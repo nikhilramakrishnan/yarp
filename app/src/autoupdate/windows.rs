@@ -218,7 +218,7 @@ pub(super) fn relaunch() -> Result<()> {
             "/NORESTART",
             &log_arg,
             "/update=1",
-            // Do not forcibly kill Warp via RestartManager. The installer will wait for
+            // Do not forcibly kill Yarp via RestartManager. The installer will wait for
             // Warp to exit naturally by polling the single-instance mutex instead.
             "/NOCLOSEAPPLICATIONS",
             &format!("/DIR={}", install_dir.display()),

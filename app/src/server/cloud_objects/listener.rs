@@ -72,7 +72,7 @@ pub struct Listener {
     /// Since we only want to start websocket connections if we know the user is
     /// on a team or has access to cloud objects, we keep track of whether
     /// or not we should be subscribing for updates. Once we start websockets, we don't stop
-    /// so that the user gets a snappier experience once they start using Warp Drive.
+    /// so that the user gets a snappier experience once they start using Yarp Drive.
     should_subscribe_to_updates: bool,
     /// Abort handle for the (retried) future that resolves when the subscription is done.
     current_subscription_abort_handle: Option<AbortHandle>,
@@ -282,7 +282,7 @@ impl Listener {
 
     fn start_listener(&mut self, ctx: &mut ModelContext<Self>) {
         // warp-oss: there is no rtc.app.warp.dev websocket to subscribe to, and
-        // no Warp Drive backend to receive updates from. Skip the listener
+        // no Yarp Drive backend to receive updates from. Skip the listener
         // entirely — `OssObjectClient` (Phase 8) services local-only object
         // reads from `~/.warp-oss/objects/`.
         let _ = ctx;

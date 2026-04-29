@@ -211,7 +211,7 @@ impl OpenWarpLaunchModal {
 
     fn render_description(appearance: &Appearance) -> Box<dyn Element> {
         Text::new(
-            "You, our community, can participate in building Warp using an agent-first workflow.",
+            "You, our community, can participate in building Yarp using an agent-first workflow.",
             appearance.ui_font_family(),
             14.,
         )

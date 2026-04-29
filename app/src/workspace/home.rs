@@ -10,11 +10,11 @@ use crate::pane_group::{AnyPaneContent, FilePane};
 
 const WARP_HOME_TITLE: &str = "Welcome to Yarp on Web";
 const WARP_HOME_CONTENT: &str = r#"
-Welcome to Warp on Web - your browser-based home for Warp! 
+Welcome to Yarp on Web - your browser-based home for Warp! 
 Use Warp on Web to:
 * Join Shared Sessions
-* Create, View, and Edit Warp Drive Objects
-* Manage your Warp Settings
+* Create, View, and Edit Yarp Drive Objects
+* Manage your Yarp Settings
 
 Warp on Web can also be used by your teammates and peers who don't have Warp downloaded yet to view your shared sessions, notebooks, and workflows."#;
 

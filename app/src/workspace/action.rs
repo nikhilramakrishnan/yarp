@@ -250,13 +250,13 @@ pub enum WorkspaceAction {
     },
     DropTab,
     FinalizeDropTab,
-    /// Toggles the left panel. In Code Mode V1 this toggles Warp Drive.
+    /// Toggles the left panel. In Code Mode V1 this toggles Yarp Drive.
     /// In Code Mode V2 this toggles the left panel which contains both the project explorer and
-    /// Warp Drive. This happens as explicit action from the user.
+    /// Yarp Drive. This happens as explicit action from the user.
     ToggleLeftPanel,
-    /// Toggles directly to the Warp Drive tab of the left panel in Code Mode V2
+    /// Toggles directly to the Yarp Drive tab of the left panel in Code Mode V2
     ToggleWarpDrive,
-    /// Unconditionally opens Warp Drive. This is used in the case of user lifecycle
+    /// Unconditionally opens Yarp Drive. This is used in the case of user lifecycle
     /// events like new user onboarding or when the user joins a team.
     OpenWarpDrive,
     /// Toggles the right panel. This happens as an explicit action from the user.
@@ -551,7 +551,7 @@ pub enum WorkspaceAction {
     /// Open the OpenWarp Launch Modal (for debugging)
     #[cfg(debug_assertions)]
     OpenOpenWarpLaunchModal,
-    /// Reset the OpenWarp launch modal dismissed state (for debugging)
+    /// Reset the OpenYarp launch modal dismissed state (for debugging)
     #[cfg(debug_assertions)]
     ResetOpenWarpLaunchModalState,
     /// Install the opencode-warp plugin from GitHub into the global opencode config.

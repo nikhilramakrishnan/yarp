@@ -230,7 +230,7 @@ fn main() {
     );
     root.insert(
         "title".to_string(),
-        Value::String("Warp Settings".to_string()),
+        Value::String("Yarp Settings".to_string()),
     );
     root.insert(
         "description".to_string(),

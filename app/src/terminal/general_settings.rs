@@ -139,7 +139,7 @@ define_settings_group!(GeneralSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: true,
     },
-    // One-time flag tracking whether the OpenWarp launch modal has already been
+    // One-time flag tracking whether the OpenYarp launch modal has already been
     // shown to the user. Not user-visible; modeled as a setting so it's only
     // shown once per user regardless of the number of devices they use.
     did_check_to_trigger_openwarp_launch_modal: DidShowOpenWarpLaunchModal {

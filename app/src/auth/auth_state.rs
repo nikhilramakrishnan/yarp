@@ -328,7 +328,7 @@ impl AuthState {
         })
     }
 
-    /// Returns whether or not the anonymous user is past any of their Warp Drive object limits.
+    /// Returns whether or not the anonymous user is past any of their Yarp Drive object limits.
     pub fn is_anonymous_user_past_object_limit(
         &self,
         object_type: ObjectType,

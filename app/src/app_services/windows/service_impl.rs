@@ -8,7 +8,7 @@ use warpui::r#async::executor::Background;
 
 use super::single_instance_manager::uri_named_pipe_name;
 
-/// IPC Service to respond to URIs sent to the active Warp instance.
+/// IPC Service to respond to URIs sent to the active Yarp instance.
 pub(super) struct UriService {}
 
 impl ipc::Service for UriService {

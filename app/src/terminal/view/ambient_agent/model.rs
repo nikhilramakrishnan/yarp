@@ -129,7 +129,7 @@ impl AmbientAgentViewModel {
             me.handle_cloud_model_event(event, ctx);
         });
 
-        // Validate the default environment once Warp Drive sync completes.
+        // Validate the default environment once Yarp Drive sync completes.
         // The environment ID may be restored from settings before environments are synced,
         // so we need to validate it once the initial load is complete.
         let initial_load_complete = UpdateManager::as_ref(ctx).initial_load_complete();
@@ -210,7 +210,7 @@ impl AmbientAgentViewModel {
         }
     }
 
-    /// Validates the environment ID after Warp Drive initial load completes.
+    /// Validates the environment ID after Yarp Drive initial load completes.
     /// If the environment no longer exists, clears the selection.
     fn validate_environment_after_initial_load(&mut self, ctx: &mut ModelContext<Self>) {
         if let Some(id) = &self.environment_id {

@@ -7,7 +7,7 @@ use warpui::elements::shimmering_text::{
 use warpui::elements::Element;
 use warpui::{AppContext, SingletonEntity};
 
-/// Warp icon glyph character
+/// Yarp icon glyph character
 const WARP_GLYPH: &str = "\u{E500}";
 
 /// Creates a shimmering text element with the Warp glyph.

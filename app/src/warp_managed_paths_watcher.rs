@@ -39,7 +39,7 @@ pub(crate) fn ensure_warp_watch_roots_exist() {
     if config_local_dir != data_dir {
         if let Err(err) = fs::create_dir_all(&config_local_dir) {
             log::warn!(
-                "Failed to create Warp config directory {}: {err}",
+                "Failed to create Yarp config directory {}: {err}",
                 config_local_dir.display()
             );
         }
@@ -259,7 +259,7 @@ impl WarpManagedPathsWatcher {
                     config_local_dir.clone(),
                     WatchFilter::accept_all(),
                     RecursiveMode::Recursive,
-                    "Warp config directory",
+                    "Yarp config directory",
                 );
             }
             if let Some(warp_home_skills_dir) = warp_home_skills_dir() {

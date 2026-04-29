@@ -1,8 +1,13 @@
-<!-- Yarp brand mark (file kept under the legacy name so existing call-sites
-     keep working with no path changes). 38x30 viewBox; uses currentColor. -->
-<svg width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g transform="translate(11, 0) scale(0.15)">
-    <path d="M 100 28 C 78 28, 60 38, 54 56 C 50 70, 50 86, 52 100 C 52 116, 56 130, 62 142 C 66 150, 72 156, 78 158 L 78 150 C 76 140, 76 130, 78 120 C 74 110, 72 96, 74 84 C 78 76, 86 72, 100 72 C 114 72, 122 76, 126 84 C 128 96, 126 110, 122 120 C 124 130, 124 140, 122 150 L 122 158 C 128 156, 134 150, 138 142 C 144 130, 148 116, 148 100 C 150 86, 150 70, 146 56 C 140 38, 122 28, 100 28 Z" fill="currentColor" />
-    <g transform="rotate(-10 111 74.5)"><rect x="102" y="70" width="18" height="9" rx="1" fill="currentColor" opacity="0.45" /></g>
+<!-- Yarp brand mark — small/neutral. 38x30 viewBox.
+     warpui renders SVGs as alpha masks and tints them with the color passed
+     to Icon::new(...), so fill values here only need to mark "ink" vs
+     "background"; the actual hue comes from the call site. -->
+<svg width="38" height="30" viewBox="0 0 38 30" xmlns="http://www.w3.org/2000/svg">
+  <!-- Portrait at scale 0.15 → 30×30. Centered in 38-wide viewBox: x=4. -->
+  <g transform="translate(4, 0) scale(0.15)">
+    <path d="M 100 28 C 78 28, 60 38, 54 56 C 50 70, 50 86, 52 100 C 52 116, 56 130, 62 142 C 66 150, 72 156, 78 158 L 78 150 C 76 140, 76 130, 78 120 C 74 110, 72 96, 74 84 C 78 76, 86 72, 100 72 C 114 72, 122 76, 126 84 C 128 96, 126 110, 122 120 C 124 130, 124 140, 122 150 L 122 158 C 128 156, 134 150, 138 142 C 144 130, 148 116, 148 100 C 150 86, 150 70, 146 56 C 140 38, 122 28, 100 28 Z" fill="#FAF9F6"/>
+    <g transform="rotate(-10 111 74.5)">
+      <rect x="102" y="70" width="18" height="9" rx="1" fill="#FAF9F6" fill-opacity="0.5"/>
+    </g>
   </g>
 </svg>

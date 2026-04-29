@@ -99,7 +99,7 @@ impl TerminalView {
         }
     }
 
-    /// Whether or not the "Open in Warp" banner is open.
+    /// Whether or not the "Open in Yarp" banner is open.
     #[cfg(feature = "integration_tests")]
     pub fn is_open_in_warp_banner_open(&self) -> bool {
         self.inline_banners_state.open_in_warp_banner.is_some()

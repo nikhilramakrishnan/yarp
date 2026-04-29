@@ -21,7 +21,7 @@ pub struct OneTimeModalModel {
     is_build_plan_migration_modal_open: bool,
     /// Whether the Oz launch modal is currently being shown.
     is_oz_launch_modal_open: bool,
-    /// Whether the OpenWarp launch modal is currently being shown.
+    /// Whether the OpenYarp launch modal is currently being shown.
     is_openwarp_launch_modal_open: bool,
     /// Whether the HOA onboarding flow is currently being shown.
     is_hoa_onboarding_open: bool,
@@ -78,7 +78,7 @@ impl OneTimeModalModel {
                         .did_check_to_trigger_openwarp_launch_modal
                         .set_value(true, ctx)
                     {
-                        log::warn!("Failed to mark OpenWarp launch modal as dismissed: {e}");
+                        log::warn!("Failed to mark OpenYarp launch modal as dismissed: {e}");
                     }
                 });
             }
@@ -107,7 +107,7 @@ impl OneTimeModalModel {
         self.set_oz_launch_modal_open(false, ctx);
     }
 
-    /// Returns whether the OpenWarp launch modal is currently open.
+    /// Returns whether the OpenYarp launch modal is currently open.
     pub fn is_openwarp_launch_modal_open(&self) -> bool {
         self.is_openwarp_launch_modal_open && self.target_window_id.is_some()
     }
@@ -192,7 +192,7 @@ impl OneTimeModalModel {
             }
         });
 
-        // The OpenWarp launch modal takes priority over the Oz launch modal
+        // The OpenYarp launch modal takes priority over the Oz launch modal
         // when both are enabled.
         if self.check_and_trigger_openwarp_launch_modal(ctx) {
             return;
@@ -286,7 +286,7 @@ impl OneTimeModalModel {
                 .did_check_to_trigger_openwarp_launch_modal
                 .set_value(true, ctx)
             {
-                log::warn!("Failed to mark OpenWarp launch modal as dismissed: {e}");
+                log::warn!("Failed to mark OpenYarp launch modal as dismissed: {e}");
             }
         });
 

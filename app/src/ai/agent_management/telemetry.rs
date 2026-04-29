@@ -111,7 +111,7 @@ pub enum AgentManagementTelemetryEvent {
     /// User clicked "Continue locally" in the details panel
     #[cfg(not(target_family = "wasm"))]
     DetailsPanelContinueLocally,
-    /// User clicked "Open in Warp" in the tombstone (wasm)
+    /// User clicked "Open in Yarp" in the tombstone (wasm)
     #[cfg(target_family = "wasm")]
     TombstoneOpenInWarp,
     /// User cancelled a cloud run
@@ -279,7 +279,7 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
                 "User clicked Continue locally in the details panel"
             }
             #[cfg(target_family = "wasm")]
-            Self::TombstoneOpenInWarp => "User clicked Open in Warp in the tombstone",
+            Self::TombstoneOpenInWarp => "User clicked Open in Yarp in the tombstone",
             Self::CloudRunCancelled => "User cancelled a cloud run",
             Self::ConversationForked => "User forked a conversation",
         }

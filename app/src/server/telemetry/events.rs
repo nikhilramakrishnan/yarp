@@ -212,7 +212,7 @@ impl From<Space> for TelemetrySpace {
     }
 }
 
-/// Common metadata to include in all Warp Drive telemetry events that act on a specific object.
+/// Common metadata to include in all Yarp Drive telemetry events that act on a specific object.
 /// Events that only apply to a single object type may use specific metadata like [`WorkflowTelemetryMetadata`],
 /// [`NotebookTelemetryMetadata`], or [`EnvVarTelemetryMetadata`] instead.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -382,7 +382,7 @@ impl From<rmcp::RmcpError> for MCPServerTelemetryError {
 pub struct OpenedSharingDialogEvent {
     pub source: SharingDialogSource,
 
-    /// Metadata for the object being shared, if it's a Warp Drive object.
+    /// Metadata for the object being shared, if it's a Yarp Drive object.
     #[serde(flatten)]
     pub object_metadata: Option<CloudObjectTelemetryMetadata>,
 
@@ -390,14 +390,14 @@ pub struct OpenedSharingDialogEvent {
     pub session_id: Option<SharedSessionId>,
 }
 
-/// How the user opened the Warp Drive sharing dialog.
+/// How the user opened the Yarp Drive sharing dialog.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
 pub enum SharingDialogSource {
     /// The sharing button in the pane header.
     PaneHeader,
     /// The per-pane command palette entry (includes keybindings).
     CommandPalette,
-    /// The Warp Drive index context menu.
+    /// The Yarp Drive index context menu.
     DriveIndex,
     /// The sharing dialog was auto-opened from shared session creation.
     StartedSessionShare,
@@ -5816,7 +5816,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::EnableAliasExpansionFromBanner => "Enable Alias Expansion From Banner",
             Self::InitiateReauth => "Initiate Reauth",
             Self::NeedsReauth => "Needs Reauth",
-            Self::WarpDriveOpened => "Warp Drive Opened",
+            Self::WarpDriveOpened => "Yarp Drive Opened",
             Self::ToggleWarpAI => "Toggle Warp AI",
             Self::ToggleSecretRedaction => "Toggle Secret Redaction",
             Self::CustomSecretRegexAdded => "Custom Secret Regex Added",
@@ -5842,8 +5842,8 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::JumpToSharedSessionParticipant { .. } => "Jumped to Shared Session Participant",
             Self::CopiedSharedSessionLink { .. } => "Copied Shared Session Link",
             Self::WebSessionOpenedOnDesktop { .. } => "Web session opened on desktop",
-            Self::WebCloudObjectOpenedOnDesktop { .. } => "Warp Drive object opened on desktop",
-            Self::DriveSharingOnboardingBlockShown => "Warp Drive Sharing onboarding block shown",
+            Self::WebCloudObjectOpenedOnDesktop { .. } => "Yarp Drive object opened on desktop",
+            Self::DriveSharingOnboardingBlockShown => "Yarp Drive Sharing onboarding block shown",
             Self::UnsupportedShell => "Unsupported Shell",
             Self::SettingsImportInitiated => "Settings Import Initiated",
             Self::InviteTeammates => "Invited Teammates",
@@ -6337,16 +6337,16 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Opened the launch config YAML file from modal once saved successfully"
             }
             Self::OpenLaunchConfig => "Opened launch config for a session",
-            Self::TeamCreated => "Created a Warp Drive team",
-            Self::TeamJoined => "Joined a Warp Drive team",
-            Self::TeamLeft => "Left a Warp Drive team",
-            Self::TeamLinkCopied => "Copied a Warp Drive team link",
-            Self::RemovedUserFromTeam => "Remove user from Warp Drive team",
-            Self::DeletedWorkflow => "Deleted workflow from Warp Drive team",
-            Self::DeletedNotebook => "Deleted notebook from Warp Drive team",
+            Self::TeamCreated => "Created a Yarp Drive team",
+            Self::TeamJoined => "Joined a Yarp Drive team",
+            Self::TeamLeft => "Left a Yarp Drive team",
+            Self::TeamLinkCopied => "Copied a Yarp Drive team link",
+            Self::RemovedUserFromTeam => "Remove user from Yarp Drive team",
+            Self::DeletedWorkflow => "Deleted workflow from Yarp Drive team",
+            Self::DeletedNotebook => "Deleted notebook from Yarp Drive team",
             Self::ToggleApprovalsModal => "Opened or closed teams modal",
             Self::ChangedInviteViewOption => "Toggled between link and invite for invite",
-            Self::SendEmailInvites => "Sent email invites for Warp Drive team",
+            Self::SendEmailInvites => "Sent email invites for Yarp Drive team",
             Self::CommandCorrection => "Accepted command correction",
             Self::SetLineHeight => "Set line height through Settings -> Appearance",
             Self::ResourceCenterOpened => "Opened Resource Center pane",
@@ -6533,7 +6533,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             }
             Self::InitiateReauth => "Started the flow to re-authenticate the client",
             Self::NeedsReauth => "User needs to re-authenticate",
-            Self::WarpDriveOpened => "Opened Warp Drive panel",
+            Self::WarpDriveOpened => "Opened Yarp Drive panel",
             Self::ToggleWarpAI => {
                 "Toggled Warp AI--an AI assistant to help you debug errors, look up forgotten commands and more"
             }
@@ -6549,11 +6549,11 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::AutoGenerateMetadataError => {
                 "Failed to generate metadata for a workflow using Warp AI"
             }
-            Self::UpdateSortingChoice => "Modified the sorting scheme for Warp Drive objects",
+            Self::UpdateSortingChoice => "Modified the sorting scheme for Yarp Drive objects",
             Self::UndoClose => "Re-opened a closed tab or window (undo closing a tab or window)",
             Self::PtyThroughput => "A sample of the max PTY throughput in bytes/sec",
-            Self::DuplicateObject => "Cloned a Warp Drive object",
-            Self::ExportObject => "Exported a Warp Drive object",
+            Self::DuplicateObject => "Cloned a Yarp Drive object",
+            Self::ExportObject => "Exported a Yarp Drive object",
             Self::CommandFileRun => {
                 "Opened a .cmd or unix executable file and ran it directly in Warp"
             }
@@ -6582,15 +6582,15 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Shared session viewed on the web was opened on the desktop"
             }
             Self::WebCloudObjectOpenedOnDesktop => {
-                "Warp Drive object on the web was opened on the desktop"
+                "Yarp Drive object on the web was opened on the desktop"
             }
             Self::DriveSharingOnboardingBlockShown => {
-                "Showed onboarding block for Warp Drive sharing"
+                "Showed onboarding block for Yarp Drive sharing"
             }
             Self::UnsupportedShell => "Booted Warp with a shell that isn't supported",
             Self::LogOut => "Logged out of the Warp client",
             Self::SettingsImportInitiated => "Started the import settings flow for new users",
-            Self::InviteTeammates => "Sent emails to invite teammates to join Warp Drive team",
+            Self::InviteTeammates => "Sent emails to invite teammates to join Yarp Drive team",
             Self::CopyObjectToClipboard => "Copied an object to the user's keyboard",
             Self::OpenAndWarpifyDockerSubshell => {
                 "Warpifying a docker subshell from using the docker extension"
@@ -6739,18 +6739,18 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             }
             Self::AgentModeOpenedCitation => "Opened a citation that was surfaced in agent mode",
             Self::OpenedSharingDialog => {
-                "Opened the sharing settings dialog for a session or Warp Drive object"
+                "Opened the sharing settings dialog for a session or Yarp Drive object"
             }
             Self::ToggleGlobalAI => "Toggled global AI enablement.",
             Self::ToggleActiveAI => "Toggled active AI enablement.",
             Self::ToggleLigatureRendering => "Toggled ligature rendering",
-            Self::WorkflowAliasAdded => "Added an alias to a Warp Drive workflow",
-            Self::WorkflowAliasRemoved => "Removed an alias from a Warp Drive workflow",
+            Self::WorkflowAliasAdded => "Added an alias to a Yarp Drive workflow",
+            Self::WorkflowAliasRemoved => "Removed an alias from a Yarp Drive workflow",
             Self::WorkflowAliasArgumentEdited => {
-                "Edited an argument in a Warp Drive workflow alias"
+                "Edited an argument in a Yarp Drive workflow alias"
             }
             Self::WorkflowAliasEnvVarsAttached => {
-                "Added or removed environment variables for a Warp Drive workflow alias"
+                "Added or removed environment variables for a Yarp Drive workflow alias"
             }
             Self::ToggledAgentModeAutoexecuteReadonlyCommandsSetting => {
                 "Toggled setting to autoexecute readonly Agent Mode requested commands"

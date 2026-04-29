@@ -248,7 +248,7 @@ pub struct AIExecutionProfile {
     pub cli_agent_model: Option<LLMId>,
     pub computer_use_model: Option<LLMId>,
 
-    /// Whether plans created by the agent should be automatically synced to Warp Drive
+    /// Whether plans created by the agent should be automatically synced to Yarp Drive
     pub autosync_plans_to_warp_drive: bool,
 
     /// Whether the agent may use web search when helpful for completing tasks

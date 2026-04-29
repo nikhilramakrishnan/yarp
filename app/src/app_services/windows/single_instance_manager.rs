@@ -90,7 +90,7 @@ pub(super) struct SingleInstanceManager {
 }
 
 impl SingleInstanceManager {
-    /// Attempts to upgrade the current Warp instance to the "main" instance (i.e. the one that
+    /// Attempts to upgrade the current Yarp instance to the "main" instance (i.e. the one that
     /// holds the named mutex). This function enforces that a URI server is created iff the mutex
     /// is held.
     pub(super) fn new(ctx: &mut ModelContext<Self>) -> Self {

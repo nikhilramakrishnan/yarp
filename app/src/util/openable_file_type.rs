@@ -41,9 +41,9 @@ pub enum OpenableFileType {
 /// The target application or viewer to use when opening a file.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FileTarget {
-    /// Open in Warp's Markdown viewer.
+    /// Open in Yarp's Markdown viewer.
     MarkdownViewer(EditorLayout),
-    /// Open in Warp's Code Editor.
+    /// Open in Yarp's Code Editor.
     CodeEditor(EditorLayout),
     /// Open in an external editor (e.g. VS Code, Emacs).
     #[cfg(feature = "local_fs")]

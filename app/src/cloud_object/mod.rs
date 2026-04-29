@@ -190,8 +190,8 @@ pub trait CloudObject: Debug {
         true
     }
 
-    /// Creates a new Warp Drive item for this object.  Returns None if this
-    /// object is not rendered in Warp Drive.
+    /// Creates a new Yarp Drive item for this object.  Returns None if this
+    /// object is not rendered in Yarp Drive.
     fn to_warp_drive_item(&self, appearance: &Appearance) -> Option<Box<dyn WarpDriveItem>>;
 
     /// Returns the web link of this object. Will return none if we do not support web links
@@ -478,7 +478,7 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
     }
 
     /// Creates a new warp drive item for this model type. Returns None
-    /// if this object does not render in Warp Drive.
+    /// if this object does not render in Yarp Drive.
     fn to_warp_drive_item(
         &self,
         id: SyncId,
@@ -486,10 +486,10 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
         object: &Self::CloudObjectType,
     ) -> Option<Box<dyn WarpDriveItem>>;
 
-    /// Returns the display name for this model (e.g. to show in the Warp Drive index)
+    /// Returns the display name for this model (e.g. to show in the Yarp Drive index)
     fn display_name(&self) -> String;
 
-    /// Sets the display name to show in the Warp Drive Index.  Setting the name
+    /// Sets the display name to show in the Yarp Drive Index.  Setting the name
     /// is not currently supported by all object types, hence the default empty
     /// implementation.
     fn set_display_name(&mut self, _name: &str) {}
