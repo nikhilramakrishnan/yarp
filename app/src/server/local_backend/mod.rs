@@ -25,11 +25,13 @@ pub mod ai_client;
 pub mod file_store;
 pub mod harness_support;
 pub mod llm_provider;
+pub mod object_client;
 pub mod paths;
 
 pub use ai_client::OssAiClient;
 pub use file_store::FileStore;
 pub use harness_support::OssHarnessSupportClient;
+pub use object_client::OssObjectClient;
 pub use paths::LocalPaths;
 
 use std::sync::Arc;

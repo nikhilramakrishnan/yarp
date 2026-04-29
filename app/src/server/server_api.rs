@@ -1380,7 +1380,9 @@ impl ServerApiProvider {
     }
 
     pub fn get_cloud_objects_client(&self) -> Arc<dyn ObjectClient> {
-        self.server_api.clone()
+        // warp-oss doesn't talk to a cloud object store. Mutations error out;
+        // reads return empty so the Yarp Drive UI shows an empty state.
+        Arc::new(crate::server::local_backend::OssObjectClient::new())
     }
 
     pub fn get_integrations_client(&self) -> Arc<dyn integrations::IntegrationsClient> {
