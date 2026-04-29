@@ -193,8 +193,9 @@ impl LocalLlmProvider {
                 ollama_chat(base_url, model, system, messages).await
             }
             LocalLlmProvider::Disabled => Err(anyhow!(
-                "warp-oss: no LLM provider configured. Set WARP_OSS_LLM_PROVIDER \
-                 (anthropic / openai / ollama) and the corresponding key/base URL."
+                "Yarp: no LLM provider configured. Edit ~/.yarp/llm_provider.json \
+                 (provider = anthropic | openai | ollama, plus api_key/model/base_url), \
+                 or set WARP_OSS_LLM_PROVIDER + WARP_OSS_LLM_API_KEY in your shell."
             )),
         }
     }
