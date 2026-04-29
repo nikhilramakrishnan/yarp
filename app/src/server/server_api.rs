@@ -1370,7 +1370,13 @@ impl ServerApiProvider {
     }
 
     pub fn get_ai_client(&self) -> Arc<dyn AIClient> {
-        self.server_api.clone()
+        // warp-oss replaces the cloud AIClient impl entirely with a local-only
+        // version backed by `~/.warp-oss/`. Inference methods will eventually
+        // route through a configurable LLM provider; for now they return
+        // explicit "not supported" errors.
+        Arc::new(crate::server::local_backend::OssAiClient::new(
+            crate::server::local_backend::LocalBackend::new(),
+        ))
     }
 
     pub fn get_cloud_objects_client(&self) -> Arc<dyn ObjectClient> {
@@ -1393,7 +1399,12 @@ impl ServerApiProvider {
 
     #[cfg_attr(target_family = "wasm", expect(dead_code))]
     pub fn get_harness_support_client(&self) -> Arc<dyn harness_support::HarnessSupportClient> {
-        self.server_api.clone()
+        // warp-oss: harness transcript / snapshot persistence happens locally
+        // under `~/.warp-oss/harness/{id}/`. Sentinel `localhost.invalid` URLs
+        // are returned from upload-target methods so any leak is loud.
+        Arc::new(crate::server::local_backend::OssHarnessSupportClient::new(
+            crate::server::local_backend::LocalBackend::new(),
+        ))
     }
 }
 

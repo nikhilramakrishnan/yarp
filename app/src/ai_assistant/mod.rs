@@ -127,6 +127,29 @@ impl From<GeneratedCommand> for AIGeneratedCommand {
     }
 }
 
+impl AIGeneratedCommand {
+    /// Constructor used by the warp-oss local AI client. Avoids needing to
+    /// fabricate a `GeneratedCommand` (the GraphQL response type) just to
+    /// instantiate one.
+    pub fn new(
+        command: String,
+        description: String,
+        parameters: Vec<AIGeneratedCommandParameter>,
+    ) -> Self {
+        Self {
+            command,
+            description,
+            parameters,
+        }
+    }
+}
+
+impl AIGeneratedCommandParameter {
+    pub fn new(id: String, description: String) -> Self {
+        Self { id, description }
+    }
+}
+
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub enum GenerateCommandsFromNaturalLanguageError {
     BadPrompt,

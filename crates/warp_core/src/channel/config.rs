@@ -42,11 +42,14 @@ pub struct WarpServerConfig {
 
 impl WarpServerConfig {
     pub fn production() -> Self {
+        // warp-oss runs entirely against a local backend; the URLs below are
+        // unreachable on purpose so any leaked HTTP request surfaces loudly in
+        // a network audit instead of silently hitting Warp's production servers.
         Self {
-            server_root_url: "https://app.warp.dev".into(),
-            rtc_server_url: "wss://rtc.app.warp.dev/graphql/v2".into(),
-            session_sharing_server_url: Some("wss://sessions.app.warp.dev".into()),
-            firebase_auth_api_key: "AIzaSyBdy3O3S9hrdayLJxJ7mriBR4qgUaUygAs".into(),
+            server_root_url: "https://localhost.invalid".into(),
+            rtc_server_url: "wss://localhost.invalid".into(),
+            session_sharing_server_url: Some("wss://localhost.invalid".into()),
+            firebase_auth_api_key: "warp-oss-no-firebase".into(),
         }
     }
 }
@@ -64,8 +67,9 @@ pub struct OzConfig {
 
 impl OzConfig {
     pub fn production() -> Self {
+        // See WarpServerConfig::production for rationale on localhost.invalid.
         Self {
-            oz_root_url: "https://oz.warp.dev".into(),
+            oz_root_url: "https://localhost.invalid".into(),
             workload_audience_url: None,
         }
     }

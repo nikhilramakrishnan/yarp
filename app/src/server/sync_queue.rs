@@ -414,8 +414,12 @@ impl SyncQueue {
     }
 
     pub fn start_dequeueing(&mut self, ctx: &mut ModelContext<Self>) {
-        self.should_dequeue = true;
-        self.dequeue(ctx)
+        // warp-oss has no Warp backend, so the cloud-object sync queue has
+        // nothing to drain. We keep `should_dequeue=false` to short-circuit
+        // every retry, dependency-resolve, and rate-limit path that would
+        // otherwise hammer `localhost.invalid`.
+        let _ = ctx;
+        self.should_dequeue = false;
     }
 
     // Clear the SyncQueue. This is used during Logout.
@@ -434,13 +438,11 @@ impl SyncQueue {
 
     /// Enqueue a new request.
     pub fn enqueue(&mut self, item: QueueItem, ctx: &mut ModelContext<Self>) -> QueueItemId {
-        let queue_id = QueueItemId::new();
-        let mut queue_item = item;
-
-        self.add_inferred_dependencies(&mut queue_item, &queue_id, ctx);
-        self.queue.push((queue_id, queue_item));
-        self.dequeue(ctx);
-        queue_id
+        // warp-oss: nothing to sync. Drop the request on the floor instead of
+        // queueing — there's no backend that would ever process it, and any
+        // dequeue attempt would hit `localhost.invalid` and burn retry budget.
+        let _ = (item, ctx);
+        QueueItemId::new()
     }
 
     /// Given a queue item, infer its dependencies based on the current state of the queue and add them to queue_dependencies.

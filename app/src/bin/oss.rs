@@ -5,16 +5,66 @@
 use anyhow::Result;
 use warp_core::{
     channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig},
+    features::FeatureFlag,
     AppId,
 };
+
+// Features enabled for warp-oss. We commit to OSS as the sole channel and
+// replace Warp's backend with a local-first implementation, so we can enable
+// every flag whose feature works without a Warp account or a cloud service.
+//
+// What's intentionally NOT here: ProviderCommand, ArtifactCommand,
+// OzIdentityFederation, CloudEnvironments, ScheduledAmbientAgents,
+// WarpManagedSecrets, CreatingSharedSessions — those surfaces would expose
+// non-functional UI without a backend we control. CrossRepoContext /
+// FullSourceCodeEmbedding are deferred until we wire up a local embedding
+// provider.
+const OSS_FLAGS: &[FeatureFlag] = &[
+    // Required for harness flow
+    FeatureFlag::AgentHarness,
+    FeatureFlag::OrchestrationV2,
+    FeatureFlag::OzHandoff,
+    FeatureFlag::ConversationApi,
+    // Markdown / editor
+    FeatureFlag::MarkdownTables,
+    FeatureFlag::BlocklistMarkdownTableRendering,
+    FeatureFlag::BlocklistMarkdownImages,
+    FeatureFlag::MarkdownImages,
+    FeatureFlag::EditableMarkdownMermaid,
+    // Code review
+    FeatureFlag::GitOperationsInCodeReview,
+    FeatureFlag::CodeReviewScrollPreservation,
+    FeatureFlag::ContextLineReviewComments,
+    FeatureFlag::FileAndDiffSetComments,
+    // Tabs / window
+    FeatureFlag::DirectoryTabColors,
+    FeatureFlag::VerticalTabsSummaryMode,
+    // Terminal UX
+    FeatureFlag::RemoveAutosuggestionDuringTabCompletions,
+    FeatureFlag::ResizeFix,
+    FeatureFlag::LazySceneBuilding,
+    FeatureFlag::ToggleBootstrapBlock,
+    #[cfg(target_os = "macos")]
+    FeatureFlag::ImeMarkedText,
+    FeatureFlag::SshDragAndDrop,
+    // Agent ergonomics
+    FeatureFlag::QueueSlashCommand,
+    FeatureFlag::PendingUserQueryIndicator,
+    FeatureFlag::RetryTruncatedCodeResponses,
+    FeatureFlag::RememberFastForwardState,
+    FeatureFlag::AgentViewBlockContext,
+    FeatureFlag::AgentModeWorkflows,
+    // Skills
+    FeatureFlag::OzPlatformSkills,
+];
 
 // Simple wrapper around warp::run() for Warp OSS builds.
 fn main() -> Result<()> {
     let mut state = ChannelState::new(
         Channel::Oss,
         ChannelConfig {
-            app_id: AppId::new("dev", "warp", "WarpOss"),
-            logfile_name: "warp-oss.log".into(),
+            app_id: AppId::new("dev", "yarp", "Yarp"),
+            logfile_name: "yarp.log".into(),
             server_config: WarpServerConfig::production(),
             oz_config: OzConfig::production(),
             telemetry_config: None,
@@ -23,6 +73,7 @@ fn main() -> Result<()> {
             mcp_static_config: None,
         },
     );
+    state = state.with_additional_features(OSS_FLAGS);
     if cfg!(debug_assertions) {
         state = state.with_additional_features(warp_core::features::DEBUG_FLAGS);
     }
@@ -41,15 +92,15 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleDisplayName</key>
-    <string>WarpOss</string>
+    <string>Yarp</string>
     <key>CFBundleExecutable</key>
     <string>warp-oss</string>
     <key>CFBundleIdentifier</key>
-    <string>dev.warp.WarpOss</string>
+    <string>dev.yarp.Yarp</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>WarpOss</string>
+    <string>Yarp</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -61,9 +112,9 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>UIDesignRequiresCompatibility</key>
     <true/>
     <key>CFBundleURLTypes</key>
-    <array><dict><key>CFBundleURLName</key><string>Custom App</string><key>CFBundleURLSchemes</key><array><string>warposs</string></array></dict></array>
+    <array><dict><key>CFBundleURLName</key><string>Yarp</string><key>CFBundleURLSchemes</key><array><string>yarp</string></array></dict></array>
     <key>NSHumanReadableCopyright</key>
-    <string>© 2026, Denver Technologies, Inc</string>
+    <string>© 2026 Yarp contributors</string>
     </dict>
     </plist>
 "#.as_bytes());

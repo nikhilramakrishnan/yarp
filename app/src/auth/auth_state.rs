@@ -73,13 +73,19 @@ impl AuthState {
         }
     }
 
-    /// Creates and initializes auth state. Checks, in order:
-    /// 1. Test user (test/integration/skip_login builds)
-    /// 2. Provided API key
-    /// 3. WARP_USER_SECRET environment variable
-    /// 4. Persisted user from secure storage
+    /// Creates and initializes auth state. warp-oss is single-user with no backend,
+    /// so we always synthesize a local user. The remaining branches (api key,
+    /// WARP_USER_SECRET, persisted user) are kept for source compatibility but are
+    /// unreachable in OSS builds.
     #[cfg_attr(target_family = "wasm", allow(dead_code))]
-    pub fn initialize(ctx: &AppContext, api_key: Option<String>) -> Self {
+    pub fn initialize(ctx: &AppContext, _api_key: Option<String>) -> Self {
+        let state = Self::new(ctx);
+        state.set_user(Some(User::test()));
+        state
+    }
+
+    #[allow(dead_code)]
+    fn _initialize_legacy(ctx: &AppContext, api_key: Option<String>) -> Self {
         let state = Self::new(ctx);
 
         if Self::should_use_test_user() {
@@ -228,19 +234,16 @@ impl AuthState {
         }
     }
 
-    /// Determines whether the user should be considered as logged in.
+    /// In warp-oss the user is always considered logged in — there is no Warp
+    /// backend and no auth flow. The synthetic local user is set up in `initialize`.
     pub fn is_logged_in(&self) -> bool {
-        self.credentials.read().is_some()
+        true
     }
 
-    /// Returns whether the user should be treated as not having a full account.
-    /// True if the user is anonymous OR if there is no user at all (fully logged out).
-    ///
-    /// Note: uses `unwrap_or(true)` intentionally (not `unwrap_or_default()`) so that
-    /// during the transient state where credentials exist but user data hasn't loaded
-    /// yet, the user is conservatively treated as lacking a full account.
+    /// In warp-oss there is no anonymous tier and no logout, so this is always
+    /// false. The synthetic local user is treated as a full account.
     pub fn is_anonymous_or_logged_out(&self) -> bool {
-        !self.is_logged_in() || self.is_user_anonymous().unwrap_or(true)
+        false
     }
 
     /// Returns the cached access token, if any exists. This method *will not* check if the JWT is

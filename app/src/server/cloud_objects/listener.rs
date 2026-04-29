@@ -281,10 +281,12 @@ impl Listener {
     }
 
     fn start_listener(&mut self, ctx: &mut ModelContext<Self>) {
-        if !self.should_subscribe_to_updates {
-            self.should_subscribe_to_updates = true;
-            self.get_warp_drive_updates(ctx);
-        }
+        // warp-oss: there is no rtc.app.warp.dev websocket to subscribe to, and
+        // no Warp Drive backend to receive updates from. Skip the listener
+        // entirely — `OssObjectClient` (Phase 8) services local-only object
+        // reads from `~/.warp-oss/objects/`.
+        let _ = ctx;
+        self.should_subscribe_to_updates = false;
     }
 
     /// Cancels any pending delayed refresh that was scheduled after a reconnection.

@@ -241,42 +241,10 @@ impl AuthClient for ServerApi {
     }
 
     async fn get_or_refresh_access_token(&self) -> Result<AuthToken> {
-        if cfg!(feature = "skip_login") {
-            bail!("skip_login enabled; failing all authenticated requests");
-        }
-
-        let Some(credentials) = self.auth_state.credentials() else {
-            bail!("Attempted to retrieve access token when user is logged out");
-        };
-
-        match credentials {
-            Credentials::ApiKey { key, .. } => Ok(AuthToken::ApiKey(key)),
-            Credentials::Firebase(auth_tokens) => {
-                let expiration_time = auth_tokens.expiration_time;
-
-                // Generate a new ID token if the token has expired or will expire in the
-                // next five minutes. This matches the behavior of the Firebase Auth SDK.
-                if chrono::DateTime::now() + chrono::Duration::minutes(5) >= expiration_time {
-                    let refresh_token = auth_tokens.refresh_token.clone();
-                    let firebase_token = FirebaseToken::Refresh(RefreshToken::new(refresh_token));
-
-                    let result = fetch_auth_tokens(self.client.clone(), firebase_token).await;
-
-                    if let Err(UserAuthenticationError::DeniedAccessToken(_)) = result {
-                        let _ = self.event_sender.send(ServerApiEvent::NeedsReauth).await;
-                    }
-                    let new_firebase_token_info = result?;
-                    self.auth_state
-                        .update_firebase_tokens(new_firebase_token_info.clone());
-                    return Ok(AuthToken::Firebase(new_firebase_token_info.id_token));
-                }
-
-                Ok(AuthToken::Firebase(auth_tokens.id_token))
-            }
-            Credentials::SessionCookie => Ok(AuthToken::NoAuth),
-            #[cfg(any(test, feature = "integration_tests", feature = "skip_login"))]
-            Credentials::Test => Ok(AuthToken::NoAuth),
-        }
+        // warp-oss has no Warp backend and no real credentials. Every consumer
+        // of this token must accept `NoAuth` (downstream HTTP code already
+        // handles that — `Authorization` header is just omitted).
+        Ok(AuthToken::NoAuth)
     }
 
     async fn fetch_user(
