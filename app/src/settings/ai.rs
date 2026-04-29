@@ -1458,7 +1458,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
         toml_path: "agents.warp_agent.other.agent_attribution_enabled",
-        description: "Whether the Warp Agent adds an attribution co-author line to commit messages and pull requests it creates.",
+        description: "Whether the Yarp Agent adds an attribution co-author line to commit messages and pull requests it creates.",
     }
 ]);
 

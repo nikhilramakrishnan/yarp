@@ -3090,7 +3090,7 @@ impl SettingsWidget for GlobalAIWidget {
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
                 Text::new_inline(
-                    "Warp Agent",
+                    "Yarp Agent",
                     appearance.ui_font_family(),
                     PRIMARY_HEADER_FONT_SIZE,
                 )
@@ -4197,7 +4197,7 @@ impl AgentsWidget {
         );
         render_ai_list(
             "Command denylist",
-            "Regular expressions to match commands that the Warp Agent should always ask permission to execute.",
+            "Regular expressions to match commands that the Yarp Agent should always ask permission to execute.",
             list,
             view,
             ai_settings,
@@ -4230,7 +4230,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Command allowlist",
-            "Regular expressions to match commands that can be automatically executed by the Warp Agent.",
+            "Regular expressions to match commands that can be automatically executed by the Yarp Agent.",
             list,
             view,
             ai_settings,
@@ -4330,7 +4330,7 @@ impl AgentsWidget {
             appearance,
             "Base model",
             Some(
-                "This model serves as the primary engine behind the Warp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Warp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
+                "This model serves as the primary engine behind the Yarp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Warp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
             ),
             Some(show_in_prompt_checkbox),
             LocalOnlyIconState::Hidden,
@@ -4361,7 +4361,7 @@ impl AgentsWidget {
 
         let codebase_context_description = vec![
             FormattedTextFragment::plain_text(
-                "Allow the Warp Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. ",
+                "Allow the Yarp Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
@@ -4434,7 +4434,7 @@ impl AgentsWidget {
         let subtext = {
             let subtext_fragments = vec![
                 FormattedTextFragment::plain_text(
-                    "You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Warp Agent has when interacting with them. ",
+                    "You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Yarp Agent has when interacting with them. ",
                 ),
                 FormattedTextFragment::hyperlink_action(
                     "Add a server",
@@ -4515,7 +4515,7 @@ impl AgentsWidget {
         {
             let allowlist = self.render_mcp_list(
                 "MCP allowlist",
-                "Allow the Warp Agent to call these MCP servers.",
+                "Allow the Yarp Agent to call these MCP servers.",
                 &view.mcp_allowlist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_allowlist(app, None),
                 view.mcp_allowlist_mouse_state_handles.clone(),
@@ -4532,7 +4532,7 @@ impl AgentsWidget {
         {
             let denylist = self.render_mcp_list(
                 "MCP denylist",
-                "The Warp Agent will always ask for permission before calling any MCP servers on this list.",
+                "The Yarp Agent will always ask for permission before calling any MCP servers on this list.",
                 &view.mcp_denylist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_denylist(app, None),
                 view.mcp_denylist_mouse_state_handles.clone(),
@@ -4902,7 +4902,7 @@ impl SettingsWidget for MCPServersWidget {
 
         let mcp_description = vec![
             FormattedTextFragment::plain_text(
-                "Add MCP servers to extend the Warp Agent's capabilities. \
+                "Add MCP servers to extend the Yarp Agent's capabilities. \
             MCP servers expose data sources or tools to agents through a standardized interface, essentially acting like plugins. ",
             ),
             FormattedTextFragment::hyperlink(
@@ -5034,7 +5034,7 @@ impl AIFactWidget {
 
         let rules_description = vec![
             FormattedTextFragment::plain_text(
-                "Rules help the Warp Agent follow your conventions, whether for codebases or specific workflows. ",
+                "Rules help the Yarp Agent follow your conventions, whether for codebases or specific workflows. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
@@ -5112,7 +5112,7 @@ impl AIFactWidget {
         );
 
         let description = render_ai_setting_description(
-            "The Warp Agent can leverage your Warp Drive Contents to tailor responses to your personal and team developer workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
+            "The Yarp Agent can leverage your Warp Drive Contents to tailor responses to your personal and team developer workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -6097,7 +6097,7 @@ impl ApiKeysWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Use your own API keys from model providers for the Warp Agent to use. API keys are stored locally and never synced to the cloud. Using auto models or models from providers you have not provided API keys for will consume Warp credits.",
+                        "Use your own API keys from model providers for the Yarp Agent to use. API keys are stored locally and never synced to the cloud. Using auto models or models from providers you have not provided API keys for will consume Warp credits.",
                         is_enabled,
                         app,
                     ))

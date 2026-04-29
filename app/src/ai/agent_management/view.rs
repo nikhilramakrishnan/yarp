@@ -1311,7 +1311,7 @@ impl AgentManagementView {
                 let copy_link_url = conversation.session_or_conversation_link(ctx);
 
                 // Prefer server-reported harness when available; otherwise treat as a pure
-                // local conversation (always Warp Agent).
+                // local conversation (always Yarp Agent).
                 let harness = navigation_data
                     .and_then(|nav| history_model.get_server_conversation_metadata(&nav.id))
                     .map(|m| Harness::from(m.harness))
