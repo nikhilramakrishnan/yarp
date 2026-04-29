@@ -708,7 +708,7 @@ impl AISettingsPageView {
         });
         // The coding agent footer command editor is always enabled,
         // independent of the global AI toggle, because it controls
-        // third-party coding agents rather than Warp's own AI.
+        // third-party coding agents rather than Yarp's own AI.
         Self::update_editor_interaction_state(
             cli_agent_footer_command_editor.as_ref(ctx).editor().clone(),
             true,
@@ -4330,7 +4330,7 @@ impl AgentsWidget {
             appearance,
             "Base model",
             Some(
-                "This model serves as the primary engine behind the Yarp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Warp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
+                "This model serves as the primary engine behind the Yarp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Yarp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
             ),
             Some(show_in_prompt_checkbox),
             LocalOnlyIconState::Hidden,
@@ -5202,7 +5202,7 @@ impl VoiceWidget {
 
         let voice_input_description_text_fragments = vec![
             FormattedTextFragment::plain_text(
-                "Voice input allows you to control Warp by speaking directly to your terminal (powered by ",
+                "Voice input allows you to control Yarp by speaking directly to your terminal (powered by ",
             ),
             FormattedTextFragment::hyperlink("Wispr Flow", WISPR_FLOW_URL),
             FormattedTextFragment::plain_text(")."),
@@ -5464,7 +5464,7 @@ impl SettingsWidget for CLIAgentWidget {
 
         // The Coding Agents section is always enabled, independent of the
         // global AI toggle, because these settings control third-party coding
-        // agents (Claude Code, Codex, Gemini CLI) rather than Warp's own AI.
+        // agents (Claude Code, Codex, Gemini CLI) rather than Yarp's own AI.
         let cli_agent_footer_toggle = render_ai_setting_toggle::<ShouldRenderCLIAgentToolbar>(
             "Show coding agent toolbar",
             AISettingsPageAction::ToggleCLIAgentToolbar,
@@ -5534,7 +5534,7 @@ impl SettingsWidget for CLIAgentWidget {
                         on_click_action: None,
                         secondary_text: None,
                         tooltip_override_text: Some(
-                            "Requires the Warp plugin for your coding agent".to_owned(),
+                            "Requires the Yarp plugin for your coding agent".to_owned(),
                         ),
                     }),
                     LocalOnlyIconState::for_setting(
@@ -5937,7 +5937,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Enable computer use in cloud agent conversations started from the Warp app.",
+                "Enable computer use in cloud agent conversations started from the Yarp app.",
                 !is_disabled,
                 app,
             ));
@@ -6235,7 +6235,7 @@ impl ApiKeysWidget {
         let ai_settings = AISettings::as_ref(app);
 
         let toggle = render_ai_setting_toggle::<CanUseWarpCreditsWithByok>(
-            "Warp credit fallback",
+            "Yarp credit fallback",
             AISettingsPageAction::ToggleCanUseWarpCreditsWithByok,
             *ai_settings.can_use_warp_credits_with_byok,
             ai_settings.is_any_ai_enabled(app),
@@ -6245,7 +6245,7 @@ impl ApiKeysWidget {
         );
 
         let description = render_ai_setting_description(
-            "When enabled, agent requests may be routed to one of Warp's provided models in the event of an error. Warp will prioritize using your API keys over your Yarp credits.",
+            "When enabled, agent requests may be routed to one of Yarp's provided models in the event of an error. Yarp will prioritize using your API keys over your Yarp credits.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -6517,9 +6517,9 @@ impl AwsBedrockWidget {
         let are_credentials_enabled = user_workspaces.is_aws_bedrock_credentials_enabled(app);
         let is_usage_enabled = is_section_enabled && are_credentials_enabled;
         let toggle_description = if is_admin_enforced {
-            "Warp loads and sends local AWS CLI credentials for Bedrock-supported models. This setting is managed by your organization.".to_string()
+            "Yarp loads and sends local AWS CLI credentials for Bedrock-supported models. This setting is managed by your organization.".to_string()
         } else {
-            "Warp loads and sends local AWS CLI credentials for Bedrock-supported models."
+            "Yarp loads and sends local AWS CLI credentials for Bedrock-supported models."
                 .to_string()
         };
 

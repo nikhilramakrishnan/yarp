@@ -236,7 +236,7 @@ impl EditorView {
                 // If the keypress is not valid in the current state, we ignore it.
                 match &self.voice_input_state {
                     // For example, the user could press Fn in a different app, then switch focus
-                    // to Warp and let it go - we should NOT activate voice input in this case.
+                    // to Yarp and let it go - we should NOT activate voice input in this case.
                     VoiceInputState::Stopped => {
                         if matches!(state, warpui::event::KeyState::Released) {
                             return false;

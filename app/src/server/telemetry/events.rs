@@ -6428,7 +6428,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InputAICommandSearch => {
                 "Opened AI Command Search via the Input Editor's context menu (right clicking the buffer)"
             }
-            Self::InputAskWarpAI => "Clicked \"Ask Warp AI\" from the Input Editor's context menu",
+            Self::InputAskWarpAI => "Clicked \"Ask Yarp AI\" from the Input Editor's context menu",
             Self::SaveAsWorkflowModal => {
                 "Opened the modal to create a new workflow using a Block's context--command, etc."
             }
@@ -6535,7 +6535,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::NeedsReauth => "User needs to re-authenticate",
             Self::WarpDriveOpened => "Opened Yarp Drive panel",
             Self::ToggleWarpAI => {
-                "Toggled Warp AI--an AI assistant to help you debug errors, look up forgotten commands and more"
+                "Toggled Yarp AI--an AI assistant to help you debug errors, look up forgotten commands and more"
             }
             Self::ToggleSecretRedaction => {
                 "Toggled on/off the setting for Secret Redaction - attempts to redact secrets and sensitive information"

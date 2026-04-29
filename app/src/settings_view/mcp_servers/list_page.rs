@@ -1280,8 +1280,8 @@ impl MCPServersListPageView {
                         .current_team()
                         .map(|team| team.name.clone());
                     let shared_by_text = match team_name {
-                        Some(name) => format!("Shared by Warp and {name}"),
-                        None => "Shared by Warp and from other devices".to_string(),
+                        Some(name) => format!("Shared by Yarp and {name}"),
+                        None => "Shared by Yarp and from other devices".to_string(),
                     };
 
                     page.add_child(self.render_server_cards_section(
@@ -1292,7 +1292,7 @@ impl MCPServersListPageView {
                     ));
                 } else if !filtered_gallery_cards.is_empty() {
                     page.add_child(self.render_server_cards_section(
-                        "Shared from Warp",
+                        "Shared from Yarp",
                         &filtered_gallery_cards,
                         appearance,
                         app,
@@ -1552,7 +1552,7 @@ impl MCPServersListPageView {
             }
         }
 
-        // If the path is the Warp data directory (e.g. ~/.warp or ~/.warp_dev), set the text to
+        // If the path is the Yarp data directory (e.g. ~/.warp or ~/.warp_dev), set the text to
         // "global". The Warp provider stores its data directory as the root path rather than the
         // home directory, unlike other providers that store the home directory directly.
         if root_path == &crate::warp_managed_paths_watcher::warp_data_dir() {

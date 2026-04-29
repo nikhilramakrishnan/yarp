@@ -923,7 +923,7 @@ impl Action {
             | Self::FocusCloudMode => W::default(),
             Self::NewTab => W::ShowPrimaryWindow(WindowActivationFallbackBehavior::Notify {
                 title: "New tab created".to_owned(),
-                description: "Go to Warp to see your new tab.".to_owned(),
+                description: "Go to Yarp to see your new tab.".to_owned(),
             }),
             Self::NewWindow => W::Nothing,
         }
@@ -1037,7 +1037,7 @@ fn open_file(window_id: Option<WindowId>, path: PathBuf, ctx: &mut AppContext) {
                 openable_file_type::resolve_file_target_to_open_in_warp,
             };
 
-            // Open text/code files in Warp's code editor, respecting the user's layout preference.
+            // Open text/code files in Yarp's code editor, respecting the user's layout preference.
             let editor_settings = EditorSettings::as_ref(ctx);
             let target = resolve_file_target_to_open_in_warp(&path, editor_settings, None);
 

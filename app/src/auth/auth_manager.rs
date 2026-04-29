@@ -137,7 +137,7 @@ impl AuthManager {
 
     /// Fetches and ultimately sets the user's auth state from an auth payload.
     /// Typically, this function is triggered when a user clicks the intent link from their browser
-    /// back to Warp after login (or pastes the URL in the app).
+    /// back to Yarp after login (or pastes the URL in the app).
     pub fn initialize_user_from_auth_payload(
         &mut self,
         auth_payload: AuthRedirectPayload,
@@ -267,7 +267,7 @@ impl AuthManager {
 
     /// Authenticate asynchronously using the OAuth2 device authorization flow.
     ///
-    /// This is only used by the Warp CLI if running on a devic that does not have the Warp app installed.
+    /// This is only used by the Warp CLI if running on a devic that does not have the Yarp app installed.
     #[cfg_attr(target_family = "wasm", allow(dead_code))]
     pub fn authorize_device(&self, ctx: &mut ModelContext<Self>) {
         // Clear any stale user state so old credentials don't interfere
@@ -840,7 +840,7 @@ impl AuthManager {
 
     /// Returns whether an auth redirect that failed state validation should be
     /// silently dropped rather than surfaced as an error. This covers the
-    /// "user clicks the browser's 'Take me to Warp' button twice" case: once
+    /// "user clicks the browser's 'Take me to Yarp' button twice" case: once
     /// they're fully logged in, a second redirect targeting the same user is
     /// redundant and should not produce a user-visible error.
     fn should_silently_ignore_stale_redirect(&self, incoming_user_uid: &Option<UserUid>) -> bool {

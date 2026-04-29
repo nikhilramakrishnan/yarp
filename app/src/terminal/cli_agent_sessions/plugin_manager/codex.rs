@@ -31,7 +31,7 @@ impl CliAgentPluginManager for CodexPluginManager {
 
 static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
     PluginInstructions {
-    title: "Enable Warp Notifications for Codex",
+    title: "Enable Yarp Notifications for Codex",
     subtitle: "Update Codex to the latest version, then enable in-focus notifications so Warp can display them while you work.",
     steps: &[
         PluginInstructionStep {

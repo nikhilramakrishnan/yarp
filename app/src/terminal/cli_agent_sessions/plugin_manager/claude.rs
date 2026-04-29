@@ -167,13 +167,13 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
         subtitle: "Ensure that jq is installed on your machine. Then, run these commands.",
         steps: &[
             PluginInstructionStep {
-                description: "Add the Warp plugin marketplace repository",
+                description: "Add the Yarp plugin marketplace repository",
                 command: "claude plugin marketplace add warpdotdev/claude-code-warp",
                 executable: true,
                 link: None,
             },
             PluginInstructionStep {
-                description: "Install the Warp plugin",
+                description: "Install the Yarp plugin",
                 command: "claude plugin install warp@claude-code-warp",
                 executable: true,
                 link: None,

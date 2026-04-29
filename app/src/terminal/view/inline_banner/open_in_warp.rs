@@ -50,7 +50,7 @@ impl OpenInWarpBannerState {
 fn file_title_text(openable_path: &OpenablePath) -> String {
     match openable_path.file_type {
         OpenableFileType::Markdown => {
-            "Did you know that Warp can directly display Markdown files?".to_string()
+            "Did you know that Yarp can directly display Markdown files?".to_string()
         }
         OpenableFileType::Code | OpenableFileType::Text => {
             cfg_if::cfg_if! {

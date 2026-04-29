@@ -255,7 +255,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 
     // Add command palette entry for toggling between Warp and Classic input modes
     app.register_fixed_bindings(vec![FixedBinding::empty(
-        "Toggle Input Mode (Warp/Classic)".to_string(),
+        "Toggle Input Mode (Yarp/Classic)".to_string(),
         builder(SettingsAction::AppearancePageToggle(
             AppearancePageAction::ToggleInputMode,
         )),
@@ -507,7 +507,7 @@ pub struct AppearanceSettingsPageView {
     header_toolbar_inline_editor: ViewHandle<HeaderToolbarInlineEditor>,
 
     /// The context chip renderers based on the most recently
-    /// selected Warp prompt configuration.
+    /// selected Yarp prompt configuration.
     context_chips: Vec<ContextChipRenderer>,
 
     /// The information we need to render the PS1 as a grid when we're
@@ -1503,7 +1503,7 @@ impl AppearanceSettingsPageView {
 
     fn input_mode_dropdown_item_label(val: InputMode) -> &'static str {
         match val {
-            InputMode::PinnedToBottom => "Pin to the bottom (Warp mode)",
+            InputMode::PinnedToBottom => "Pin to the bottom (Yarp mode)",
             InputMode::PinnedToTop => "Pin to the top (Reverse mode)",
             InputMode::Waterfall => "Start at the top (Classic mode)",
         }
@@ -2845,7 +2845,7 @@ impl SettingsWidget for CustomAppIconWidget {
                         appearance
                             .ui_builder()
                             .wrappable_text(
-                                "You may need to restart Warp for MacOS to apply the preferred icon style.",
+                                "You may need to restart Yarp for MacOS to apply the preferred icon style.",
                                 true,
                             )
                             .with_style(UiComponentStyles {
@@ -3323,7 +3323,7 @@ impl SettingsWidget for InputTypeWidget {
             .radio_buttons(
                 self.radio_buttons_states.clone(),
                 vec![
-                    RadioButtonItem::text("Warp"),
+                    RadioButtonItem::text("Yarp"),
                     RadioButtonItem::text("Shell (PS1)"),
                 ],
                 view.input_type_radio_state.clone(),

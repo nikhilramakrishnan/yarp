@@ -515,7 +515,7 @@ pub enum Event {
     OpenPromptEditor,
     OpenAgentToolbarEditor,
     OpenCLIAgentToolbarEditor,
-    /// tell the workspace to open a file within Warp.
+    /// tell the workspace to open a file within Yarp.
     OpenFileInWarp {
         /// The file path to open.
         path: PathBuf,
@@ -2361,7 +2361,7 @@ impl PaneGroup {
     }
 
     /// Send prompt change bindkey events to all terminal sessions in this pane group. This
-    /// is used for intra-session prompt switching between Warp prompt and PS1.
+    /// is used for intra-session prompt switching between Yarp prompt and PS1.
     #[cfg_attr(not(feature = "local_tty"), allow(unused_variables))]
     pub fn send_prompt_change_bindkey_to_all_sessions(
         &self,

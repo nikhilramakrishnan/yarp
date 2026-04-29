@@ -45,7 +45,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::HeartHand,
         title: "Contribute",
-        description: "Warp's client code is now open source. Get started by using the /feedback skill to open an issue, and follow the contribution guidelines here.",
+        description: "Yarp's client code is now open source. Get started by using the /feedback skill to open an issue, and follow the contribution guidelines here.",
         inline_link: Some(InlineLink {
             text: "here",
             url: CONTRIBUTING_URL,
@@ -54,7 +54,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::Oz,
         title: "Open Automated Development",
-        description: "The Warp repo is managed by an agent-first workflow powered by Oz, our cloud agent orchestration platform.",
+        description: "The Yarp repo is managed by an agent-first workflow powered by Oz, our cloud agent orchestration platform.",
         inline_link: Some(InlineLink {
             text: "Oz",
             url: OZ_URL,

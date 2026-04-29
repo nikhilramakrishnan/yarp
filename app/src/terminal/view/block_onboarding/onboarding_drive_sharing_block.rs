@@ -53,7 +53,7 @@ impl Entity for OnboardingDriveSharingBlock {
 
 const TITLE_TEXT: &str = "Sharing in Yarp Drive";
 const BODY_TEXT: &[&str] = &[
-    "You can now share drive objects, in Warp or on the web, with anyone - Warp user or not. Click Share in the Yarp Drive menu or the pane header to share via link or email.",
+    "You can now share drive objects, in Yarp or on the web, with anyone - Yarp user or not. Click Share in the Yarp Drive menu or the pane header to share via link or email.",
     "You’ll be able to modify the access permissions any time.",
 ];
 

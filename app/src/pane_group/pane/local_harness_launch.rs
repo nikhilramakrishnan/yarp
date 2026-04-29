@@ -106,12 +106,12 @@ pub(super) async fn prepare_local_harness_child_launch(
                 .prepare_environment_config(&working_dir, None, &managed_secrets)
                 .map_err(|error: AgentDriverError| error.to_string())?;
             // The Warp claude-code plugin (`warp@claude-code-warp`) is published from
-            // Warp's plugin registry and provides the parent-bridge integration.
+            // Yarp's plugin registry and provides the parent-bridge integration.
             // warp-oss has no Warp backend, so the plugin can't be installed and
             // wouldn't function even if it were. The harness still works without
             // it — we just lose the Warp-side bridge enhancements.
             let _ = plugin_manager_for(claude_harness.cli_agent());
-            log::info!("warp-oss: skipping Warp claude-code plugin install");
+            log::info!("warp-oss: skipping claude-code plugin install");
 
             build_local_claude_child_command(&prompt)
         }

@@ -1728,7 +1728,7 @@ impl DriveIndex {
             (DriveIndexVariant::MainIndex, DriveIndexSection::JoinTeam) => {
                 if self.is_online(app) {
                     let join_teams_text = format!(
-                        "Collaborate with {} of your teammates already on Warp.",
+                        "Collaborate with {} of your teammates already on Yarp.",
                         UserWorkspaces::handle(app)
                             .as_ref(app)
                             .total_teammates_in_joinable_teams()
