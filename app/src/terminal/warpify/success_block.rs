@@ -116,7 +116,7 @@ impl WarpifySuccessBlock {
         let auto_warpify_snippet = auto_warpify_snippet.map(|(output_grid, can_write_to_rc)| {
             AutoWarpifySnippet {
                 description: (if !output_grid.is_empty() {
-                    "Run the following to automatically Warpify in the future:"
+                    "Run the following to automatically Yarpify in the future:"
                 } else {
                     "In remote subshells, Yarp runs commands in the background to power completions, syntax highlighting, and other features."
                 }).into(),
@@ -156,7 +156,7 @@ impl WarpifySuccessBlock {
 
     pub fn render_title_ui(&self, theme: &WarpTheme, appearance: &Appearance) -> Box<dyn Element> {
         let header_contents = render::build_header_row(
-            "Session Warpified",
+            "Session Yarpified",
             Icon::new(UiIcon::Warp.into(), theme.active_ui_detail()),
             theme,
             appearance,
