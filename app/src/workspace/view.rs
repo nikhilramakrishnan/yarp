@@ -12046,7 +12046,7 @@ impl Workspace {
                         let url = NOTIFICATIONS_TROUBLESHOOT_URL.to_string();
                         view.toast_stack.update(ctx, |toast_stack, ctx| {
                             let toast = DismissibleToast::error(
-                                "Warp doesn't have permission to send desktop notifications.".to_string(),
+                                "Yarp doesn't have permission to send desktop notifications.".to_string(),
                             )
                             .with_link(ToastLink::new("Troubleshoot notifications".to_string()).with_href(url));
                             toast_stack.add_persistent_toast(toast, ctx);
@@ -12647,7 +12647,7 @@ impl Workspace {
                                 link = link.with_keystroke(keystroke);
                             }
 
-                            let toast = DismissibleToast::default(String::from("Warp updated!"))
+                            let toast = DismissibleToast::default(String::from("Yarp updated!"))
                                 .with_link(link);
 
                             stack.add_ephemeral_toast(toast, ctx);
@@ -18337,7 +18337,7 @@ impl Workspace {
                         if is_incoming_version_past_current(new_version.soft_cutoff.as_deref()) {
                             VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT.to_owned()
                         } else {
-                            "Warp was unable to launch the new installed version.".to_owned()
+                            "Yarp was unable to launch the new installed version.".to_owned()
                         };
 
                     Some(WorkspaceBannerFields {

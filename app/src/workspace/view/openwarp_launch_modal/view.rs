@@ -203,7 +203,7 @@ impl OpenWarpLaunchModal {
     }
 
     fn render_title(appearance: &Appearance) -> Box<dyn Element> {
-        Text::new("Warp is now open-source", appearance.ui_font_family(), 20.)
+        Text::new("Yarp is now open-source", appearance.ui_font_family(), 20.)
             .with_color(PhenomenonStyle::modal_title_text())
             .with_style(Properties::default().weight(Weight::Semibold))
             .finish()

@@ -173,7 +173,7 @@ impl View for WasmNUXDialog {
                         .with_child(
                             appearance
                                 .ui_builder()
-                                .span("Warp is the intelligent terminal with AI and your dev team's knowledge built-in.")
+                                .span("Yarp is the intelligent terminal with AI and your dev team's knowledge built-in.")
                                 .with_style(UiComponentStyles {
                                     font_weight: Some(Weight::Thin),
                                     font_color: Some(
@@ -218,9 +218,9 @@ impl View for WasmNUXDialog {
                 ))
         } else {
             let object_kind = match web_intent_parser::current_web_intent() {
-                Some(WebIntent::DriveObject(_)) => "Warp Drive objects",
+                Some(WebIntent::DriveObject(_)) => "Yarp Drive objects",
                 Some(WebIntent::SessionView(_)) => "shared sessions",
-                _ => "Warp links",
+                _ => "Yarp links",
             };
 
             Dialog::new(
