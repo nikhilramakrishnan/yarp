@@ -790,7 +790,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             TOGGLE_WARP_DRIVE_BINDING_NAME,
             BindingDescription::new("Toggle Warp Drive")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Warp Drive"),
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Yarp Drive"),
             WorkspaceAction::ToggleWarpDrive,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
