@@ -1,8 +1,10 @@
 //! LLM provider for warp-oss inference paths.
 //!
-//! Backend selection is purely env-var driven for v1; a settings UI can
-//! supersede this later by writing to the same env vars before app boot,
-//! or by storing keys via `crates/ai/src/api_keys.rs`.
+//! Resolution order (first match wins):
+//!   1. Process env vars (see below) — useful for one-off overrides.
+//!   2. `~/.yarp/llm_provider.json` — written by the AI Provider settings UI.
+//!   3. Standard `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` env auto-detection.
+//!   4. Ollama on localhost (no key required).
 //!
 //! Provider selection (`WARP_OSS_LLM_PROVIDER`):
 //!   - `anthropic`  → POSTs to `https://api.anthropic.com/v1/messages`
@@ -10,14 +12,10 @@
 //!                    (also covers LM Studio, vLLM, LiteLLM, OpenRouter)
 //!   - `ollama`     → POSTs to `${WARP_OSS_LLM_BASE_URL:-http://localhost:11434}/api/chat`
 //!
-//! Auto-detection if `WARP_OSS_LLM_PROVIDER` is unset:
-//!   - `ANTHROPIC_API_KEY` set → anthropic
-//!   - `OPENAI_API_KEY` set → openai
-//!   - else → ollama (no key required)
-//!
 //! Other env vars:
 //!   - `WARP_OSS_LLM_API_KEY` (overrides `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`)
 //!   - `WARP_OSS_LLM_MODEL`   (provider-default if unset)
+//!   - `WARP_OSS_LLM_BASE_URL` (provider-default if unset, openai/ollama only)
 
 use anyhow::{anyhow, Context, Result};
 use serde::{Deserialize, Serialize};
@@ -50,19 +48,67 @@ pub struct Message {
     pub content: String,
 }
 
+/// Persistent on-disk config at `~/.yarp/llm_provider.json`. Written by the
+/// settings UI; read here as a fallback when env vars are unset.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct StoredLlmConfig {
+    /// "anthropic", "openai", or "ollama". Empty/missing → auto-detect.
+    #[serde(default)]
+    pub provider: String,
+    #[serde(default)]
+    pub api_key: String,
+    #[serde(default)]
+    pub model: String,
+    #[serde(default)]
+    pub base_url: String,
+}
+
+impl StoredLlmConfig {
+    pub fn load() -> Self {
+        let path = crate::server::local_backend::paths::LocalPaths::resolve().llm_provider_file();
+        match std::fs::read_to_string(&path) {
+            Ok(s) => serde_json::from_str(&s).unwrap_or_default(),
+            Err(_) => Self::default(),
+        }
+    }
+
+    pub fn save(&self) -> Result<()> {
+        let paths = crate::server::local_backend::paths::LocalPaths::resolve();
+        paths.ensure_root_exists();
+        let path = paths.llm_provider_file();
+        let json = serde_json::to_string_pretty(self).context("serialize llm config")?;
+        let tmp = path.with_extension("json.tmp");
+        std::fs::write(&tmp, json).context("write llm config tmp")?;
+        std::fs::rename(&tmp, &path).context("rename llm config tmp")?;
+        Ok(())
+    }
+}
+
 impl LocalLlmProvider {
     pub fn from_env() -> Self {
-        let provider = std::env::var("WARP_OSS_LLM_PROVIDER").ok();
-        let key_override = std::env::var("WARP_OSS_LLM_API_KEY").ok();
-        let model_override = std::env::var("WARP_OSS_LLM_MODEL").ok();
-        let base_url_override = std::env::var("WARP_OSS_LLM_BASE_URL").ok();
+        let stored = StoredLlmConfig::load();
+
+        let provider_env = std::env::var("WARP_OSS_LLM_PROVIDER").ok();
+        let key_env = std::env::var("WARP_OSS_LLM_API_KEY").ok();
+        let model_env = std::env::var("WARP_OSS_LLM_MODEL").ok();
+        let base_url_env = std::env::var("WARP_OSS_LLM_BASE_URL").ok();
+
+        let pick =
+            |env: Option<String>, file: &str| env.or_else(|| (!file.is_empty()).then(|| file.to_string()));
+        let key = pick(key_env, &stored.api_key);
+        let model = pick(model_env, &stored.model);
+        let base_url = pick(base_url_env, &stored.base_url);
+        let provider = pick(provider_env, &stored.provider);
 
         let kind = provider
             .as_deref()
             .map(str::trim)
             .map(str::to_lowercase)
             .unwrap_or_else(|| {
-                if std::env::var("ANTHROPIC_API_KEY").is_ok() {
+                if key.is_some() && stored.provider.is_empty() {
+                    // Stored key without provider: assume anthropic.
+                    "anthropic".into()
+                } else if std::env::var("ANTHROPIC_API_KEY").is_ok() {
                     "anthropic".into()
                 } else if std::env::var("OPENAI_API_KEY").is_ok() {
                     "openai".into()
@@ -73,25 +119,25 @@ impl LocalLlmProvider {
 
         match kind.as_str() {
             "anthropic" => {
-                let Some(api_key) = key_override
+                let Some(api_key) = key
                     .clone()
                     .or_else(|| std::env::var("ANTHROPIC_API_KEY").ok())
                 else {
                     return LocalLlmProvider::Disabled;
                 };
-                let model = model_override.unwrap_or_else(|| ANTHROPIC_DEFAULT_MODEL.to_string());
+                let model = model.unwrap_or_else(|| ANTHROPIC_DEFAULT_MODEL.to_string());
                 LocalLlmProvider::Anthropic { api_key, model }
             }
             "openai" => {
-                let Some(api_key) = key_override
+                let Some(api_key) = key
                     .clone()
                     .or_else(|| std::env::var("OPENAI_API_KEY").ok())
                 else {
                     return LocalLlmProvider::Disabled;
                 };
                 let base_url =
-                    base_url_override.unwrap_or_else(|| "https://api.openai.com/v1".to_string());
-                let model = model_override.unwrap_or_else(|| OPENAI_DEFAULT_MODEL.to_string());
+                    base_url.unwrap_or_else(|| "https://api.openai.com/v1".to_string());
+                let model = model.unwrap_or_else(|| OPENAI_DEFAULT_MODEL.to_string());
                 LocalLlmProvider::OpenAi {
                     base_url,
                     api_key,
@@ -100,13 +146,13 @@ impl LocalLlmProvider {
             }
             "ollama" => {
                 let base_url =
-                    base_url_override.unwrap_or_else(|| "http://localhost:11434".to_string());
-                let model = model_override.unwrap_or_else(|| OLLAMA_DEFAULT_MODEL.to_string());
+                    base_url.unwrap_or_else(|| "http://localhost:11434".to_string());
+                let model = model.unwrap_or_else(|| OLLAMA_DEFAULT_MODEL.to_string());
                 LocalLlmProvider::Ollama { base_url, model }
             }
             other => {
                 log::warn!(
-                    "warp-oss: unknown WARP_OSS_LLM_PROVIDER value {other:?}; LLM disabled"
+                    "warp-oss: unknown LLM provider value {other:?}; LLM disabled"
                 );
                 LocalLlmProvider::Disabled
             }

@@ -105,4 +105,8 @@ impl LocalPaths {
     pub fn secrets_file(&self) -> PathBuf {
         self.root.join("secrets.json")
     }
+
+    pub fn llm_provider_file(&self) -> PathBuf {
+        self.root.join("llm_provider.json")
+    }
 }
