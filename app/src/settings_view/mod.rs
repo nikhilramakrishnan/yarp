@@ -25,6 +25,7 @@ use crate::{
     GlobalResourceHandlesProvider,
 };
 use about_page::AboutPageView;
+use ai_provider_page::AIProviderPageView;
 use ai_page::{AISettingsPageAction, AISettingsPageEvent, AISettingsPageView, AISubpage};
 use appearance_page::{AppearancePageAction, AppearanceSettingsPageView};
 use billing_and_usage_page::{BillingAndUsagePageEvent, BillingAndUsagePageView};
@@ -77,6 +78,7 @@ mod about_page;
 mod admin_actions;
 mod agent_assisted_environment_modal;
 mod ai_page;
+mod ai_provider_page;
 mod appearance_page;
 mod billing_and_usage;
 mod billing_and_usage_page;
@@ -189,6 +191,7 @@ pub enum SettingsSection {
     #[default]
     About,
     Account,
+    AIProvider,
     MCPServers,
     BillingAndUsage,
     Appearance,
@@ -244,6 +247,7 @@ impl Display for SettingsSection {
             SettingsSection::EditorAndCodeReview => write!(f, "Editor and Code Review"),
             SettingsSection::CloudEnvironments => write!(f, "Environments"),
             SettingsSection::OzCloudAPIKeys => write!(f, "Oz Cloud API Keys"),
+            SettingsSection::AIProvider => write!(f, "AI Provider"),
             _ => write!(f, "{self:?}"),
         }
     }
@@ -322,6 +326,7 @@ impl FromStr for SettingsSection {
         match s {
             "About" => Ok(Self::About),
             "Account" => Ok(Self::Account),
+            "AI Provider" | "AIProvider" => Ok(Self::AIProvider),
             "AI" => Ok(Self::AI),
             "MCP Servers" => Ok(Self::MCPServers),
             "Billing and usage" => Ok(Self::BillingAndUsage),
@@ -964,6 +969,7 @@ macro_rules! update_page {
             SettingsPageViewHandle::Privacy(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Referrals(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::AI(handle) => $ctx.update_view(handle, $update),
+            SettingsPageViewHandle::AIProvider(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::CloudEnvironments(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::About(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Code(handle) => $ctx.update_view(handle, $update),
@@ -1049,6 +1055,9 @@ impl SettingsView {
 
         // About page
         let about_page_handle = ctx.add_view(AboutPageView::new);
+
+        // AI Provider page (Yarp local LLM config)
+        let ai_provider_page_handle = ctx.add_view(AIProviderPageView::new);
 
         // AI page
         let ai_page_handle = ctx.add_typed_action_view(AISettingsPageView::new);
@@ -1177,6 +1186,7 @@ impl SettingsView {
             SettingsPage::new(mcp_servers_page_handle),
             SettingsPage::new(environments_page_handle.clone()),
             SettingsPage::new(privacy_page_handle),
+            SettingsPage::new(ai_provider_page_handle),
             SettingsPage::new(about_page_handle),
         ]);
 
@@ -1203,6 +1213,7 @@ impl SettingsView {
             SettingsNavItem::Page(SettingsSection::Appearance),
             SettingsNavItem::Page(SettingsSection::Features),
             SettingsNavItem::Page(SettingsSection::Keybindings),
+            SettingsNavItem::Page(SettingsSection::AIProvider),
             SettingsNavItem::Page(SettingsSection::Warpify),
             SettingsNavItem::Page(SettingsSection::Privacy),
             SettingsNavItem::Page(SettingsSection::About),
@@ -1951,6 +1962,7 @@ impl SettingsView {
             SettingsPageViewHandle::Warpify(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Referrals(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::AI(v) => v.as_ref(app).should_render(app),
+            SettingsPageViewHandle::AIProvider(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::CloudEnvironments(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::MCPServers(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Code(v) => v.as_ref(app).should_render(app),
