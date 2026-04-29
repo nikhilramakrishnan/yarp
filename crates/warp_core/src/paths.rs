@@ -39,7 +39,7 @@ fn base_warp_config_dir_name() -> String {
         // Preview shares the same directory as Stable for backward
         // compatibility — existing users already have config in `.warp`.
         Channel::Stable | Channel::Preview => WARP_CONFIG_DIR.to_owned(),
-        // Yarp is a fork of warp-oss; we use `.yarp` so a user can run both
+        // Yarp is a fork of yarp; we use `.yarp` so a user can run both
         // Yarp and Warp side by side without sharing state.
         Channel::Oss => ".yarp".to_owned(),
         Channel::Dev => format!("{WARP_CONFIG_DIR}-dev"),

@@ -1,7 +1,7 @@
 [package]
-authors = ["Warp Team <dev@warp.dev>"]
-default-run = "warp-oss"
-description = "The cloud-backed terminal for individuals and teams"
+authors = ["Yarp team <yarp@hot.fuzz>"]
+default-run = "yarp"
+description = "Yaarp. Naarp, naarp."
 edition = "2021"
 autobins = false
 name = "warp"
@@ -18,8 +18,8 @@ path = "src/lib.rs"
 # flag overrides). Otherwise these binaries are exactly identical to our main binary.
 
 [[bin]]
-name = "warp-oss"
-path = "src/bin/oss.rs"
+name = "yarp"
+path = "src/bin/yarp.rs"
 test = false
 
 [[bin]]
@@ -928,14 +928,14 @@ codex_notifications = []
 cloud_mode_setup_v2 = ["cloud_mode"]
 cloud_mode_input_v2 = ["cloud_mode"]
 
-[package.metadata.bundle.bin.warp-oss]
+[package.metadata.bundle.bin.yarp]
 category = "public.app-category.developer-tools"
 copyright = "© 2026 Yarp contributors"
 identifier = "dev.yarp.Yarp"
 name = "Yarp"
 resources = ["assets/onboarding"]
 icon = ["channels/oss/icon/no-padding/512x512.png", "channels/oss/icon/no-padding/icon.ico"]
-short_description = "Local-first agentic terminal — a Yarp fork of Warp's open-source client."
+short_description = "Yaarp. Naarp, naarp."
 
 [package.metadata.bundle.bin.stable]
 category = "public.app-category.developer-tools"

@@ -1,4 +1,4 @@
-//! Stub `ObjectClient` implementation for warp-oss.
+//! Stub `ObjectClient` implementation for yarp.
 //!
 //! Yarp does not have a cloud object store. The Warp Drive UI surfaces are
 //! still wired up (workflows / notebooks / generic string objects), but every

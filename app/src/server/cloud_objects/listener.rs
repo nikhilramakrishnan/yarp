@@ -281,10 +281,10 @@ impl Listener {
     }
 
     fn start_listener(&mut self, ctx: &mut ModelContext<Self>) {
-        // warp-oss: there is no rtc.app.warp.dev websocket to subscribe to, and
+        // yarp: there is no rtc.app.warp.dev websocket to subscribe to, and
         // no Yarp Drive backend to receive updates from. Skip the listener
         // entirely — `OssObjectClient` (Phase 8) services local-only object
-        // reads from `~/.warp-oss/objects/`.
+        // reads from `~/.yarp/objects/`.
         let _ = ctx;
         self.should_subscribe_to_updates = false;
     }

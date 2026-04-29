@@ -1,6 +1,6 @@
 [package]
 name = "warp_js"
-authors = ["Warp Team <dev@warp.dev>"]
+authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
 publish.workspace = true

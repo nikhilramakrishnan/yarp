@@ -9,7 +9,7 @@ use warp_core::{
     AppId,
 };
 
-// Features enabled for warp-oss. We commit to OSS as the sole channel and
+// Features enabled for Yarp. We commit to OSS as the sole channel and
 // replace Warp's backend with a local-first implementation, so we can enable
 // every flag whose feature works without a Warp account or a cloud service.
 //
@@ -58,7 +58,7 @@ const OSS_FLAGS: &[FeatureFlag] = &[
     FeatureFlag::OzPlatformSkills,
 ];
 
-// Simple wrapper around warp::run() for Warp OSS builds.
+// Simple wrapper around warp::run() for Yarp builds.
 fn main() -> Result<()> {
     let mut state = ChannelState::new(
         Channel::Oss,
@@ -122,7 +122,7 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>CFBundleDisplayName</key>
     <string>Yarp</string>
     <key>CFBundleExecutable</key>
-    <string>warp-oss</string>
+    <string>yarp</string>
     <key>CFBundleIdentifier</key>
     <string>dev.yarp.Yarp</string>
     <key>CFBundleInfoDictionaryVersion</key>

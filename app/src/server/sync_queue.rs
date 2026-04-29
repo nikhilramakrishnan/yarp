@@ -414,7 +414,7 @@ impl SyncQueue {
     }
 
     pub fn start_dequeueing(&mut self, ctx: &mut ModelContext<Self>) {
-        // warp-oss has no Warp backend, so the cloud-object sync queue has
+        // yarp has no Warp backend, so the cloud-object sync queue has
         // nothing to drain. We keep `should_dequeue=false` to short-circuit
         // every retry, dependency-resolve, and rate-limit path that would
         // otherwise hammer `localhost.invalid`.
@@ -438,7 +438,7 @@ impl SyncQueue {
 
     /// Enqueue a new request.
     pub fn enqueue(&mut self, item: QueueItem, ctx: &mut ModelContext<Self>) -> QueueItemId {
-        // warp-oss: nothing to sync. Drop the request on the floor instead of
+        // yarp: nothing to sync. Drop the request on the floor instead of
         // queueing — there's no backend that would ever process it, and any
         // dequeue attempt would hit `localhost.invalid` and burn retry budget.
         let _ = (item, ctx);

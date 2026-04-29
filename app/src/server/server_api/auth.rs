@@ -241,7 +241,7 @@ impl AuthClient for ServerApi {
     }
 
     async fn get_or_refresh_access_token(&self) -> Result<AuthToken> {
-        // warp-oss has no Warp backend and no real credentials. Every consumer
+        // yarp has no Warp backend and no real credentials. Every consumer
         // of this token must accept `NoAuth` (downstream HTTP code already
         // handles that — `Authorization` header is just omitted).
         Ok(AuthToken::NoAuth)

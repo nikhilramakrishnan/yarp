@@ -1370,8 +1370,8 @@ impl ServerApiProvider {
     }
 
     pub fn get_ai_client(&self) -> Arc<dyn AIClient> {
-        // warp-oss replaces the cloud AIClient impl entirely with a local-only
-        // version backed by `~/.warp-oss/`. Inference methods will eventually
+        // yarp replaces the cloud AIClient impl entirely with a local-only
+        // version backed by `~/.yarp/`. Inference methods will eventually
         // route through a configurable LLM provider; for now they return
         // explicit "not supported" errors.
         Arc::new(crate::server::local_backend::OssAiClient::new(
@@ -1380,7 +1380,7 @@ impl ServerApiProvider {
     }
 
     pub fn get_cloud_objects_client(&self) -> Arc<dyn ObjectClient> {
-        // warp-oss doesn't talk to a cloud object store. Mutations error out;
+        // yarp doesn't talk to a cloud object store. Mutations error out;
         // reads return empty so the Yarp Drive UI shows an empty state.
         Arc::new(crate::server::local_backend::OssObjectClient::new())
     }
@@ -1401,8 +1401,8 @@ impl ServerApiProvider {
 
     #[cfg_attr(target_family = "wasm", expect(dead_code))]
     pub fn get_harness_support_client(&self) -> Arc<dyn harness_support::HarnessSupportClient> {
-        // warp-oss: harness transcript / snapshot persistence happens locally
-        // under `~/.warp-oss/harness/{id}/`. Sentinel `localhost.invalid` URLs
+        // yarp: harness transcript / snapshot persistence happens locally
+        // under `~/.yarp/harness/{id}/`. Sentinel `localhost.invalid` URLs
         // are returned from upload-target methods so any leak is loud.
         Arc::new(crate::server::local_backend::OssHarnessSupportClient::new(
             crate::server::local_backend::LocalBackend::new(),

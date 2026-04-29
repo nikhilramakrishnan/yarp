@@ -128,7 +128,7 @@ impl From<GeneratedCommand> for AIGeneratedCommand {
 }
 
 impl AIGeneratedCommand {
-    /// Constructor used by the warp-oss local AI client. Avoids needing to
+    /// Constructor used by the yarp local AI client. Avoids needing to
     /// fabricate a `GeneratedCommand` (the GraphQL response type) just to
     /// instantiate one.
     pub fn new(

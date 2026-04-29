@@ -8,9 +8,9 @@ fn test_data_dir_path() {
     // ChannelState, by default, is configured for Channel::Oss.
     cfg_if::cfg_if! {
         if #[cfg(target_os = "macos")] {
-            assert_eq!(data_dir(), home_dir.join(".warp-oss"));
+            assert_eq!(data_dir(), home_dir.join(".yarp"));
         } else if #[cfg(target_os = "linux")] {
-            assert_eq!(data_dir(), home_dir.join(".local/share/warp-oss"));
+            assert_eq!(data_dir(), home_dir.join(".local/share/yarp"));
         } else if #[cfg(windows)] {
             assert_eq!(data_dir(), home_dir.join("AppData\\Roaming\\warp\\WarpOss\\data"));
         } else {
@@ -25,9 +25,9 @@ fn test_config_local_dir_path() {
     // ChannelState, by default, is configured for Channel::Oss.
     cfg_if::cfg_if! {
         if #[cfg(target_os = "macos")] {
-            assert_eq!(config_local_dir(), home_dir.join(".warp-oss"));
+            assert_eq!(config_local_dir(), home_dir.join(".yarp"));
         } else if #[cfg(target_os = "linux")] {
-            assert_eq!(config_local_dir(), home_dir.join(".config/warp-oss"));
+            assert_eq!(config_local_dir(), home_dir.join(".config/yarp"));
         } else if #[cfg(windows)] {
             assert_eq!(config_local_dir(), home_dir.join("AppData\\Local\\warp\\WarpOss\\config"));
         } else {
@@ -40,8 +40,8 @@ fn test_config_local_dir_path() {
 fn test_warp_home_config_dir_path() {
     let home_dir = home_dir().expect("Should be able to compute home directory");
     let expected_dir_name = match ChannelState::data_profile() {
-        Some(data_profile) => format!(".warp-oss-{data_profile}"),
-        None => ".warp-oss".to_string(),
+        Some(data_profile) => format!(".yarp-{data_profile}"),
+        None => ".yarp".to_string(),
     };
 
     assert_eq!(
@@ -70,7 +70,7 @@ fn test_cache_dir_path() {
         if #[cfg(target_os = "macos")] {
             assert_eq!(cache_dir(), home_dir.join("Library/Application Support/dev.warp.WarpOss"));
         } else if #[cfg(target_os = "linux")] {
-            assert_eq!(cache_dir(), home_dir.join(".cache/warp-oss"));
+            assert_eq!(cache_dir(), home_dir.join(".cache/yarp"));
         } else if #[cfg(windows)] {
             assert_eq!(cache_dir(), home_dir.join("AppData\\Local\\warp\\WarpOss\\cache"));
         } else {
@@ -87,7 +87,7 @@ fn test_state_dir_path() {
         if #[cfg(target_os = "macos")] {
             assert_eq!(state_dir(), home_dir.join("Library/Application Support/dev.warp.WarpOss"));
         } else if #[cfg(target_os = "linux")] {
-            assert_eq!(state_dir(), home_dir.join(".local/state/warp-oss"));
+            assert_eq!(state_dir(), home_dir.join(".local/state/yarp"));
         } else if #[cfg(windows)] {
             assert_eq!(state_dir(), home_dir.join("AppData\\Local\\warp\\WarpOss\\data"));
         } else {
@@ -138,7 +138,7 @@ fn test_project_path_for_oss_app_id() {
         if #[cfg(target_os = "macos")] {
             assert_eq!(project_dirs.project_path(), "dev.warp.WarpOss");
         } else if #[cfg(target_os = "linux")] {
-            assert_eq!(project_dirs.project_path(), "warp-oss");
+            assert_eq!(project_dirs.project_path(), "yarp");
         } else if #[cfg(windows)] {
             assert_eq!(project_dirs.project_path(), "warp\\WarpOss");
         } else {

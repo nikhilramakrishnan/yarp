@@ -1,4 +1,4 @@
-//! LLM provider for warp-oss inference paths.
+//! LLM provider for yarp inference paths.
 //!
 //! Resolution order (first match wins):
 //!   1. Process env vars (see below) — useful for one-off overrides.
@@ -6,16 +6,16 @@
 //!   3. Standard `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` env auto-detection.
 //!   4. Ollama on localhost (no key required).
 //!
-//! Provider selection (`WARP_OSS_LLM_PROVIDER`):
+//! Provider selection (`YARP_LLM_PROVIDER`):
 //!   - `anthropic`  → POSTs to `https://api.anthropic.com/v1/messages`
-//!   - `openai`     → POSTs to `${WARP_OSS_LLM_BASE_URL:-https://api.openai.com/v1}/chat/completions`
+//!   - `openai`     → POSTs to `${YARP_LLM_BASE_URL:-https://api.openai.com/v1}/chat/completions`
 //!                    (also covers LM Studio, vLLM, LiteLLM, OpenRouter)
-//!   - `ollama`     → POSTs to `${WARP_OSS_LLM_BASE_URL:-http://localhost:11434}/api/chat`
+//!   - `ollama`     → POSTs to `${YARP_LLM_BASE_URL:-http://localhost:11434}/api/chat`
 //!
 //! Other env vars:
-//!   - `WARP_OSS_LLM_API_KEY` (overrides `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`)
-//!   - `WARP_OSS_LLM_MODEL`   (provider-default if unset)
-//!   - `WARP_OSS_LLM_BASE_URL` (provider-default if unset, openai/ollama only)
+//!   - `YARP_LLM_API_KEY` (overrides `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`)
+//!   - `YARP_LLM_MODEL`   (provider-default if unset)
+//!   - `YARP_LLM_BASE_URL` (provider-default if unset, openai/ollama only)
 
 use anyhow::{anyhow, Context, Result};
 use serde::{Deserialize, Serialize};
@@ -88,10 +88,10 @@ impl LocalLlmProvider {
     pub fn from_env() -> Self {
         let stored = StoredLlmConfig::load();
 
-        let provider_env = std::env::var("WARP_OSS_LLM_PROVIDER").ok();
-        let key_env = std::env::var("WARP_OSS_LLM_API_KEY").ok();
-        let model_env = std::env::var("WARP_OSS_LLM_MODEL").ok();
-        let base_url_env = std::env::var("WARP_OSS_LLM_BASE_URL").ok();
+        let provider_env = std::env::var("YARP_LLM_PROVIDER").ok();
+        let key_env = std::env::var("YARP_LLM_API_KEY").ok();
+        let model_env = std::env::var("YARP_LLM_MODEL").ok();
+        let base_url_env = std::env::var("YARP_LLM_BASE_URL").ok();
 
         let pick =
             |env: Option<String>, file: &str| env.or_else(|| (!file.is_empty()).then(|| file.to_string()));
@@ -152,7 +152,7 @@ impl LocalLlmProvider {
             }
             other => {
                 log::warn!(
-                    "warp-oss: unknown LLM provider value {other:?}; LLM disabled"
+                    "yarp: unknown LLM provider value {other:?}; LLM disabled"
                 );
                 LocalLlmProvider::Disabled
             }
@@ -195,7 +195,7 @@ impl LocalLlmProvider {
             LocalLlmProvider::Disabled => Err(anyhow!(
                 "Yarp: no LLM provider configured. Edit ~/.yarp/llm_provider.json \
                  (provider = anthropic | openai | ollama, plus api_key/model/base_url), \
-                 or set WARP_OSS_LLM_PROVIDER + WARP_OSS_LLM_API_KEY in your shell."
+                 or set YARP_LLM_PROVIDER + YARP_LLM_API_KEY in your shell."
             )),
         }
     }

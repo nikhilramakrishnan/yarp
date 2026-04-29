@@ -73,7 +73,7 @@ impl AuthState {
         }
     }
 
-    /// Creates and initializes auth state. warp-oss is single-user with no backend,
+    /// Creates and initializes auth state. yarp is single-user with no backend,
     /// so we always synthesize a local user. The remaining branches (api key,
     /// WARP_USER_SECRET, persisted user) are kept for source compatibility but are
     /// unreachable in OSS builds.
@@ -234,13 +234,13 @@ impl AuthState {
         }
     }
 
-    /// In warp-oss the user is always considered logged in — there is no Warp
+    /// In yarp the user is always considered logged in — there is no Warp
     /// backend and no auth flow. The synthetic local user is set up in `initialize`.
     pub fn is_logged_in(&self) -> bool {
         true
     }
 
-    /// In warp-oss there is no anonymous tier and no logout, so this is always
+    /// In yarp there is no anonymous tier and no logout, so this is always
     /// false. The synthetic local user is treated as a full account.
     pub fn is_anonymous_or_logged_out(&self) -> bool {
         false

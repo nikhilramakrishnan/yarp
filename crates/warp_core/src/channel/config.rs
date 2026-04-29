@@ -42,14 +42,14 @@ pub struct WarpServerConfig {
 
 impl WarpServerConfig {
     pub fn production() -> Self {
-        // warp-oss runs entirely against a local backend; the URLs below are
+        // yarp runs entirely against a local backend; the URLs below are
         // unreachable on purpose so any leaked HTTP request surfaces loudly in
         // a network audit instead of silently hitting Warp's production servers.
         Self {
             server_root_url: "https://localhost.invalid".into(),
             rtc_server_url: "wss://localhost.invalid".into(),
             session_sharing_server_url: Some("wss://localhost.invalid".into()),
-            firebase_auth_api_key: "warp-oss-no-firebase".into(),
+            firebase_auth_api_key: "yarp-no-firebase".into(),
         }
     }
 }

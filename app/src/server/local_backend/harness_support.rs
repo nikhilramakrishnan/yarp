@@ -1,4 +1,4 @@
-//! Local-only `HarnessSupportClient` for warp-oss.
+//! Local-only `HarnessSupportClient` for yarp.
 //!
 //! Third-party CLI harnesses (Claude Code, OpenCode, Gemini) want a place to
 //! park transcripts and block snapshots. In warp proper this is GCS via signed
@@ -8,7 +8,7 @@
 //! session is resumed.
 //!
 //! `create_external_conversation` is the only method that *must* succeed for a
-//! harness launch — we generate a UUID and create `~/.warp-oss/harness/{id}/`
+//! harness launch — we generate a UUID and create `~/.yarp/harness/{id}/`
 //! up front so the directory exists before subprocess spawn.
 
 use std::collections::HashMap;
@@ -43,7 +43,7 @@ impl OssHarnessSupportClient {
 
     fn sentinel_target(&self, kind: &str, id: &str) -> UploadTarget {
         UploadTarget {
-            url: format!("{SENTINEL_HOST}/warp-oss/{kind}/{id}"),
+            url: format!("{SENTINEL_HOST}/yarp/{kind}/{id}"),
             method: "PUT".into(),
             headers: HashMap::new(),
         }
@@ -81,7 +81,7 @@ impl HarnessSupportClient for OssHarnessSupportClient {
         // the raw user prompt the local launcher already has in hand. Returning
         // an empty resolved prompt would let the launcher fall through to its
         // local-prompt path; an Err makes the (rare) callers flag the gap loudly.
-        Err(anyhow::anyhow!("warp-oss: resolve_prompt not supported"))
+        Err(anyhow::anyhow!("yarp: resolve_prompt not supported"))
     }
 
     async fn report_artifact(&self, _artifact: &Artifact) -> Result<ReportArtifactResponse> {
@@ -115,9 +115,9 @@ impl HarnessSupportClient for OssHarnessSupportClient {
     async fn fetch_transcript(&self) -> Result<bytes::Bytes> {
         // We cannot resolve which conversation this refers to without context the
         // trait doesn't pass through. Resume from disk happens via the harness
-        // launcher reading directly from `~/.warp-oss/harness/{id}/transcript.json`.
+        // launcher reading directly from `~/.yarp/harness/{id}/transcript.json`.
         Err(anyhow::anyhow!(
-            "warp-oss: fetch_transcript via HarnessSupportClient is unsupported; resume reads disk directly"
+            "yarp: fetch_transcript via HarnessSupportClient is unsupported; resume reads disk directly"
         ))
     }
 

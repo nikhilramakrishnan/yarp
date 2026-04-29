@@ -23,7 +23,7 @@ default-members = [
 ]
 
 [workspace.package]
-authors = ["Warp Team <dev@warp.dev>"]
+authors = ["Yarp team <yarp@hot.fuzz>"]
 license = "AGPL-3.0-only"
 publish = false
 

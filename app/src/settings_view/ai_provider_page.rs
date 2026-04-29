@@ -1,7 +1,7 @@
 //! AI Provider settings page.
 //!
 //! Yarp's local LLM provider is configured via `~/.yarp/llm_provider.json`
-//! (created automatically on first launch) and/or `WARP_OSS_LLM_*` env vars.
+//! (created automatically on first launch) and/or `YARP_LLM_*` env vars.
 //! This page surfaces the current resolved configuration and a button to
 //! open the JSON file in the user's default editor.
 
@@ -169,10 +169,10 @@ impl SettingsWidget for AIProviderWidget {
             .finish();
 
         let env_lines = [
-            "  WARP_OSS_LLM_PROVIDER  (anthropic | openai | ollama)",
-            "  WARP_OSS_LLM_API_KEY",
-            "  WARP_OSS_LLM_MODEL",
-            "  WARP_OSS_LLM_BASE_URL",
+            "  YARP_LLM_PROVIDER  (anthropic | openai | ollama)",
+            "  YARP_LLM_API_KEY",
+            "  YARP_LLM_MODEL",
+            "  YARP_LLM_BASE_URL",
         ];
         let mut env_block = Flex::column().with_child(env_header);
         for line in env_lines {

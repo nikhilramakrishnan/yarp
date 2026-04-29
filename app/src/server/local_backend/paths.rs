@@ -28,7 +28,7 @@ impl LocalPaths {
     pub fn ensure_root_exists(&self) {
         if let Err(err) = std::fs::create_dir_all(&self.root) {
             log::warn!(
-                "warp-oss: failed to create root config dir {}: {err}",
+                "yarp: failed to create root config dir {}: {err}",
                 self.root.display()
             );
         }

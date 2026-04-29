@@ -1,11 +1,11 @@
-//! Local-only `AIClient` implementation used by warp-oss.
+//! Local-only `AIClient` implementation used by yarp.
 //!
-//! warp-oss does not have a Warp backend. The five methods that drive an LLM
+//! yarp does not have a Warp backend. The five methods that drive an LLM
 //! call (dialogue, command suggestions, command metadata, code review copy)
 //! will eventually route through a local provider — for now they return a
 //! clear error so callers see something actionable instead of a `localhost.invalid`
 //! connection failure. State-tracking methods (agent task registry, request
-//! quota, model discovery) are real implementations backed by `~/.warp-oss/`.
+//! quota, model discovery) are real implementations backed by `~/.yarp/`.
 //!
 //! Cloud-only methods (artifact upload, ambient/scheduled agent runs, server
 //! conversation history, orchestration messaging) return `Err` or empty
@@ -56,7 +56,7 @@ use warp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
 use super::llm_provider::{LocalLlmProvider, Message, Role};
 use super::LocalBackend;
 
-const NOT_SUPPORTED: &str = "not supported in warp-oss; use a local agent harness instead";
+const NOT_SUPPORTED: &str = "not supported in yarp; use a local agent harness instead";
 
 const COMMANDS_SYSTEM_PROMPT: &str = r#"You translate natural-language requests into shell commands. Reply with ONLY a single JSON object — no prose, no code fences. Schema:
 {
@@ -202,12 +202,12 @@ impl AIClient for OssAiClient {
             )
             .await
             .map_err(|err| {
-                log::warn!("warp-oss: command-suggestion LLM call failed: {err:#}");
+                log::warn!("yarp: command-suggestion LLM call failed: {err:#}");
                 GenerateCommandsFromNaturalLanguageError::AiProviderError
             })?;
         let parsed: CommandsJson = serde_json::from_str(extract_json_object(&response))
             .map_err(|err| {
-                log::warn!("warp-oss: command-suggestion JSON parse failed: {err:#}; raw={response}");
+                log::warn!("yarp: command-suggestion JSON parse failed: {err:#}; raw={response}");
                 GenerateCommandsFromNaturalLanguageError::BadPrompt
             })?;
         Ok(parsed
@@ -283,13 +283,13 @@ impl AIClient for OssAiClient {
             )
             .await
             .map_err(|err| {
-                log::warn!("warp-oss: command-metadata LLM call failed: {err:#}");
+                log::warn!("yarp: command-metadata LLM call failed: {err:#}");
                 GeneratedCommandMetadataError::AiProviderError
             })?;
         let parsed: MetadataJson = serde_json::from_str(extract_json_object(&response))
             .map_err(|err| {
                 log::warn!(
-                    "warp-oss: command-metadata JSON parse failed: {err:#}; raw={response}"
+                    "yarp: command-metadata JSON parse failed: {err:#}; raw={response}"
                 );
                 GeneratedCommandMetadataError::BadCommand
             })?;
@@ -388,7 +388,7 @@ impl AIClient for OssAiClient {
         Ok(0)
     }
 
-    // ---- Agent task registry: backed by ~/.warp-oss/agent_tasks.json. ----
+    // ---- Agent task registry: backed by ~/.yarp/agent_tasks.json. ----
 
     async fn create_agent_task(
         &self,
