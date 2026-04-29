@@ -79,7 +79,35 @@ fn main() -> Result<()> {
     }
     ChannelState::set(state);
 
+    write_default_llm_config_if_missing();
+
     warp::run()
+}
+
+/// On first launch, drop a commented template at `~/.yarp/llm_provider.json`
+/// so users can configure the local LLM without grepping the source for env
+/// var names. Existing files are never overwritten.
+fn write_default_llm_config_if_missing() {
+    let Some(home) = warp_core::paths::warp_home_config_dir() else {
+        return;
+    };
+    let _ = std::fs::create_dir_all(&home);
+    let path = home.join("llm_provider.json");
+    if path.exists() {
+        return;
+    }
+    let template = r#"{
+  "_comment_provider":  "anthropic | openai | ollama   (omit or empty = auto-detect)",
+  "_comment_api_key":   "Anthropic or OpenAI API key. Ignored for ollama.",
+  "_comment_model":     "Model id. Defaults: claude-opus-4-7 / gpt-5 / qwen2.5-coder",
+  "_comment_base_url":  "Override endpoint. openai: https://api.openai.com/v1   ollama: http://localhost:11434",
+  "provider": "",
+  "api_key": "",
+  "model": "",
+  "base_url": ""
+}
+"#;
+    let _ = std::fs::write(&path, template);
 }
 
 // If we're not using an external plist, embed the following as the Info.plist.

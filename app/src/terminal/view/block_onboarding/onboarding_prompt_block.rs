@@ -326,7 +326,7 @@ impl OnboardingPromptBlock {
     fn render_warp_prompt_button_interior(&self, appearance: &Appearance) -> Box<dyn Element> {
         // Pixel values pulled from Figma mocks
         // https://www.figma.com/file/y888viqzWBoMpFTxQqkQEN/Activation?node-id=568:1595&mode=dev
-        const HEADER_TEXT: &str = "Warp prompt";
+        const HEADER_TEXT: &str = "Yarp prompt";
         const HEADER_MARGIN_LEFT: f32 = 4.;
         const SECTION_MARGIN_TOP: f32 = 8.;
         const OUTER_CORNER_RADIUS: f32 = 4.;
