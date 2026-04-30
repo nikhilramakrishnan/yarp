@@ -42,7 +42,7 @@ struct GridTooltipLink {
 /// Mutates `detail_for_default` leaving None in place if the GridTooltipLink returned is the default
 /// action on "Cmd+Click" and thus should use the detail_for_default.
 #[cfg(feature = "local_fs")]
-fn open_in_warp_tooltip(
+fn open_in_yarp_tooltip(
     path: std::path::PathBuf,
     line_and_column_num: Option<yarp_util::path::LineAndColumnArg>,
     detail_for_default: &mut Option<String>,
@@ -198,11 +198,11 @@ impl TerminalView {
             {
                 if let GridHighlightedLink::File(file_link) = link {
                     if let Some(path) = file_link.get_inner().absolute_path() {
-                        open_in_warp = open_in_warp_tooltip(
+                        open_in_warp = open_in_yarp_tooltip(
                             path,
                             file_link.get_inner().line_and_column_num,
                             &mut detail,
-                            self.mouse_states.open_in_warp_tooltip.clone(),
+                            self.mouse_states.open_in_yarp_tooltip.clone(),
                             app,
                         );
                     }
@@ -234,11 +234,11 @@ impl TerminalView {
                     ..
                 } = &tooltip_info.link
                 {
-                    open_in_warp = open_in_warp_tooltip(
+                    open_in_warp = open_in_yarp_tooltip(
                         absolute_path.clone(),
                         *line_and_column_num,
                         &mut detail,
-                        self.mouse_states.open_in_warp_tooltip.clone(),
+                        self.mouse_states.open_in_yarp_tooltip.clone(),
                         app,
                     );
                 }

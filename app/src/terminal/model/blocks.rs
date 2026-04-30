@@ -281,7 +281,7 @@ pub struct BlockList {
     /// Executor used for spawning threads in the background.
     background_executor: Arc<Background>,
 
-    show_warp_bootstrap_block: bool,
+    show_yarp_bootstrap_block: bool,
 
     show_in_band_command_blocks: bool,
 
@@ -588,7 +588,7 @@ impl BlockList {
     /// feed input into, and finish whereas `finalize_block_and_advance_list` will create the _subsequent_
     /// block.
     /// 3. Create the `BootstrapStage::YarpInput` block through
-    /// `create_warp_input_block`. From here on, there is always a default
+    /// `create_yarp_input_block`. From here on, there is always a default
     /// block which is hidden until it is started.
     /// 4. We progress through the bootstrap stages with the `finalize_block_and_advance_list` function.
     /// 5. After we hit `BootstrapStage::PostBootstrapPrecmd`, it's normal
@@ -628,7 +628,7 @@ impl BlockList {
             padding: sizes.block_padding,
             yarp_prompt_height_lines: sizes.yarp_prompt_height_lines,
             background_executor,
-            show_warp_bootstrap_block: show_yarp_bootstrap_input,
+            show_yarp_bootstrap_block: show_yarp_bootstrap_input,
             show_in_band_command_blocks,
             show_memory_stats,
             honor_ps1,
@@ -681,7 +681,7 @@ impl BlockList {
                 }
             }
         }
-        self.create_warp_input_block();
+        self.create_yarp_input_block();
         // Note: We no longer call start() here.
         // When shell input arrives, the block will be started (see the `input` handler).
         // This ensures sessions without a shell (like cloude mode) don't permanently trigger is_active_and_long_running()
@@ -725,7 +725,7 @@ impl BlockList {
     /// This is an important function in the block list lifecycle. After this
     /// is called, there's an invariant where we always have an active block
     /// that's hidden until it's `start`ed.
-    fn create_warp_input_block(&mut self) {
+    fn create_yarp_input_block(&mut self) {
         self.create_new_block(
             BlockId::new(),
             BootstrapStage::YarpInput,
@@ -970,7 +970,7 @@ impl BlockList {
             self.append_item_to_blocklist(BlockHeightItem::RichContent(item))
         } else {
             // If there's no long-running block, then the active block is a default block that is hidden
-            // until it's started. This is an invariant of the blocklist (see create_warp_input_block). In this
+            // until it's started. This is an invariant of the blocklist (see create_yarp_input_block). In this
             // case, we should add the rich content above that hidden block.
             self.insert_non_block_item_before_block(
                 self.active_block_index(),
@@ -1210,7 +1210,7 @@ impl BlockList {
 
     /// Inserts the `item` into the blocklist at the given `index`.
     /// We only want to use this in the block list lifecycle after
-    /// `create_warp_input_block`. For non-block items before then, we should
+    /// `create_yarp_input_block`. For non-block items before then, we should
     /// insert the item directly into the sumtree.
     /// Returns the inserted index (according to the TotalCount dimension).
     fn insert_non_block_item_before_block(
@@ -2182,7 +2182,7 @@ impl BlockList {
     }
 
     pub fn set_show_bootstrap_block(&mut self, show_bootstrap_block: bool) {
-        self.show_warp_bootstrap_block = show_bootstrap_block;
+        self.show_yarp_bootstrap_block = show_bootstrap_block;
         self.update_blocks_and_sumtree(
             None,
             None,
@@ -2486,7 +2486,7 @@ impl BlockList {
             self.event_proxy.clone(),
             self.background_executor.clone(),
             bootstrap_stage,
-            self.show_warp_bootstrap_block,
+            self.show_yarp_bootstrap_block,
             self.show_in_band_command_blocks,
             self.show_memory_stats,
             self.blocks.len().into(),
@@ -2540,7 +2540,7 @@ impl BlockList {
             self.event_proxy.clone(),
             self.background_executor.clone(),
             self.bootstrap_stage,
-            self.show_warp_bootstrap_block,
+            self.show_yarp_bootstrap_block,
             self.show_in_band_command_blocks,
             self.show_memory_stats,
             BlockIndex::zero(),

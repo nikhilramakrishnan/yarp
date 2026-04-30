@@ -591,7 +591,7 @@ pub fn test_basic_bootstrapping() {
     // overall bootstrapping script.
     command_finished_and_precmd(&mut block_list);
 
-    // We have four blocks from calling `create_warp_input_block` once and `block_finished` twice.
+    // We have four blocks from calling `create_yarp_input_block` once and `block_finished` twice.
     assert_eq!(block_list.blocks.len(), 3);
     assert_lines_approx_eq!(block_list.blocks[0].height(&AgentViewState::Inactive), 0.0);
     assert_lines_approx_eq!(block_list.blocks[1].height(&AgentViewState::Inactive), 0.0);

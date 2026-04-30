@@ -293,7 +293,7 @@ impl EditorModal {
     }
 
     /// Updates the state of the Yarp prompt separator dropdown to be enabled/disabled based on the current state of the modal.
-    fn update_warp_separator_dropdown_state(&mut self, ctx: &mut ViewContext<Self>) {
+    fn update_yarp_separator_dropdown_state(&mut self, ctx: &mut ViewContext<Self>) {
         // If we are using the Yarp prompt and SLP is enabled, then we enable the dropdown. Otherwise, disable it.
         if self.prompt_type != PromptType::PS1 && self.same_line_prompt_enabled {
             self.yarp_prompt_separator_dropdown
@@ -411,14 +411,14 @@ impl TypedActionView for EditorModal {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::PS1;
                 // Disable the Yarp separator dropdown (only applies to Yarp prompt).
-                self.update_warp_separator_dropdown_state(ctx);
+                self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
             Self::Action::UseWarpPrompt => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::yarp_prompt_from_settings(ctx);
                 // Enable the Yarp separator dropdown, if SLP is on.
-                self.update_warp_separator_dropdown_state(ctx);
+                self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
             Self::Action::ResetWarpPrompt => {
@@ -429,7 +429,7 @@ impl TypedActionView for EditorModal {
                 self.same_line_prompt_enabled = default_prompt.same_line_prompt_enabled();
                 self.yarp_prompt_separator = default_prompt.separator();
                 // Disable the Yarp separator dropdown, since SLP is off for the default Yarp prompt.
-                self.update_warp_separator_dropdown_state(ctx);
+                self.update_yarp_separator_dropdown_state(ctx);
                 let restored_chips = default_prompt.chip_kinds();
                 self.update_used_chips(restored_chips, ctx);
                 ctx.notify();
@@ -442,7 +442,7 @@ impl TypedActionView for EditorModal {
                 // same line prompt - it's no longer the default prompt.
                 self.prompt_type = PromptType::Yarp;
 
-                self.update_warp_separator_dropdown_state(ctx);
+                self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
             Self::Action::SetWarpPromptSeparator { separator } => {

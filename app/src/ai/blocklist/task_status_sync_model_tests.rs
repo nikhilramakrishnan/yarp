@@ -55,7 +55,7 @@ fn server_overloaded_is_error_with_resource_unavailable() {
 #[test]
 fn internal_warp_error_is_error() {
     assert_update(
-        classify_renderable_error(&RenderableAIError::InternalWarpError),
+        classify_renderable_error(&RenderableAIError::InternalYarpError),
         AgentTaskState::Error,
         Some(PlatformErrorCode::InternalError),
         Some("internal error"),

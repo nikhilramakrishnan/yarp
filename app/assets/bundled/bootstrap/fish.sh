@@ -71,7 +71,7 @@ end
 # A list of PIDs for running in-band command(s). This is used to kill running
 # in-band commands in preexec for a user command, so they do not interfere with
 # user command output.
-set -g _warp_generator_pids ''
+set -g _yarp_generator_pids ''
 
 # Runs the given command in the background, records its PID in
 # _YARP_GENERATOR_PIDS_STARTED_TMP_FILE, and adds its PID from the file when
@@ -123,11 +123,11 @@ function  _warp_run_generator_command_internal
         yarp_maybe_send_reset_grid_osc" 2> /dev/null &
         
     set -l command_pid $last_pid
-    set -a _warp_generator_pids $command_pid
+    set -a _yarp_generator_pids $command_pid
 
-    # Remove the command's PID from _warp_generator_pids when the command exits.
+    # Remove the command's PID from _yarp_generator_pids when the command exits.
     function on_command_{$command_pid}_finish --on-process-exit $command_pid --inherit-variable command_pid
-        set -g _warp_generator_pids (string replace $command_pid '' $_warp_generator_pids)
+        set -g _yarp_generator_pids (string replace $command_pid '' $_yarp_generator_pids)
 
         # Erase this function after the pids list is updated above so we don't create an infinite number of
         # functions that could pollute the user's context (nested functions are still existing in the global
@@ -164,13 +164,13 @@ function yarp_preexec --on-event fish_preexec
 
     # If this preexec is called for user command, kill ongoing generator command jobs.
     if test (! string match -q "yarp_run_generator_command*" $argv[1])
-        for pid in $_warp_generator_pids
+        for pid in $_yarp_generator_pids
             # Surpress stderr output; kill writes to stderr if any of the given
             # PIDS are not running (which might rarely be the case due to race
             # conditions in checking which PIDS to cancel and this kill command.
             kill -9 $pids >/dev/null 2>/dev/null
         end
-        set -g _warp_generator_pids ''
+        set -g _yarp_generator_pids ''
     end
 end
 

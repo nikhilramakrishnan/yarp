@@ -1194,7 +1194,7 @@ define_settings_group!(AISettings, settings: [
 
     // Whether or not the user has enabled the ability to use Yarp credits even when providing
     // their own LLM provider API key.
-    can_use_yarp_credits_with_byok: CanUseWarpCreditsWithByok {
+    can_use_yarp_credits_with_byok: CanUseYarpCreditsWithByok {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,

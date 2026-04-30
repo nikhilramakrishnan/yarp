@@ -419,7 +419,7 @@ mod Ivar {
 // Declarations of functions implemented in ObjC files.
 // These signatures must be manually synced - there's no type checking here.
 extern "C" {
-    fn create_warp_nswindow(
+    fn create_yarp_nswindow(
         contentRect: NSRect,
         metalDevice: id,
         hideTitleBar: BOOL,
@@ -551,7 +551,7 @@ impl Window {
                     let _: () = msg_send![panel, positionPinnedPanel];
                     panel
                 }
-                _ => create_warp_nswindow(
+                _ => create_yarp_nswindow(
                     frame,
                     metal_device_ptr,
                     options.hide_title_bar as BOOL,

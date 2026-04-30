@@ -716,7 +716,7 @@ fn should_fork_from_last_known_good_state(
         | RenderableAIError::ContextWindowExceeded(_)
         | RenderableAIError::InvalidApiKey { .. }
         | RenderableAIError::AwsBedrockCredentialsExpiredOrInvalid { .. } => false,
-        RenderableAIError::InternalWarpError => true,
+        RenderableAIError::InternalYarpError => true,
         RenderableAIError::Other {
             will_attempt_resume,
             ..

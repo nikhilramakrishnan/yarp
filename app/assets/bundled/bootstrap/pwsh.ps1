@@ -438,7 +438,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
             hook = 'CommandFinished'
             value = @{
                 exit_code = $exitCode
-                next_block_id = "precmd-${global:_warpSessionId}-$blockId"
+                next_block_id = "precmd-${global:_yarpSessionId}-$blockId"
             }
         }
         Yarp-Send-JsonMessage $commandFinishedMsg
@@ -463,7 +463,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
                     git_branch = ''
                     virtual_env = ''
                     conda_env = ''
-                    session_id = $global:_warpSessionId
+                    session_id = $global:_yarpSessionId
                     is_after_in_band_command = $true
                 }
             }
@@ -571,7 +571,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
                     virtual_env = $virtualEnv
                     conda_env = $condaEnv
                     node_version = $nodeVersion
-                    session_id = $global:_warpSessionId
+                    session_id = $global:_yarpSessionId
                     kube_config = $kubeConfig
                 }
             }

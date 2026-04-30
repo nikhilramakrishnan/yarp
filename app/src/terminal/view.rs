@@ -2290,7 +2290,7 @@ struct TerminalViewMouseStates {
     copy_secrets_tooltip: MouseStateHandle,
 
     #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
-    open_in_warp_tooltip: MouseStateHandle,
+    open_in_yarp_tooltip: MouseStateHandle,
     jump_to_bottom_of_block_button: MouseStateHandle,
 
     // Mouse state for the pane header ambient agent indicator tooltip.

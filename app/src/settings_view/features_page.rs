@@ -551,7 +551,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
         app.register_fixed_bindings([FixedBinding::empty(
             "Make Yarp the default terminal",
             builder(SettingsAction::FeaturesPageToggle(
-                FeaturesPageAction::MakeWarpDefaultTerminal,
+                FeaturesPageAction::MakeYarpDefaultTerminal,
             )),
             context.to_owned() & !id!(flags::YARP_IS_DEFAULT_TERMINAL),
         )]);
@@ -641,7 +641,7 @@ pub enum FeaturesPageAction {
     ToggleAutoOpenCodeReviewPane,
     ToggleShowTerminalInputMessageLine,
     ToggleAgentInAppNotifications,
-    MakeWarpDefaultTerminal,
+    MakeYarpDefaultTerminal,
 }
 
 lazy_static! {
@@ -1131,8 +1131,8 @@ impl FeaturesPageAction {
                     ),
                 }
             }
-            Self::MakeWarpDefaultTerminal => TelemetryEvent::FeaturesPageAction {
-                action: "MakeWarpDefaultTerminal".to_string(),
+            Self::MakeYarpDefaultTerminal => TelemetryEvent::FeaturesPageAction {
+                action: "MakeYarpDefaultTerminal".to_string(),
                 value: to_string(DefaultTerminal::as_ref(ctx).is_yarp_default()),
             },
             Self::ToggleAutoOpenCodeReviewPane => TelemetryEvent::FeaturesPageAction {
@@ -1902,7 +1902,7 @@ impl TypedActionView for FeaturesPageView {
                     }
                 }
             }
-            MakeWarpDefaultTerminal => {
+            MakeYarpDefaultTerminal => {
                 DefaultTerminal::handle(ctx).update(ctx, |default_terminal, ctx| {
                     default_terminal.make_yarp_default(ctx);
                 });
@@ -4804,7 +4804,7 @@ impl SettingsWidget for DefaultTerminalWidget {
                     "Make Yarp the default terminal".to_string(),
                     None,
                     Some(Box::new(|ctx| {
-                        ctx.dispatch_typed_action(FeaturesPageAction::MakeWarpDefaultTerminal);
+                        ctx.dispatch_typed_action(FeaturesPageAction::MakeYarpDefaultTerminal);
                     })),
                     self.link_state.clone(),
                 )

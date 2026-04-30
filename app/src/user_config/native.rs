@@ -64,7 +64,7 @@ impl super::YarpConfig {
         );
         ctx.subscribe_to_model(
             &YarpManagedPathsWatcher::handle(ctx),
-            Self::handle_warp_managed_paths_event,
+            Self::handle_yarp_managed_paths_event,
         );
 
         Self {
@@ -73,7 +73,7 @@ impl super::YarpConfig {
         }
     }
 
-    fn handle_warp_managed_paths_event(
+    fn handle_yarp_managed_paths_event(
         &mut self,
         event: &YarpManagedPathsWatcherEvent,
         ctx: &mut ModelContext<Self>,

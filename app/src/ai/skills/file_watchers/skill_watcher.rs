@@ -125,7 +125,7 @@ impl SkillWatcher {
                 },
             );
             ctx.subscribe_to_model(&YarpManagedPathsWatcher::handle(ctx), |me, event, ctx| {
-                me.handle_warp_managed_paths_event(event, ctx);
+                me.handle_yarp_managed_paths_event(event, ctx);
             });
         }
 
@@ -804,7 +804,7 @@ impl SkillWatcher {
         }
     }
 
-    fn handle_warp_managed_paths_event(
+    fn handle_yarp_managed_paths_event(
         &mut self,
         event: &YarpManagedPathsWatcherEvent,
         ctx: &mut ModelContext<Self>,

@@ -272,7 +272,7 @@ pub(crate) fn classify_renderable_error(
                 PlatformErrorCode::ResourceUnavailable,
             )),
         ),
-        RenderableAIError::InternalWarpError => (
+        RenderableAIError::InternalYarpError => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
                 "An internal error occurred during the conversation. Please try again.",

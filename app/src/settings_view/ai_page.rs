@@ -26,7 +26,7 @@ use crate::settings::{
     AIAutoDetectionEnabled, AICommandDenylist, AISettingsChangedEvent,
     AgentModeCodingPermissionsType, AgentModeCommandExecutionDenylist,
     AgentModeCommandExecutionPredicate, AgentModeQuerySuggestionsEnabled, AwsBedrockAutoLogin,
-    AwsBedrockCredentialsEnabled, CanUseWarpCreditsWithByok, CodeSettings, CodebaseContextEnabled,
+    AwsBedrockCredentialsEnabled, CanUseYarpCreditsWithByok, CodeSettings, CodebaseContextEnabled,
     FileBasedMcpEnabled, GitOperationsAutogenEnabled, IncludeAgentCommandsInHistory,
     IntelligentAutosuggestionsEnabled, MemoryEnabled, NLDInTerminalEnabled,
     NaturalLanguageAutosuggestionsEnabled, OrchestrationEnabled, RuleSuggestionsEnabled,
@@ -2069,7 +2069,7 @@ pub enum AISettingsPageAction {
     ToggleCLIAgentToolbar,
     ToggleUseAgentToolbar,
     ToggleVoiceInput,
-    ToggleCanUseWarpCreditsWithByok,
+    ToggleCanUseYarpCreditsWithByok,
     HyperlinkClick(HyperlinkUrl),
     ToggleCodebaseContext,
     ToggleShowInputHintText,
@@ -2454,7 +2454,7 @@ impl TypedActionView for AISettingsPageView {
                 }
                 ctx.notify();
             }
-            AISettingsPageAction::ToggleCanUseWarpCreditsWithByok => {
+            AISettingsPageAction::ToggleCanUseYarpCreditsWithByok => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     report_if_error!(settings
                         .can_use_yarp_credits_with_byok
@@ -6234,9 +6234,9 @@ impl ApiKeysWidget {
     ) -> Box<dyn Element> {
         let ai_settings = AISettings::as_ref(app);
 
-        let toggle = render_ai_setting_toggle::<CanUseWarpCreditsWithByok>(
+        let toggle = render_ai_setting_toggle::<CanUseYarpCreditsWithByok>(
             "Yarp credit fallback",
-            AISettingsPageAction::ToggleCanUseWarpCreditsWithByok,
+            AISettingsPageAction::ToggleCanUseYarpCreditsWithByok,
             *ai_settings.can_use_yarp_credits_with_byok,
             ai_settings.is_any_ai_enabled(app),
             self.can_use_yarp_credits_with_byok.clone(),

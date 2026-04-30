@@ -241,7 +241,7 @@ use crate::terminal::{AudibleBell, History};
 use crate::undo_close::UndoCloseStack;
 use crate::user_config::YarpConfig;
 use crate::vim_registers::VimRegisters;
-use crate::yarp_managed_paths_watcher::{ensure_warp_watch_roots_exist, YarpManagedPathsWatcher};
+use crate::yarp_managed_paths_watcher::{ensure_yarp_watch_roots_exist, YarpManagedPathsWatcher};
 use crate::workflows::aliases::WorkflowAliases;
 use crate::workflows::local_workflows::LocalWorkflows;
 use crate::workspace::{ActiveSession, OneTimeModalModel, ToastStack};
@@ -990,11 +990,11 @@ fn initialize_app(
 
     // One-time migration: give Preview its own config directory by
     // symlinking contents from the shared ~/.yarp location. Must run
-    // before ensure_warp_watch_roots_exist() creates the new directory.
+    // before ensure_yarp_watch_roots_exist() creates the new directory.
     #[cfg(target_os = "macos")]
     preview_config_migration::migrate_preview_config_dir_if_needed();
 
-    ensure_warp_watch_roots_exist();
+    ensure_yarp_watch_roots_exist();
     ctx.add_singleton_model(YarpManagedPathsWatcher::new);
 
     ctx.add_singleton_model(YarpConfig::new);

@@ -2960,7 +2960,7 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
         RenderableAIError::ServerOverloaded => {
             "Yarp is currently overloaded. Please try again later.".to_string()
         }
-        RenderableAIError::InternalWarpError => {
+        RenderableAIError::InternalYarpError => {
             format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_YARP_ERROR}")
         }
         RenderableAIError::Other {

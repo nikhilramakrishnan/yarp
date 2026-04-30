@@ -619,7 +619,7 @@ impl AIAgentOutput {
 pub enum RenderableAIError {
     QuotaLimit,
     ServerOverloaded,
-    InternalWarpError,
+    InternalYarpError,
     ContextWindowExceeded(String),
     InvalidApiKey {
         provider: String,
@@ -679,7 +679,7 @@ impl Display for RenderableAIError {
             Self::ServerOverloaded => {
                 write!(f, "Yarp is currently overloaded. Please try again later.")
             }
-            Self::InternalWarpError => write!(f, "Internal Yarp error."),
+            Self::InternalYarpError => write!(f, "Internal Yarp error."),
             Self::ContextWindowExceeded(message) => {
                 write!(f, "Context window exceeded: {message}")
             }

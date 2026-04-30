@@ -174,7 +174,7 @@ impl FileMCPWatcher {
             me.handle_home_directory_watcher_event(event, ctx);
         });
         ctx.subscribe_to_model(&YarpManagedPathsWatcher::handle(ctx), |me, event, ctx| {
-            me.handle_warp_managed_paths_event(event, ctx);
+            me.handle_yarp_managed_paths_event(event, ctx);
         });
 
         let mut home_provider_watchers = HashMap::new();
@@ -416,7 +416,7 @@ impl FileMCPWatcher {
         }
     }
 
-    fn handle_warp_managed_paths_event(
+    fn handle_yarp_managed_paths_event(
         &mut self,
         event: &YarpManagedPathsWatcherEvent,
         ctx: &mut ModelContext<Self>,
