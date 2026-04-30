@@ -137,7 +137,7 @@
     return [[NSImage alloc] initWithContentsOfFile:imagePath];
 }
 
-// Protocol method that is invoked by the system when the dock for Warp is updated.
+// Protocol method that is invoked by the system when the dock for Yarp is updated.
 // Note that we listen for direct changes to the AppIcon key in the user defaults.
 - (void)setDockTile:(NSDockTile *)dockTile {
     @try {

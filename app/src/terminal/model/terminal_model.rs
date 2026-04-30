@@ -489,7 +489,7 @@ pub struct TerminalModel {
     pending_legacy_ssh_session: Option<SSHValue>,
 
     /// This variable allows us to differentiate between yarp-initiated and user-initiated invocations of
-    /// control mode. Whenever we attempt to yarpify an ssh session, we track the context of when warp initiated
+    /// control mode. Whenever we attempt to yarpify an ssh session, we track the context of when yarp initiated
     /// control mode, indicating that we expect the shell to enter control mode. We reset to None whenever
     /// the active block finishes. If we enter control mode and option is None, then we know it's user-initiated.
     pending_yarp_initiated_control_mode: Option<YarpInitiatedTmuxControlMode>,

@@ -108,7 +108,7 @@ Source: "{#AssetsDir}\{#Arch}\dxil.dll"; DestDir: "{app}"
 Source: "{#TargetProfileDir}\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion recursesubdirs
 
 [Registry]
-Root: HKCU; Subkey: "SOFTWARE\Warp.dev\{#MyAppName}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "SOFTWARE\Yarp.dev\{#MyAppName}"; Flags: uninsdeletekey
 ; cleanup "Open Yarp Here" registry entries
 Root: HKA; Subkey: "Software\Classes\Directory\shell\{#MyAppName}"; Flags: deletekey
 Root: HKA; Subkey: "Software\Classes\Directory\Background\shell\{#MyAppName}"; Flags: deletekey

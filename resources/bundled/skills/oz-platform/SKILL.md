@@ -59,7 +59,7 @@ $ {{warp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_k
 
 Oz has a REST API for starting and inspecting cloud agents.
 
-All API requests require authentication using an API key. The user can generate API keys in their Warp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
+All API requests require authentication using an API key. The user can generate API keys in their Yarp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
 
 You can find the full OpenAPI specification here: https://docs.warp.dev/reference/api-and-sdk
 

@@ -333,8 +333,8 @@ NSUInteger activeScreenId() {
     // We use an async dispatch here for two reasons:
     //  1. When the active window changes, this will be called twice (once for resign, once for
     //     activated). We can coalesce these calls.
-    //  2. When a new window is created, warp will activate it; if we recursively call back into
-    //     warp then we will cause the app to be mutably borrowed while already borrowed.
+    //  2. When a new window is created, yarp will activate it; if we recursively call back into
+    //     yarp then we will cause the app to be mutably borrowed while already borrowed.
     if (!hasPendingActiveWindowChange) {
         hasPendingActiveWindowChange = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -440,7 +440,7 @@ NSUInteger activeScreenId() {
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
     didReceiveNotificationResponse:(UNNotificationResponse *)response
              withCompletionHandler:(void (^)(void))completionHandler {
-    // Handle what happens when the user clicks the notification. Warp doesn't support any actions
+    // Handle what happens when the user clicks the notification. Yarp doesn't support any actions
     // other than the default action currently.
     if ([response.actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier]) {
         NSDictionary *userInfo = response.notification.request.content.userInfo;
@@ -489,7 +489,7 @@ WarpApplication *get_warp_app() {
       sharedDelegate = [[WarpDelegate alloc] init];
       [app setDelegate:sharedDelegate];
 
-      // Hack to work around the fact that warp is frequently tested as a
+      // Hack to work around the fact that yarp is frequently tested as a
       // standalone (unbundled) binary.
       app.activationPolicy = NSApplicationActivationPolicyRegular;
     });
@@ -519,7 +519,7 @@ NSMenuItem *make_services_menu_item() {
 }
 
 // \return a new menu item that wraps the given context pointer.
-// The pointer will be provided back to Warp in the callbacks (see menus.h).
+// The pointer will be provided back to Yarp in the callbacks (see menus.h).
 // The result is autoreleased.
 NSMenuItem *make_warp_custom_menu_item(void *context) {
     WarpCustomMenuItemHandler *handler =

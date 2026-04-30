@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface NSPasteboard (Warp)
+@interface NSPasteboard (Yarp)
 - (NSArray *)getFilePaths;
 @end
 

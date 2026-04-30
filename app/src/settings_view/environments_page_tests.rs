@@ -1252,7 +1252,7 @@ fn test_environment_matches_search_query_is_case_insensitive() {
     let mut environment = make_test_environment(
         "yarp-env",
         "ubuntu:latest",
-        vec![("YarpDotDev".to_string(), "Warp-Internal".to_string())],
+        vec![("YarpDotDev".to_string(), "Yarp-Internal".to_string())],
         vec![],
     );
     environment.description = Some("Some Description".to_string());

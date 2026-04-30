@@ -10,7 +10,7 @@ pub struct RegistryBackedPreferences {
     app_key_path: String,
 }
 
-static YARP_REGISTRY_BASE_PATH: &str = "Software\\Warp.dev\\";
+static YARP_REGISTRY_BASE_PATH: &str = "Software\\Yarp.dev\\";
 pub const KEY_NOT_FOUND_ERR: HRESULT = HRESULT::from_win32(0x80070002);
 
 impl RegistryBackedPreferences {

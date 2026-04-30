@@ -24,32 +24,32 @@ use crate::{
     AppId,
 };
 
-/// The name of the directory in which to put non-global Warp-specific files.
+/// The name of the directory in which to put non-global Yarp-specific files.
 ///
 /// This should be used, for example, as the base directory under which
-/// repository workflows would be stored (in "./.warp/workflows").
-pub const YARP_CONFIG_DIR: &str = ".warp";
+/// repository workflows would be stored (in "./.yarp/workflows").
+pub const YARP_CONFIG_DIR: &str = ".yarp";
 
-/// The name of the folder that stores Warp execution logs and network logs.
+/// The name of the folder that stores Yarp execution logs and network logs.
 /// This is currently only used on Windows to maintain backwards compatibility.
 pub const YARP_LOGS_DIR: &str = "logs";
 
 fn base_yarp_config_dir_name() -> String {
     match ChannelState::channel() {
         // Preview shares the same directory as Stable for backward
-        // compatibility — existing users already have config in `.warp`.
+        // compatibility — existing users already have config in `.yarp`.
         Channel::Stable | Channel::Preview => YARP_CONFIG_DIR.to_owned(),
         // Yarp is a fork of yarp; we use `.yarp` so a user can run both
-        // Yarp and Warp side by side without sharing state.
+        // Yarp and Yarp side by side without sharing state.
         Channel::Oss => ".yarp".to_owned(),
         Channel::Dev => format!("{YARP_CONFIG_DIR}-dev"),
         Channel::Integration => format!("{YARP_CONFIG_DIR}-integration"),
         Channel::Local => format!("{YARP_CONFIG_DIR}-local"),
     }
 }
-/// Returns the home-relative Warp config directory name for the current channel and data profile.
+/// Returns the home-relative Yarp config directory name for the current channel and data profile.
 ///
-/// This preserves the historical `.warp*` directory shape while still isolating dev, local,
+/// This preserves the historical `.yarp*` directory shape while still isolating dev, local,
 /// integration, oss, and optional development profiles.
 pub fn yarp_home_config_dir_name() -> String {
     let base_dir_name = base_yarp_config_dir_name();
@@ -61,10 +61,10 @@ pub fn yarp_home_config_dir_name() -> String {
     }
 }
 
-/// Returns the home-relative Warp config directory for the current channel and data profile.
+/// Returns the home-relative Yarp config directory for the current channel and data profile.
 ///
 /// Unlike [`data_dir`] and [`config_local_dir`] on non-macOS platforms, this intentionally keeps
-/// Warp-authored, user-facing config under a `.warp*` directory in the home directory instead of
+/// Yarp-authored, user-facing config under a `.yarp*` directory in the home directory instead of
 /// using the platform XDG/AppData project directories.
 pub fn yarp_home_config_dir() -> Option<PathBuf> {
     dirs::home_dir().map(|home_dir| home_dir.join(yarp_home_config_dir_name()))
@@ -80,8 +80,8 @@ pub fn yarp_home_mcp_config_file_path() -> Option<PathBuf> {
 
 /// Returns the macOS config directory name for the current channel.
 ///
-/// Stable uses `.warp`, while other channels include a channel suffix
-/// (e.g., `.warp-dev`, `.warp-local`).
+/// Stable uses `.yarp`, while other channels include a channel suffix
+/// (e.g., `.yarp-dev`, `.yarp-local`).
 ///
 /// These suffixes are persisted on disk as directory names and must not be
 /// changed once established, or existing user data will be orphaned.
@@ -142,7 +142,7 @@ pub fn base_config_dir() -> PathBuf {
 ///
 /// This is the appropriate home for files like our sqlite database, which
 /// contains durable but non-critical and non-portable data like what windows
-/// the user had open and cached state of known Warp Drive objects.
+/// the user had open and cached state of known Yarp Drive objects.
 pub fn state_dir() -> PathBuf {
     let Some(project_dirs) = project_dirs() else {
         return PathBuf::new();
@@ -168,7 +168,7 @@ pub fn secure_state_dir() -> Option<PathBuf> {
 
     #[cfg(target_os = "macos")]
     if let Some(app_group_root) = app_group_container_path() {
-        // The macOS project_path is the bundle ID (i.e. `dev.warp.Warp-Stable`).
+        // The macOS project_path is the bundle ID (i.e. `dev.yarp.Yarp-Stable`).
         let project_dirs = project_dirs()?;
         return Some(
             app_group_root
@@ -277,7 +277,7 @@ pub fn app_group_container_path() -> Option<PathBuf> {
 
         let fm = NSFileManager::defaultManager();
         // Keep in sync with Entitlements.plist
-        let group_id = format!("{}.dev.warp", crate::macos::APPLE_TEAM_ID);
+        let group_id = format!("{}.dev.yarp", crate::macos::APPLE_TEAM_ID);
         let group_id = NSString::from_str(&group_id);
         // containerURLForSecurityApplicationGroupIdentifier always returns a value on macOS (unlike iOS).
         // We have to double-check that the path points to a directory we can actually use. In addition to
@@ -297,13 +297,13 @@ pub fn app_group_container_path() -> Option<PathBuf> {
     LazyLock::force(&CONTAINER_PATH).clone()
 }
 
-/// Returns the path to resources included in the Warp distribution.
+/// Returns the path to resources included in the Yarp distribution.
 ///
 /// Unlike [`yarpui::AssetProvider`] assets, which are generally embedded in the binary, these are
-/// stored on the filesystem alongside the rest of Warp.
+/// stored on the filesystem alongside the rest of Yarp.
 ///
 /// ## macOS
-/// The resources directory is `$APP_DIR/Contents/Resources` (e.g. `/Applications/Warp.app/Contents/Resources`).
+/// The resources directory is `$APP_DIR/Contents/Resources` (e.g. `/Applications/Yarp.app/Contents/Resources`).
 ///
 /// ## Linux
 /// The resources directory is `$INSTALL_DIR/resources`, where `$INSTALL_DIR` depends on the

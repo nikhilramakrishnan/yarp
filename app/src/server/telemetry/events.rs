@@ -6459,28 +6459,28 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Enabled or disabled preserving the active tab color"
             }
             Self::ShowSubshellBanner => {
-                "Displayed the banner asking whether Warp should Yarpify the current session via Warp's subshell wrapper"
+                "Displayed the banner asking whether Yarp should Yarpify the current session via Yarp's subshell wrapper"
             }
             Self::SshTmuxYarpifyBannerDisplayed => {
-                "Displayed the banner asking whether Warp should Yarpify the current SSH session via Warp's SSH Wrapper"
+                "Displayed the banner asking whether Yarp should Yarpify the current SSH session via Yarp's SSH Wrapper"
             }
             Self::DeclineSubshellBootstrap => {
-                "Developer declined the Warp banner to Yarpify the current session"
+                "Developer declined the Yarp banner to Yarpify the current session"
             }
             Self::TriggerSubshellBootstrap => {
-                "Attempted to Yarpify the current session via Warp's subshell wrapper"
+                "Attempted to Yarpify the current session via Yarp's subshell wrapper"
             }
             Self::AddDenylistedSubshellCommand => {
                 "Explicitly prevent a command from being Yarpified via Yarp's subshell wrapper"
             }
             Self::RemoveDenylistedSubshellCommand => {
-                "Removed a command from the list of commands to IGNORE when trying to Yarpify via Warp's subshell wrapper"
+                "Removed a command from the list of commands to IGNORE when trying to Yarpify via Yarp's subshell wrapper"
             }
             Self::AddAddedSubshellCommand => {
                 "Added a command to be automatically Yarpified via Yarp's subshell wrapper"
             }
             Self::RemoveAddedSubshellCommand => {
-                "Removed a command from the list of commands to automatically Yarpify via Warp's subshell wrapper"
+                "Removed a command from the list of commands to automatically Yarpify via Yarp's subshell wrapper"
             }
             Self::ReceivedSubshellRcFileDcs => "Spawned a subshell to be automatically Yarpified",
             Self::ToggleSshTmuxWrapper => {
