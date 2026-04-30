@@ -86,13 +86,13 @@ pub fn is_feedback_skill_available(ctx: &AppContext) -> bool {
 
 use crate::workspace::view::{
     LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME, LEFT_PANEL_GLOBAL_SEARCH_BINDING_NAME,
-    LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME, LEFT_PANEL_WARP_DRIVE_BINDING_NAME,
+    LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME, LEFT_PANEL_YARP_DRIVE_BINDING_NAME,
     NEW_AGENT_TAB_BINDING_NAME, NEW_AMBIENT_AGENT_TAB_BINDING_NAME, NEW_TAB_BINDING_NAME,
     NEW_TERMINAL_TAB_BINDING_NAME, OPEN_GLOBAL_SEARCH_BINDING_NAME,
     TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME, TOGGLE_NOTIFICATION_MAILBOX_BINDING_NAME,
     TOGGLE_PROJECT_EXPLORER_BINDING_NAME, TOGGLE_RIGHT_PANEL_BINDING_NAME,
     TOGGLE_TAB_CONFIGS_MENU_BINDING_NAME, TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME,
-    TOGGLE_WARP_DRIVE_BINDING_NAME,
+    TOGGLE_YARP_DRIVE_BINDING_NAME,
 };
 pub use one_time_modal_model::OneTimeModalModel;
 pub use registry::WorkspaceRegistry;
@@ -610,7 +610,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::NewTeamNotebook)
         .with_context_predicate(
             id!("Workspace")
-                & id!(flags::ENABLE_WARP_DRIVE)
+                & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("WarpDrive_BelongsToTeam")
                 & id!("IsOnline"),
         )
@@ -623,7 +623,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_group(bindings::BindingGroup::Notebooks.as_str())
         .with_custom_action(CustomAction::NewPersonalNotebook)
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:create_team_workflow",
             BindingDescription::new("Create a new team workflow")
@@ -633,7 +633,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::NewTeamWorkflow)
         .with_context_predicate(
             id!("Workspace")
-                & id!(flags::ENABLE_WARP_DRIVE)
+                & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("IsOnline")
                 & id!("WarpDrive_BelongsToTeam"),
         )
@@ -646,7 +646,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_group(bindings::BindingGroup::Workflow.as_str())
         .with_custom_action(CustomAction::NewPersonalWorkflow)
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:create_team_folder",
             BindingDescription::new("Create a new team folder")
@@ -655,7 +655,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_context_predicate(
             id!("Workspace")
-                & id!(flags::ENABLE_WARP_DRIVE)
+                & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("IsOnline")
                 & id!("WarpDrive_BelongsToTeam"),
         )
@@ -667,7 +667,7 @@ pub fn init(app: &mut AppContext) {
             WorkspaceAction::CreatePersonalFolder,
         )
         .with_group(bindings::BindingGroup::Folders.as_str())
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE) & id!("IsOnline")),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!("IsOnline")),
         EditableBinding::new(
             NEW_TAB_BINDING_NAME,
             BindingDescription::new("Create new tab"),
@@ -762,12 +762,12 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| FeatureFlag::GlobalSearch.is_enabled())
         .with_custom_action(CustomAction::ToggleGlobalSearch),
         EditableBinding::new(
-            LEFT_PANEL_WARP_DRIVE_BINDING_NAME,
+            LEFT_PANEL_YARP_DRIVE_BINDING_NAME,
             BindingDescription::new("Left Panel: Yarp Drive"),
             WorkspaceAction::ToggleWarpDrive,
         )
         .with_group(bindings::BindingGroup::Navigation.as_str())
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE))
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE))
         .with_mac_key_binding("ctrl-4")
         .with_linux_or_windows_key_binding("alt-4"),
         EditableBinding::new(
@@ -788,12 +788,12 @@ pub fn init(app: &mut AppContext) {
         // we use alt because we use ctrl-shift-f for find because ctrl-f needs to be reserved for the shell
         .with_linux_or_windows_key_binding("alt-shift-F"),
         EditableBinding::new(
-            TOGGLE_WARP_DRIVE_BINDING_NAME,
+            TOGGLE_YARP_DRIVE_BINDING_NAME,
             BindingDescription::new("Toggle Yarp Drive")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Yarp Drive"),
             WorkspaceAction::ToggleWarpDrive,
         )
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME,
             BindingDescription::new("Toggle Agent conversation list view").with_custom_description(
@@ -1079,7 +1079,7 @@ pub fn init(app: &mut AppContext) {
             WorkspaceAction::ExportAllWarpDriveObjects,
         )
         .with_group(bindings::BindingGroup::Settings.as_str())
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE))]);
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE))]);
     }
 
     // CLI install/uninstall actions (macOS only)
@@ -1172,7 +1172,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::NewTeamEnvVars)
         .with_context_predicate(
             id!("Workspace")
-                & id!(flags::ENABLE_WARP_DRIVE)
+                & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("WarpDrive_BelongsToTeam")
                 & id!("IsOnline"),
         )
@@ -1188,7 +1188,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_group(bindings::BindingGroup::EnvVarCollection.as_str())
         .with_custom_action(CustomAction::NewPersonalEnvVars)
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:create_personal_ai_prompt",
             BindingDescription::new("Create a new personal prompt")
@@ -1198,7 +1198,7 @@ pub fn init(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::WarpAi.as_str())
         .with_custom_action(CustomAction::NewPersonalAIPrompt)
         .with_context_predicate(
-            id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE) & id!(flags::IS_ANY_AI_ENABLED),
+            id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!(flags::IS_ANY_AI_ENABLED),
         ),
         EditableBinding::new(
             "workspace:create_team_ai_prompt",
@@ -1210,7 +1210,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::NewTeamAIPrompt)
         .with_context_predicate(
             id!("Workspace")
-                & id!(flags::ENABLE_WARP_DRIVE)
+                & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("WarpDrive_BelongsToTeam")
                 & id!("IsOnline")
                 & id!(flags::IS_ANY_AI_ENABLED),
@@ -1240,14 +1240,14 @@ pub fn init(app: &mut AppContext) {
             "Import To Personal Drive",
             WorkspaceAction::ImportToPersonalDrive,
         )
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE)),
+        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:import_to_team_drive",
             "Import To Team Drive",
             WorkspaceAction::ImportToTeamDrive,
         )
         .with_context_predicate(
-            id!("Workspace") & id!(flags::ENABLE_WARP_DRIVE) & id!("WarpDrive_BelongsToTeam"),
+            id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!("WarpDrive_BelongsToTeam"),
         ),
     ]);
 

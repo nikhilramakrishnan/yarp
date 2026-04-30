@@ -36,8 +36,8 @@ use yarpui::{
     AppContext, Element, SingletonEntity,
 };
 
-const OPEN_WARP_AI_ITEM_BODY_TEXT: &str = "Ask Yarp AI for command suggestions";
-const TRANSLATE_WITH_WARP_AI_ITEM_BODY_TEXT: &str = "Translate into shell command using Yarp AI";
+const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Ask Yarp AI for command suggestions";
+const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into shell command using Yarp AI";
 
 #[derive(Clone, Debug)]
 pub enum WarpAISearchItem {
@@ -51,8 +51,8 @@ pub enum WarpAISearchItem {
 impl WarpAISearchItem {
     fn item_body_text(&self) -> &'static str {
         match self {
-            WarpAISearchItem::Translate => TRANSLATE_WITH_WARP_AI_ITEM_BODY_TEXT,
-            WarpAISearchItem::Open => OPEN_WARP_AI_ITEM_BODY_TEXT,
+            WarpAISearchItem::Translate => TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT,
+            WarpAISearchItem::Open => OPEN_YARP_AI_ITEM_BODY_TEXT,
         }
     }
 }

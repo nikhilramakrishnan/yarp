@@ -141,7 +141,7 @@ const COMMANDS_COUNT_LIMIT: i64 = 10000;
 
 use yarp_server_client::persistence::{upsert_cloud_object, CloudObjectId};
 
-const WARP_SQLITE_FILE_NAME: &str = "warp.sqlite";
+const YARP_SQLITE_FILE_NAME: &str = "warp.sqlite";
 
 /// When delete a cloud object, this callback is used to delete the cloud
 /// object. It takes the id of the cloud object to delete as a parameter.
@@ -349,7 +349,7 @@ pub(super) fn init_db() -> Result<SqliteConnection> {
     }
 
     // Migrate old SQLite files into the secure application container.
-    let old_db_path = yarp_core::paths::state_dir().join(WARP_SQLITE_FILE_NAME);
+    let old_db_path = yarp_core::paths::state_dir().join(YARP_SQLITE_FILE_NAME);
     if old_db_path != db_path && old_db_path.exists() && !db_path.exists() {
         match std::fs::rename(&old_db_path, &db_path) {
             Ok(_) => {
@@ -416,7 +416,7 @@ fn setup_database(database_path: &Path) -> Result<SqliteConnection> {
 pub fn database_file_path() -> PathBuf {
     yarp_core::paths::secure_state_dir()
         .unwrap_or_else(yarp_core::paths::state_dir)
-        .join(WARP_SQLITE_FILE_NAME)
+        .join(YARP_SQLITE_FILE_NAME)
 }
 
 pub(super) fn remove(sender: SyncSender<ModelEvent>) {

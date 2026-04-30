@@ -79,7 +79,7 @@ ln -s %{prefix}/warpdotdev/%{name}/@@BINARY_NAME@@ %{buildroot}%{_bindir}/@@BINA
 
 # Install the signing key to the standard location for RPM GPG keys.
 mkdir -p /etc/pki/rpm-gpg
-install -m 644 /dev/stdin /etc/pki/rpm-gpg/RPM-GPG-KEY-@@REPO_NAME@@ << 'WARP_SIGNING_KEY_EOF'
+install -m 644 /dev/stdin /etc/pki/rpm-gpg/RPM-GPG-KEY-@@REPO_NAME@@ << 'YARP_SIGNING_KEY_EOF'
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQINBGXJOCwBEADBfryUo8Yx7sbp6KRk08YqKQBVGA7VmNhC/3dRQvK4hbL49KxvicOyIQXykuKrgZ68
@@ -150,7 +150,7 @@ eStX9QCdaf+T1uUMGtaxnbrV76Hb2EHPEa3YMn1bUJDAfUVs5+8wJ6x5QChEQQtCcd4nWVhVWnoGWziA
 39zmImytKo0uyVov+w2F6dMAOZk23ZsjCTqrSBVoDQ2HGig6N0c/V6M/l9CkcGCmLmjx10thsW3BTaBa
 Qh6Vm3FbRCkKqx2FzF6lCwA=
 -----END PGP PUBLIC KEY BLOCK-----
-WARP_SIGNING_KEY_EOF
+YARP_SIGNING_KEY_EOF
 
 # Helper function to set up a yum repo.
 install_yum() {

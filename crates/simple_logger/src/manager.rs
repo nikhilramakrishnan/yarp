@@ -39,7 +39,7 @@ fn log_directory_path(namespace: &str) -> PathBuf {
     let base_dir = yarp_core::paths::secure_state_dir().unwrap_or_else(yarp_core::paths::state_dir);
     if cfg!(windows) {
         base_dir
-            .join(yarp_core::paths::WARP_LOGS_DIR)
+            .join(yarp_core::paths::YARP_LOGS_DIR)
             .join(namespace)
     } else {
         base_dir.join(namespace)

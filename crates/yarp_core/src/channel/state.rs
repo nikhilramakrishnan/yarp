@@ -131,7 +131,7 @@ impl ChannelState {
     /// supported in release builds.
     pub fn data_profile() -> Option<String> {
         if cfg!(debug_assertions) {
-            std::env::var("WARP_DATA_PROFILE").ok()
+            std::env::var("YARP_DATA_PROFILE").ok()
         } else {
             None
         }
@@ -140,7 +140,7 @@ impl ChannelState {
     /// Returns a value that should be used for namespacing persisted data.
     ///
     /// In release builds, this is identical to the app ID; in debug builds,
-    /// it optionally includes a suffix derived from the `WARP_DATA_PROFILE`
+    /// it optionally includes a suffix derived from the `YARP_DATA_PROFILE`
     /// environment variable.
     pub fn data_domain() -> String {
         match Self::data_profile() {
@@ -231,7 +231,7 @@ impl ChannelState {
     /// Derived from [`ws_server_url`] by rewriting the scheme (`wss`→`https`,
     /// `ws`→`http`) and stripping the path. Falls back to [`server_root_url`]
     /// when the WS URL cannot be parsed or uses an unexpected scheme — this
-    /// keeps override paths (e.g. `WARP_WS_SERVER_URL=...`) working without a
+    /// keeps override paths (e.g. `YARP_WS_SERVER_URL=...`) working without a
     /// separate override for the HTTP variant.
     pub fn rtc_http_url() -> Cow<'static, str> {
         cfg_if::cfg_if! {

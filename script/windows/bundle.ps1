@@ -86,31 +86,31 @@ $BUNDLE_ID = "dev.yarp.$app_name"
 # APP_NAME here must match the value used in Rust as the
 # application name; see app/src/channel.rs.
 #
-# WARP_BIN is the name of the binary produced by cargo;
+# YARP_BIN is the name of the binary produced by cargo;
 # BINARY_NAME is the desired name of the binary in the final package.
 if ("$CHANNEL" -eq 'local') {
-    $WARP_BIN = 'warp'
+    $YARP_BIN = 'warp'
     $BINARY_NAME = 'warp.exe'
     $APP_NAME = 'YarpLocal'
     $FEATURES = "$FEATURES,nld_improvements"
 } elseif ("$CHANNEL" -eq 'dev') {
-    $WARP_BIN = 'dev'
+    $YARP_BIN = 'dev'
     $BINARY_NAME = 'dev.exe'
     $APP_NAME = 'YarpDev'
     $FEATURES = "$FEATURES,agent_mode_debug,nld_improvements"
 } elseif ("$CHANNEL" -eq 'preview') {
-    $WARP_BIN = 'preview'
+    $YARP_BIN = 'preview'
     $BINARY_NAME = 'preview.exe'
     $APP_NAME = 'YarpPreview'
     $FEATURES = "$FEATURES,preview_channel,nld_improvements"
 } elseif ("$CHANNEL" -eq 'stable') {
-    $WARP_BIN = 'stable'
+    $YARP_BIN = 'stable'
     $BINARY_NAME = 'warp.exe'
     $APP_NAME = 'Yarp'
     # TODO(vorporeal): Remove this once we get tests passing with this default enabled.
     $FEATURES = "$FEATURES,nld_improvements"
 } elseif ("$CHANNEL" -eq 'oss') {
-    $WARP_BIN = 'warp-oss'
+    $YARP_BIN = 'warp-oss'
     $BINARY_NAME = 'warp-oss.exe'
     $APP_NAME = 'YarpOss'
     # The OSS channel does not ship Sentry, so drop the crash_reporting feature
@@ -123,7 +123,7 @@ $BUNDLE_ID = "dev.yarp.$APP_NAME"
 $INSTALLER_OUTPUT_DIR = "$WINDOWS_INSTALLER_DIR\Output"
 $INSTALLER_NAME = "$($APP_NAME)$($FILE_ENDING)"
 $INSTALLER_PATH = "$($INSTALLER_OUTPUT_DIR)\$($INSTALLER_NAME).exe"
-$PDB_PATH = "$CARGO_TARGET_OUTPUT_DIR\$WARP_BIN.pdb"
+$PDB_PATH = "$CARGO_TARGET_OUTPUT_DIR\$YARP_BIN.pdb"
 
 # The CARGO_FULL_PROFILE environment variable is read by the `cargo` build
 # script (`app/build.rs`) to determine where to place `conpty.dll`.
@@ -137,9 +137,9 @@ if ($DEBUG_BUILD) {
 # then exit.  We use this script to invoke `cargo check` to ensure that we are
 # using the same feature flags and profile that we would be using in production.
 if ($CHECK_ONLY) {
-    cargo check -p warp --profile "$CARGO_PROFILE" --bin "$WARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
+    cargo check -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
     if (-Not $?) {
-        Write-Error "Failed to verify Warp $WARP_BIN compilation with profile $CARGO_PROFILE"
+        Write-Error "Failed to verify Warp $YARP_BIN compilation with profile $CARGO_PROFILE"
         exit 1
     }
     exit 0
@@ -148,17 +148,17 @@ if ($CHECK_ONLY) {
 if (-Not $SKIP_BUILD_BINARY) {
     Write-Output "Building Warp for channel $CHANNEL and bundle id $BUNDLE_ID"
     $env:CARGO_BIN_NAME = $CHANNEL
-    $env:WARP_APP_NAME = $APP_NAME
-    cargo build -p warp --profile "$CARGO_PROFILE" --bin "$WARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
+    $env:YARP_APP_NAME = $APP_NAME
+    cargo build -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
     if (-Not $?) {
-        Write-Error "Failed to build Warp $WARP_BIN binary with profile $CARGO_PROFILE"
+        Write-Error "Failed to build Warp $YARP_BIN binary with profile $CARGO_PROFILE"
         exit 1
     }
 
     # If we desire an executable name different from the cargo bin, rename it.
-    if ("$WARP_BIN.exe" -ne $BINARY_NAME) {
-        $binarySource = "$CARGO_TARGET_OUTPUT_DIR\$WARP_BIN.exe"
-        Write-Output "Renaming executable $WARP_BIN.exe to $BINARY_NAME"
+    if ("$YARP_BIN.exe" -ne $BINARY_NAME) {
+        $binarySource = "$CARGO_TARGET_OUTPUT_DIR\$YARP_BIN.exe"
+        Write-Output "Renaming executable $YARP_BIN.exe to $BINARY_NAME"
         Move-Item -Path "$binarySource" -Destination "$BINARY_PATH" -Force
     }
 }

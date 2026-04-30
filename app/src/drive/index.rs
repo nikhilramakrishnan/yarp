@@ -105,7 +105,7 @@ use yarpui::{
     UpdateView, View, ViewContext, ViewHandle, WindowId,
 };
 
-const WARP_DRIVE_TITLE: &str = "Yarp Drive";
+const YARP_DRIVE_TITLE: &str = "Yarp Drive";
 
 // Team zero state consts
 const HINT_HORIZONTAL_PADDING: f32 = 18.;
@@ -2484,7 +2484,7 @@ impl DriveIndex {
         let text = Container::new(
             appearance
                 .ui_builder()
-                .span(WARP_DRIVE_TITLE.to_string())
+                .span(YARP_DRIVE_TITLE.to_string())
                 .with_style(UiComponentStyles {
                     font_family_id: Some(appearance.ui_font_family()),
                     font_size: Some(TITLE_FONT_SIZE),

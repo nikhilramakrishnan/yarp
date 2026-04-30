@@ -41,7 +41,7 @@ pub const AI_FEATURES: &[&str] = &[
 /// intention is selected with Warp Drive turned on. Shared by the login slide's
 /// skip-login confirmation dialog so the list stays in sync with any future
 /// surfaces that need it.
-pub const WARP_DRIVE_FEATURES: &[&str] = &["Yarp Drive", "Session Sharing"];
+pub const YARP_DRIVE_FEATURES: &[&str] = &["Yarp Drive", "Session Sharing"];
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "bin")] {

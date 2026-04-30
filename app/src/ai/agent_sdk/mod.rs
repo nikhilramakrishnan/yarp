@@ -1328,7 +1328,7 @@ fn launch_command(
                 dispatched = true;
                 let auth_state = AuthStateProvider::handle(ctx).as_ref(ctx).get();
                 let message = if auth_state.is_api_key_authenticated() {
-                    "Your API key is invalid. Please provide a valid key via '--api-key' or the WARP_API_KEY environment variable.".to_string()
+                    "Your API key is invalid. Please provide a valid key via '--api-key' or the YARP_API_KEY environment variable.".to_string()
                 } else {
                     format!("Your credentials are invalid. Please log in again with `{cli_name} login`.")
                 };

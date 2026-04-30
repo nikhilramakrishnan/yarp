@@ -10,14 +10,14 @@ pub struct RegistryBackedPreferences {
     app_key_path: String,
 }
 
-static WARP_REGISTRY_BASE_PATH: &str = "Software\\Warp.dev\\";
+static YARP_REGISTRY_BASE_PATH: &str = "Software\\Warp.dev\\";
 pub const KEY_NOT_FOUND_ERR: HRESULT = HRESULT::from_win32(0x80070002);
 
 impl RegistryBackedPreferences {
     /// Construct a separate registry path for each channel (stable, dev, local, etc.)
     pub fn new(app_name: &str) -> Self {
         Self {
-            app_key_path: WARP_REGISTRY_BASE_PATH.to_owned() + app_name,
+            app_key_path: YARP_REGISTRY_BASE_PATH.to_owned() + app_name,
         }
     }
 

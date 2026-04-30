@@ -75,7 +75,7 @@ impl AuthState {
 
     /// Creates and initializes auth state. yarp is single-user with no backend,
     /// so we always synthesize a local user. The remaining branches (api key,
-    /// WARP_USER_SECRET, persisted user) are kept for source compatibility but are
+    /// YARP_USER_SECRET, persisted user) are kept for source compatibility but are
     /// unreachable in OSS builds.
     #[cfg_attr(target_family = "wasm", allow(dead_code))]
     pub fn initialize(ctx: &AppContext, _api_key: Option<String>) -> Self {
@@ -109,8 +109,8 @@ impl AuthState {
             return state;
         }
 
-        // Try WARP_USER_SECRET environment variable.
-        if let Some(persisted) = option_env!("WARP_USER_SECRET")
+        // Try YARP_USER_SECRET environment variable.
+        if let Some(persisted) = option_env!("YARP_USER_SECRET")
             .and_then(|s| serde_json::from_str::<PersistedUser>(s).ok())
         {
             state.apply_persisted_user(persisted);

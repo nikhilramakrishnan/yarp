@@ -22,7 +22,7 @@ use crate::terminal::TerminalManager;
 
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::agent_sdk::driver::{
-    environment::prepare_environment, terminal::TerminalDriver, WARP_DRIVE_SYNC_TIMEOUT,
+    environment::prepare_environment, terminal::TerminalDriver, YARP_DRIVE_SYNC_TIMEOUT,
 };
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::cloud_environments::CloudAmbientAgentEnvironment;
@@ -213,7 +213,7 @@ impl TerminalView {
                 // Wait for Yarp Drive initial sync so environment lookup succeeds.
 
                 if sync_future
-                    .with_timeout(WARP_DRIVE_SYNC_TIMEOUT)
+                    .with_timeout(YARP_DRIVE_SYNC_TIMEOUT)
                     .await
                     .is_err()
                 {

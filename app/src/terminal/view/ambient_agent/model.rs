@@ -490,7 +490,7 @@ impl AmbientAgentViewModel {
             ComputerUsePermission::resolve_cloud_agent_state(ctx);
         let computer_use_enabled = Some(enabled);
 
-        let default_host = std::env::var("WARP_CLOUD_MODE_DEFAULT_HOST")
+        let default_host = std::env::var("YARP_CLOUD_MODE_DEFAULT_HOST")
             .ok()
             .filter(|s| !s.is_empty());
 

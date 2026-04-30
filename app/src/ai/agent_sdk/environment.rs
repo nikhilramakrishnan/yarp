@@ -14,7 +14,7 @@ use yarpui::{AppContext, ModelContext, SingletonEntity};
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 
-use crate::ai::agent_sdk::driver::WARP_DRIVE_SYNC_TIMEOUT;
+use crate::ai::agent_sdk::driver::YARP_DRIVE_SYNC_TIMEOUT;
 use crate::ai::agent_sdk::oauth_flow::poll_oauth_until_terminal;
 use crate::ai::cloud_environments::{
     AmbientAgentEnvironment, BaseImage, CloudAmbientAgentEnvironment,
@@ -38,7 +38,7 @@ use yarp_graphql::queries::list_warp_dev_images::{
 };
 use yarp_graphql::queries::user_repo_auth_status::UserRepoAuthStatusEnum;
 
-const WARP_DEV_ENVIRONMENTS_REPO: &str = "https://github.com/warpdotdev/warp-dev-environments";
+const YARP_DEV_ENVIRONMENTS_REPO: &str = "https://github.com/warpdotdev/warp-dev-environments";
 
 /// Parse repo strings in the format "owner/repo" into GithubRepo objects.
 fn parse_repos(repo_strings: Vec<String>) -> anyhow::Result<Vec<GithubRepo>> {
@@ -170,7 +170,7 @@ impl EnvironmentCommandRunner {
                     ) {
                         println!(
                             "All Yarp dev images contain Python and Node. For more information, see: {}\n",
-                            WARP_DEV_ENVIRONMENTS_REPO
+                            YARP_DEV_ENVIRONMENTS_REPO
                         );
                     }
                     output::print_list(image_infos, global_options.output_format);
@@ -189,7 +189,7 @@ impl EnvironmentCommandRunner {
     fn list(&self, global_options: GlobalOptions, ctx: &mut ModelContext<Self>) {
         let initial_sync = UpdateManager::as_ref(ctx)
             .initial_load_complete()
-            .with_timeout(WARP_DRIVE_SYNC_TIMEOUT);
+            .with_timeout(YARP_DRIVE_SYNC_TIMEOUT);
 
         ctx.spawn(initial_sync, move |_, result, ctx| {
             if result.is_err() {
@@ -260,7 +260,7 @@ impl EnvironmentCommandRunner {
     fn get(&mut self, id: String, ctx: &mut ModelContext<Self>) {
         let initial_sync = UpdateManager::as_ref(ctx)
             .initial_load_complete()
-            .with_timeout(WARP_DRIVE_SYNC_TIMEOUT);
+            .with_timeout(YARP_DRIVE_SYNC_TIMEOUT);
 
         ctx.spawn(initial_sync, move |_, result, ctx| {
             if result.is_err() {
@@ -364,7 +364,7 @@ impl EnvironmentCommandRunner {
                     );
                     println!(
                         "All warpdotdev images contain Python and Node, in addition to language-specific tooling. For more info: {}\n",
-                        WARP_DEV_ENVIRONMENTS_REPO
+                        YARP_DEV_ENVIRONMENTS_REPO
                     );
 
                     let mut image_choices: Vec<String> =
@@ -469,7 +469,7 @@ impl EnvironmentCommandRunner {
     ) {
         let initial_sync = UpdateManager::as_ref(ctx)
             .initial_load_complete()
-            .with_timeout(WARP_DRIVE_SYNC_TIMEOUT);
+            .with_timeout(YARP_DRIVE_SYNC_TIMEOUT);
 
         ctx.spawn(initial_sync, move |_, result, ctx| {
             if result.is_err() {
@@ -851,7 +851,7 @@ impl EnvironmentCommandRunner {
     ) {
         let initial_sync = UpdateManager::as_ref(ctx)
             .initial_load_complete()
-            .with_timeout(WARP_DRIVE_SYNC_TIMEOUT);
+            .with_timeout(YARP_DRIVE_SYNC_TIMEOUT);
 
         ctx.spawn(initial_sync, move |_, result, ctx| {
             if result.is_err() {
@@ -1030,7 +1030,7 @@ impl EnvironmentCommandRunner {
     fn delete(&mut self, id: String, force: bool, ctx: &mut ModelContext<Self>) {
         let initial_sync = UpdateManager::as_ref(ctx)
             .initial_load_complete()
-            .with_timeout(WARP_DRIVE_SYNC_TIMEOUT);
+            .with_timeout(YARP_DRIVE_SYNC_TIMEOUT);
 
         ctx.spawn(initial_sync, move |_, result, ctx| {
             if result.is_err() {

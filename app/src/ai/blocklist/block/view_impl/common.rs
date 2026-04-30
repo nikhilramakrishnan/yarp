@@ -127,7 +127,7 @@ pub const WAITING_FOR_USER_INPUT_MESSAGE: &str = "Agent waiting for instructions
 const IMAGE_SOURCE_LINK_LINE_INDEX: usize = 1;
 
 const ERROR_APOLOGY_TEXT: &str = "I'm sorry, I couldn't complete that request.";
-const INTERNAL_WARP_ERROR: &str = "Internal Yarp error.";
+const INTERNAL_YARP_ERROR: &str = "Internal Yarp error.";
 
 pub const LOAD_OUTPUT_MESSAGE: &str = "Yarping...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_ADJUSTING: &str = "Adjusting tasks...";
@@ -554,7 +554,7 @@ pub fn render_warping_indicator_base(
     // Unicode code point for the Warp glyph that is embedded in the version of Roboto we bundle
     // into the app. This code point MUST be rendered using Roboto (the default ui font) or else the
     // glyph may not be rendered.
-    const WARP_GLYPH: &str = "\u{E500}";
+    const YARP_GLYPH: &str = "\u{E500}";
 
     let appearance = Appearance::as_ref(app);
 
@@ -605,7 +605,7 @@ pub fn render_warping_indicator_base(
         let sub_element = if should_indent_tip_for_warp_glyph {
             let font_size = appearance.monospace_font_size() - 3.;
             let glyph_indent = Text::new_inline(
-                format!("{WARP_GLYPH} "),
+                format!("{YARP_GLYPH} "),
                 appearance.ui_font_family(),
                 font_size,
             )
@@ -2961,7 +2961,7 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
             "Yarp is currently overloaded. Please try again later.".to_string()
         }
         RenderableAIError::InternalWarpError => {
-            format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_WARP_ERROR}")
+            format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_YARP_ERROR}")
         }
         RenderableAIError::Other {
             error_message,

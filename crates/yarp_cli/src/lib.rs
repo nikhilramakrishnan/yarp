@@ -36,9 +36,9 @@ pub const OZ_RUN_ID_ENV: &str = "OZ_RUN_ID";
 pub const OZ_PARENT_RUN_ID_ENV: &str = "OZ_PARENT_RUN_ID";
 pub const OZ_CLI_ENV: &str = "OZ_CLI";
 pub const OZ_HARNESS_ENV: &str = "OZ_HARNESS";
-pub const SERVER_ROOT_URL_OVERRIDE_ENV: &str = "WARP_SERVER_ROOT_URL";
-pub const WS_SERVER_URL_OVERRIDE_ENV: &str = "WARP_WS_SERVER_URL";
-pub const SESSION_SHARING_SERVER_URL_OVERRIDE_ENV: &str = "WARP_SESSION_SHARING_SERVER_URL";
+pub const SERVER_ROOT_URL_OVERRIDE_ENV: &str = "YARP_SERVER_ROOT_URL";
+pub const WS_SERVER_URL_OVERRIDE_ENV: &str = "YARP_WS_SERVER_URL";
+pub const SESSION_SHARING_SERVER_URL_OVERRIDE_ENV: &str = "YARP_SESSION_SHARING_SERVER_URL";
 
 /// Options related to the parent process that spawned this Warp instance.
 #[derive(Debug, Default, Clone, clap::Args)]
@@ -65,7 +65,7 @@ pub struct ParentOpts {
 #[derive(Debug, Default, Clone, clap::Args)]
 pub struct GlobalOptions {
     /// API key for server authentication.
-    #[arg(long = "api-key", global = true, env = "WARP_API_KEY")]
+    #[arg(long = "api-key", global = true, env = "YARP_API_KEY")]
     pub api_key: Option<String>,
 
     /// Set the output format.
@@ -74,7 +74,7 @@ pub struct GlobalOptions {
         global = true,
         value_enum,
         default_value_t = OutputFormat::Pretty,
-        env = "WARP_OUTPUT_FORMAT"
+        env = "YARP_OUTPUT_FORMAT"
     )]
     pub output_format: OutputFormat,
 }
@@ -107,7 +107,7 @@ pub struct Args {
         long = "server-root-url",
         global = true,
         hide = true,
-        env = "WARP_SERVER_ROOT_URL"
+        env = "YARP_SERVER_ROOT_URL"
     )]
     server_root_url: Option<String>,
 
@@ -116,7 +116,7 @@ pub struct Args {
         long = "ws-server-url",
         global = true,
         hide = true,
-        env = "WARP_WS_SERVER_URL"
+        env = "YARP_WS_SERVER_URL"
     )]
     ws_server_url: Option<String>,
 
@@ -125,7 +125,7 @@ pub struct Args {
         long = "session-sharing-server-url",
         global = true,
         hide = true,
-        env = "WARP_SESSION_SHARING_SERVER_URL"
+        env = "YARP_SESSION_SHARING_SERVER_URL"
     )]
     session_sharing_server_url: Option<String>,
 

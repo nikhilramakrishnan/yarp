@@ -24,8 +24,8 @@ pub fn run_integration_test(name: &str) -> Result<(), String> {
                 // Propagate any Rust-related variables.
                 || k.starts_with("RUST_")
                 // Propagate any Warp-specific variables.
-                || k.starts_with("WARP_")
-                || k.starts_with("WARPUI_")
+                || k.starts_with("YARP_")
+                || k.starts_with("YARPUI_")
                 // Propagate any wgpu-specific variables.
                 || k.starts_with("WGPU_")
                 // Make sure the test knows what X or Wayland server to use.
@@ -43,7 +43,7 @@ pub fn run_integration_test(name: &str) -> Result<(), String> {
             .arg(name)
             .env_clear()
             .envs(inherited_envs)
-            .env("WARP_INTEGRATION", "1")
+            .env("YARP_INTEGRATION", "1")
             .stdout(Stdio::inherit())
             .stderr(Stdio::inherit())
             .status()

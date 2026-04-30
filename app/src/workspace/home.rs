@@ -8,8 +8,8 @@ use yarpui::ViewContext;
 use super::view::Workspace;
 use crate::pane_group::{AnyPaneContent, FilePane};
 
-const WARP_HOME_TITLE: &str = "Welcome to Yarp on Web";
-const WARP_HOME_CONTENT: &str = r#"
+const YARP_HOME_TITLE: &str = "Welcome to Yarp on Web";
+const YARP_HOME_CONTENT: &str = r#"
 Welcome to Yarp on Web - your browser-based home for Warp! 
 Use Warp on Web to:
 * Join Shared Sessions
@@ -28,7 +28,7 @@ pub fn create_home_pane(ctx: &mut ViewContext<Workspace>) -> Box<dyn AnyPaneCont
         ctx,
     );
     pane.file_view(ctx).update(ctx, |pane, ctx| {
-        pane.open_static(WARP_HOME_TITLE, WARP_HOME_CONTENT, ctx);
+        pane.open_static(YARP_HOME_TITLE, YARP_HOME_CONTENT, ctx);
     });
     Box::new(pane)
 }

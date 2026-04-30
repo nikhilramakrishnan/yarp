@@ -73,15 +73,15 @@ const EXPERIMENT_ID_HEADER: &str = "X-Warp-Experiment-Id";
 /// more specific error code information, so that the client can discern between different
 /// errors with the same error code.
 /// See errors/http_error_codes.go on the server for possible values.
-const WARP_ERROR_CODE_HEADER: &str = "X-Warp-Error-Code";
+const YARP_ERROR_CODE_HEADER: &str = "X-Warp-Error-Code";
 
 /// An error indicating the user is out of credits. The server sends 429s to communicate this
 /// state, but if Cloud Run is overloaded, it can also send 429s that aren't credit-related.
 /// So we use this to distinguish between the two cases.
-const WARP_ERROR_CODE_OUT_OF_CREDITS: &str = "OUT_OF_CREDITS";
+const YARP_ERROR_CODE_OUT_OF_CREDITS: &str = "OUT_OF_CREDITS";
 
 /// Error code indicating the user has reached their cloud agent concurrency limit.
-const WARP_ERROR_CODE_AT_CAPACITY: &str = "AT_CLOUD_AGENT_CAPACITY";
+const YARP_ERROR_CODE_AT_CAPACITY: &str = "AT_CLOUD_AGENT_CAPACITY";
 
 /// Header used to communicate the source of an agent run (e.g. "CLI", "GITHUB_ACTION").
 pub(crate) const AGENT_SOURCE_HEADER: &str = "X-Oz-Api-Source";
@@ -246,9 +246,9 @@ impl AIApiError {
     /// Returns the appropriate error for a 429 response by checking the X-Warp-Error-Code header.
     fn error_for_429(headers: &::http::HeaderMap) -> Self {
         if headers
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(YARP_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_OUT_OF_CREDITS)
+            == Some(YARP_ERROR_CODE_OUT_OF_CREDITS)
         {
             AIApiError::QuotaLimit
         } else {
@@ -733,14 +733,14 @@ impl ServerApi {
         let status = response.status();
         let is_at_capacity = response
             .headers()
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(YARP_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_AT_CAPACITY);
+            == Some(YARP_ERROR_CODE_AT_CAPACITY);
         let is_out_of_credits = response
             .headers()
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(YARP_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_OUT_OF_CREDITS);
+            == Some(YARP_ERROR_CODE_OUT_OF_CREDITS);
 
         // Get the response text first since we may need to try multiple deserializations.
         let response_text = response.text().await.unwrap_or_default();
@@ -1048,9 +1048,9 @@ impl ServerApi {
                 } else if res.status() == http::StatusCode::TOO_MANY_REQUESTS {
                     if res
                         .headers()
-                        .get(WARP_ERROR_CODE_HEADER)
+                        .get(YARP_ERROR_CODE_HEADER)
                         .and_then(|v| v.to_str().ok())
-                        == Some(WARP_ERROR_CODE_OUT_OF_CREDITS)
+                        == Some(YARP_ERROR_CODE_OUT_OF_CREDITS)
                     {
                         Err(TranscribeError::QuotaLimit)
                     } else {

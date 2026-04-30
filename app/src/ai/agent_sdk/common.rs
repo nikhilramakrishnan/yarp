@@ -13,7 +13,7 @@ use yarpui::r#async::FutureExt;
 use yarpui::{AppContext, GetSingletonModelHandle, SingletonEntity as _, UpdateModel};
 
 use crate::ai::agent::conversation::ServerAIConversationMetadata;
-use crate::ai::agent_sdk::driver::{AgentDriverError, WARP_DRIVE_SYNC_TIMEOUT};
+use crate::ai::agent_sdk::driver::{AgentDriverError, YARP_DRIVE_SYNC_TIMEOUT};
 use crate::ai::ambient_agents::AmbientAgentTaskId;
 use crate::ai::cloud_environments::CloudAmbientAgentEnvironment;
 use crate::ai::llms::{LLMId, LLMPreferences};
@@ -140,7 +140,7 @@ pub fn refresh_warp_drive(
 ) -> impl Future<Output = anyhow::Result<()>> + Send + 'static {
     UpdateManager::as_ref(ctx)
         .initial_load_complete()
-        .with_timeout(WARP_DRIVE_SYNC_TIMEOUT)
+        .with_timeout(YARP_DRIVE_SYNC_TIMEOUT)
         .map_err(|_| anyhow::anyhow!("Timed out waiting for Yarp Drive to sync"))
 }
 

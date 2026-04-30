@@ -345,7 +345,7 @@ pub enum LaunchMode {
     /// Run the regular GUI application.
     App {
         args: yarp_cli::AppArgs,
-        /// API key for server authentication, if provided via `--api-key` or `WARP_API_KEY`.
+        /// API key for server authentication, if provided via `--api-key` or `YARP_API_KEY`.
         /// Only used on dogfood channels.
         api_key: Option<String>,
     },
@@ -640,7 +640,7 @@ pub fn run() -> Result<()> {
     // instead of launching the GUI app.
     let is_cli_binary = cfg!(feature = "standalone")
         || yarp_cli::binary_name().is_some_and(|name| name.starts_with("oz"))
-        || std::env::var_os("WARP_CLI_MODE").is_some();
+        || std::env::var_os("YARP_CLI_MODE").is_some();
     if is_cli_binary {
         yarp_cli::Args::clap_command().print_help()?;
         return Ok(());
@@ -655,7 +655,7 @@ pub fn run() -> Result<()> {
 
 /// Runs an integration test using the provided test driver.
 pub fn run_integration_test(driver: TestDriver) -> Result<()> {
-    let is_integration_test = std::env::var("WARP_INTEGRATION").is_ok();
+    let is_integration_test = std::env::var("YARP_INTEGRATION").is_ok();
     let launch = LaunchMode::Test {
         driver: Box::new(Some(driver)),
         is_integration_test,
@@ -844,7 +844,7 @@ fn run_internal(mut launch_mode: LaunchMode) -> Result<()> {
         use yarpui::platform::mac::AppExt;
 
         let activate_on_launch = !launch_mode.is_integration_test()
-            || std::env::var("WARPUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_ok();
+            || std::env::var("YARPUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_ok();
         app_builder.set_activate_on_launch(activate_on_launch);
 
         let dev_icon = ASSETS.get("bundled/png/local.png")?;
@@ -863,7 +863,7 @@ fn run_internal(mut launch_mode: LaunchMode) -> Result<()> {
 
         let force_x11 = ForceX11::read_from_preferences(prefs_for_public_settings)
             .unwrap_or(ForceX11::default_value());
-        // Force use of wayland if the user has passed the `WARP_ENABLE_WAYLAND` env var.
+        // Force use of wayland if the user has passed the `YARP_ENABLE_WAYLAND` env var.
         let allow_wayland = linux::is_wayland_env_var_set() || !force_x11;
         app_builder.force_x11(!allow_wayland);
     }

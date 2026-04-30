@@ -147,16 +147,16 @@ mkdir -p "$OUT_DIR"
 # APP_NAME here must match the value used in Rust as the
 # application name; see app/src/channel.rs.
 #
-# WARP_BIN is the name of the binary produced by cargo;
+# YARP_BIN is the name of the binary produced by cargo;
 # BINARY_NAME is the desired name of the binary in the final package.
 if [[ $RELEASE_CHANNEL = "local" ]]; then
-  WARP_BIN="warp"
+  YARP_BIN="warp"
   BINARY_NAME="warp-local"
   APP_NAME="YarpLocal"
   FEATURES="$FEATURES,agent_mode_debug"
   export HANDLE_MARKDOWN=1
 elif [[ $RELEASE_CHANNEL = "dev" ]]; then
-  WARP_BIN="dev"
+  YARP_BIN="dev"
   BINARY_NAME="warp-dev"
   APP_NAME="YarpDev"
   FEATURES="$FEATURES,agent_mode_debug"
@@ -164,16 +164,16 @@ elif [[ $RELEASE_CHANNEL = "dev" ]]; then
   FEATURES="$FEATURES,jemalloc_pprof"
   export HANDLE_MARKDOWN=1
 elif [[ $RELEASE_CHANNEL = "preview" ]]; then
-  WARP_BIN="preview"
+  YARP_BIN="preview"
   BINARY_NAME="warp-preview"
   APP_NAME="YarpPreview"
   FEATURES="$FEATURES,preview_channel"
 elif [[ $RELEASE_CHANNEL = "stable" ]]; then
-  WARP_BIN="stable"
+  YARP_BIN="stable"
   BINARY_NAME="warp"
   APP_NAME="Yarp"
 elif [[ $RELEASE_CHANNEL = "oss" ]]; then
-  WARP_BIN="warp-oss"
+  YARP_BIN="warp-oss"
   BINARY_NAME="warp-oss"
   APP_NAME="YarpOss"
   # The OSS channel does not ship Sentry, so drop the crash_reporting feature
@@ -199,7 +199,7 @@ elif [[ "$ARTIFACT" == "app" ]]; then
 fi
 
 BUNDLE_ID="dev.yarp.$APP_NAME"
-EXECUTABLE_PATH="$CARGO_TARGET_OUTPUT_DIR/$WARP_BIN"
+EXECUTABLE_PATH="$CARGO_TARGET_OUTPUT_DIR/$YARP_BIN"
 DEBUG_EXECUTABLE_PATH="$EXECUTABLE_PATH.debug"
 
 # Note that this variable must be set (and exported!) before we compile the
@@ -211,14 +211,14 @@ export APPIMAGE_NAME="$APP_NAME-$BUILD_ARCH.AppImage"
 # then exit.  We use this script to invoke `cargo check` to ensure that we are
 # using the same feature flags and profile that we would be using in production.
 if [[ "$CHECK_ONLY" == "true" ]]; then
-  cargo check -p warp --profile "$CARGO_PROFILE" --bin "$WARP_BIN" --features "$FEATURES"
+  cargo check -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES"
   exit 0
 fi
 
 # Build the binary.
 if [[ "$BUILD" == "true" ]]; then
   echo "Building and bundling Warp for channel $RELEASE_CHANNEL and bundle id $BUNDLE_ID"
-  cargo build -p warp --profile "$CARGO_PROFILE" --bin "$WARP_BIN" --features "$FEATURES"
+  cargo build -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES"
   echo "Making debug copy of '$EXECUTABLE_PATH' at '$DEBUG_EXECUTABLE_PATH'"
   cp "$EXECUTABLE_PATH" "$DEBUG_EXECUTABLE_PATH"
 

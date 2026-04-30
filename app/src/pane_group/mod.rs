@@ -247,7 +247,7 @@ fn resolve_tab_config_shell(name: &str, ctx: &AppContext) -> Option<AvailableShe
 
     AvailableShell::try_from(name).ok()
 }
-const WARP_SHELL_COMPATIBILITY_DOCS: &str =
+const YARP_SHELL_COMPATIBILITY_DOCS: &str =
     "https://docs.warp.dev/getting-started/supported-shells";
 // Default minimum width for a newly created Agent Mode pane so that it is legible. Called "default"
 // because this value may be too large for small windows. In that case, we fall back to 50% of the
@@ -2914,7 +2914,7 @@ impl PaneGroup {
                     FormattedTextFragment::plain_text(
                         "Yarp doesn't currently support your default shell, falling back to zsh.  ",
                     ),
-                    FormattedTextFragment::hyperlink("Learn more", WARP_SHELL_COMPATIBILITY_DOCS),
+                    FormattedTextFragment::hyperlink("Learn more", YARP_SHELL_COMPATIBILITY_DOCS),
                 ]),
             )
         });

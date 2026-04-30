@@ -509,7 +509,7 @@ impl Window {
             };
 
             let test_mode = cfg!(feature = "integration_tests")
-                && std::env::var("WARPUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_err();
+                && std::env::var("YARPUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_err();
 
             let (metal_device, metal_device_ptr) = if test_mode {
                 (None, nil)
