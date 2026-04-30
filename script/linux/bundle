@@ -152,13 +152,13 @@ mkdir -p "$OUT_DIR"
 if [[ $RELEASE_CHANNEL = "local" ]]; then
   WARP_BIN="warp"
   BINARY_NAME="warp-local"
-  APP_NAME="WarpLocal"
+  APP_NAME="YarpLocal"
   FEATURES="$FEATURES,agent_mode_debug"
   export HANDLE_MARKDOWN=1
 elif [[ $RELEASE_CHANNEL = "dev" ]]; then
   WARP_BIN="dev"
   BINARY_NAME="warp-dev"
-  APP_NAME="WarpDev"
+  APP_NAME="YarpDev"
   FEATURES="$FEATURES,agent_mode_debug"
   # Enable heap profiling using jemalloc through pprof.
   FEATURES="$FEATURES,jemalloc_pprof"
@@ -166,16 +166,16 @@ elif [[ $RELEASE_CHANNEL = "dev" ]]; then
 elif [[ $RELEASE_CHANNEL = "preview" ]]; then
   WARP_BIN="preview"
   BINARY_NAME="warp-preview"
-  APP_NAME="WarpPreview"
+  APP_NAME="YarpPreview"
   FEATURES="$FEATURES,preview_channel"
 elif [[ $RELEASE_CHANNEL = "stable" ]]; then
   WARP_BIN="stable"
   BINARY_NAME="warp"
-  APP_NAME="Warp"
+  APP_NAME="Yarp"
 elif [[ $RELEASE_CHANNEL = "oss" ]]; then
   WARP_BIN="warp-oss"
   BINARY_NAME="warp-oss"
-  APP_NAME="WarpOss"
+  APP_NAME="YarpOss"
   # The OSS channel does not ship Sentry, so drop the crash_reporting feature
   # (which would otherwise pull in the Sentry SDK as a dependency).
   FEATURES="release_bundle"
@@ -198,7 +198,7 @@ elif [[ "$ARTIFACT" == "app" ]]; then
   FEATURES="$FEATURES,gui,nld_improvements"
 fi
 
-BUNDLE_ID="dev.warp.$APP_NAME"
+BUNDLE_ID="dev.yarp.$APP_NAME"
 EXECUTABLE_PATH="$CARGO_TARGET_OUTPUT_DIR/$WARP_BIN"
 DEBUG_EXECUTABLE_PATH="$EXECUTABLE_PATH.debug"
 

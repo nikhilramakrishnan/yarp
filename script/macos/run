@@ -22,8 +22,8 @@ cd "${REPO_ROOT}"
 : "${FEATURES:?FEATURES must be set (invoke via ./script/run)}"
 
 if [ "$YARP_CHANNEL" = "local" ]; then
-    YARP_APP_PATH="target/debug/bundle/osx/WarpLocal.app"
-    YARP_SCHEME_NAME="warplocal"
+    YARP_APP_PATH="target/debug/bundle/osx/YarpLocal.app"
+    YARP_SCHEME_NAME="yarplocal"
 else
     YARP_APP_PATH="target/debug/bundle/osx/Yarp.app"
     YARP_SCHEME_NAME="yarp"
@@ -60,7 +60,7 @@ while (( "$#" )); do
     --release)
       echo "Detected release build, pointing at release bundle under target/release/bundle"
       if [ "$YARP_CHANNEL" = "local" ]; then
-          YARP_APP_PATH="target/release/bundle/osx/WarpLocal.app"
+          YARP_APP_PATH="target/release/bundle/osx/YarpLocal.app"
       else
           YARP_APP_PATH="target/release/bundle/osx/Yarp.app"
       fi
@@ -71,7 +71,7 @@ while (( "$#" )); do
       PROFILE="$2"
       shift 2
       if [ "$YARP_CHANNEL" = "local" ]; then
-          YARP_APP_PATH="target/${PROFILE}/bundle/osx/WarpLocal.app"
+          YARP_APP_PATH="target/${PROFILE}/bundle/osx/YarpLocal.app"
       else
           YARP_APP_PATH="target/${PROFILE}/bundle/osx/Yarp.app"
       fi

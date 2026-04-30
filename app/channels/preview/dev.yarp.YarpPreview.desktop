@@ -4,20 +4,20 @@ Version=1.0
 
 Type=Application
 
-Name=WarpDev
+Name=YarpPreview
 GenericName=TerminalEmulator
 
-Exec=warp-terminal-dev %U
-StartupWMClass=dev.warp.WarpDev
+Exec=yarp-terminal-preview %U
+StartupWMClass=dev.yarp.YarpPreview
 
 Keywords=shell;prompt;command;commandline;cmd;
 
-Icon=dev.warp.WarpDev
+Icon=dev.yarp.YarpPreview
 
 Categories=System;TerminalEmulator;
 
 # Don't run this application within a terminal.
 Terminal=false
 
-# Register ourselves as the handler for warpdev:// URLs.
-MimeType=x-scheme-handler/warpdev;
+# Register ourselves as the handler for yarppreview:// URLs.
+MimeType=x-scheme-handler/yarppreview;

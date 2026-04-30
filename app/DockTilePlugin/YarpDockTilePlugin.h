@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 
-@interface WarpDockTilePlugIn : NSObject <NSDockTilePlugIn>
+@interface YarpDockTilePlugIn : NSObject <NSDockTilePlugIn>
 {
     id iconChangedObserver;
     id defaultsObserver;

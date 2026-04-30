@@ -270,9 +270,9 @@ fi
 
 if [[ $RELEASE_CHANNEL = "local" ]]; then
     YARP_BIN="warp"
-    BUNDLE_ID="dev.warp.Warp-Local"
-    YARP_APP_NAME="WarpLocal"
-    YARP_SCHEME_NAME="warplocal"
+    BUNDLE_ID="dev.yarp.Yarp-Local"
+    YARP_APP_NAME="YarpLocal"
+    YARP_SCHEME_NAME="yarplocal"
     FEATURES="$FEATURES,agent_mode_debug"
     # For local builds, use different versions of our bundled frameworks (e.g.:
     # Sentry).  This needs to be exported so it can be referenced by
@@ -280,9 +280,9 @@ if [[ $RELEASE_CHANNEL = "local" ]]; then
     export FRAMEWORK_OVERRIDE="dev"
 elif [[ $RELEASE_CHANNEL = "dev" ]]; then
     YARP_BIN="dev"
-    BUNDLE_ID="dev.warp.Warp-Dev"
-    YARP_APP_NAME="WarpDev"
-    YARP_SCHEME_NAME="warpdev"
+    BUNDLE_ID="dev.yarp.Yarp-Dev"
+    YARP_APP_NAME="YarpDev"
+    YARP_SCHEME_NAME="yarpdev"
     FEATURES="$FEATURES,agent_mode_debug"
     # Enable heap usage tracking & profiling using jemalloc through pprof.
     FEATURES="$FEATURES,jemalloc_pprof,heap_usage_tracking"
@@ -293,17 +293,17 @@ elif [[ $RELEASE_CHANNEL = "dev" ]]; then
     export HANDLE_MARKDOWN=1
 elif [[ $RELEASE_CHANNEL = "preview" ]]; then
     YARP_BIN="preview"
-    BUNDLE_ID="dev.warp.Warp-Preview"
-    YARP_APP_NAME="WarpPreview"
-    YARP_SCHEME_NAME="warppreview"
+    BUNDLE_ID="dev.yarp.Yarp-Preview"
+    YARP_APP_NAME="YarpPreview"
+    YARP_SCHEME_NAME="yarppreview"
     FEATURES="$FEATURES,preview_channel"
     # Enable heap usage tracking & profiling using jemalloc through pprof.
     FEATURES="$FEATURES,jemalloc_pprof,heap_usage_tracking"
 elif [[ $RELEASE_CHANNEL = "stable" ]]; then
     YARP_BIN="stable"
-    BUNDLE_ID="dev.warp.Warp-Stable"
-    YARP_APP_NAME="Warp"
-    YARP_SCHEME_NAME="warp"
+    BUNDLE_ID="dev.yarp.Yarp"
+    YARP_APP_NAME="Yarp"
+    YARP_SCHEME_NAME="yarp"
 elif [[ $RELEASE_CHANNEL = "oss" ]]; then
     YARP_BIN="yarp"
     BUNDLE_ID="dev.yarp.Yarp"
@@ -315,7 +315,7 @@ elif [[ $RELEASE_CHANNEL = "oss" ]]; then
 fi
 
 OUT_DIR="target/$TARGET_PROFILE_DIR/bundle/osx"
-DOCK_TILE_PLUGIN_DIR="target/$TARGET_PROFILE_DIR/WarpDockTilePlugin.docktileplugin"
+DOCK_TILE_PLUGIN_DIR="target/$TARGET_PROFILE_DIR/YarpDockTilePlugin.docktileplugin"
 
 # Handle specific architecture targeting
 if [[ -n "$TARGET_ARCH" ]]; then
@@ -511,8 +511,8 @@ if [[ "$ARTIFACT" == "app" ]]; then
   cp -R "$DOCK_TILE_PLUGIN_DIR" "$BUNDLE_DIR/$YARP_APP_NAME.app/Contents/PlugIns/"
 
   echo "Updating plist with dock tile plugin entries"
-  plutil -insert NSDockTilePlugIn -string "WarpDockTilePlugin.docktileplugin" "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/Info.plist
-  plutil -insert MainAppBundleIdentifier -string "$BUNDLE_ID" "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/PlugIns/WarpDockTilePlugin.docktileplugin/Contents/Info.plist
+  plutil -insert NSDockTilePlugIn -string "YarpDockTilePlugin.docktileplugin" "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/Info.plist
+  plutil -insert MainAppBundleIdentifier -string "$BUNDLE_ID" "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/PlugIns/YarpDockTilePlugin.docktileplugin/Contents/Info.plist
 
   BUNDLED_RESOURCES_DIR="$BUNDLE_DIR/$YARP_APP_NAME.app/Contents/Resources"
   echo "Preparing bundled resources..."

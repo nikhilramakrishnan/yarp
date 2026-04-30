@@ -379,13 +379,13 @@ impl ChannelState {
 
     pub fn url_scheme() -> &'static str {
         match Self::channel() {
-            Channel::Stable => "warp",
-            Channel::Preview => "warppreview",
-            Channel::Dev => "warpdev",
+            Channel::Stable => "yarp",
+            Channel::Preview => "yarppreview",
+            Channel::Dev => "yarpdev",
             // Dummy value--integration tests shouldn't support URL schemes.
-            Channel::Integration => "warpintegration",
-            Channel::Local => "warplocal",
-            Channel::Oss => "warposs",
+            Channel::Integration => "yarpintegration",
+            Channel::Local => "yarplocal",
+            Channel::Oss => "yarposs",
         }
     }
 }
@@ -429,7 +429,7 @@ fn app_id_from_bundle() -> Option<AppId> {
             foundation::NSBundle,
         };
         use objc::{msg_send, sel, sel_impl};
-        use warpui::platform::mac::utils::nsstring_as_str;
+        use yarpui::platform::mac::utils::nsstring_as_str;
 
         let bundle = id::mainBundle();
         if bundle != nil {

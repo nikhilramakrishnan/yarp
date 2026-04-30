@@ -5,7 +5,7 @@
 #define MyAppPublisher "Denver Technologies, Inc."
 #define MyAppURL "https://www.warp.dev/"
 #ifndef MyAppName
-  #define MyAppName "WarpDev"
+  #define MyAppName "YarpDev"
 #endif
 #ifndef MyAppVersion
   #define MyAppVersion "0.1.0"
