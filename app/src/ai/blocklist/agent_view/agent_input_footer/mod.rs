@@ -1764,7 +1764,7 @@ impl AgentInputFooter {
     }
 
     fn sync_fast_forward_button(&self, ctx: &mut ViewContext<Self>) {
-        // Read directly from the conversation, same data source as the warping
+        // Read directly from the conversation, same data source as the yarping
         // indicator footer's auto-approve chip.
         let is_active = BlocklistAIHistoryModel::as_ref(ctx)
             .active_conversation(self.terminal_view_id)

@@ -556,10 +556,10 @@ pub enum WorkspaceAction {
     ResetOpenYarpLaunchModalState,
     /// Install the opencode-yarp plugin from GitHub into the global opencode config.
     #[cfg(debug_assertions)]
-    InstallOpenCodeWarpPlugin,
+    InstallOpenCodeYarpPlugin,
     /// Use a local checkout of the opencode-yarp plugin (for testing/development).
     #[cfg(debug_assertions)]
-    UseLocalOpenCodeWarpPlugin,
+    UseLocalOpenCodeYarpPlugin,
     /// Take a process sample of the app (equivalent to Activity Monitor > Sample Process).
     #[cfg(target_os = "macos")]
     SampleProcess,
@@ -946,8 +946,8 @@ impl WorkspaceAction {
             | ResetOzLaunchModalState
             | OpenOpenYarpLaunchModal
             | ResetOpenYarpLaunchModalState
-            | InstallOpenCodeWarpPlugin
-            | UseLocalOpenCodeWarpPlugin => false,
+            | InstallOpenCodeYarpPlugin
+            | UseLocalOpenCodeYarpPlugin => false,
             #[cfg(not(target_family = "wasm"))]
             ViewLogs => false,
             #[cfg(target_os = "macos")]

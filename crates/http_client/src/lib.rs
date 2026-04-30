@@ -173,7 +173,7 @@ impl Client {
     fn builder(
         &self,
         wrapped: reqwest::RequestBuilder,
-        include_warp_headers: bool,
+        include_yarp_headers: bool,
     ) -> RequestBuilder<'_> {
         let mut builder = RequestBuilder {
             wrapped,
@@ -182,7 +182,7 @@ impl Client {
             prevent_sleep_reason: None,
         };
 
-        if include_warp_headers {
+        if include_yarp_headers {
             builder = Self::add_yarp_http_headers(builder);
         }
 
@@ -663,14 +663,14 @@ impl<'c> oauth2::AsyncHttpClient<'c> for Client {
 
     fn call(&'c self, request: oauth2::HttpRequest) -> Self::Future {
         Box::pin(async move {
-            let include_warp_headers = Self::include_yarp_http_headers(request.uri().to_string());
+            let include_yarp_headers = Self::include_yarp_http_headers(request.uri().to_string());
             let builder = reqwest::RequestBuilder::from_parts(
                 self.wrapped.clone(),
                 request.try_into().map_err(Box::new)?,
             );
 
             let response = self
-                .builder(builder, include_warp_headers)
+                .builder(builder, include_yarp_headers)
                 .send()
                 .await
                 .map_err(Box::new)?;

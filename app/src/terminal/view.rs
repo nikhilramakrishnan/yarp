@@ -573,7 +573,7 @@ use inline_banner::{
     AliasExpansionBanner, AliasExpansionBannerAction, AnonymousUserAISignUpBannerState,
     AnonymousUserLoginBannerAction, AwsBedrockLoginBannerAction, AwsBedrockLoginBannerState,
     AwsCliNotInstalledBannerAction, AwsCliNotInstalledBannerState, ByoLlmAuthBannerSessionState,
-    OpenInWarpBannerState, SSHBannerAction, SSHBannerState, VimModeBannerAction,
+    OpenInYarpBannerState, SSHBannerAction, SSHBannerState, VimModeBannerAction,
 };
 use yarp_core::command::ExitCode;
 
@@ -1095,7 +1095,7 @@ struct InlineBannersState {
     /// banner to display.
     shell_process_terminated_banner: Option<ShellProcessTerminatedBanner>,
 
-    open_in_yarp_banner: Option<OpenInWarpBannerState>,
+    open_in_yarp_banner: Option<OpenInYarpBannerState>,
 
     vim_banner_state: Option<VimModeBannerState>,
 
@@ -24268,7 +24268,7 @@ impl TypedActionView for TerminalView {
             | StartLspServer => ActionAccessibilityContent::from_debug(),
             #[cfg(feature = "local_fs")]
             OpenCodeInWarp { .. } => ActionAccessibilityContent::from_debug(),
-            OpenInWarpBanner(action) => self.open_in_yarp_banner_accessibility_content(*action),
+            OpenInYarpBanner(action) => self.open_in_yarp_banner_accessibility_content(*action),
             OpenAIBlockAttachedBlocksMenu { .. } => Custom(AccessibilityContent::new_without_help(
                 "Open list of blocks attached as context to this AI query.".to_owned(),
                 YarpA11yRole::PopoverRole,
@@ -24770,7 +24770,7 @@ impl TypedActionView for TerminalView {
             }
             InsertMostRecentCommandCorrection => self.insert_most_recent_command_correction(ctx),
             AliasExpansionBanner(action) => self.alias_expansion_banner_action(*action, ctx),
-            OpenInWarpBanner(action) => self.handle_open_in_yarp_banner_action(*action, ctx),
+            OpenInYarpBanner(action) => self.handle_open_in_yarp_banner_action(*action, ctx),
             OpenBlockFilterEditor(block_index) => {
                 self.open_block_filter_editor(*block_index, OpenedFromClick::Yes, ctx)
             }

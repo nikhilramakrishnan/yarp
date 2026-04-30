@@ -267,7 +267,7 @@ fn new_builder() -> Builder {
 
 /// Adds a workflow file, containing two workflows, to the mocked out yarp
 /// config directory and verifies that the workflows appear in the workflow menu.
-pub fn test_add_workflows_to_warp_config() -> Builder {
+pub fn test_add_workflows_to_yarp_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
             utils.set_env("YARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
@@ -321,7 +321,7 @@ pub fn test_add_workflows_to_warp_config() -> Builder {
         )
 }
 
-pub fn test_launch_warp_with_theme_in_warp_config() -> Builder {
+pub fn test_launch_warp_with_theme_in_yarp_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
             utils.set_env("YARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
@@ -337,7 +337,7 @@ pub fn test_launch_warp_with_theme_in_warp_config() -> Builder {
 
 /// Adds a theme to the mocked out yarp config directory and verifies that
 /// the theme appears in the theme picker.
-pub fn test_add_theme_to_warp_config() -> Builder {
+pub fn test_add_theme_to_yarp_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
             utils.set_env("YARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));

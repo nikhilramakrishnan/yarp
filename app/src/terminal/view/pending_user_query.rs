@@ -114,7 +114,7 @@ impl TerminalView {
     /// Cancel the active stream explicitly here so "Send now" works for any prompt type.
     /// Use `FollowUpSubmitted { is_for_same_conversation: true }` so the conversation
     /// status stays `InProgress` across the cancel+resend (see `mark_request_cancelled`
-    /// in `conversation.rs`), keeping the warping indicator visible throughout.
+    /// in `conversation.rs`), keeping the yarping indicator visible throughout.
     fn send_queued_prompt_now(&mut self, prompt: String, ctx: &mut ViewContext<Self>) {
         self.remove_pending_user_query_block(ctx);
         if let Some(conversation_id) = self

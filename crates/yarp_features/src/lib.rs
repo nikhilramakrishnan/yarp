@@ -354,7 +354,7 @@ pub enum FeatureFlag {
 
     /// Expands code diff edits to replace the current pane instead of opening in a new tab.
     ExpandEditToPane,
-    /// Enables fallback model load output messaging in the warping indicator.
+    /// Enables fallback model load output messaging in the yarping indicator.
     FallbackModelLoadOutputMessaging,
 
     /// Enables close button on left side of tabs
@@ -590,7 +590,7 @@ pub enum FeatureFlag {
     /// Enables loading conversations in the Agent Management View.
     InteractiveConversationManagementView,
 
-    /// Enables agent tips displayed below the warping indicator in Agent Mode.
+    /// Enables agent tips displayed below the yarping indicator in Agent Mode.
     AgentTips,
 
     /// Allows agent mode to use computer use tools.

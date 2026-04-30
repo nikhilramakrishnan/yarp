@@ -302,7 +302,7 @@ pub enum TerminalAction {
     ShowYarpifySshBanner(String, Option<String>),
     InsertMostRecentCommandCorrection,
     AliasExpansionBanner(AliasExpansionBannerAction),
-    OpenInWarpBanner(OpenInYarpBannerAction),
+    OpenInYarpBanner(OpenInYarpBannerAction),
     OpenBlockFilterEditor(BlockIndex),
     OnboardingFlow(OnboardingVersion),
     ImportSettings,
@@ -585,7 +585,7 @@ impl fmt::Debug for TerminalAction {
             ShowYarpifySshBanner(_, _) => f.write_str("ShowYarpifySshBanner"),
             InsertMostRecentCommandCorrection => f.write_str("InsertMostRecentCommandCorrection"),
             AliasExpansionBanner(action) => write!(f, "AliasExpansionBanner({action:?}"),
-            OpenInWarpBanner(action) => write!(f, "OpenInWarpBanner({action:?})"),
+            OpenInYarpBanner(action) => write!(f, "OpenInYarpBanner({action:?})"),
             OpenBlockFilterEditor(block_index) => {
                 write!(f, "OpenBlockFilterEditor({block_index:?})")
             }

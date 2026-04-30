@@ -159,7 +159,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # where command_id is the ID given as the first argument to this function,
   # exit_code is the exit code of the executed command, and command_output is
   # the output itself.
-  _warp_execute_command() {
+  _yarp_execute_command() {
     local command_id=$1
     # This is shorthand to slice the 2nd-nth arguments of this function (i.e.
     # the command array) into its own array. The first argument is the
@@ -185,17 +185,17 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # Runs the given command in the background, records its PID in
   # _YARP_GENERATOR_PIDS_STARTED_TMP_FILE, and adds its PID from the file when
   # the job is completed.
-  _warp_run_generator_command_internal() {
-    _warp_execute_command "$@" &
+  _yarp_run_generator_command_internal() {
+    _yarp_execute_command "$@" &
     # $! contains the PID of the most recently backgrounded command.
     local pid=$!
     echo $pid >> $_YARP_GENERATOR_PIDS_STARTED_TMP_FILE
     wait $pid 2> /dev/null
 
-    # If the exit code of the backgrounded _warp_execute_command process is non-zero,
+    # If the exit code of the backgrounded _yarp_execute_command process is non-zero,
     # the call to send the generator output failed (most likely because this is being
     # executed in an old zsh version that doesn't support some syntax in
-    # _warp_execute_command function itself). In this case, send empty output with
+    # _yarp_execute_command function itself). In this case, send empty output with
     # exit code 1 to indicate generator execution failed.
     if [[ $? -ne 0 ]]; then
         yarp_send_generator_output_osc "$1;;1"
@@ -241,7 +241,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     # not know when it finishes, which causes a variety of undesirable side-effects.
     precmd_functions=(${(M)precmd_functions:#*(yarp|p9k)*})
 
-    (_warp_run_generator_command_internal "$@" &)
+    (_yarp_run_generator_command_internal "$@" &)
   }
 
   # Returns exit code 1 if the given argument starts with 'yarp_run_generator_command'.

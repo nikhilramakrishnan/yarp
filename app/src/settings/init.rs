@@ -210,7 +210,7 @@ pub fn init(
         if prefs.is_settings_file() {
             ctx.subscribe_to_model(
                 &crate::user_config::YarpConfig::handle(ctx),
-                handle_warp_config_change,
+                handle_yarp_config_change,
             );
         }
     }
@@ -221,7 +221,7 @@ pub fn init(
 /// Handles a `YarpConfig` change event, reloading settings from disk when
 /// the settings file is modified, created, or deleted.
 #[cfg(feature = "local_fs")]
-fn handle_warp_config_change(
+fn handle_yarp_config_change(
     _: yarpui::ModelHandle<crate::user_config::YarpConfig>,
     event: &crate::user_config::YarpConfigUpdateEvent,
     ctx: &mut AppContext,

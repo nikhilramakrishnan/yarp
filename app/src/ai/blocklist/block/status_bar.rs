@@ -4,9 +4,9 @@ use super::{
     cli_controller::{CLISubagentController, CLISubagentEvent, UserTakeOverReason},
     model::{AIBlockModel, AIBlockModelImpl, AIBlockOutputStatus},
     view_impl::common::{
-        render_switch_control_to_user_button, render_warping_indicator,
-        render_warping_indicator_base, ButtonProps, ForceRefreshButtonProps, MaybeShimmeringText,
-        WarpingIndicatorProps, WarpingProps, LOAD_OUTPUT_MESSAGE, WAITING_FOR_USER_INPUT_MESSAGE,
+        render_switch_control_to_user_button, render_yarping_indicator,
+        render_yarping_indicator_base, ButtonProps, ForceRefreshButtonProps, MaybeShimmeringText,
+        YarpingIndicatorProps, YarpingProps, LOAD_OUTPUT_MESSAGE, WAITING_FOR_USER_INPUT_MESSAGE,
     },
 };
 use crate::{
@@ -129,12 +129,12 @@ pub struct BlocklistAIStatusBar {
     summarization_timer_handle: Option<SpawnedFutureHandle>,
     summarization_start_time: Option<Instant>,
     /// Handle for the 1-second periodic timer that refreshes the "Last read …" suffix in
-    /// the warping indicator while the active block has a recorded LRC snapshot.
+    /// the yarping indicator while the active block has a recorded LRC snapshot.
     last_read_refresh_handle: Option<SpawnedFutureHandle>,
 
     latest_response_stream_id: Option<ResponseStreamId>,
 
-    /// Agent tip to display below the warping indicator.
+    /// Agent tip to display below the yarping indicator.
     current_tip: Option<AgentTip>,
 
     ephemeral_message_model: ModelHandle<EphemeralMessageModel>,
@@ -749,7 +749,7 @@ impl BlocklistAIStatusBar {
         }
     }
 
-    fn render_warping_indicator_for_latest_exchange(
+    fn render_yarping_indicator_for_latest_exchange(
         &self,
         app: &AppContext,
     ) -> Option<Box<dyn Element>> {
@@ -764,12 +764,12 @@ impl BlocklistAIStatusBar {
                 .is_some_and(|metadata| {
                     !metadata.should_hide_block() && metadata.long_running_control_state().is_none()
                 });
-        let should_render_warping = !model.request_type(app).is_passive()
+        let should_render_yarping = !model.request_type(app).is_passive()
             && !has_expanded_requested_command_with_no_subagent
             && (conversation.status().is_in_progress()
                 || (active_block.is_agent_in_control() && !active_block.is_agent_blocked()));
 
-        if !should_render_warping {
+        if !should_render_yarping {
             return None;
         }
 
@@ -804,24 +804,24 @@ impl BlocklistAIStatusBar {
             })
             .unwrap_or((None, None));
 
-        let fallback_warping_text = resolve_fallback_warping_message(
+        let fallback_yarping_text = resolve_fallback_yarping_message(
             current_is_fallback,
             current_display_name,
             model.as_ref(),
             app,
         );
-        let default_warping_text = fallback_warping_text
+        let default_yarping_text = fallback_yarping_text
             .as_deref()
             .unwrap_or(LOAD_OUTPUT_MESSAGE)
             .to_owned();
-        let secondary_element = if fallback_warping_text.is_some() {
+        let secondary_element = if fallback_yarping_text.is_some() {
             Some(render_fallback_explanation(model.as_ref(), app))
         } else {
             self.render_tip(app)
         };
 
-        Some(render_warping_indicator(
-            WarpingProps {
+        Some(render_yarping_indicator(
+            YarpingProps {
                 model: model.as_ref(),
                 terminal_model: &terminal_model,
                 action_model: self.action_model.as_ref(app),
@@ -866,7 +866,7 @@ impl BlocklistAIStatusBar {
                     should_hide_responses,
                 )),
                 force_refresh_button,
-                default_warping_text,
+                default_yarping_text,
                 secondary_element,
                 last_snapshot_at,
             },
@@ -889,8 +889,8 @@ impl BlocklistAIStatusBar {
         } else {
             "Connecting to Host (Step 1/3)"
         };
-        Some(render_warping_indicator_base(
-            WarpingIndicatorProps {
+        Some(render_yarping_indicator_base(
+            YarpingIndicatorProps {
                 icon: None,
                 yarping_indicator_text: MaybeShimmeringText::Shimmering {
                     text: progress_text.into(),
@@ -1081,16 +1081,16 @@ fn render_fallback_explanation<V: View>(
     .finish()
 }
 
-/// If the current exchange is using a fallback model, returns the warping message to display
-/// (e.g. "Warping with Claude 3.5 Haiku."). When the current exchange's output doesn't have
+/// If the current exchange is using a fallback model, returns the yarping message to display
+/// (e.g. "Yarping with Claude 3.5 Haiku."). When the current exchange's output doesn't have
 /// model info yet (the ModelUsed message hasn't arrived), we check the most recent previous
 /// exchange as a best guess — if the conversation already fell back, the next exchange likely
-/// will too. This avoids a flicker from "Warping..." to "Working with {name}." on follow-ups.
+/// will too. This avoids a flicker from "Yarping..." to "Working with {name}." on follow-ups.
 ///
 /// We skip the lookback for new user queries because the underlying model may have recovered
 /// since the previous exchange. For agent-initiated follow-up exchanges (action results, etc.)
 /// the lookback is still applied.
-fn resolve_fallback_warping_message<V: View>(
+fn resolve_fallback_yarping_message<V: View>(
     current_is_fallback: Option<bool>,
     current_display_name: Option<String>,
     model: &dyn AIBlockModel<View = V>,
@@ -1148,8 +1148,8 @@ impl View for BlocklistAIStatusBar {
                     app,
                 )
             {
-                render_warping_indicator_base(
-                    WarpingIndicatorProps {
+                render_yarping_indicator_base(
+                    YarpingIndicatorProps {
                         icon: None,
                         yarping_indicator_text: MaybeShimmeringText::Shimmering {
                             text: "Setting up environment".into(),
@@ -1175,8 +1175,8 @@ impl View for BlocklistAIStatusBar {
                     .current_message()
                     .is_none()
             {
-                render_warping_indicator_base(
-                    WarpingIndicatorProps {
+                render_yarping_indicator_base(
+                    YarpingIndicatorProps {
                         icon: Some(icons::gray_clock_icon(appearance).finish()),
                         yarping_indicator_text: MaybeShimmeringText::Static(
                             WAITING_FOR_USER_INPUT_MESSAGE.into(),
@@ -1198,20 +1198,20 @@ impl View for BlocklistAIStatusBar {
                     },
                     app,
                 )
-            } else if let (Some(warping_indicator), true) = (
-                self.render_warping_indicator_for_latest_exchange(app),
+            } else if let (Some(yarping_indicator), true) = (
+                self.render_yarping_indicator_for_latest_exchange(app),
                 self.ephemeral_message_model
                     .as_ref(app)
                     .current_message()
                     .is_none(),
             ) {
-                warping_indicator
+                yarping_indicator
             } else if self
                 .ambient_agent_view_model
                 .as_ref(app)
                 .is_waiting_for_session()
             {
-                // Don't render warping indicator - the loading screen is shown in the main view
+                // Don't render yarping indicator - the loading screen is shown in the main view
                 return Empty::new().finish();
             } else if agent_view_controller.is_active() {
                 return Flex::column()
@@ -1282,7 +1282,7 @@ impl View for BlocklistAIStatusBar {
         }
 
         // When the agent view is active, keep the child agent status card
-        // visible above the warping/status indicator so it doesn't disappear
+        // visible above the yarping/status indicator so it doesn't disappear
         // while the agent is working.
         if agent_view_controller.is_active() {
             return Flex::column()
@@ -1312,7 +1312,7 @@ pub enum BlocklistAIStatusBarAction {
     Stop,
     /// Force the agent's pending poll for a long-running command to resolve
     /// immediately with a fresh snapshot, bypassing its agent-set timer. Dispatched
-    /// by the inline `Check now` affordance in the warping indicator.
+    /// by the inline `Check now` affordance in the yarping indicator.
     ForceRefreshAgentView {
         block_id: crate::terminal::model::block::BlockId,
     },

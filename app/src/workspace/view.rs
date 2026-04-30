@@ -21308,14 +21308,14 @@ impl TypedActionView for Workspace {
                 );
             }
             #[cfg(debug_assertions)]
-            InstallOpenCodeWarpPlugin => {
+            InstallOpenCodeYarpPlugin => {
                 let message = set_opencode_warp_plugin("github:warpdotdev/opencode-warp-internal");
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(DismissibleToast::default(message), ctx);
                 });
             }
             #[cfg(debug_assertions)]
-            UseLocalOpenCodeWarpPlugin => {
+            UseLocalOpenCodeYarpPlugin => {
                 let message = match dirs::home_dir() {
                     Some(home) => {
                         let plugin_path = home.join("opencode-yarp/src/index.ts");

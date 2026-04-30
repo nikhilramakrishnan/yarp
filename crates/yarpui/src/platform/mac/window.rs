@@ -117,7 +117,7 @@ impl platform::WindowManager for WindowManager {
     }
 
     fn app_is_active(&self) -> bool {
-        let res: BOOL = unsafe { msg_send![app::get_warp_app(), isActive] };
+        let res: BOOL = unsafe { msg_send![app::get_yarp_app(), isActive] };
         res == YES
     }
 

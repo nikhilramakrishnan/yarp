@@ -91,7 +91,7 @@ const RUST_WRAPPER_IVAR_NAME: &str = "rustWrapper";
 
 extern "C" {
     // Implemented in ObjC to get the yarp NSApplication subclass.
-    pub(super) fn get_warp_app() -> id;
+    pub(super) fn get_yarp_app() -> id;
 }
 
 /// An extension trait defining additional configurability for
@@ -178,7 +178,7 @@ impl App {
             let pool = NSAutoreleasePool::new(nil);
 
             // Get (and create, if necessary) the underlying NSApplication.
-            let app: id = get_warp_app();
+            let app: id = get_yarp_app();
 
             let running_app: id = msg_send![class!(NSRunningApplication), currentApplication];
             let bundle_id: id = msg_send![running_app, bundleIdentifier];
@@ -252,7 +252,7 @@ unsafe fn get_app(object: &mut Object) -> &mut App {
 
 pub(super) fn callback_dispatcher() -> &'static mut AppCallbackDispatcher {
     unsafe {
-        let app = get_warp_app();
+        let app = get_yarp_app();
         let app = get_app(&mut *app);
         &mut app.callbacks
     }
@@ -608,7 +608,7 @@ pub(crate) extern "C-unwind" fn yarp_open_panel_file_selected(urls: id, callback
         log::info!("No file was selected. Dialog was cancelled.")
     }
 
-    let app = unsafe { get_app(&mut *get_warp_app()) };
+    let app = unsafe { get_app(&mut *get_yarp_app()) };
     app.callbacks.with_mutable_app_context(move |ctx| {
         callback(Ok(paths), ctx);
     });
@@ -636,7 +636,7 @@ pub(crate) extern "C-unwind" fn yarp_save_panel_file_selected(url: id, callback:
         log::info!("Save dialog was cancelled.");
     }
 
-    let app = unsafe { get_app(&mut *get_warp_app()) };
+    let app = unsafe { get_app(&mut *get_yarp_app()) };
     app.callbacks.with_mutable_app_context(move |ctx| {
         callback(path, ctx);
     });

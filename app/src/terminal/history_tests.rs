@@ -513,7 +513,7 @@ fn test_multiple_machines() {
                 .with_hostname("prod".to_string())
                 .with_user("user".to_string())
                 .with_ssh_socket_path(PathBuf::from("~/.ssh/12345"))
-                .with_home_dir("/users/warpuser".to_owned()),
+                .with_home_dir("/users/yarpuser".to_owned()),
             Arc::new(TestCommandExecutor::default()),
         ));
 
@@ -525,7 +525,7 @@ fn test_multiple_machines() {
                 .with_hostname("dev".to_string())
                 .with_user("user2".to_string())
                 .with_ssh_socket_path(PathBuf::from("~/.ssh/12345"))
-                .with_home_dir("/users/warpuser".to_owned()),
+                .with_home_dir("/users/yarpuser".to_owned()),
             Arc::new(TestCommandExecutor::default()),
         ));
 

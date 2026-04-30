@@ -30,7 +30,7 @@ use yarp::{
 
 /// Adds a launch config to the mocked out yarp config directory and verifies that
 /// the launch config appears in the launch config palette.
-pub fn test_add_launch_config_to_warp_config() -> Builder {
+pub fn test_add_launch_config_to_yarp_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
             utils.set_env("YARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));

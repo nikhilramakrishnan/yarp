@@ -20,7 +20,7 @@ use crate::{
         event::UserBlockCompleted,
         general_settings::GeneralSettings,
         model::session::Session,
-        view::inline_banner::{OpenInYarpBannerAction, OpenInWarpBannerState},
+        view::inline_banner::{OpenInYarpBannerAction, OpenInYarpBannerState},
     },
     util::openable_file_type::{is_file_openable_in_warp, OpenableFileType},
 };
@@ -38,7 +38,7 @@ use yarp_completer::{
 use super::{Event, InlineBannerItem, InlineBannerType, TerminalView};
 
 #[cfg(test)]
-#[path = "open_in_warp_tests.rs"]
+#[path = "open_in_yarp_tests.rs"]
 mod tests;
 
 const LEARN_MORE_MARKDOWN_URL: &str =
@@ -146,7 +146,7 @@ impl TerminalView {
         }
 
         let banner_id = self.inline_banners_state.next_banner_id();
-        self.inline_banners_state.open_in_yarp_banner = Some(OpenInWarpBannerState::new(
+        self.inline_banners_state.open_in_yarp_banner = Some(OpenInYarpBannerState::new(
             banner_id,
             openable_path,
             session,

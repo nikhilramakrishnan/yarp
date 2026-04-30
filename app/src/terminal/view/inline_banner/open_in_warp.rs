@@ -24,7 +24,7 @@ pub enum OpenInYarpBannerAction {
     Close,
 }
 
-pub struct OpenInWarpBannerState {
+pub struct OpenInYarpBannerState {
     pub id: InlineBannerId,
     pub target: OpenablePath,
     pub session: Arc<Session>,
@@ -33,7 +33,7 @@ pub struct OpenInWarpBannerState {
     close_button_mouse_state: MouseStateHandle,
 }
 
-impl OpenInWarpBannerState {
+impl OpenInYarpBannerState {
     pub fn new(id: InlineBannerId, openable_path: OpenablePath, session: Arc<Session>) -> Self {
         Self {
             id,
@@ -75,7 +75,7 @@ fn file_title_text(openable_path: &OpenablePath) -> String {
 }
 
 pub fn render_open_in_yarp_banner(
-    state: &OpenInWarpBannerState,
+    state: &OpenInYarpBannerState,
     view_id: EntityId,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -88,7 +88,7 @@ pub fn render_open_in_yarp_banner(
         text: button_text.to_string(),
         text_color: appearance.theme().active_ui_text_color().into_solid(),
         button_state: InlineBannerButtonState {
-            on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::OpenFile),
+            on_click_event: TerminalAction::OpenInYarpBanner(OpenInYarpBannerAction::OpenFile),
             mouse_state_handle: state.open_button_mouse_state.clone(),
         },
         font: InlineBannerTextButtonFont {
@@ -103,7 +103,7 @@ pub fn render_open_in_yarp_banner(
         text: "Learn more".to_string(),
         text_color: appearance.theme().active_ui_text_color().into_solid(),
         button_state: InlineBannerButtonState {
-            on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::LearnMore),
+            on_click_event: TerminalAction::OpenInYarpBanner(OpenInYarpBannerAction::LearnMore),
             mouse_state_handle: state.learn_more_button_mouse_state.clone(),
         },
         font: Default::default(),
@@ -112,7 +112,7 @@ pub fn render_open_in_yarp_banner(
     };
 
     let close_button = InlineBannerCloseButton(InlineBannerButtonState {
-        on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::Close),
+        on_click_event: TerminalAction::OpenInYarpBanner(OpenInYarpBannerAction::Close),
         mouse_state_handle: state.close_button_mouse_state.clone(),
     });
 

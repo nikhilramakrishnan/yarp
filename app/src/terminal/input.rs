@@ -12173,7 +12173,7 @@ impl Input {
     /// without touching the input buffer or triggering NLD / autosuggestion side-effects.
     ///
     /// Cancels the in-flight stream first so slash/skill paths don't trip the in-flight assertion.
-    /// `is_for_same_conversation: true` keeps the conversation status `InProgress` so the warping
+    /// `is_for_same_conversation: true` keeps the conversation status `InProgress` so the yarping
     /// indicator stays visible.
     pub(crate) fn submit_queued_prompt(&mut self, prompt: String, ctx: &mut ViewContext<Self>) {
         if let Some(conversation_id) = self

@@ -515,7 +515,7 @@ impl ShellCommandExecutor {
         enum WakeReason {
             BlockFinished,
             Timeout,
-            /// User clicked `Check now` in the warping indicator, short-circuiting  
+            /// User clicked `Check now` in the yarping indicator, short-circuiting  
             /// the agent-set poll timer. Treated as a preemption so the server does  
             /// not interpret the early snapshot as a completion.  
             ForceRefresh,
@@ -631,7 +631,7 @@ impl ShellCommandExecutor {
     /// Force any in-flight poll for the given long-running command block to resolve
     /// immediately with a fresh snapshot, bypassing the agent-set timeout.
     ///
-    /// Called by the `Check now` affordance in the warping indicator. No-ops if there
+    /// Called by the `Check now` affordance in the yarping indicator. No-ops if there
     /// is no matching in-flight poll (e.g. because the block already finished or the
     /// agent has transferred control to the user).
     pub fn force_refresh_block(&mut self, block_id: &BlockId) {

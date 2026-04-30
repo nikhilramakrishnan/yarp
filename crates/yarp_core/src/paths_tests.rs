@@ -97,7 +97,7 @@ fn test_state_dir_path() {
 }
 
 #[test]
-fn test_project_path_for_warp_app_id() {
+fn test_project_path_for_yarp_app_id() {
     let project_dirs = project_dirs_for_app_id(AppId::new("dev", "yarp", "Yarp"), None)
         .expect("should be able to compute project dirs");
     cfg_if::cfg_if! {

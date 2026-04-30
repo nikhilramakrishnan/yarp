@@ -174,7 +174,7 @@ const VISUAL_CARD_HEADER_VERTICAL_PADDING: f32 = 8.;
 const VISUAL_CARD_HEADER_HORIZONTAL_PADDING: f32 = 16.;
 const MERMAID_CANVAS_PADDING: f32 = 32.;
 
-pub struct WarpingProps<'a, V> {
+pub struct YarpingProps<'a, V> {
     pub model: &'a dyn AIBlockModel<View = V>,
     pub shimmering_text_handle: &'a ShimmeringTextStateHandle,
     pub summarization_start_time: Option<instant::Instant>,
@@ -184,12 +184,12 @@ pub struct WarpingProps<'a, V> {
     pub queue_next_prompt_button: Option<ButtonProps<'a>>,
     pub stop_button: Option<ButtonProps<'a>>,
     /// Inline `Check now` affordance displayed alongside `Last seen by agent ...`
-    /// in the warping indicator. When set, the agent's pending poll future is
+    /// in the yarping indicator. When set, the agent's pending poll future is
     /// short-circuited on click and a fresh snapshot is returned immediately.
     pub force_refresh_button: Option<ForceRefreshButtonProps<'a>>,
     pub action_model: &'a BlocklistAIActionModel,
     pub terminal_model: &'a TerminalModel,
-    pub default_warping_text: String,
+    pub default_yarping_text: String,
     pub secondary_element: Option<Box<dyn Element>>,
     /// When an LRC subagent has sent at least one snapshot, the timestamp of the most recent snapshot.
     pub last_snapshot_at: Option<instant::Instant>,
@@ -207,8 +207,8 @@ pub struct ForceRefreshButtonProps<'a> {
     pub block_id: crate::terminal::model::block::BlockId,
 }
 
-pub fn render_warping_indicator<V: View>(
-    props: WarpingProps<'_, V>,
+pub fn render_yarping_indicator<V: View>(
+    props: YarpingProps<'_, V>,
     app: &AppContext,
 ) -> Box<dyn Element> {
     let output_status = props.model.status(app);
@@ -423,7 +423,7 @@ pub fn render_warping_indicator<V: View>(
                         }
                     }
                 } else {
-                    props.default_warping_text.clone()
+                    props.default_yarping_text.clone()
                 }
             }
         }
@@ -496,8 +496,8 @@ pub fn render_warping_indicator<V: View>(
         _ => None,
     };
 
-    render_warping_indicator_base(
-        WarpingIndicatorProps {
+    render_yarping_indicator_base(
+        YarpingIndicatorProps {
             icon: should_render_waiting_icon.then(|| icons::gray_clock_icon(appearance).finish()),
             yarping_indicator_text,
             non_shimmering_text,
@@ -522,7 +522,7 @@ pub enum MaybeShimmeringText {
     },
 }
 
-pub struct WarpingIndicatorProps {
+pub struct YarpingIndicatorProps {
     pub icon: Option<Box<dyn Element>>,
     pub yarping_indicator_text: MaybeShimmeringText,
     pub non_shimmering_text: Option<String>,
@@ -534,15 +534,15 @@ pub struct WarpingIndicatorProps {
     pub secondary_element: Option<Box<dyn Element>>,
 }
 
-/// Helper function to render text in the "warping..." footer.
+/// Helper function to render text in the "yarping..." footer.
 /// Additional text that does not use the shimmering text animation can be passed in via
 /// `non_shimmering_text` which is useful if you want some part of the text to constantly update
 /// without the animation resetting.
-pub fn render_warping_indicator_base(
-    props: WarpingIndicatorProps,
+pub fn render_yarping_indicator_base(
+    props: YarpingIndicatorProps,
     app: &AppContext,
 ) -> Box<dyn Element> {
-    let WarpingIndicatorProps {
+    let YarpingIndicatorProps {
         icon,
         yarping_indicator_text,
         non_shimmering_text,
@@ -599,9 +599,9 @@ pub fn render_warping_indicator_base(
 
     let mut text_col = Flex::column();
     if let Some(sub_element) = secondary_element {
-        // Our warping indicator text prepends the Yarp glyph (and a space) to the label.
+        // Our yarping indicator text prepends the Yarp glyph (and a space) to the label.
         // If we render the tip directly underneath, it will align to the glyph instead of
-        // the start of the actual warping text.
+        // the start of the actual yarping text.
         let sub_element = if should_indent_tip_for_warp_glyph {
             let font_size = appearance.monospace_font_size() - 3.;
             let glyph_indent = Text::new_inline(
@@ -776,7 +776,7 @@ fn render_hide_responses_button(
         "Hide agent responses"
     };
 
-    render_warping_indicator_button(
+    render_yarping_indicator_button(
         props.button_handle.clone(),
         appearance,
         text,
@@ -807,7 +807,7 @@ pub fn render_switch_control_to_user_button(
     )
     .finish();
 
-    render_warping_indicator_button(
+    render_yarping_indicator_button(
         props.button_handle.clone(),
         appearance,
         text,
@@ -830,7 +830,7 @@ fn render_stop_button(props: ButtonProps, appearance: &Appearance) -> Box<dyn El
     )
     .finish();
 
-    render_warping_indicator_button(
+    render_yarping_indicator_button(
         props.button_handle.clone(),
         appearance,
         stop_icon,
@@ -867,7 +867,7 @@ fn render_queue_next_prompt_button(
         "Auto-queue next prompt while agent is responding"
     };
 
-    render_warping_indicator_button(
+    render_yarping_indicator_button(
         props.button_handle.clone(),
         appearance,
         icon,
@@ -904,7 +904,7 @@ fn render_auto_approve_button(props: ButtonProps, appearance: &Appearance) -> Bo
         "Auto-approve all agent actions for this task"
     };
 
-    render_warping_indicator_button(
+    render_yarping_indicator_button(
         props.button_handle.clone(),
         appearance,
         icon,
@@ -926,7 +926,7 @@ fn get_icon_size(appearance: &Appearance) -> f32 {
 }
 
 /// Renders the inline `Check now` affordance displayed alongside
-/// `Last seen by agent ...` in the warping indicator. On click, short-circuits the
+/// `Last seen by agent ...` in the yarping indicator. On click, short-circuits the
 /// agent's pending poll timer for the given block and delivers a fresh snapshot.
 fn render_force_refresh_inline(
     props: ForceRefreshButtonProps<'_>,
@@ -989,7 +989,7 @@ fn render_force_refresh_inline(
     .finish()
 }
 
-fn render_warping_indicator_button<F>(
+fn render_yarping_indicator_button<F>(
     mouse_state: MouseStateHandle,
     appearance: &Appearance,
     content: Box<dyn Element>,

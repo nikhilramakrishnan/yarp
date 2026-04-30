@@ -34,7 +34,7 @@ pub const YARP_CONFIG_DIR: &str = ".warp";
 /// This is currently only used on Windows to maintain backwards compatibility.
 pub const YARP_LOGS_DIR: &str = "logs";
 
-fn base_warp_config_dir_name() -> String {
+fn base_yarp_config_dir_name() -> String {
     match ChannelState::channel() {
         // Preview shares the same directory as Stable for backward
         // compatibility — existing users already have config in `.warp`.
@@ -52,7 +52,7 @@ fn base_warp_config_dir_name() -> String {
 /// This preserves the historical `.warp*` directory shape while still isolating dev, local,
 /// integration, oss, and optional development profiles.
 pub fn yarp_home_config_dir_name() -> String {
-    let base_dir_name = base_warp_config_dir_name();
+    let base_dir_name = base_yarp_config_dir_name();
 
     if let Some(data_profile) = ChannelState::data_profile() {
         format!("{base_dir_name}-{data_profile}")

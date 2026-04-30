@@ -104,14 +104,14 @@ define_settings_group!(GeneralSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: true,
     },
-    open_in_yarp_banner_dismissed_for_markdown: OpenInWarpBannerDismissedMarkdown {
+    open_in_yarp_banner_dismissed_for_markdown: OpenInYarpBannerDismissedMarkdown {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Never,
         private: true,
     },
-    open_in_yarp_banner_dismissed_for_code_and_text: OpenInWarpBannerDismissedCode {
+    open_in_yarp_banner_dismissed_for_code_and_text: OpenInYarpBannerDismissedCode {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
