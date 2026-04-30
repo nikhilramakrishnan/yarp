@@ -1,5 +1,5 @@
 use crate::ai::block_context::BlockContext;
-use crate::ai_assistant::execution_context::WarpAiExecutionContext;
+use crate::ai_assistant::execution_context::YarpAiExecutionContext;
 use crate::completer::SessionContext;
 use crate::report_error;
 use crate::server::server_api::{AIApiError, ServerApi};
@@ -260,7 +260,7 @@ impl NextCommandModel {
     fn get_next_command_context(
         terminal_model: Arc<FairMutex<TerminalModel>>,
         #[cfg(feature = "local_fs")] conn: Option<Arc<Mutex<SqliteConnection>>>,
-        ai_execution_context: WarpAiExecutionContext,
+        ai_execution_context: YarpAiExecutionContext,
         block_completed: &UserBlockCompleted,
     ) -> NextCommandContext {
         #[cfg_attr(not(feature = "local_fs"), allow(unused_mut))]
@@ -286,7 +286,7 @@ impl NextCommandModel {
     pub fn generate_next_command_suggestion(
         &mut self,
         block_completed: UserBlockCompleted,
-        context: WarpAiExecutionContext,
+        context: YarpAiExecutionContext,
         completer_data: CompleterData,
         block_context: Option<Box<BlockContext>>,
         previous_result: Option<IntelligentAutosuggestionResult>,
@@ -333,7 +333,7 @@ impl NextCommandModel {
         &mut self,
         prefix: Option<String>,
         block_completed: UserBlockCompleted,
-        context: WarpAiExecutionContext,
+        context: YarpAiExecutionContext,
         completer_data: CompleterData,
         block_context: Option<Box<BlockContext>>,
         previous_result: Option<IntelligentAutosuggestionResult>,

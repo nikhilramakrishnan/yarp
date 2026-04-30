@@ -19,7 +19,7 @@ use yarp_core::{
     ui::{appearance::DEFAULT_COMMAND_PALETTE_FONT_SIZE, builder::UiBuilder},
 };
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     clipboard::ClipboardContent,
     color::ColorU,
     elements::{
@@ -1000,7 +1000,7 @@ impl View for AuthViewBody {
         Some(AccessibilityContent::new(
             "Welcome to Yarp!",
             "Press enter to open your browser to Sign Up or Sign In.",
-            WarpA11yRole::HelpRole,
+            YarpA11yRole::HelpRole,
         ))
     }
 

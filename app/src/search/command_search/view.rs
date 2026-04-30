@@ -9,7 +9,7 @@ use lazy_static::lazy_static;
 use std::{collections::HashSet, ops::Range, sync::Arc, time::Duration};
 use yarp_core::features::FeatureFlag;
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     elements::{
         resizable_state_handle, Align, AnchorPair, Border, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Dismiss, Fill, Flex, MouseStateHandle, OffsetPositioning, OffsetType,
@@ -26,7 +26,7 @@ use yarpui::{
 
 use crate::{
     ai_assistant::{
-        execution_context::WarpAiExecutionContext, GenerateCommandsFromNaturalLanguageError,
+        execution_context::YarpAiExecutionContext, GenerateCommandsFromNaturalLanguageError,
     },
     appearance::Appearance,
     auth::{
@@ -58,7 +58,7 @@ use super::{
     env_var_collections::EnvVarCollectionDataSource,
     history::history_data_source_for_session,
     notebooks::notebooks_data_source,
-    warp_ai::WarpAIDataSource,
+    yarp_ai::YarpAIDataSource,
     workflows::{cloud_workflows_data_source, WorkflowsDataSource},
     zero_state::{CommandSearchZeroStateEvent, CommandSearchZeroStateView},
 };
@@ -225,7 +225,7 @@ impl CommandSearchView {
         &mut self,
         session_id: SessionId,
         session_context: Option<SessionContext>,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
         ctx: &mut ViewContext<Self>,
     ) {
         self.mixer.update(ctx, |mixer, ctx| {
@@ -236,11 +236,11 @@ impl CommandSearchView {
             // will show up higher in the list (i.e.: further away from the input).
             if AISettings::as_ref(ctx).is_any_ai_enabled(ctx) {
                 mixer.add_sync_source(
-                    WarpAIDataSource::new(self.ai_client.clone(), None),
+                    YarpAIDataSource::new(self.ai_client.clone(), None),
                     HashSet::from([QueryFilter::NaturalLanguage]),
                 );
                 mixer.add_async_source(
-                    WarpAIDataSource::new(self.ai_client.clone(), ai_execution_context),
+                    YarpAIDataSource::new(self.ai_client.clone(), ai_execution_context),
                     HashSet::from([QueryFilter::NaturalLanguage]),
                     AddAsyncSourceOptions {
                         debounce_interval: Some(Duration::from_millis(50)),
@@ -354,7 +354,7 @@ impl CommandSearchView {
         initial_query: String,
         query_filter: Option<QueryFilter>,
         menu_positioning: MenuPositioning,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
         ctx: &mut ViewContext<Self>,
     ) {
         self.reset_command_search_mixer(session_id, session_context, ai_execution_context, ctx);
@@ -528,7 +528,7 @@ impl CommandSearchView {
             ctx.emit_a11y_content(AccessibilityContent::new(
                 a11y_content,
                 a11y_help_content,
-                WarpA11yRole::UserAction,
+                YarpA11yRole::UserAction,
             ));
 
             // Recompute the result index - the incoming index is the index in the
@@ -1006,7 +1006,7 @@ impl View for CommandSearchView {
         Some(AccessibilityContent::new(
             "Command Search".to_owned(),
             "Search your history, workflows, and more.  Use the Up and Down arrows to browse search results after typing.  Press Enter to accept a selected result, inserting it into the terminal input.  Press Escape to close.".to_owned(),
-            WarpA11yRole::MenuRole,
+            YarpA11yRole::MenuRole,
         ))
     }
 

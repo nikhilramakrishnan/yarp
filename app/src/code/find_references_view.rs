@@ -9,7 +9,7 @@ use lsp::ReferenceLocation;
 use pathfinder_geometry::vector::Vector2F;
 use string_offset::CharOffset;
 use yarp_core::ui::{
-    appearance::Appearance, icons::Icon as WarpIcon, theme::color::internal_colors,
+    appearance::Appearance, icons::Icon as YarpIcon, theme::color::internal_colors,
 };
 use yarp_files::FileModel;
 use yarpui::{
@@ -520,7 +520,7 @@ fn render_header(
     let icon_color = theme.sub_text_color(theme.background());
     let close_button = Hoverable::new(back_mouse_state, move |state| {
         let close_icon = ConstrainedBox::new(
-            yarpui::elements::Icon::new(WarpIcon::X.into(), icon_color).finish(),
+            yarpui::elements::Icon::new(YarpIcon::X.into(), icon_color).finish(),
         )
         .with_width(16.)
         .with_height(16.)

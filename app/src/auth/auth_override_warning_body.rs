@@ -6,7 +6,7 @@ use yarpui::keymap::FixedBinding;
 
 use crate::modal::MODAL_CORNER_RADIUS;
 use yarp_core::ui::color::blend::Blend;
-use yarpui::accessibility::{AccessibilityContent, WarpA11yRole};
+use yarpui::accessibility::{AccessibilityContent, YarpA11yRole};
 use yarpui::color::ColorU;
 use yarpui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Fill, Flex, Icon,
@@ -378,7 +378,7 @@ impl View for AuthOverrideWarningBody {
         Some(AccessibilityContent::new(
             "New login detected",
             "Yarp has detected a new login from a web browser. Press escape to cancel and continue using Yarp without login.",
-            WarpA11yRole::HelpRole,
+            YarpA11yRole::HelpRole,
         ))
     }
 

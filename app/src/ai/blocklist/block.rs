@@ -3630,7 +3630,7 @@ impl AIBlock {
             AwsBedrockCredentialsErrorEvent::ConfigureLoginCommand => {
                 ctx.dispatch_typed_action(&WorkspaceAction::ShowSettingsPageWithSearch {
                     search_query: "aws bedrock".to_string(),
-                    section: Some(SettingsSection::WarpAgent),
+                    section: Some(SettingsSection::YarpAgent),
                 });
             }
         });
@@ -6256,7 +6256,7 @@ impl TypedActionView for AIBlock {
             AIBlockAction::ConfigureAwsLoginCommand => {
                 ctx.dispatch_typed_action(&WorkspaceAction::ShowSettingsPageWithSearch {
                     search_query: "aws bedrock".to_string(),
-                    section: Some(SettingsSection::WarpAgent),
+                    section: Some(SettingsSection::YarpAgent),
                 });
             }
             AIBlockAction::ToggleImportedCommentCollapsed {

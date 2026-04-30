@@ -6,7 +6,7 @@ use yarpui::elements::{Align, Dash};
 use yarpui::ui_components::components::UiComponent;
 use yarpui::FocusContext;
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     elements::{
         Border, ChildAnchor, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Dismiss, DropShadow, Empty, Flex, Hoverable, MouseStateHandle, OffsetPositioning,
@@ -755,7 +755,7 @@ impl View for BlockFilterEditor {
         Some(AccessibilityContent::new(
             "Type searched phrase.",
             "Press escape to quit",
-            WarpA11yRole::TextareaRole,
+            YarpA11yRole::TextareaRole,
         ))
     }
 }

@@ -18,7 +18,7 @@ fi
 
 if [[ -n "$GIT_RELEASE_TAG" ]]; then
   echo "Updating plist Yarp version to $GIT_RELEASE_TAG"
-  plutil -insert WarpVersion -string "$GIT_RELEASE_TAG" "$YARP_PLIST_PATH"
+  plutil -insert YarpVersion -string "$GIT_RELEASE_TAG" "$YARP_PLIST_PATH"
 
   # We convert our version format to be period-separated integers only to align better with
   # Apple's guidance on values for `CFBundleVersion` / `CFBundleShortVersionString`.

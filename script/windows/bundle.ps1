@@ -52,7 +52,7 @@ if ($ARCH -eq 'arm64') {
     $FILE_ENDING = 'Setup-arm64'
     $PLATFORM_TARGET = 'aarch64-pc-windows-msvc'
 } else {
-    # If x64, then we just use the filename "WarpSetup.exe" for example
+    # If x64, then we just use the filename "YarpSetup.exe" for example
     $FILE_ENDING = 'Setup'
     $PLATFORM_TARGET = 'x86_64-pc-windows-msvc'
 }

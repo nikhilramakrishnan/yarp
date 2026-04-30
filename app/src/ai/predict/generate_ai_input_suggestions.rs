@@ -11,7 +11,7 @@ use parking_lot::FairMutex;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-use crate::ai_assistant::execution_context::WarpAiExecutionContext;
+use crate::ai_assistant::execution_context::YarpAiExecutionContext;
 use crate::terminal::model::block::BlockState;
 use crate::terminal::TerminalModel;
 
@@ -45,7 +45,7 @@ pub struct HistoryContext {
 #[derive(Clone)]
 pub struct NextCommandContext {
     pub history_contexts: Vec<HistoryContext>,
-    pub ai_execution_context: WarpAiExecutionContext,
+    pub ai_execution_context: YarpAiExecutionContext,
     pub context_messages: Vec<ContextMessageInput>,
 }
 

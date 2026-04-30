@@ -89,7 +89,7 @@ pub enum TipAction {
     CommandSearch,
     AiCommandSearch,
     SaveNewLaunchConfig,
-    WarpAI,
+    YarpAI,
     // This toggles Yarp Drive rather than opening it. This enum can't directly be
     // renamed because we serialize it into the welcome tips.
     OpenYarpDrive,
@@ -111,7 +111,7 @@ impl TipAction {
             TipAction::AiCommandSearch => "input:toggle_natural_language_command_search",
             TipAction::ThemePicker => "workspace:show_theme_chooser",
             TipAction::SaveNewLaunchConfig => "workspace:open_launch_config_save_modal",
-            TipAction::WarpAI => "workspace:toggle_ai_assistant",
+            TipAction::YarpAI => "workspace:toggle_ai_assistant",
             TipAction::OpenYarpDrive => "workspace:toggle_left_panel",
             // Slash commands are also registered as editable bindings, so callers can look them up here
             // the same way they do regular app actions.

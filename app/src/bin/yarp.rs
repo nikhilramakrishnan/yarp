@@ -4,7 +4,7 @@
 
 use anyhow::Result;
 use yarp_core::{
-    channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig},
+    channel::{Channel, ChannelConfig, ChannelState, OzConfig, YarpServerConfig},
     features::FeatureFlag,
     AppId,
 };
@@ -15,7 +15,7 @@ use yarp_core::{
 //
 // What's intentionally NOT here: ProviderCommand, ArtifactCommand,
 // OzIdentityFederation, CloudEnvironments, ScheduledAmbientAgents,
-// WarpManagedSecrets, CreatingSharedSessions — those surfaces would expose
+// YarpManagedSecrets, CreatingSharedSessions — those surfaces would expose
 // non-functional UI without a backend we control. CrossRepoContext /
 // FullSourceCodeEmbedding are deferred until we wire up a local embedding
 // provider.
@@ -65,7 +65,7 @@ fn main() -> Result<()> {
         ChannelConfig {
             app_id: AppId::new("dev", "yarp", "Yarp"),
             logfile_name: "yarp.log".into(),
-            server_config: WarpServerConfig::production(),
+            server_config: YarpServerConfig::production(),
             oz_config: OzConfig::production(),
             telemetry_config: None,
             crash_reporting_config: None,

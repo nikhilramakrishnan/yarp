@@ -133,7 +133,7 @@ pub fn command_finished_and_precmd(block_list: &mut BlockList) {
 fn advance_to_script_execution(block_list: &mut BlockList) {
     assert!(
         block_list.bootstrap_stage == BootstrapStage::RestoreBlocks
-            || block_list.bootstrap_stage == BootstrapStage::WarpInput,
+            || block_list.bootstrap_stage == BootstrapStage::YarpInput,
         "Unexpected bootstrap stage: {:?}",
         block_list.bootstrap_stage
     );
@@ -146,7 +146,7 @@ fn advance_to_script_execution(block_list: &mut BlockList) {
 /// stage).
 fn advance_to_bootstrapped(block_list: &mut BlockList, data: BootstrappedValue) {
     if block_list.bootstrap_stage == BootstrapStage::RestoreBlocks
-        || block_list.bootstrap_stage == BootstrapStage::WarpInput
+        || block_list.bootstrap_stage == BootstrapStage::YarpInput
     {
         advance_to_script_execution(block_list);
     }
@@ -334,7 +334,7 @@ pub fn test_script_execution_block() {
         .build();
     advance_to_script_execution(&mut block_list);
 
-    // We have the `WarpInput` block and the current script execution block.
+    // We have the `YarpInput` block and the current script execution block.
     assert_eq!(block_list.blocks.len(), 2);
     // Ensure that script execution block has a height of 0 if nothing was added to it.
     assert!(block_list
@@ -410,7 +410,7 @@ pub fn test_restore_completed_blocks() {
         .with_restored_blocks(&restored_blocks)
         .build();
 
-    // We expect to have the two restored blocks, followed by the WarpInput
+    // We expect to have the two restored blocks, followed by the YarpInput
     // block.
     assert_eq!(block_list.blocks.len(), 3);
     let restored_block_height = 5.5;
@@ -474,7 +474,7 @@ pub fn test_restore_blocks_with_local_status() {
         .with_restored_blocks(&restored_blocks)
         .build();
 
-    // We should have 3 restored blocks plus the WarpInput block
+    // We should have 3 restored blocks plus the YarpInput block
     assert_eq!(block_list.blocks.len(), 4);
 
     // Check that the local status was preserved
@@ -512,11 +512,11 @@ pub fn test_restore_block_that_wasnt_started() {
         .build();
 
     // Non-started blocks are skipped during the restoration process, so we
-    // expect to only have one block - the WarpInput block.
+    // expect to only have one block - the YarpInput block.
     assert_eq!(block_list.blocks.len(), 1);
     assert_eq!(
         block_list.blocks[0].bootstrap_stage(),
-        BootstrapStage::WarpInput
+        BootstrapStage::YarpInput
     );
     assert_eq!(
         block_list.blocks[0].height(&AgentViewState::Inactive),
@@ -547,11 +547,11 @@ pub fn test_restore_block_that_wasnt_completed() {
         .build();
 
     // Non-completed blocks are skipped during the restoration process, so we
-    // expect to only have one block - the WarpInput block.
+    // expect to only have one block - the YarpInput block.
     assert_eq!(block_list.blocks.len(), 1);
     assert_eq!(
         block_list.blocks[0].bootstrap_stage(),
-        BootstrapStage::WarpInput
+        BootstrapStage::YarpInput
     );
     assert_lines_approx_eq!(block_list.blocks[0].height(&AgentViewState::Inactive), 0.0);
 
@@ -577,12 +577,12 @@ pub fn test_basic_bootstrapping() {
         .with_channel_event_proxy(channel_event_proxy)
         .build();
 
-    // Simulate entering the bootstrap script for WarpInput mode.
+    // Simulate entering the bootstrap script for YarpInput mode.
     block_list.start_active_block();
     input_string(&mut block_list, "i am the yarp input");
     block_list.linefeed();
     block_list.preexec(Default::default());
-    // WarpInput -> ScriptExecution
+    // YarpInput -> ScriptExecution
     command_finished_and_precmd(&mut block_list);
     // ScriptExecution -> Bootstrapped
     block_list.bootstrapped(Default::default());

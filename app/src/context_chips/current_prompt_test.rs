@@ -31,7 +31,7 @@ use crate::{
     server::{
         server_api::ServerApiProvider, telemetry::context_provider::AppTelemetryContextProvider,
     },
-    settings::WarpPromptSeparator,
+    settings::YarpPromptSeparator,
     terminal::{
         model::{
             block::BlockMetadata,
@@ -59,7 +59,7 @@ fn test_context_menu_items() {
                     ContextChipKind::VirtualEnvironment,
                 ],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -117,7 +117,7 @@ fn test_prompt_to_string() {
                     ContextChipKind::ShellGitBranch,
                 ],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -173,7 +173,7 @@ fn test_fingerprint_skips_contextual_chip_recompute_when_context_is_unchanged() 
             Prompt::mock_with(
                 [ContextChipKind::WorkingDirectory],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -233,7 +233,7 @@ fn test_shell_chip_is_disabled_when_required_executable_is_missing() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -360,7 +360,7 @@ fn test_invalidating_command_count_unaffected_for_chips_without_invalidate_on_co
             Prompt::mock_with(
                 [ContextChipKind::WorkingDirectory],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -407,7 +407,7 @@ fn test_github_pr_chip_is_disabled_when_github_cli_is_missing() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -493,7 +493,7 @@ fn test_github_pr_chip_empty_success_does_not_set_failure_suppression() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -587,7 +587,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -728,7 +728,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -871,7 +871,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1034,7 +1034,7 @@ fn test_disabling_chips() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1150,7 +1150,7 @@ fn test_externally_driven_chip_skips_periodic_timer() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1211,7 +1211,7 @@ fn test_git_status_change_updates_chip_value() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                YarpPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);

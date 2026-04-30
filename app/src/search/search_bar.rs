@@ -7,7 +7,7 @@ use std::collections::HashSet;
 
 use yarpui::fonts::FamilyId;
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     elements::{Clipped, Container, CrossAxisAlignment, Flex, ParentElement, Shrinkable, Text},
     fonts::{Properties, Style, Weight},
     presenter::ChildView,
@@ -792,7 +792,7 @@ impl<T: Action + Clone> SearchBar<T> {
             for loading_filter in loading_filters.into_iter() {
                 ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                     format!("Loading {} suggestions", loading_filter.display_name()),
-                    WarpA11yRole::MenuItemRole,
+                    YarpA11yRole::MenuItemRole,
                 ));
             }
 
@@ -803,7 +803,7 @@ impl<T: Action + Clone> SearchBar<T> {
             ctx.emit_a11y_content(AccessibilityContent::new(
                 "Error finding results",
                 data_source_err.user_facing_error(),
-                WarpA11yRole::MenuItemRole,
+                YarpA11yRole::MenuItemRole,
             ));
             return;
         }
@@ -813,12 +813,12 @@ impl<T: Action + Clone> SearchBar<T> {
             let a11y_content = match selected_result.accessibility_help_message() {
                 None => AccessibilityContent::new_without_help(
                     a11y_content_text,
-                    WarpA11yRole::MenuItemRole,
+                    YarpA11yRole::MenuItemRole,
                 ),
                 Some(help_message) => AccessibilityContent::new(
                     a11y_content_text,
                     help_message,
-                    WarpA11yRole::MenuItemRole,
+                    YarpA11yRole::MenuItemRole,
                 ),
             };
             ctx.emit_a11y_content(a11y_content);

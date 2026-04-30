@@ -3,7 +3,7 @@ use yarpui::{App, SingletonEntity};
 
 use super::Prompt;
 use crate::auth::AuthStateProvider;
-use crate::settings::WarpPromptSeparator;
+use crate::settings::YarpPromptSeparator;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{
@@ -30,7 +30,7 @@ fn test_prompt_config_adds_git_diff_stats_for_legacy_config() {
             ContextChipKind::ShellGitBranch,
         ],
         false,
-        WarpPromptSeparator::None,
+        YarpPromptSeparator::None,
     );
     let mut serialized = serde_json::to_value(config).expect("serialize prompt config");
 
@@ -60,7 +60,7 @@ fn test_prompt_config_after_nomalization() {
     let config = PromptConfiguration::from_chips(
         [ContextChipKind::ShellGitBranch],
         false,
-        WarpPromptSeparator::None,
+        YarpPromptSeparator::None,
     );
     let normalized = config.normalize_custom_prompt_config();
 
@@ -91,7 +91,7 @@ fn test_prompt_settings() {
         let new_chips = [ContextChipKind::Ssh, ContextChipKind::WorkingDirectory];
         prompt.update(&mut app, |prompt, ctx| {
             prompt
-                .update(new_chips.clone(), false, WarpPromptSeparator::None, ctx)
+                .update(new_chips.clone(), false, YarpPromptSeparator::None, ctx)
                 .expect("Saving prompt failed")
         });
 
@@ -104,7 +104,7 @@ fn test_prompt_settings() {
         session_settings.read(&app, |settings, _| {
             assert_eq!(
                 settings.saved_prompt.to_owned(),
-                PromptConfiguration::from_chips(new_chips, false, WarpPromptSeparator::None).into()
+                PromptConfiguration::from_chips(new_chips, false, YarpPromptSeparator::None).into()
             );
         });
 

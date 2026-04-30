@@ -18,7 +18,7 @@ use yarpui::{
     fonts::Weight,
     keymap::Keystroke,
     prelude::*,
-    ui_components::checkbox::Checkbox as WarpCheckbox,
+    ui_components::checkbox::Checkbox as YarpCheckbox,
     ui_components::components::{UiComponent as _, UiComponentStyles},
 };
 
@@ -251,7 +251,7 @@ impl OnboardingCallout {
         let foreground_color = PhenomenonStyle::foreground();
         let subtle_border = Fill::Solid(PhenomenonStyle::subtle_border());
 
-        let checkbox_element = WarpCheckbox::new(
+        let checkbox_element = YarpCheckbox::new(
             self.checkbox_mouse_state.clone(),
             UiComponentStyles {
                 font_size: checkbox_size,

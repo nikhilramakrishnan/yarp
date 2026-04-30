@@ -31,7 +31,7 @@ pub fn run_proxy() -> anyhow::Result<()> {
 /// Run the `remote-server-daemon` subcommand.
 ///
 /// Binds a Unix domain socket and writes a PID file, then delegates the
-/// WarpUI app startup to [`super::run_daemon_app`] with the Unix-specific
+/// YarpUI app startup to [`super::run_daemon_app`] with the Unix-specific
 /// `ServerModel` constructor.
 pub fn run_daemon() -> anyhow::Result<()> {
     // Log to a rotating file so daemon output is preserved across invocations.

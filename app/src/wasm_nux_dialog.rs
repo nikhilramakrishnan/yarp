@@ -269,7 +269,7 @@ impl TypedActionView for WasmNUXDialog {
                 if let Some(url) = web_intent_parser::parse_web_intent_from_current_url() {
                     // Signals to the react app to open the native app.
                     crate::platform::wasm::emit_event(
-                        crate::platform::wasm::WarpEvent::OpenOnNative {
+                        crate::platform::wasm::YarpEvent::OpenOnNative {
                             url: String::from(url.as_str()),
                         },
                     );

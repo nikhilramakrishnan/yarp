@@ -396,7 +396,7 @@ pub enum HostEnablementSetting {
 pub struct Tier {
     pub name: String,
     pub description: String,
-    pub warp_ai_policy: Option<WarpAiPolicy>,
+    pub yarp_ai_policy: Option<WarpAiPolicy>,
     pub workspace_size_policy: Option<WorkspaceSizePolicy>,
     pub shared_notebooks_policy: Option<SharedNotebooksPolicy>,
     pub shared_workflows_policy: Option<SharedWorkflowsPolicy>,

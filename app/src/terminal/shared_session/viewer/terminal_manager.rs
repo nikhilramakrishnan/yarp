@@ -31,7 +31,7 @@ use crate::pane_group::pane::DetachType;
 
 use crate::network::{NetworkStatus, NetworkStatusEvent, NetworkStatusKind};
 
-use crate::settings::{DebugSettings, InputModeSettings, WarpPromptSeparator};
+use crate::settings::{DebugSettings, InputModeSettings, YarpPromptSeparator};
 use crate::terminal::event_listener::ChannelEventListener;
 
 use crate::terminal::input::CommandExecutionSource;
@@ -205,7 +205,7 @@ impl TerminalManager {
             ctx.add_model(|ctx| ModelEventDispatcher::new(events_rx, sessions.clone(), ctx));
         // The prompt is initially empty until we receive the update from the server.
         let prompt_type =
-            ctx.add_model(|_| PromptType::new_static(vec![], false, WarpPromptSeparator::None));
+            ctx.add_model(|_| PromptType::new_static(vec![], false, YarpPromptSeparator::None));
 
         let view = ctx.add_typed_action_view(window_id, |ctx| {
             let size_info = cloned_model.lock().block_list().size().to_owned();
@@ -669,7 +669,7 @@ impl TerminalManager {
                 });
 
                 #[cfg(target_family = "wasm")]
-                crate::platform::wasm::emit_event(crate::platform::wasm::WarpEvent::SessionJoined);
+                crate::platform::wasm::emit_event(crate::platform::wasm::YarpEvent::SessionJoined);
             }
             NetworkEvent::SessionEnded { reason } => {
                 let Some(view) = weak_view_handle.upgrade(ctx) else {

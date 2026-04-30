@@ -80,7 +80,7 @@ fn current_exe_path() -> Option<PathBuf> {
 /// Returns the per-channel registry value name used under the `Run` subkey.
 ///
 /// Using the channel's application name keeps Dogfood / Preview / Stable installs
-/// isolated (`Yarp`, `WarpPreview`, `WarpDev`, etc.) so installing multiple
+/// isolated (`Yarp`, `YarpPreview`, `YarpDev`, etc.) so installing multiple
 /// channels doesn't cause one to overwrite another's startup entry.
 fn login_item_value_name() -> String {
     ChannelState::app_id().application_name().to_owned()
@@ -235,7 +235,7 @@ mod tests {
         register_in(
             HKEY_CURRENT_USER,
             &scratch.path,
-            "WarpPreview",
+            "YarpPreview",
             &PathBuf::from(r"C:\yarp-preview.exe"),
         )
         .unwrap();
@@ -244,7 +244,7 @@ mod tests {
 
         assert!(scratch.read("Yarp").is_none());
         assert_eq!(
-            scratch.read("WarpPreview").as_deref(),
+            scratch.read("YarpPreview").as_deref(),
             Some(r#""C:\yarp-preview.exe""#)
         );
     }

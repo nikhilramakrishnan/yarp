@@ -49,7 +49,7 @@ impl ManagedSecretManager {
         let client = self.client.clone();
         let actor_provider = self.actor_provider.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::YarpManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
             // We retrieve all upload keys on demand. These should potentially be fetched and stored
@@ -91,7 +91,7 @@ impl ManagedSecretManager {
     ) -> impl Future<Output = anyhow::Result<()>> + use<> {
         let client = self.client.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::YarpManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
 
@@ -110,7 +110,7 @@ impl ManagedSecretManager {
         let client = self.client.clone();
         let actor_provider = self.actor_provider.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::YarpManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
 

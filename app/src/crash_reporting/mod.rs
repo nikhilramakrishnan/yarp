@@ -468,7 +468,7 @@ fn set_optional_user_information(
         let anonymous_id = get_or_create_anonymous_id(ctx);
         format!("anon.{anonymous_id}")
     });
-    // Only send along emails if we're on WarpDev.
+    // Only send along emails if we're on YarpDev.
     // We try to keep PII out of Sentry as much as possible.
     let email = if ChannelState::channel() == Channel::Dev {
         email

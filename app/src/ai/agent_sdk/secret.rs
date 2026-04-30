@@ -72,7 +72,7 @@ pub fn run(
     global_options: GlobalOptions,
     command: SecretCommand,
 ) -> Result<()> {
-    if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+    if !FeatureFlag::YarpManagedSecrets.is_enabled() {
         return Err(anyhow::anyhow!("This feature is not enabled"));
     }
 

@@ -35,7 +35,7 @@ use crate::{
     },
     themes::theme::{CustomTheme, SelectedSystemThemes, ThemeKind},
     ui_components::blended_colors,
-    user_config::{self, WarpConfig},
+    user_config::{self, YarpConfig},
     window_settings::WindowSettings,
     GlobalResourceHandlesProvider, TelemetryEvent,
 };
@@ -775,10 +775,10 @@ impl SettingsImportView {
                     ));
                     report_if_error!(theme_settings.use_system_theme.set_value(true, ctx));
                 });
-                WarpConfig::handle(ctx).update(ctx, |config, ctx| {
+                YarpConfig::handle(ctx).update(ctx, |config, ctx| {
                     config.add_new_theme_to_config(dark_kind, dark, ctx)
                 });
-                WarpConfig::handle(ctx).update(ctx, |config, ctx| {
+                YarpConfig::handle(ctx).update(ctx, |config, ctx| {
                     config.add_new_theme_to_config(light_kind, light, ctx)
                 });
             }
@@ -795,7 +795,7 @@ impl SettingsImportView {
                         .set_value(theme_kind.clone(), ctx,));
                     report_if_error!(theme_settings.use_system_theme.set_value(false, ctx));
                 });
-                WarpConfig::handle(ctx).update(ctx, |config, ctx| {
+                YarpConfig::handle(ctx).update(ctx, |config, ctx| {
                     config.add_new_theme_to_config(theme_kind, theme, ctx)
                 });
             }

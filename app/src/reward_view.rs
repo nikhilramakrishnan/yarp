@@ -1,6 +1,6 @@
 use yarp_core::ui::builder::UiBuilder;
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     elements::{Align, Container, Element, Flex, MouseStateHandle, ParentElement},
     keymap::FixedBinding,
     ui_components::button::ButtonVariant,
@@ -186,7 +186,7 @@ impl View for RewardView {
         Some(AccessibilityContent::new(
             format!("{} {}", TITLE, self.subtitle()),
             ACCESSIBILITY_HELP,
-            WarpA11yRole::WindowRole,
+            YarpA11yRole::WindowRole,
         ))
     }
 

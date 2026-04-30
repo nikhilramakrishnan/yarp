@@ -18,7 +18,7 @@ use crate::ai::paths::host_native_absolute_path;
 use crate::ai::predict::generate_am_query_suggestions::{
     GenerateAMQuerySuggestionsRequest, GenerateAMQuerySuggestionsResponse, Suggestion,
 };
-use crate::ai_assistant::execution_context::WarpAiExecutionContext;
+use crate::ai_assistant::execution_context::YarpAiExecutionContext;
 use crate::network::NetworkStatus;
 use crate::report_error;
 use crate::server::server_api::ServerApiProvider;
@@ -606,7 +606,7 @@ fn fetch_static_prompt_suggestion(block: &UserBlockCompleted) -> Option<AgentMod
 
 fn build_prompt_suggestions_request(
     block: &UserBlockCompleted,
-    execution_context: WarpAiExecutionContext,
+    execution_context: YarpAiExecutionContext,
     terminal_model: &Arc<FairMutex<TerminalModel>>,
 ) -> Option<GenerateAMQuerySuggestionsRequest> {
     let exit_code = block.serialized_block.exit_code;

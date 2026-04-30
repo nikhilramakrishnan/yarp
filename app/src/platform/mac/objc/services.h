@@ -1,5 +1,5 @@
 // Our class for handling NSServices messages.
-@interface WarpServicesProvider : NSObject
+@interface YarpServicesProvider : NSObject
 @end
 
 // Functions implemented in Rust.

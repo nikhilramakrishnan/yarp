@@ -363,7 +363,7 @@ settings::macros::implement_setting_for_enum!(
     SupportedPlatforms::ALL,
     SyncToCloud::Globally(RespectUserSyncSetting::Yes),
     private: false,
-    toml_path: "agents.warp_agent.other.thinking_display_mode",
+    toml_path: "agents.yarp_agent.other.thinking_display_mode",
     description: "Controls how agent thinking traces are displayed after streaming.",
 );
 
@@ -715,7 +715,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
-        toml_path: "agents.warp_agent.is_any_ai_enabled",
+        toml_path: "agents.yarp_agent.is_any_ai_enabled",
         description: "Controls whether all AI features are enabled.",
     },
     // This field should not be referenced directly to lookup active AI enablement -- use the
@@ -726,7 +726,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.enabled",
+        toml_path: "agents.yarp_agent.active_ai.enabled",
         description: "Controls whether proactive AI features like suggestions are enabled.",
     },
     // This field should not be referenced directly to lookup autodetection enablement -- use the
@@ -737,7 +737,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.ai_auto_detection_enabled",
+        toml_path: "agents.yarp_agent.input.ai_auto_detection_enabled",
         description: "Controls whether AI automatically detects natural language input.",
     },
     // This field should not be referenced directly -- use the
@@ -751,7 +751,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.nld_in_terminal_enabled",
+        toml_path: "agents.yarp_agent.input.nld_in_terminal_enabled",
         description: "Controls whether natural language detection is enabled in the terminal input.",
     },
     autodetection_command_denylist: AICommandDenylist {
@@ -760,7 +760,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.ai_command_denylist",
+        toml_path: "agents.yarp_agent.input.ai_command_denylist",
         description: "Commands to exclude from AI natural language autodetection.",
     },
     // This field should not be referenced directly to lookup intelligent autosuggestion enablement
@@ -771,7 +771,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.intelligent_autosuggestions_enabled",
+        toml_path: "agents.yarp_agent.active_ai.intelligent_autosuggestions_enabled",
         description: "Controls whether AI-powered intelligent autosuggestions are enabled.",
     }
     // This field should not be referenced directly to lookup Prompt Suggestions
@@ -785,7 +785,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.agent_mode_query_suggestions_enabled",
+        toml_path: "agents.yarp_agent.active_ai.agent_mode_query_suggestions_enabled",
         description: "Controls whether prompt suggestions are shown in agent mode.",
     }
 
@@ -797,7 +797,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.code_suggestions_enabled",
+        toml_path: "agents.yarp_agent.active_ai.code_suggestions_enabled",
         description: "Controls whether AI code suggestions are enabled.",
     }
     // This field should not be referenced directly to lookup natural language autosuggestions
@@ -809,7 +809,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.natural_language_autosuggestions_enabled",
+        toml_path: "agents.yarp_agent.active_ai.natural_language_autosuggestions_enabled",
         description: "Controls whether ghosted text autosuggestions are shown for AI input queries.",
         feature_flag: FeatureFlag::PredictAMQueries,
     }
@@ -822,7 +822,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.shared_block_title_generation_enabled",
+        toml_path: "agents.yarp_agent.active_ai.shared_block_title_generation_enabled",
         description: "Controls whether titles are auto-generated when sharing blocks.",
     }
     // This field should not be referenced directly to lookup git operations AI autogen
@@ -833,7 +833,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.git_operations_autogen_enabled",
+        toml_path: "agents.yarp_agent.active_ai.git_operations_autogen_enabled",
         description: "Controls whether AI auto-generates commit messages and PR title/body in the code review dialogs.",
     }
     // This field should not be referenced directly to lookup Rule Suggestions
@@ -844,7 +844,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.rule_suggestions_enabled",
+        toml_path: "agents.yarp_agent.active_ai.rule_suggestions_enabled",
         description: "Controls whether the agent suggests rules to save after responses.",
         feature_flag: FeatureFlag::SuggestedRules,
     }
@@ -1188,7 +1188,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.should_show_oz_updates_in_zero_state",
+        toml_path: "agents.yarp_agent.other.should_show_oz_updates_in_zero_state",
         description: "Whether the \"What's new\" section is shown in the agent view.",
     }
 
@@ -1210,7 +1210,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.should_render_use_agent_toolbar_for_user_commands",
+        toml_path: "agents.yarp_agent.other.should_render_use_agent_toolbar_for_user_commands",
         description: "Whether to show the \"Use Agent\" footer for terminal commands.",
     }
 
@@ -1353,7 +1353,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::DESKTOP,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.cloud_agent_computer_use_enabled",
+        toml_path: "agents.yarp_agent.other.cloud_agent_computer_use_enabled",
         description: "Whether computer use is enabled for cloud agent conversations.",
     }
 
@@ -1367,7 +1367,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::DESKTOP,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.orchestration_enabled",
+        toml_path: "agents.yarp_agent.other.orchestration_enabled",
         description: "Whether multi-agent orchestration is enabled.",
         feature_flag: FeatureFlag::Orchestration,
     }
@@ -1397,7 +1397,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.include_agent_commands_in_history",
+        toml_path: "agents.yarp_agent.input.include_agent_commands_in_history",
         description: "Whether agent-executed commands are included in command history.",
     }
 
@@ -1408,7 +1408,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.show_conversation_history",
+        toml_path: "agents.yarp_agent.other.show_conversation_history",
         description: "Whether conversation history appears in the tools panel.",
     }
 
@@ -1420,7 +1420,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.show_agent_notifications",
+        toml_path: "agents.yarp_agent.other.show_agent_notifications",
         description: "Whether agent notifications are shown.",
     }
 
@@ -1457,7 +1457,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
-        toml_path: "agents.warp_agent.other.agent_attribution_enabled",
+        toml_path: "agents.yarp_agent.other.agent_attribution_enabled",
         description: "Whether the Yarp Agent adds an attribution co-author line to commit messages and pull requests it creates.",
     }
 ]);
@@ -1548,7 +1548,7 @@ impl AISettings {
             return None;
         }
         let path = std::path::Path::new(path_str);
-        crate::user_config::WarpConfig::as_ref(app)
+        crate::user_config::YarpConfig::as_ref(app)
             .tab_configs()
             .iter()
             .find(|config| config.source_path.as_deref().is_some_and(|p| p == path))

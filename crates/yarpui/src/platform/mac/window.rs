@@ -562,7 +562,7 @@ impl Window {
                 ),
             };
             if native_window == nil {
-                return Err(anyhow!("WarpWindow returned nil from initializer"));
+                return Err(anyhow!("YarpWindow returned nil from initializer"));
             }
 
             if options.fullscreen_state == FullscreenState::Fullscreen {
@@ -845,7 +845,7 @@ impl Window {
         }
     }
 
-    /// Returns a reference to a `WarpWindow` identified by `window_id`, if any.
+    /// Returns a reference to a `YarpWindow` identified by `window_id`, if any.
     ///
     /// # Safety
     /// This code is unsafe since it requires interfacing with platform code.

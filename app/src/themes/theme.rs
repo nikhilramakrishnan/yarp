@@ -287,11 +287,11 @@ impl InMemoryThemeOptions {
 }
 
 #[derive(Debug, Clone)]
-pub struct WarpThemeConfig {
+pub struct YarpThemeConfig {
     theme_map: HashMap<ThemeKind, YarpTheme>,
 }
 
-impl WarpThemeConfig {
+impl YarpThemeConfig {
     pub fn new() -> Self {
         // preload with built-in themes
         let theme_map: HashMap<ThemeKind, YarpTheme> = HashMap::from_iter([
@@ -322,7 +322,7 @@ impl WarpThemeConfig {
             (ThemeKind::SolarFlare, solar_flare()),
             (ThemeKind::Adeberry, adeberry()),
         ]);
-        WarpThemeConfig { theme_map }
+        YarpThemeConfig { theme_map }
     }
 
     pub fn add_new_theme(&mut self, theme_name: ThemeKind, theme: YarpTheme) {
@@ -342,7 +342,7 @@ impl WarpThemeConfig {
     }
 }
 
-impl Default for WarpThemeConfig {
+impl Default for YarpThemeConfig {
     fn default() -> Self {
         Self::new()
     }

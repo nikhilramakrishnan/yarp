@@ -116,7 +116,7 @@ impl TabBehavior {
     description = "Trailing separator character displayed at the end of the prompt.",
     rename_all = "snake_case"
 )]
-pub enum WarpPromptSeparator {
+pub enum YarpPromptSeparator {
     /// No separator for the prompt.
     #[default]
     None,
@@ -128,7 +128,7 @@ pub enum WarpPromptSeparator {
     ChevronSymbol,
 }
 
-impl WarpPromptSeparator {
+impl YarpPromptSeparator {
     pub fn dropdown_item_label(&self) -> &'static str {
         match self {
             Self::None => "None",

@@ -31,7 +31,7 @@ pub fn run_daemon() -> anyhow::Result<()> {
     anyhow::bail!("remote-server-daemon is not supported on this platform")
 }
 
-/// Start the WarpUI headless app with all daemon singleton models.
+/// Start the YarpUI headless app with all daemon singleton models.
 ///
 /// This is the platform-agnostic core of every `run_daemon` implementation.
 /// Platform-specific code (Unix sockets, Windows named pipes, …) binds a

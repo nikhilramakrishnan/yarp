@@ -134,7 +134,7 @@ impl ChangelogModel {
             _ => return,
         };
 
-        // For WarpPreview, add a section at the beginning describing
+        // For YarpPreview, add a section at the beginning describing
         // preview-exclusive flags.
         if ChannelState::channel() == Channel::Preview && !PREVIEW_FLAGS.is_empty() {
             let preview_flags_vec: Vec<String> = PREVIEW_FLAGS

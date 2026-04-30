@@ -612,7 +612,7 @@ if test "$YARP_IS_LOCAL_SHELL_SESSION" = "1"
         command ssh -o ControlMaster=yes -o ControlPath=$SSH_SOCKET_DIR/$YARP_SESSION_ID \
         -t $argv \
 "
-export TERM_PROGRAM='WarpTerminal'
+export TERM_PROGRAM='YarpTerminal'
 test -n '$YARP_CLIENT_VERSION' && export YARP_CLIENT_VERSION='$YARP_CLIENT_VERSION'
 # Only forward the protocol version if it was set locally (i.e. the HOANotifications feature flag is on).
 test -n '$YARP_CLI_AGENT_PROTOCOL_VERSION' && export YARP_CLI_AGENT_PROTOCOL_VERSION='$YARP_CLI_AGENT_PROTOCOL_VERSION'

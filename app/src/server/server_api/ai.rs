@@ -48,7 +48,7 @@ use crate::{
         RequestUsageInfo,
     },
     ai_assistant::{
-        execution_context::WarpAiExecutionContext, requests::GenerateDialogueResult,
+        execution_context::YarpAiExecutionContext, requests::GenerateDialogueResult,
         utils::TranscriptPart, AIGeneratedCommand, GenerateCommandsFromNaturalLanguageError,
     },
     drive::workflows::ai_assist::{GeneratedCommandMetadata, GeneratedCommandMetadataError},
@@ -732,14 +732,14 @@ pub trait AIClient: 'static + Send + Sync {
     async fn generate_commands_from_natural_language(
         &self,
         prompt: String,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> Result<Vec<AIGeneratedCommand>, GenerateCommandsFromNaturalLanguageError>;
 
     async fn generate_dialogue_answer(
         &self,
         transcript: Vec<TranscriptPart>,
         prompt: String,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> anyhow::Result<GenerateDialogueResult>;
 
     async fn generate_metadata_for_command(
@@ -986,7 +986,7 @@ impl AIClient for ServerApi {
         &self,
         prompt: String,
         // TODO: use relevant context from RequestContext and deprecate usage of ai_execution_context
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> Result<Vec<AIGeneratedCommand>, GenerateCommandsFromNaturalLanguageError> {
         let default_err = GenerateCommandsFromNaturalLanguageError::Other;
 
@@ -1025,7 +1025,7 @@ impl AIClient for ServerApi {
         transcript: Vec<TranscriptPart>,
         prompt: String,
         // TODO: use relevant context from RequestContext and deprecate usage of ai_execution_context
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> anyhow::Result<GenerateDialogueResult> {
         let graphql_transcript: Vec<TranscriptPartGraphql> = transcript
             .into_iter()

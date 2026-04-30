@@ -1,5 +1,5 @@
 use crate::ui::theme::Fill;
-use yarpui::elements::Icon as WarpUiIcon;
+use yarpui::elements::Icon as YarpUiIcon;
 
 /// Default icon dimensions that apply to all icons used within the ui system.
 pub const ICON_DIMENSIONS: f32 = 24.;
@@ -64,7 +64,7 @@ pub enum Icon {
     CreateTeam,
     YarpDrive,
     Yarp,
-    WarpLogoLight,
+    YarpLogoLight,
     ArrowLeft,
     ArrowBlockLeft,
     ArrowBlockUp,
@@ -372,7 +372,7 @@ impl From<Icon> for &'static str {
             Icon::CreateTeam => "bundled/svg/create-team.svg",
             Icon::YarpDrive => "bundled/svg/yarp.svg",
             Icon::Yarp => "bundled/svg/yarp-drive.svg",
-            Icon::WarpLogoLight => "bundled/svg/yarp-logo-light.svg",
+            Icon::YarpLogoLight => "bundled/svg/yarp-logo-light.svg",
             Icon::ArrowLeft => "bundled/svg/arrow-left.svg",
             Icon::ArrowBlockLeft => "bundled/svg/arrow-block-left.svg",
             Icon::ArrowBlockUp => "bundled/svg/arrow-block-up.svg",
@@ -620,11 +620,11 @@ impl From<Icon> for &'static str {
 }
 
 impl Icon {
-    pub fn to_yarpui_icon(self, color: Fill) -> WarpUiIcon {
-        WarpUiIcon::new(self.into(), color.into_solid())
+    pub fn to_yarpui_icon(self, color: Fill) -> YarpUiIcon {
+        YarpUiIcon::new(self.into(), color.into_solid())
     }
 
-    pub fn icon_for_key(key: &str) -> Option<WarpUiIcon> {
+    pub fn icon_for_key(key: &str) -> Option<YarpUiIcon> {
         match key {
             "⏎" => Some(Self::CornerDownLeft.to_yarpui_icon(Fill::black())),
             _ => None,

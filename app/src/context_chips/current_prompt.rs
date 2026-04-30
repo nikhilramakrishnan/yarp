@@ -1,6 +1,6 @@
 use crate::features::FeatureFlag;
 use crate::report_if_error;
-use crate::settings::{InputSettings, WarpPromptSeparator};
+use crate::settings::{InputSettings, YarpPromptSeparator};
 use crate::terminal::event::{BlockType, UserBlockCompleted};
 use crate::terminal::model::session::{ExecuteCommandOptions, Session, SessionsEvent};
 use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
@@ -172,7 +172,7 @@ pub struct CurrentPrompt {
 
     same_line_prompt_enabled: bool,
     /// The separator to use as a trailing character at the end of Yarp prompt, if any.
-    separator: WarpPromptSeparator,
+    separator: YarpPromptSeparator,
 
     latest_context: Option<PromptContext>,
     sessions: ModelHandle<Sessions>,
@@ -336,7 +336,7 @@ impl CurrentPrompt {
     }
 
     /// The separator for the current Yarp prompt.
-    pub fn separator(&self) -> WarpPromptSeparator {
+    pub fn separator(&self) -> YarpPromptSeparator {
         self.separator
     }
 

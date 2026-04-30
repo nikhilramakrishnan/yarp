@@ -4,7 +4,7 @@ use yarpui::App;
 use super::*;
 
 fn initialize_app(app: &App) {
-    app.add_singleton_model(WarpConfig::mock);
+    app.add_singleton_model(YarpConfig::mock);
 }
 
 #[test]

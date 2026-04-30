@@ -1,5 +1,5 @@
 use crate::ui::theme::Fill;
-use yarpui::elements::Icon as WarpUiIcon;
+use yarpui::elements::Icon as YarpUiIcon;
 
 pub enum ExternalProductIcon {
     Heroku,
@@ -35,8 +35,8 @@ impl ExternalProductIcon {
         }
     }
 
-    pub fn to_yarpui_icon(&self, color: Fill) -> WarpUiIcon {
+    pub fn to_yarpui_icon(&self, color: Fill) -> YarpUiIcon {
         let path = self.get_path();
-        WarpUiIcon::new(path, color.into_solid())
+        YarpUiIcon::new(path, color.into_solid())
     }
 }

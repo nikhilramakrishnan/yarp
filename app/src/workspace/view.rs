@@ -62,7 +62,7 @@ use crate::ai::{
     },
     facts::{view::AIFactPage, AIFactManager, AIFactView, AIFactViewEvent},
 };
-use crate::ai_assistant::execution_context::WarpAiExecutionContext;
+use crate::ai_assistant::execution_context::YarpAiExecutionContext;
 use crate::app_state::{
     LeafContents, LeafSnapshot, LeftPanelDisplayedTab, LeftPanelSnapshot, NotebookPaneSnapshot,
     PaneNodeSnapshot, PaneUuid, RightPanelSnapshot, SettingsPaneSnapshot, TabSnapshot,
@@ -338,7 +338,7 @@ use crate::user_config::{
     find_unused_worktree_config_path, materialize_default_worktree_config, sanitize_toml_base_name,
     tab_configs_dir,
 };
-use crate::user_config::{WarpConfig, WarpConfigUpdateEvent};
+use crate::user_config::{YarpConfig, YarpConfigUpdateEvent};
 use crate::util::bindings::{
     keybinding_name_to_display_string, keybinding_name_to_keystroke, trigger_to_keystroke,
 };
@@ -493,12 +493,12 @@ use yarpui::text_layout::ClipConfig;
 use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 use yarpui::{
     accessibility::{
-        AccessibilityContent, AccessibilityVerbosity, ActionAccessibilityContent, WarpA11yRole,
+        AccessibilityContent, AccessibilityVerbosity, ActionAccessibilityContent, YarpA11yRole,
     },
     elements::{
         Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Dismiss, Element, Empty, Expanded, Fill as ElementFill, Flex,
-        Highlight, Hoverable, Icon as WarpUiIcon, MainAxisAlignment, MainAxisSize,
+        Highlight, Hoverable, Icon as YarpUiIcon, MainAxisAlignment, MainAxisSize,
         OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds,
         PositionedElementAnchor, PositionedElementOffsetBounds, Radius, SavePosition, Shrinkable,
         Stack, Text,
@@ -1937,7 +1937,7 @@ impl Workspace {
                         );
                     });
                 } else {
-                    WarpConfig::handle(ctx).update(ctx, |warp_config, ctx| {
+                    YarpConfig::handle(ctx).update(ctx, |warp_config, ctx| {
                         warp_config.remove_tab_config_by_path(path, ctx);
                     });
                 }
@@ -2405,7 +2405,7 @@ impl Workspace {
         );
     }
 
-    /// Subscribes to `WarpConfigUpdateEvent::TabConfigErrors` and shows a persistent
+    /// Subscribes to `YarpConfigUpdateEvent::TabConfigErrors` and shows a persistent
     /// error toast for each tab config file that failed to parse.  Uses `object_id`
     /// keyed by file path so that re-saving the same file auto-dismisses the stale
     /// toast.
@@ -2413,9 +2413,9 @@ impl Workspace {
         toast_stack: ViewHandle<DismissibleToastStack<WorkspaceAction>>,
         ctx: &mut ViewContext<Self>,
     ) {
-        ctx.subscribe_to_model(&WarpConfig::handle(ctx), move |_me, _, event, ctx| {
+        ctx.subscribe_to_model(&YarpConfig::handle(ctx), move |_me, _, event, ctx| {
             match event {
-                WarpConfigUpdateEvent::TabConfigs => {
+                YarpConfigUpdateEvent::TabConfigs => {
                     // On every tab config reload, dismiss error toasts for
                     // files that now parse successfully.  The model has already
                     // been updated with the current error set before this event
@@ -2430,7 +2430,7 @@ impl Workspace {
                         toast_stack.dismiss_toasts_by_prefix("tab_config_error:", ctx);
                     });
                 }
-                WarpConfigUpdateEvent::TabConfigErrors(errors) => {
+                YarpConfigUpdateEvent::TabConfigErrors(errors) => {
                     let home_dir = dirs::home_dir();
                     for error in errors {
                         let object_id = format!("tab_config_error:{}", error.file_path.display());
@@ -2464,17 +2464,17 @@ impl Workspace {
         });
     }
 
-    /// Subscribes to `WarpConfigUpdateEvent::SettingsErrors` and
+    /// Subscribes to `YarpConfigUpdateEvent::SettingsErrors` and
     /// `SettingsErrorsCleared` to update the workspace settings-error banner
     /// and mirror the state into the settings pane for its nav-rail footer.
     fn subscribe_to_settings_errors(ctx: &mut ViewContext<Self>) {
-        ctx.subscribe_to_model(&WarpConfig::handle(ctx), |me, _, event, ctx| match event {
-            WarpConfigUpdateEvent::SettingsErrors(error) => {
+        ctx.subscribe_to_model(&YarpConfig::handle(ctx), |me, _, event, ctx| match event {
+            YarpConfigUpdateEvent::SettingsErrors(error) => {
                 me.settings_file_error = Some(error.clone());
                 me.sync_settings_error_state_into_settings_pane(ctx);
                 ctx.notify();
             }
-            WarpConfigUpdateEvent::SettingsErrorsCleared => {
+            YarpConfigUpdateEvent::SettingsErrorsCleared => {
                 me.settings_file_error = None;
                 me.sync_settings_error_state_into_settings_pane(ctx);
                 ctx.notify();
@@ -4350,7 +4350,7 @@ impl Workspace {
 
         self.tips_completed.update(ctx, |tips_completed, ctx| {
             mark_feature_used_and_write_to_user_defaults(
-                Tip::Action(TipAction::WarpAI),
+                Tip::Action(TipAction::YarpAI),
                 tips_completed,
                 ctx,
             );
@@ -5573,7 +5573,7 @@ impl Workspace {
     fn handle_ai_fact_view_event(&mut self, event: &AIFactViewEvent, ctx: &mut ViewContext<Self>) {
         match event {
             AIFactViewEvent::OpenSettings => {
-                self.show_settings_with_section(Some(SettingsSection::WarpAgent), ctx);
+                self.show_settings_with_section(Some(SettingsSection::YarpAgent), ctx);
             }
             #[allow(unused_variables)]
             AIFactViewEvent::OpenFile(path) => {
@@ -6094,7 +6094,7 @@ impl Workspace {
 
         // 4. User tab configs
         if FeatureFlag::TabConfigs.is_enabled() {
-            let tab_configs = WarpConfig::as_ref(ctx).tab_configs().to_vec();
+            let tab_configs = YarpConfig::as_ref(ctx).tab_configs().to_vec();
 
             // Count occurrences of each config name so we can disambiguate
             // duplicates in the menu (e.g. "My Tab Config", "My Tab Config (1)").
@@ -8868,7 +8868,7 @@ impl Workspace {
                 ctx.notify();
             }
             LaunchConfigModalEvent::SuccessfullySavedConfig(launch_config) => {
-                ctx.update_model(&WarpConfig::handle(ctx), move |warp_config, ctx| {
+                ctx.update_model(&YarpConfig::handle(ctx), move |warp_config, ctx| {
                     warp_config.append_launch_config(launch_config, ctx);
                 });
                 ctx.notify();
@@ -9822,10 +9822,10 @@ impl Workspace {
                 .size()
         });
 
-        let warp_ai_width = modal_sizes.map(|ms| {
-            ms.warp_ai_width
+        let yarp_ai_width = modal_sizes.map(|ms| {
+            ms.yarp_ai_width
                 .lock()
-                .expect("should be able to lock warp_ai resizable state handle")
+                .expect("should be able to lock yarp_ai resizable state handle")
                 .size()
         });
 
@@ -9869,7 +9869,7 @@ impl Workspace {
             fullscreen_state: window_fullscreen_state,
             quake_mode,
             universal_search_width,
-            warp_ai_width,
+            yarp_ai_width,
             voltron_width,
             yarp_drive_index_width,
             left_panel_open: self.left_panel_open,
@@ -14141,7 +14141,7 @@ impl Workspace {
 
             let ai_execution_context = session_context
                 .as_ref()
-                .map(|session_context| WarpAiExecutionContext::new(&session_context.session));
+                .map(|session_context| YarpAiExecutionContext::new(&session_context.session));
 
             let menu_positioning = active_input_handle
                 .as_ref()
@@ -15754,8 +15754,8 @@ impl Workspace {
                         workflow,
                         origin: AIWorkflowOrigin::LegacyWarpAI,
                     },
-                    WorkflowSource::WarpAI,
-                    WorkflowSelectionSource::WarpAI,
+                    WorkflowSource::YarpAI,
+                    WorkflowSelectionSource::YarpAI,
                     None,
                     TerminalSessionFallbackBehavior::default(),
                     ctx,
@@ -16421,7 +16421,7 @@ impl Workspace {
             .with_child(
                 Container::new(
                     ConstrainedBox::new(
-                        WarpUiIcon::new(icons::Icon::AiAssistant.into(), *AI_ASSISTANT_LOGO_COLOR)
+                        YarpUiIcon::new(icons::Icon::AiAssistant.into(), *AI_ASSISTANT_LOGO_COLOR)
                             .finish(),
                     )
                     .with_width(16.)
@@ -17347,7 +17347,7 @@ impl Workspace {
             );
         } else {
             let resource_center_closed = !self.current_workspace_state.is_resource_center_open;
-            if resource_center_closed && ContextFlag::WarpEssentials.is_enabled() {
+            if resource_center_closed && ContextFlag::YarpEssentials.is_enabled() {
                 target.add_child(
                     Container::new(self.render_resource_center_button(appearance, ctx))
                         .with_margin_left(TAB_BAR_PADDING_LEFT)
@@ -17772,7 +17772,7 @@ impl Workspace {
             const INDICATOR_DIAMETER: f32 = 6.;
             let indicator = Container::new(
                 ConstrainedBox::new(
-                    WarpUiIcon::new(ELLIPSE_SVG_PATH, appearance.theme().accent()).finish(),
+                    YarpUiIcon::new(ELLIPSE_SVG_PATH, appearance.theme().accent()).finish(),
                 )
                 .with_height(INDICATOR_DIAMETER)
                 .with_width(INDICATOR_DIAMETER)
@@ -19636,7 +19636,7 @@ impl TypedActionView for Workspace {
             WorkspaceAction::SetA11yVerbosityLevel(verbosity) => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     format!("{verbosity:?} accessibility announcements set"),
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ))
             }
             _ => ActionAccessibilityContent::from_debug(),
@@ -20790,8 +20790,8 @@ impl TypedActionView for Workspace {
                         workflow,
                         origin: AIWorkflowOrigin::AgentMode,
                     },
-                    WorkflowSource::WarpAI,
-                    WorkflowSelectionSource::WarpAI,
+                    WorkflowSource::YarpAI,
+                    WorkflowSelectionSource::YarpAI,
                     None,
                     TerminalSessionFallbackBehavior::default(),
                     ctx,

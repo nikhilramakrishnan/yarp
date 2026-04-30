@@ -1,8 +1,8 @@
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
-use yarp_core::ui::icons::Icon as WarpIcon;
+use yarp_core::ui::icons::Icon as YarpIcon;
 use yarp_core::ui::theme::color::internal_colors;
-use yarp_core::ui::theme::{Fill as WarpThemeFill, YarpTheme};
+use yarp_core::ui::theme::{Fill as YarpThemeFill, YarpTheme};
 use yarpui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, Element, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Stack,
@@ -30,8 +30,8 @@ pub(crate) struct IconWithStatusSizing {
 pub(crate) enum IconWithStatusVariant {
     /// A generic icon with a given color on an overlay background.
     Neutral {
-        icon: WarpIcon,
-        icon_color: WarpThemeFill,
+        icon: YarpIcon,
+        icon_color: YarpThemeFill,
     },
     /// A pre-built icon element on an overlay background.
     NeutralElement { icon_element: Box<dyn Element> },
@@ -52,7 +52,7 @@ pub(crate) fn render_icon_with_status(
     variant: IconWithStatusVariant,
     sizing: &IconWithStatusSizing,
     theme: &YarpTheme,
-    badge_ring_background: WarpThemeFill,
+    badge_ring_background: YarpThemeFill,
 ) -> Box<dyn Element> {
     let sub_text = theme.sub_text_color(theme.background());
 
@@ -85,9 +85,9 @@ pub(crate) fn render_icon_with_status(
         }
         IconWithStatusVariant::OzAgent { status, is_ambient } => {
             let icon = if is_ambient {
-                WarpIcon::OzCloud
+                YarpIcon::OzCloud
             } else {
-                WarpIcon::Oz
+                YarpIcon::Oz
             };
             let inner = ConstrainedBox::new(
                 icon.to_yarpui_icon(theme.main_text_color(theme.background()))
@@ -119,10 +119,10 @@ pub(crate) fn render_icon_with_status(
             let icon_element = agent
                 .icon()
                 .map(|icon| {
-                    icon.to_yarpui_icon(WarpThemeFill::Solid(icon_color))
+                    icon.to_yarpui_icon(YarpThemeFill::Solid(icon_color))
                         .finish()
                 })
-                .unwrap_or_else(|| WarpIcon::Terminal.to_yarpui_icon(sub_text).finish());
+                .unwrap_or_else(|| YarpIcon::Terminal.to_yarpui_icon(sub_text).finish());
             let inner = ConstrainedBox::new(icon_element)
                 .with_width(sizing.icon_size)
                 .with_height(sizing.icon_size)
@@ -151,13 +151,13 @@ fn render_with_optional_status_badge(
     status: Option<&ConversationStatus>,
     sizing: &IconWithStatusSizing,
     theme: &YarpTheme,
-    badge_ring_background: WarpThemeFill,
+    badge_ring_background: YarpThemeFill,
 ) -> Box<dyn Element> {
     let Some(status) = status else {
         return circle;
     };
     let (icon, color) = status.status_icon_and_color(theme);
-    let badge_icon = ConstrainedBox::new(icon.to_yarpui_icon(WarpThemeFill::Solid(color)).finish())
+    let badge_icon = ConstrainedBox::new(icon.to_yarpui_icon(YarpThemeFill::Solid(color)).finish())
         .with_width(sizing.badge_icon_size)
         .with_height(sizing.badge_icon_size)
         .finish();

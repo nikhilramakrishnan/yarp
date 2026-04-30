@@ -988,7 +988,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
             command ssh -o ControlMaster=yes -o ControlPath=$SSH_SOCKET_DIR/$YARP_SESSION_ID \
             -t "${@:1}" \
 "
-export TERM_PROGRAM='WarpTerminal'
+export TERM_PROGRAM='YarpTerminal'
 # Mark the remote side of a Yarp-managed SSH session so the bootstrap
 # body can distinguish it from local shells. Used to gate the ExitShell
 # hook which tears down the remote-server-proxy subprocess.

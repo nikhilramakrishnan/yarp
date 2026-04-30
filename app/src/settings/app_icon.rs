@@ -65,7 +65,7 @@ pub enum AppIcon {
     Sticker,
     /// Previous default icon with solid blue background.
     #[schemars(description = "Yarp 1")]
-    WarpOne,
+    YarpOne,
 }
 
 impl std::fmt::Display for AppIcon {
@@ -87,7 +87,7 @@ impl std::fmt::Display for AppIcon {
             AppIcon::Original => "Original",
             AppIcon::Starburst => "Starburst",
             AppIcon::Sticker => "Sticker",
-            AppIcon::WarpOne => "Yarp 1",
+            AppIcon::YarpOne => "Yarp 1",
         };
         write!(f, "{value}")
     }
@@ -117,7 +117,7 @@ impl AppIconSettings {
             AppIcon::Original => "original",
             AppIcon::Starburst => "starburst",
             AppIcon::Sticker => "sticker",
-            AppIcon::WarpOne => "blue",
+            AppIcon::YarpOne => "blue",
         }
     }
 }

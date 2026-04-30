@@ -3,7 +3,7 @@ use crate::ai::mcp::FileMCPWatcher;
 use crate::ai::mcp::ParsedTemplatableMCPServerResult;
 use crate::auth::AuthStateProvider;
 use crate::settings::{AISettings, FocusedTerminalInfo};
-use crate::warp_managed_paths_watcher::{warp_data_dir, WarpManagedPathsWatcher};
+use crate::warp_managed_paths_watcher::{warp_data_dir, YarpManagedPathsWatcher};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
@@ -22,7 +22,7 @@ fn setup_app(app: &mut App) -> yarpui::ModelHandle<FileBasedMCPManager> {
     app.add_singleton_model(|_| DetectedRepositories::default());
     app.add_singleton_model(RepoMetadataModel::new);
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(YarpManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(FileMCPWatcher::new);
     app.add_singleton_model(AISettings::new_with_defaults);
     app.add_singleton_model(|_| AuthStateProvider::new_for_test());

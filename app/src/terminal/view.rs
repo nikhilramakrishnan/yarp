@@ -404,7 +404,7 @@ use yarpui::assets::asset_cache::{AssetCache, AssetCacheEvent};
 use yarpui::image_cache::ImageType;
 use yarpui::units::{IntoLines, IntoPixels, Lines, Pixels};
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     elements::SavePosition,
     elements::{
         Align, Clipped, ConstrainedBox, CornerRadius, Fill, Hoverable, Icon, MouseStateHandle,
@@ -8544,7 +8544,7 @@ impl TerminalView {
         let a11y_content = AccessibilityContent::new(
             format!("{title} recognized."),
             a11y_message,
-            WarpA11yRole::TextRole,
+            YarpA11yRole::TextRole,
         );
         ctx.emit_a11y_content(a11y_content);
 
@@ -8657,7 +8657,7 @@ impl TerminalView {
         let a11y_content = AccessibilityContent::new(
             trigger.discovery_banner_copy(),
             "You can enable notifications through the command palette.",
-            WarpA11yRole::TextRole,
+            YarpA11yRole::TextRole,
         );
         ctx.emit_a11y_content(a11y_content);
 
@@ -8696,7 +8696,7 @@ impl TerminalView {
         let a11y_content = AccessibilityContent::new(
             banner_title,
             "Make sure you have enabled access for Yarp notifications in System Preferences.",
-            WarpA11yRole::TextRole,
+            YarpA11yRole::TextRole,
         );
         ctx.emit_a11y_content(a11y_content);
 
@@ -13464,7 +13464,7 @@ impl TerminalView {
             let a11y_content = AccessibilityContent::new(
                 format!("Suggested corrected command: {}", correction.command),
                 "Press right arrow to insert or keep editing to ignore",
-                WarpA11yRole::HelpRole,
+                YarpA11yRole::HelpRole,
             );
             ctx.emit_a11y_content(a11y_content);
 
@@ -15936,7 +15936,7 @@ impl TerminalView {
 
         send_telemetry_from_ctx!(
             TelemetryEvent::SaveAsWorkflowModal {
-                source: SaveAsWorkflowModalSource::WarpAIWorkflowCard,
+                source: SaveAsWorkflowModalSource::YarpAIWorkflowCard,
             },
             ctx
         );
@@ -18860,7 +18860,7 @@ impl TerminalView {
                 self.handle_usage_footer_toggled(block.id(), *conversation_id, *is_expanded, ctx);
             }
             AIBlockEvent::OpenSettings => {
-                ctx.emit(Event::OpenSettings(SettingsSection::WarpAgent));
+                ctx.emit(Event::OpenSettings(SettingsSection::YarpAgent));
             }
             #[cfg(feature = "local_fs")]
             AIBlockEvent::OpenCodeInWarp { source, layout } => {
@@ -23067,7 +23067,7 @@ impl TerminalView {
                 // TODO (a11y) Keybindings should be taken from the actual user's
                 // configuration
                 "Press cmd-C to read and copy both command and output, and cmd-option-shift-C to read and copy output only. Press cmd-B to bookmark the block: you could navigate between bookmarked blocks quickly using option-up and option-down.",
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )
         })
     }
@@ -24066,7 +24066,7 @@ impl TypedActionView for TerminalView {
                     .map_or(Empty, |selected| {
                         Custom(AccessibilityContent::new_without_help(
                             selected,
-                            WarpA11yRole::TextRole,
+                            YarpA11yRole::TextRole,
                         ))
                     })
             }
@@ -24092,7 +24092,7 @@ impl TypedActionView for TerminalView {
             BookmarkBlock(_) | BookmarkSelectedBlock => {
                 Custom(AccessibilityContent::new_without_help(
                     "Toggle Bookmark block",
-                    WarpA11yRole::TextRole,
+                    YarpA11yRole::TextRole,
                 ))
             }
             ExpandBlockSelectionAbove | ExpandBlockSelectionBelow => {
@@ -24114,19 +24114,19 @@ impl TypedActionView for TerminalView {
                     "Selected all {} blocks.",
                     self.num_non_hidden_selected_blocks()
                 ),
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             ScrollToBottomOfSelectedBlocks => Custom(AccessibilityContent::new_without_help(
                 "Scrolled to bottom of selected block".to_string(),
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             ScrollToTopOfSelectedBlocks => Custom(AccessibilityContent::new_without_help(
                 "Scrolled to top of selected block".to_string(),
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             ScrollToBottomOfOverhangingBlock(_) => Custom(AccessibilityContent::new_without_help(
                 "Scrolled to bottom of bottommost visible block".to_string(),
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             CopyOutputs => {
                 let mut outputs = vec![];
@@ -24147,7 +24147,7 @@ impl TypedActionView for TerminalView {
                 );
                 Custom(AccessibilityContent::new_without_help(
                     text,
-                    WarpA11yRole::TextRole,
+                    YarpA11yRole::TextRole,
                 ))
             }
             Copy => {
@@ -24166,7 +24166,7 @@ impl TypedActionView for TerminalView {
                 let text = format!("Copied {} blocks.\n{}", blocks.len(), blocks.join("\n"));
                 Custom(AccessibilityContent::new_without_help(
                     text,
-                    WarpA11yRole::TextRole,
+                    YarpA11yRole::TextRole,
                 ))
             }
             FocusInputAndClearSelection => {
@@ -24174,7 +24174,7 @@ impl TypedActionView for TerminalView {
                     INPUT_A11Y_LABEL,
                     // TODO (a11y) use bindings from user settings
                     INPUT_A11Y_HELPER,
-                    WarpA11yRole::TextareaRole,
+                    YarpA11yRole::TextareaRole,
                 ))
             }
             KeyDown(key) => {
@@ -24185,24 +24185,24 @@ impl TypedActionView for TerminalView {
                 };
                 Custom(AccessibilityContent::new_without_help(
                     label,
-                    WarpA11yRole::TextareaRole,
+                    YarpA11yRole::TextareaRole,
                 ))
             }
             OpenBlockFilterEditor(block_index) => Custom(AccessibilityContent::new_without_help(
                 format!("Open block filter editor for block {block_index}"),
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             ShowInitializationBlock => Custom(AccessibilityContent::new_without_help(
                 "Showed initialization block",
-                WarpA11yRole::TextareaRole,
+                YarpA11yRole::TextareaRole,
             )),
             ShowWarpifySettings => Custom(AccessibilityContent::new_without_help(
                 "Opened Warpify Settings",
-                WarpA11yRole::ButtonRole,
+                YarpA11yRole::ButtonRole,
             )),
             OpenFilesPalette { .. } => Custom(AccessibilityContent::new_without_help(
                 "Opened file search palette",
-                WarpA11yRole::ButtonRole,
+                YarpA11yRole::ButtonRole,
             )),
             InsertCommandCorrection { .. }
             | BlockListContextMenu(_)
@@ -24271,28 +24271,28 @@ impl TypedActionView for TerminalView {
             OpenInWarpBanner(action) => self.open_in_warp_banner_accessibility_content(*action),
             OpenAIBlockAttachedBlocksMenu { .. } => Custom(AccessibilityContent::new_without_help(
                 "Open list of blocks attached as context to this AI query.".to_owned(),
-                WarpA11yRole::PopoverRole,
+                YarpA11yRole::PopoverRole,
             )),
             OpenAIBlockOverflowMenu { .. } => Custom(AccessibilityContent::new_without_help(
                 "Open overflow menu with copy options for this AI block.".to_owned(),
-                WarpA11yRole::PopoverRole,
+                YarpA11yRole::PopoverRole,
             )),
             RewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
                 "Show confirmation dialog to rewind to before this point in the AI conversation."
                     .to_owned(),
-                WarpA11yRole::ButtonRole,
+                YarpA11yRole::ButtonRole,
             )),
             ExecuteRewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
                 "Execute rewind to before this point in the AI conversation.".to_owned(),
-                WarpA11yRole::ButtonRole,
+                YarpA11yRole::ButtonRole,
             )),
             SelectAIAttachedBlock(_) => Custom(AccessibilityContent::new_without_help(
                 "Click on a block attached as context to this AI query.".to_owned(),
-                WarpA11yRole::ButtonRole,
+                YarpA11yRole::ButtonRole,
             )),
             PickRepoToOpen => Custom(AccessibilityContent::new_without_help(
                 "Use file picker to select a git repository".to_owned(),
-                WarpA11yRole::PopoverRole,
+                YarpA11yRole::PopoverRole,
             )),
             #[cfg(feature = "voice_input")]
             ToggleCLIAgentVoiceInput(_) => Empty,

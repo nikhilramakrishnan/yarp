@@ -153,8 +153,8 @@ impl ApplicationService {
 // invoking org.freedesktop.Application IPC methods.
 #[proxy(
     interface = "org.freedesktop.Application",
-    default_service = "dev.yarp.WarpLocal",
-    default_path = "/dev/yarp/WarpLocal",
+    default_service = "dev.yarp.YarpLocal",
+    default_path = "/dev/yarp/YarpLocal",
     gen_blocking = false
 )]
 trait ExistingApplication {

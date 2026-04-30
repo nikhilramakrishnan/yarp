@@ -434,7 +434,7 @@ fn build_appearance(ctx: &mut AppContext) -> Appearance {
 fn emit_theme_background_event(theme: &YarpTheme) {
     let bg = theme.background().into_solid();
     let color = format!("#{:02x}{:02x}{:02x}", bg.r, bg.g, bg.b);
-    crate::platform::wasm::emit_event(crate::platform::wasm::WarpEvent::ThemeBackgroundChanged {
+    crate::platform::wasm::emit_event(crate::platform::wasm::YarpEvent::ThemeBackgroundChanged {
         color,
     });
 }

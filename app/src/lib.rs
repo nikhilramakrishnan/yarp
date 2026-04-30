@@ -239,9 +239,9 @@ use crate::terminal::resizable_data::ResizableData;
 use crate::terminal::view::inline_banner::ByoLlmAuthBannerSessionState;
 use crate::terminal::{AudibleBell, History};
 use crate::undo_close::UndoCloseStack;
-use crate::user_config::WarpConfig;
+use crate::user_config::YarpConfig;
 use crate::vim_registers::VimRegisters;
-use crate::warp_managed_paths_watcher::{ensure_warp_watch_roots_exist, WarpManagedPathsWatcher};
+use crate::warp_managed_paths_watcher::{ensure_warp_watch_roots_exist, YarpManagedPathsWatcher};
 use crate::workflows::aliases::WorkflowAliases;
 use crate::workflows::local_workflows::LocalWorkflows;
 use crate::workspace::{ActiveSession, OneTimeModalModel, ToastStack};
@@ -995,9 +995,9 @@ fn initialize_app(
     preview_config_migration::migrate_preview_config_dir_if_needed();
 
     ensure_warp_watch_roots_exist();
-    ctx.add_singleton_model(WarpManagedPathsWatcher::new);
+    ctx.add_singleton_model(YarpManagedPathsWatcher::new);
 
-    ctx.add_singleton_model(WarpConfig::new);
+    ctx.add_singleton_model(YarpConfig::new);
     ctx.add_singleton_model(|_ctx| SettingsManager::default());
 
     let user_defaults_on_startup = settings::init(startup_toml_parse_error, ctx);
@@ -2433,7 +2433,7 @@ pub fn enabled_features() -> HashSet<FeatureFlag> {
         #[cfg(all(not(windows), feature = "kitty_images"))]
         FeatureFlag::KittyImages,
         #[cfg(feature = "warp_packs")]
-        FeatureFlag::WarpPacks,
+        FeatureFlag::YarpPacks,
         #[cfg(feature = "global_ai_analytics_banner")]
         FeatureFlag::GlobalAIAnalyticsBanner,
         #[cfg(feature = "global_ai_analytics_collection")]
@@ -2647,7 +2647,7 @@ pub fn enabled_features() -> HashSet<FeatureFlag> {
         #[cfg(feature = "agent_view_block_context")]
         FeatureFlag::AgentViewBlockContext,
         #[cfg(feature = "yarp_managed_secrets")]
-        FeatureFlag::WarpManagedSecrets,
+        FeatureFlag::YarpManagedSecrets,
         #[cfg(feature = "v4a_file_diffs")]
         FeatureFlag::V4AFileDiffs,
         #[cfg(feature = "interactive_conversation_management_view")]

@@ -9,7 +9,7 @@ use yarp_util::path::user_friendly_path;
 #[cfg(feature = "local_fs")]
 use yarpui::clipboard::ClipboardContent;
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     elements::{
         Align, Container, CrossAxisAlignment, DispatchEventResult, Empty, EventHandler, Flex,
         MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, SavePosition, Shrinkable,
@@ -810,7 +810,7 @@ impl View for FileNotebookView {
     fn accessibility_contents(&self, _ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new_without_help(
             format!("{} notebook", self.title()),
-            WarpA11yRole::TextRole,
+            YarpA11yRole::TextRole,
         ))
     }
 

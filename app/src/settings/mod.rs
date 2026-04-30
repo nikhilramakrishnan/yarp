@@ -119,7 +119,7 @@ use crate::{
     root_view::QuakeModePinPosition,
     terminal::{BlockListSettings, BlockPadding},
     themes::theme::{ThemeKind, YarpTheme},
-    user_config::WarpConfig,
+    user_config::YarpConfig,
 };
 use lazy_static::lazy_static;
 use pathfinder_geometry::{rect::RectF, vector::Vector2F};
@@ -519,7 +519,7 @@ impl Settings {
     pub fn theme_for_theme_kind(theme_kind: &ThemeKind, ctx: &mut AppContext) -> YarpTheme {
         match theme_kind {
             ThemeKind::InMemory(in_memory_theme) => in_memory_theme.theme(),
-            _ => WarpConfig::as_ref(ctx).theme_config().theme(theme_kind),
+            _ => YarpConfig::as_ref(ctx).theme_config().theme(theme_kind),
         }
     }
 }

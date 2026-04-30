@@ -34,7 +34,7 @@ use crate::ui_components::icons;
 use crate::workspace::tab_settings::TabSettings;
 use settings::Setting as _;
 use yarp_core::context_flag::ContextFlag;
-use yarp_core::ui::Icon as WarpIcon;
+use yarp_core::ui::Icon as YarpIcon;
 use yarpui::elements::{
     ChildAnchor, ConstrainedBox, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize,
     OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Shrinkable, Stack,
@@ -796,9 +796,9 @@ impl TerminalView {
         {
             ConstrainedBox::new(
                 if is_ambient_agent {
-                    WarpIcon::OzCloud
+                    YarpIcon::OzCloud
                 } else {
-                    WarpIcon::Oz
+                    YarpIcon::Oz
                 }
                 .to_yarpui_icon(blended_colors::text_sub(theme, theme.background()).into())
                 .finish(),

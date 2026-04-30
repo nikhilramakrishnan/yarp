@@ -2,7 +2,7 @@
 
 #import "services.h"
 
-@implementation WarpServicesProvider
+@implementation YarpServicesProvider
 
 // Opens a new tab for each file URL in the pasteboard, with the initial
 // directory set to the provided path (or parent directory, if the path
@@ -52,10 +52,10 @@
 
 @end
 
-// Creates a new WarpServicesProvider and registers it as the global services
+// Creates a new YarpServicesProvider and registers it as the global services
 // provider for the application
 void warp_register_services_provider() {
-    WarpServicesProvider *provider = [[WarpServicesProvider alloc] init];
+    YarpServicesProvider *provider = [[YarpServicesProvider alloc] init];
 
     // Set the global NSServices provider for the application.  This holds a
     // strong reference to the provider, so we don't have to worry about it

@@ -132,7 +132,7 @@ use yarpui::text::TextBuffer;
 use yarpui::text_layout::TextStyle;
 use yarpui::windowing::WindowManager;
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     fonts::Cache as FontCache,
     keymap::{EditableBinding, FixedBinding},
     AppContext, Element, Entity, ModelAsRef, ModelHandle, View, ViewContext, WindowId,
@@ -8368,7 +8368,7 @@ impl TypedActionView for EditorView {
     ) -> ActionAccessibilityContent {
         match action {
             EditorAction::UserInsert(text) => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help(text.to_string(), WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help(text.to_string(), YarpA11yRole::UserAction),
             ),
             EditorAction::SelectLeft
             | EditorAction::SelectToLineEnd
@@ -8403,7 +8403,7 @@ impl TypedActionView for EditorView {
             EditorAction::Paste => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     format!("Pasting: {}", self.clipboard_content(ctx)),
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ))
             }
             _ => ActionAccessibilityContent::from_debug(),

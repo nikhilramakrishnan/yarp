@@ -6,7 +6,7 @@ use url::{Origin, ParseError, Url};
 use crate::AppId;
 use crate::{
     channel::config::{
-        ChannelConfig, McpOAuthProviderConfig, OzConfig, RudderStackDestination, WarpServerConfig,
+        ChannelConfig, McpOAuthProviderConfig, OzConfig, RudderStackDestination, YarpServerConfig,
     },
     features::FeatureFlag,
 };
@@ -44,7 +44,7 @@ impl ChannelState {
             config: ChannelConfig {
                 app_id,
                 logfile_name: "".into(),
-                server_config: WarpServerConfig::production(),
+                server_config: YarpServerConfig::production(),
                 oz_config: OzConfig::production(),
                 telemetry_config: None,
                 autoupdate_config: None,

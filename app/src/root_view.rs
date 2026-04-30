@@ -50,7 +50,7 @@ use crate::terminal::keys_settings::KeysSettings;
 use crate::terminal::shell::ShellType;
 use crate::terminal::view::{cell_size_and_padding, TerminalAction};
 use crate::themes::onboarding_theme_picker_themes;
-use crate::themes::theme::{AnsiColorIdentifier, Blend, Fill, ThemeKind, WarpThemeConfig};
+use crate::themes::theme::{AnsiColorIdentifier, Blend, Fill, ThemeKind, YarpThemeConfig};
 use crate::uri::OpenMCPSettingsArgs;
 use crate::util::bindings::{self, is_binding_pty_compliant};
 use crate::util::traffic_lights::{traffic_light_data, TrafficLightData, TrafficLightMouseStates};
@@ -2145,7 +2145,7 @@ impl RootView {
     }
 
     fn onboarding_theme_kind(theme_name: &str) -> Option<ThemeKind> {
-        WarpThemeConfig::new()
+        YarpThemeConfig::new()
             .theme_items()
             .find_map(|(kind, theme)| {
                 (theme.name().as_deref() == Some(theme_name)).then(|| kind.clone())

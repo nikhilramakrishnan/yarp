@@ -18,7 +18,7 @@ use yarpui::elements::{
 };
 use yarpui::WindowId;
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     elements::{
         Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss,
         DispatchEventResult, Element, EventHandler, Flex, Hoverable, Icon, MainAxisAlignment,
@@ -2342,28 +2342,28 @@ impl<A: Action + Clone> SubMenu<A> {
                 Custom(AccessibilityContent::new(
                     menu_item,
                     instructions,
-                    WarpA11yRole::TextRole,
+                    YarpA11yRole::TextRole,
                 ))
             }
             OpenSubmenu => Custom(AccessibilityContent::new(
                 String::from("Submenu Expanded"),
                 "Press the right key to open the selected submenu",
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             CloseSubmenu(_) => Custom(AccessibilityContent::new(
                 String::from("Submenu Closed"),
                 "Removing focus from a submenu will close the submenu",
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             Close(_) => Custom(AccessibilityContent::new(
                 String::from("Menu Closed"),
                 "Press the escape key to close the menu",
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             Enter => Custom(AccessibilityContent::new(
                 String::from("Action Selected"),
                 "Press the enter key to execute the selected menu item action",
-                WarpA11yRole::TextRole,
+                YarpA11yRole::TextRole,
             )),
             HoverSubmenuLeafNode { .. }
             | UnhoverSubmenuParent(_)

@@ -391,7 +391,7 @@ impl PromptAlertView {
                         "use your own API keys",
                         WorkspaceAction::ShowSettingsPageWithSearch {
                             search_query: "api".to_string(),
-                            section: Some(SettingsSection::WarpAgent),
+                            section: Some(SettingsSection::YarpAgent),
                         },
                     ));
                 }

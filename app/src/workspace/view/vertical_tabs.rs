@@ -61,8 +61,8 @@ use yarp_core::telemetry::TelemetryEvent as _;
 use yarp_core::ui::color::blend::Blend;
 use yarp_core::ui::color::coloru_with_opacity;
 use yarp_core::ui::theme::color::internal_colors;
-use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, YarpTheme};
-use yarp_core::ui::Icon as WarpIcon;
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as YarpThemeFill, YarpTheme};
+use yarp_core::ui::Icon as YarpIcon;
 use yarpui::elements::DispatchEventResult;
 use yarpui::elements::{
     resizable_state_handle, Border, ChildAnchor, Clipped, ClippedScrollStateHandle,
@@ -254,7 +254,7 @@ enum TerminalPrimaryLineFont {
     Monospace,
 }
 
-fn oz_icon_fill(theme: &YarpTheme) -> WarpThemeFill {
+fn oz_icon_fill(theme: &YarpTheme) -> YarpThemeFill {
     theme.main_text_color(theme.background())
 }
 
@@ -1166,7 +1166,7 @@ fn render_control_bar(
     let theme = appearance.theme();
     let sub_text = theme.sub_text_color(theme.background());
 
-    let search_icon = ConstrainedBox::new(WarpIcon::Search.to_yarpui_icon(sub_text).finish())
+    let search_icon = ConstrainedBox::new(YarpIcon::Search.to_yarpui_icon(sub_text).finish())
         .with_width(SEARCH_ICON_SIZE)
         .with_height(SEARCH_ICON_SIZE)
         .finish();
@@ -1226,35 +1226,35 @@ fn render_detail_kind_badge_icon(
             if let Some(icon) = cli_agent_session.and_then(|session| session.agent.icon()) {
                 let color = cli_agent_session
                     .and_then(|session| session.agent.brand_color())
-                    .map(WarpThemeFill::Solid)
+                    .map(YarpThemeFill::Solid)
                     .unwrap_or_else(|| theme.accent());
                 return icon.to_yarpui_icon(color).finish();
             }
 
             let icon = if terminal_view.is_ambient_agent_session(app) {
-                WarpIcon::OzCloud
+                YarpIcon::OzCloud
             } else if terminal_view
                 .selected_conversation_display_title(app)
                 .is_some()
             {
-                WarpIcon::Oz
+                YarpIcon::Oz
             } else {
-                WarpIcon::Terminal
+                YarpIcon::Terminal
             };
             let color = match icon {
-                WarpIcon::Oz | WarpIcon::OzCloud => oz_icon_fill(theme),
-                WarpIcon::Terminal => disabled_text,
+                YarpIcon::Oz | YarpIcon::OzCloud => oz_icon_fill(theme),
+                YarpIcon::Terminal => disabled_text,
                 _ => sub_text,
             };
             icon.to_yarpui_icon(color).finish()
         }
         TypedPane::Code(_) => icon_from_file_path(&props.title, appearance)
-            .unwrap_or_else(|| WarpIcon::Code2.to_yarpui_icon(sub_text).finish()),
+            .unwrap_or_else(|| YarpIcon::Code2.to_yarpui_icon(sub_text).finish()),
         typed => {
             let fill = typed
                 .yarp_drive_object_type()
                 .map(|object_type| {
-                    WarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
+                    YarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
                 })
                 .unwrap_or(sub_text);
             typed.icon().to_yarpui_icon(fill).finish()
@@ -1276,7 +1276,7 @@ fn render_settings_button(
         state.settings_button_mouse_state.clone(),
         move |hover_state| {
             let icon = ConstrainedBox::new(
-                WarpIcon::Settings
+                YarpIcon::Settings
                     .to_yarpui_icon(if is_popup_open { main_text } else { sub_text })
                     .finish(),
             )
@@ -2090,7 +2090,7 @@ fn render_group_action_buttons(
 
     let kebab_button = Hoverable::new(kebab_mouse_state, move |button_state| {
         let mut container = Container::new(
-            ConstrainedBox::new(WarpIcon::DotsVertical.to_yarpui_icon(meta_color).finish())
+            ConstrainedBox::new(YarpIcon::DotsVertical.to_yarpui_icon(meta_color).finish())
                 .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .finish(),
@@ -2113,7 +2113,7 @@ fn render_group_action_buttons(
 
     let close_button = Hoverable::new(close_mouse_state, move |button_state| {
         let mut container = Container::new(
-            ConstrainedBox::new(WarpIcon::X.to_yarpui_icon(meta_color).finish())
+            ConstrainedBox::new(YarpIcon::X.to_yarpui_icon(meta_color).finish())
                 .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .finish(),
@@ -2231,8 +2231,8 @@ fn resolve_icon_with_status_variant(
     let main_text = theme.main_text_color(theme.background());
     let sub_text = theme.sub_text_color(theme.background());
 
-    let drive_color = |object_type: DriveObjectType| -> WarpThemeFill {
-        WarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
+    let drive_color = |object_type: DriveObjectType| -> YarpThemeFill {
+        YarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
     };
 
     match typed {
@@ -2275,7 +2275,7 @@ fn resolve_icon_with_status_variant(
             } else {
                 // Plain terminal: use foreground color per design spec
                 IconWithStatusVariant::Neutral {
-                    icon: WarpIcon::Terminal,
+                    icon: YarpIcon::Terminal,
                     icon_color: main_text,
                 }
             }
@@ -2285,7 +2285,7 @@ fn resolve_icon_with_status_variant(
                 IconWithStatusVariant::NeutralElement { icon_element }
             } else {
                 IconWithStatusVariant::Neutral {
-                    icon: WarpIcon::Code2,
+                    icon: YarpIcon::Code2,
                     icon_color: sub_text,
                 }
             }
@@ -2343,7 +2343,7 @@ const INDICATOR_DOT_SIZE: f32 = 8.;
 
 fn render_title_indicator(theme: &YarpTheme) -> Box<dyn Element> {
     ConstrainedBox::new(
-        WarpIcon::CircleFilled
+        YarpIcon::CircleFilled
             .to_yarpui_icon(theme.accent())
             .finish(),
     )
@@ -2555,24 +2555,24 @@ impl TypedPane<'_> {
         }
     }
 
-    fn icon(&self) -> WarpIcon {
+    fn icon(&self) -> YarpIcon {
         match self {
-            TypedPane::Terminal(_) => WarpIcon::Terminal,
-            TypedPane::Code(_) => WarpIcon::Code2,
-            TypedPane::CodeDiff => WarpIcon::Diff,
-            TypedPane::File => WarpIcon::File,
-            TypedPane::Notebook { is_plan: true } => WarpIcon::Compass,
-            TypedPane::Notebook { is_plan: false } => WarpIcon::Notebook,
-            TypedPane::Workflow { is_ai_prompt: true } => WarpIcon::Prompt,
+            TypedPane::Terminal(_) => YarpIcon::Terminal,
+            TypedPane::Code(_) => YarpIcon::Code2,
+            TypedPane::CodeDiff => YarpIcon::Diff,
+            TypedPane::File => YarpIcon::File,
+            TypedPane::Notebook { is_plan: true } => YarpIcon::Compass,
+            TypedPane::Notebook { is_plan: false } => YarpIcon::Notebook,
+            TypedPane::Workflow { is_ai_prompt: true } => YarpIcon::Prompt,
             TypedPane::Workflow {
                 is_ai_prompt: false,
-            } => WarpIcon::Workflow,
-            TypedPane::Settings | TypedPane::EnvironmentManagement => WarpIcon::Gear,
-            TypedPane::EnvVarCollection => WarpIcon::EnvVarCollection,
-            TypedPane::AIFact => WarpIcon::BookOpen,
-            TypedPane::AIDocument => WarpIcon::Compass,
-            TypedPane::ExecutionProfileEditor => WarpIcon::Lightning,
-            TypedPane::Other => WarpIcon::File,
+            } => YarpIcon::Workflow,
+            TypedPane::Settings | TypedPane::EnvironmentManagement => YarpIcon::Gear,
+            TypedPane::EnvVarCollection => YarpIcon::EnvVarCollection,
+            TypedPane::AIFact => YarpIcon::BookOpen,
+            TypedPane::AIDocument => YarpIcon::Compass,
+            TypedPane::ExecutionProfileEditor => YarpIcon::Lightning,
+            TypedPane::Other => YarpIcon::File,
         }
     }
 }
@@ -3333,7 +3333,7 @@ fn compact_branch_subtitle_display(
 
 fn render_git_branch_text(
     branch: &str,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     font_size: f32,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -3366,7 +3366,7 @@ enum MetadataLeftContent {
 
 fn render_text_line(
     text: &str,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -3399,7 +3399,7 @@ fn render_inline_tab_rename_editor(
 fn render_title_override(
     props: &PaneProps<'_>,
     font_size: f32,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
     app: &AppContext,
@@ -3433,7 +3433,7 @@ fn render_pane_title_slot(
     props: &PaneProps<'_>,
     generated_title: impl FnOnce() -> Box<dyn Element>,
     font_size: f32,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
     app: &AppContext,
@@ -3629,9 +3629,9 @@ fn render_summary_pane_kind_icon_circle(
     let (icon_element, background): (Box<dyn Element>, ElementFill) = match kind {
         SummaryPaneKind::OzAgent { is_ambient } => {
             let icon = if is_ambient {
-                WarpIcon::OzCloud
+                YarpIcon::OzCloud
             } else {
-                WarpIcon::Oz
+                YarpIcon::Oz
             };
             (
                 icon.to_yarpui_icon(oz_icon_fill(theme)).finish(),
@@ -3643,11 +3643,11 @@ fn render_summary_pane_kind_icon_circle(
             let icon_element = agent
                 .icon()
                 .map(|icon| {
-                    icon.to_yarpui_icon(WarpThemeFill::Solid(icon_color))
+                    icon.to_yarpui_icon(YarpThemeFill::Solid(icon_color))
                         .finish()
                 })
                 .unwrap_or_else(|| {
-                    WarpIcon::Terminal
+                    YarpIcon::Terminal
                         .to_yarpui_icon(theme.sub_text_color(theme.background()))
                         .finish()
                 });
@@ -3663,7 +3663,7 @@ fn render_summary_pane_kind_icon_circle(
         }
         SummaryPaneKind::Code { title } => (
             icon_from_file_path(&title, appearance).unwrap_or_else(|| {
-                WarpIcon::Code2
+                YarpIcon::Code2
                     .to_yarpui_icon(theme.sub_text_color(theme.background()))
                     .finish()
             }),
@@ -3705,36 +3705,36 @@ fn render_summary_pane_kind_icon_circle(
 fn summary_pane_kind_icon(
     kind: SummaryPaneKind,
     appearance: &Appearance,
-) -> (WarpIcon, WarpThemeFill) {
+) -> (YarpIcon, YarpThemeFill) {
     let theme = appearance.theme();
     let main_text = theme.main_text_color(theme.background());
     let sub_text = theme.sub_text_color(theme.background());
-    let drive_color = |object_type: DriveObjectType| -> WarpThemeFill {
-        WarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
+    let drive_color = |object_type: DriveObjectType| -> YarpThemeFill {
+        YarpThemeFill::Solid(yarp_drive_icon_color(appearance, object_type))
     };
 
     match kind {
-        SummaryPaneKind::Terminal => (WarpIcon::Terminal, main_text),
+        SummaryPaneKind::Terminal => (YarpIcon::Terminal, main_text),
         SummaryPaneKind::OzAgent { is_ambient } => (
             if is_ambient {
-                WarpIcon::OzCloud
+                YarpIcon::OzCloud
             } else {
-                WarpIcon::Oz
+                YarpIcon::Oz
             },
             main_text,
         ),
         SummaryPaneKind::CLIAgent { agent } => (
-            agent.icon().unwrap_or(WarpIcon::Terminal),
-            WarpThemeFill::Solid(agent.brand_icon_color()),
+            agent.icon().unwrap_or(YarpIcon::Terminal),
+            YarpThemeFill::Solid(agent.brand_icon_color()),
         ),
-        SummaryPaneKind::Code { .. } => (WarpIcon::Code2, sub_text),
-        SummaryPaneKind::CodeDiff => (WarpIcon::Diff, sub_text),
-        SummaryPaneKind::File => (WarpIcon::File, sub_text),
+        SummaryPaneKind::Code { .. } => (YarpIcon::Code2, sub_text),
+        SummaryPaneKind::CodeDiff => (YarpIcon::Diff, sub_text),
+        SummaryPaneKind::File => (YarpIcon::File, sub_text),
         SummaryPaneKind::Notebook { is_plan } => (
             if is_plan {
-                WarpIcon::Compass
+                YarpIcon::Compass
             } else {
-                WarpIcon::Notebook
+                YarpIcon::Notebook
             },
             drive_color(DriveObjectType::Notebook {
                 is_ai_document: is_plan,
@@ -3742,9 +3742,9 @@ fn summary_pane_kind_icon(
         ),
         SummaryPaneKind::Workflow { is_ai_prompt } => (
             if is_ai_prompt {
-                WarpIcon::Prompt
+                YarpIcon::Prompt
             } else {
-                WarpIcon::Workflow
+                YarpIcon::Workflow
             },
             if is_ai_prompt {
                 drive_color(DriveObjectType::AgentModeWorkflow)
@@ -3753,16 +3753,16 @@ fn summary_pane_kind_icon(
             },
         ),
         SummaryPaneKind::Settings | SummaryPaneKind::EnvironmentManagement => {
-            (WarpIcon::Gear, main_text)
+            (YarpIcon::Gear, main_text)
         }
         SummaryPaneKind::EnvVarCollection => (
-            WarpIcon::EnvVarCollection,
+            YarpIcon::EnvVarCollection,
             drive_color(DriveObjectType::EnvVarCollection),
         ),
-        SummaryPaneKind::AIFact => (WarpIcon::BookOpen, drive_color(DriveObjectType::AIFact)),
-        SummaryPaneKind::AIDocument => (WarpIcon::Compass, sub_text),
-        SummaryPaneKind::ExecutionProfileEditor => (WarpIcon::Lightning, sub_text),
-        SummaryPaneKind::Other => (WarpIcon::File, sub_text),
+        SummaryPaneKind::AIFact => (YarpIcon::BookOpen, drive_color(DriveObjectType::AIFact)),
+        SummaryPaneKind::AIDocument => (YarpIcon::Compass, sub_text),
+        SummaryPaneKind::ExecutionProfileEditor => (YarpIcon::Lightning, sub_text),
+        SummaryPaneKind::Other => (YarpIcon::File, sub_text),
     }
 }
 
@@ -3817,7 +3817,7 @@ fn render_summary_branch_line(
 fn render_terminal_primary_line_for_view(
     terminal_view: &TerminalView,
     appearance: &Appearance,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     app: &AppContext,
 ) -> Box<dyn Element> {
     let title_text = terminal_view.terminal_title_from_shell();
@@ -3853,7 +3853,7 @@ fn render_terminal_primary_line(
     primary_line: TerminalPrimaryLineData,
     terminal_view: &TerminalView,
     appearance: &Appearance,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
 ) -> Box<dyn Element> {
     let theme = appearance.theme();
 
@@ -4466,7 +4466,7 @@ pub(super) fn render_settings_popup(
                 Expanded::new(
                     1.,
                     render_popup_segment(
-                        WarpIcon::Menu01,
+                        YarpIcon::Menu01,
                         matches!(current_mode, VerticalTabsViewMode::Compact),
                         state.compact_segment_mouse_state.clone(),
                         VerticalTabsViewMode::Compact,
@@ -4480,7 +4480,7 @@ pub(super) fn render_settings_popup(
                 Expanded::new(
                     1.,
                     render_popup_segment(
-                        WarpIcon::Grid,
+                        YarpIcon::Grid,
                         matches!(current_mode, VerticalTabsViewMode::Expanded),
                         state.expanded_segment_mouse_state.clone(),
                         VerticalTabsViewMode::Expanded,
@@ -4716,7 +4716,7 @@ fn render_compact_subtitle_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_yarpui_icon(main_text).finish())
+            ConstrainedBox::new(YarpIcon::Check.to_yarpui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4769,7 +4769,7 @@ fn render_tab_item_mode_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_yarpui_icon(main_text).finish())
+            ConstrainedBox::new(YarpIcon::Check.to_yarpui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4822,7 +4822,7 @@ fn render_primary_info_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_yarpui_icon(main_text).finish())
+            ConstrainedBox::new(YarpIcon::Check.to_yarpui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4889,7 +4889,7 @@ fn render_show_toggle_option(
 
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_enabled {
-            ConstrainedBox::new(WarpIcon::Check.to_yarpui_icon(main_text).finish())
+            ConstrainedBox::new(YarpIcon::Check.to_yarpui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4959,12 +4959,12 @@ fn render_show_toggle_option(
 }
 
 fn render_popup_segment(
-    icon: WarpIcon,
+    icon: YarpIcon,
     is_selected: bool,
     mouse_state: MouseStateHandle,
     mode: VerticalTabsViewMode,
     theme: &YarpTheme,
-    icon_color: WarpThemeFill,
+    icon_color: YarpThemeFill,
 ) -> Box<dyn Element> {
     Hoverable::new(mouse_state, move |hover_state| {
         let background = if is_selected {
@@ -5170,9 +5170,9 @@ fn detail_sidecar_width_and_bounds(available_width: f32) -> (f32, PositionedElem
 }
 
 struct DetailSidecarTextColors {
-    main: WarpThemeFill,
-    sub: WarpThemeFill,
-    disabled: WarpThemeFill,
+    main: YarpThemeFill,
+    sub: YarpThemeFill,
+    disabled: YarpThemeFill,
 }
 
 fn detail_sidecar_background(theme: &YarpTheme) -> ColorU {
@@ -5201,7 +5201,7 @@ fn render_detail_badge(
     label: impl Into<String>,
     icon: Option<Box<dyn Element>>,
     background: Option<ThemeFill>,
-    text_color: WarpThemeFill,
+    text_color: YarpThemeFill,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let mut content = Flex::row()
@@ -5244,14 +5244,14 @@ fn render_detail_status_pill(
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_spacing(4.)
             .with_child(
-                ConstrainedBox::new(icon.to_yarpui_icon(WarpThemeFill::Solid(color)).finish())
+                ConstrainedBox::new(icon.to_yarpui_icon(YarpThemeFill::Solid(color)).finish())
                     .with_width(12.)
                     .with_height(12.)
                     .finish(),
             )
             .with_child(
                 Text::new_inline(status.to_string(), appearance.ui_font_family(), 10.)
-                    .with_color(WarpThemeFill::Solid(color).into())
+                    .with_color(YarpThemeFill::Solid(color).into())
                     .finish(),
             )
             .finish(),
@@ -5265,7 +5265,7 @@ fn render_detail_status_pill(
 fn render_detail_wrapping_text(
     text: impl Into<String>,
     font_size: f32,
-    color: WarpThemeFill,
+    color: YarpThemeFill,
     style: Option<Properties>,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -5280,7 +5280,7 @@ fn render_detail_wrapping_text(
 
 fn render_terminal_detail_primary_line(
     primary_line: &TerminalPrimaryLineData,
-    color: WarpThemeFill,
+    color: YarpThemeFill,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let font_family = match primary_line {

@@ -25,7 +25,7 @@ impl<'a> Mouse<'a> {
     }
 
     pub fn move_to(&mut self, target: Vector2I) -> Result<(), String> {
-        // Use WarpPointer to move the pointer. Unlike XTEST MotionNotify, this
+        // Use YarpPointer to move the pointer. Unlike XTEST MotionNotify, this
         // reliably updates the server's pointer position, ensuring that subsequent
         // button events are delivered to the correct window.
         self.conn

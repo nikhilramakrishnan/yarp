@@ -11,7 +11,7 @@ use yarp_graphql::billing::AddonCreditsOption;
 use yarpui::elements::{
     Align, Border, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, DropShadow, Expanded, Flex, FormattedTextElement, HighlightedHyperlink,
-    Hoverable, Icon as WarpUiIcon, MainAxisAlignment, MainAxisSize, MouseStateHandle,
+    Hoverable, Icon as YarpUiIcon, MainAxisAlignment, MainAxisSize, MouseStateHandle,
     OffsetPositioning, ParentAnchor, ParentElement as _, ParentOffsetBounds, Radius, Shrinkable,
     SizeConstraintCondition, SizeConstraintSwitch, Stack, Text,
 };
@@ -264,7 +264,7 @@ impl BuyCreditsBanner {
             move |state| {
                 let info_icon_element = Container::new(
                     ConstrainedBox::new(
-                        WarpUiIcon::new("bundled/svg/info.svg", sub_text_color).finish(),
+                        YarpUiIcon::new("bundled/svg/info.svg", sub_text_color).finish(),
                     )
                     .with_width(13.)
                     .with_height(13.)

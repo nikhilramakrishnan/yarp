@@ -38,7 +38,7 @@ use crate::ai::generate_code_review_content::api::{
 use crate::ai::llms::ModelsByFeature;
 use crate::ai::request_usage_model::{RequestLimitInfo, RequestUsageInfo};
 use crate::ai_assistant::{
-    execution_context::WarpAiExecutionContext, requests::GenerateDialogueResult,
+    execution_context::YarpAiExecutionContext, requests::GenerateDialogueResult,
     utils::TranscriptPart, AIGeneratedCommand, GenerateCommandsFromNaturalLanguageError,
 };
 use crate::drive::workflows::ai_assist::{GeneratedCommandMetadata, GeneratedCommandMetadataError};
@@ -189,7 +189,7 @@ impl AIClient for OssAiClient {
     async fn generate_commands_from_natural_language(
         &self,
         prompt: String,
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> Result<Vec<AIGeneratedCommand>, GenerateCommandsFromNaturalLanguageError> {
         let provider = LocalLlmProvider::from_env();
         let response = provider
@@ -235,7 +235,7 @@ impl AIClient for OssAiClient {
         &self,
         transcript: Vec<TranscriptPart>,
         prompt: String,
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> anyhow::Result<GenerateDialogueResult> {
         let provider = LocalLlmProvider::from_env();
         let mut messages: Vec<Message> = Vec::new();

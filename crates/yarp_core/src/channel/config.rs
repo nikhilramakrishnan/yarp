@@ -13,7 +13,7 @@ pub struct ChannelConfig {
     pub logfile_name: Cow<'static, str>,
 
     /// Configuration for talking to Yarp's servers.
-    pub server_config: WarpServerConfig,
+    pub server_config: YarpServerConfig,
     /// Configuration for Oz/ambient agents.
     pub oz_config: OzConfig,
     /// Configuration for telemetry sending, or [`None`] if telemetry should be
@@ -28,7 +28,7 @@ pub struct ChannelConfig {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct WarpServerConfig {
+pub struct YarpServerConfig {
     /// The root URL for the standard server pool.
     pub server_root_url: Cow<'static, str>,
     /// The URL for the RTC server, which serves real-time updates for Yarp Drive objects.
@@ -40,7 +40,7 @@ pub struct WarpServerConfig {
     pub firebase_auth_api_key: Cow<'static, str>,
 }
 
-impl WarpServerConfig {
+impl YarpServerConfig {
     pub fn production() -> Self {
         // yarp runs entirely against a local backend; the URLs below are
         // unreachable on purpose so any leaked HTTP request surfaces loudly in
@@ -60,14 +60,14 @@ pub struct OzConfig {
     pub oz_root_url: Cow<'static, str>,
 
     /// URL to use as the audience when issuing workload identity tokens. If [`None`], falls back
-    /// to [`WarpServerConfig::server_root_url`]. This exists so the audience is not overridden
+    /// to [`YarpServerConfig::server_root_url`]. This exists so the audience is not overridden
     /// when a custom server root URL is provided (e.g. an ngrok URL for local development).
     pub workload_audience_url: Option<Cow<'static, str>>,
 }
 
 impl OzConfig {
     pub fn production() -> Self {
-        // See WarpServerConfig::production for rationale on localhost.invalid.
+        // See YarpServerConfig::production for rationale on localhost.invalid.
         Self {
             oz_root_url: "https://localhost.invalid".into(),
             workload_audience_url: None,

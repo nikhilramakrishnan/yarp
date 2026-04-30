@@ -5,7 +5,7 @@ use clap::Parser;
 use integration::test::*;
 use integration::Builder;
 use yarp_cli::WorkerCommand;
-use yarp_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig};
+use yarp_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, YarpServerConfig};
 use yarp_core::AppId;
 
 /// The Yarp integration test runner.
@@ -32,11 +32,11 @@ pub fn main() -> Result<()> {
                 if cfg!(target_os = "macos") {
                     "Yarp-Integration"
                 } else {
-                    "WarpIntegration"
+                    "YarpIntegration"
                 },
             ),
             logfile_name: "warp_integration.log".into(),
-            server_config: WarpServerConfig {
+            server_config: YarpServerConfig {
                 firebase_auth_api_key: "".into(),
                 // Use an IP in the IANA testing range, with the TCP discard port, to
                 // black-hole server traffic.

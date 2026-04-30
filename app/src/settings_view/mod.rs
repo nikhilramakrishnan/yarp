@@ -204,12 +204,12 @@ pub enum SettingsSection {
     YarpDrive,
     Warpify,
     /// Internal backing-page identifier for AISettingsPageView. Multiple subpages
-    /// (WarpAgent, AgentProfiles, Knowledge, ThirdPartyCLIAgents) share this single
+    /// (YarpAgent, AgentProfiles, Knowledge, ThirdPartyCLIAgents) share this single
     /// backing page, so this variant is needed as the key in `settings_pages`.
-    /// External callers should navigate to a specific subpage (e.g. `WarpAgent`) instead.
+    /// External callers should navigate to a specific subpage (e.g. `YarpAgent`) instead.
     AI,
     // ── Agents umbrella subpages ──
-    WarpAgent,
+    YarpAgent,
     AgentProfiles,
     AgentMCPServers,
     Knowledge,
@@ -238,7 +238,7 @@ impl Display for SettingsSection {
             SettingsSection::SharedBlocks => write!(f, "Shared blocks"),
             SettingsSection::MCPServers => write!(f, "MCP Servers"),
             SettingsSection::YarpDrive => write!(f, "Yarp Drive"),
-            SettingsSection::WarpAgent => write!(f, "Yarp Agent"),
+            SettingsSection::YarpAgent => write!(f, "Yarp Agent"),
             SettingsSection::AgentProfiles => write!(f, "Profiles"),
             SettingsSection::AgentMCPServers => write!(f, "MCP servers"),
             SettingsSection::Knowledge => write!(f, "Knowledge"),
@@ -263,7 +263,7 @@ impl SettingsSection {
     pub fn is_ai_subpage(&self) -> bool {
         matches!(
             self,
-            Self::WarpAgent
+            Self::YarpAgent
                 | Self::AgentProfiles
                 | Self::AgentMCPServers
                 | Self::Knowledge
@@ -300,7 +300,7 @@ impl SettingsSection {
     /// The ordered list of AI subpage sections shown under the Agents umbrella.
     pub fn ai_subpages() -> &'static [Self] {
         &[
-            Self::WarpAgent,
+            Self::YarpAgent,
             Self::AgentProfiles,
             Self::AgentMCPServers,
             Self::Knowledge,
@@ -341,7 +341,7 @@ impl FromStr for SettingsSection {
             "Warpify" => Ok(Self::Warpify),
             "YarpDrive" | "WarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
             // This page was called "Oz" at one point, keep for backward compatibility.
-            "Oz" | "Yarp Agent" => Ok(Self::WarpAgent),
+            "Oz" | "Yarp Agent" => Ok(Self::YarpAgent),
             "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
             "MCP servers" | "AgentMCPServers" => Ok(Self::AgentMCPServers),
             "Knowledge" => Ok(Self::Knowledge),
@@ -469,7 +469,7 @@ pub mod flags {
     pub const UNIVERSAL_DEVELOPER_INPUT_ENABLED: &str = "UniversalDeveloperInputEnabled";
     pub const AGENT_MODE_INPUT: &str = "InputAgentMode";
     pub const TERMINAL_MODE_INPUT: &str = "InputTerminalMode";
-    pub const YARP_IS_DEFAULT_TERMINAL: &str = "WarpIsDefaultTerminal";
+    pub const YARP_IS_DEFAULT_TERMINAL: &str = "YarpIsDefaultTerminal";
     pub const PASSIVE_CODE_DIFF_KEYBINDINGS_ENABLED: &str = "PassiveCodeDiffKeybindingsEnabled";
     /// When set, ctrl-enter should accept a prompt suggestion rather than insert a newline.
     /// This flag is set by the terminal Input when there's a pending passive code diff.
@@ -1221,7 +1221,7 @@ impl SettingsView {
 
         // Resolve the initial page: map internal backing-page sections to their default subpage.
         let initial_page = match page {
-            Some(SettingsSection::AI) => SettingsSection::WarpAgent,
+            Some(SettingsSection::AI) => SettingsSection::YarpAgent,
             Some(SettingsSection::Code) => SettingsSection::CodeIndexing,
             Some(section) if section.is_subpage() => section,
             other => other.unwrap_or_default(),
@@ -1853,7 +1853,7 @@ impl SettingsView {
         // Map internal backing-page sections to their default subpage.
         // External callers should use subpage variants directly.
         let section = match section {
-            SettingsSection::AI => SettingsSection::WarpAgent,
+            SettingsSection::AI => SettingsSection::YarpAgent,
             SettingsSection::Code => SettingsSection::CodeIndexing,
             other => other,
         };

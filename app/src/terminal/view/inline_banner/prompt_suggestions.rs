@@ -34,7 +34,7 @@ use crate::{appearance::Appearance, terminal::view::TerminalAction};
 use yarp_core::channel::ChannelState;
 use yarp_core::ui::theme::color::internal_colors::{neutral_2, neutral_3};
 
-use crate::ui_components::icons::Icon as WarpUIIcon;
+use crate::ui_components::icons::Icon as YarpUIIcon;
 
 use crate::ai::agent::{PassiveSuggestionTrigger, StaticQueryType};
 use crate::server::ids::ServerId;
@@ -123,7 +123,7 @@ pub struct PromptSuggestionBannerState {
 #[allow(clippy::too_many_arguments)]
 fn render_button(
     text: String,
-    icon: WarpUIIcon,
+    icon: YarpUIIcon,
     button_index: usize,
     keystroke: Option<Keystroke>,
     mouse_state: MouseStateHandle,
@@ -408,7 +408,7 @@ impl View for PromptSuggestionsView {
                 1.0,
                 render_button(
                     prompt_suggestion.label().clone(),
-                    WarpUIIcon::Oz,
+                    YarpUIIcon::Oz,
                     0,
                     keybinding_name_to_keystroke(ACCEPT_PROMPT_SUGGESTION_KEYBINDING, app),
                     banner_state.accept_button_mouse_state.clone(),

@@ -605,14 +605,14 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
     $script:outerRunspacePool.ThreadOptions = 'ReuseThread'
     $script:outerRunspacePool.Open() | Out-Null
 
-    class WarpGeneratorCommand {
+    class YarpGeneratorCommand {
         [string]$CommandId
         [string]$Command
     }
 
     function Yarp-Run-GeneratorCommandImpl {
         param(
-            [WarpGeneratorCommand[]]$commands
+            [YarpGeneratorCommand[]]$commands
         )
 
         $jobNumber = $script:inBandCommandCount++
@@ -730,15 +730,15 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         # (which doesn't really exist in powershell, but :shrug:), we need
         # to properly handle them here like we do in bashzshfish
 
-        # Converts the passed in args to WarpGeneratorCommand objects to group them together
+        # Converts the passed in args to YarpGeneratorCommand objects to group them together
         # note that if an odd number of arguments is passed in, the last arg will be silently ignored
-        [WarpGeneratorCommand[]] $jobs = @()
+        [YarpGeneratorCommand[]] $jobs = @()
         for ($i = 0; $i -lt $passedArgs.Length; $i += 2) {
             $commandId = $passedArgs[$i]
             $command = $passedArgs[$i + 1]
 
             if ($null -ne $command) {
-                $jobs += [WarpGeneratorCommand]@{
+                $jobs += [YarpGeneratorCommand]@{
                     commandId = $commandId
                     command = $command
                 }

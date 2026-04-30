@@ -27,7 +27,7 @@ Windows paths:
 
 - Logs live under Yarp's local app data state directory.
 - Stable app logs are typically `%LOCALAPPDATA%\yarp\Yarp\data\logs\yarp.log*`
-- Preview app logs are typically `%LOCALAPPDATA%\yarp\WarpPreview\data\logs\warp_preview.log*`
+- Preview app logs are typically `%LOCALAPPDATA%\yarp\YarpPreview\data\logs\warp_preview.log*`
 - If the exact channel is unclear, ask the user to look under `%LOCALAPPDATA%\yarp\` for the relevant `Yarp*` folder and attach the matching `yarp*.log*` files from its `data\logs\` directory
 
 If no artifacts are available, say so plainly instead of implying they were checked.

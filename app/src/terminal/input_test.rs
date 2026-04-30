@@ -22,7 +22,7 @@ use crate::search::files::model::FileSearchModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::terminal::input::slash_command_model::SlashCommandEntryState;
 use crate::terminal::input::slash_commands::SlashCommandsEvent;
-use crate::warp_managed_paths_watcher::WarpManagedPathsWatcher;
+use crate::warp_managed_paths_watcher::YarpManagedPathsWatcher;
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 use repo_metadata::RepoMetadataModel;
@@ -161,7 +161,7 @@ pub fn initialize_app(app: &mut App) {
         crate::ai::document::ai_document_model::AIDocumentModel::new_for_test()
     });
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(YarpManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(SkillManager::new);
 
     // Add GlobalResourceHandlesProvider for persistence

@@ -207,7 +207,7 @@ impl Args {
                     }
                 }
 
-                if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+                if !FeatureFlag::YarpManagedSecrets.is_enabled() {
                     let args: Vec<String> = env::args().collect();
                     if args.len() > 1 && args[1] == "secret" {
                         eprintln!("error: unrecognized subcommand 'secret'\n");
@@ -304,7 +304,7 @@ impl Args {
         }
 
         // Hide the secret subcommand from help text.
-        if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+        if !FeatureFlag::YarpManagedSecrets.is_enabled() {
             command = command.mut_subcommand("secret", |c| c.hide(true));
         }
 

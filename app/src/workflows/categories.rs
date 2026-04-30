@@ -18,10 +18,10 @@ use crate::{
     cloud_object::model::persistence::CloudModel, workspaces::user_workspaces::UserWorkspaces,
 };
 use crate::{editor::Event as EditorEvent, send_telemetry_from_ctx};
-use crate::{server::telemetry::TelemetryEvent, user_config::WarpConfig};
+use crate::{server::telemetry::TelemetryEvent, user_config::YarpConfig};
 use crate::{
     themes::theme::{self, Blend, YarpTheme},
-    user_config::WarpConfigUpdateEvent,
+    user_config::YarpConfigUpdateEvent,
 };
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use std::collections::HashMap;
@@ -32,7 +32,7 @@ use std::sync::Arc;
 use yarp_core::ui::builder::UiBuilder;
 use yarp_core::ui::theme::color::internal_colors;
 use warp_workflows::workflows as global_workflows;
-use yarpui::accessibility::{AccessibilityContent, WarpA11yRole};
+use yarpui::accessibility::{AccessibilityContent, YarpA11yRole};
 use yarpui::color::ColorU;
 use yarpui::elements::{
     Align, CrossAxisAlignment, EventHandler, Highlight, Hoverable, MainAxisSize, MouseStateHandle,
@@ -174,7 +174,7 @@ impl WorkflowViewType {
             WorkflowViewType::Team => "Showing team workflows".into(),
         };
 
-        AccessibilityContent::new_without_help(a11y_content, WarpA11yRole::UserAction)
+        AccessibilityContent::new_without_help(a11y_content, YarpA11yRole::UserAction)
     }
 }
 
@@ -406,8 +406,8 @@ impl CategoriesView {
             ctx.notify();
         });
 
-        ctx.subscribe_to_model(&WarpConfig::handle(ctx), |me, _, event, ctx| {
-            if let WarpConfigUpdateEvent::LocalUserWorkflows = event {
+        ctx.subscribe_to_model(&YarpConfig::handle(ctx), |me, _, event, ctx| {
+            if let YarpConfigUpdateEvent::LocalUserWorkflows = event {
                 me.update_workflows(ctx);
             }
         });
@@ -722,7 +722,7 @@ impl CategoriesView {
             );
             ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                 a11y_content_text,
-                WarpA11yRole::MenuItemRole,
+                YarpA11yRole::MenuItemRole,
             ));
         }
     }
@@ -1156,7 +1156,7 @@ impl CategoriesView {
     }
 
     fn update_workflows(&mut self, ctx: &mut ViewContext<Self>) {
-        let workflows = WarpConfig::as_ref(ctx)
+        let workflows = YarpConfig::as_ref(ctx)
             .local_user_workflows()
             .iter()
             .map(Clone::clone)
@@ -1212,7 +1212,7 @@ impl View for CategoriesView {
         Some(AccessibilityContent::new(
             "Workflows",
             "Search or use arrow up and arrow down keys to navigate and find a workflow. Use enter to confirm the workflow and esc to quit.",
-            WarpA11yRole::MenuRole,
+            YarpA11yRole::MenuRole,
         ))
     }
 

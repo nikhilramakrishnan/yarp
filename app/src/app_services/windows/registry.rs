@@ -12,9 +12,9 @@ pub(super) fn register_uri_handler() {
         return;
     };
 
-    // The Windows Registry entry for Yarp (assuming the channel is WarpLocal):
+    // The Windows Registry entry for Yarp (assuming the channel is YarpLocal):
     // warplocal
-    //   (Default) = "WarpLocal"
+    //   (Default) = "YarpLocal"
     //   URL Protocol = ""
     //   DefaultIcon
     //      (Default) = "{path_to_channel_icon},0" TODO(CORE-2860): Add icon file path here.

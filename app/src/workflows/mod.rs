@@ -53,7 +53,7 @@ pub enum WorkflowSource {
         team_uid: ServerId,
     },
     PersonalCloud,
-    WarpAI,
+    YarpAI,
     Notebook {
         notebook_id: Option<NotebookId>,
         team_uid: Option<ServerId>,
@@ -71,7 +71,7 @@ pub enum WorkflowSelectionSource {
     CommandPalette,
     UniversalSearch,
     Voltron,
-    WarpAI,
+    YarpAI,
     Notebook,
     SlashMenu,
     UpArrowHistory,

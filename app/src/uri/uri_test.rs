@@ -1,4 +1,4 @@
-use self::parse_url_paths::{get_item_data_from_warp_link, WarpWebLink};
+use self::parse_url_paths::{get_item_data_from_warp_link, YarpWebLink};
 use super::*;
 use crate::launch_configs::launch_config::make_mock_single_window_launch_config;
 use crate::linear::{LinearAction, LinearIssueWork};
@@ -155,7 +155,7 @@ fn test_warp_web_link_notebook() {
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::DriveObject(Box::new(OpenYarpDriveObjectArgs {
+        Some(YarpWebLink::DriveObject(Box::new(OpenYarpDriveObjectArgs {
             object_type: ObjectType::Notebook,
 server_id: ServerId::from_string_lossy("LkDlnAe34vfYD2JXsAkssc"),
             settings: OpenYarpDriveObjectSettings {
@@ -177,7 +177,7 @@ fn test_warp_web_link_session() {
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::Session)
+        Some(YarpWebLink::Session)
     );
 }
 
@@ -191,7 +191,7 @@ fn test_warp_web_link_workflow() {
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::DriveObject(Box::new(OpenYarpDriveObjectArgs {
+        Some(YarpWebLink::DriveObject(Box::new(OpenYarpDriveObjectArgs {
             object_type: ObjectType::Workflow,
 server_id: ServerId::from_string_lossy("ZCJSkai2gpwTqpBFs5HOfZ"),
             settings: OpenYarpDriveObjectSettings::default(),

@@ -91,8 +91,8 @@ use super::{
 /// When `None`, the page shows all widgets (legacy/full view).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AISubpage {
-    /// The main "WarpAgent" page: global AI toggle + Active AI + Input + Other sections.
-    WarpAgent,
+    /// The main "YarpAgent" page: global AI toggle + Active AI + Input + Other sections.
+    YarpAgent,
     /// Agent profiles and permissions.
     Profiles,
     /// Knowledge / Rules settings.
@@ -104,7 +104,7 @@ pub enum AISubpage {
 impl AISubpage {
     pub fn from_section(section: SettingsSection) -> Option<Self> {
         match section {
-            SettingsSection::WarpAgent => Some(Self::WarpAgent),
+            SettingsSection::YarpAgent => Some(Self::YarpAgent),
             SettingsSection::AgentProfiles => Some(Self::Profiles),
             SettingsSection::Knowledge => Some(Self::Knowledge),
             SettingsSection::ThirdPartyCLIAgents => Some(Self::ThirdPartyCLIAgents),
@@ -169,7 +169,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             context,
             flags::IS_ANY_AI_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
 
@@ -180,7 +180,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::IS_ACTIVE_AI_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
 
@@ -197,7 +197,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::AI_INPUT_AUTODETECTION_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())],
         app,
     );
@@ -210,7 +210,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::NLD_IN_TERMINAL_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::AgentView.is_enabled())],
         app,
     );
@@ -223,7 +223,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::INTELLIGENT_AUTOSUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -235,7 +235,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::PROMPT_SUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -249,7 +249,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
                 & id!(flags::PROMPT_SUGGESTIONS_FLAG)),
             flags::CODE_SUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -264,7 +264,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::AgentTips.is_enabled())],
         app,
     );
@@ -287,7 +287,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::AgentView.is_enabled())],
         app,
     );
@@ -312,7 +312,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
                     )),
                     ai_context.clone() & !id!(context_flag),
                 )
-                .with_group(bindings::BindingGroup::WarpAi.as_str())
+                .with_group(bindings::BindingGroup::YarpAi.as_str())
             })
             .collect();
         app.register_fixed_bindings(mode_bindings);
@@ -326,7 +326,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::NATURAL_LANGUAGE_AUTOSUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::PredictAMQueries.is_enabled())],
         app,
     );
@@ -339,7 +339,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::SHARED_BLOCK_TITLE_GENERATION_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| FeatureFlag::SharedBlockTitleGeneration.is_enabled())],
         app,
     );
@@ -350,7 +350,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::IS_VOICE_INPUT_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::YarpAi)
         .with_enabled(|| cfg!(feature = "voice_input"))],
         app,
     );
@@ -371,7 +371,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::YarpAi)],
         app,
     );
     if !FeatureFlag::FullSourceCodeEmbedding.is_enabled() {
@@ -1475,7 +1475,7 @@ impl AISettingsPageView {
                     widgets.push(Box::new(CloudAgentComputerUseWidget::default()));
                 }
             }
-            Some(AISubpage::WarpAgent) => {
+            Some(AISubpage::YarpAgent) => {
                 // Oz page: global toggle + Active AI + Input + Other
                 widgets.push(Box::new(GlobalAIWidget::default()));
                 if ai_settings

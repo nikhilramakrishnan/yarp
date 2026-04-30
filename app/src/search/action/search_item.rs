@@ -180,7 +180,7 @@ impl SearchItemIcon for BindingGroup {
     fn icon(&self) -> Icon {
         match self {
             Self::Settings => Icon::Gear,
-            Self::WarpAi => {
+            Self::YarpAi => {
                 if !FeatureFlag::AgentMode.is_enabled() {
                     Icon::AiAssistant
                 } else {
@@ -210,10 +210,10 @@ impl SearchItemIcon for BindingGroup {
             | Self::Folders
             | Self::Terminal
             | Self::Notifications => appearance.theme().foreground().into_solid(),
-            Self::WarpAi if !FeatureFlag::AgentMode.is_enabled() => {
+            Self::YarpAi if !FeatureFlag::AgentMode.is_enabled() => {
                 ColorU::from_u32(colors::YARP_AI)
             }
-            Self::WarpAi => appearance.theme().foreground().into_solid(),
+            Self::YarpAi => appearance.theme().foreground().into_solid(),
             Self::Workflow => yarp_drive_icon_color(appearance, DriveObjectType::Workflow),
             Self::Notebooks => yarp_drive_icon_color(
                 appearance,

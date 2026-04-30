@@ -296,7 +296,7 @@ impl TerminalManager {
 
         let model = Arc::new(FairMutex::new(model));
 
-        // This is purely for measuring throughput on WarpDev.
+        // This is purely for measuring throughput on YarpDev.
         if FeatureFlag::RecordPtyThroughput.is_enabled() {
             Self::record_pty_throughput(inactive_pty_reads_rx.clone(), model.clone(), ctx);
         }

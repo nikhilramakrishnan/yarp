@@ -20,7 +20,7 @@ use crate::context_chips::{
 };
 
 use crate::server::telemetry::{PromptChoice, TelemetryEvent};
-use crate::settings::{FontSettings, WarpPromptSeparator};
+use crate::settings::{FontSettings, YarpPromptSeparator};
 use crate::terminal::blockgrid_element::BlockGridElement;
 use crate::terminal::SizeInfo;
 use settings::Setting as _;
@@ -117,7 +117,7 @@ pub struct EditorModal {
     /// same line prompt. This separator is added at the end of the Yarp prompt.
     warp_prompt_separator_dropdown: ViewHandle<Dropdown<EditorModalAction>>,
     /// The separator currently selected for the Yarp prompt.
-    warp_prompt_separator: WarpPromptSeparator,
+    warp_prompt_separator: YarpPromptSeparator,
 
     /// True if there was any change while the modal was open.
     is_dirty: bool,
@@ -129,14 +129,14 @@ pub struct EditorModal {
 enum PromptType {
     PS1,
     Yarp,
-    WarpDefault,
+    YarpDefault,
 }
 
 impl PromptType {
     fn warp_prompt_from_settings(app: &AppContext) -> PromptType {
         let session_settings = SessionSettings::as_ref(app);
         if matches!(*session_settings.saved_prompt, PromptSelection::Default) {
-            PromptType::WarpDefault
+            PromptType::YarpDefault
         } else {
             PromptType::Yarp
         }
@@ -161,7 +161,7 @@ pub enum EditorModalAction {
     UseWarpPrompt,
     ResetWarpPrompt,
     ToggleSameLinePrompt,
-    SetWarpPromptSeparator { separator: WarpPromptSeparator },
+    SetWarpPromptSeparator { separator: YarpPromptSeparator },
 }
 
 impl EditorModal {
@@ -176,7 +176,7 @@ impl EditorModal {
         let warp_prompt_separator = match SessionSettings::as_ref(ctx).saved_prompt.value() {
             PromptSelection::CustomChipSelection(config) => config.separator(),
             // If the "default Yarp prompt" i.e. no context chips, is selected, then default to no Yarp prompt separator.
-            _ => WarpPromptSeparator::None,
+            _ => YarpPromptSeparator::None,
         };
         let warp_prompt_separator_label = warp_prompt_separator.dropdown_item_label().to_owned();
 
@@ -186,27 +186,27 @@ impl EditorModal {
             dropdown.set_menu_width(DROPDOWN_WIDTH, ctx);
             let items = vec![
                 DropdownItem::new(
-                    WarpPromptSeparator::None.dropdown_item_label(),
+                    YarpPromptSeparator::None.dropdown_item_label(),
                     EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::None,
+                        separator: YarpPromptSeparator::None,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::PercentSign.dropdown_item_label(),
+                    YarpPromptSeparator::PercentSign.dropdown_item_label(),
                     EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::PercentSign,
+                        separator: YarpPromptSeparator::PercentSign,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::DollarSign.dropdown_item_label(),
+                    YarpPromptSeparator::DollarSign.dropdown_item_label(),
                     EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::DollarSign,
+                        separator: YarpPromptSeparator::DollarSign,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::ChevronSymbol.dropdown_item_label(),
+                    YarpPromptSeparator::ChevronSymbol.dropdown_item_label(),
                     EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::ChevronSymbol,
+                        separator: YarpPromptSeparator::ChevronSymbol,
                     },
                 ),
             ];
@@ -317,7 +317,7 @@ impl EditorModal {
                         report_if_error!(settings.honor_ps1.set_value(true, ctx));
                     });
                 }
-                PromptType::WarpDefault => {
+                PromptType::YarpDefault => {
                     Prompt::handle(ctx).update(ctx, |prompt, ctx| {
                         report_if_error!(prompt.reset(ctx));
                     });
@@ -355,7 +355,7 @@ impl EditorModal {
 
             let prompt_info = match self.prompt_type {
                 PromptType::PS1 => PromptChoice::PS1,
-                PromptType::WarpDefault => PromptChoice::Default,
+                PromptType::YarpDefault => PromptChoice::Default,
                 PromptType::Yarp => PromptChoice::Custom {
                     builtin_chips: self
                         .chip_configurator
@@ -423,7 +423,7 @@ impl TypedActionView for EditorModal {
             }
             Self::Action::ResetWarpPrompt => {
                 self.is_dirty = true;
-                self.prompt_type = PromptType::WarpDefault;
+                self.prompt_type = PromptType::YarpDefault;
 
                 let default_prompt = PromptConfiguration::default_prompt();
                 self.same_line_prompt_enabled = default_prompt.same_line_prompt_enabled();
@@ -587,7 +587,7 @@ impl EditorModal {
         .on_click(|ctx, _, _| ctx.dispatch_typed_action(EditorModalAction::ResetWarpPrompt))
         .with_cursor(Cursor::PointingHand);
 
-        if matches!(self.prompt_type, PromptType::WarpDefault) && !self.is_dirty {
+        if matches!(self.prompt_type, PromptType::YarpDefault) && !self.is_dirty {
             button.disable().finish()
         } else {
             button.finish()
@@ -691,7 +691,7 @@ impl EditorModal {
 
         self.render_prompt_section(
             appearance,
-            matches!(self.prompt_type, PromptType::Yarp | PromptType::WarpDefault),
+            matches!(self.prompt_type, PromptType::Yarp | PromptType::YarpDefault),
             header_row,
             None,
             body,

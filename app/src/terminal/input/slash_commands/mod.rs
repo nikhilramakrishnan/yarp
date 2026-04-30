@@ -253,7 +253,7 @@ impl Input {
 
                 self.show_workflows_info_box_on_workflow_selection(
                     WorkflowType::Cloud(Box::new(workflow)),
-                    WorkflowSource::WarpAI,
+                    WorkflowSource::YarpAI,
                     WorkflowSelectionSource::SlashMenu,
                     None,
                     ctx,

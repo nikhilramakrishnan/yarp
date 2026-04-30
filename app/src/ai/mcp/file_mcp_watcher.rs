@@ -20,7 +20,7 @@ use crate::ai::mcp::{
     ParsedTemplatableMCPServerResult,
 };
 use crate::warp_managed_paths_watcher::{
-    warp_managed_mcp_config_path, WarpManagedPathsWatcher, WarpManagedPathsWatcherEvent,
+    warp_managed_mcp_config_path, YarpManagedPathsWatcher, YarpManagedPathsWatcherEvent,
 };
 use crate::HomeDirectoryWatcher;
 use strum::IntoEnumIterator;
@@ -173,7 +173,7 @@ impl FileMCPWatcher {
         ctx.subscribe_to_model(&HomeDirectoryWatcher::handle(ctx), |me, event, ctx| {
             me.handle_home_directory_watcher_event(event, ctx);
         });
-        ctx.subscribe_to_model(&WarpManagedPathsWatcher::handle(ctx), |me, event, ctx| {
+        ctx.subscribe_to_model(&YarpManagedPathsWatcher::handle(ctx), |me, event, ctx| {
             me.handle_warp_managed_paths_event(event, ctx);
         });
 
@@ -418,10 +418,10 @@ impl FileMCPWatcher {
 
     fn handle_warp_managed_paths_event(
         &mut self,
-        event: &WarpManagedPathsWatcherEvent,
+        event: &YarpManagedPathsWatcherEvent,
         ctx: &mut ModelContext<Self>,
     ) {
-        let WarpManagedPathsWatcherEvent::FilesChanged(update) = event;
+        let YarpManagedPathsWatcherEvent::FilesChanged(update) = event;
         let Some(mcp_config_path) = warp_managed_mcp_config_path() else {
             return;
         };

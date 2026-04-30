@@ -5,7 +5,7 @@ pub mod util;
 mod imp;
 
 use crate::tab_configs::{TabConfig, TabConfigError};
-use crate::themes::theme::WarpThemeConfig;
+use crate::themes::theme::YarpThemeConfig;
 use crate::{
     launch_configs::launch_config::LaunchConfig, themes::theme::ThemeKind,
     workflows::workflow::Workflow,
@@ -53,7 +53,7 @@ lazy_static! {
 }
 
 #[derive(Clone)]
-pub enum WarpConfigUpdateEvent {
+pub enum YarpConfigUpdateEvent {
     Themes,
     #[cfg_attr(not(feature = "local_fs"), expect(dead_code))]
     LocalUserWorkflows,
@@ -82,24 +82,24 @@ pub enum WarpConfigUpdateEvent {
 /// tab configs, etc.) and, on platforms where it differs, `config_local_dir()`
 /// (`settings.toml`, `keybindings.yaml`, `user_preferences.json`).
 #[derive(Default)]
-pub struct WarpConfig {
+pub struct YarpConfig {
     launch_configs: Vec<LaunchConfig>,
     tab_configs: Vec<TabConfig>,
     #[cfg_attr(target_family = "wasm", allow(dead_code))]
     tab_config_errors: Vec<TabConfigError>,
-    theme_config: WarpThemeConfig,
+    theme_config: YarpThemeConfig,
     local_user_workflows: Vec<Workflow>,
 }
 
-/// Platform-independent parts of WarpConfig.
+/// Platform-independent parts of YarpConfig.
 ///
 /// Additional platform-dependent functionality can be found in impl blocks
 /// in native.rs and wasm.rs.
-impl WarpConfig {
+impl YarpConfig {
     #[cfg(test)]
     pub fn mock(_ctx: &mut ModelContext<Self>) -> Self {
         Self {
-            theme_config: WarpThemeConfig::new(),
+            theme_config: YarpThemeConfig::new(),
             ..Default::default()
         }
     }
@@ -112,7 +112,7 @@ impl WarpConfig {
         &self.tab_configs
     }
 
-    pub fn theme_config(&self) -> &WarpThemeConfig {
+    pub fn theme_config(&self) -> &YarpThemeConfig {
         &self.theme_config
     }
 
@@ -120,7 +120,7 @@ impl WarpConfig {
         &self.local_user_workflows
     }
 
-    /// Saving the newly created launch configuration to the WarpConfig that we currently
+    /// Saving the newly created launch configuration to the YarpConfig that we currently
     /// have.
     pub fn append_launch_config(
         &mut self,
@@ -129,17 +129,17 @@ impl WarpConfig {
     ) {
         if !self.launch_configs.contains(launch_config) {
             self.launch_configs.push(launch_config.to_owned());
-            ctx.emit(WarpConfigUpdateEvent::LaunchConfigs);
+            ctx.emit(YarpConfigUpdateEvent::LaunchConfigs);
         }
     }
 
     pub fn update_theme_config(
         &mut self,
-        theme_config: WarpThemeConfig,
+        theme_config: YarpThemeConfig,
         ctx: &mut ModelContext<Self>,
     ) {
         self.theme_config = theme_config;
-        ctx.emit(WarpConfigUpdateEvent::Themes);
+        ctx.emit(YarpConfigUpdateEvent::Themes);
     }
 
     pub fn add_new_theme_to_config(
@@ -149,7 +149,7 @@ impl WarpConfig {
         ctx: &mut ModelContext<Self>,
     ) {
         self.theme_config.add_new_theme(theme_name, theme);
-        ctx.emit(WarpConfigUpdateEvent::Themes);
+        ctx.emit(YarpConfigUpdateEvent::Themes);
     }
 
     /// Eagerly removes a tab config by its source path and emits a `TabConfigs` event.
@@ -161,7 +161,7 @@ impl WarpConfig {
         self.tab_configs
             .retain(|c| c.source_path.as_deref() != Some(path));
         if self.tab_configs.len() != before {
-            ctx.emit(WarpConfigUpdateEvent::TabConfigs);
+            ctx.emit(YarpConfigUpdateEvent::TabConfigs);
         }
     }
 }
@@ -393,11 +393,11 @@ pub(crate) fn find_unused_worktree_config_path(dir: &Path, branch_name: &str) ->
     }
 }
 
-impl Entity for WarpConfig {
-    type Event = WarpConfigUpdateEvent;
+impl Entity for YarpConfig {
+    type Event = YarpConfigUpdateEvent;
 }
 
-impl SingletonEntity for WarpConfig {}
+impl SingletonEntity for YarpConfig {}
 
 #[cfg(test)]
 #[path = "mod_test.rs"]

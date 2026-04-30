@@ -30,7 +30,7 @@ use num_traits::SaturatingSub;
 use string_offset::{ByteOffset, CharOffset};
 use vec1::{vec1, Vec1};
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     text_layout::TextStyle,
     AppContext, Entity, ModelAsRef, ModelContext, ModelHandle,
 };
@@ -505,7 +505,7 @@ impl EditorModel {
         let delta = &text[start.as_usize()..end.as_usize()];
         match (was_selecting, is_selecting) {
             (false, false) => {
-                AccessibilityContent::new_without_help(delta, WarpA11yRole::UserAction)
+                AccessibilityContent::new_without_help(delta, YarpA11yRole::UserAction)
             }
             (_, true) => {
                 // Note that Range is start <= x < end, and in our case, when deciding what was the action
@@ -529,10 +529,10 @@ impl EditorModel {
                 } else {
                     "unselected"
                 };
-                AccessibilityContent::new(delta, format!(", {action}"), WarpA11yRole::UserAction)
+                AccessibilityContent::new(delta, format!(", {action}"), YarpA11yRole::UserAction)
             }
             (true, false) => {
-                AccessibilityContent::new_without_help("Unselected", WarpA11yRole::UserAction)
+                AccessibilityContent::new_without_help("Unselected", YarpA11yRole::UserAction)
             }
         }
     }
@@ -2230,7 +2230,7 @@ impl EditorModel {
         ctx.emit_a11y_content(AccessibilityContent::new(
             self.selected_text(ctx),
             ", deleted",
-            WarpA11yRole::UserAction,
+            YarpA11yRole::UserAction,
         ));
         self.change_selections(new_selections, ctx);
         self.insert("", None, ctx);
@@ -2254,7 +2254,7 @@ impl EditorModel {
         ctx.emit_a11y_content(AccessibilityContent::new(
             self.selected_text(ctx),
             ", deleted",
-            WarpA11yRole::UserAction,
+            YarpA11yRole::UserAction,
         ));
         self.change_selections(new_selections, ctx);
         self.insert("", None, ctx);

@@ -7,7 +7,7 @@ use crate::context_chips::ContextChipKind;
 use super::current_prompt::CurrentPrompt;
 use super::prompt::Prompt;
 use super::{chips_to_string, ChipResult, ChipValue};
-use crate::settings::WarpPromptSeparator;
+use crate::settings::YarpPromptSeparator;
 
 /// Struct that holds a point in time snapshot of a prompt (chips are no longer interactive)
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -16,7 +16,7 @@ pub struct PromptSnapshot {
 
     same_line_prompt_enabled: bool,
     /// The separator to use as a trailing character at the end of Yarp prompt, if any.
-    separator: WarpPromptSeparator,
+    separator: YarpPromptSeparator,
 }
 
 impl PromptSnapshot {
@@ -59,7 +59,7 @@ impl PromptSnapshot {
     pub fn from_chips(
         chips: Vec<ChipResult>,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: YarpPromptSeparator,
     ) -> Self {
         Self {
             chips,
@@ -87,7 +87,7 @@ impl PromptSnapshot {
         self.same_line_prompt_enabled
     }
 
-    pub(super) fn separator(&self) -> WarpPromptSeparator {
+    pub(super) fn separator(&self) -> YarpPromptSeparator {
         self.separator
     }
 }

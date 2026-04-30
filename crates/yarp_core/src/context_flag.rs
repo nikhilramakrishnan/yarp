@@ -26,7 +26,7 @@ pub enum ContextFlag {
     NetworkLogConsole,
     RunWorkflow,
     LaunchConfigurations,
-    WarpEssentials,
+    YarpEssentials,
     AllowSettingsModalToClose,
     ShowSlowShellStartupBanner,
     DynamicBrowserUrl,
@@ -67,7 +67,7 @@ impl ContextFlag {
         disable_flag(Self::CreateNewSession);
         disable_flag(Self::CloseWindow);
         disable_flag(Self::PromptForVersionUpdates);
-        disable_flag(Self::WarpEssentials);
+        disable_flag(Self::YarpEssentials);
         disable_flag(Self::NetworkLogConsole);
         disable_flag(Self::ShowMCPServers);
     }
@@ -81,7 +81,7 @@ impl ContextFlag {
         disable_flag(Self::CreateNewSession);
         disable_flag(Self::CloseWindow);
         disable_flag(Self::PromptForVersionUpdates);
-        disable_flag(Self::WarpEssentials);
+        disable_flag(Self::YarpEssentials);
         disable_flag(Self::NetworkLogConsole);
         disable_flag(Self::AllowSettingsModalToClose);
         disable_flag(Self::ShowSlowShellStartupBanner);
@@ -98,7 +98,7 @@ impl ContextFlag {
         disable_flag(Self::CreateNewSession);
         disable_flag(Self::CloseWindow);
         disable_flag(Self::PromptForVersionUpdates);
-        disable_flag(Self::WarpEssentials);
+        disable_flag(Self::YarpEssentials);
         disable_flag(Self::NetworkLogConsole);
         disable_flag(Self::ShowMCPServers);
     }
@@ -114,7 +114,7 @@ impl ContextFlag {
         disable_flag(Self::PromptForVersionUpdates);
         disable_flag(Self::NetworkLogConsole);
         disable_flag(Self::LaunchConfigurations);
-        disable_flag(Self::WarpEssentials);
+        disable_flag(Self::YarpEssentials);
         disable_flag(Self::ShowMCPServers);
     }
 
@@ -128,7 +128,7 @@ impl ContextFlag {
         disable_flag(Self::PromptForVersionUpdates);
         disable_flag(Self::NetworkLogConsole);
         disable_flag(Self::LaunchConfigurations);
-        disable_flag(Self::WarpEssentials);
+        disable_flag(Self::YarpEssentials);
         disable_flag(Self::ShowMCPServers);
         disable_flag(Self::RunWorkflow);
     }
@@ -149,7 +149,7 @@ impl FromStr for ContextFlag {
             "NetworkLogConsole" => Ok(Self::NetworkLogConsole),
             "RunWorkflow" => Ok(Self::RunWorkflow),
             "LaunchConfigurations" => Ok(Self::LaunchConfigurations),
-            "WarpEssentials" => Ok(Self::WarpEssentials),
+            "YarpEssentials" => Ok(Self::YarpEssentials),
             _ => Err(()),
         }
     }

@@ -17,7 +17,7 @@ use yarpui::{
     elements::{
         AnchorPair, Border, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CornerRadius, CrossAxisAlignment, Dismiss, Empty, Flex, FormattedTextElement, Hoverable,
-        Icon as WarpUiIcon, MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning,
+        Icon as YarpUiIcon, MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning,
         OffsetType, ParentElement, ParentOffsetBounds, PositioningAxis, Radius, SavePosition,
         ScrollTarget, ScrollToPositionMode, ScrollbarWidth, Stack, Text, XAxisAnchor, YAxisAnchor,
     },
@@ -555,7 +555,7 @@ impl AgentSlide {
             };
 
             // Trailing chevron icon.
-            let chevron = ConstrainedBox::new(Box::new(WarpUiIcon::new(
+            let chevron = ConstrainedBox::new(Box::new(YarpUiIcon::new(
                 "bundled/svg/chevron-down.svg",
                 title_color,
             )))

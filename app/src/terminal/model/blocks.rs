@@ -587,7 +587,7 @@ impl BlockList {
     /// the block as the input and consider that one whole block to create,
     /// feed input into, and finish whereas `finalize_block_and_advance_list` will create the _subsequent_
     /// block.
-    /// 3. Create the `BootstrapStage::WarpInput` block through
+    /// 3. Create the `BootstrapStage::YarpInput` block through
     /// `create_warp_input_block`. From here on, there is always a default
     /// block which is hidden until it is started.
     /// 4. We progress through the bootstrap stages with the `finalize_block_and_advance_list` function.
@@ -728,11 +728,11 @@ impl BlockList {
     fn create_warp_input_block(&mut self) {
         self.create_new_block(
             BlockId::new(),
-            BootstrapStage::WarpInput,
+            BootstrapStage::YarpInput,
             Default::default(),
             None,
         );
-        self.bootstrap_stage = BootstrapStage::WarpInput;
+        self.bootstrap_stage = BootstrapStage::YarpInput;
     }
 
     pub fn restored_session_ts(&self) -> &Option<DateTime<Local>> {
@@ -2720,11 +2720,11 @@ impl BlockList {
 
         self.create_new_block(
             BlockId::new(),
-            BootstrapStage::WarpInput,
+            BootstrapStage::YarpInput,
             None, /* precmd_value */
             None, /* restored_block_is_local */
         );
-        self.bootstrap_stage = BootstrapStage::WarpInput;
+        self.bootstrap_stage = BootstrapStage::YarpInput;
     }
 
     /// Starts the active block and resets block-to-block state. For local sessions, this is called
@@ -3282,7 +3282,7 @@ impl BlockList {
         let mut contents = String::new();
         for block in self.blocks.iter() {
             match block.bootstrap_stage() {
-                BootstrapStage::WarpInput | BootstrapStage::ScriptExecution => {
+                BootstrapStage::YarpInput | BootstrapStage::ScriptExecution => {
                     contents.push_str(&block.command_to_string());
                     contents.push('\n');
                 }

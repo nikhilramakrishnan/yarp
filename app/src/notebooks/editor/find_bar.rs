@@ -7,7 +7,7 @@ use yarp_editor::{
     search::{SearchEvent, Searcher},
 };
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     elements::{
         Border, ChildAnchor, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Empty, Flex, MouseStateHandle, OffsetPositioning, ParentElement, PositionedElementAnchor,
@@ -561,7 +561,7 @@ impl TypedActionView for FindBar {
         };
         Some(AccessibilityContent::new_without_help(
             text,
-            WarpA11yRole::UserAction,
+            YarpA11yRole::UserAction,
         ))
         .into()
     }

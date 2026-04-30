@@ -29,7 +29,7 @@ use yarpui::r#async::Timer;
 use yarpui::windowing::state::ApplicationStage;
 use yarpui::windowing::{self, WindowManager};
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     AppContext,
 };
 use yarpui::{Entity, ModelContext, SingletonEntity, ViewContext};
@@ -712,12 +712,12 @@ pub fn accessibility_content(
         (RequestType::ManualCheck, Ok(UpdateReady::Yes { .. })) => Some(AccessibilityContent::new(
             "Update available.",
             "Use the command palette to install and relaunch Yarp",
-            WarpA11yRole::HelpRole,
+            YarpA11yRole::HelpRole,
         )),
         // Any non-successful autoupdate check
         (RequestType::ManualCheck, _) => Some(AccessibilityContent::new_without_help(
             "No updates available",
-            WarpA11yRole::HelpRole,
+            YarpA11yRole::HelpRole,
         )),
         _ => None,
     }

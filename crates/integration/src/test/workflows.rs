@@ -104,7 +104,7 @@ pub fn test_loading_project_workflows() -> Builder {
 
                     workflows.read(app, |workflows, _| {
                         // Note that this can be a synchronous assertion because unlike the next assertion,
-                        // we don't have concurrency with a WarpConfig watcher thread
+                        // we don't have concurrency with a YarpConfig watcher thread
                         async_assert_eq!(
                             workflows.project_workflows().count(),
                             0,

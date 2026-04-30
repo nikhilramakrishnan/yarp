@@ -10,7 +10,7 @@ use regex::Regex;
 use url::Url;
 use vec1::{vec1, Vec1};
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     clipboard::ClipboardContent,
     AppContext, Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity, WindowId,
 };
@@ -1289,7 +1289,7 @@ impl NotebooksEditorModel {
         if let Some(command) = child_model.executable_command(ctx) {
             ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                 format!("Selected workflow: {command}"),
-                WarpA11yRole::TextareaRole,
+                YarpA11yRole::TextareaRole,
             ));
         }
 
@@ -1650,7 +1650,7 @@ impl NotebooksEditorModel {
         let text = format!("{style:?} {action}");
         ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
             text,
-            WarpA11yRole::UserAction,
+            YarpA11yRole::UserAction,
         ))
     }
 

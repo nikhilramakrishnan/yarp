@@ -32,7 +32,7 @@ use crate::input_suggestions::{Event as InputSuggestionsEvent, InputSuggestions}
 use crate::send_telemetry_from_ctx;
 use crate::server::server_api::ai::AIClient;
 use crate::server::server_api::ServerApi;
-use crate::server::telemetry::{TelemetryEvent, WarpAIActionType};
+use crate::server::telemetry::{TelemetryEvent, YarpAIActionType};
 use crate::terminal::resizable_data::{ModalType, ResizableData, DEFAULT_YARP_AI_WIDTH};
 use crate::ui_components::blended_colors;
 use crate::workspaces::user_workspaces::UserWorkspaces;
@@ -46,7 +46,7 @@ use yarpui::elements::ParentElement;
 use yarpui::elements::Resizable;
 use yarpui::elements::ResizableStateHandle;
 
-use super::execution_context::WarpAiExecutionContext;
+use super::execution_context::YarpAiExecutionContext;
 use super::requests::{Event as RequestsEvent, RequestStatus, Requests};
 use super::transcript::{Transcript, TranscriptEvent};
 use super::utils::{render_prepared_response_button, render_request_limit_info, TranscriptPart};
@@ -233,7 +233,7 @@ impl AIAssistantPanelView {
         let resizable_data_handle = ResizableData::handle(ctx);
         let resizable_state_handle = match resizable_data_handle
             .as_ref(ctx)
-            .get_handle(ctx.window_id(), ModalType::WarpAIWidth)
+            .get_handle(ctx.window_id(), ModalType::YarpAIWidth)
         {
             Some(handle) => handle,
             None => {
@@ -269,7 +269,7 @@ impl AIAssistantPanelView {
             .as_ref(ctx)
             .session(window_id)
             .as_ref()
-            .map(WarpAiExecutionContext::new);
+            .map(YarpAiExecutionContext::new);
         self.requests_model.update(ctx, |requests, _| {
             requests.update_ai_execution_context(ai_execution_context);
         });
@@ -450,7 +450,7 @@ impl AIAssistantPanelView {
                     self.issue_request(buffer_text, ctx);
                 } else {
                     // Only send this event if the user tried to execute with a longer than permitted prompt.
-                    send_telemetry_from_ctx!(TelemetryEvent::WarpAICharacterLimitExceeded, ctx);
+                    send_telemetry_from_ctx!(TelemetryEvent::YarpAICharacterLimitExceeded, ctx);
                 }
                 ctx.notify();
             }
@@ -1029,8 +1029,8 @@ impl TypedActionView for AIAssistantPanelView {
             ResetContext => {
                 self.reset_context(ctx);
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::WarpAIAction {
-                        action_type: WarpAIActionType::Restart
+                    TelemetryEvent::YarpAIAction {
+                        action_type: YarpAIActionType::Restart
                     },
                     ctx
                 );
@@ -1038,8 +1038,8 @@ impl TypedActionView for AIAssistantPanelView {
             CopyTranscript => {
                 self.copy_transcript(ctx);
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::WarpAIAction {
-                        action_type: WarpAIActionType::CopyTranscript
+                    TelemetryEvent::YarpAIAction {
+                        action_type: YarpAIActionType::CopyTranscript
                     },
                     ctx
                 );
@@ -1058,8 +1058,8 @@ impl TypedActionView for AIAssistantPanelView {
                 ctx.clipboard()
                     .write(ClipboardContent::plain_text(content.to_string()));
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::WarpAIAction {
-                        action_type: WarpAIActionType::CopyAnswer
+                    TelemetryEvent::YarpAIAction {
+                        action_type: YarpAIActionType::CopyAnswer
                     },
                     ctx
                 );

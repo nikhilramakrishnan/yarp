@@ -691,7 +691,7 @@ pub fn init(app: &mut AppContext) {
             BindingDescription::new("New Agent Tab"),
             WorkspaceAction::AddAgentTab,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_custom_action(CustomAction::NewAgentTab)
         .with_context_predicate(
             id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED) & !id!("Workspace_PaneDragging"),
@@ -701,7 +701,7 @@ pub fn init(app: &mut AppContext) {
             BindingDescription::new("New Cloud Agent Tab"),
             WorkspaceAction::AddAmbientAgentTab,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED) & !id!("Workspace_PaneDragging"),
         )
@@ -806,7 +806,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace") & id!(flags::SHOW_CONVERSATION_HISTORY))
         .with_mac_key_binding("cmd-shift-A")
         .with_linux_or_windows_key_binding("ctrl-shift-A")
-        .with_group(bindings::BindingGroup::WarpAi.as_str()),
+        .with_group(bindings::BindingGroup::YarpAi.as_str()),
         EditableBinding::new(
             "workspace:close_panel",
             BindingDescription::new("Close focused panel")
@@ -1114,9 +1114,9 @@ pub fn init(app: &mut AppContext) {
             )
             .with_context_predicate(id!("Workspace") & !id!("UpdateToastVisible"))
             .with_group(bindings::BindingGroup::Settings.as_str())
-            // Note that while the changelog resides in WarpEssentials, we should gate access to
-            // the changelog based on whether WarpEssentials is an available view.
-            .with_enabled(|| ContextFlag::WarpEssentials.is_enabled()),
+            // Note that while the changelog resides in YarpEssentials, we should gate access to
+            // the changelog based on whether YarpEssentials is an available view.
+            .with_enabled(|| ContextFlag::YarpEssentials.is_enabled()),
             // When the update toast is visible, register the keybinding as well.
             EditableBinding::new(
                 "workspace:view_changelog",
@@ -1127,7 +1127,7 @@ pub fn init(app: &mut AppContext) {
             .with_group(bindings::BindingGroup::Settings.as_str())
             .with_custom_action(CustomAction::ViewChangelog)
             .with_linux_or_windows_key_binding(format!("alt-{}", cmd_or_ctrl_shift("o")))
-            .with_enabled(|| ContextFlag::WarpEssentials.is_enabled()),
+            .with_enabled(|| ContextFlag::YarpEssentials.is_enabled()),
         ]);
     }
 
@@ -1144,7 +1144,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
         .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_custom_action(CustomAction::NewAgentModePane),
         EditableBinding::new(
             "workspace:toggle_ai_assistant",
@@ -1153,7 +1153,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| !FeatureFlag::AgentMode.is_enabled())
         .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         // We use the same custom action as AM so that we don't have
         // two mac menu items for AM vs Yarp AI since they are mutually exclusive.
         .with_custom_action(CustomAction::NewAgentModePane),
@@ -1195,7 +1195,7 @@ pub fn init(app: &mut AppContext) {
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Personal Prompt"),
             WorkspaceAction::CreatePersonalAIPrompt,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_custom_action(CustomAction::NewPersonalAIPrompt)
         .with_context_predicate(
             id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!(flags::IS_ANY_AI_ENABLED),
@@ -1206,7 +1206,7 @@ pub fn init(app: &mut AppContext) {
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Team Prompt"),
             WorkspaceAction::CreateTeamAIPrompt,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_custom_action(CustomAction::NewTeamAIPrompt)
         .with_context_predicate(
             id!("Workspace")
@@ -1282,7 +1282,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| FeatureFlag::AIRules.is_enabled())
         .with_custom_action(CustomAction::OpenAIFactCollection)
         .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
-        .with_group(bindings::BindingGroup::WarpAi.as_str()),
+        .with_group(bindings::BindingGroup::YarpAi.as_str()),
     ]);
 
     app.register_editable_bindings([EditableBinding::new(
@@ -1296,7 +1296,7 @@ pub fn init(app: &mut AppContext) {
     })
     .with_custom_action(CustomAction::OpenMCPServerCollection)
     .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
-    .with_group(bindings::BindingGroup::WarpAi.as_str())]);
+    .with_group(bindings::BindingGroup::YarpAi.as_str())]);
 
     app.register_editable_bindings([EditableBinding::new(
         "workspace:jump_to_latest_toast",
@@ -1307,7 +1307,7 @@ pub fn init(app: &mut AppContext) {
     .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
     .with_mac_key_binding("cmd-shift-G")
     .with_linux_or_windows_key_binding("ctrl-shift-G")
-    .with_group(bindings::BindingGroup::WarpAi.as_str())]);
+    .with_group(bindings::BindingGroup::YarpAi.as_str())]);
 
     app.register_editable_bindings([EditableBinding::new(
         TOGGLE_NOTIFICATION_MAILBOX_BINDING_NAME,
@@ -1318,7 +1318,7 @@ pub fn init(app: &mut AppContext) {
     .with_context_predicate(id!("Workspace"))
     .with_mac_key_binding("cmd-shift-U")
     .with_linux_or_windows_key_binding("ctrl-shift-U")
-    .with_group(bindings::BindingGroup::WarpAi.as_str())]);
+    .with_group(bindings::BindingGroup::YarpAi.as_str())]);
 
     add_open_setting_pages_as_editable_binding(app);
     add_overflow_menu_items_as_editable_binding(app);
@@ -1332,7 +1332,7 @@ pub fn init(app: &mut AppContext) {
     .with_context_predicate(id!("Workspace") & id!(flags::IS_ANY_AI_ENABLED))
     .with_mac_key_binding("cmd-shift-M")
     .with_linux_or_windows_key_binding("ctrl-shift-M")
-    .with_group(bindings::BindingGroup::WarpAi.as_str())]);
+    .with_group(bindings::BindingGroup::YarpAi.as_str())]);
 }
 
 fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
@@ -1429,7 +1429,7 @@ fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
         EditableBinding::new(
             "workspace:show_ai_settings_page",
             BindingDescription::new("Open Settings: AI"),
-            WorkspaceAction::ShowSettingsPage(SettingsSection::WarpAgent),
+            WorkspaceAction::ShowSettingsPage(SettingsSection::YarpAgent),
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
         .with_group(bindings::BindingGroup::Settings.as_str())

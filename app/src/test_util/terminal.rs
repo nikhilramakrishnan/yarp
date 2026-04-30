@@ -15,7 +15,7 @@ use crate::ai::persisted_workspace::PersistedWorkspace;
 use crate::ai::skills::SkillManager;
 use crate::code_review::git_status_update::GitStatusUpdateModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
-use crate::warp_managed_paths_watcher::WarpManagedPathsWatcher;
+use crate::warp_managed_paths_watcher::YarpManagedPathsWatcher;
 use yarpui::SingletonEntity;
 use yarpui::{platform::WindowStyle, App, ViewHandle, WindowId};
 use watcher::HomeDirectoryWatcher;
@@ -116,7 +116,7 @@ pub fn initialize_app_for_terminal_view(app: &mut App) {
     app.add_singleton_model(|_| GitStatusUpdateModel::new());
     app.add_singleton_model(RepoOutlines::new_for_test);
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(YarpManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(SkillManager::new);
     app.add_singleton_model(|ctx| {
         CodebaseIndexManager::new_for_test(ServerApiProvider::as_ref(ctx).get(), ctx)

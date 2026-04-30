@@ -2,7 +2,7 @@ use yarpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     menu::{MenuItem, MenuItemFields},
-    settings::WarpPromptSeparator,
+    settings::YarpPromptSeparator,
     terminal::{
         model::session::Sessions,
         session_settings::{SessionSettings, ToolbarChipSelection},
@@ -46,7 +46,7 @@ impl PromptType {
     pub fn new_static(
         chips: Vec<ChipResult>,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: YarpPromptSeparator,
     ) -> Self {
         PromptType::Static {
             snapshot: PromptSnapshot::from_chips(chips, same_line_prompt_enabled, separator),
@@ -171,7 +171,7 @@ impl PromptType {
     }
 
     /// The separator for the Yarp prompt.
-    pub fn separator(&self, ctx: &AppContext) -> WarpPromptSeparator {
+    pub fn separator(&self, ctx: &AppContext) -> YarpPromptSeparator {
         match self {
             Self::Dynamic { prompt } => prompt.as_ref(ctx).separator(),
             Self::Static { snapshot } => snapshot.separator(),

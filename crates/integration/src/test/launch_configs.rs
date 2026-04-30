@@ -50,7 +50,7 @@ pub fn test_add_launch_config_to_warp_config() -> Builder {
                         .clone();
                     launch_config_data_source.read(app, |palette, app| {
                         // Note that this can be a synchronous assertion because unlike the next test step,
-                        // we don't have concurrency with a WarpConfig watcher thread
+                        // we don't have concurrency with a YarpConfig watcher thread
                         assert_eq!(
                             palette.run_query(&Query::from(""), app).unwrap().len(),
                             0,

@@ -27,7 +27,7 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{
     appearance::Appearance,
     send_telemetry_from_ctx,
-    server::telemetry::{SaveAsWorkflowModalSource, TelemetryEvent, WarpAIActionType},
+    server::telemetry::{SaveAsWorkflowModalSource, TelemetryEvent, YarpAIActionType},
     ui_components::blended_colors,
 };
 
@@ -154,8 +154,8 @@ impl TypedActionView for Transcript {
                     ctx.clipboard().write(ClipboardContent::plain_text(answer));
                 }
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::WarpAIAction {
-                        action_type: WarpAIActionType::CopyAnswer
+                    TelemetryEvent::YarpAIAction {
+                        action_type: YarpAIActionType::CopyAnswer
                     },
                     ctx
                 );
@@ -211,8 +211,8 @@ impl Transcript {
         }
 
         send_telemetry_from_ctx!(
-            TelemetryEvent::WarpAIAction {
-                action_type: WarpAIActionType::CopyCode
+            TelemetryEvent::YarpAIAction {
+                action_type: YarpAIActionType::CopyCode
             },
             ctx
         );
@@ -225,8 +225,8 @@ impl Transcript {
     ) {
         ctx.emit(TranscriptEvent::PasteInTerminalInput { code_block_index });
         send_telemetry_from_ctx!(
-            TelemetryEvent::WarpAIAction {
-                action_type: WarpAIActionType::InsertIntoInput
+            TelemetryEvent::YarpAIAction {
+                action_type: YarpAIActionType::InsertIntoInput
             },
             ctx
         );
@@ -243,7 +243,7 @@ impl Transcript {
 
         send_telemetry_from_ctx!(
             TelemetryEvent::SaveAsWorkflowModal {
-                source: SaveAsWorkflowModalSource::WarpAIPanel
+                source: SaveAsWorkflowModalSource::YarpAIPanel
             },
             ctx
         );

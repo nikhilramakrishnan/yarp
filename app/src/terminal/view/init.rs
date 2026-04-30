@@ -749,7 +749,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
         .with_custom_action(CustomAction::AttachSelectionAsAgentModeContext)
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         // When possible, prioritize the text selection action over attaching a block as
         // context.
         .with_context_predicate(
@@ -772,7 +772,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
         .with_custom_action(CustomAction::AttachSelectionAsAgentModeContext)
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Terminal")
                 & (id!("ActiveBlockTextSelection") | id!("ActiveAltScreenSelection"))
@@ -789,7 +789,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| !FeatureFlag::AgentMode.is_enabled())
         .with_custom_action(CustomAction::AttachSelectionAsAgentModeContext)
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Terminal")
                 & id!(flags::IS_ANY_AI_ENABLED)
@@ -807,7 +807,7 @@ pub fn init(app: &mut AppContext) {
         )
         .with_enabled(|| !FeatureFlag::AgentMode.is_enabled())
         .with_key_binding("ctrl-shift->")
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Terminal") & id!("TerminalView_NonEmptyBlockList") & id!(flags::IS_ANY_AI_ENABLED),
         ),
@@ -817,7 +817,7 @@ pub fn init(app: &mut AppContext) {
             TerminalAction::ContextMenu(ContextMenuAction::AskAI(AskAISource::SelectedInputText)),
         )
         .with_enabled(|| !FeatureFlag::AgentMode.is_enabled())
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_key_binding("ctrl-shift-space")
         .with_context_predicate(id!("Input") & id!(flags::IS_ANY_AI_ENABLED)),
     ]);
@@ -843,7 +843,7 @@ pub fn init(app: &mut AppContext) {
         // UniversalInput callout debug bindings
         EditableBinding::new(
             "terminal:agent_onboarding_flow_legacy_terminal",
-            "[Debug] Onboarding Callout: WarpInput - Terminal",
+            "[Debug] Onboarding Callout: YarpInput - Terminal",
             TerminalAction::OnboardingFlow(OnboardingVersion::Legacy),
         )
         .with_enabled(|| {
@@ -854,7 +854,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:agent_onboarding_flow_universal_input_project",
-            "[Debug] Onboarding Callout: WarpInput - Project",
+            "[Debug] Onboarding Callout: YarpInput - Project",
             TerminalAction::OnboardingFlow(OnboardingVersion::Agent(
                 AgentOnboardingVersion::UniversalInput { has_project: true },
             )),
@@ -867,7 +867,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:agent_onboarding_flow_universal_input_no_project",
-            "[Debug] Onboarding Callout: WarpInput - No Project",
+            "[Debug] Onboarding Callout: YarpInput - No Project",
             TerminalAction::OnboardingFlow(OnboardingVersion::Agent(
                 AgentOnboardingVersion::UniversalInput { has_project: false },
             )),
@@ -986,7 +986,7 @@ pub fn init(app: &mut AppContext) {
             TerminalAction::ToggleAutoexecuteMode,
         )
         .with_key_binding("cmdorctrl-shift-I")
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(id!(flags::IS_ANY_AI_ENABLED) & id!("Terminal"))
         .with_enabled(|| FeatureFlag::FastForwardAutoexecuteButton.is_enabled()),
         EditableBinding::new(
@@ -995,7 +995,7 @@ pub fn init(app: &mut AppContext) {
             TerminalAction::ToggleQueueNextPrompt,
         )
         .with_key_binding("cmdorctrl-shift-J")
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(id!(flags::IS_ANY_AI_ENABLED) & id!("Terminal"))
         .with_enabled(|| FeatureFlag::QueueSlashCommand.is_enabled()),
         EditableBinding::new(
@@ -1003,7 +1003,7 @@ pub fn init(app: &mut AppContext) {
             "[Debug] Generate codebase index",
             TerminalAction::GenerateCodebaseIndex,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(id!("Terminal") & !id!("IMEOpen"))
         .with_enabled(|| {
             FeatureFlag::FullSourceCodeEmbedding.is_enabled()
@@ -1088,7 +1088,7 @@ pub fn init(app: &mut AppContext) {
                 && FeatureFlag::CloudMode.is_enabled()
                 && FeatureFlag::CloudModeFromLocalSession.is_enabled()
         })
-        .with_group(bindings::BindingGroup::WarpAi.as_str())]);
+        .with_group(bindings::BindingGroup::YarpAi.as_str())]);
         if cfg!(target_os = "macos") {
             // On MacOS, if the user has the 'Option as meta' setting enabled, the cmd-alt-enter
             // binding above will not match.
@@ -1162,7 +1162,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
             "Set Input Mode to Agent Mode",
             TerminalAction::SetInputModeAgent,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(agent_mode_predicate)
         .with_mac_key_binding("cmd-i")
         .with_linux_or_windows_key_binding("ctrl-i"),
@@ -1171,7 +1171,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
             "Set Input Mode to Terminal Mode",
             TerminalAction::SetInputModeTerminal,
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(terminal_mode_predicate)
         .with_mac_key_binding("cmd-i")
         .with_linux_or_windows_key_binding("ctrl-i"),
@@ -1181,7 +1181,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
             TerminalAction::ToggleHideCliResponses,
         )
         .with_key_binding("cmdorctrl-g")
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!(flags::IS_ANY_AI_ENABLED) & !id!(LONG_RUNNING_AGENT_REQUESTED_COMMAND_CONTEXT_KEY),
         ),

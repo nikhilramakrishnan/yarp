@@ -16,7 +16,7 @@ use yarp_editor::{
     model::{CoreEditorModel, RichTextEditorModel},
 };
 use yarpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, YarpA11yRole},
     clipboard::ClipboardContent,
     elements::{
         Align, Clipped, ConstrainedBox, Container, CrossAxisAlignment, DispatchEventResult, Empty,
@@ -2185,7 +2185,7 @@ impl View for NotebookView {
     fn accessibility_contents(&self, ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new_without_help(
             format!("{} notebook", self.title(ctx)),
-            WarpA11yRole::TextRole,
+            YarpA11yRole::TextRole,
         ))
     }
 

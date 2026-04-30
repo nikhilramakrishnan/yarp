@@ -49,7 +49,7 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
     undo_close::UndoCloseStack,
-    warp_managed_paths_watcher::WarpManagedPathsWatcher,
+    warp_managed_paths_watcher::YarpManagedPathsWatcher,
     workflows::local_workflows::LocalWorkflows,
     workspace::{
         sync_inputs::SyncedInputState, ActiveSession, OneTimeModalModel, WorkspaceRegistry,
@@ -102,7 +102,7 @@ fn initialize_app(app: &mut App) {
     app.add_singleton_model(|_| DetectedRepositories::default());
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
     app.add_singleton_model(DirectoryWatcher::new);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(YarpManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(FileMCPWatcher::new);
     app.add_singleton_model(|_| FileBasedMCPManager::default());
 

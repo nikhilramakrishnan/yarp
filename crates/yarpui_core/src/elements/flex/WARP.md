@@ -1,6 +1,6 @@
 # Flex Element Debugging Guide
 
-This guide helps diagnose and fix common Flex layout panics in WarpUI.
+This guide helps diagnose and fix common Flex layout panics in YarpUI.
 
 ## Quick Reference: Error Messages → Fixes
 

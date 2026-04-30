@@ -1003,7 +1003,7 @@ impl TypedActionView for BillingAndUsagePageView {
             BillingAndUsagePageAction::NavigateToByokSettings => {
                 ctx.dispatch_typed_action_deferred(WorkspaceAction::ShowSettingsPageWithSearch {
                     search_query: "api".to_string(),
-                    section: Some(SettingsSection::WarpAgent),
+                    section: Some(SettingsSection::YarpAgent),
                 });
             }
         }
@@ -2955,7 +2955,7 @@ impl UsageWidget {
             if t.billing_metadata.customer_type == CustomerType::Enterprise
                 && t.billing_metadata
                     .tier
-                    .warp_ai_policy
+                    .yarp_ai_policy
                     .is_some_and(|p| p.limit == 0)
             {
                 usage.add_child(self.render_enterprise_usage_card(

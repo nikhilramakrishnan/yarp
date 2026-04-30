@@ -629,14 +629,14 @@ pub enum OpenedWarpAISource {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub enum WarpAIRequestResult {
+pub enum YarpAIRequestResult {
     Succeeded { latency_ms: i64, truncated: bool },
     OutOfRequests,
     Failed,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub enum WarpAIActionType {
+pub enum YarpAIActionType {
     CopyTranscript,
     Restart,
     CopyAnswer,
@@ -648,8 +648,8 @@ pub enum WarpAIActionType {
 pub enum SaveAsWorkflowModalSource {
     Block,
     Input,
-    WarpAIWorkflowCard,
-    WarpAIPanel,
+    YarpAIWorkflowCard,
+    YarpAIPanel,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -1000,7 +1000,7 @@ pub enum AgentModeCitation {
         object_type: ObjectType,
         uid: ObjectUid,
     },
-    WarpDocs {
+    YarpDocs {
         page: String,
     },
     WebPage {
@@ -1607,11 +1607,11 @@ pub enum TelemetryEvent {
         source: OpenedWarpAISource,
     },
     /// Issued legacy Yarp AI request.
-    WarpAIRequestIssued {
-        result: WarpAIRequestResult,
+    YarpAIRequestIssued {
+        result: YarpAIRequestResult,
     },
-    WarpAIAction {
-        action_type: WarpAIActionType,
+    YarpAIAction {
+        action_type: YarpAIActionType,
     },
     /// This is purely for static prompts! Do not send user-written prompts with this event.
     UsedWarpAIPreparedPrompt {
@@ -1620,7 +1620,7 @@ pub enum TelemetryEvent {
     ToggleFocusPaneOnHover {
         enabled: bool,
     },
-    WarpAICharacterLimitExceeded,
+    YarpAICharacterLimitExceeded,
     OpenInputContextMenu,
     InputCutSelectedText,
     InputCopySelectedText,
@@ -1761,7 +1761,7 @@ pub enum TelemetryEvent {
         item_type: UndoCloseItemType,
     },
     /// This event is used to measure PTY throughput.
-    /// NOTE: this event is only meant to be used for WarpDev.
+    /// NOTE: this event is only meant to be used for YarpDev.
     PtyThroughput {
         /// The maximum PTY throughput in bytes/sec, aggregated over a 10 minute period.
         max_bytes_per_second: usize,
@@ -3163,8 +3163,8 @@ impl TelemetryEvent {
                 advanced_mode_enabled,
             } => Some(json!({ "advanced_mode_enabled": advanced_mode_enabled })),
             TelemetryEvent::OpenedWarpAI { source } => Some(json!({ "source": source })),
-            TelemetryEvent::WarpAIRequestIssued { result } => Some(json!({ "result": result })),
-            TelemetryEvent::WarpAIAction { action_type } => {
+            TelemetryEvent::YarpAIRequestIssued { result } => Some(json!({ "result": result })),
+            TelemetryEvent::YarpAIAction { action_type } => {
                 Some(json!({ "action_type": action_type }))
             }
             TelemetryEvent::MCPServerCollectionPaneOpened { entrypoint } => {
@@ -4048,7 +4048,7 @@ impl TelemetryEvent {
             | TelemetryEvent::QuitModalDisabled
             | TelemetryEvent::UserInitiatedLogOut
             | TelemetryEvent::LogOutModalShown
-            | TelemetryEvent::WarpAICharacterLimitExceeded
+            | TelemetryEvent::YarpAICharacterLimitExceeded
             | TelemetryEvent::OpenInputContextMenu
             | TelemetryEvent::InputCutSelectedText
             | TelemetryEvent::InputCopySelectedText
@@ -4712,11 +4712,11 @@ impl TelemetryEvent {
             | TelemetryEvent::PtySpawned { .. }
             | TelemetryEvent::InitialWorkingDirectoryConfigurationChanged { .. }
             | TelemetryEvent::OpenedWarpAI { .. }
-            | TelemetryEvent::WarpAIRequestIssued { .. }
-            | TelemetryEvent::WarpAIAction { .. }
+            | TelemetryEvent::YarpAIRequestIssued { .. }
+            | TelemetryEvent::YarpAIAction { .. }
             | TelemetryEvent::UsedWarpAIPreparedPrompt { .. }
             | TelemetryEvent::ToggleFocusPaneOnHover { .. }
-            | TelemetryEvent::WarpAICharacterLimitExceeded
+            | TelemetryEvent::YarpAICharacterLimitExceeded
             | TelemetryEvent::OpenInputContextMenu
             | TelemetryEvent::InputCutSelectedText
             | TelemetryEvent::InputCopySelectedText
@@ -5263,10 +5263,10 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::PtySpawned => EnablementState::Always,
             Self::InitialWorkingDirectoryConfigurationChanged => EnablementState::Always,
             Self::OpenedWarpAI => EnablementState::Always,
-            Self::WarpAIRequestIssued => EnablementState::Always,
-            Self::WarpAIAction => EnablementState::Always,
+            Self::YarpAIRequestIssued => EnablementState::Always,
+            Self::YarpAIAction => EnablementState::Always,
             Self::UsedWarpAIPreparedPrompt => EnablementState::Always,
-            Self::WarpAICharacterLimitExceeded => EnablementState::Always,
+            Self::YarpAICharacterLimitExceeded => EnablementState::Always,
             Self::OpenInputContextMenu => EnablementState::Always,
             Self::InputCutSelectedText => EnablementState::Always,
             Self::InputCopySelectedText => EnablementState::Always,
@@ -5763,10 +5763,10 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             }
             Self::InputModeChanged => "Input Mode Changed",
             Self::OpenedWarpAI => "Opened Yarp AI",
-            Self::WarpAIRequestIssued => "Yarp AI Request Issued",
-            Self::WarpAIAction => "Yarp AI Action",
+            Self::YarpAIRequestIssued => "Yarp AI Request Issued",
+            Self::YarpAIAction => "Yarp AI Action",
             Self::UsedWarpAIPreparedPrompt => "Used Yarp AI Prepared Prompt",
-            Self::WarpAICharacterLimitExceeded => "Yarp AI Character Limit Exceeded",
+            Self::YarpAICharacterLimitExceeded => "Yarp AI Character Limit Exceeded",
             Self::OpenInputContextMenu => "OpenInputBoxContextMenu",
             Self::InputCutSelectedText => "InputBoxCutSelectedText",
             Self::InputCopySelectedText => "InputBoxCutSelectedText",
@@ -6403,12 +6403,12 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Replaced the default working directory with a different path"
             }
             Self::OpenedWarpAI => "Activated Yarp AI",
-            Self::WarpAIRequestIssued => "Issued a question to Yarp AI",
-            Self::WarpAIAction => "Executed a Yarp AI action: Restart, Copy, Insert into terminal",
+            Self::YarpAIRequestIssued => "Issued a question to Yarp AI",
+            Self::YarpAIAction => "Executed a Yarp AI action: Restart, Copy, Insert into terminal",
             Self::UsedWarpAIPreparedPrompt => {
                 "Used one of the Yarp-provided prompts, like \"Show examples\""
             }
-            Self::WarpAICharacterLimitExceeded => {
+            Self::YarpAICharacterLimitExceeded => {
                 "Attempted to ask a question longer than 1k chars to Yarp AI"
             }
             Self::OpenInputContextMenu => "Opened the Input Editor's context menu",

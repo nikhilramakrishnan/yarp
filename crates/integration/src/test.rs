@@ -284,7 +284,7 @@ pub fn test_add_workflows_to_warp_config() -> Builder {
 
                     workflows.read(app, |workflows, _| {
                         // Note that this can be a synchronous assertion because unlike the next test step,
-                        // we don't have concurrency with a WarpConfig watcher thread
+                        // we don't have concurrency with a YarpConfig watcher thread
                         assert_eq!(
                             workflows.local_workflows().count(),
                             0,
@@ -5578,7 +5578,7 @@ pub fn test_terminal_announces_capabilities_to_shell() -> Builder {
             0,
             format!("echo ${var_prefix}TERM_PROGRAM"),
             ExpectedExitStatus::Success,
-            "WarpTerminal",
+            "YarpTerminal",
         ))
         .with_step(execute_command_for_single_terminal_in_tab(
             0,

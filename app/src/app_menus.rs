@@ -14,7 +14,7 @@ use crate::terminal::alt_screen_reporting::AltScreenReporting;
 use crate::terminal::session_settings::SessionSettings;
 use crate::terminal::settings::{SpacingMode, TerminalSettings};
 use crate::undo_close::UndoCloseStack;
-use crate::user_config::WarpConfig;
+use crate::user_config::YarpConfig;
 use crate::util::bindings::{self, trigger_to_keystroke, CustomAction};
 use crate::util::links;
 use crate::workspace::sync_inputs::SyncedInputState;
@@ -918,7 +918,7 @@ fn make_new_help_menu() -> Menu {
 fn make_launch_config_menu_items(ctx: &mut AppContext) -> Vec<MenuItem> {
     let mut launch_config_menu_items = vec![];
 
-    let launch_configs = WarpConfig::handle(ctx).as_ref(ctx).launch_configs();
+    let launch_configs = YarpConfig::handle(ctx).as_ref(ctx).launch_configs();
     for config in launch_configs {
         launch_config_menu_items.push(MenuItem::Custom(CustomMenuItem::new(
             &config.name,

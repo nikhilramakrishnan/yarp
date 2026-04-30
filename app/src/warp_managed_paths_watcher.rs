@@ -62,7 +62,7 @@ pub(crate) fn warp_home_mcp_config_file_path() -> Option<PathBuf> {
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct WarpMcpConfigPath {
+pub(crate) struct YarpMcpConfigPath {
     pub(crate) root_path: PathBuf,
     pub(crate) config_path: PathBuf,
 }
@@ -72,8 +72,8 @@ pub(crate) fn warp_managed_skill_dirs() -> Vec<PathBuf> {
 }
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
-pub(crate) fn warp_managed_mcp_config_path() -> Option<WarpMcpConfigPath> {
-    Some(WarpMcpConfigPath {
+pub(crate) fn warp_managed_mcp_config_path() -> Option<YarpMcpConfigPath> {
+    Some(YarpMcpConfigPath {
         root_path: home_dir()?,
         config_path: warp_home_mcp_config_file_path()?,
     })
@@ -200,23 +200,23 @@ fn filesystem_event_to_repository_update(event: &BulkFilesystemWatcherEvent) -> 
 
 #[cfg(target_family = "wasm")]
 #[allow(dead_code)]
-pub(crate) enum WarpManagedPathsWatcherEvent {}
+pub(crate) enum YarpManagedPathsWatcherEvent {}
 
 #[cfg(not(target_family = "wasm"))]
-pub(crate) enum WarpManagedPathsWatcherEvent {
+pub(crate) enum YarpManagedPathsWatcherEvent {
     FilesChanged(RepositoryUpdate),
 }
 
 #[cfg(not(target_family = "wasm"))]
-pub(crate) struct WarpManagedPathsWatcher {
+pub(crate) struct YarpManagedPathsWatcher {
     _watcher: ModelHandle<BulkFilesystemWatcher>,
 }
 
 #[cfg(target_family = "wasm")]
-pub(crate) struct WarpManagedPathsWatcher;
+pub(crate) struct YarpManagedPathsWatcher;
 
 #[cfg(not(target_family = "wasm"))]
-impl WarpManagedPathsWatcher {
+impl YarpManagedPathsWatcher {
     pub(crate) fn new(ctx: &mut ModelContext<Self>) -> Self {
         Self::new_internal(ctx, true)
     }
@@ -333,13 +333,13 @@ impl WarpManagedPathsWatcher {
     ) {
         let update = filesystem_event_to_repository_update(event);
         if !update.is_empty() {
-            ctx.emit(WarpManagedPathsWatcherEvent::FilesChanged(update));
+            ctx.emit(YarpManagedPathsWatcherEvent::FilesChanged(update));
         }
     }
 }
 
 #[cfg(target_family = "wasm")]
-impl WarpManagedPathsWatcher {
+impl YarpManagedPathsWatcher {
     pub(crate) fn new(_ctx: &mut ModelContext<Self>) -> Self {
         Self
     }
@@ -350,11 +350,11 @@ impl WarpManagedPathsWatcher {
     }
 }
 
-impl Entity for WarpManagedPathsWatcher {
-    type Event = WarpManagedPathsWatcherEvent;
+impl Entity for YarpManagedPathsWatcher {
+    type Event = YarpManagedPathsWatcherEvent;
 }
 
-impl SingletonEntity for WarpManagedPathsWatcher {}
+impl SingletonEntity for YarpManagedPathsWatcher {}
 
 #[cfg(test)]
 mod tests {

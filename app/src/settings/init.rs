@@ -201,7 +201,7 @@ pub fn init(
 
     appearance::register(ctx);
 
-    // Set up hot-reload for the settings file. When the WarpConfig watcher
+    // Set up hot-reload for the settings file. When the YarpConfig watcher
     // detects a change to settings.toml, reload preferences from disk and
     // push changed values into setting models.
     #[cfg(feature = "local_fs")]
@@ -209,7 +209,7 @@ pub fn init(
         let prefs = <settings::PublicPreferences as yarpui::SingletonEntity>::as_ref(ctx);
         if prefs.is_settings_file() {
             ctx.subscribe_to_model(
-                &crate::user_config::WarpConfig::handle(ctx),
+                &crate::user_config::YarpConfig::handle(ctx),
                 handle_warp_config_change,
             );
         }
@@ -218,24 +218,24 @@ pub fn init(
     user_defaults_on_startup
 }
 
-/// Handles a `WarpConfig` change event, reloading settings from disk when
+/// Handles a `YarpConfig` change event, reloading settings from disk when
 /// the settings file is modified, created, or deleted.
 #[cfg(feature = "local_fs")]
 fn handle_warp_config_change(
-    _: yarpui::ModelHandle<crate::user_config::WarpConfig>,
-    event: &crate::user_config::WarpConfigUpdateEvent,
+    _: yarpui::ModelHandle<crate::user_config::YarpConfig>,
+    event: &crate::user_config::YarpConfigUpdateEvent,
     ctx: &mut AppContext,
 ) {
-    use crate::user_config::{WarpConfig, WarpConfigUpdateEvent};
+    use crate::user_config::{YarpConfig, YarpConfigUpdateEvent};
 
-    if !matches!(event, WarpConfigUpdateEvent::Settings) {
+    if !matches!(event, YarpConfigUpdateEvent::Settings) {
         return;
     }
     let prefs = <settings::PublicPreferences as yarpui::SingletonEntity>::as_ref(ctx);
     if let Err(err) = prefs.reload_from_disk() {
         log::warn!("Settings file reload failed: {err}");
-        WarpConfig::handle(ctx).update(ctx, |_, ctx| {
-            ctx.emit(WarpConfigUpdateEvent::SettingsErrors(
+        YarpConfig::handle(ctx).update(ctx, |_, ctx| {
+            ctx.emit(YarpConfigUpdateEvent::SettingsErrors(
                 super::SettingsFileError::FileParseFailed(err.to_string()),
             ));
         });
@@ -243,11 +243,11 @@ fn handle_warp_config_change(
     }
     let failed_keys = settings::SettingsManager::handle(ctx)
         .update(ctx, |manager, ctx| manager.reload_all_public_settings(ctx));
-    WarpConfig::handle(ctx).update(ctx, |_, ctx| {
+    YarpConfig::handle(ctx).update(ctx, |_, ctx| {
         if failed_keys.is_empty() {
-            ctx.emit(WarpConfigUpdateEvent::SettingsErrorsCleared);
+            ctx.emit(YarpConfigUpdateEvent::SettingsErrorsCleared);
         } else {
-            ctx.emit(WarpConfigUpdateEvent::SettingsErrors(
+            ctx.emit(YarpConfigUpdateEvent::SettingsErrors(
                 super::SettingsFileError::InvalidSettings(failed_keys),
             ));
         }

@@ -27,7 +27,7 @@ use yarpui::{
         Align, Axis, Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, DispatchEventResult, Empty, EventHandler,
         Expanded, Fill, Flex, FormattedTextElement, HeadingFontSizeMultipliers, Hoverable,
-        Image as WarpImage, MainAxisAlignment, MainAxisSize, MouseStateHandle, NewScrollable,
+        Image as YarpImage, MainAxisAlignment, MainAxisSize, MouseStateHandle, NewScrollable,
         OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, SavePosition,
         ScrollTarget, ScrollToPositionMode, ScrollbarWidth, Shrinkable, Stack, Table,
         TableColumnWidth, TableConfig, TableHeader, TableVerticalSizing, Text, Wrap,
@@ -2148,7 +2148,7 @@ fn render_visual_markdown_block<A: Action>(
     .with_color(blended_colors::text_sub(theme, theme.surface_2()))
     .finish();
 
-    let image = WarpImage::new(asset_source, CacheOption::BySize)
+    let image = YarpImage::new(asset_source, CacheOption::BySize)
         .contain()
         .before_load(placeholder)
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)));
@@ -3121,7 +3121,7 @@ fn render_invalid_api_key_error(
         .on_click(move |ctx, _, _| {
             ctx.dispatch_typed_action(WorkspaceAction::ShowSettingsPageWithSearch {
                 search_query: "api keys".to_string(),
-                section: Some(SettingsSection::WarpAgent),
+                section: Some(SettingsSection::YarpAgent),
             });
         })
         .finish();

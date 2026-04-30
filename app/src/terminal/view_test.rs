@@ -21,7 +21,7 @@ use crate::{
 use crate::context_chips::prompt::Prompt;
 use crate::editor::{AutosuggestionLocation, AutosuggestionType};
 
-use crate::settings::{AISettings, AppEditorSettings, WarpPromptSeparator};
+use crate::settings::{AISettings, AppEditorSettings, YarpPromptSeparator};
 
 use crate::ai::blocklist::agent_view::toolbar_item::AgentToolbarItemKind;
 use crate::ai::blocklist::{
@@ -2749,7 +2749,7 @@ fn test_prompt_context_menu_items_for_context_chips() {
                 .update(
                     [ContextChipKind::Time12],
                     false,
-                    WarpPromptSeparator::None,
+                    YarpPromptSeparator::None,
                     ctx,
                 )
                 .expect("updating prompt to time chip failed");

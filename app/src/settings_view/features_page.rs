@@ -77,7 +77,7 @@ use crate::terminal::settings::{
 };
 use crate::terminal::{BlockListSettings, SnackbarEnabled};
 use crate::undo_close::UndoCloseSettings;
-use crate::user_config::{WarpConfig, WarpConfigUpdateEvent};
+use crate::user_config::{YarpConfig, YarpConfigUpdateEvent};
 use crate::util::bindings::{
     keybinding_name_to_display_string, reset_keybinding_to_default, set_custom_keybinding,
 };
@@ -2141,8 +2141,8 @@ impl FeaturesPageView {
         let default_session_mode_dropdown = ctx.add_typed_action_view(FilterableDropdown::new);
         Self::update_default_session_mode_dropdown(default_session_mode_dropdown.clone(), ctx);
 
-        ctx.subscribe_to_model(&WarpConfig::handle(ctx), |me, _, event, ctx| {
-            if matches!(event, WarpConfigUpdateEvent::TabConfigs) {
+        ctx.subscribe_to_model(&YarpConfig::handle(ctx), |me, _, event, ctx| {
+            if matches!(event, YarpConfigUpdateEvent::TabConfigs) {
                 Self::update_default_session_mode_dropdown(
                     me.default_session_mode_dropdown.clone(),
                     ctx,
@@ -3339,7 +3339,7 @@ impl FeaturesPageView {
                     .collect();
 
                 // Append each loaded tab config
-                let tab_configs = WarpConfig::as_ref(ctx).tab_configs().to_vec();
+                let tab_configs = YarpConfig::as_ref(ctx).tab_configs().to_vec();
                 for config in &tab_configs {
                     if let Some(path) = &config.source_path {
                         items.push(DropdownItem::new(

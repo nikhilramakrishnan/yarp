@@ -8,7 +8,7 @@ use itertools::Itertools;
 use lazy_static::lazy_static;
 use yarp_util::path::EscapeChar;
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     SingletonEntity, ViewContext,
 };
 
@@ -238,7 +238,7 @@ impl TerminalView {
                     Some(banner_state) => {
                         ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                             format!("Open {} in Yarp", banner_state.target.path.display()),
-                            WarpA11yRole::UserAction,
+                            YarpA11yRole::UserAction,
                         ))
                     }
                     None => ActionAccessibilityContent::Empty,
@@ -247,14 +247,14 @@ impl TerminalView {
             OpenInWarpBannerAction::Close => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Close View in Yarp banner",
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ))
             }
             OpenInWarpBannerAction::LearnMore => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new(
                     "Learn more",
                     "Learn more about opening Markdown files in Yarp",
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ))
             }
         }

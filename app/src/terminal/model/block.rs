@@ -523,7 +523,7 @@ impl From<&Block> for BlockType {
 
         match block.bootstrap_stage() {
             BootstrapStage::RestoreBlocks => BlockType::Restored,
-            BootstrapStage::WarpInput | BootstrapStage::Bootstrapped => BlockType::BootstrapHidden,
+            BootstrapStage::YarpInput | BootstrapStage::Bootstrapped => BlockType::BootstrapHidden,
             BootstrapStage::ScriptExecution => {
                 if block.is_empty(&AgentViewState::Inactive) {
                     BlockType::BootstrapHidden
@@ -1431,7 +1431,7 @@ impl Block {
             }
         }
 
-        let is_bootstrap_block = self.bootstrap_stage == BootstrapStage::WarpInput;
+        let is_bootstrap_block = self.bootstrap_stage == BootstrapStage::YarpInput;
         let is_empty_bootstrap_script_execution_block = self.bootstrap_stage
             == BootstrapStage::ScriptExecution
             && self.command_should_show_as_empty_when_finished()

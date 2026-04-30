@@ -148,7 +148,7 @@ impl InlineModelSelectorView {
                     .on_click(|ctx| {
                         ctx.dispatch_typed_action(WorkspaceAction::ShowSettingsPageWithSearch {
                             search_query: String::new(),
-                            section: Some(SettingsSection::WarpAgent),
+                            section: Some(SettingsSection::YarpAgent),
                         });
                     })
             });

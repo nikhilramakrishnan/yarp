@@ -175,7 +175,7 @@ fn dispatch_command(
             schedule::run(ctx, global_options, schedule_cmd)
         }
         CliCommand::Secret(secret_cmd) => {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::YarpManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("invalid value 'secret'"));
             }
             secret::run(ctx, global_options, secret_cmd)
@@ -1354,7 +1354,7 @@ fn launch_command(
 /// within a Yarp terminal session).
 pub fn is_running_in_warp() -> bool {
     std::env::var("TERM_PROGRAM")
-        .map(|v| v == "WarpTerminal")
+        .map(|v| v == "YarpTerminal")
         .unwrap_or(false)
 }
 

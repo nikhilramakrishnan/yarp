@@ -15,13 +15,13 @@ use crate::{
     send_telemetry_from_ctx,
     server::{
         server_api::{ai::AIClient, ServerApi},
-        telemetry::{TelemetryEvent, WarpAIRequestResult},
+        telemetry::{TelemetryEvent, YarpAIRequestResult},
     },
     workspaces::user_workspaces::UserWorkspaces,
 };
 
 use super::{
-    execution_context::WarpAiExecutionContext,
+    execution_context::YarpAiExecutionContext,
     utils::{markdown_segments_from_text, FormattedTranscriptMessage, TranscriptPart},
 };
 use anyhow::Result;
@@ -90,7 +90,7 @@ pub struct Requests {
     /// This list is mutually exclusive from current_transcript.  
     old_transcript_parts: Vec<TranscriptPart>,
 
-    ai_execution_context: Option<WarpAiExecutionContext>,
+    ai_execution_context: Option<YarpAiExecutionContext>,
 }
 
 impl Entity for Requests {
@@ -150,7 +150,7 @@ impl Requests {
 
     pub fn update_ai_execution_context(
         &mut self,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
     ) {
         self.ai_execution_context = ai_execution_context;
     }
@@ -239,7 +239,7 @@ impl Requests {
 
                             let req_latency = end_time.signed_duration_since(start_time).num_milliseconds();
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::Succeeded { latency_ms: req_latency, truncated }},
+                                TelemetryEvent::YarpAIRequestIssued { result: YarpAIRequestResult::Succeeded { latency_ms: req_latency, truncated }},
                                 ctx
                             );
                         }
@@ -289,7 +289,7 @@ impl Requests {
                             });
 
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::OutOfRequests},
+                                TelemetryEvent::YarpAIRequestIssued { result: YarpAIRequestResult::OutOfRequests},
                                 ctx
                             );
                         }
@@ -313,7 +313,7 @@ impl Requests {
                             });
 
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::Failed},
+                                TelemetryEvent::YarpAIRequestIssued { result: YarpAIRequestResult::Failed},
                                 ctx
                             );
                         }

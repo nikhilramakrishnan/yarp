@@ -126,7 +126,7 @@ use crate::{
         },
         AIRequestUsageModel,
     },
-    ai_assistant::execution_context::WarpAiExecutionContext,
+    ai_assistant::execution_context::YarpAiExecutionContext,
     appearance::{Appearance, AppearanceEvent},
     channel::{Channel, ChannelState},
     cloud_object::{
@@ -192,7 +192,7 @@ use crate::{
     settings_view::{flags, SettingsSection},
     terminal::view::inline_banner::{PromptSuggestionsEvent, PromptSuggestionsView},
     ui_components::{blended_colors, icons::Icon},
-    user_config::WarpConfig,
+    user_config::YarpConfig,
     util::bindings::{self, CustomAction},
     util::image::MAX_IMAGE_COUNT_FOR_QUERY,
     view_components::{DismissibleToast, ToastFlavor},
@@ -268,7 +268,7 @@ use yarp_core::{
 use yarp_editor::editor::NavigationKey;
 use yarp_util::path::ShellFamily;
 use yarpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, YarpA11yRole},
     clipboard::{ClipboardContent, ImageData},
     clipboard_utils::CLIPBOARD_IMAGE_MIME_TYPES,
     color::ColorU,
@@ -1877,7 +1877,7 @@ pub fn init(app: &mut AppContext) {
                 & id!(flags::IS_ANY_AI_ENABLED)
                 & !id!("AIInput"),
         )
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_custom_action(CustomAction::AISearch),
         EditableBinding::new(
             START_NEW_CONVERSATION_KEYBINDING_NAME,
@@ -1885,7 +1885,7 @@ pub fn init(app: &mut AppContext) {
             InputAction::StartNewAgentConversation,
         )
         .with_enabled(|| !FeatureFlag::AgentView.is_enabled())
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Input") & id!(flags::IS_ANY_AI_ENABLED) & id!("TerminalView_NonEmptyBlockList"),
         )
@@ -1897,7 +1897,7 @@ pub fn init(app: &mut AppContext) {
             InputAction::EnableAutoDetection,
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
-        .with_group(bindings::BindingGroup::WarpAi.as_str())
+        .with_group(bindings::BindingGroup::YarpAi.as_str())
         .with_context_predicate(
             id!("Input")
                 & id!("UniversalDeveloperInput")
@@ -2656,7 +2656,7 @@ impl Input {
             .app_workflows()
             .cloned()
             .collect_vec();
-        let local_user_workflows = WarpConfig::as_ref(ctx).local_user_workflows().clone();
+        let local_user_workflows = YarpConfig::as_ref(ctx).local_user_workflows().clone();
 
         let workflows_search_view = ctx.add_typed_action_view(|ctx| {
             workflows::CategoriesView::new(local_user_workflows, app_workflows, ctx)
@@ -3839,7 +3839,7 @@ impl Input {
                 });
             }
             InlineProfileSelectorEvent::ManageProfiles => {
-                ctx.emit(Event::OpenSettings(SettingsSection::WarpAgent));
+                ctx.emit(Event::OpenSettings(SettingsSection::YarpAgent));
             }
             InlineProfileSelectorEvent::Dismissed => {
                 if self
@@ -3893,7 +3893,7 @@ impl Input {
 
         self.show_workflows_info_box_on_workflow_selection(
             WorkflowType::Cloud(Box::new(workflow)),
-            WorkflowSource::WarpAI,
+            WorkflowSource::YarpAI,
             WorkflowSelectionSource::SlashMenu,
             None,
             ctx,
@@ -5549,7 +5549,7 @@ impl Input {
         let Some(session) = self.active_session(ctx) else {
             return;
         };
-        let context = WarpAiExecutionContext::new(&session);
+        let context = YarpAiExecutionContext::new(&session);
         let completer_data = self.completer_data();
         let block_context = Some(BlockContext::from_completed_block(&block_completed));
         let previous_result = self.last_intelligent_autosuggestion_result.take();
@@ -6681,7 +6681,7 @@ impl Input {
         ctx.emit_a11y_content(AccessibilityContent::new(
             accessibility_text,
             "Press shift-tab to select the next workflow argument",
-            WarpA11yRole::UserAction,
+            YarpA11yRole::UserAction,
         ));
 
         // Only highlight an argument and show enum suggestions if history suggestions are not active
@@ -7033,7 +7033,7 @@ impl Input {
 
                 ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                     format!("Executed: {command}"),
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ));
             }
             InputSuggestionsEvent::CloseSuggestion {
@@ -8044,7 +8044,7 @@ impl Input {
             let Some(session) = self.active_session(ctx) else {
                 return;
             };
-            let context = WarpAiExecutionContext::new(&session);
+            let context = YarpAiExecutionContext::new(&session);
             if let Some(last_user_block_completed) =
                 completer_data.last_user_block_completed.clone()
             {
@@ -11167,7 +11167,7 @@ impl Input {
             if let Some(a11y_text) = self.selected_workflow_a11y_text(ctx) {
                 ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                     a11y_text,
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ));
             }
         } else {
@@ -11249,7 +11249,7 @@ impl Input {
             if trigger == CommandXRayTrigger::Keystroke {
                 ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                     description.a11y_text(),
-                    WarpA11yRole::UserAction,
+                    YarpA11yRole::UserAction,
                 ));
             }
             ctx.notify();
@@ -12128,7 +12128,7 @@ impl Input {
         let Some(session) = self.active_session(ctx) else {
             return;
         };
-        let context = WarpAiExecutionContext::new(&session);
+        let context = YarpAiExecutionContext::new(&session);
 
         let request = PredictAMQueriesRequest {
             context_messages: vec![json_message.to_string()],
@@ -13886,7 +13886,7 @@ impl TypedActionView for Input {
                     INPUT_A11Y_LABEL,
                     // TODO (a11y) use bindings from user settings
                     INPUT_A11Y_HELPER,
-                    WarpA11yRole::TextareaRole,
+                    YarpA11yRole::TextareaRole,
                 ))
             }
             _ => ActionAccessibilityContent::Empty,
@@ -14085,7 +14085,7 @@ impl View for Input {
             INPUT_A11Y_LABEL,
             // TODO (a11y) use bindings from user settings
             INPUT_A11Y_HELPER,
-            WarpA11yRole::TextareaRole,
+            YarpA11yRole::TextareaRole,
         ))
     }
 

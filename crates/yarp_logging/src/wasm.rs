@@ -170,7 +170,7 @@ impl Log for WasmLogger {
                             .map_or_else(|| "[Unknown]".to_string(), |line| line.to_string()),
                     );
                     // Send error logs to Sentry.
-                    yarp_web_event_bus::emit_event(yarp_web_event_bus::WarpEvent::ErrorLogged {
+                    yarp_web_event_bus::emit_event(yarp_web_event_bus::YarpEvent::ErrorLogged {
                         error,
                     });
 

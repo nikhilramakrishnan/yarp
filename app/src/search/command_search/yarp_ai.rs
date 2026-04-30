@@ -2,7 +2,7 @@ use super::workflows::{WorkflowIdentity, WorkflowSearchItem};
 use crate::{
     ai::AIRequestUsageModel,
     ai_assistant::{
-        execution_context::WarpAiExecutionContext, GenerateCommandsFromNaturalLanguageError,
+        execution_context::YarpAiExecutionContext, GenerateCommandsFromNaturalLanguageError,
         AI_ASSISTANT_LOGO_COLOR,
     },
     appearance::Appearance,
@@ -40,24 +40,24 @@ const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Ask Yarp AI for command suggestions";
 const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into shell command using Yarp AI";
 
 #[derive(Clone, Debug)]
-pub enum WarpAISearchItem {
+pub enum YarpAISearchItem {
     /// Translates the query within command search.
     Translate,
 
-    /// Opens WarpAI with the query.
+    /// Opens YarpAI with the query.
     Open,
 }
 
-impl WarpAISearchItem {
+impl YarpAISearchItem {
     fn item_body_text(&self) -> &'static str {
         match self {
-            WarpAISearchItem::Translate => TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT,
-            WarpAISearchItem::Open => OPEN_YARP_AI_ITEM_BODY_TEXT,
+            YarpAISearchItem::Translate => TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT,
+            YarpAISearchItem::Open => OPEN_YARP_AI_ITEM_BODY_TEXT,
         }
     }
 }
 
-impl SearchItem for WarpAISearchItem {
+impl SearchItem for YarpAISearchItem {
     type Action = CommandSearchItemAction;
 
     fn render_icon(
@@ -127,15 +127,15 @@ impl SearchItem for WarpAISearchItem {
 
     fn accept_result(&self) -> CommandSearchItemAction {
         match self {
-            WarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
-            WarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
+            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
+            YarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
         }
     }
 
     fn execute_result(&self) -> CommandSearchItemAction {
         match self {
-            WarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
-            WarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
+            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
+            YarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
         }
     }
 
@@ -151,15 +151,15 @@ impl SearchItem for WarpAISearchItem {
 /// In most cases, the data source should be registered _twice_: once as a sync source
 /// and once as an async source. That way, the mixer will treat these as two separate
 /// data sources.
-pub struct WarpAIDataSource {
+pub struct YarpAIDataSource {
     ai_client: Arc<dyn AIClient>,
-    ai_execution_context: Option<WarpAiExecutionContext>,
+    ai_execution_context: Option<YarpAiExecutionContext>,
 }
 
-impl WarpAIDataSource {
+impl YarpAIDataSource {
     pub fn new(
         ai_client: Arc<dyn AIClient>,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<YarpAiExecutionContext>,
     ) -> Self {
         Self {
             ai_client,
@@ -168,7 +168,7 @@ impl WarpAIDataSource {
     }
 }
 
-impl SyncDataSource for WarpAIDataSource {
+impl SyncDataSource for YarpAIDataSource {
     type Action = CommandSearchItemAction;
 
     fn run_query(
@@ -177,17 +177,17 @@ impl SyncDataSource for WarpAIDataSource {
         _app: &AppContext,
     ) -> Result<Vec<QueryResult<Self::Action>>, DataSourceRunErrorWrapper> {
         if query.filters.is_empty() {
-            Ok(vec![WarpAISearchItem::Translate.into()])
+            Ok(vec![YarpAISearchItem::Translate.into()])
         } else {
             // Since the query matched, the `#` filter must be applied in this case.
-            Ok(vec![WarpAISearchItem::Open.into()])
+            Ok(vec![YarpAISearchItem::Open.into()])
         }
     }
 }
 
 #[cfg_attr(not(target_family = "wasm"), async_trait)]
 #[cfg_attr(target_family = "wasm", async_trait(?Send))]
-impl AsyncDataSource for WarpAIDataSource {
+impl AsyncDataSource for YarpAIDataSource {
     type Action = CommandSearchItemAction;
 
     fn run_query(
@@ -219,7 +219,7 @@ impl AsyncDataSource for WarpAIDataSource {
                                         origin: AIWorkflowOrigin::CommandSearch,
                                     },
                                 )),
-                                source: WorkflowSource::WarpAI,
+                                source: WorkflowSource::YarpAI,
                                 fuzzy_matched_workflow: FuzzyMatchWorkflowResult::no_match(),
                             }
                             .into()

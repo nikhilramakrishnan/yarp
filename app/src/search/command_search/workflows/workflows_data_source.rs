@@ -4,7 +4,7 @@ use yarpui::AppContext;
 
 use crate::completer::SessionContext;
 use crate::search::command_search::settings::CommandSearchSettings;
-use crate::user_config::WarpConfig;
+use crate::user_config::YarpConfig;
 use crate::workflows::local_workflows::LocalWorkflows;
 #[cfg(feature = "local_fs")]
 use crate::workflows::local_workflows::UseCache;
@@ -35,7 +35,7 @@ impl WorkflowsDataSource {
 
         workflows_by_source.insert(WorkflowSource::Global, global_workflows);
 
-        let user_workflows = WarpConfig::as_ref(app).local_user_workflows().clone();
+        let user_workflows = YarpConfig::as_ref(app).local_user_workflows().clone();
         workflows_by_source.insert(WorkflowSource::Local, user_workflows);
 
         #[cfg(feature = "local_fs")]
