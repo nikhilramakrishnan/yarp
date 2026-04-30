@@ -2382,7 +2382,7 @@ impl PaneGroup {
                                 if honor_ps1 {
                                     manager.send_switch_to_ps1_bindkey(ctx);
                                 } else {
-                                    manager.send_switch_to_warp_prompt_bindkey(ctx);
+                                    manager.send_switch_to_yarp_prompt_bindkey(ctx);
                                 }
                             }
                         });

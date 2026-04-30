@@ -104,14 +104,14 @@ define_settings_group!(GeneralSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: true,
     },
-    open_in_warp_banner_dismissed_for_markdown: OpenInWarpBannerDismissedMarkdown {
+    open_in_yarp_banner_dismissed_for_markdown: OpenInWarpBannerDismissedMarkdown {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Never,
         private: true,
     },
-    open_in_warp_banner_dismissed_for_code_and_text: OpenInWarpBannerDismissedCode {
+    open_in_yarp_banner_dismissed_for_code_and_text: OpenInWarpBannerDismissedCode {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
@@ -142,7 +142,7 @@ define_settings_group!(GeneralSettings, settings: [
     // One-time flag tracking whether the OpenYarp launch modal has already been
     // shown to the user. Not user-visible; modeled as a setting so it's only
     // shown once per user regardless of the number of devices they use.
-    did_check_to_trigger_openwarp_launch_modal: DidShowOpenYarpLaunchModal {
+    did_check_to_trigger_openyarp_launch_modal: DidShowOpenYarpLaunchModal {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,

@@ -541,7 +541,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # We remove any existing bindkey for ESC-P ("w" for Yarp prompt) and register the bindkey
         # to our custom function. Note that this specific keybinding is arbitrary.
         bind -r '"\ew"'
-        bind -x '"\ew":"yarp_change_prompt_modes_to_warp_prompt"'
+        bind -x '"\ew":"yarp_change_prompt_modes_to_yarp_prompt"'
 
         local escaped_pwd
         if [ "$YARP_IN_MSYS2" = false ]; then
@@ -879,7 +879,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # yarp_update_prompt_vars to refresh the prompt (note the PS1 will be unset in this logic). 
     # Note that we use an "empty block" workaround to achieve instant prompt switching in bash, 
     # since there is no built-in methods to repaint the prompt, unlike Zsh/fish.
-    function yarp_change_prompt_modes_to_warp_prompt() {
+    function yarp_change_prompt_modes_to_yarp_prompt() {
       YARP_HONOR_PS1="0"
 
       yarp_update_prompt_vars

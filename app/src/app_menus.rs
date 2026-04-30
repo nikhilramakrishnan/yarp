@@ -210,7 +210,7 @@ fn make_new_app_menu(ctx: &AppContext) -> Menu {
         "Set Yarp as Default Terminal",
         move |ctx| {
             DefaultTerminal::handle(ctx).update(ctx, |default_terminal, ctx| {
-                default_terminal.make_warp_default(ctx)
+                default_terminal.make_yarp_default(ctx)
             });
         },
         move |_props, ctx| {
@@ -218,7 +218,7 @@ fn make_new_app_menu(ctx: &AppContext) -> Menu {
             MenuItemPropertyChanges {
                 disabled: Some(
                     !DefaultTerminal::can_warp_become_default()
-                        || default_terminal.is_warp_default(),
+                        || default_terminal.is_yarp_default(),
                 ),
                 ..Default::default()
             }

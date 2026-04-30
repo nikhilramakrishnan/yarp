@@ -74,7 +74,7 @@ fn file_title_text(openable_path: &OpenablePath) -> String {
     }
 }
 
-pub fn render_open_in_warp_banner(
+pub fn render_open_in_yarp_banner(
     state: &OpenInWarpBannerState,
     view_id: EntityId,
     appearance: &Appearance,
@@ -95,7 +95,7 @@ pub fn render_open_in_warp_banner(
             weight: Some(Weight::Bold),
             ..Default::default()
         },
-        position_id: Some(format!("open_in_warp_banner_button_{view_id}")),
+        position_id: Some(format!("open_in_yarp_banner_button_{view_id}")),
         variant: InlineBannerTextButtonVariant::Primary,
     };
 

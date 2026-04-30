@@ -1124,7 +1124,7 @@ fn test_removed_gap_with_banner() {
 }
 
 #[test]
-pub fn test_block_heights_combined_prompt_command_grid_warp_prompt() {
+pub fn test_block_heights_combined_prompt_command_grid_yarp_prompt() {
     let mut block_list =
         new_bootstrapped_block_list(None, None, ChannelEventListener::new_for_test());
     let bootstrapped_block_list_len = block_list.blocks().len();

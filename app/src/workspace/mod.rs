@@ -112,7 +112,7 @@ pub fn init(app: &mut AppContext) {
     hoa_onboarding::init(app);
     tab_configs::session_config_modal::init(app);
     view::launch_modal::oz_launch::init(app);
-    view::openwarp_launch_modal::init(app);
+    view::openyarp_launch_modal::init(app);
     view::cloud_agent_capacity_modal::init(app);
     view::codex_modal::init(app);
     view::free_tier_limit_hit_modal::init(app);
@@ -216,13 +216,13 @@ pub fn init(app: &mut AppContext) {
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:open_openwarp_launch_modal",
+                    "workspace:open_openyarp_launch_modal",
                     "[Debug] Open OpenYarp Launch Modal",
                     WorkspaceAction::OpenOpenYarpLaunchModal,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:reset_openwarp_launch_modal_state",
+                    "workspace:reset_openyarp_launch_modal_state",
                     "[Debug] Reset OpenYarp Launch Modal State",
                     WorkspaceAction::ResetOpenYarpLaunchModalState,
                 )

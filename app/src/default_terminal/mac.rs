@@ -40,7 +40,7 @@ pub fn can_become_default_terminal() -> bool {
     }
 }
 
-pub fn is_warp_default_terminal() -> bool {
+pub fn is_yarp_default_terminal() -> bool {
     unsafe {
         let unix_executable_content_type = CFString::new("public.unix-executable");
         let handler = LSCopyDefaultRoleHandlerForContentType(

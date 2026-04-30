@@ -29,7 +29,7 @@ const CONFIRM_MARGIN_TOP: f32 = 16.;
 pub struct OnboardingPromptBlock {
     learn_more_highlight_index: HighlightedHyperlink,
     mouse_state_handle_look_incorrect: MouseStateHandle,
-    mouse_state_handle_warp_prompt: MouseStateHandle,
+    mouse_state_handle_yarp_prompt: MouseStateHandle,
     mouse_state_handle_existing_prompt: MouseStateHandle,
     mouse_state_handle_confirm: MouseStateHandle,
     ps1_grid_info: Option<(BlockGrid, SizeInfo)>,
@@ -42,7 +42,7 @@ impl OnboardingPromptBlock {
         Self {
             learn_more_highlight_index: Default::default(),
             mouse_state_handle_look_incorrect: Default::default(),
-            mouse_state_handle_warp_prompt: Default::default(),
+            mouse_state_handle_yarp_prompt: Default::default(),
             mouse_state_handle_existing_prompt: Default::default(),
             mouse_state_handle_confirm: Default::default(),
             ps1_grid_info,
@@ -180,7 +180,7 @@ impl OnboardingPromptBlock {
 
                     ConstrainedBox::new(
                         Container::new(if prompt_type == OnboardingPromptType::YarpDefault {
-                            self.render_warp_prompt_button_interior(appearance)
+                            self.render_yarp_prompt_button_interior(appearance)
                         } else {
                             self.render_existing_prompt_button_interior(appearance)
                         })
@@ -323,7 +323,7 @@ impl OnboardingPromptBlock {
             .finish()
     }
 
-    fn render_warp_prompt_button_interior(&self, appearance: &Appearance) -> Box<dyn Element> {
+    fn render_yarp_prompt_button_interior(&self, appearance: &Appearance) -> Box<dyn Element> {
         // Pixel values pulled from Figma mocks
         // https://www.figma.com/file/y888viqzWBoMpFTxQqkQEN/Activation?node-id=568:1595&mode=dev
         const HEADER_TEXT: &str = "Yarp prompt";
@@ -440,7 +440,7 @@ impl View for OnboardingPromptBlock {
                     .with_main_axis_alignment(MainAxisAlignment::Start)
                     .with_child(self.render_prompt_button(
                         appearance,
-                        self.mouse_state_handle_warp_prompt.clone(),
+                        self.mouse_state_handle_yarp_prompt.clone(),
                         OnboardingPromptType::YarpDefault,
                     ))
                     .with_child(self.render_prompt_button(

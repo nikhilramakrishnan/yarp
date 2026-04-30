@@ -11,7 +11,7 @@ use crate::JsFunctionRegistry;
 /// This is similar to `rquickjs`'s native `FromJs` trait, except it enables registering JS
 /// functions in the given `JsFunctionRegistry` so these functions can be called arbitrarily.
 pub trait FromYarpJs<'js>: Sized {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -27,14 +27,14 @@ pub trait FromYarpJs<'js>: Sized {
 /// like `Vec`, which causes issues when the Rust compiler attempts to generate `CallableJsFunction`
 /// for monomorphized `TypedJsFunction`s (which have generic type params).
 pub trait IntoYarpJs<'js>: Sized {
-    fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>>;
+    fn into_yarp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>>;
 }
 
 impl<'js, T> FromYarpJs<'js> for Vec<T>
 where
     T: FromYarpJs<'js>,
 {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -43,7 +43,7 @@ where
             let values = value.get::<Vec<Value>>()?;
             Ok(values
                 .into_iter()
-                .flat_map(|value| T::from_warp_js(ctx, value, js_function_registry).ok())
+                .flat_map(|value| T::from_yarp_js(ctx, value, js_function_registry).ok())
                 .collect())
         } else {
             Err(rquickjs::Error::FromJs {
@@ -56,7 +56,7 @@ where
 }
 
 impl<'js> FromYarpJs<'js> for String {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
         _js_function_registry: &mut JsFunctionRegistry,
@@ -66,7 +66,7 @@ impl<'js> FromYarpJs<'js> for String {
 }
 
 impl<'js> FromYarpJs<'js> for bool {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
         _js_function_registry: &mut JsFunctionRegistry,
@@ -76,7 +76,7 @@ impl<'js> FromYarpJs<'js> for bool {
 }
 
 impl<'js> FromYarpJs<'js> for i32 {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
         _js_function_registry: &mut JsFunctionRegistry,
@@ -86,13 +86,13 @@ impl<'js> FromYarpJs<'js> for i32 {
 }
 
 impl<'js> IntoYarpJs<'js> for String {
-    fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
+    fn into_yarp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         self.into_js(ctx)
     }
 }
 
 impl<'js> IntoYarpJs<'js> for Vec<String> {
-    fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
+    fn into_yarp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         self.into_js(ctx)
     }
 }

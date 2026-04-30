@@ -1133,7 +1133,7 @@ impl FeaturesPageAction {
             }
             Self::MakeWarpDefaultTerminal => TelemetryEvent::FeaturesPageAction {
                 action: "MakeWarpDefaultTerminal".to_string(),
-                value: to_string(DefaultTerminal::as_ref(ctx).is_warp_default()),
+                value: to_string(DefaultTerminal::as_ref(ctx).is_yarp_default()),
             },
             Self::ToggleAutoOpenCodeReviewPane => TelemetryEvent::FeaturesPageAction {
                 action: "ToggleAutoOpenCodeReviewPane".to_string(),
@@ -1904,7 +1904,7 @@ impl TypedActionView for FeaturesPageView {
             }
             MakeWarpDefaultTerminal => {
                 DefaultTerminal::handle(ctx).update(ctx, |default_terminal, ctx| {
-                    default_terminal.make_warp_default(ctx);
+                    default_terminal.make_yarp_default(ctx);
                 });
             }
         }
@@ -4788,7 +4788,7 @@ impl SettingsWidget for DefaultTerminalWidget {
     ) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder();
         let default_terminal = DefaultTerminal::as_ref(app);
-        if default_terminal.is_warp_default() {
+        if default_terminal.is_yarp_default() {
             ui_builder
                 .wrappable_text("Yarp is the default terminal", true)
                 .with_style(UiComponentStyles {

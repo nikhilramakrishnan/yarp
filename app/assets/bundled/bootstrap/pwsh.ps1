@@ -368,7 +368,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         }
 
         # Sets the prompt mode to yarp prompt
-        # Is the equivalent of yarp_change_prompt_modes_to_warp_prompt in other shells
+        # Is the equivalent of yarp_change_prompt_modes_to_yarp_prompt in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+w' -ScriptBlock {
             $env:YARP_HONOR_PS1 = '0'
             Yarp-Redraw-Prompt

@@ -123,9 +123,9 @@ where
         ctx: Ctx<'_>,
     ) -> Result<SerializedJsValue, JsFunctionError> {
         let input: I = input.to_value().map_err(JsFunctionError::Deserialization)?;
-        let input_value = input.into_warp_js(ctx)?;
+        let input_value = input.into_yarp_js(ctx)?;
         let func = self.js_function.clone().restore(ctx)?;
-        let output = O::from_warp_js(ctx, func.call((input_value,))?, function_registry)?;
+        let output = O::from_yarp_js(ctx, func.call((input_value,))?, function_registry)?;
         SerializedJsValue::from_value(output).map_err(JsFunctionError::Serialization)
     }
 }

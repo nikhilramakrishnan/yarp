@@ -9,7 +9,7 @@ pub mod global_search;
 pub(crate) mod launch_modal;
 pub(crate) mod left_panel;
 pub(crate) mod onboarding;
-pub(crate) mod openwarp_launch_modal;
+pub(crate) mod openyarp_launch_modal;
 pub(crate) mod right_panel;
 mod startup_directory;
 #[cfg(test)]
@@ -129,7 +129,7 @@ use crate::workspace::view::free_tier_limit_hit_modal::{
     FreeTierLimitHitModal, FreeTierLimitHitModalEvent,
 };
 use crate::workspace::view::launch_modal::{LaunchModal, LaunchModalEvent, OzLaunchSlide};
-use crate::workspace::view::openwarp_launch_modal::{
+use crate::workspace::view::openyarp_launch_modal::{
     OpenYarpLaunchModal, OpenYarpLaunchModalEvent,
 };
 use crate::workspace::{ForkFromExchange, ForkedConversationDestination};
@@ -967,7 +967,7 @@ pub struct Workspace {
     suggested_agent_mode_workflow_modal: ViewHandle<SuggestedAgentModeWorkflowModal>,
     suggested_rule_modal: ViewHandle<SuggestedRuleModal>,
     oz_launch_modal: ModalWithTab<LaunchModal<OzLaunchSlide>>,
-    openwarp_launch_modal: ViewHandle<OpenYarpLaunchModal>,
+    openyarp_launch_modal: ViewHandle<OpenYarpLaunchModal>,
     enable_auto_reload_modal: ViewHandle<EnableAutoReloadModal>,
     build_plan_migration_modal: ViewHandle<BuildPlanMigrationModal>,
     codex_modal: ViewHandle<CodexModal>,
@@ -2666,7 +2666,7 @@ impl Workspace {
 
         let openwarp_launch_view = ctx.add_typed_action_view(OpenYarpLaunchModal::new);
         ctx.subscribe_to_view(&openwarp_launch_view, |me, _, event, ctx| {
-            me.handle_openwarp_launch_modal_event(event, ctx);
+            me.handle_openyarp_launch_modal_event(event, ctx);
         });
 
         let launch_config_save_modal = Self::build_launch_config_save_modal(ctx);
@@ -3001,8 +3001,8 @@ impl Workspace {
                 if model_ref.target_window_id() == Some(ctx.window_id()) {
                     if model_ref.is_oz_launch_modal_open() {
                         me.open_tab_and_focus_oz_launch_modal(ctx);
-                    } else if model_ref.is_openwarp_launch_modal_open() {
-                        me.focus_openwarp_launch_modal(ctx);
+                    } else if model_ref.is_openyarp_launch_modal_open() {
+                        me.focus_openyarp_launch_modal(ctx);
                     } else if model_ref.is_hoa_onboarding_open() {
                         me.show_hoa_onboarding_flow(ctx);
                     } else if model_ref.is_build_plan_migration_modal_open() {
@@ -3134,7 +3134,7 @@ impl Workspace {
                 view: oz_launch_view,
                 tab_pane_group_id: None,
             },
-            openwarp_launch_modal: openwarp_launch_view,
+            openyarp_launch_modal: openwarp_launch_view,
             enable_auto_reload_modal,
             agent_management_view,
             notification_mailbox_view,
@@ -15772,7 +15772,7 @@ impl Workspace {
         }
     }
 
-    fn handle_openwarp_launch_modal_event(
+    fn handle_openyarp_launch_modal_event(
         &mut self,
         event: &OpenYarpLaunchModalEvent,
         ctx: &mut ViewContext<Self>,
@@ -15780,7 +15780,7 @@ impl Workspace {
         match event {
             OpenYarpLaunchModalEvent::Close => {
                 OneTimeModalModel::handle(ctx).update(ctx, |model, ctx| {
-                    model.mark_openwarp_launch_modal_dismissed(ctx);
+                    model.mark_openyarp_launch_modal_dismissed(ctx);
                 });
                 self.focus_active_tab(ctx);
                 ctx.notify();
@@ -19488,8 +19488,8 @@ impl Workspace {
         self.on_window_closed(ctx);
     }
 
-    fn focus_openwarp_launch_modal(&mut self, ctx: &mut ViewContext<Self>) {
-        ctx.focus(&self.openwarp_launch_modal);
+    fn focus_openyarp_launch_modal(&mut self, ctx: &mut ViewContext<Self>) {
+        ctx.focus(&self.openyarp_launch_modal);
     }
 
     fn open_tab_and_focus_oz_launch_modal(&mut self, ctx: &mut ViewContext<Self>) {
@@ -21279,7 +21279,7 @@ impl TypedActionView for Workspace {
             OpenOpenYarpLaunchModal => {
                 // Force open the OpenYarp launch modal for debugging
                 OneTimeModalModel::handle(ctx).update(ctx, |model, ctx| {
-                    model.force_open_openwarp_launch_modal(ctx);
+                    model.force_open_openyarp_launch_modal(ctx);
                 });
                 ctx.notify();
             }
@@ -21287,18 +21287,18 @@ impl TypedActionView for Workspace {
             ResetOpenYarpLaunchModalState => {
                 // Reset the OpenYarp launch modal dismissed state for debugging
                 let old_value = *GeneralSettings::as_ref(ctx)
-                    .did_check_to_trigger_openwarp_launch_modal
+                    .did_check_to_trigger_openyarp_launch_modal
                     .value();
                 GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
                     if let Err(e) = settings
-                        .did_check_to_trigger_openwarp_launch_modal
+                        .did_check_to_trigger_openyarp_launch_modal
                         .set_value(false, ctx)
                     {
                         log::warn!("Failed to reset OpenYarp launch modal dismissed setting: {e}");
                     }
                 });
                 let new_value = *GeneralSettings::as_ref(ctx)
-                    .did_check_to_trigger_openwarp_launch_modal
+                    .did_check_to_trigger_openyarp_launch_modal
                     .value();
                 log::info!(
                     "OpenYarp launch modal state: old={}, new={}, feature_flag_enabled={}",
@@ -21782,7 +21782,7 @@ impl View for Workspace {
         }
 
         let default_terminal = DefaultTerminal::as_ref(app);
-        if default_terminal.is_warp_default() {
+        if default_terminal.is_yarp_default() {
             context.set.insert(flags::YARP_IS_DEFAULT_TERMINAL);
         }
 
@@ -22482,8 +22482,8 @@ impl View for Workspace {
             stack.add_child(ChildView::new(&self.oz_launch_modal.view).finish());
         }
 
-        if should_show_modal && one_time_modal_model.is_openwarp_launch_modal_open() {
-            stack.add_child(ChildView::new(&self.openwarp_launch_modal).finish());
+        if should_show_modal && one_time_modal_model.is_openyarp_launch_modal_open() {
+            stack.add_child(ChildView::new(&self.openyarp_launch_modal).finish());
         }
 
         if let Some(hoa_flow) = &self.hoa_onboarding_flow {

@@ -55,9 +55,9 @@ where
 {
     let value: Value = object.get(field_name)?;
     if value.is_array() {
-        Vec::<T>::from_warp_js(ctx, value, js_function_registry)
+        Vec::<T>::from_yarp_js(ctx, value, js_function_registry)
     } else {
-        Ok(vec![T::from_warp_js(ctx, value, js_function_registry)?])
+        Ok(vec![T::from_yarp_js(ctx, value, js_function_registry)?])
     }
 }
 
@@ -78,7 +78,7 @@ where
     T: FromYarpJs<'js>,
 {
     let value = object.get(field_name)?;
-    T::from_warp_js(ctx, value, js_function_registry)
+    T::from_yarp_js(ctx, value, js_function_registry)
 }
 
 /// Returns the value for an optional property of type `T`.

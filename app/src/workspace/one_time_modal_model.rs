@@ -22,7 +22,7 @@ pub struct OneTimeModalModel {
     /// Whether the Oz launch modal is currently being shown.
     is_oz_launch_modal_open: bool,
     /// Whether the OpenYarp launch modal is currently being shown.
-    is_openwarp_launch_modal_open: bool,
+    is_openyarp_launch_modal_open: bool,
     /// Whether the HOA onboarding flow is currently being shown.
     is_hoa_onboarding_open: bool,
     /// The window ID where the currently open one-time modal should be displayed.
@@ -75,7 +75,7 @@ impl OneTimeModalModel {
                 });
                 GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
                     if let Err(e) = settings
-                        .did_check_to_trigger_openwarp_launch_modal
+                        .did_check_to_trigger_openyarp_launch_modal
                         .set_value(true, ctx)
                     {
                         log::warn!("Failed to mark OpenYarp launch modal as dismissed: {e}");
@@ -87,7 +87,7 @@ impl OneTimeModalModel {
         Self {
             is_build_plan_migration_modal_open: false,
             is_oz_launch_modal_open: false,
-            is_openwarp_launch_modal_open: false,
+            is_openyarp_launch_modal_open: false,
             is_hoa_onboarding_open: false,
             target_window_id: None,
         }
@@ -108,12 +108,12 @@ impl OneTimeModalModel {
     }
 
     /// Returns whether the OpenYarp launch modal is currently open.
-    pub fn is_openwarp_launch_modal_open(&self) -> bool {
-        self.is_openwarp_launch_modal_open && self.target_window_id.is_some()
+    pub fn is_openyarp_launch_modal_open(&self) -> bool {
+        self.is_openyarp_launch_modal_open && self.target_window_id.is_some()
     }
 
-    pub fn mark_openwarp_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_openwarp_launch_modal_open(false, ctx);
+    pub fn mark_openyarp_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_openyarp_launch_modal_open(false, ctx);
     }
 
     /// Returns whether the HOA onboarding flow is currently open.
@@ -128,7 +128,7 @@ impl OneTimeModalModel {
     /// Returns true if any one-time modal is currently open.
     pub fn is_any_modal_open(&self) -> bool {
         (self.is_oz_launch_modal_open
-            || self.is_openwarp_launch_modal_open
+            || self.is_openyarp_launch_modal_open
             || self.is_build_plan_migration_modal_open
             || self.is_hoa_onboarding_open)
             && self.target_window_id.is_some()
@@ -140,8 +140,8 @@ impl OneTimeModalModel {
     }
 
     #[cfg(debug_assertions)]
-    pub fn force_open_openwarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_openwarp_launch_modal_open(true, ctx);
+    pub fn force_open_openyarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_openyarp_launch_modal_open(true, ctx);
     }
 
     pub fn update_target_window_id(&mut self, window_id: WindowId, ctx: &mut ModelContext<Self>) {
@@ -163,13 +163,13 @@ impl OneTimeModalModel {
         false
     }
 
-    fn set_openwarp_launch_modal_open(
+    fn set_openyarp_launch_modal_open(
         &mut self,
         is_open: bool,
         ctx: &mut ModelContext<Self>,
     ) -> bool {
-        if self.is_openwarp_launch_modal_open != is_open {
-            self.is_openwarp_launch_modal_open = is_open;
+        if self.is_openyarp_launch_modal_open != is_open {
+            self.is_openyarp_launch_modal_open = is_open;
             ctx.emit(OneTimeModalEvent::VisibilityChanged { is_open });
             return true;
         }
@@ -194,7 +194,7 @@ impl OneTimeModalModel {
 
         // The OpenYarp launch modal takes priority over the Oz launch modal
         // when both are enabled.
-        if self.check_and_trigger_openwarp_launch_modal(ctx) {
+        if self.check_and_trigger_openyarp_launch_modal(ctx) {
             return;
         }
 
@@ -266,7 +266,7 @@ impl OneTimeModalModel {
         should_show_oz_modal
     }
 
-    fn check_and_trigger_openwarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
+    fn check_and_trigger_openyarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
         // Only show if the feature flag is enabled.
         if !FeatureFlag::OpenYarpLaunchModal.is_enabled() {
             return false;
@@ -274,7 +274,7 @@ impl OneTimeModalModel {
 
         let general_settings = GeneralSettings::as_ref(ctx);
         let openwarp_modal_shown = *general_settings
-            .did_check_to_trigger_openwarp_launch_modal
+            .did_check_to_trigger_openyarp_launch_modal
             .value();
 
         if openwarp_modal_shown {
@@ -283,7 +283,7 @@ impl OneTimeModalModel {
 
         GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
             if let Err(e) = settings
-                .did_check_to_trigger_openwarp_launch_modal
+                .did_check_to_trigger_openyarp_launch_modal
                 .set_value(true, ctx)
             {
                 log::warn!("Failed to mark OpenYarp launch modal as dismissed: {e}");
@@ -291,7 +291,7 @@ impl OneTimeModalModel {
         });
 
         let should_show_openwarp_modal = !matches!(ChannelState::channel(), Channel::Integration);
-        self.set_openwarp_launch_modal_open(should_show_openwarp_modal, ctx);
+        self.set_openyarp_launch_modal_open(should_show_openwarp_modal, ctx);
         should_show_openwarp_modal
     }
 

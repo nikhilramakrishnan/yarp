@@ -14,19 +14,19 @@ use super::{
 };
 
 impl<'js> FromYarpJs<'js> for CommandSignature {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
     ) -> rquickjs::Result<Self> {
         let object = Object::from_value(value)?;
-        let command = Command::from_warp_js(ctx, object.get("command")?, js_function_registry)?;
+        let command = Command::from_yarp_js(ctx, object.get("command")?, js_function_registry)?;
         Ok(Self { command })
     }
 }
 
 impl<'js> FromYarpJs<'js> for Command {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -58,7 +58,7 @@ impl<'js> FromYarpJs<'js> for Command {
 }
 
 impl<'js> FromYarpJs<'js> for Argument {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -83,7 +83,7 @@ impl<'js> FromYarpJs<'js> for Argument {
 }
 
 impl<'js> FromYarpJs<'js> for ArgumentValue {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -93,7 +93,7 @@ impl<'js> FromYarpJs<'js> for ArgumentValue {
         if value.is_object() {
             let object = Object::from_value(value)?;
             if object.contains_key("value")? {
-                Ok(ArgumentValue::Suggestion(Suggestion::from_warp_js(
+                Ok(ArgumentValue::Suggestion(Suggestion::from_yarp_js(
                     ctx,
                     object.into_value(),
                     js_function_registry,
@@ -132,7 +132,7 @@ impl<'js> FromYarpJs<'js> for ArgumentValue {
 }
 
 impl<'js> FromYarpJs<'js> for Suggestion {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -155,12 +155,12 @@ impl<'js> FromYarpJs<'js> for Suggestion {
 }
 
 impl<'js> FromYarpJs<'js> for TemplateType {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
     ) -> rquickjs::Result<Self> {
-        let type_string = String::from_warp_js(ctx, value, js_function_registry)?;
+        let type_string = String::from_yarp_js(ctx, value, js_function_registry)?;
         match type_string.as_str() {
             "TemplateType.Files" => Ok(TemplateType::Files),
             "TemplateType.Folders" => Ok(TemplateType::Folders),
@@ -175,7 +175,7 @@ impl<'js> FromYarpJs<'js> for TemplateType {
 }
 
 impl<'js> FromYarpJs<'js> for GeneratorFn {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -183,7 +183,7 @@ impl<'js> FromYarpJs<'js> for GeneratorFn {
         if value.is_object() {
             let object = Object::from_value(value)?;
             let value: Value = object.get("script")?;
-            let script = GeneratorScript::from_warp_js(ctx, value, js_function_registry)?;
+            let script = GeneratorScript::from_yarp_js(ctx, value, js_function_registry)?;
             let post_process = if object.contains_key("postProcess")? {
                 let function: Function = object.get("postProcess")?;
                 let function_ref = js_function_registry
@@ -214,7 +214,7 @@ impl<'js> FromYarpJs<'js> for GeneratorFn {
 }
 
 impl<'js> FromYarpJs<'js> for GeneratorScript {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -237,7 +237,7 @@ impl<'js> FromYarpJs<'js> for GeneratorScript {
 }
 
 impl<'js> FromYarpJs<'js> for Opt {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -264,7 +264,7 @@ impl<'js> FromYarpJs<'js> for Opt {
 }
 
 impl<'js> FromYarpJs<'js> for GeneratorResults {
-    fn from_warp_js(
+    fn from_yarp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
         js_function_registry: &mut JsFunctionRegistry,
@@ -283,7 +283,7 @@ impl<'js> FromYarpJs<'js> for GeneratorResults {
 }
 
 impl<'js> IntoYarpJs<'js> for GeneratorCompletionContext {
-    fn into_warp_js(self, ctx: rquickjs::Ctx<'js>) -> rquickjs::Result<Value<'js>> {
+    fn into_yarp_js(self, ctx: rquickjs::Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         let object = Object::new(ctx)?;
         object.set("tokens", self.tokens)?;
         object.set("pwd", self.pwd)?;

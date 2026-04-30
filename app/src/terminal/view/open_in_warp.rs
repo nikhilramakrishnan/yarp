@@ -101,18 +101,18 @@ impl TerminalView {
 
     /// Whether or not the "Open in Yarp" banner is open.
     #[cfg(feature = "integration_tests")]
-    pub fn is_open_in_warp_banner_open(&self) -> bool {
-        self.inline_banners_state.open_in_warp_banner.is_some()
+    pub fn is_open_in_yarp_banner_open(&self) -> bool {
+        self.inline_banners_state.open_in_yarp_banner.is_some()
     }
 
-    fn close_open_in_warp_banner(&mut self, banner_id: usize) {
+    fn close_open_in_yarp_banner(&mut self, banner_id: usize) {
         self.model
             .lock()
             .block_list_mut()
             .remove_inline_banner(banner_id);
     }
 
-    fn open_in_warp_banner_type_dismissed(
+    fn open_in_yarp_banner_type_dismissed(
         &self,
         file_type: OpenableFileType,
         ctx: &ViewContext<Self>,
@@ -120,10 +120,10 @@ impl TerminalView {
         let general_settings = GeneralSettings::as_ref(ctx);
         match file_type {
             OpenableFileType::Markdown => {
-                *general_settings.open_in_warp_banner_dismissed_for_markdown
+                *general_settings.open_in_yarp_banner_dismissed_for_markdown
             }
             OpenableFileType::Code | OpenableFileType::Text => {
-                *general_settings.open_in_warp_banner_dismissed_for_code_and_text
+                *general_settings.open_in_yarp_banner_dismissed_for_code_and_text
             }
         }
     }
@@ -136,17 +136,17 @@ impl TerminalView {
         session: Arc<Session>,
         ctx: &mut ViewContext<Self>,
     ) {
-        if self.open_in_warp_banner_type_dismissed(openable_path.file_type, ctx) {
+        if self.open_in_yarp_banner_type_dismissed(openable_path.file_type, ctx) {
             return;
         }
 
         // We only show a banner for the most recent command.
-        if let Some(prev_state) = &self.inline_banners_state.open_in_warp_banner {
-            self.close_open_in_warp_banner(prev_state.id);
+        if let Some(prev_state) = &self.inline_banners_state.open_in_yarp_banner {
+            self.close_open_in_yarp_banner(prev_state.id);
         }
 
         let banner_id = self.inline_banners_state.next_banner_id();
-        self.inline_banners_state.open_in_warp_banner = Some(OpenInWarpBannerState::new(
+        self.inline_banners_state.open_in_yarp_banner = Some(OpenInWarpBannerState::new(
             banner_id,
             openable_path,
             session,
@@ -161,14 +161,14 @@ impl TerminalView {
         ctx.notify();
     }
 
-    pub fn handle_open_in_warp_banner_action(
+    pub fn handle_open_in_yarp_banner_action(
         &mut self,
         action: OpenInWarpBannerAction,
         ctx: &mut ViewContext<Self>,
     ) {
         match action {
             OpenInWarpBannerAction::OpenFile => {
-                if let Some(banner_state) = self.inline_banners_state.open_in_warp_banner.take() {
+                if let Some(banner_state) = self.inline_banners_state.open_in_yarp_banner.take() {
                     match banner_state.target.file_type {
                         OpenableFileType::Markdown => {
                             ctx.emit(Event::OpenFileInWarp {
@@ -190,12 +190,12 @@ impl TerminalView {
                             });
                         }
                     }
-                    self.close_open_in_warp_banner(banner_state.id);
+                    self.close_open_in_yarp_banner(banner_state.id);
                     ctx.notify();
                 }
             }
             OpenInWarpBannerAction::LearnMore => {
-                if let Some(banner_state) = &self.inline_banners_state.open_in_warp_banner {
+                if let Some(banner_state) = &self.inline_banners_state.open_in_yarp_banner {
                     let url = match banner_state.target.file_type {
                         OpenableFileType::Markdown => LEARN_MORE_MARKDOWN_URL,
                         OpenableFileType::Code | OpenableFileType::Text => LEARN_MORE_CODE_URL,
@@ -204,20 +204,20 @@ impl TerminalView {
                 }
             }
             OpenInWarpBannerAction::Close => {
-                if let Some(banner_state) = self.inline_banners_state.open_in_warp_banner.take() {
-                    self.close_open_in_warp_banner(banner_state.id);
+                if let Some(banner_state) = self.inline_banners_state.open_in_yarp_banner.take() {
+                    self.close_open_in_yarp_banner(banner_state.id);
                     match banner_state.target.file_type {
                         OpenableFileType::Markdown => {
                             GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
                                 report_if_error!(settings
-                                    .open_in_warp_banner_dismissed_for_markdown
+                                    .open_in_yarp_banner_dismissed_for_markdown
                                     .set_value(true, ctx));
                             });
                         }
                         OpenableFileType::Code | OpenableFileType::Text => {
                             GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
                                 report_if_error!(settings
-                                    .open_in_warp_banner_dismissed_for_code_and_text
+                                    .open_in_yarp_banner_dismissed_for_code_and_text
                                     .set_value(true, ctx));
                             });
                         }
@@ -228,13 +228,13 @@ impl TerminalView {
         }
     }
 
-    pub fn open_in_warp_banner_accessibility_content(
+    pub fn open_in_yarp_banner_accessibility_content(
         &self,
         action: OpenInWarpBannerAction,
     ) -> ActionAccessibilityContent {
         match action {
             OpenInWarpBannerAction::OpenFile => {
-                match &self.inline_banners_state.open_in_warp_banner {
+                match &self.inline_banners_state.open_in_yarp_banner {
                     Some(banner_state) => {
                         ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                             format!("Open {} in Yarp", banner_state.target.path.display()),

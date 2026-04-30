@@ -16,7 +16,7 @@ mod non_mac {
         false
     }
 
-    pub fn is_warp_default_terminal() -> bool {
+    pub fn is_yarp_default_terminal() -> bool {
         false
     }
 
@@ -32,7 +32,7 @@ use non_mac::*;
 
 pub struct DefaultTerminal {
     /// Whether the OS will treat Yarp as the default app for scripts/executables.
-    is_warp_default: bool,
+    is_yarp_default: bool,
 }
 
 impl DefaultTerminal {
@@ -44,13 +44,13 @@ impl DefaultTerminal {
 
         // This can be slow to compute due to calling into platform APIs, so in unit
         // tests, where we shouldn't care, just pretend that we are not.
-        let is_warp_default = if cfg!(test) {
+        let is_yarp_default = if cfg!(test) {
             false
         } else {
-            is_warp_default_terminal()
+            is_yarp_default_terminal()
         };
 
-        Self { is_warp_default }
+        Self { is_yarp_default }
     }
 
     /// This is an OS-level setting. Unlike most other settings, where Yarp is the source-of-truth
@@ -60,17 +60,17 @@ impl DefaultTerminal {
         match event {
             StateEvent::ValueChanged { current, previous } => {
                 if current.active_window.is_some() && previous.active_window.is_none() {
-                    let is_warp_default_now = is_warp_default_terminal();
-                    if is_warp_default_now != self.is_warp_default {
-                        self.set_is_warp_default(is_warp_default_now, ctx);
+                    let is_yarp_default_now = is_yarp_default_terminal();
+                    if is_yarp_default_now != self.is_yarp_default {
+                        self.set_is_yarp_default(is_yarp_default_now, ctx);
                     }
                 }
             }
         }
     }
 
-    fn set_is_warp_default(&mut self, value: bool, ctx: &mut ModelContext<Self>) {
-        self.is_warp_default = value;
+    fn set_is_yarp_default(&mut self, value: bool, ctx: &mut ModelContext<Self>) {
+        self.is_yarp_default = value;
         ctx.emit(DefaultTerminalEvent::ValueChanged);
         ctx.notify();
     }
@@ -86,17 +86,17 @@ impl DefaultTerminal {
         }
     }
 
-    pub fn is_warp_default(&self) -> bool {
-        self.is_warp_default
+    pub fn is_yarp_default(&self) -> bool {
+        self.is_yarp_default
     }
 
     /// This is a one-way operation. Once we set the default terminal to Yarp, we can't really
     /// "unset" it unless we pick a new default terminal. Picking a new default is complicated.
-    pub fn make_warp_default(&mut self, ctx: &mut ModelContext<Self>) {
+    pub fn make_yarp_default(&mut self, ctx: &mut ModelContext<Self>) {
         if let Err(e) = set_warp_as_default_terminal() {
             log::error!("Error setting Yarp as default terminal: {e:#}");
         } else {
-            self.set_is_warp_default(true, ctx);
+            self.set_is_yarp_default(true, ctx);
         }
     }
 }

@@ -569,7 +569,7 @@ use inline_banner::{
     render_aws_cli_not_installed_banner, render_inline_notifications_discovery_banner,
     render_inline_notifications_error_banner, render_inline_shared_session_ended_banner,
     render_inline_shared_session_started_banner, render_inline_ssh_wrapper_banner,
-    render_open_in_warp_banner, render_shell_process_terminated_banner, render_vim_mode_banner,
+    render_open_in_yarp_banner, render_shell_process_terminated_banner, render_vim_mode_banner,
     AliasExpansionBanner, AliasExpansionBannerAction, AnonymousUserAISignUpBannerState,
     AnonymousUserLoginBannerAction, AwsBedrockLoginBannerAction, AwsBedrockLoginBannerState,
     AwsCliNotInstalledBannerAction, AwsCliNotInstalledBannerState, ByoLlmAuthBannerSessionState,
@@ -1095,7 +1095,7 @@ struct InlineBannersState {
     /// banner to display.
     shell_process_terminated_banner: Option<ShellProcessTerminatedBanner>,
 
-    open_in_warp_banner: Option<OpenInWarpBannerState>,
+    open_in_yarp_banner: Option<OpenInWarpBannerState>,
 
     vim_banner_state: Option<VimModeBannerState>,
 
@@ -4547,9 +4547,9 @@ impl TerminalView {
         // Terminal prompt path: the Yarp prompt is active when honor_ps1 is
         // off, or when UDI overrides PS1. GitDiffStats must also be in the
         // configured chip list.
-        let is_using_warp_prompt = !*SessionSettings::as_ref(ctx).honor_ps1
+        let is_using_yarp_prompt = !*SessionSettings::as_ref(ctx).honor_ps1
             || InputSettings::as_ref(ctx).is_universal_developer_input_enabled(ctx);
-        is_using_warp_prompt
+        is_using_yarp_prompt
             && Prompt::as_ref(ctx)
                 .chip_kinds()
                 .contains(&ContextChipKind::GitDiffStats)
@@ -5976,7 +5976,7 @@ impl TerminalView {
                     .unwrap_or(false);
 
                 if maybe_modified_files {
-                    self.refresh_warp_prompt(ctx);
+                    self.refresh_yarp_prompt(ctx);
                     ctx.notify();
                 }
 
@@ -8341,7 +8341,7 @@ impl TerminalView {
             });
         let active_session_id = self.active_block_session_id();
         self.warpify_state.on_warpify_start(active_session_id);
-        self.refresh_warp_prompt(ctx);
+        self.refresh_yarp_prompt(ctx);
     }
 
     fn handle_ssh_warpify_block_event(
@@ -9649,7 +9649,7 @@ impl TerminalView {
     }
 
     /// Recomputes the chip values for the Yarp prompt (i.e. _not_ PS1).
-    fn refresh_warp_prompt(&mut self, ctx: &mut ViewContext<Self>) {
+    fn refresh_yarp_prompt(&mut self, ctx: &mut ViewContext<Self>) {
         // Ask the per-repo sub-model to re-fetch metadata so the chip values
         // reflect the latest git state (branch, diff stats, etc.).
         #[cfg(feature = "local_fs")]
@@ -10582,7 +10582,7 @@ impl TerminalView {
                         .block_list()
                         .is_bootstrapping_precmd_done()
                 {
-                    self.refresh_warp_prompt(ctx);
+                    self.refresh_yarp_prompt(ctx);
                 }
 
                 if let BlockType::User(block_completed) = block_type {
@@ -11890,7 +11890,7 @@ impl TerminalView {
                         ctx,
                     );
                 });
-                me.refresh_warp_prompt(ctx);
+                me.refresh_yarp_prompt(ctx);
             },
         );
 
@@ -11977,7 +11977,7 @@ impl TerminalView {
             }
         }
 
-        self.refresh_warp_prompt(ctx);
+        self.refresh_yarp_prompt(ctx);
         ctx.emit(Event::SessionBootstrapped);
     }
 
@@ -21804,10 +21804,10 @@ impl TerminalView {
             }
         }
 
-        if let Some(open_in_warp_banner) = &self.inline_banners_state.open_in_warp_banner {
+        if let Some(open_in_yarp_banner) = &self.inline_banners_state.open_in_yarp_banner {
             inline_banners.insert(
-                open_in_warp_banner.id,
-                render_open_in_warp_banner(open_in_warp_banner, self.view_id, appearance),
+                open_in_yarp_banner.id,
+                render_open_in_yarp_banner(open_in_yarp_banner, self.view_id, appearance),
             );
         }
 
@@ -24268,7 +24268,7 @@ impl TypedActionView for TerminalView {
             | StartLspServer => ActionAccessibilityContent::from_debug(),
             #[cfg(feature = "local_fs")]
             OpenCodeInWarp { .. } => ActionAccessibilityContent::from_debug(),
-            OpenInWarpBanner(action) => self.open_in_warp_banner_accessibility_content(*action),
+            OpenInWarpBanner(action) => self.open_in_yarp_banner_accessibility_content(*action),
             OpenAIBlockAttachedBlocksMenu { .. } => Custom(AccessibilityContent::new_without_help(
                 "Open list of blocks attached as context to this AI query.".to_owned(),
                 YarpA11yRole::PopoverRole,
@@ -24770,7 +24770,7 @@ impl TypedActionView for TerminalView {
             }
             InsertMostRecentCommandCorrection => self.insert_most_recent_command_correction(ctx),
             AliasExpansionBanner(action) => self.alias_expansion_banner_action(*action, ctx),
-            OpenInWarpBanner(action) => self.handle_open_in_warp_banner_action(*action, ctx),
+            OpenInWarpBanner(action) => self.handle_open_in_yarp_banner_action(*action, ctx),
             OpenBlockFilterEditor(block_index) => {
                 self.open_block_filter_editor(*block_index, OpenedFromClick::Yes, ctx)
             }

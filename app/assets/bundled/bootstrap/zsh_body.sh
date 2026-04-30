@@ -364,7 +364,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       # This is arbitrarily bound to ESC-w in all supported shells ("w" for Yarp prompt),
       # and we can change it to any other keybinding if needed.
       bindkey -r '\ew'
-      bindkey '\ew' yarp_change_prompt_modes_to_warp_prompt
+      bindkey '\ew' yarp_change_prompt_modes_to_yarp_prompt
 
       local escaped_pwd
       if [ -n "${WSL_DISTRO_NAME:-}" ]; then
@@ -812,7 +812,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # Switches to Yarp prompt by flipping YARP_HONOR_PS1 to "0", which will result
   # in unsetting the PROMPT variables to avoid a double prompt. Resets the prompt, forcing
   # a re-print.
-  function yarp_change_prompt_modes_to_warp_prompt() {
+  function yarp_change_prompt_modes_to_yarp_prompt() {
     YARP_HONOR_PS1=0
 
     yarp_update_prompt_vars
@@ -821,7 +821,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
 
   # The following line creates a new widget with ZLE (the Zsh line editor) with the custom function above,
   # so we can reference this when we register it with a bindkey.
-  zle -N yarp_change_prompt_modes_to_warp_prompt
+  zle -N yarp_change_prompt_modes_to_yarp_prompt
 
   # The SSH logic only applies to local sessions, because we don't yet have support for bootstrapping
   # recursive SSH sessions.

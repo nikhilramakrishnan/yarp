@@ -2708,7 +2708,7 @@ pub fn enabled_features() -> HashSet<FeatureFlag> {
         FeatureFlag::BundledSkills,
         #[cfg(feature = "oz_launch_modal")]
         FeatureFlag::OzLaunchModal,
-        #[cfg(feature = "open_warp_launch_modal")]
+        #[cfg(feature = "open_yarp_launch_modal")]
         FeatureFlag::OpenYarpLaunchModal,
         #[cfg(feature = "new_tab_styling")]
         FeatureFlag::NewTabStyling,

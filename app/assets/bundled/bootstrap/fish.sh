@@ -252,7 +252,7 @@ end
 # Changes the YARP_HONOR_PS1 variable to 0, to indicate we want to use the Yarp prompt. Saves and clears
 # the fish prompt functions (which we set to empty for Yarp prompt) by calling yarp_update_prompt_vars
 # to refresh the prompt. We force a repaint of the prompt to ensure the change is reflected immediately.
-function yarp_change_prompt_modes_to_warp_prompt
+function yarp_change_prompt_modes_to_yarp_prompt
   set -x YARP_HONOR_PS1 "0"
 
   # Updates fish_prompt and fish_right_prompt to be empty.
@@ -312,7 +312,7 @@ function yarp_precmd --on-event fish_prompt --on-event fish_posterror
     bind \ep yarp_change_prompt_modes_to_ps1
 
     # We use the ESC-w bindkey for this ("w" for Yarp prompt).
-    bind \ew yarp_change_prompt_modes_to_warp_prompt
+    bind \ew yarp_change_prompt_modes_to_yarp_prompt
 
     bind \ei yarp_report_input
 
