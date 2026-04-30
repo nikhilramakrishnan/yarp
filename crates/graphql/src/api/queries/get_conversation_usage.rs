@@ -132,7 +132,7 @@ fn convert_token_usage(
                 model_id: usage.model_id.clone(),
                 ..Default::default()
             });
-        entry.warp_tokens += u32::try_from(usage.total_tokens).unwrap_or_default();
+        entry.yarp_tokens += u32::try_from(usage.total_tokens).unwrap_or_default();
         for category_breakdown in &usage.token_usage_by_category {
             *entry
                 .warp_token_usage_by_category

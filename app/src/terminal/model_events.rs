@@ -196,7 +196,7 @@ impl ModelEventDispatcher {
                 context,
             }) => {
                 {
-                    if let Some(TmuxControlModeContext::WarpInitiatedForSsh(control_mode)) = context
+                    if let Some(TmuxControlModeContext::YarpInitiatedForSsh(control_mode)) = context
                     {
                         let duration_ms = Instant::now()
                             .duration_since(control_mode.start_time)

@@ -17,7 +17,7 @@ use api::message::Message;
 
 use super::task::helper::{SubagentExt, ToolExt};
 
-const BASE_DIR_NAME: &str = "warp_conversation_search";
+const BASE_DIR_NAME: &str = "yarp_conversation_search";
 
 /// Returns the base directory for conversation search temp files.
 ///

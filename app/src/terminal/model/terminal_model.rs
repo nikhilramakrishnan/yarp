@@ -419,12 +419,12 @@ impl FromStr for TmuxInstallationState {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct WarpInitiatedTmuxControlMode {
+pub struct YarpInitiatedTmuxControlMode {
     pub start_time: Instant,
     pub tmux_installation: Option<TmuxInstallationState>,
 }
 
-impl WarpInitiatedTmuxControlMode {
+impl YarpInitiatedTmuxControlMode {
     pub fn new(tmux_installation: Option<TmuxInstallationState>) -> Self {
         Self {
             start_time: Instant::now(),
@@ -436,15 +436,15 @@ impl WarpInitiatedTmuxControlMode {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum TmuxControlModeContext {
     UserInitiated,
-    WarpInitiatedForSsh(WarpInitiatedTmuxControlMode),
+    YarpInitiatedForSsh(YarpInitiatedTmuxControlMode),
 }
 
 impl TmuxControlModeContext {
     pub fn tmux_installation(&self) -> Option<TmuxInstallationState> {
         match self {
             TmuxControlModeContext::UserInitiated => None,
-            TmuxControlModeContext::WarpInitiatedForSsh(warp_initiated) => {
-                warp_initiated.tmux_installation
+            TmuxControlModeContext::YarpInitiatedForSsh(yarp_initiated) => {
+                yarp_initiated.tmux_installation
             }
         }
     }
@@ -492,7 +492,7 @@ pub struct TerminalModel {
     /// control mode. Whenever we attempt to warpify an ssh session, we track the context of when warp initiated
     /// control mode, indicating that we expect the shell to enter control mode. We reset to None whenever
     /// the active block finishes. If we enter control mode and option is None, then we know it's user-initiated.
-    pending_warp_initiated_control_mode: Option<WarpInitiatedTmuxControlMode>,
+    pending_warp_initiated_control_mode: Option<YarpInitiatedTmuxControlMode>,
 
     tmux_control_mode_context: Option<TmuxControlModeContext>,
 
@@ -2213,12 +2213,12 @@ impl TerminalModel {
             .tmux_control_mode_context
             .and_then(|context| context.tmux_installation());
         self.pending_warp_initiated_control_mode =
-            Some(WarpInitiatedTmuxControlMode::new(tmux_installation));
+            Some(YarpInitiatedTmuxControlMode::new(tmux_installation));
     }
 
     pub fn set_pending_warp_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
         self.pending_warp_initiated_control_mode =
-            Some(WarpInitiatedTmuxControlMode::new(Some(if with_root {
+            Some(YarpInitiatedTmuxControlMode::new(Some(if with_root {
                 TmuxInstallationState::InstalledByWarpRootInThisSession
             } else {
                 TmuxInstallationState::InstalledByWarpInThisSession
@@ -2334,7 +2334,7 @@ impl TerminalModel {
     pub fn is_warpified_ssh(&self) -> bool {
         matches!(
             self.tmux_control_mode_context,
-            Some(TmuxControlModeContext::WarpInitiatedForSsh { .. })
+            Some(TmuxControlModeContext::YarpInitiatedForSsh { .. })
         )
     }
 }
@@ -2928,7 +2928,7 @@ impl ansi::Handler for TerminalModel {
                 self.pending_legacy_ssh_session.take(),
                 matches!(
                     self.tmux_control_mode_context,
-                    Some(TmuxControlModeContext::WarpInitiatedForSsh { .. })
+                    Some(TmuxControlModeContext::YarpInitiatedForSsh { .. })
                 ),
                 self.block_list().active_block().session_id(),
             );
@@ -3035,8 +3035,8 @@ impl ansi::Handler for TerminalModel {
     }
 
     fn notify_ssh_tmux_is_installed(&mut self, tmux_installation: TmuxInstallationState) {
-        if let Some(ref mut warp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
-            warp_initiated_for_ssh.tmux_installation = Some(tmux_installation);
+        if let Some(ref mut yarp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
+            yarp_initiated_for_ssh.tmux_installation = Some(tmux_installation);
         }
         self.event_proxy
             .send_terminal_event(Event::SshTmuxInstaller(tmux_installation));
@@ -3169,9 +3169,9 @@ impl ansi::Handler for TerminalModel {
                 }
             }
             tmux::ControlModeEvent::Starting => {
-                if let Some(warp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
+                if let Some(yarp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
                     self.tmux_control_mode_context = Some(
-                        TmuxControlModeContext::WarpInitiatedForSsh(warp_initiated_for_ssh),
+                        TmuxControlModeContext::YarpInitiatedForSsh(yarp_initiated_for_ssh),
                     );
                 } else {
                     self.tmux_control_mode_context = Some(TmuxControlModeContext::UserInitiated);
@@ -3582,7 +3582,7 @@ impl ModeProvider for TerminalModel {
     }
 }
 
-/// Validates and decodes in-band command output sent via `warp_send_generator_output_osc_message`.
+/// Validates and decodes in-band command output sent via `yarp_send_generator_output_osc_message`.
 /// Upon success, returns the string content of the generator output. The OSC payload is expected
 /// to conform to the following format:
 ///

@@ -33,7 +33,7 @@ impl ForTelemetry for AIAgentCitation {
                     }
                 })
             }
-            Self::WarpDocumentation { path } => {
+            Self::YarpDocumentation { path } => {
                 Some(CitationForTelemetry::YarpDocs { page: path.clone() })
             }
             Self::WebPage { url } => Some(CitationForTelemetry::WebPage { url: url.clone() }),

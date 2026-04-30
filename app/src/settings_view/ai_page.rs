@@ -2660,7 +2660,7 @@ impl TypedActionView for AISettingsPageView {
             AISettingsPageAction::ToggleYarpDriveContext => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     let _ = settings
-                        .yarp_drive_context_enabled
+                        .warp_drive_context_enabled
                         .toggle_and_save_value(ctx);
                 });
                 ctx.notify();
@@ -5104,7 +5104,7 @@ impl AIFactWidget {
         let toggle = render_ai_setting_toggle::<YarpDriveContextEnabled>(
             "Yarp Drive as agent context",
             AISettingsPageAction::ToggleYarpDriveContext,
-            *ai_settings.yarp_drive_context_enabled,
+            *ai_settings.warp_drive_context_enabled,
             ai_settings.is_any_ai_enabled(app),
             self.yarp_drive_context_toggle.clone(),
             &view.local_only_icon_tooltip_states,

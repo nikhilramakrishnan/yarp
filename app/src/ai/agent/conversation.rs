@@ -1573,7 +1573,7 @@ impl AIConversation {
             let mut token_usage: HashMap<_, ModelTokenUsage> = HashMap::new();
             for (model_id, usage) in usage_metadata.warp_token_usage {
                 let entry = token_usage.entry(model_id.clone()).or_default();
-                entry.warp_tokens += usage.total_tokens;
+                entry.yarp_tokens += usage.total_tokens;
                 for (category, tokens) in usage.token_usage_by_category {
                     *entry
                         .warp_token_usage_by_category

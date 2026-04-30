@@ -525,13 +525,13 @@ async fn read_bundled_skills(skills_dir: &Path) -> HashMap<String, ParsedSkill> 
 /// Supported variables:
 /// - `{{warp_server_url}}` - The server root URL (e.g., `https://api.warp.dev`)
 /// - `{{warp_cli_binary_name}}` - The CLI binary name (e.g., `yarp` or `yarp-cli`)
-/// - `{{warp_url_scheme}}` - The URL scheme (e.g., `yarp`, `warpdev`, `warppreview`)
+/// - `{{yarp_url_scheme}}` - The URL scheme (e.g., `yarp`, `warpdev`, `warppreview`)
 /// - `{{settings_schema_path}}` - Path to the bundled JSON settings schema
 /// - `{{settings_file_path}}` - Path to the user's settings TOML file
 fn build_bundled_skill_context() -> HashMap<String, String> {
     let mut context: HashMap<String, String> = [
         (
-            "warp_server_url".to_owned(),
+            "yarp_server_url".to_owned(),
             ChannelState::server_root_url().into_owned(),
         ),
         (
@@ -539,7 +539,7 @@ fn build_bundled_skill_context() -> HashMap<String, String> {
             ChannelState::channel().cli_command_name().to_owned(),
         ),
         (
-            "warp_url_scheme".to_owned(),
+            "yarp_url_scheme".to_owned(),
             ChannelState::url_scheme().to_owned(),
         ),
         (

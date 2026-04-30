@@ -18778,7 +18778,7 @@ impl TerminalView {
                 AIAgentCitation::YarpDriveObject { uid } => {
                     ctx.emit(Event::OpenYarpDriveObjectInPane(uid.clone()));
                 }
-                AIAgentCitation::WarpDocumentation { path } => {
+                AIAgentCitation::YarpDocumentation { path } => {
                     ctx.open_url(&format!("https://docs.warp.dev/{path}"));
                 }
                 AIAgentCitation::WebPage { url } => {

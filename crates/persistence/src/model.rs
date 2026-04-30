@@ -1070,7 +1070,7 @@ pub struct ModelTokenUsage {
     pub model_id: String,
     /// Alias for backward compat: old persisted data used `total_tokens` for yarp usage.
     #[serde(default, alias = "total_tokens")]
-    pub warp_tokens: u32,
+    pub yarp_tokens: u32,
     #[serde(default)]
     pub byok_tokens: u32,
     #[serde(default)]
@@ -1103,7 +1103,7 @@ impl ModelTokenUsage {
     }
 
     pub fn to_proto_warp_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
-        self.to_proto_usage(self.warp_tokens, &self.warp_token_usage_by_category)
+        self.to_proto_usage(self.yarp_tokens, &self.warp_token_usage_by_category)
     }
 
     pub fn to_proto_byok_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
@@ -1114,7 +1114,7 @@ impl ModelTokenUsage {
     pub fn to_proto_combined(&self) -> stream_finished::ModelTokenUsage {
         stream_finished::ModelTokenUsage {
             model_id: self.model_id.clone(),
-            total_tokens: self.warp_tokens + self.byok_tokens,
+            total_tokens: self.yarp_tokens + self.byok_tokens,
             token_usage_by_category: self
                 .warp_token_usage_by_category
                 .iter()

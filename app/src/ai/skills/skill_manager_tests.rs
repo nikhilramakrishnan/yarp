@@ -1,5 +1,5 @@
 use super::*;
-use crate::warp_managed_paths_watcher::YarpManagedPathsWatcher;
+use crate::yarp_managed_paths_watcher::YarpManagedPathsWatcher;
 use ai::skills::{ParsedSkill, SkillProvider, SkillScope};
 use repo_metadata::{repositories::DetectedRepositories, DirectoryWatcher, RepoMetadataModel};
 use std::collections::{HashMap, HashSet};
@@ -439,13 +439,13 @@ fn test_build_bundled_skill_context() {
     // At least 4 entries: server_url, cli_binary_name, url_scheme, settings_file_path.
     // settings_schema_path is only present when bundled_resources_dir() returns Some.
     assert!(context.len() >= 4);
-    assert!(context.contains_key("warp_server_url"));
+    assert!(context.contains_key("yarp_server_url"));
     assert!(context.contains_key("warp_cli_binary_name"));
-    assert!(context.contains_key("warp_url_scheme"));
+    assert!(context.contains_key("yarp_url_scheme"));
     assert!(context.contains_key("settings_file_path"));
 
     assert_eq!(
-        context.get("warp_server_url").unwrap(),
+        context.get("yarp_server_url").unwrap(),
         &ChannelState::server_root_url().to_string()
     );
     assert_eq!(
@@ -453,7 +453,7 @@ fn test_build_bundled_skill_context() {
         ChannelState::channel().cli_command_name()
     );
     assert_eq!(
-        context.get("warp_url_scheme").unwrap(),
+        context.get("yarp_url_scheme").unwrap(),
         ChannelState::url_scheme()
     );
     assert_eq!(

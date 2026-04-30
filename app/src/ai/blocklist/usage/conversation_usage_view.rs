@@ -79,7 +79,7 @@ impl ConversationUsageView {
     }
     /// Helper to collect models grouped by category.
     /// Returns a HashMap mapping category name to list of (model_id, is_byok) tuples.
-    /// Handles both category-based fields and legacy warp_tokens/byok_tokens fields.
+    /// Handles both category-based fields and legacy yarp_tokens/byok_tokens fields.
     fn collect_models_by_category(&self) -> HashMap<String, Vec<(String, bool)>> {
         let mut entries_by_category: HashMap<String, Vec<(String, bool)>> = HashMap::new();
 
@@ -106,7 +106,7 @@ impl ConversationUsageView {
         // Fallback to legacy fields for backwards compatibility
         if entries_by_category.is_empty() {
             for model in &self.usage_info.models {
-                if model.warp_tokens > 0 {
+                if model.yarp_tokens > 0 {
                     entries_by_category
                         .entry(PRIMARY_AGENT_CATEGORY.to_string())
                         .or_default()

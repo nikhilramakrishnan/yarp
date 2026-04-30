@@ -59,7 +59,7 @@ $ {{warp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_k
 
 Oz has a REST API for starting and inspecting cloud agents.
 
-All API requests require authentication using an API key. The user can generate API keys in their Warp settings, on the `Platform` page (accessible via `{{warp_url_scheme}}://settings/platform`).
+All API requests require authentication using an API key. The user can generate API keys in their Warp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
 
 You can find the full OpenAPI specification here: https://docs.warp.dev/reference/api-and-sdk
 
@@ -82,7 +82,7 @@ The Python SDK is available from PyPi. It can be used synchronously or asynchron
 ### API Examples
 
 ```sh
-curl -L -X POST {{warp_server_url}}/api/v1/agent/run \
+curl -L -X POST {{yarp_server_url}}/api/v1/agent/run \
     --header 'Authorization: Bearer YOUR_API_KEY' \
     --header 'Content-Type: application/json' \
     --data '{
@@ -94,7 +94,7 @@ curl -L -X POST {{warp_server_url}}/api/v1/agent/run \
 ```
 
 ```sh
-curl -L -X GET {{warp_server_url}}/api/v1/agent/runs/5972cca4-a410-42af-930a-e56bc23e07ac \
+curl -L -X GET {{yarp_server_url}}/api/v1/agent/runs/5972cca4-a410-42af-930a-e56bc23e07ac \
     --header 'Authorization: Bearer YOUR_API_KEY' \
     --header 'Content-Type: application/json'
 ```
@@ -112,7 +112,7 @@ The agent will have access to the `gh` CLI to communicate back to the repository
 
 Use `warpdotdev/oz-agent-action@main` in your workflow. Required inputs:
 * `prompt`: The task description for the agent
-* `warp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.WARP_API_KEY }}`)
+* `yarp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.WARP_API_KEY }}`)
 * `profile`: Optional agent profile identifier (can use repo variable, e.g., `${{ vars.WARP_AGENT_PROFILE || '' }}`)
 
 The action outputs `agent_output` with the agent's response.
@@ -143,7 +143,7 @@ jobs:
             ${{ github.event.issue.body }}
 
             Respond to the issue with a comment containing your summary using the `gh` CLI.
-          warp_api_key: ${{ secrets.WARP_API_KEY }}
+          yarp_api_key: ${{ secrets.WARP_API_KEY }}
           profile: ${{ vars.WARP_AGENT_PROFILE || '' }}
       - name: Use Agent Output
         run: echo "${{ steps.agent.outputs.agent_output }}"

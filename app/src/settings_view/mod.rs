@@ -339,7 +339,7 @@ impl FromStr for SettingsSection {
             "Shared blocks" => Ok(Self::SharedBlocks),
             "Teams" => Ok(Self::Teams),
             "Warpify" => Ok(Self::Warpify),
-            "YarpDrive" | "WarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
+            "YarpDrive" | "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
             // This page was called "Oz" at one point, keep for backward compatibility.
             "Oz" | "Yarp Agent" => Ok(Self::YarpAgent),
             "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
