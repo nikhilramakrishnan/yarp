@@ -1,4 +1,4 @@
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{YarpDriveItem, YarpDriveItemId};
 use crate::{
     ai::mcp::CloudMCPServer,
     appearance::Appearance,
@@ -9,18 +9,18 @@ use crate::{
 use yarpui::{elements::MouseStateHandle, AppContext, Element};
 
 #[derive(Clone)]
-pub struct WarpDriveMCPServer {
+pub struct YarpDriveMCPServer {
     id: CloudObjectTypeAndId,
     mcp_server: CloudMCPServer,
 }
 
-impl WarpDriveMCPServer {
+impl YarpDriveMCPServer {
     pub fn new(id: CloudObjectTypeAndId, mcp_server: CloudMCPServer) -> Self {
         Self { id, mcp_server }
     }
 }
 
-impl WarpDriveItem for WarpDriveMCPServer {
+impl YarpDriveItem for YarpDriveMCPServer {
     fn display_name(&self) -> Option<String> {
         Some(self.mcp_server.model().string_model.name.clone())
     }
@@ -45,8 +45,8 @@ impl WarpDriveItem for WarpDriveMCPServer {
         None
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::Object(self.id)
+    fn yarp_drive_id(&self) -> YarpDriveItemId {
+        YarpDriveItemId::Object(self.id)
     }
 
     fn sync_status_icon(
@@ -65,7 +65,7 @@ impl WarpDriveItem for WarpDriveMCPServer {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn YarpDriveItem> {
         Box::new(self.clone())
     }
 }

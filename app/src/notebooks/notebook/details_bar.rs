@@ -72,7 +72,7 @@ impl DetailsBar {
                     self.breadcrumbs.iter().cloned(),
                     appearance,
                     |ctx, _, breadcrumb| {
-                        ctx.dispatch_typed_action(NotebookAction::ViewInWarpDrive(
+                        ctx.dispatch_typed_action(NotebookAction::ViewInYarpDrive(
                             breadcrumb.kind.into_item_id(),
                         ));
                     },

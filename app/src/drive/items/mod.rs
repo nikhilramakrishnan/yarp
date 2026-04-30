@@ -8,8 +8,8 @@ use crate::{
 };
 
 use super::{
-    cloud_object_styling::warp_drive_icon_color,
-    index::{warp_drive_section_header_position_id, DriveIndexAction, DriveIndexSection},
+    cloud_object_styling::yarp_drive_icon_color,
+    index::{yarp_drive_section_header_position_id, DriveIndexAction, DriveIndexSection},
     CloudObjectTypeAndId, DriveObjectType,
 };
 
@@ -24,7 +24,7 @@ pub mod notebook;
 pub mod space;
 pub mod workflow;
 
-pub trait WarpDriveItem {
+pub trait YarpDriveItem {
     /// The display name of the item. If the item is unnamed, this may return `None` - implementations
     /// should prefer this over `Some("")`, as it lets the index view use alternate styling.
     fn display_name(&self) -> Option<String>;
@@ -33,7 +33,7 @@ pub trait WarpDriveItem {
     fn secondary_icon(&self, color: Option<Fill>) -> Option<Box<dyn Element>>; // The optional icon to the right of the name
     fn click_action(&self) -> Option<DriveIndexAction>;
     fn preview(&self, appearance: &Appearance) -> Option<Box<dyn Element>>;
-    fn warp_drive_id(&self) -> WarpDriveItemId;
+    fn yarp_drive_id(&self) -> YarpDriveItemId;
     fn sync_status_icon(
         &self,
         sync_queue_is_dequeueing: bool,
@@ -43,7 +43,7 @@ pub trait WarpDriveItem {
 
     fn icon(&self, appearance: &Appearance, color: Option<Fill>) -> Option<Box<dyn Element>> {
         let object_type = self.object_type()?;
-        let icon_fill = color.unwrap_or(warp_drive_icon_color(appearance, object_type).into());
+        let icon_fill = color.unwrap_or(yarp_drive_icon_color(appearance, object_type).into());
         Some(Icon::from(object_type).to_yarpui_icon(icon_fill).finish())
     }
 
@@ -55,17 +55,17 @@ pub trait WarpDriveItem {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem>;
+    fn clone_box(&self) -> Box<dyn YarpDriveItem>;
 }
 
-impl WarpDriveItemId {
+impl YarpDriveItemId {
     pub fn drive_row_position_id(&self) -> String {
         match self {
             Self::AIFactCollection => "AI_fact_collection".to_string(),
             Self::MCPServerCollection => "MCP_server_collection".to_string(),
             Self::Object(object_id) => object_id.drive_row_position_id(),
             Self::Space(space) => {
-                warp_drive_section_header_position_id(&DriveIndexSection::Space(*space))
+                yarp_drive_section_header_position_id(&DriveIndexSection::Space(*space))
             }
             Self::Trash => "Trash".to_string(),
         }
@@ -74,7 +74,7 @@ impl WarpDriveItemId {
 /// This uniquely identifies an item in Yarp Drive index
 /// Includes spaces (which CloudObjectTypeAndId does not entail)
 #[derive(Debug, Clone, PartialEq, Eq, Copy)]
-pub enum WarpDriveItemId {
+pub enum YarpDriveItemId {
     AIFactCollection,
     MCPServerCollection,
     Object(CloudObjectTypeAndId),
@@ -82,7 +82,7 @@ pub enum WarpDriveItemId {
     Trash,
 }
 
-impl Clone for Box<dyn WarpDriveItem> {
+impl Clone for Box<dyn YarpDriveItem> {
     fn clone(&self) -> Self {
         self.clone_box()
     }

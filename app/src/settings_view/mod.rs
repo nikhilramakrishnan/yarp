@@ -108,7 +108,7 @@ mod teams_page;
 mod telemetry;
 mod transfer_ownership_confirmation_modal;
 pub mod update_environment_form;
-mod warp_drive_page;
+mod yarp_drive_page;
 mod warpify_page;
 
 #[cfg(not(target_family = "wasm"))]
@@ -168,7 +168,7 @@ pub enum SettingsViewEvent {
     StartResize,
     CheckForUpdate,
     LaunchNetworkLogging,
-    OpenWarpDrive,
+    OpenYarpDrive,
     SignupAnonymousUser,
     ShowToast {
         message: String,
@@ -201,7 +201,7 @@ pub enum SettingsSection {
     Referrals,
     SharedBlocks,
     Teams,
-    WarpDrive,
+    YarpDrive,
     Warpify,
     /// Internal backing-page identifier for AISettingsPageView. Multiple subpages
     /// (WarpAgent, AgentProfiles, Knowledge, ThirdPartyCLIAgents) share this single
@@ -237,7 +237,7 @@ impl Display for SettingsSection {
             SettingsSection::Keybindings => write!(f, "Keyboard shortcuts"),
             SettingsSection::SharedBlocks => write!(f, "Shared blocks"),
             SettingsSection::MCPServers => write!(f, "MCP Servers"),
-            SettingsSection::WarpDrive => write!(f, "Yarp Drive"),
+            SettingsSection::YarpDrive => write!(f, "Yarp Drive"),
             SettingsSection::WarpAgent => write!(f, "Yarp Agent"),
             SettingsSection::AgentProfiles => write!(f, "Profiles"),
             SettingsSection::AgentMCPServers => write!(f, "MCP servers"),
@@ -339,7 +339,7 @@ impl FromStr for SettingsSection {
             "Shared blocks" => Ok(Self::SharedBlocks),
             "Teams" => Ok(Self::Teams),
             "Warpify" => Ok(Self::Warpify),
-            "WarpDrive" | "Yarp Drive" => Ok(Self::WarpDrive),
+            "YarpDrive" | "WarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
             // This page was called "Oz" at one point, keep for backward compatibility.
             "Oz" | "Yarp Agent" => Ok(Self::WarpAgent),
             "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
@@ -488,7 +488,7 @@ pub mod flags {
     pub const CLI_AGENT_RICH_INPUT_OPEN: &str = "CLIAgentRichInputOpen";
     pub const CLI_AGENT_FOOTER_ENABLED: &str = "CLIAgentFooterEnabled";
     pub const CLI_AGENT_RICH_INPUT_CHIP_ENABLED: &str = "CLIAgentRichInputChipEnabled";
-    pub const ENABLE_YARP_DRIVE: &str = "EnableWarpDrive";
+    pub const ENABLE_YARP_DRIVE: &str = "EnableYarpDrive";
     // Tools panel settings
     pub const SHOW_CONVERSATION_HISTORY: &str = "ShowConversationHistory";
     pub const SHOW_PROJECT_EXPLORER: &str = "ShowProjectExplorer";
@@ -817,7 +817,7 @@ pub enum SettingsAction {
     PrivacyPageToggle(PrivacyPageAction),
     AI(AISettingsPageAction),
     Code(CodeSettingsPageAction),
-    WarpDrive(warp_drive_page::WarpDriveSettingsPageAction),
+    YarpDrive(yarp_drive_page::YarpDriveSettingsPageAction),
     WarpifyPageToggle(WarpifyPageAction),
     Tab,
     Split(Direction),
@@ -975,7 +975,7 @@ macro_rules! update_page {
             SettingsPageViewHandle::Code(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::BillingAndUsage(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::MCPServers(handle) => $ctx.update_view(handle, $update),
-            SettingsPageViewHandle::WarpDrive(handle) => $ctx.update_view(handle, $update),
+            SettingsPageViewHandle::YarpDrive(handle) => $ctx.update_view(handle, $update),
         }
     };
 }
@@ -1093,7 +1093,7 @@ impl SettingsView {
         let teams_page_handle = ctx.add_typed_action_view(TeamsPageView::new);
         ctx.subscribe_to_view(&teams_page_handle, |_, _, event, ctx| match event {
             TeamsPageViewEvent::TeamsChanged => ctx.notify(),
-            TeamsPageViewEvent::OpenWarpDrive => ctx.emit(SettingsViewEvent::OpenWarpDrive),
+            TeamsPageViewEvent::OpenYarpDrive => ctx.emit(SettingsViewEvent::OpenYarpDrive),
             TeamsPageViewEvent::ShowToast { message, flavor } => {
                 ctx.emit(SettingsViewEvent::ShowToast {
                     message: message.clone(),
@@ -1121,10 +1121,10 @@ impl SettingsView {
         });
 
         // Yarp Drive page
-        let warp_drive_page_handle =
-            ctx.add_typed_action_view(warp_drive_page::WarpDriveSettingsPageView::new);
-        ctx.subscribe_to_view(&warp_drive_page_handle, |me, _, event, ctx| {
-            me.handle_warp_drive_page_event(event, ctx);
+        let yarp_drive_page_handle =
+            ctx.add_typed_action_view(yarp_drive_page::YarpDriveSettingsPageView::new);
+        ctx.subscribe_to_view(&yarp_drive_page_handle, |me, _, event, ctx| {
+            me.handle_yarp_drive_page_event(event, ctx);
         });
 
         let platform_page_handle = ctx.add_typed_action_view(platform_page::PlatformPageView::new);
@@ -1179,7 +1179,7 @@ impl SettingsView {
             SettingsPage::new(warpify_page_handle),
             SettingsPage::new(referrals_page_handle),
             SettingsPage::new(show_blocks_view_handle),
-            SettingsPage::new(warp_drive_page_handle),
+            SettingsPage::new(yarp_drive_page_handle),
         ];
 
         settings_pages.extend(vec![
@@ -1194,7 +1194,7 @@ impl SettingsView {
         // with subpages; the actual AI SettingsPage is hidden from direct sidebar listing.
         //
         // Yarp: Account / BillingAndUsage / Teams / Referrals / SharedBlocks /
-        // WarpDrive / Cloud platform are hidden — they all rely on the Yarp
+        // YarpDrive / Cloud platform are hidden — they all rely on the Yarp
         // backend, which Yarp has replaced with local-first impls. The
         // underlying SettingsSection variants stay in the enum so the rest of
         // the app keeps compiling, they're just not surfaced in the sidebar.
@@ -1768,13 +1768,13 @@ impl SettingsView {
         }
     }
 
-    fn handle_warp_drive_page_event(
+    fn handle_yarp_drive_page_event(
         &mut self,
-        event: &warp_drive_page::WarpDriveSettingsPageEvent,
+        event: &yarp_drive_page::YarpDriveSettingsPageEvent,
         ctx: &mut ViewContext<Self>,
     ) {
         match event {
-            warp_drive_page::WarpDriveSettingsPageEvent::SignUp => {
+            yarp_drive_page::YarpDriveSettingsPageEvent::SignUp => {
                 ctx.emit(SettingsViewEvent::SignupAnonymousUser)
             }
         }
@@ -1966,7 +1966,7 @@ impl SettingsView {
             SettingsPageViewHandle::CloudEnvironments(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::MCPServers(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Code(v) => v.as_ref(app).should_render(app),
-            SettingsPageViewHandle::WarpDrive(v) => v.as_ref(app).should_render(app),
+            SettingsPageViewHandle::YarpDrive(v) => v.as_ref(app).should_render(app),
         }
     }
 
@@ -2584,11 +2584,11 @@ impl TypedActionView for SettingsView {
                     }
                 }
             }
-            SettingsAction::WarpDrive(warp_drive_action) => {
-                if let Some(warp_drive_page) = self.settings_page(SettingsSection::WarpDrive) {
-                    if let SettingsPageViewHandle::WarpDrive(view) = &warp_drive_page.view_handle {
+            SettingsAction::YarpDrive(yarp_drive_action) => {
+                if let Some(yarp_drive_page) = self.settings_page(SettingsSection::YarpDrive) {
+                    if let SettingsPageViewHandle::YarpDrive(view) = &yarp_drive_page.view_handle {
                         view.update(ctx, |view, ctx| {
-                            view.handle_action(warp_drive_action, ctx);
+                            view.handle_action(yarp_drive_action, ctx);
                         })
                     }
                 }

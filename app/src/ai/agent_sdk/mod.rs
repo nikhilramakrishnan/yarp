@@ -551,12 +551,12 @@ impl AgentDriverRunner {
         // prompt resolution (SavedPrompt -> workflow lookup) and environment
         // resolution (CloudAmbientAgentEnvironment lookup) depend on it.
         if foreground
-            .spawn(|_, ctx| common::refresh_warp_drive(ctx))
+            .spawn(|_, ctx| common::refresh_yarp_drive(ctx))
             .await?
             .await
             .is_err()
         {
-            return Err(AgentDriverError::WarpDriveSyncFailed);
+            return Err(AgentDriverError::YarpDriveSyncFailed);
         }
 
         // Extract the task ID if available, so that if there are setup errors and we have

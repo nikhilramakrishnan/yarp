@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use super::items::folder::WarpDriveFolder;
-use super::items::WarpDriveItem;
+use super::items::folder::YarpDriveFolder;
+use super::items::YarpDriveItem;
 use super::CloudObjectTypeAndId;
 use crate::server::cloud_objects::update_manager::InitiatedBy;
 use crate::{
@@ -158,17 +158,17 @@ impl CloudModelType for CloudFolderModel {
             .await
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_yarp_drive(&self) -> bool {
         true
     }
 
-    fn to_warp_drive_item(
+    fn to_yarp_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         folder: &CloudFolder,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveFolder::new(
+    ) -> Option<Box<dyn YarpDriveItem>> {
+        Some(Box::new(YarpDriveFolder::new(
             self.cloud_object_type_and_id(id),
             folder.clone(),
         )))

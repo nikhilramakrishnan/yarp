@@ -5,28 +5,28 @@ use crate::{
     appearance::Appearance,
     cloud_object::CloudObjectMetadata,
     drive::{
-        cloud_object_styling::warp_drive_icon_color, folders::CloudFolder, index::DriveIndexAction,
+        cloud_object_styling::yarp_drive_icon_color, folders::CloudFolder, index::DriveIndexAction,
         CloudObjectTypeAndId, DriveObjectType,
     },
     themes::theme::Fill,
     ui_components::icons::Icon,
 };
 
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{YarpDriveItem, YarpDriveItemId};
 
 #[derive(Clone)]
-pub struct WarpDriveFolder {
+pub struct YarpDriveFolder {
     id: CloudObjectTypeAndId,
     folder: CloudFolder,
 }
 
-impl WarpDriveFolder {
+impl YarpDriveFolder {
     pub fn new(id: CloudObjectTypeAndId, folder: CloudFolder) -> Self {
         Self { id, folder }
     }
 }
 
-impl WarpDriveItem for WarpDriveFolder {
+impl YarpDriveItem for YarpDriveFolder {
     fn display_name(&self) -> Option<String> {
         if self.folder.model().name.is_empty() {
             None
@@ -45,7 +45,7 @@ impl WarpDriveItem for WarpDriveFolder {
 
     fn icon(&self, appearance: &Appearance, color: Option<Fill>) -> Option<Box<dyn Element>> {
         let icon_fill =
-            color.unwrap_or(warp_drive_icon_color(appearance, DriveObjectType::Folder).into());
+            color.unwrap_or(yarp_drive_icon_color(appearance, DriveObjectType::Folder).into());
         let icon = if FeatureFlag::WarpPacks.is_enabled() && self.folder.model().is_warp_pack {
             Icon::PackageCheck
         } else {
@@ -71,8 +71,8 @@ impl WarpDriveItem for WarpDriveFolder {
         None
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::Object(self.id)
+    fn yarp_drive_id(&self) -> YarpDriveItemId {
+        YarpDriveItemId::Object(self.id)
     }
 
     fn sync_status_icon(
@@ -92,7 +92,7 @@ impl WarpDriveItem for WarpDriveFolder {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn YarpDriveItem> {
         Box::new(self.clone())
     }
 }

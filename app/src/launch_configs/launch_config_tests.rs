@@ -5,7 +5,7 @@ use crate::{
         AppState, BranchSnapshot, LeafContents, LeafSnapshot, NotebookPaneSnapshot, PaneFlex,
         PaneNodeSnapshot, SplitDirection, TabSnapshot, TerminalPaneSnapshot, WindowSnapshot,
     },
-    drive::OpenWarpDriveObjectSettings,
+    drive::OpenYarpDriveObjectSettings,
     tab::SelectedTabColor,
 };
 
@@ -28,7 +28,7 @@ fn single_tab_snapshot(root: PaneNodeSnapshot) -> AppState {
             universal_search_width: None,
             warp_ai_width: None,
             voltron_width: None,
-            warp_drive_index_width: None,
+            yarp_drive_index_width: None,
             left_panel_open: false,
             vertical_tabs_panel_open: false,
             fullscreen_state: Default::default(),
@@ -52,7 +52,7 @@ fn multi_tab_snapshot(active_tab_index: usize, tabs: Vec<TabSnapshot>) -> AppSta
             universal_search_width: None,
             warp_ai_width: None,
             voltron_width: None,
-            warp_drive_index_width: None,
+            yarp_drive_index_width: None,
             left_panel_open: false,
             vertical_tabs_panel_open: false,
             fullscreen_state: Default::default(),
@@ -81,7 +81,7 @@ fn test_config_from_snapshot_flattens_single_pane() {
                     custom_vertical_tabs_title: None,
                     contents: LeafContents::Notebook(NotebookPaneSnapshot::CloudNotebook {
                         notebook_id: None,
-                        settings: OpenWarpDriveObjectSettings::default(),
+                        settings: OpenYarpDriveObjectSettings::default(),
                     }),
                 }),
             ),
@@ -151,7 +151,7 @@ fn test_config_from_snapshot_filters_panes() {
                     custom_vertical_tabs_title: None,
                     contents: LeafContents::Notebook(NotebookPaneSnapshot::CloudNotebook {
                         notebook_id: None,
-                        settings: OpenWarpDriveObjectSettings::default(),
+                        settings: OpenYarpDriveObjectSettings::default(),
                     }),
                 }),
             ),
@@ -215,7 +215,7 @@ fn test_config_from_snapshot_filters_tabs() {
                 custom_vertical_tabs_title: None,
                 contents: LeafContents::Notebook(NotebookPaneSnapshot::CloudNotebook {
                     notebook_id: None,
-                    settings: OpenWarpDriveObjectSettings::default(),
+                    settings: OpenYarpDriveObjectSettings::default(),
                 }),
             }),
         )],
@@ -285,7 +285,7 @@ fn test_config_with_active_tab_index_and_filtered_tabs() {
                             custom_vertical_tabs_title: None,
                             contents: LeafContents::Notebook(NotebookPaneSnapshot::CloudNotebook {
                                 notebook_id: None,
-                                settings: OpenWarpDriveObjectSettings::default(),
+                                settings: OpenYarpDriveObjectSettings::default(),
                             }),
                         }),
                     )],
@@ -376,7 +376,7 @@ fn test_config_with_active_tab_being_filtered() {
                             custom_vertical_tabs_title: None,
                             contents: LeafContents::Notebook(NotebookPaneSnapshot::CloudNotebook {
                                 notebook_id: None,
-                                settings: OpenWarpDriveObjectSettings::default(),
+                                settings: OpenYarpDriveObjectSettings::default(),
                             }),
                         }),
                     )],

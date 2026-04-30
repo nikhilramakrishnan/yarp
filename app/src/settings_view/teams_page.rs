@@ -188,7 +188,7 @@ pub enum TeamsPageAction {
     SendEmailInvites {
         team_uid: ServerId,
     },
-    OpenWarpDrive,
+    OpenYarpDrive,
     GenerateUpgradeLink {
         team_uid: ServerId,
     },
@@ -297,7 +297,7 @@ impl TryFrom<&TeamsPageAction> for TelemetryEvent {
 #[derive(Clone)]
 pub enum TeamsPageViewEvent {
     TeamsChanged,
-    OpenWarpDrive,
+    OpenYarpDrive,
     ShowToast {
         message: String,
         flavor: ToastFlavor,
@@ -491,7 +491,7 @@ impl TypedActionView for TeamsPageView {
                 self.send_email_invites(*team_uid, ctx);
                 ctx.notify();
             }
-            TeamsPageAction::OpenWarpDrive => ctx.emit(TeamsPageViewEvent::OpenWarpDrive),
+            TeamsPageAction::OpenYarpDrive => ctx.emit(TeamsPageViewEvent::OpenYarpDrive),
             TeamsPageAction::ShowLeaveTeamConfirmationDialog => {
                 self.delete_or_leave_team_confirmation_dialog
                     .update(ctx, |dialog, ctx| {
@@ -1364,7 +1364,7 @@ impl TeamsPageView {
                 ctx,
             );
         });
-        ctx.dispatch_typed_action(&WorkspaceAction::OpenWarpDrive);
+        ctx.dispatch_typed_action(&WorkspaceAction::OpenYarpDrive);
     }
 
     fn set_team_member_role(

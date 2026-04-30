@@ -34,7 +34,7 @@ use crate::{
         AuthStateProvider, UserUid,
     },
     completer::SessionContext,
-    drive::settings::WarpDriveSettings,
+    drive::settings::YarpDriveSettings,
     search::{
         command_search::searcher::{CommandSearchItemAction, CommandSearchMixer},
         result_renderer::{QueryResultRenderer, QueryResultRendererStyles},
@@ -251,7 +251,7 @@ impl CommandSearchView {
                 );
             }
 
-            if WarpDriveSettings::is_warp_drive_enabled(ctx) {
+            if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
                 mixer.add_sync_source(
                     WorkflowsDataSource::new(session_context.as_ref(), ctx),
                     HashSet::from([QueryFilter::Workflows]),

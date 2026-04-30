@@ -13,21 +13,21 @@ use crate::{
     themes::theme::Fill,
 };
 
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{YarpDriveItem, YarpDriveItemId};
 
 #[derive(Clone)]
-pub struct WarpDriveAIFact {
+pub struct YarpDriveAIFact {
     id: CloudObjectTypeAndId,
     ai_fact: CloudAIFact,
 }
 
-impl WarpDriveAIFact {
+impl YarpDriveAIFact {
     pub fn new(id: CloudObjectTypeAndId, ai_fact: CloudAIFact) -> Self {
         Self { id, ai_fact }
     }
 }
 
-impl WarpDriveItem for WarpDriveAIFact {
+impl YarpDriveItem for YarpDriveAIFact {
     fn display_name(&self) -> Option<String> {
         match &self.ai_fact.model().string_model {
             AIFact::Memory(AIMemory { content, name, .. }) => {
@@ -88,8 +88,8 @@ impl WarpDriveItem for WarpDriveAIFact {
         )
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::Object(self.id)
+    fn yarp_drive_id(&self) -> YarpDriveItemId {
+        YarpDriveItemId::Object(self.id)
     }
 
     fn sync_status_icon(
@@ -109,7 +109,7 @@ impl WarpDriveItem for WarpDriveAIFact {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn YarpDriveItem> {
         Box::new(self.clone())
     }
 }

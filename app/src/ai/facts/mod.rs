@@ -1,5 +1,5 @@
 use crate::ai::agent::SuggestedLoggingId;
-use crate::drive::items::{ai_fact::WarpDriveAIFact, WarpDriveItem};
+use crate::drive::items::{ai_fact::YarpDriveAIFact, YarpDriveItem};
 use crate::server::{ids::SyncId, sync_queue::QueueItem};
 use crate::{
     cloud_object::{
@@ -101,17 +101,17 @@ impl StringModel for AIFact {
         None
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_yarp_drive(&self) -> bool {
         false
     }
 
-    fn to_warp_drive_item(
+    fn to_yarp_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         ai_fact: &CloudAIFact,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveAIFact::new(
+    ) -> Option<Box<dyn YarpDriveItem>> {
+        Some(Box::new(YarpDriveAIFact::new(
             CloudObjectTypeAndId::GenericStringObject {
                 object_type: GenericStringObjectFormat::Json(JsonObjectType::AIFact),
                 id,

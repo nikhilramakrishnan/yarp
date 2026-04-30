@@ -8,14 +8,14 @@ use crate::{
     themes::theme::Fill,
 };
 
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{YarpDriveItem, YarpDriveItemId};
 
 #[derive(Clone)]
-pub struct WarpDriveAIFactCollection {
+pub struct YarpDriveAIFactCollection {
     id: ClientId,
 }
 
-impl WarpDriveAIFactCollection {
+impl YarpDriveAIFactCollection {
     pub fn new(id: ClientId) -> Self {
         Self { id }
     }
@@ -25,7 +25,7 @@ impl WarpDriveAIFactCollection {
     }
 }
 
-impl WarpDriveItem for WarpDriveAIFactCollection {
+impl YarpDriveItem for YarpDriveAIFactCollection {
     fn display_name(&self) -> Option<String> {
         Some("Rules".to_string())
     }
@@ -50,8 +50,8 @@ impl WarpDriveItem for WarpDriveAIFactCollection {
         None
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::AIFactCollection
+    fn yarp_drive_id(&self) -> YarpDriveItemId {
+        YarpDriveItemId::AIFactCollection
     }
 
     fn sync_status_icon(
@@ -67,7 +67,7 @@ impl WarpDriveItem for WarpDriveAIFactCollection {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn YarpDriveItem> {
         Box::new(self.clone())
     }
 }

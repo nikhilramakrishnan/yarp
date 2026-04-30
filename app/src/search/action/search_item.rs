@@ -1,5 +1,5 @@
 use crate::appearance::Appearance;
-use crate::drive::cloud_object_styling::warp_drive_icon_color;
+use crate::drive::cloud_object_styling::yarp_drive_icon_color;
 use crate::drive::DriveObjectType;
 use crate::features::FeatureFlag;
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
@@ -214,15 +214,15 @@ impl SearchItemIcon for BindingGroup {
                 ColorU::from_u32(colors::YARP_AI)
             }
             Self::WarpAi => appearance.theme().foreground().into_solid(),
-            Self::Workflow => warp_drive_icon_color(appearance, DriveObjectType::Workflow),
-            Self::Notebooks => warp_drive_icon_color(
+            Self::Workflow => yarp_drive_icon_color(appearance, DriveObjectType::Workflow),
+            Self::Notebooks => yarp_drive_icon_color(
                 appearance,
                 DriveObjectType::Notebook {
                     is_ai_document: false,
                 },
             ),
             Self::EnvVarCollection => {
-                warp_drive_icon_color(appearance, DriveObjectType::EnvVarCollection)
+                yarp_drive_icon_color(appearance, DriveObjectType::EnvVarCollection)
             }
         }
     }

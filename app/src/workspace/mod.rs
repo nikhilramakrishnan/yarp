@@ -611,7 +611,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(
             id!("Workspace")
                 & id!(flags::ENABLE_YARP_DRIVE)
-                & id!("WarpDrive_BelongsToTeam")
+                & id!("YarpDrive_BelongsToTeam")
                 & id!("IsOnline"),
         )
         .with_group(bindings::BindingGroup::Notebooks.as_str()),
@@ -635,7 +635,7 @@ pub fn init(app: &mut AppContext) {
             id!("Workspace")
                 & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("IsOnline")
-                & id!("WarpDrive_BelongsToTeam"),
+                & id!("YarpDrive_BelongsToTeam"),
         )
         .with_group(bindings::BindingGroup::Workflow.as_str()),
         EditableBinding::new(
@@ -657,7 +657,7 @@ pub fn init(app: &mut AppContext) {
             id!("Workspace")
                 & id!(flags::ENABLE_YARP_DRIVE)
                 & id!("IsOnline")
-                & id!("WarpDrive_BelongsToTeam"),
+                & id!("YarpDrive_BelongsToTeam"),
         )
         .with_group(bindings::BindingGroup::Folders.as_str()),
         EditableBinding::new(
@@ -714,7 +714,7 @@ pub fn init(app: &mut AppContext) {
             WorkspaceAction::ToggleLeftPanel,
         )
         .with_context_predicate(id!("Workspace"))
-        .with_custom_action(CustomAction::ToggleWarpDrive),
+        .with_custom_action(CustomAction::ToggleYarpDrive),
         EditableBinding::new(
             TOGGLE_RIGHT_PANEL_BINDING_NAME,
             BindingDescription::new("Toggle code review")
@@ -764,7 +764,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             LEFT_PANEL_YARP_DRIVE_BINDING_NAME,
             BindingDescription::new("Left Panel: Yarp Drive"),
-            WorkspaceAction::ToggleWarpDrive,
+            WorkspaceAction::ToggleYarpDrive,
         )
         .with_group(bindings::BindingGroup::Navigation.as_str())
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE))
@@ -791,7 +791,7 @@ pub fn init(app: &mut AppContext) {
             TOGGLE_YARP_DRIVE_BINDING_NAME,
             BindingDescription::new("Toggle Yarp Drive")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Yarp Drive"),
-            WorkspaceAction::ToggleWarpDrive,
+            WorkspaceAction::ToggleYarpDrive,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
@@ -1022,7 +1022,7 @@ pub fn init(app: &mut AppContext) {
             "workspace:search_drive",
             "Search Yarp Drive",
             WorkspaceAction::OpenPalette {
-                mode: PaletteMode::WarpDrive,
+                mode: PaletteMode::YarpDrive,
                 source: PaletteSource::Keybinding,
                 query: None,
             },
@@ -1074,9 +1074,9 @@ pub fn init(app: &mut AppContext) {
 
     if cfg!(not(target_family = "wasm")) {
         app.register_editable_bindings([EditableBinding::new(
-            "workspace:export_all_warp_drive_objects",
+            "workspace:export_all_yarp_drive_objects",
             "Export all Yarp Drive objects",
-            WorkspaceAction::ExportAllWarpDriveObjects,
+            WorkspaceAction::ExportAllYarpDriveObjects,
         )
         .with_group(bindings::BindingGroup::Settings.as_str())
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE))]);
@@ -1173,7 +1173,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(
             id!("Workspace")
                 & id!(flags::ENABLE_YARP_DRIVE)
-                & id!("WarpDrive_BelongsToTeam")
+                & id!("YarpDrive_BelongsToTeam")
                 & id!("IsOnline"),
         )
         .with_group(bindings::BindingGroup::EnvVarCollection.as_str()),
@@ -1211,7 +1211,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(
             id!("Workspace")
                 & id!(flags::ENABLE_YARP_DRIVE)
-                & id!("WarpDrive_BelongsToTeam")
+                & id!("YarpDrive_BelongsToTeam")
                 & id!("IsOnline")
                 & id!(flags::IS_ANY_AI_ENABLED),
         ),
@@ -1247,7 +1247,7 @@ pub fn init(app: &mut AppContext) {
             WorkspaceAction::ImportToTeamDrive,
         )
         .with_context_predicate(
-            id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!("WarpDrive_BelongsToTeam"),
+            id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE) & id!("YarpDrive_BelongsToTeam"),
         ),
     ]);
 

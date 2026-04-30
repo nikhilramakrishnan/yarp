@@ -66,8 +66,8 @@ impl IntegrationCommandRunner {
 
     fn create(&self, args: CreateIntegrationArgs, ctx: &mut ModelContext<Self>) {
         let refresh_future = super::common::refresh_workspace_metadata(ctx);
-        let warp_drive_sync_future = super::common::refresh_warp_drive(ctx);
-        let setup_future = future::try_join(refresh_future, warp_drive_sync_future);
+        let yarp_drive_sync_future = super::common::refresh_yarp_drive(ctx);
+        let setup_future = future::try_join(refresh_future, yarp_drive_sync_future);
 
         ctx.spawn(setup_future, move |runner, setup_result, ctx| {
             if let Err(err) = setup_result {
@@ -376,8 +376,8 @@ impl IntegrationCommandRunner {
 
     fn update(&self, args: UpdateIntegrationArgs, ctx: &mut ModelContext<Self>) {
         let refresh_future = super::common::refresh_workspace_metadata(ctx);
-        let warp_drive_sync_future = super::common::refresh_warp_drive(ctx);
-        let setup_future = future::try_join(refresh_future, warp_drive_sync_future);
+        let yarp_drive_sync_future = super::common::refresh_yarp_drive(ctx);
+        let setup_future = future::try_join(refresh_future, yarp_drive_sync_future);
 
         ctx.spawn(setup_future, move |runner, setup_result, ctx| {
             if let Err(err) = setup_result {

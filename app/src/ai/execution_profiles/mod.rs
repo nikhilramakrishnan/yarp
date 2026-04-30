@@ -249,7 +249,7 @@ pub struct AIExecutionProfile {
     pub computer_use_model: Option<LLMId>,
 
     /// Whether plans created by the agent should be automatically synced to Yarp Drive
-    pub autosync_plans_to_warp_drive: bool,
+    pub autosync_plans_to_yarp_drive: bool,
 
     /// Whether the agent may use web search when helpful for completing tasks
     pub web_search_enabled: bool,
@@ -276,7 +276,7 @@ impl Default for AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: true,
+            autosync_plans_to_yarp_drive: true,
             web_search_enabled: true,
         }
     }
@@ -327,7 +327,7 @@ impl AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: false,
+            autosync_plans_to_yarp_drive: false,
             web_search_enabled: true,
         }
     }
@@ -381,7 +381,7 @@ impl AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: FeatureFlag::SyncAmbientPlans.is_enabled(),
+            autosync_plans_to_yarp_drive: FeatureFlag::SyncAmbientPlans.is_enabled(),
             web_search_enabled: true,
         }
     }
@@ -460,7 +460,7 @@ impl StringModel for AIExecutionProfile {
             })
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_yarp_drive(&self) -> bool {
         false
     }
 }

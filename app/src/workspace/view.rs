@@ -159,7 +159,7 @@ use crate::code::editor_management::CodeManager;
 use crate::code::editor_management::CodeSource;
 use crate::code_review::telemetry_event::CodeReviewPaneEntrypoint;
 use crate::drive::export::ExportManager;
-use crate::drive::settings::WarpDriveSettings;
+use crate::drive::settings::YarpDriveSettings;
 use crate::launch_configs::launch_config::WindowTemplate;
 use crate::pane_group::{
     AIFactPane, CodeReviewPanelArg, Direction as PaneGroupDirection, EnvironmentManagementPane,
@@ -208,8 +208,8 @@ use crate::billing::shared_objects_creation_denied_modal::{
 #[cfg(target_family = "wasm")]
 use crate::wasm_nux_dialog::WasmNUXDialog;
 
-use crate::drive::items::WarpDriveItemId;
-use crate::drive::settings::WarpDriveSettingsChangedEvent;
+use crate::drive::items::YarpDriveItemId;
+use crate::drive::settings::YarpDriveSettingsChangedEvent;
 use crate::env_vars::{
     manager::{EnvVarCollectionManager, EnvVarCollectionSource},
     CloudEnvVarCollection,
@@ -233,7 +233,7 @@ use crate::drive::import::modal::{ImportModal, ImportModalEvent};
 use crate::drive::workflows::arguments::ArgumentsState;
 use crate::drive::workflows::modal::{WorkflowModal, WorkflowModalEvent};
 use crate::drive::{
-    CloudObjectTypeAndId, DriveObjectType, DrivePanel, DrivePanelEvent, OpenWarpDriveObjectSettings,
+    CloudObjectTypeAndId, DriveObjectType, DrivePanel, DrivePanelEvent, OpenYarpDriveObjectSettings,
 };
 use crate::experiments::{BlockOnboarding, Experiment};
 use crate::menu::{
@@ -280,7 +280,7 @@ use crate::server::telemetry::{
     AddTabWithShellSource, AnonymousUserSignupEntrypoint, CloseTarget, EnvVarTelemetryMetadata,
     FileTreeSource, KnowledgePaneEntrypoint, LaunchConfigUiLocation,
     MCPServerCollectionPaneEntrypoint, OpenedWarpAISource, SharingDialogSource, TierLimitHitEvent,
-    WarpDriveSource,
+    YarpDriveSource,
 };
 use crate::session_management::{SessionNavigationData, SessionSource};
 use crate::settings::{
@@ -601,7 +601,7 @@ pub(crate) const TOGGLE_NOTIFICATION_MAILBOX_BINDING_NAME: &str =
 
 // these won't have to be public after we deprecate the code mode v1 project explorer which is defined in terminal
 pub(crate) const TOGGLE_PROJECT_EXPLORER_BINDING_NAME: &str = "workspace:toggle_project_explorer";
-pub(crate) const TOGGLE_YARP_DRIVE_BINDING_NAME: &str = "workspace:toggle_warp_drive";
+pub(crate) const TOGGLE_YARP_DRIVE_BINDING_NAME: &str = "workspace:toggle_yarp_drive";
 pub(crate) const TOGGLE_RIGHT_PANEL_BINDING_NAME: &str = "workspace:toggle_right_panel";
 pub(crate) const TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME: &str =
     "workspace:toggle_vertical_tabs_panel";
@@ -618,7 +618,7 @@ pub(crate) const TOGGLE_TAB_CONFIGS_MENU_BINDING_NAME: &str = "workspace:toggle_
 pub(crate) const LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME: &str =
     "workspace:left_panel_project_explorer";
 pub(crate) const LEFT_PANEL_GLOBAL_SEARCH_BINDING_NAME: &str = "workspace:left_panel_global_search";
-pub(crate) const LEFT_PANEL_YARP_DRIVE_BINDING_NAME: &str = "workspace:left_panel_warp_drive";
+pub(crate) const LEFT_PANEL_YARP_DRIVE_BINDING_NAME: &str = "workspace:left_panel_yarp_drive";
 pub(crate) const LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME: &str =
     "workspace:left_panel_agent_conversations";
 
@@ -756,7 +756,7 @@ impl ShowTabBar {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum SimplifiedWasmTabBarContent {
     /// Viewing a Yarp Drive object (notebook, workflow, env vars, AI facts, MCP servers)
-    WarpDriveObject,
+    YarpDriveObject,
     /// Participating in a shared session (viewer or writer). Contains the optional ambient agent task ID.
     SharedSession { task_id: Option<AmbientAgentTaskId> },
     /// Viewing a conversation transcript. Contains the optional ambient agent task ID.
@@ -1373,7 +1373,7 @@ impl Workspace {
                 if let Some(id) = id_to_force_expand {
                     self.open_notebook(
                         &NotebookSource::Existing(id),
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         ctx,
                         true,
                     );
@@ -1389,7 +1389,7 @@ impl Workspace {
                 if let Some(id) = id_to_force_expand {
                     self.open_workflow_with_existing(
                         id,
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         ctx,
                     );
                     CloudModel::handle(ctx).update(ctx, |cloud_model, ctx| {
@@ -1585,7 +1585,7 @@ impl Workspace {
                 ctx.notify();
             }
             AuthOverrideWarningModalEvent::BulkExport => {
-                self.export_all_warp_drive_objects(ctx);
+                self.export_all_yarp_drive_objects(ctx);
             }
         }
     }
@@ -2865,8 +2865,8 @@ impl Workspace {
             }
         });
 
-        ctx.subscribe_to_model(&WarpDriveSettings::handle(ctx), |me, _, event, ctx| {
-            if let WarpDriveSettingsChangedEvent::EnableWarpDrive { .. } = event {
+        ctx.subscribe_to_model(&YarpDriveSettings::handle(ctx), |me, _, event, ctx| {
+            if let YarpDriveSettingsChangedEvent::EnableYarpDrive { .. } = event {
                 me.update_left_panel_available_views(ctx);
                 ctx.notify();
             }
@@ -3769,7 +3769,7 @@ impl Workspace {
                 LeftPanelDisplayedTab::GlobalSearch => ToolPanelView::GlobalSearch {
                     entry_focus: GlobalSearchEntryFocus::Results,
                 },
-                LeftPanelDisplayedTab::WarpDrive => ToolPanelView::WarpDrive,
+                LeftPanelDisplayedTab::YarpDrive => ToolPanelView::YarpDrive,
                 LeftPanelDisplayedTab::ConversationListView => ToolPanelView::ConversationListView,
             };
             lp.restore_active_view_from_snapshot(active_view, ctx);
@@ -3814,7 +3814,7 @@ impl Workspace {
     ) {
         let show_warp_home = !ContextFlag::CreateNewSession.is_enabled();
         let mut placeholder_pane = None;
-        let open_warp_drive = if !show_warp_home {
+        let open_yarp_drive = if !show_warp_home {
             if self.should_trigger_get_started_onboarding(ctx) {
                 self.trigger_get_started_onboarding(ctx);
             } else if FeatureFlag::WelcomeTab.is_enabled() {
@@ -3842,7 +3842,7 @@ impl Workspace {
         };
         let initial_tab = self.active_tab_pane_group().clone();
 
-        if open_warp_drive {
+        if open_yarp_drive {
             // We open Yarp Drive automatically in two cases:
             // * The user is new to Yarp, and went through the overall onboarding flow
             // * The user is on the web, so we can't open a terminal session.
@@ -3851,7 +3851,7 @@ impl Workspace {
                 // New Yarp users can have non-welcome objects if they were directly invited OR if
                 // linked objects were copied over from an anonymous user.
                 if CloudModel::as_ref(ctx).has_non_welcome_objects() {
-                    me.open_or_toggle_warp_drive(false, false, ctx);
+                    me.open_or_toggle_yarp_drive(false, false, ctx);
 
                     // After opening Yarp Drive, if we rendered the Yarp Home placeholder panel, replace it with one of
                     // the user's own objects.
@@ -3861,7 +3861,7 @@ impl Workspace {
                             .cloud_objects()
                             .filter(|object| {
                                 !object.is_trashed(cloud_model)
-                                    && object.renders_in_warp_drive()
+                                    && object.renders_in_yarp_drive()
                                     && !object.metadata().is_welcome_object
                             })
                             .map(|object| object.cloud_object_type_and_id())
@@ -4250,8 +4250,8 @@ impl Workspace {
 
         // Check if focused pane is a Yarp Drive object
         let focused_pane_id = pane_group.focused_pane_id(ctx);
-        if focused_pane_id.is_warp_drive_object_pane() {
-            return Some(SimplifiedWasmTabBarContent::WarpDriveObject);
+        if focused_pane_id.is_yarp_drive_object_pane() {
+            return Some(SimplifiedWasmTabBarContent::YarpDriveObject);
         }
 
         None
@@ -4387,32 +4387,32 @@ impl Workspace {
     }
 
     /// Sets focused to the index of either the selected object or the first item in WD
-    fn reset_focused_index_in_warp_drive(
+    fn reset_focused_index_in_yarp_drive(
         &mut self,
         should_scroll: bool,
         ctx: &mut ViewContext<Self>,
     ) {
         ctx.focus(&self.left_panel_view);
 
-        self.update_warp_drive_view(ctx, |drive_panel, ctx| {
-            drive_panel.reset_focused_index_in_warp_drive(should_scroll, ctx);
+        self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
+            drive_panel.reset_focused_index_in_yarp_drive(should_scroll, ctx);
         });
     }
 
-    pub fn has_warp_drive_initialized_sections(
+    pub fn has_yarp_drive_initialized_sections(
         &self,
         app: &AppContext,
     ) -> impl Future<Output = ()> {
         self.left_panel_view
             .as_ref(app)
-            .warp_drive_view()
+            .yarp_drive_view()
             .as_ref(app)
-            .has_warp_drive_initialized_sections(app)
+            .has_yarp_drive_initialized_sections(app)
     }
 
     /// Check if Yarp Drive view is focused within.
     /// Routes to the appropriate Yarp Drive panel.
-    fn is_warp_drive_view_focused(&self, ctx: &mut ViewContext<Self>) -> bool {
+    fn is_yarp_drive_view_focused(&self, ctx: &mut ViewContext<Self>) -> bool {
         let app = ctx;
         self.left_panel_view.is_self_or_child_focused(app)
     }
@@ -4617,8 +4617,8 @@ impl Workspace {
     fn focus_left_panel(&mut self, ctx: &mut ViewContext<Self>) {
         // Starts from terminal
         if self.active_tab_pane_group().is_self_or_child_focused(ctx) {
-            if self.current_workspace_state.is_warp_drive_open {
-                self.reset_focused_index_in_warp_drive(true, ctx);
+            if self.current_workspace_state.is_yarp_drive_open {
+                self.reset_focused_index_in_yarp_drive(true, ctx);
             } else if self.is_theme_chooser_open() {
                 ctx.focus(&self.theme_chooser_view);
             } else if self.current_workspace_state.is_ai_assistant_panel_open {
@@ -4634,7 +4634,7 @@ impl Workspace {
             self.focus_active_tab(ctx);
         }
         // Starts from a left panel: Yarp Drive
-        else if self.is_warp_drive_view_focused(ctx) {
+        else if self.is_yarp_drive_view_focused(ctx) {
             if self.current_workspace_state.is_right_panel_open() {
                 self.set_selected_object(None, ctx);
                 if self.current_workspace_state.is_ai_assistant_panel_open {
@@ -4672,14 +4672,14 @@ impl Workspace {
                 ctx.focus(&self.ai_assistant_panel);
             } else if self.current_workspace_state.is_resource_center_open {
                 ctx.focus(&self.resource_center_view);
-            } else if self.current_workspace_state.is_warp_drive_open {
-                self.reset_focused_index_in_warp_drive(true, ctx);
+            } else if self.current_workspace_state.is_yarp_drive_open {
+                self.reset_focused_index_in_yarp_drive(true, ctx);
             } else if self.is_theme_chooser_open() {
                 ctx.focus(&self.theme_chooser_view);
             }
         }
         // Starts from a left panel: Yarp Drive, theme chooser
-        else if self.is_warp_drive_view_focused(ctx)
+        else if self.is_yarp_drive_view_focused(ctx)
             || self.theme_chooser_view.is_self_or_child_focused(ctx)
         {
             self.focus_active_tab(ctx);
@@ -4689,8 +4689,8 @@ impl Workspace {
             || self.resource_center_view.is_self_or_child_focused(ctx)
         {
             if self.current_workspace_state.is_left_panel_open() {
-                if self.current_workspace_state.is_warp_drive_open {
-                    self.reset_focused_index_in_warp_drive(true, ctx);
+                if self.current_workspace_state.is_yarp_drive_open {
+                    self.reset_focused_index_in_yarp_drive(true, ctx);
                 } else if self.is_theme_chooser_open() {
                     ctx.focus(&self.theme_chooser_view);
                 }
@@ -5631,7 +5631,7 @@ impl Workspace {
             AgentManagementViewEvent::OpenPlanNotebook { notebook_uid } => {
                 self.open_notebook(
                     &NotebookSource::Existing((*notebook_uid).into()),
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     ctx,
                     false,
                 );
@@ -5777,8 +5777,8 @@ impl Workspace {
                 let pane_group = self.active_tab_pane_group().clone();
                 self.handle_file_tree_event(pane_group, pane_group_event, ctx);
             }
-            LeftPanelEvent::WarpDrive(drive_event) => {
-                self.handle_warp_drive_event(drive_event, ctx);
+            LeftPanelEvent::YarpDrive(drive_event) => {
+                self.handle_yarp_drive_event(drive_event, ctx);
             }
             LeftPanelEvent::OpenFileWithTarget {
                 path,
@@ -5975,7 +5975,7 @@ impl Workspace {
             .write(ClipboardContent::plain_text(version.to_string()));
     }
 
-    fn export_all_warp_drive_objects(&mut self, ctx: &mut ViewContext<Self>) {
+    fn export_all_yarp_drive_objects(&mut self, ctx: &mut ViewContext<Self>) {
         let window_id = ctx.window_id();
         let cloud_model = CloudModel::as_ref(ctx);
         let exportable_objects = cloud_model.get_all_exportable_object_ids();
@@ -6602,7 +6602,7 @@ impl Workspace {
             return;
         }
 
-        if *WarpDriveSettings::as_ref(ctx)
+        if *YarpDriveSettings::as_ref(ctx)
             .sharing_onboarding_block_shown
             .value()
         {
@@ -6778,7 +6778,7 @@ impl Workspace {
 
     /// Opens the Yarp Drive object identified by `uid` in a new pane
     /// if it has a pane representation.
-    fn open_warp_drive_object_in_new_pane(&mut self, uid: &ObjectUid, ctx: &mut ViewContext<Self>) {
+    fn open_yarp_drive_object_in_new_pane(&mut self, uid: &ObjectUid, ctx: &mut ViewContext<Self>) {
         let Some(object) = CloudModel::as_ref(ctx).get_by_uid(uid) else {
             return;
         };
@@ -6788,7 +6788,7 @@ impl Workspace {
             ObjectType::Notebook => {
                 self.open_notebook(
                     &NotebookSource::Existing(sync_id),
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     ctx,
                     true,
                 );
@@ -6796,7 +6796,7 @@ impl Workspace {
             ObjectType::Workflow => {
                 self.open_workflow_in_pane(
                     &WorkflowOpenSource::Existing(sync_id),
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     WorkflowViewMode::View,
                     ctx,
                 );
@@ -6825,7 +6825,7 @@ impl Workspace {
     pub fn open_notebook(
         &mut self,
         source: &NotebookSource,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         ctx: &mut ViewContext<Self>,
         default_to_new_pane: bool,
     ) {
@@ -6883,9 +6883,9 @@ impl Workspace {
 
             if let Some(focused_folder_id) = focused_folder_id {
                 // Only focus the notebook if we don't want to focus a parent folder instead
-                self.open_or_toggle_warp_drive(false, false, ctx);
+                self.open_or_toggle_yarp_drive(false, false, ctx);
                 self.set_selected_object(
-                    Some(WarpDriveItemId::Object(
+                    Some(YarpDriveItemId::Object(
                         CloudObjectTypeAndId::from_id_and_type(
                             focused_folder_id,
                             ObjectType::Folder,
@@ -6895,7 +6895,7 @@ impl Workspace {
                 );
             } else {
                 self.set_selected_object(
-                    Some(WarpDriveItemId::Object(
+                    Some(YarpDriveItemId::Object(
                         CloudObjectTypeAndId::from_id_and_type(*notebook_id, ObjectType::Notebook),
                     )),
                     ctx,
@@ -6908,7 +6908,7 @@ impl Workspace {
     pub fn open_workflow_from_intent(
         &mut self,
         workflow_id: SyncId,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         ctx: &mut ViewContext<Self>,
     ) {
         // If running workflows is supported, do so. Otherwise, or if the workflow isn't in memory,
@@ -6918,7 +6918,7 @@ impl Workspace {
         if ContextFlag::RunWorkflow.is_enabled() && settings.invitee_email.is_none() {
             match CloudModel::as_ref(ctx).get_workflow(&workflow_id).cloned() {
                 Some(workflow) => {
-                    self.open_or_toggle_warp_drive(false, false, ctx);
+                    self.open_or_toggle_yarp_drive(false, false, ctx);
                     self.run_cloud_workflow_in_active_input(
                         workflow,
                         WorkflowSelectionSource::Undefined,
@@ -6930,7 +6930,7 @@ impl Workspace {
                     // that will focus the workflow instead.
                     if let Some(focused_folder) = settings.focused_folder_id.map(SyncId::ServerId) {
                         self.set_selected_object(
-                            Some(WarpDriveItemId::Object(
+                            Some(YarpDriveItemId::Object(
                                 CloudObjectTypeAndId::from_id_and_type(
                                     focused_folder,
                                     ObjectType::Folder,
@@ -6950,7 +6950,7 @@ impl Workspace {
     pub fn open_workflow_in_pane(
         &mut self,
         source: &WorkflowOpenSource,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         mode: WorkflowViewMode,
         ctx: &mut ViewContext<Self>,
     ) {
@@ -7028,7 +7028,7 @@ impl Workspace {
 
         if let EnvVarCollectionSource::Existing(env_var_collection_id) = source {
             self.set_selected_object(
-                Some(WarpDriveItemId::Object(
+                Some(YarpDriveItemId::Object(
                     CloudObjectTypeAndId::from_generic_string_object(
                         GenericStringObjectFormat::Json(
                             crate::cloud_object::JsonObjectType::EnvVarCollection,
@@ -7436,7 +7436,7 @@ impl Workspace {
         });
 
         // Focus WD index item
-        self.set_selected_object(Some(WarpDriveItemId::AIFactCollection), ctx);
+        self.set_selected_object(Some(YarpDriveItemId::AIFactCollection), ctx);
     }
 
     /// Open the Execution Profile Editor pane
@@ -7663,7 +7663,7 @@ impl Workspace {
         ctx.notify();
     }
 
-    pub fn open_or_toggle_warp_drive(
+    pub fn open_or_toggle_yarp_drive(
         &mut self,
         toggle: bool,
         explicit_user_action: bool,
@@ -7671,20 +7671,20 @@ impl Workspace {
     ) {
         // Closing all left panels will also close yarp drive so we need to retrieve
         // whether yarp drive was open first, and toggle based on the initial value.
-        let was_warp_drive_open = self.current_workspace_state.is_warp_drive_open;
+        let was_yarp_drive_open = self.current_workspace_state.is_yarp_drive_open;
         self.current_workspace_state.close_all_left_panels();
-        self.current_workspace_state.is_warp_drive_open =
-            if toggle { !was_warp_drive_open } else { true };
+        self.current_workspace_state.is_yarp_drive_open =
+            if toggle { !was_yarp_drive_open } else { true };
 
         // Set selected object to None upon toggle close of Yarp Drive
-        if !self.current_workspace_state.is_warp_drive_open {
+        if !self.current_workspace_state.is_yarp_drive_open {
             self.set_selected_object(None, ctx);
             self.focus_active_tab(ctx);
         }
 
         // Reset focused index when opening/toggling Yarp Drive open
-        if self.current_workspace_state.is_warp_drive_open {
-            self.reset_focused_index_in_warp_drive(true, ctx);
+        if self.current_workspace_state.is_yarp_drive_open {
+            self.reset_focused_index_in_yarp_drive(true, ctx);
         }
 
         ctx.notify();
@@ -7693,19 +7693,19 @@ impl Workspace {
         // AND yarp drive wasn't open before. There are other scenarios where we open Yarp Drive like:
         // new user onboarding, user joins a team, etc so we want to avoid counting those.
         if explicit_user_action
-            && !was_warp_drive_open
-            && self.current_workspace_state.is_warp_drive_open
+            && !was_yarp_drive_open
+            && self.current_workspace_state.is_yarp_drive_open
         {
             send_telemetry_from_ctx!(
-                TelemetryEvent::WarpDriveOpened {
-                    source: WarpDriveSource::Legacy,
+                TelemetryEvent::YarpDriveOpened {
+                    source: YarpDriveSource::Legacy,
                     is_code_mode_v2: false
                 },
                 ctx
             );
             self.tips_completed.update(ctx, |tips_completed, ctx| {
                 mark_feature_used_and_write_to_user_defaults(
-                    Tip::Action(TipAction::OpenWarpDrive),
+                    Tip::Action(TipAction::OpenYarpDrive),
                     tips_completed,
                     ctx,
                 );
@@ -9391,8 +9391,8 @@ impl Workspace {
                 // If saved workflow id matches the one that is currently displayed, then refresh workflow info box + input
                 self.maybe_refresh_workflow_info_box_and_input(workflow_id, ctx);
             }
-            WorkflowModalEvent::ViewInWarpDrive(id) => {
-                self.view_in_and_focus_warp_drive(*id, ctx);
+            WorkflowModalEvent::ViewInYarpDrive(id) => {
+                self.view_in_and_focus_yarp_drive(*id, ctx);
             }
             WorkflowModalEvent::AiAssistUpgradeError(team_uid, user_id) => {
                 let upgrade_link = team_uid
@@ -9460,7 +9460,7 @@ impl Workspace {
                     // Proc same behavior as DrivePanelEvent::RunWorkflow
                     self.run_cloud_workflow_in_active_input(
                         workflow.clone(),
-                        WorkflowSelectionSource::WarpDrive,
+                        WorkflowSelectionSource::YarpDrive,
                         TerminalSessionFallbackBehavior::default(),
                         ctx,
                     );
@@ -9836,8 +9836,8 @@ impl Workspace {
                 .size()
         });
 
-        let warp_drive_index_width = modal_sizes.map(|ms| {
-            ms.warp_drive_index_width
+        let yarp_drive_index_width = modal_sizes.map(|ms| {
+            ms.yarp_drive_index_width
                 .lock()
                 .expect("should be able to lock yarp drive resizable state handle")
                 .size()
@@ -9871,7 +9871,7 @@ impl Workspace {
             universal_search_width,
             warp_ai_width,
             voltron_width,
-            warp_drive_index_width,
+            yarp_drive_index_width,
             left_panel_open: self.left_panel_open,
             vertical_tabs_panel_open: self.vertical_tabs_panel_open,
             left_panel_width,
@@ -10851,7 +10851,7 @@ impl Workspace {
     pub fn add_tab_for_cloud_notebook(
         &mut self,
         notebook_id: SyncId,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         ctx: &mut ViewContext<Self>,
     ) {
         // TODO: We should validate that this notebook exists and fallback if it doesn't
@@ -10869,7 +10869,7 @@ impl Workspace {
     fn add_tab_for_cloud_workflow(
         &mut self,
         workflow_id: SyncId,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         ctx: &mut ViewContext<Self>,
     ) {
         let panes_layout = PanesLayout::Snapshot(Box::new(PaneNodeSnapshot::Leaf(LeafSnapshot {
@@ -12195,7 +12195,7 @@ impl Workspace {
         ctx.notify();
     }
 
-    fn open_warp_drive_palette(&mut self, ctx: &mut ViewContext<Self>) {
+    fn open_yarp_drive_palette(&mut self, ctx: &mut ViewContext<Self>) {
         self.palette.update(ctx, |view, ctx| {
             view.reset(ctx);
             view.set_active_query_filter(QueryFilter::Drive, ctx);
@@ -12364,7 +12364,7 @@ impl Workspace {
                 _ => self.open_navigation_palette(ctx),
             },
             PaletteMode::LaunchConfig => self.open_launch_config_palette(ctx),
-            PaletteMode::WarpDrive => self.open_warp_drive_palette(ctx),
+            PaletteMode::YarpDrive => self.open_yarp_drive_palette(ctx),
             PaletteMode::Files => self.open_files_palette(ctx),
             PaletteMode::Conversations => self.open_conversations_palette(ctx),
             PaletteMode::ConversationsAndRepos => self.open_recent_repos_and_convos_palette(ctx),
@@ -12457,12 +12457,12 @@ impl Workspace {
             }
             CommandPaletteEvent::OpenNotebook { id } => self.open_notebook(
                 &NotebookSource::Existing(*id),
-                &OpenWarpDriveObjectSettings::default(),
+                &OpenYarpDriveObjectSettings::default(),
                 ctx,
                 true,
             ),
-            CommandPaletteEvent::ViewInWarpDrive { id } => {
-                self.view_in_and_focus_warp_drive(WarpDriveItemId::Object(*id), ctx);
+            CommandPaletteEvent::ViewInYarpDrive { id } => {
+                self.view_in_and_focus_yarp_drive(YarpDriveItemId::Object(*id), ctx);
             }
             #[allow(unused_variables)]
             CommandPaletteEvent::OpenFile {
@@ -12500,47 +12500,47 @@ impl Workspace {
 
     /// This function is used when we set a selected object, which is an object open in an active pane.
     /// We do not want to focus Yarp Drive, instead we want to focus the editor of the open object.
-    fn view_in_warp_drive(&mut self, item_id: WarpDriveItemId, ctx: &mut ViewContext<Self>) {
+    fn view_in_yarp_drive(&mut self, item_id: YarpDriveItemId, ctx: &mut ViewContext<Self>) {
         self.open_left_panel(ctx);
         self.left_panel_view.update(ctx, |left_panel, ctx| {
-            left_panel.handle_action(&LeftPanelAction::WarpDrive, ctx);
+            left_panel.handle_action(&LeftPanelAction::YarpDrive, ctx);
         });
 
-        if let WarpDriveItemId::Object(object_id) = item_id {
+        if let YarpDriveItemId::Object(object_id) = item_id {
             CloudModel::handle(ctx).update(ctx, |model, ctx| {
                 model.force_expand_object_and_ancestors_cloud_id(object_id, ctx);
             });
         }
-        self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-            warp_drive.scroll_item_into_view(item_id, ctx);
-            warp_drive.expand_section_for_drive_item_id(item_id, ctx);
-            warp_drive.initialize_drive_section_states(ctx);
+        self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+            yarp_drive.scroll_item_into_view(item_id, ctx);
+            yarp_drive.expand_section_for_drive_item_id(item_id, ctx);
+            yarp_drive.initialize_drive_section_states(ctx);
         });
     }
 
     /// This function is used when we want to view an item in Yarp Drive AND focus Yarp Drive.
-    pub fn view_in_and_focus_warp_drive(
+    pub fn view_in_and_focus_yarp_drive(
         &mut self,
-        item_id: WarpDriveItemId,
+        item_id: YarpDriveItemId,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.view_in_warp_drive(item_id, ctx);
+        self.view_in_yarp_drive(item_id, ctx);
 
-        self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-            warp_drive.reset_and_open_to_main_index(ctx);
-            warp_drive.set_focused_item(item_id, ctx);
+        self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+            yarp_drive.reset_and_open_to_main_index(ctx);
+            yarp_drive.set_focused_item(item_id, ctx);
         });
         ctx.notify();
     }
 
     /// Updates the left panel's yarp drive view.
-    fn update_warp_drive_view<F>(&mut self, ctx: &mut ViewContext<Self>, update_fn: F)
+    fn update_yarp_drive_view<F>(&mut self, ctx: &mut ViewContext<Self>, update_fn: F)
     where
         F: FnOnce(&mut DrivePanel, &mut ViewContext<DrivePanel>),
     {
         self.left_panel_view.update(ctx, |left_panel, ctx| {
-            left_panel.warp_drive_view().update(ctx, |warp_drive, ctx| {
-                update_fn(warp_drive, ctx);
+            left_panel.yarp_drive_view().update(ctx, |yarp_drive, ctx| {
+                update_fn(yarp_drive, ctx);
             });
         });
     }
@@ -12553,10 +12553,10 @@ impl Workspace {
         source: SharingDialogSource,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.view_in_warp_drive(WarpDriveItemId::Object(object_id), ctx);
-        self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-            warp_drive.reset_and_open_to_main_index(ctx);
-            warp_drive.open_object_sharing_settings(object_id, invitee_email, source, ctx);
+        self.view_in_yarp_drive(YarpDriveItemId::Object(object_id), ctx);
+        self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+            yarp_drive.reset_and_open_to_main_index(ctx);
+            yarp_drive.open_object_sharing_settings(object_id, invitee_email, source, ctx);
         });
 
         ctx.notify();
@@ -12568,14 +12568,14 @@ impl Workspace {
         space: Space,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-            warp_drive.move_object_to_team_owner(cloud_object_type_and_id, space, ctx);
+        self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+            yarp_drive.move_object_to_team_owner(cloud_object_type_and_id, space, ctx);
         });
     }
 
     fn set_focused_index(&mut self, index: Option<usize>, ctx: &mut ViewContext<Self>) {
-        self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-            warp_drive.set_focused_index(index, ctx);
+        self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+            yarp_drive.set_focused_index(index, ctx);
         });
         ctx.notify();
     }
@@ -12606,7 +12606,7 @@ impl Workspace {
                 ..
             } => match ChannelState::app_version() {
                 Some(version) => {
-                    let opening_warp_drive_on_start_up = OPENING_YARP_DRIVE_ON_START_UP
+                    let opening_yarp_drive_on_start_up = OPENING_YARP_DRIVE_ON_START_UP
                         .lock()
                         .expect("Should be able to access OPENING_YARP_DRIVE_ON_START_UP");
 
@@ -12615,7 +12615,7 @@ impl Workspace {
                     // or if we are opening Yarp Drive on start up
                     quake_mode_window_id() != Some(ctx.window_id())
                         && !Settings::has_changelog_been_shown(version, ctx)
-                        && !*opening_warp_drive_on_start_up
+                        && !*opening_yarp_drive_on_start_up
                 }
                 None => false,
             },
@@ -12705,8 +12705,8 @@ impl Workspace {
         self.current_workspace_state.is_workflow_modal_open
     }
 
-    pub fn is_warp_drive_open(&self) -> bool {
-        self.current_workspace_state.is_warp_drive_open
+    pub fn is_yarp_drive_open(&self) -> bool {
+        self.current_workspace_state.is_yarp_drive_open
     }
 
     pub fn is_left_panel_open(&self, ctx: &AppContext) -> bool {
@@ -12740,9 +12740,9 @@ impl Workspace {
             SettingsViewEvent::LaunchNetworkLogging => {
                 self.open_network_log_pane(ctx);
             }
-            SettingsViewEvent::OpenWarpDrive => {
+            SettingsViewEvent::OpenYarpDrive => {
                 self.close_all_overlays(ctx);
-                self.open_or_toggle_warp_drive(
+                self.open_or_toggle_yarp_drive(
                     false, /* toggle */
                     false, /* explicit_user_action */
                     ctx,
@@ -13040,7 +13040,7 @@ impl Workspace {
             pane_group::Event::OpenCloudWorkflowForEdit(workflow_id) => self
                 .open_workflow_with_existing(
                     *workflow_id,
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     ctx,
                 ),
             pane_group::Event::OpenWorkflowModalWithTemporary(workflow) => {
@@ -13102,11 +13102,11 @@ impl Workspace {
             } => {
                 self.move_to_drive_space(*cloud_object_type_and_id, *space, ctx);
             }
-            pane_group::Event::OpenWarpDriveLink {
-                open_warp_drive_args,
+            pane_group::Event::OpenYarpDriveLink {
+                open_yarp_drive_args,
             } => {
                 let object_found = CloudModel::as_ref(ctx)
-                    .get_by_uid(&open_warp_drive_args.server_id.uid())
+                    .get_by_uid(&open_yarp_drive_args.server_id.uid())
                     .is_some();
 
                 if !object_found {
@@ -13120,31 +13120,31 @@ impl Workspace {
                     return;
                 }
 
-                let server_id = open_warp_drive_args.server_id;
-                match open_warp_drive_args.object_type {
+                let server_id = open_yarp_drive_args.server_id;
+                match open_yarp_drive_args.object_type {
                     ObjectType::Notebook => self.open_notebook(
                         &NotebookSource::Existing(SyncId::ServerId(server_id)),
-                        &open_warp_drive_args.settings,
+                        &open_yarp_drive_args.settings,
                         ctx,
                         true,
                     ),
-                    ObjectType::Workflow => self.view_in_and_focus_warp_drive(
-                        WarpDriveItemId::Object(CloudObjectTypeAndId::Workflow(SyncId::ServerId(
+                    ObjectType::Workflow => self.view_in_and_focus_yarp_drive(
+                        YarpDriveItemId::Object(CloudObjectTypeAndId::Workflow(SyncId::ServerId(
                             server_id,
                         ))),
                         ctx,
                     ),
                     ObjectType::GenericStringObject(GenericStringObjectFormat::Json(
                         JsonObjectType::EnvVarCollection,
-                    )) => self.view_in_and_focus_warp_drive(
-                        WarpDriveItemId::Object(CloudObjectTypeAndId::from_generic_string_object(
+                    )) => self.view_in_and_focus_yarp_drive(
+                        YarpDriveItemId::Object(CloudObjectTypeAndId::from_generic_string_object(
                             GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
                             SyncId::ServerId(server_id),
                         )),
                         ctx,
                     ),
-                    ObjectType::Folder => self.view_in_and_focus_warp_drive(
-                        WarpDriveItemId::Object(CloudObjectTypeAndId::Folder(SyncId::ServerId(
+                    ObjectType::Folder => self.view_in_and_focus_yarp_drive(
+                        YarpDriveItemId::Object(CloudObjectTypeAndId::Folder(SyncId::ServerId(
                             server_id,
                         ))),
                         ctx,
@@ -13279,8 +13279,8 @@ impl Workspace {
                 // Focus an existing pane by its locator (used when avoiding duplicate file panes during undo close pane)
                 self.focus_pane(*locator, ctx);
             }
-            pane_group::Event::ViewInWarpDrive(id) => {
-                self.view_in_and_focus_warp_drive(*id, ctx);
+            pane_group::Event::ViewInYarpDrive(id) => {
+                self.view_in_and_focus_yarp_drive(*id, ctx);
             }
             // If focused pane contains an object, then set selected state in WD to that object
             pane_group::Event::PaneFocused => {
@@ -13309,7 +13309,7 @@ impl Workspace {
 
                     if let Some(workflow_id) = active_workflow_id {
                         self.set_selected_object(
-                            Some(WarpDriveItemId::Object(
+                            Some(YarpDriveItemId::Object(
                                 CloudObjectTypeAndId::from_id_and_type(
                                     workflow_id,
                                     ObjectType::Workflow,
@@ -13332,7 +13332,7 @@ impl Workspace {
 
                     if let Some(notebook_id) = notebook_id {
                         self.set_selected_object(
-                            Some(WarpDriveItemId::Object(
+                            Some(YarpDriveItemId::Object(
                                 CloudObjectTypeAndId::from_id_and_type(
                                     notebook_id,
                                     ObjectType::Notebook,
@@ -13354,7 +13354,7 @@ impl Workspace {
 
                     if let Some(env_var_collection_id) = env_var_collection_id {
                         self.set_selected_object(
-                            Some(WarpDriveItemId::Object(
+                            Some(YarpDriveItemId::Object(
                                 CloudObjectTypeAndId::from_generic_string_object(
                                     GenericStringObjectFormat::Json(
                                         crate::cloud_object::JsonObjectType::EnvVarCollection,
@@ -13374,7 +13374,7 @@ impl Workspace {
                     let workflow_id = workflow_pane.get_view(ctx).as_ref(ctx).workflow_id();
 
                     self.set_selected_object(
-                        Some(WarpDriveItemId::Object(
+                        Some(YarpDriveItemId::Object(
                             CloudObjectTypeAndId::from_id_and_type(
                                 workflow_id,
                                 ObjectType::Workflow,
@@ -13388,7 +13388,7 @@ impl Workspace {
                 else if let Some(_ai_fact_pane) =
                     pane_group.ai_fact_pane_by_pane_id(focused_pane_id)
                 {
-                    self.set_selected_object(Some(WarpDriveItemId::AIFactCollection), ctx);
+                    self.set_selected_object(Some(YarpDriveItemId::AIFactCollection), ctx);
                     active_object_open_in_pane = true;
                 }
 
@@ -13682,8 +13682,8 @@ impl Workspace {
                 ctx.notify();
             }
             pane_group::Event::ClearHoveredTabIndex => self.hovered_tab_index = None,
-            pane_group::Event::OpenWarpDriveObjectInPane(uid) => {
-                self.open_warp_drive_object_in_new_pane(uid, ctx);
+            pane_group::Event::OpenYarpDriveObjectInPane(uid) => {
+                self.open_yarp_drive_object_in_new_pane(uid, ctx);
             }
             pane_group::Event::OpenSuggestedAgentModeWorkflowModal { workflow_and_id } => {
                 self.open_suggested_agent_mode_workflow_modal(workflow_and_id, ctx);
@@ -13872,7 +13872,7 @@ impl Workspace {
             }
             pane_group::Event::OpenAddPromptPane { initial_content } => {
                 if UserWorkspaces::as_ref(ctx).personal_drive(ctx).is_some() {
-                    self.update_warp_drive_view(ctx, |drive_view, ctx| {
+                    self.update_yarp_drive_view(ctx, |drive_view, ctx| {
                         if let Some(initial_content) = initial_content {
                             drive_view.create_workflow_with_content(
                                 Space::Personal,
@@ -13903,7 +13903,7 @@ impl Workspace {
                     self.left_panel_view
                         .read(ctx, |left_panel, _| match target_view {
                             LeftPanelTargetView::FileTree => left_panel.is_file_tree_active(),
-                            LeftPanelTargetView::WarpDrive => left_panel.is_warp_drive_active(),
+                            LeftPanelTargetView::YarpDrive => left_panel.is_yarp_drive_active(),
                         });
 
                 if self.active_tab_pane_group().as_ref(ctx).left_panel_open && is_target_active {
@@ -13918,7 +13918,7 @@ impl Workspace {
                     self.left_panel_view.update(ctx, |left_panel, ctx| {
                         let action = match target_view {
                             LeftPanelTargetView::FileTree => LeftPanelAction::ProjectExplorer,
-                            LeftPanelTargetView::WarpDrive => LeftPanelAction::WarpDrive,
+                            LeftPanelTargetView::YarpDrive => LeftPanelAction::YarpDrive,
                         };
                         left_panel.handle_action_with_force_open(&action, *force_open, ctx);
                     });
@@ -14386,12 +14386,12 @@ impl Workspace {
         }
     }
 
-    fn handle_warp_drive_event(&mut self, event: &DrivePanelEvent, ctx: &mut ViewContext<Self>) {
+    fn handle_yarp_drive_event(&mut self, event: &DrivePanelEvent, ctx: &mut ViewContext<Self>) {
         match event {
             DrivePanelEvent::RunWorkflow(workflow) => {
                 self.run_cloud_workflow_in_active_input(
                     workflow.as_ref().clone(),
-                    WorkflowSelectionSource::WarpDrive,
+                    WorkflowSelectionSource::YarpDrive,
                     TerminalSessionFallbackBehavior::default(),
                     ctx,
                 );
@@ -14422,27 +14422,27 @@ impl Workspace {
             DrivePanelEvent::OpenWorkflowModalWithCloudWorkflow(workflow_id) => {
                 self.open_workflow_with_existing(
                     *workflow_id,
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     ctx,
                 );
             }
             DrivePanelEvent::OpenSearch => {
                 self.open_palette_action(
-                    PaletteMode::WarpDrive,
-                    PaletteSource::WarpDrive,
+                    PaletteMode::YarpDrive,
+                    PaletteSource::YarpDrive,
                     None,
                     ctx,
                 );
             }
             DrivePanelEvent::OpenNotebook(source) => {
-                self.open_notebook(source, &OpenWarpDriveObjectSettings::default(), ctx, true)
+                self.open_notebook(source, &OpenYarpDriveObjectSettings::default(), ctx, true)
             }
             DrivePanelEvent::OpenEnvVarCollection(source) => {
                 self.open_env_var_collection(source, false, ctx)
             }
             DrivePanelEvent::OpenWorkflowInPane(source, mode) => self.open_workflow_in_pane(
                 source,
-                &OpenWarpDriveObjectSettings::default(),
+                &OpenYarpDriveObjectSettings::default(),
                 *mode,
                 ctx,
             ),
@@ -14450,7 +14450,7 @@ impl Workspace {
                 self.open_ai_fact_collection_pane(None, None, ctx);
                 send_telemetry_from_ctx!(
                     TelemetryEvent::KnowledgePaneOpened {
-                        entrypoint: KnowledgePaneEntrypoint::WarpDrive,
+                        entrypoint: KnowledgePaneEntrypoint::YarpDrive,
                     },
                     ctx
                 );
@@ -14460,12 +14460,12 @@ impl Workspace {
 
                 send_telemetry_from_ctx!(
                     TelemetryEvent::MCPServerCollectionPaneOpened {
-                        entrypoint: MCPServerCollectionPaneEntrypoint::WarpDrive,
+                        entrypoint: MCPServerCollectionPaneEntrypoint::YarpDrive,
                     },
                     ctx
                 );
             }
-            DrivePanelEvent::FocusWarpDrive => {
+            DrivePanelEvent::FocusYarpDrive => {
                 ctx.focus(&self.left_panel_view);
             }
             DrivePanelEvent::OpenSharedObjectsCreationDeniedModal(object_type, team_uid) => {
@@ -14534,7 +14534,7 @@ impl Workspace {
         ctx.focus_self();
         ctx.notify();
         self.set_selected_object(
-            Some(WarpDriveItemId::Object(workflow.cloud_object_type_and_id())),
+            Some(YarpDriveItemId::Object(workflow.cloud_object_type_and_id())),
             ctx,
         );
     }
@@ -14886,7 +14886,7 @@ impl Workspace {
                     AcceptNotebook(sync_id) => {
                         self.open_notebook(
                             &NotebookSource::Existing(*sync_id),
-                            &OpenWarpDriveObjectSettings::default(),
+                            &OpenYarpDriveObjectSettings::default(),
                             ctx,
                             true,
                         );
@@ -15040,8 +15040,8 @@ impl Workspace {
                                             .with_link(
                                                 ToastLink::new("View".to_string())
                                                     .with_onclick_action(
-                                                        WorkspaceAction::ViewObjectInWarpDrive(
-                                                            WarpDriveItemId::Object(
+                                                        WorkspaceAction::ViewObjectInYarpDrive(
+                                                            YarpDriveItemId::Object(
                                                                 CloudObjectTypeAndId::Notebook(
                                                                     notebook.id,
                                                                 ),
@@ -15061,8 +15061,8 @@ impl Workspace {
                                     {
                                         new_toast = new_toast.with_link(
                                             ToastLink::new("View".to_string()).with_onclick_action(
-                                                WorkspaceAction::ViewObjectInWarpDrive(
-                                                    WarpDriveItemId::Object(
+                                                WorkspaceAction::ViewObjectInYarpDrive(
+                                                    YarpDriveItemId::Object(
                                                         CloudObjectTypeAndId::Workflow(workflow.id),
                                                     ),
                                                 ),
@@ -15215,7 +15215,7 @@ impl Workspace {
                 .and_then(|id| CloudModel::as_ref(ctx).get_by_uid(&id.uid()))
             {
                 if created_object.space(ctx) == Space::Personal
-                    && created_object.renders_in_warp_drive()
+                    && created_object.renders_in_yarp_drive()
                 {
                     self.check_and_trigger_drive_sharing_onboarding_block(
                         created_object.cloud_object_type_and_id(),
@@ -15605,15 +15605,15 @@ impl Workspace {
         });
     }
 
-    fn set_selected_object(&mut self, id: Option<WarpDriveItemId>, ctx: &mut ViewContext<Self>) {
+    fn set_selected_object(&mut self, id: Option<YarpDriveItemId>, ctx: &mut ViewContext<Self>) {
         // Set Yarp drive index selected state
-        self.update_warp_drive_view(ctx, |drive_panel, ctx| {
+        self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
             drive_panel.set_selected_object(id, ctx);
         });
         // If WD open, show the highlighted object (force expand necessary ancestors)
-        if self.current_workspace_state.is_warp_drive_open {
+        if self.current_workspace_state.is_yarp_drive_open {
             if let Some(id) = id {
-                self.view_in_warp_drive(id, ctx);
+                self.view_in_yarp_drive(id, ctx);
                 ctx.notify();
             }
         }
@@ -16361,7 +16361,7 @@ impl Workspace {
     fn open_workflow_with_existing(
         &mut self,
         workflow_id: SyncId,
-        settings: &OpenWarpDriveObjectSettings,
+        settings: &OpenYarpDriveObjectSettings,
         ctx: &mut ViewContext<Self>,
     ) {
         let source = WorkflowOpenSource::Existing(workflow_id);
@@ -16381,7 +16381,7 @@ impl Workspace {
         };
         self.open_workflow_in_pane(
             &source,
-            &OpenWarpDriveObjectSettings::default(),
+            &OpenYarpDriveObjectSettings::default(),
             WorkflowViewMode::Create,
             ctx,
         );
@@ -16402,7 +16402,7 @@ impl Workspace {
         };
         self.open_workflow_in_pane(
             &source,
-            &OpenWarpDriveObjectSettings::default(),
+            &OpenYarpDriveObjectSettings::default(),
             WorkflowViewMode::Create,
             ctx,
         );
@@ -16594,11 +16594,11 @@ impl Workspace {
                         .left_panel_views
                         .first()
                         .copied()
-                        .unwrap_or(ToolPanelView::WarpDrive)
+                        .unwrap_or(ToolPanelView::YarpDrive)
                     {
                         ToolPanelView::ProjectExplorer => "Project explorer",
                         ToolPanelView::GlobalSearch { .. } => "Global search",
-                        ToolPanelView::WarpDrive => "Yarp Drive",
+                        ToolPanelView::YarpDrive => "Yarp Drive",
                         ToolPanelView::ConversationListView => "Agent conversations",
                     }
                 } else {
@@ -16648,11 +16648,11 @@ impl Workspace {
                 .left_panel_views
                 .first()
                 .copied()
-                .unwrap_or(ToolPanelView::WarpDrive)
+                .unwrap_or(ToolPanelView::YarpDrive)
             {
                 ToolPanelView::ProjectExplorer => "Project explorer",
                 ToolPanelView::GlobalSearch { .. } => "Global search",
-                ToolPanelView::WarpDrive => "Yarp Drive",
+                ToolPanelView::YarpDrive => "Yarp Drive",
                 ToolPanelView::ConversationListView => "Agent conversations",
             }
         } else {
@@ -16970,12 +16970,12 @@ impl Workspace {
             let task_id = match content_type {
                 SimplifiedWasmTabBarContent::ConversationTranscript { task_id }
                 | SimplifiedWasmTabBarContent::SharedSession { task_id } => task_id,
-                SimplifiedWasmTabBarContent::WarpDriveObject => None,
+                SimplifiedWasmTabBarContent::YarpDriveObject => None,
             };
 
             // Show info button for conversation transcripts and shared sessions (if there's content to display)
             let should_show_info_button =
-                !matches!(content_type, SimplifiedWasmTabBarContent::WarpDriveObject)
+                !matches!(content_type, SimplifiedWasmTabBarContent::YarpDriveObject)
                     && self
                         .active_tab_pane_group()
                         .as_ref(ctx)
@@ -19567,8 +19567,8 @@ impl Workspace {
                 entry_focus: GlobalSearchEntryFocus::Results,
             });
         }
-        if WarpDriveSettings::is_warp_drive_enabled(ctx) {
-            views.push(ToolPanelView::WarpDrive);
+        if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
+            views.push(ToolPanelView::YarpDrive);
         }
         views
     }
@@ -19954,8 +19954,8 @@ impl TypedActionView for Workspace {
                 // the currently active session in the log out modal.
                 ctx.dispatch_global_action("app:maybe_log_out", ());
             }
-            ExportAllWarpDriveObjects => {
-                self.export_all_warp_drive_objects(ctx);
+            ExportAllYarpDriveObjects => {
+                self.export_all_yarp_drive_objects(ctx);
             }
             CopyVersion(version) => self.copy_version(version, ctx),
             DownloadNewVersion => self.download_new_version(ctx),
@@ -20067,7 +20067,7 @@ impl TypedActionView for Workspace {
                             owner: personal_drive,
                             initial_folder_id: None,
                         },
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         ctx,
                         true,
                     );
@@ -20076,7 +20076,7 @@ impl TypedActionView for Workspace {
             CreateTeamNotebook => {
                 let team_uid = self.team_uid(ctx);
                 if let Some(team_uid) = team_uid {
-                    self.update_warp_drive_view(ctx, |drive_panel, ctx| {
+                    self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
                         drive_panel.open_cloud_object_dialog(
                             DriveObjectType::Notebook {
                                 is_ai_document: false,
@@ -20086,7 +20086,7 @@ impl TypedActionView for Workspace {
                             ctx,
                         );
                     });
-                    self.current_workspace_state.is_warp_drive_open = true;
+                    self.current_workspace_state.is_yarp_drive_open = true;
                     ctx.notify();
                 }
             }
@@ -20106,7 +20106,7 @@ impl TypedActionView for Workspace {
             CreateTeamEnvVarCollection => {
                 let team_uid = self.team_uid(ctx);
                 if let Some(team_uid) = team_uid {
-                    self.update_warp_drive_view(ctx, |drive_panel, ctx| {
+                    self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
                         drive_panel.open_cloud_object_dialog(
                             DriveObjectType::EnvVarCollection,
                             Space::Team { team_uid },
@@ -20114,7 +20114,7 @@ impl TypedActionView for Workspace {
                             ctx,
                         );
                     });
-                    self.current_workspace_state.is_warp_drive_open = true;
+                    self.current_workspace_state.is_yarp_drive_open = true;
                     ctx.notify();
                 }
             }
@@ -20129,7 +20129,7 @@ impl TypedActionView for Workspace {
                     };
                     self.open_workflow_in_pane(
                         &source,
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         WorkflowViewMode::Create,
                         ctx,
                     );
@@ -20147,14 +20147,14 @@ impl TypedActionView for Workspace {
                     };
                     self.open_workflow_in_pane(
                         &source,
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         WorkflowViewMode::Create,
                         ctx,
                     );
                 }
             }
             CreatePersonalFolder => {
-                self.update_warp_drive_view(ctx, |drive_panel, ctx| {
+                self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
                     drive_panel.open_cloud_object_dialog(
                         DriveObjectType::Folder,
                         Space::Personal,
@@ -20162,13 +20162,13 @@ impl TypedActionView for Workspace {
                         ctx,
                     );
                 });
-                self.current_workspace_state.is_warp_drive_open = true;
+                self.current_workspace_state.is_yarp_drive_open = true;
                 ctx.notify();
             }
             CreateTeamFolder => {
                 let team_uid = self.team_uid(ctx);
                 if let Some(team_uid) = team_uid {
-                    self.update_warp_drive_view(ctx, |drive_panel, ctx| {
+                    self.update_yarp_drive_view(ctx, |drive_panel, ctx| {
                         drive_panel.open_cloud_object_dialog(
                             DriveObjectType::Folder,
                             Space::Team { team_uid },
@@ -20176,7 +20176,7 @@ impl TypedActionView for Workspace {
                             ctx,
                         );
                     });
-                    self.current_workspace_state.is_warp_drive_open = true;
+                    self.current_workspace_state.is_yarp_drive_open = true;
                     ctx.notify();
                 }
             }
@@ -20188,9 +20188,9 @@ impl TypedActionView for Workspace {
                 self.finish_tab_rename(ctx);
                 self.current_workspace_state.is_tab_being_dragged = true;
             }
-            OpenWarpDrive => {
-                if WarpDriveSettings::is_warp_drive_enabled(ctx) {
-                    self.open_left_panel_view(&LeftPanelAction::WarpDrive, ctx);
+            OpenYarpDrive => {
+                if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
+                    self.open_left_panel_view(&LeftPanelAction::YarpDrive, ctx);
                 }
             }
             ToggleLeftPanel => {
@@ -20205,9 +20205,9 @@ impl TypedActionView for Workspace {
                 let file_tree_active = self
                     .left_panel_view
                     .read(ctx, |lp, _| lp.is_file_tree_active());
-                let warp_drive_active = self
+                let yarp_drive_active = self
                     .left_panel_view
-                    .read(ctx, |lp, _| lp.is_warp_drive_active());
+                    .read(ctx, |lp, _| lp.is_yarp_drive_active());
 
                 self.toggle_left_panel(ctx);
 
@@ -20227,11 +20227,11 @@ impl TypedActionView for Workspace {
                             },
                             ctx
                         );
-                    } else if warp_drive_active {
+                    } else if yarp_drive_active {
                         // Tools panel opened with Yarp Drive as the active view
                         send_telemetry_from_ctx!(
-                            TelemetryEvent::WarpDriveOpened {
-                                source: WarpDriveSource::LeftPanelToolbelt,
+                            TelemetryEvent::YarpDriveOpened {
+                                source: YarpDriveSource::LeftPanelToolbelt,
                                 is_code_mode_v2: true
                             },
                             ctx
@@ -20698,7 +20698,7 @@ impl TypedActionView for Workspace {
                 });
                 self.open_workflow_with_existing(
                     *workflow_id,
-                    &OpenWarpDriveObjectSettings::default(),
+                    &OpenYarpDriveObjectSettings::default(),
                     ctx,
                 );
             }
@@ -20762,16 +20762,16 @@ impl TypedActionView for Workspace {
             }
             FocusLeftPanel => self.focus_left_panel(ctx),
             FocusRightPanel => self.focus_right_panel(ctx),
-            ViewObjectInWarpDrive(item_id) => {
+            ViewObjectInYarpDrive(item_id) => {
                 // Focus newly created object in WD
-                self.view_in_and_focus_warp_drive(*item_id, ctx);
+                self.view_in_and_focus_yarp_drive(*item_id, ctx);
             }
             OpenObjectSharingSettings { object_id, source } => {
                 self.open_object_sharing_settings(*object_id, None, *source, ctx);
             }
             UndoTrash(cloud_object_type_and_id) => {
-                self.update_warp_drive_view(ctx, |warp_drive, ctx| {
-                    warp_drive.undo_trash(cloud_object_type_and_id, ctx);
+                self.update_yarp_drive_view(ctx, |yarp_drive, ctx| {
+                    yarp_drive.undo_trash(cloud_object_type_and_id, ctx);
                 });
             }
             TerminateApp => {
@@ -21018,7 +21018,7 @@ impl TypedActionView for Workspace {
             }
             OpenNotebook { id } => self.open_notebook(
                 &NotebookSource::Existing(*id),
-                &OpenWarpDriveObjectSettings::default(),
+                &OpenYarpDriveObjectSettings::default(),
                 ctx,
                 true,
             ),
@@ -21176,7 +21176,7 @@ impl TypedActionView for Workspace {
                     };
                     self.open_workflow_in_pane(
                         &source,
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         WorkflowViewMode::Create,
                         ctx,
                     );
@@ -21194,7 +21194,7 @@ impl TypedActionView for Workspace {
                     };
                     self.open_workflow_in_pane(
                         &source,
-                        &OpenWarpDriveObjectSettings::default(),
+                        &OpenYarpDriveObjectSettings::default(),
                         WorkflowViewMode::Create,
                         ctx,
                     );
@@ -21432,11 +21432,11 @@ impl TypedActionView for Workspace {
                     self.toggle_left_panel_view(&LeftPanelAction::ProjectExplorer, is_showing, ctx);
                 }
             }
-            ToggleWarpDrive => {
-                if WarpDriveSettings::is_warp_drive_enabled(ctx) {
+            ToggleYarpDrive => {
+                if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
                     let is_showing =
-                        self.left_panel_view.as_ref(ctx).active_view() == ToolPanelView::WarpDrive;
-                    self.toggle_left_panel_view(&LeftPanelAction::WarpDrive, is_showing, ctx);
+                        self.left_panel_view.as_ref(ctx).active_view() == ToolPanelView::YarpDrive;
+                    self.toggle_left_panel_view(&LeftPanelAction::YarpDrive, is_showing, ctx);
                 }
             }
             ToggleGlobalSearch => {
@@ -21737,7 +21737,7 @@ impl View for Workspace {
             }
         };
 
-        if WarpDriveSettings::is_warp_drive_enabled(app) {
+        if YarpDriveSettings::is_yarp_drive_enabled(app) {
             context.set.insert(flags::ENABLE_YARP_DRIVE);
         }
 
@@ -21755,7 +21755,7 @@ impl View for Workspace {
         }
 
         if self.team_uid(app).is_some() {
-            context.set.insert("WarpDrive_BelongsToTeam");
+            context.set.insert("YarpDrive_BelongsToTeam");
         }
 
         if self.auth_state.is_anonymous_or_logged_out() {

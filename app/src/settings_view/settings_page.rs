@@ -21,7 +21,7 @@ use super::{
     referrals_page::ReferralsPageView,
     show_blocks_view::ShowBlocksView,
     teams_page::TeamsPageView,
-    warp_drive_page::WarpDriveSettingsPageView,
+    yarp_drive_page::YarpDriveSettingsPageView,
     warpify_page::WarpifyPageView,
     SettingsSection,
 };
@@ -121,7 +121,7 @@ pub enum SettingsPageViewHandle {
     CloudEnvironments(ViewHandle<EnvironmentsPageView>),
     BillingAndUsage(ViewHandle<BillingAndUsagePageView>),
     MCPServers(ViewHandle<MCPServersSettingsPageView>),
-    WarpDrive(ViewHandle<WarpDriveSettingsPageView>),
+    YarpDrive(ViewHandle<YarpDriveSettingsPageView>),
 }
 
 impl SettingsPageViewHandle {
@@ -145,7 +145,7 @@ impl SettingsPageViewHandle {
             CloudEnvironments(view_handle) => ChildView::new(view_handle).finish(),
             BillingAndUsage(view_handle) => ChildView::new(view_handle).finish(),
             MCPServers(view_handle) => ChildView::new(view_handle).finish(),
-            WarpDrive(view_handle) => ChildView::new(view_handle).finish(),
+            YarpDrive(view_handle) => ChildView::new(view_handle).finish(),
         }
     }
 }

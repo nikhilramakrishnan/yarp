@@ -223,7 +223,7 @@ impl AIDocumentModel {
     /// Sends a request to create a new cloud notebook with the document's contents.
     /// Returns true if the create document request was sent successfully (or if there was already a notebook entry).
     /// Actually creating the notebook is done asynchronously in the background.
-    pub fn sync_to_warp_drive(&mut self, id: AIDocumentId, ctx: &mut ModelContext<Self>) -> bool {
+    pub fn sync_to_yarp_drive(&mut self, id: AIDocumentId, ctx: &mut ModelContext<Self>) -> bool {
         let Some(document) = self.documents.get(&id) else {
             return false;
         };
@@ -679,7 +679,7 @@ impl AIDocumentModel {
         }
     }
 
-    pub fn get_document_warp_drive_object_link(
+    pub fn get_document_yarp_drive_object_link(
         &self,
         id: &AIDocumentId,
         ctx: &AppContext,

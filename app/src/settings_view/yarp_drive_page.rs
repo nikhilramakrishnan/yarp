@@ -5,7 +5,7 @@ use super::{
     },
     LocalOnlyIconState, SettingsSection, ToggleState,
 };
-use crate::{appearance::Appearance, auth::AuthStateProvider, drive::settings::WarpDriveSettings};
+use crate::{appearance::Appearance, auth::AuthStateProvider, drive::settings::YarpDriveSettings};
 use yarp_core::{features::FeatureFlag, report_if_error, settings::ToggleableSetting as _};
 use yarpui::{
     elements::{Container, Element, Flex, MouseStateHandle, ParentElement, Shrinkable, Text},
@@ -19,27 +19,27 @@ use yarpui::{
 };
 
 #[derive(Debug, Clone)]
-pub enum WarpDriveSettingsPageAction {
-    ToggleShowWarpDrive,
+pub enum YarpDriveSettingsPageAction {
+    ToggleShowYarpDrive,
     SignUp,
     OpenUrl(String),
 }
 
-pub enum WarpDriveSettingsPageEvent {
+pub enum YarpDriveSettingsPageEvent {
     SignUp,
 }
 
-pub struct WarpDriveSettingsPageView {
+pub struct YarpDriveSettingsPageView {
     page: PageType<Self>,
 }
 
-impl WarpDriveSettingsPageView {
+impl YarpDriveSettingsPageView {
     pub fn new(_ctx: &mut ViewContext<Self>) -> Self {
         Self {
             page: PageType::new_uncategorized(
                 vec![
-                    Box::new(WarpDriveHeaderWidget::default()),
-                    Box::new(WarpDriveToggleWidget::default()),
+                    Box::new(YarpDriveHeaderWidget::default()),
+                    Box::new(YarpDriveToggleWidget::default()),
                 ],
                 None,
             ),
@@ -47,34 +47,34 @@ impl WarpDriveSettingsPageView {
     }
 }
 
-impl Entity for WarpDriveSettingsPageView {
-    type Event = WarpDriveSettingsPageEvent;
+impl Entity for YarpDriveSettingsPageView {
+    type Event = YarpDriveSettingsPageEvent;
 }
 
-impl TypedActionView for WarpDriveSettingsPageView {
-    type Action = WarpDriveSettingsPageAction;
+impl TypedActionView for YarpDriveSettingsPageView {
+    type Action = YarpDriveSettingsPageAction;
 
     fn handle_action(&mut self, action: &Self::Action, ctx: &mut ViewContext<Self>) {
         match action {
-            WarpDriveSettingsPageAction::ToggleShowWarpDrive => {
-                WarpDriveSettings::handle(ctx).update(ctx, |settings, ctx| {
-                    report_if_error!(settings.enable_warp_drive.toggle_and_save_value(ctx));
+            YarpDriveSettingsPageAction::ToggleShowYarpDrive => {
+                YarpDriveSettings::handle(ctx).update(ctx, |settings, ctx| {
+                    report_if_error!(settings.enable_yarp_drive.toggle_and_save_value(ctx));
                 });
                 ctx.notify();
             }
-            WarpDriveSettingsPageAction::SignUp => {
-                ctx.emit(WarpDriveSettingsPageEvent::SignUp);
+            YarpDriveSettingsPageAction::SignUp => {
+                ctx.emit(YarpDriveSettingsPageEvent::SignUp);
             }
-            WarpDriveSettingsPageAction::OpenUrl(url) => {
+            YarpDriveSettingsPageAction::OpenUrl(url) => {
                 ctx.open_url(url.as_str());
             }
         }
     }
 }
 
-impl View for WarpDriveSettingsPageView {
+impl View for YarpDriveSettingsPageView {
     fn ui_name() -> &'static str {
-        "WarpDrivePage"
+        "YarpDrivePage"
     }
 
     fn render(&self, app: &AppContext) -> Box<dyn Element> {
@@ -82,9 +82,9 @@ impl View for WarpDriveSettingsPageView {
     }
 }
 
-impl SettingsPageMeta for WarpDriveSettingsPageView {
+impl SettingsPageMeta for YarpDriveSettingsPageView {
     fn section() -> SettingsSection {
-        SettingsSection::WarpDrive
+        SettingsSection::YarpDrive
     }
 
     fn should_render(&self, _ctx: &AppContext) -> bool {
@@ -104,19 +104,19 @@ impl SettingsPageMeta for WarpDriveSettingsPageView {
     }
 }
 
-impl From<ViewHandle<WarpDriveSettingsPageView>> for SettingsPageViewHandle {
-    fn from(view_handle: ViewHandle<WarpDriveSettingsPageView>) -> Self {
-        SettingsPageViewHandle::WarpDrive(view_handle)
+impl From<ViewHandle<YarpDriveSettingsPageView>> for SettingsPageViewHandle {
+    fn from(view_handle: ViewHandle<YarpDriveSettingsPageView>) -> Self {
+        SettingsPageViewHandle::YarpDrive(view_handle)
     }
 }
 
 #[derive(Default)]
-struct WarpDriveHeaderWidget {
+struct YarpDriveHeaderWidget {
     sign_up_button: MouseStateHandle,
 }
 
-impl SettingsWidget for WarpDriveHeaderWidget {
-    type View = WarpDriveSettingsPageView;
+impl SettingsWidget for YarpDriveHeaderWidget {
+    type View = YarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
         "yarp drive sign up"
@@ -174,7 +174,7 @@ impl SettingsWidget for WarpDriveHeaderWidget {
                 .with_text_label("Sign up".to_owned())
                 .build()
                 .on_click(move |ctx, _, _| {
-                    ctx.dispatch_typed_action(WarpDriveSettingsPageAction::SignUp);
+                    ctx.dispatch_typed_action(YarpDriveSettingsPageAction::SignUp);
                 })
                 .finish(),
         )
@@ -193,13 +193,13 @@ impl SettingsWidget for WarpDriveHeaderWidget {
 }
 
 #[derive(Default)]
-struct WarpDriveToggleWidget {
+struct YarpDriveToggleWidget {
     switch_state: SwitchStateHandle,
     info_icon_mouse_state: MouseStateHandle,
 }
 
-impl SettingsWidget for WarpDriveToggleWidget {
-    type View = WarpDriveSettingsPageView;
+impl SettingsWidget for YarpDriveToggleWidget {
+    type View = YarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
         "yarp drive tools panel command palette search workflows prompts notebooks environment variables"
@@ -211,17 +211,17 @@ impl SettingsWidget for WarpDriveToggleWidget {
         appearance: &Appearance,
         app: &AppContext,
     ) -> Box<dyn Element> {
-        let settings = WarpDriveSettings::as_ref(app);
+        let settings = YarpDriveSettings::as_ref(app);
         let is_anonymous_or_logged_out = FeatureFlag::SkipFirebaseAnonymousUser.is_enabled()
             && AuthStateProvider::as_ref(app)
                 .get()
                 .is_anonymous_or_logged_out();
 
-        render_body_item::<WarpDriveSettingsPageAction>(
+        render_body_item::<YarpDriveSettingsPageAction>(
             "Yarp Drive".into(),
             Some(AdditionalInfo {
                 mouse_state: self.info_icon_mouse_state.clone(),
-                on_click_action: Some(WarpDriveSettingsPageAction::OpenUrl(
+                on_click_action: Some(YarpDriveSettingsPageAction::OpenUrl(
                     "https://docs.warp.dev/knowledge-and-collaboration/warp-drive".to_string(),
                 )),
                 secondary_text: None,
@@ -237,13 +237,13 @@ impl SettingsWidget for WarpDriveToggleWidget {
             appearance
                 .ui_builder()
                 .switch(self.switch_state.clone())
-                .check(*settings.enable_warp_drive && !is_anonymous_or_logged_out)
+                .check(*settings.enable_yarp_drive && !is_anonymous_or_logged_out)
                 .with_disabled(is_anonymous_or_logged_out)
                 .build()
                 .on_click(move |ctx, _, _| {
                     if !is_anonymous_or_logged_out {
                         ctx.dispatch_typed_action(
-                            WarpDriveSettingsPageAction::ToggleShowWarpDrive,
+                            YarpDriveSettingsPageAction::ToggleShowYarpDrive,
                         );
                     }
                 })

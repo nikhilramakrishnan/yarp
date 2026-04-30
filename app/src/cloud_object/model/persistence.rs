@@ -1102,7 +1102,7 @@ impl CloudModel {
     pub fn num_visible_errored_objects(&self) -> usize {
         self.objects_by_id
             .values()
-            .filter(|object| object.renders_in_warp_drive() && object.metadata().is_errored())
+            .filter(|object| object.renders_in_yarp_drive() && object.metadata().is_errored())
             .count()
     }
 

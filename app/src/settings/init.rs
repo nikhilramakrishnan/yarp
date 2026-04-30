@@ -7,7 +7,7 @@ use crate::{
     ai::cloud_agent_settings::CloudAgentSettings,
     appearance,
     banner::BannerState,
-    drive::settings::WarpDriveSettings,
+    drive::settings::YarpDriveSettings,
     report_if_error,
     resource_center::TipsCompleted,
     search::command_search::settings::CommandSearchSettings,
@@ -39,7 +39,7 @@ use super::{
     CodeSettings, DebugSettings, EmacsBindingsSettings, FontSettings, FontSettingsChangedEvent,
     GPUSettings, InputBoxType, InputModeSettings, InputSettings, PaneSettings,
     SameLinePromptBlockSettings, ScrollSettings, SelectionSettings, SshSettings, ThemeSettings,
-    VimBannerSettings, WarpDrivePrivacySettings,
+    VimBannerSettings, YarpDrivePrivacySettings,
 };
 
 pub struct UserDefaultsOnStartup {
@@ -82,7 +82,7 @@ pub fn register_all_settings(ctx: &mut AppContext) {
     AccessibilitySettings::register(ctx);
     NativePreferenceSettings::register(ctx);
     CloudPreferencesSettings::register(ctx);
-    WarpDrivePrivacySettings::register(ctx);
+    YarpDrivePrivacySettings::register(ctx);
     UserAppInstallDetectionSettings::register(ctx);
     AppIconSettings::register(ctx);
     AppEditorSettings::register(ctx);
@@ -93,7 +93,7 @@ pub fn register_all_settings(ctx: &mut AppContext) {
     SshSettings::register(ctx);
     VimBannerSettings::register(ctx);
     SharedSessionSettings::register(ctx);
-    WarpDriveSettings::register(ctx);
+    YarpDriveSettings::register(ctx);
     WorkflowAliases::register(ctx);
     EmacsBindingsSettings::register(ctx);
     SameLinePromptBlockSettings::register(ctx);

@@ -1,6 +1,6 @@
 use super::{CloudObject, Space};
 use crate::{
-    drive::{folders::CloudFolder, items::WarpDriveItemId, CloudObjectTypeAndId},
+    drive::{folders::CloudFolder, items::YarpDriveItemId, CloudObjectTypeAndId},
     ui_components::breadcrumb::Breadcrumb,
 };
 use yarpui::AppContext;
@@ -48,10 +48,10 @@ pub enum ContainingObjectKind {
 }
 
 impl ContainingObjectKind {
-    pub fn into_item_id(self) -> WarpDriveItemId {
+    pub fn into_item_id(self) -> YarpDriveItemId {
         match self {
-            ContainingObjectKind::Space(space) => WarpDriveItemId::Space(space),
-            ContainingObjectKind::Object(object) => WarpDriveItemId::Object(object),
+            ContainingObjectKind::Space(space) => YarpDriveItemId::Space(space),
+            ContainingObjectKind::Object(object) => YarpDriveItemId::Object(object),
         }
     }
 }

@@ -13,7 +13,7 @@ use crate::search::result_renderer::ItemHighlightState;
 use crate::{
     appearance::Appearance,
     cloud_object::CloudObject,
-    drive::{cloud_object_styling::warp_drive_icon_color, DriveObjectType},
+    drive::{cloud_object_styling::yarp_drive_icon_color, DriveObjectType},
     search::{
         item::IconLocation,
         notebook_embedding::{
@@ -53,7 +53,7 @@ impl SearchItem for NotebookSearchItem {
             ConstrainedBox::new(
                 Icon::Notebook
                     .to_yarpui_icon(
-                        warp_drive_icon_color(
+                        yarp_drive_icon_color(
                             appearance,
                             DriveObjectType::Notebook {
                                 is_ai_document: false,

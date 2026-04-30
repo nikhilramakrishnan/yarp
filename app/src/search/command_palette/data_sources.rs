@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::path::PathBuf;
 
-use crate::drive::settings::WarpDriveSettings;
+use crate::drive::settings::YarpDriveSettings;
 use crate::search::action::CommandBindingDataSource;
 use crate::search::binding_source::BindingSource;
 use crate::search::command_palette::files;
@@ -22,13 +22,13 @@ use yarpui::keymap::BindingId;
 use yarpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use super::conversations;
-use super::warp_drive;
+use super::yarp_drive;
 
 /// Store of all of the [`crate::search::DataSource`]s for the command palette.
 pub struct DataSourceStore {
     actions_data_source: ModelHandle<CommandBindingDataSource>,
     sessions_data_source: ModelHandle<navigation::DataSource>,
-    warp_drive_data_source: ModelHandle<warp_drive::DataSource>,
+    yarp_drive_data_source: ModelHandle<yarp_drive::DataSource>,
     launch_config_data_source: ModelHandle<launch_config::DataSource>,
     new_session_data_source: Option<ModelHandle<NewSessionDataSource>>,
     historical_conversation_data_source: ModelHandle<conversations::DataSource>,
@@ -48,7 +48,7 @@ impl DataSourceStore {
         let sessions_data_source =
             ctx.add_model(|_| navigation::DataSource::new(active_session_handle));
 
-        let warp_drive_data_source = ctx.add_model(warp_drive::DataSource::new);
+        let yarp_drive_data_source = ctx.add_model(yarp_drive::DataSource::new);
 
         let launch_config_data_source = ctx.add_model(launch_config::DataSource::new);
 
@@ -67,7 +67,7 @@ impl DataSourceStore {
         Self {
             actions_data_source,
             sessions_data_source,
-            warp_drive_data_source,
+            yarp_drive_data_source,
             launch_config_data_source,
             new_session_data_source,
             historical_conversation_data_source,
@@ -98,20 +98,20 @@ impl DataSourceStore {
                 HashSet::from([QueryFilter::Sessions]),
             );
 
-            if WarpDriveSettings::is_warp_drive_enabled(ctx) {
-                let mut warp_drive_filters = HashSet::from([
+            if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
+                let mut yarp_drive_filters = HashSet::from([
                     QueryFilter::Notebooks,
                     QueryFilter::Plans,
                     QueryFilter::Drive,
                     QueryFilter::Workflows,
                 ]);
 
-                warp_drive_filters.insert(QueryFilter::EnvironmentVariables);
+                yarp_drive_filters.insert(QueryFilter::EnvironmentVariables);
 
                 if AISettings::as_ref(ctx).is_any_ai_enabled(ctx) {
-                    warp_drive_filters.insert(QueryFilter::AgentModeWorkflows);
+                    yarp_drive_filters.insert(QueryFilter::AgentModeWorkflows);
                 }
-                mixer.add_sync_source(self.warp_drive_data_source.clone(), warp_drive_filters);
+                mixer.add_sync_source(self.yarp_drive_data_source.clone(), yarp_drive_filters);
             }
 
             mixer.add_sync_source(
@@ -183,15 +183,15 @@ impl DataSourceStore {
                 .as_ref(app)
                 .query_result(*binding_id),
             ItemSummary::Workflow { id } => self
-                .warp_drive_data_source
+                .yarp_drive_data_source
                 .as_ref(app)
                 .query_result(id, app),
             ItemSummary::EnvVarCollection { id } => self
-                .warp_drive_data_source
+                .yarp_drive_data_source
                 .as_ref(app)
                 .query_result(id, app),
             ItemSummary::Notebook { id } => self
-                .warp_drive_data_source
+                .yarp_drive_data_source
                 .as_ref(app)
                 .query_result(id, app),
             ItemSummary::Session { pane_view_locator } => self
@@ -205,7 +205,7 @@ impl DataSourceStore {
             }
             ItemSummary::CloudObject => {
                 // We don't yet support all cloud objects in the command palette but
-                // we have a `ViewInWarpDrive` action that supports all of them, so
+                // we have a `ViewInYarpDrive` action that supports all of them, so
                 // this is necessary to make the compiler happy.
                 None
             }

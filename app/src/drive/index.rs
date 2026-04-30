@@ -61,12 +61,12 @@ use super::{
     empty_trash_confirmation_dialog::{EmptyTrashConfirmationDialog, EmptyTrashConfirmationEvent},
     folders::CloudFolder,
     items::{
-        ai_fact_collection::WarpDriveAIFactCollection,
-        item::{tools_panel_menu_direction, ItemStates, WarpDriveRow},
-        mcp_server_collection::WarpDriveMCPServerCollection,
-        WarpDriveItemId,
+        ai_fact_collection::YarpDriveAIFactCollection,
+        item::{tools_panel_menu_direction, ItemStates, YarpDriveRow},
+        mcp_server_collection::YarpDriveMCPServerCollection,
+        YarpDriveItemId,
     },
-    settings::WarpDriveSettings,
+    settings::YarpDriveSettings,
     sharing::{
         dialog::{SharingDialog, SharingDialogEvent},
         ContentEditability, ShareableObject,
@@ -228,7 +228,7 @@ impl DropTargetData for CloudObjectLocation {
     }
 }
 
-struct RenderedWarpDriveItemAndChildren {
+struct RenderedYarpDriveItemAndChildren {
     element: Box<dyn Element>,
     num_items: usize, // represents the total number of elements, including the parent and any children
 }
@@ -275,10 +275,10 @@ pub enum DriveIndexAction {
     ToggleSortingMenu,
     ToggleItemOverflowMenu {
         space: Space,
-        warp_drive_item_id: WarpDriveItemId,
+        yarp_drive_item_id: YarpDriveItemId,
     },
     ToggleShareDialog {
-        warp_drive_item_id: WarpDriveItemId,
+        yarp_drive_item_id: YarpDriveItemId,
     },
     ToggleSpaceOverflowMenu {
         space: Space,
@@ -473,14 +473,14 @@ pub enum DriveIndexEvent {
         initial_folder_id: Option<SyncId>,
     },
     OpenWorkflowModalWithCloudWorkflow(SyncId),
-    FocusWarpDrive,
+    FocusYarpDrive,
     OpenSharedObjectsCreationDeniedModal(DriveObjectType, ServerId),
     AttachPlanAsContext(AIDocumentId),
 }
 
 #[derive(Clone, Default)]
 struct MouseStateHandles {
-    warp_drive_initial_load_mouse_state: MouseStateHandle,
+    yarp_drive_initial_load_mouse_state: MouseStateHandle,
     sorting_button_mouse_state: MouseStateHandle,
     retry_button_mouse_state: MouseStateHandle,
     trash_row_mouse_state: MouseStateHandle,
@@ -521,12 +521,12 @@ pub struct DriveIndex {
     /// Variant of the index, determines whether base Yarp Drive or trash is viewed.
     index_variant: DriveIndexVariant,
     /// If None, the context menu is closed. Otherwise, this contains the ID of the object it's open on.
-    menu_object_id_if_open: Option<WarpDriveItemId>,
+    menu_object_id_if_open: Option<YarpDriveItemId>,
     /// If Some, the share dialog is open for the given object.
-    share_dialog_open_for_object: Option<WarpDriveItemId>,
+    share_dialog_open_for_object: Option<YarpDriveItemId>,
     sections: Vec<DriveIndexSection>,
     /// Selected represents an object that is open in the active pane
-    selected: Option<WarpDriveItemId>,
+    selected: Option<YarpDriveItemId>,
     /// The numerical index of the item that is focused in WD (via keyboard)
     focused_index: Option<usize>,
     item_mouse_states: HashMap<Space, Vec<ItemStates>>,
@@ -541,7 +541,7 @@ pub struct DriveIndex {
     sorting_choice: DriveSortOrder,
     auth_state: Arc<AuthState>,
     space_menu_open_for_space: Option<SpaceMenuState>,
-    show_warp_drive_loading_icon: bool,
+    show_yarp_drive_loading_icon: bool,
     should_show_personal_object_limit_status: bool,
     /// A hashmap of location (space/folder) to a list of hashed IDs of objects inside
     /// the space/folder, used for rendering our objects
@@ -549,7 +549,7 @@ pub struct DriveIndex {
     /// A sorted list of all the items (spaces + objects) in Yarp Drive
     /// Unlike sorted_orders_by_location, this is not used for rendering
     /// This is used for object focusing and WD keyboard navigation
-    ordered_items: Vec<WarpDriveItemId>,
+    ordered_items: Vec<YarpDriveItemId>,
 
     /// Whether or not we have done an initial setting of all the section states.
     /// We need to keep track of this to make sure we don't do any opening actions on WD
@@ -565,12 +565,12 @@ pub struct DriveIndex {
 
     /// Drive item to represent collection of AI facts.
     /// Special-cased to always render at the top of the Personal space section.
-    ai_fact_collection: WarpDriveAIFactCollection,
+    ai_fact_collection: YarpDriveAIFactCollection,
     ai_fact_collection_item_mouse_states: ItemStates,
 
     /// Drive item to represent collection of MCP servers.
     /// Special-cased to always render at the top of the Personal space section.
-    mcp_server_collection: WarpDriveMCPServerCollection,
+    mcp_server_collection: YarpDriveMCPServerCollection,
     mcp_server_collection_item_mouse_states: ItemStates,
 }
 
@@ -741,7 +741,7 @@ impl DriveIndex {
                 cloud_model
                     .active_cloud_objects_in_location_without_descendents(location, app)
                     .filter(move |cloud_object| {
-                        cloud_object.renders_in_warp_drive()
+                        cloud_object.renders_in_yarp_drive()
                             && user_uid.is_some_and(|uid| {
                                 cloud_object.permissions().has_direct_user_access(uid)
                             })
@@ -754,7 +754,7 @@ impl DriveIndex {
             }
             (DriveIndexVariant::MainIndex, _) => cloud_model
                 .active_cloud_objects_in_location_without_descendents(location, app)
-                .filter(|cloud_object| cloud_object.renders_in_warp_drive())
+                .filter(|cloud_object| cloud_object.renders_in_yarp_drive())
                 .sorted_by(self.sorting_choice.sort_by(
                     cloud_view_model,
                     UpdateTimestamp::Revision,
@@ -813,7 +813,7 @@ impl DriveIndex {
             if let Some(cloud_object) = cloud_model.get_by_uid(&uid) {
                 // Add object to the list
                 let cloud_id = cloud_object.cloud_object_type_and_id();
-                self.ordered_items.push(WarpDriveItemId::Object(cloud_id));
+                self.ordered_items.push(YarpDriveItemId::Object(cloud_id));
                 // If the item is a folder and the folder is open, recurse
                 if let CloudObjectTypeAndId::Folder(folder_id) = cloud_id {
                     if self
@@ -837,7 +837,7 @@ impl DriveIndex {
         for section in self.sections.clone() {
             if let DriveIndexSection::Space(space) = section {
                 // Add space to the list
-                self.ordered_items.push(WarpDriveItemId::Space(space));
+                self.ordered_items.push(YarpDriveItemId::Space(space));
                 // If the space is not collapsed, iterate through the items in the space
                 if let Some(section_state) = self
                     .section_states
@@ -850,9 +850,9 @@ impl DriveIndex {
                                 && ContextFlag::ShowMCPServers.is_enabled()
                             {
                                 self.ordered_items
-                                    .push(WarpDriveItemId::MCPServerCollection);
+                                    .push(YarpDriveItemId::MCPServerCollection);
                             }
-                            self.ordered_items.push(WarpDriveItemId::AIFactCollection);
+                            self.ordered_items.push(YarpDriveItemId::AIFactCollection);
                         }
                         // Sort and add the rest of the items in the space
                         let Some(uids) = self
@@ -867,7 +867,7 @@ impl DriveIndex {
             }
         }
         if self.index_variant == DriveIndexVariant::MainIndex {
-            self.ordered_items.push(WarpDriveItemId::Trash);
+            self.ordered_items.push(YarpDriveItemId::Trash);
         }
     }
 
@@ -946,12 +946,12 @@ impl DriveIndex {
             me.handle_empty_trash_confirmation_dialog_event(event, ctx);
         });
 
-        let sorting_choice = *WarpDriveSettings::as_ref(ctx).sorting_choice.value();
+        let sorting_choice = *YarpDriveSettings::as_ref(ctx).sorting_choice.value();
 
         // Hide Yarp Drive loading icon once initial load is complete
         let initial_load_complete = UpdateManager::as_ref(ctx).initial_load_complete();
         ctx.spawn(initial_load_complete, |me, _, ctx| {
-            me.show_warp_drive_loading_icon = false;
+            me.show_yarp_drive_loading_icon = false;
             me.initialize_section_states(ctx);
             me.has_initialized_sections.set();
             ctx.notify();
@@ -999,8 +999,8 @@ impl DriveIndex {
             dropdown
         });
 
-        let ai_fact_collection = WarpDriveAIFactCollection::new(ClientId::default());
-        let mcp_server_collection = WarpDriveMCPServerCollection::new(ClientId::default());
+        let ai_fact_collection = YarpDriveAIFactCollection::new(ClientId::default());
+        let mcp_server_collection = YarpDriveMCPServerCollection::new(ClientId::default());
 
         Self {
             window_id: ctx.window_id(),
@@ -1023,7 +1023,7 @@ impl DriveIndex {
             sorting_choice,
             auth_state: AuthStateProvider::as_ref(ctx).get().clone(),
             space_menu_open_for_space: None,
-            show_warp_drive_loading_icon: true,
+            show_yarp_drive_loading_icon: true,
             sorted_orders_by_location: Default::default(),
             ordered_items: Default::default(),
             has_initialized_sections: Default::default(),
@@ -1064,7 +1064,7 @@ impl DriveIndex {
         NetworkStatus::as_ref(app).is_online()
     }
 
-    pub fn scroll_item_into_view(&mut self, item_id: WarpDriveItemId, ctx: &mut ViewContext<Self>) {
+    pub fn scroll_item_into_view(&mut self, item_id: YarpDriveItemId, ctx: &mut ViewContext<Self>) {
         self.clipped_scroll_state.scroll_to_position(ScrollTarget {
             position_id: item_id.drive_row_position_id(),
             mode: ScrollToPositionMode::FullyIntoView,
@@ -1073,7 +1073,7 @@ impl DriveIndex {
     }
 
     /// Sets focused to the index of either the selected object or the first item in WD
-    pub fn reset_focused_index_in_warp_drive(
+    pub fn reset_focused_index_in_yarp_drive(
         &mut self,
         should_scroll: bool,
         ctx: &mut ViewContext<Self>,
@@ -1101,7 +1101,7 @@ impl DriveIndex {
 
     pub fn set_focused_item(
         &mut self,
-        item_id: WarpDriveItemId,
+        item_id: YarpDriveItemId,
         should_scroll: bool,
         ctx: &mut ViewContext<Self>,
     ) {
@@ -1174,8 +1174,8 @@ impl DriveIndex {
         if let Event::Close { via_select_item } = event {
             self.reset_menus(ctx);
             if !*via_select_item {
-                ctx.emit(DriveIndexEvent::FocusWarpDrive);
-                self.reset_focused_index_in_warp_drive(false, ctx);
+                ctx.emit(DriveIndexEvent::FocusYarpDrive);
+                self.reset_focused_index_in_yarp_drive(false, ctx);
             }
         }
     }
@@ -1243,10 +1243,10 @@ impl DriveIndex {
     /// drive items.
     pub fn expand_section_for_drive_item_id(
         &mut self,
-        item_id: WarpDriveItemId,
+        item_id: YarpDriveItemId,
         ctx: &mut ViewContext<DriveIndex>,
     ) {
-        if let WarpDriveItemId::Object(object_id) = item_id {
+        if let YarpDriveItemId::Object(object_id) = item_id {
             match object_id {
                 CloudObjectTypeAndId::Notebook(sync_id) => {
                     self.expand_section_for_object(&sync_id.uid().clone(), ctx);
@@ -1385,7 +1385,7 @@ impl DriveIndex {
             ctx.dispatch_typed_action(DriveIndexAction::ToggleSectionCollapsed(section))
         })
         .on_right_click(move |ctx, _, position| {
-            let position_id = &warp_drive_section_header_position_id(&section);
+            let position_id = &yarp_drive_section_header_position_id(&section);
             let Some(prompt_rect) = ctx.element_position_by_id(position_id) else {
                 return;
             };
@@ -1404,7 +1404,7 @@ impl DriveIndex {
                 stack.add_positioned_overlay_child(
                     ChildView::new(&self.menu).finish(),
                     OffsetPositioning::offset_from_save_position_element(
-                        warp_drive_section_header_position_id(&section),
+                        yarp_drive_section_header_position_id(&section),
                         space_menu_state.offset,
                         PositionedElementOffsetBounds::WindowByPosition,
                         PositionedElementAnchor::TopLeft,
@@ -1459,7 +1459,7 @@ impl DriveIndex {
         let mut is_focused = false;
         if let DriveIndexSection::Space(space) = section {
             if let Some(focused_index) = self.focused_index {
-                if Some(&WarpDriveItemId::Space(space)) == self.ordered_items.get(focused_index) {
+                if Some(&YarpDriveItemId::Space(space)) == self.ordered_items.get(focused_index) {
                     container = container.with_background(
                         yarp_core::ui::theme::color::internal_colors::fg_overlay_4(
                             appearance.theme(),
@@ -1517,7 +1517,7 @@ impl DriveIndex {
                 ctx.dispatch_typed_action(DriveIndexAction::ToggleSectionCollapsed(section))
             })
             .on_right_click(move |ctx, _, position| {
-                let position_id = &warp_drive_section_header_position_id(&section);
+                let position_id = &yarp_drive_section_header_position_id(&section);
                 let Some(prompt_rect) = ctx.element_position_by_id(position_id) else {
                     return;
                 };
@@ -1536,7 +1536,7 @@ impl DriveIndex {
                 left_stack.add_positioned_overlay_child(
                     ChildView::new(&self.menu).finish(),
                     OffsetPositioning::offset_from_save_position_element(
-                        warp_drive_section_header_position_id(&section),
+                        yarp_drive_section_header_position_id(&section),
                         space_menu_state.offset,
                         PositionedElementOffsetBounds::WindowByPosition,
                         PositionedElementAnchor::TopLeft,
@@ -1551,7 +1551,7 @@ impl DriveIndex {
             if self
                 .focused_index
                 .and_then(|idx| self.ordered_items.get(idx))
-                .is_some_and(|item| item == &WarpDriveItemId::Space(space_clone))
+                .is_some_and(|item| item == &YarpDriveItemId::Space(space_clone))
             {
                 (
                     blended_colors::text_main(appearance.theme(), appearance.theme().background()),
@@ -1631,7 +1631,7 @@ impl DriveIndex {
                     self.add_dialog_to_stack(
                         &mut right_stack,
                         ChildView::new(&self.empty_trash_confirmation_dialog).finish(),
-                        warp_drive_section_header_position_id(&section).as_str(),
+                        yarp_drive_section_header_position_id(&section).as_str(),
                         app,
                     );
                 }
@@ -1662,7 +1662,7 @@ impl DriveIndex {
         let mut is_focused = false;
         if let DriveIndexSection::Space(space) = section {
             if let Some(focused_index) = self.focused_index {
-                if Some(&WarpDriveItemId::Space(space)) == self.ordered_items.get(focused_index) {
+                if Some(&YarpDriveItemId::Space(space)) == self.ordered_items.get(focused_index) {
                     container = container.with_background(
                         yarp_core::ui::theme::color::internal_colors::fg_overlay_4(
                             appearance.theme(),
@@ -1691,7 +1691,7 @@ impl DriveIndex {
         .finish()
     }
 
-    // Todo: move the header rendering into WarpDriveItem to consolidate styling logic.
+    // Todo: move the header rendering into YarpDriveItem to consolidate styling logic.
     fn render_section_header(
         &self,
         section: DriveIndexSection,
@@ -1703,7 +1703,7 @@ impl DriveIndex {
             (DriveIndexVariant::MainIndex, DriveIndexSection::Space(space)) => {
                 let title_font_color: ColorU = if self.focused_index.is_some()
                     && self.ordered_items.get(self.focused_index.unwrap())
-                        == Some(&WarpDriveItemId::Space(space))
+                        == Some(&YarpDriveItemId::Space(space))
                 {
                     blended_colors::text_main(appearance.theme(), appearance.theme().background())
                 } else {
@@ -1740,7 +1740,7 @@ impl DriveIndex {
             }
             (DriveIndexVariant::Trash, DriveIndexSection::Space(space)) => {
                 let title_font_color = self
-                    .font_color_based_on_focused_state(appearance, WarpDriveItemId::Space(space));
+                    .font_color_based_on_focused_state(appearance, YarpDriveItemId::Space(space));
                 Some(self.render_trash_section_header(
                     self.render_section_title(space, title_font_color, appearance, app),
                     &space,
@@ -1760,7 +1760,7 @@ impl DriveIndex {
                 ConstrainedBox::new(header)
                     .with_height(SECTION_HEADER_CONTENT_HEIGHT + SECTION_HEADER_MARGIN_BOTTOM)
                     .finish(),
-                &warp_drive_section_header_position_id(&section),
+                &yarp_drive_section_header_position_id(&section),
             )
             .finish()
         } else {
@@ -1799,7 +1799,7 @@ impl DriveIndex {
     }
 
     fn render_trash_row(&self, appearance: &Appearance, _: &AppContext) -> Box<dyn Element> {
-        let font_color = self.font_color_based_on_focused_state(appearance, WarpDriveItemId::Trash);
+        let font_color = self.font_color_based_on_focused_state(appearance, YarpDriveItemId::Trash);
         let icon = Container::new(
             ConstrainedBox::new(Icon::Trash.to_yarpui_icon(font_color.into()).finish())
                 .with_width(SECTION_HEADER_FONT_SIZE)
@@ -1848,7 +1848,7 @@ impl DriveIndex {
         // If the trash row is focused, set background
         let mut is_focused = false;
         if let Some(focused_index) = self.focused_index {
-            if Some(&WarpDriveItemId::Trash) == self.ordered_items.get(focused_index) {
+            if Some(&YarpDriveItemId::Trash) == self.ordered_items.get(focused_index) {
                 container = container.with_background(
                     yarp_core::ui::theme::color::internal_colors::fg_overlay_4(appearance.theme()),
                 );
@@ -1883,7 +1883,7 @@ impl DriveIndex {
                     .finish(),
             )
             .finish(),
-            "WarpDrive_TrashButton",
+            "YarpDrive_TrashButton",
         )
         .finish()
     }
@@ -1894,24 +1894,24 @@ impl DriveIndex {
         appearance: &Appearance,
         app: &AppContext,
     ) -> Option<Box<dyn Element>> {
-        let warp_drive_item_id = WarpDriveItemId::AIFactCollection;
-        let is_selected = self.selected == Some(warp_drive_item_id);
+        let yarp_drive_item_id = YarpDriveItemId::AIFactCollection;
+        let is_selected = self.selected == Some(yarp_drive_item_id);
         let mut is_focused = false;
         if let Some(focused_index) = self.focused_index {
-            if let Some(&WarpDriveItemId::AIFactCollection) = self.ordered_items.get(focused_index)
+            if let Some(&YarpDriveItemId::AIFactCollection) = self.ordered_items.get(focused_index)
             {
                 is_focused = true;
             }
         }
 
-        let row = WarpDriveRow::new(
+        let row = YarpDriveRow::new(
             Box::new(self.ai_fact_collection.clone()),
             self.ai_fact_collection_item_mouse_states.clone(),
             space,
             0,
             self.menu.clone(),
             false, /* can_move */
-            !self.menu_items(&space, &warp_drive_item_id, app).is_empty(),
+            !self.menu_items(&space, &yarp_drive_item_id, app).is_empty(),
             false,
             false, /* share_dialog_open */
             is_selected,
@@ -1930,25 +1930,25 @@ impl DriveIndex {
         appearance: &Appearance,
         app: &AppContext,
     ) -> Option<Box<dyn Element>> {
-        let warp_drive_item_id = WarpDriveItemId::MCPServerCollection;
-        let is_selected = self.selected == Some(warp_drive_item_id);
+        let yarp_drive_item_id = YarpDriveItemId::MCPServerCollection;
+        let is_selected = self.selected == Some(yarp_drive_item_id);
         let mut is_focused = false;
         if let Some(focused_index) = self.focused_index {
-            if let Some(&WarpDriveItemId::MCPServerCollection) =
+            if let Some(&YarpDriveItemId::MCPServerCollection) =
                 self.ordered_items.get(focused_index)
             {
                 is_focused = true;
             }
         }
 
-        let row = WarpDriveRow::new(
+        let row = YarpDriveRow::new(
             Box::new(self.mcp_server_collection.clone()),
             self.mcp_server_collection_item_mouse_states.clone(),
             space,
             0,
             self.menu.clone(),
             false, /* can_move */
-            !self.menu_items(&space, &warp_drive_item_id, app).is_empty(),
+            !self.menu_items(&space, &yarp_drive_item_id, app).is_empty(),
             false,
             false, /* share_dialog_open */
             is_selected,
@@ -2505,8 +2505,8 @@ impl DriveIndex {
 
         let mut title_right_side = Flex::row();
 
-        if self.show_warp_drive_loading_icon && self.is_online(app) {
-            title_right_side.add_child(self.render_warp_drive_loading_icon(appearance));
+        if self.show_yarp_drive_loading_icon && self.is_online(app) {
+            title_right_side.add_child(self.render_yarp_drive_loading_icon(appearance));
         }
 
         // Only show the global retry button if there are errored objects
@@ -2661,29 +2661,29 @@ impl DriveIndex {
         cloud_model: &CloudModel,
         appearance: &Appearance,
         app: &AppContext,
-    ) -> Option<RenderedWarpDriveItemAndChildren> {
-        if !object.renders_in_warp_drive() {
+    ) -> Option<RenderedYarpDriveItemAndChildren> {
+        if !object.renders_in_yarp_drive() {
             return None;
         }
 
         let mut stack = Stack::new();
         let row_object_id = object.cloud_object_type_and_id();
-        let warp_drive_item_id = WarpDriveItemId::Object(row_object_id);
+        let yarp_drive_item_id = YarpDriveItemId::Object(row_object_id);
         let access_level = CloudViewModel::as_ref(app).access_level(&row_object_id.uid(), app);
 
-        let share_dialog_open = self.share_dialog_open_for_object == Some(warp_drive_item_id);
+        let share_dialog_open = self.share_dialog_open_for_object == Some(yarp_drive_item_id);
         // If the share dialog is open, we don't want to open the menu for the same object.
         let menu_open =
-            self.menu_object_id_if_open == Some(warp_drive_item_id) && !share_dialog_open;
+            self.menu_object_id_if_open == Some(yarp_drive_item_id) && !share_dialog_open;
         let can_move = self.online_only_operation_allowed(&row_object_id, app)
             && matches!(self.index_variant, DriveIndexVariant::MainIndex)
             && access_level.can_move_drive();
         let mut is_focused = false;
 
-        let is_selected = self.selected == Some(warp_drive_item_id);
+        let is_selected = self.selected == Some(yarp_drive_item_id);
         if let Some(focused_index) = self.focused_index {
             if !self.ordered_items.is_empty() {
-                if let Some(&WarpDriveItemId::Object(cloud_id)) =
+                if let Some(&YarpDriveItemId::Object(cloud_id)) =
                     self.ordered_items.get(focused_index)
                 {
                     is_focused = row_object_id == cloud_id;
@@ -2691,14 +2691,14 @@ impl DriveIndex {
             }
         }
 
-        let row = WarpDriveRow::new_from_cloud_object(
+        let row = YarpDriveRow::new_from_cloud_object(
             object,
             item_mouse_states[space_index].clone(),
             space,
             folder_depth,
             self.menu.clone(),
             can_move,
-            !self.menu_items(&space, &warp_drive_item_id, app).is_empty(),
+            !self.menu_items(&space, &yarp_drive_item_id, app).is_empty(),
             menu_open,
             share_dialog_open,
             is_selected,
@@ -2829,7 +2829,7 @@ impl DriveIndex {
             );
         }
 
-        Some(RenderedWarpDriveItemAndChildren {
+        Some(RenderedYarpDriveItemAndChildren {
             element: rendered_item,
             num_items: total_rows_for_item,
         })
@@ -2924,7 +2924,7 @@ impl DriveIndex {
                 // Set icon color contrast correctly if a space is focused
                 if self.focused_index.is_some()
                     && self.ordered_items.get(self.focused_index.unwrap())
-                        == Some(&WarpDriveItemId::Space(space))
+                        == Some(&YarpDriveItemId::Space(space))
                 {
                     blended_colors::text_main(appearance.theme(), appearance.theme().background())
                         .into()
@@ -2935,7 +2935,7 @@ impl DriveIndex {
             _ => appearance.theme().foreground(),
         };
 
-        // This icon should render the same as other WarpDrive icons but with no click or hover states.
+        // This icon should render the same as other YarpDrive icons but with no click or hover states.
         Container::new(
             ConstrainedBox::new(icon.to_yarpui_icon(icon_color).finish())
                 .with_width(SECTION_HEADER_FONT_SIZE)
@@ -2946,7 +2946,7 @@ impl DriveIndex {
         .finish()
     }
 
-    fn render_warp_drive_loading_icon(&self, appearance: &Appearance) -> Box<dyn yarpui::Element> {
+    fn render_yarp_drive_loading_icon(&self, appearance: &Appearance) -> Box<dyn yarpui::Element> {
         // Use same padding as icon_button (4px) to center the icon within ICON_DIMENSIONS
         let icon_button_padding = (ICON_DIMENSIONS - LOADING_ICON_WIDTH) / 2.;
         let loading_icon = Container::new(
@@ -2969,7 +2969,7 @@ impl DriveIndex {
 
         let hoverable = Hoverable::new(
             self.mouse_state_handles
-                .warp_drive_initial_load_mouse_state
+                .yarp_drive_initial_load_mouse_state
                 .clone(),
             |mouse_state| {
                 let mut stack = Stack::new().with_child(loading_icon);
@@ -3066,7 +3066,7 @@ impl DriveIndex {
         // Set color contrast correctly when focused
         if self.focused_index.is_some()
             && self.ordered_items.get(self.focused_index.unwrap())
-                == Some(&WarpDriveItemId::Space(space))
+                == Some(&YarpDriveItemId::Space(space))
         {
             button = highlight(
                 icon_button(
@@ -3149,7 +3149,7 @@ impl DriveIndex {
         // Set color contrast correctly when focused
         if self.focused_index.is_some()
             && self.ordered_items.get(self.focused_index.unwrap())
-                == Some(&WarpDriveItemId::Space(space))
+                == Some(&YarpDriveItemId::Space(space))
         {
             button = highlight(button, appearance)
         };
@@ -3179,7 +3179,7 @@ impl DriveIndex {
     fn font_color_based_on_focused_state(
         &self,
         appearance: &Appearance,
-        item: WarpDriveItemId,
+        item: YarpDriveItemId,
     ) -> ColorU {
         if self.focused_index.is_some()
             && self.ordered_items.get(self.focused_index.unwrap()) == Some(&item)
@@ -3210,7 +3210,7 @@ impl DriveIndex {
     fn refocus_section_index(&mut self, section: &DriveIndexSection, ctx: &mut ViewContext<Self>) {
         if self.focused_index.is_some() {
             if let DriveIndexSection::Space(space) = *section {
-                self.set_focused_item(WarpDriveItemId::Space(space), true, ctx);
+                self.set_focused_item(YarpDriveItemId::Space(space), true, ctx);
             }
             // Need to re-render focused index in Yarp Drive after a space has been toggled
             if let Some(focused_index) = self.focused_index {
@@ -3783,7 +3783,7 @@ impl DriveIndex {
         self.initialize_section_states(ctx);
         ctx.notify();
 
-        WarpDriveSettings::handle(ctx).update(ctx, |settings, ctx| {
+        YarpDriveSettings::handle(ctx).update(ctx, |settings, ctx| {
             report_if_error!(settings.sorting_choice.set_value(*sorting_choice, ctx));
         });
 
@@ -4338,12 +4338,12 @@ impl DriveIndex {
     fn menu_items(
         &self,
         space: &Space,
-        warp_drive_item_id: &WarpDriveItemId,
+        yarp_drive_item_id: &YarpDriveItemId,
         app: &AppContext,
     ) -> Vec<MenuItem<DriveIndexAction>> {
         match self.index_variant {
-            DriveIndexVariant::MainIndex => self.index_menu_items(space, warp_drive_item_id, app),
-            DriveIndexVariant::Trash => self.trash_menu_items(space, warp_drive_item_id, app),
+            DriveIndexVariant::MainIndex => self.index_menu_items(space, yarp_drive_item_id, app),
+            DriveIndexVariant::Trash => self.trash_menu_items(space, yarp_drive_item_id, app),
         }
     }
 
@@ -4351,11 +4351,11 @@ impl DriveIndex {
     fn index_menu_items(
         &self,
         space: &Space,
-        warp_drive_item_id: &WarpDriveItemId,
+        yarp_drive_item_id: &YarpDriveItemId,
         app: &AppContext,
     ) -> Vec<MenuItem<DriveIndexAction>> {
         let mut menu_items = Vec::new();
-        let WarpDriveItemId::Object(cloud_object_type_and_id) = warp_drive_item_id else {
+        let YarpDriveItemId::Object(cloud_object_type_and_id) = yarp_drive_item_id else {
             return menu_items;
         };
         let can_move_or_trash = self.online_only_operation_allowed(cloud_object_type_and_id, app);
@@ -4459,7 +4459,7 @@ impl DriveIndex {
                             menu_items.push(
                                 MenuItemFields::new("Share")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
-                                        warp_drive_item_id: *warp_drive_item_id,
+                                        yarp_drive_item_id: *yarp_drive_item_id,
                                     })
                                     .with_icon(Icon::Share)
                                     .into_item(),
@@ -4688,7 +4688,7 @@ impl DriveIndex {
                             menu_items.push(
                                 MenuItemFields::new("Share")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
-                                        warp_drive_item_id: *warp_drive_item_id,
+                                        yarp_drive_item_id: *yarp_drive_item_id,
                                     })
                                     .with_icon(Icon::Share)
                                     .into_item(),
@@ -4790,11 +4790,11 @@ impl DriveIndex {
     fn trash_menu_items(
         &self,
         _space: &Space,
-        warp_drive_item_id: &WarpDriveItemId,
+        yarp_drive_item_id: &YarpDriveItemId,
         app: &AppContext,
     ) -> Vec<MenuItem<DriveIndexAction>> {
         let mut menu_items = Vec::new();
-        let WarpDriveItemId::Object(cloud_object_type_and_id) = warp_drive_item_id else {
+        let YarpDriveItemId::Object(cloud_object_type_and_id) = yarp_drive_item_id else {
             return menu_items;
         };
 
@@ -4854,28 +4854,28 @@ impl DriveIndex {
     pub fn toggle_item_menu(
         &mut self,
         space: &Space,
-        warp_drive_item_id: &WarpDriveItemId,
+        yarp_drive_item_id: &YarpDriveItemId,
         ctx: &mut ViewContext<Self>,
     ) {
         let menu_items: Vec<MenuItem<DriveIndexAction>> =
-            self.menu_items(space, warp_drive_item_id, ctx);
+            self.menu_items(space, yarp_drive_item_id, ctx);
         ctx.update_view(&self.menu, |menu, ctx| {
             menu.set_items(menu_items, ctx);
         });
 
-        self.menu_object_id_if_open = Some(*warp_drive_item_id);
+        self.menu_object_id_if_open = Some(*yarp_drive_item_id);
         ctx.focus(&self.menu);
         ctx.notify();
     }
 
     pub fn toggle_share_dialog(
         &mut self,
-        warp_drive_item_id: &WarpDriveItemId,
+        yarp_drive_item_id: &YarpDriveItemId,
         invitee_email: Option<String>,
         source: SharingDialogSource,
         ctx: &mut ViewContext<Self>,
     ) {
-        let WarpDriveItemId::Object(cloud_object_type_and_id) = warp_drive_item_id else {
+        let YarpDriveItemId::Object(cloud_object_type_and_id) = yarp_drive_item_id else {
             return;
         };
 
@@ -4892,9 +4892,9 @@ impl DriveIndex {
 
         self.reset_menus(ctx);
         if let Some(server_id) = cloud_object_type_and_id.server_id() {
-            self.share_dialog_open_for_object = Some(*warp_drive_item_id);
+            self.share_dialog_open_for_object = Some(*yarp_drive_item_id);
             self.sharing_dialog.update(ctx, |sharing_dialog, ctx| {
-                sharing_dialog.set_target(Some(ShareableObject::WarpDriveObject(server_id)), ctx);
+                sharing_dialog.set_target(Some(ShareableObject::YarpDriveObject(server_id)), ctx);
                 if let Some(invitee_email) = invitee_email {
                     sharing_dialog.add_invitee_email(invitee_email, ctx);
                 }
@@ -4951,7 +4951,7 @@ impl DriveIndex {
 
     pub fn set_selected_object(
         &mut self,
-        id: Option<WarpDriveItemId>,
+        id: Option<YarpDriveItemId>,
         ctx: &mut ViewContext<Self>,
     ) {
         self.selected = id;
@@ -4979,17 +4979,17 @@ impl DriveIndex {
                 return;
             };
             match focused_item_id {
-                WarpDriveItemId::AIFactCollection => {
+                YarpDriveItemId::AIFactCollection => {
                     if let DriveIndexAction::EnterKey = key {
                         ctx.emit(DriveIndexEvent::OpenAIFactCollection);
                     }
                 }
-                WarpDriveItemId::MCPServerCollection => {
+                YarpDriveItemId::MCPServerCollection => {
                     if let DriveIndexAction::EnterKey = key {
                         ctx.emit(DriveIndexEvent::OpenMCPServerCollection);
                     }
                 }
-                WarpDriveItemId::Object(cloud_id) => match cloud_id {
+                YarpDriveItemId::Object(cloud_id) => match cloud_id {
                     CloudObjectTypeAndId::Notebook(_) => {
                         if let DriveIndexAction::EnterKey = key {
                             ctx.emit(DriveIndexEvent::OpenObject(*cloud_id))
@@ -5028,7 +5028,7 @@ impl DriveIndex {
                         }
                     }
                 },
-                WarpDriveItemId::Space(space) => {
+                YarpDriveItemId::Space(space) => {
                     let section = &DriveIndexSection::Space(*space);
                     match key {
                         DriveIndexAction::EnterKey => self.toggle_section_collapse(section, ctx),
@@ -5041,7 +5041,7 @@ impl DriveIndex {
                         _ => {}
                     }
                 }
-                WarpDriveItemId::Trash => {
+                YarpDriveItemId::Trash => {
                     if let DriveIndexAction::EnterKey = key {
                         self.index_variant = DriveIndexVariant::Trash;
                         self.initialize_section_states(ctx);
@@ -5059,7 +5059,7 @@ impl DriveIndex {
     }
 }
 
-pub fn warp_drive_section_header_position_id(section: &DriveIndexSection) -> String {
+pub fn yarp_drive_section_header_position_id(section: &DriveIndexSection) -> String {
     format!("section_position_{section:?}")
 }
 
@@ -5265,7 +5265,7 @@ impl TypedActionView for DriveIndex {
             DriveIndexAction::OpenObject(cloud_object_type_and_id) => {
                 if !matches!(self.index_variant, DriveIndexVariant::Trash) {
                     self.set_selected_object(
-                        Some(WarpDriveItemId::Object(*cloud_object_type_and_id)),
+                        Some(YarpDriveItemId::Object(*cloud_object_type_and_id)),
                         ctx,
                     );
                     ctx.emit(DriveIndexEvent::OpenObject(*cloud_object_type_and_id))
@@ -5277,7 +5277,7 @@ impl TypedActionView for DriveIndex {
             } => {
                 if !matches!(self.index_variant, DriveIndexVariant::Trash) {
                     self.set_selected_object(
-                        Some(WarpDriveItemId::Object(*cloud_object_type_and_id)),
+                        Some(YarpDriveItemId::Object(*cloud_object_type_and_id)),
                         ctx,
                     );
                     ctx.emit(DriveIndexEvent::OpenWorkflowInPane {
@@ -5352,9 +5352,9 @@ impl TypedActionView for DriveIndex {
             }
             DriveIndexAction::ToggleItemOverflowMenu {
                 space,
-                warp_drive_item_id,
+                yarp_drive_item_id,
             } => {
-                self.toggle_item_menu(space, warp_drive_item_id, ctx);
+                self.toggle_item_menu(space, yarp_drive_item_id, ctx);
             }
             DriveIndexAction::ToggleSpaceOverflowMenu { space, offset } => {
                 self.toggle_space_menu(space, *offset, ctx);
@@ -5470,7 +5470,7 @@ impl TypedActionView for DriveIndex {
                 // If WD is focused, then clicking a folder will set that folder to be focused
                 if self.focused_index.is_some() {
                     self.set_focused_item(
-                        WarpDriveItemId::Object(CloudObjectTypeAndId::Folder(*id)),
+                        YarpDriveItemId::Object(CloudObjectTypeAndId::Folder(*id)),
                         true,
                         ctx,
                     );
@@ -5560,7 +5560,7 @@ impl TypedActionView for DriveIndex {
             }
             DriveIndexAction::ToggleDriveItemContextMenu => {
                 if let Some(focused_index) = self.focused_index {
-                    if let Some(&warp_drive_item_id) = self.ordered_items.get(focused_index) {
+                    if let Some(&yarp_drive_item_id) = self.ordered_items.get(focused_index) {
                         // Retrieve space of the WD item (because context menu options depend on the space)
                         // by finding the last space before the focused item in ordered_items
                         if let Some(space) = self
@@ -5568,7 +5568,7 @@ impl TypedActionView for DriveIndex {
                             .iter()
                             .take(focused_index)
                             .filter_map(|id| {
-                                if let WarpDriveItemId::Space(space) = *id {
+                                if let YarpDriveItemId::Space(space) = *id {
                                     Some(space)
                                 } else {
                                     None
@@ -5576,7 +5576,7 @@ impl TypedActionView for DriveIndex {
                             })
                             .next_back()
                         {
-                            self.toggle_item_menu(&space, &warp_drive_item_id, ctx);
+                            self.toggle_item_menu(&space, &yarp_drive_item_id, ctx);
                         }
                     }
                 }
@@ -5612,9 +5612,9 @@ impl TypedActionView for DriveIndex {
                     user_workspaces.generate_stripe_billing_portal_link(*team_uid, ctx);
                 });
             }
-            DriveIndexAction::ToggleShareDialog { warp_drive_item_id } => {
+            DriveIndexAction::ToggleShareDialog { yarp_drive_item_id } => {
                 self.toggle_share_dialog(
-                    warp_drive_item_id,
+                    yarp_drive_item_id,
                     None,
                     SharingDialogSource::DriveIndex,
                     ctx,

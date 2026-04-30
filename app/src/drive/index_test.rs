@@ -11,7 +11,7 @@ use crate::{
         model::{actions::ObjectActions, persistence::CloudModel, view::CloudViewModel},
         CloudObjectSyncStatus, ObjectIdType, ObjectType, Owner, ServerCreationInfo, Space,
     },
-    drive::{items::WarpDriveItemId, CloudObjectTypeAndId},
+    drive::{items::YarpDriveItemId, CloudObjectTypeAndId},
     menu::MenuItem,
     network::NetworkStatus,
     notebooks::{CloudNotebook, CloudNotebookModel},
@@ -127,11 +127,11 @@ fn test_retry_menu_item_visibility() {
         let sync_id = create_workflow(&mut app);
         let cloud_object_type_and_id: CloudObjectTypeAndId =
             CloudObjectTypeAndId::from_id_and_type(sync_id, ObjectType::Workflow);
-        let warp_drive_item_id = WarpDriveItemId::Object(cloud_object_type_and_id);
+        let yarp_drive_item_id = YarpDriveItemId::Object(cloud_object_type_and_id);
 
         // by default, it doesn't show up
         index.update(&mut app, |index, ctx| {
-            let menu_items = index.menu_items(&Space::Personal, &warp_drive_item_id, ctx);
+            let menu_items = index.menu_items(&Space::Personal, &yarp_drive_item_id, ctx);
             assert_eq!(menu_items.len(), 5);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Edit");
             assert_eq!(label_for_menu_item(&menu_items[1]), "Copy workflow text");
@@ -143,7 +143,7 @@ fn test_retry_menu_item_visibility() {
         // when the object is in error, it should show up
         set_object_in_error(&mut app, &cloud_object_type_and_id);
         index.update(&mut app, |index, ctx| {
-            let menu_items = index.menu_items(&Space::Personal, &warp_drive_item_id, ctx);
+            let menu_items = index.menu_items(&Space::Personal, &yarp_drive_item_id, ctx);
             assert_eq!(menu_items.len(), 6);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Retry");
             assert_eq!(label_for_menu_item(&menu_items[1]), "Edit");
@@ -158,7 +158,7 @@ fn test_retry_menu_item_visibility() {
             network_status.reachability_changed(false, ctx);
         });
         index.update(&mut app, |index, ctx| {
-            let menu_items = index.menu_items(&Space::Personal, &warp_drive_item_id, ctx);
+            let menu_items = index.menu_items(&Space::Personal, &yarp_drive_item_id, ctx);
             assert_eq!(menu_items.len(), 5);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Edit");
             assert_eq!(label_for_menu_item(&menu_items[1]), "Copy workflow text");
@@ -246,7 +246,7 @@ fn test_retry_menu_item_logic() {
 }
 
 #[test]
-fn test_warp_drive_navigation_states() {
+fn test_yarp_drive_navigation_states() {
     use crate::drive::index::DriveIndexAction;
     App::test((), |mut app| async move {
         initialize_app(&mut app);
@@ -271,7 +271,7 @@ fn test_warp_drive_navigation_states() {
         index.read(&app, |index, _| {
             assert_eq!(
                 index.selected,
-                Some(WarpDriveItemId::Object(cloud_object_type_and_id)),
+                Some(YarpDriveItemId::Object(cloud_object_type_and_id)),
                 "Expect selected to have correct value"
             );
         });

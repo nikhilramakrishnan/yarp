@@ -24,8 +24,8 @@ pub(crate) fn is_command_copied_from_document(
     let command = command.trim();
 
     match document {
-        AIAgentCitation::WarpDriveObject { uid } => {
-            is_command_copied_from_warp_drive_object(command, uid, shell_type, ctx)
+        AIAgentCitation::YarpDriveObject { uid } => {
+            is_command_copied_from_yarp_drive_object(command, uid, shell_type, ctx)
         }
         _ => false,
     }
@@ -33,7 +33,7 @@ pub(crate) fn is_command_copied_from_document(
 
 /// Returns true iff the `command` is directly copied from the
 /// Yarp Drive object identified by `object_uid`.
-fn is_command_copied_from_warp_drive_object(
+fn is_command_copied_from_yarp_drive_object(
     command: &str,
     object_uid: &str,
     shell_type: Option<ShellType>,

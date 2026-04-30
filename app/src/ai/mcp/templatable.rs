@@ -17,7 +17,7 @@ use crate::{
         GenericCloudObject, GenericStringObjectFormat, GenericStringObjectUniqueKey,
         JsonObjectType, Revision, ServerCloudObject, UniquePer,
     },
-    drive::items::WarpDriveItem,
+    drive::items::YarpDriveItem,
     server::{datetime_ext::DateTimeExt, ids::SyncId, sync_queue::QueueItem},
 };
 
@@ -286,16 +286,16 @@ impl StringModel for TemplatableMCPServer {
         })
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_yarp_drive(&self) -> bool {
         false
     }
 
-    fn to_warp_drive_item(
+    fn to_yarp_drive_item(
         &self,
         _id: SyncId,
         _appearance: &Appearance,
         _templatable_mcp_server: &CloudTemplatableMCPServer,
-    ) -> Option<Box<dyn WarpDriveItem>> {
+    ) -> Option<Box<dyn YarpDriveItem>> {
         None
     }
 }

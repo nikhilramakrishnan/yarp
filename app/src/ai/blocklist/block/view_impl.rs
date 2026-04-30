@@ -683,10 +683,10 @@ pub fn render_citation(
     let theme = appearance.theme();
 
     let (icon, name) = match citation {
-        AIAgentCitation::WarpDriveObject { uid } => {
+        AIAgentCitation::YarpDriveObject { uid } => {
             let item = CloudModel::as_ref(app)
                 .get_by_uid(uid)?
-                .to_warp_drive_item(appearance)?;
+                .to_yarp_drive_item(appearance)?;
             (
                 item.icon(appearance, Some(theme.active_ui_text_color())),
                 item.display_name().unwrap_or(String::from("Untitled")),

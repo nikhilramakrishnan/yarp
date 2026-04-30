@@ -454,7 +454,7 @@ pub enum PaletteSource {
     PrefixChange,
     Keybinding,
     CtrlTab { shift_pressed_initially: bool },
-    WarpDrive,
+    YarpDrive,
     QuitModal,
     LogOutModal,
     IntegrationTest,
@@ -544,7 +544,7 @@ pub enum PluginChipTelemetryAction {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub enum WarpDriveSource {
+pub enum YarpDriveSource {
     Legacy,
     LeftPanelToolbelt,
     ForceOpened,
@@ -578,7 +578,7 @@ pub enum CommandSearchResultType {
     TranslateUsingWarpAI,
     Notebook,
     EnvVarCollection,
-    ViewInWarpDrive,
+    ViewInYarpDrive,
     AIQuery,
     Project,
 }
@@ -719,8 +719,8 @@ pub enum KnowledgePaneEntrypoint {
     #[serde(rename = "settings")]
     Settings,
 
-    #[serde(rename = "warp_drive")]
-    WarpDrive,
+    #[serde(rename = "yarp_drive")]
+    YarpDrive,
 
     #[serde(rename = "ai_blocklist")]
     AIBlocklist,
@@ -738,8 +738,8 @@ pub enum MCPServerCollectionPaneEntrypoint {
     #[serde(rename = "settings")]
     Settings,
 
-    #[serde(rename = "warp_drive")]
-    WarpDrive,
+    #[serde(rename = "yarp_drive")]
+    YarpDrive,
 
     #[serde(rename = "slash_command")]
     SlashCommand,
@@ -996,7 +996,7 @@ pub enum CodeContextDestination {
 
 #[derive(Clone, Debug, Serialize)]
 pub enum AgentModeCitation {
-    WarpDriveObject {
+    YarpDriveObject {
         object_type: ObjectType,
         uid: ObjectUid,
     },
@@ -1734,8 +1734,8 @@ pub enum TelemetryEvent {
     },
     AnonymousUserHitCloudObjectLimit,
     NeedsReauth,
-    WarpDriveOpened {
-        source: WarpDriveSource,
+    YarpDriveOpened {
+        source: YarpDriveSource,
         is_code_mode_v2: bool,
     },
     // Toggled the legacy Yarp AI side panel.
@@ -2338,7 +2338,7 @@ pub enum TelemetryEvent {
     AutoupdateMutexTimeout,
     #[cfg(windows)]
     AutoupdateForcekillFailed,
-    ExecutedWarpDrivePrompt {
+    ExecutedYarpDrivePrompt {
         id: Option<WorkflowId>,
         selection_source: WorkflowSelectionSource,
     },
@@ -3854,7 +3854,7 @@ impl TelemetryEvent {
                 "conversation_id": conversation_id,
                 "rating": rating,
             })),
-            TelemetryEvent::ExecutedWarpDrivePrompt {
+            TelemetryEvent::ExecutedYarpDrivePrompt {
                 id,
                 selection_source,
             } => Some(json!({
@@ -4330,7 +4330,7 @@ impl TelemetryEvent {
                 "banner_toggle_flag_enabled": banner_toggle_flag_enabled,
                 "post_purchase_modal_flag_enabled": post_purchase_modal_flag_enabled,
             })),
-            TelemetryEvent::WarpDriveOpened {
+            TelemetryEvent::YarpDriveOpened {
                 source,
                 is_code_mode_v2,
             } => Some(json!({
@@ -4771,7 +4771,7 @@ impl TelemetryEvent {
             | TelemetryEvent::AnonymousUserAttemptLoginGatedFeature { .. }
             | TelemetryEvent::AnonymousUserHitCloudObjectLimit
             | TelemetryEvent::NeedsReauth
-            | TelemetryEvent::WarpDriveOpened { .. }
+            | TelemetryEvent::YarpDriveOpened { .. }
             | TelemetryEvent::ToggleWarpAI { .. }
             | TelemetryEvent::ToggleSecretRedaction { .. }
             | TelemetryEvent::CustomSecretRegexAdded
@@ -4873,7 +4873,7 @@ impl TelemetryEvent {
             | TelemetryEvent::MCPTemplateShared
             | TelemetryEvent::MCPServerSpawned { .. }
             | TelemetryEvent::MCPToolCallAccepted { .. }
-            | TelemetryEvent::ExecutedWarpDrivePrompt { .. }
+            | TelemetryEvent::ExecutedYarpDrivePrompt { .. }
             | TelemetryEvent::ToggleSshWarpification { .. }
             | TelemetryEvent::SetSshExtensionInstallMode { .. }
             | TelemetryEvent::SshRemoteServerChoiceDoNotAskAgainToggled { .. }
@@ -5319,7 +5319,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::DismissVimKeybindingsBanner => EnablementState::Always,
             Self::InitiateReauth => EnablementState::Always,
             Self::NeedsReauth => EnablementState::Always,
-            Self::WarpDriveOpened => EnablementState::Always,
+            Self::YarpDriveOpened => EnablementState::Always,
             Self::ToggleWarpAI => EnablementState::Always,
             Self::ToggleSecretRedaction => EnablementState::Always,
             Self::CustomSecretRegexAdded => EnablementState::Always,
@@ -5449,7 +5449,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::AgentModeRatedResponse => {
                 EnablementState::Flag(FeatureFlag::GlobalAIAnalyticsBanner)
             }
-            Self::ExecutedWarpDrivePrompt => EnablementState::Flag(FeatureFlag::AgentModeWorkflows),
+            Self::ExecutedYarpDrivePrompt => EnablementState::Flag(FeatureFlag::AgentModeWorkflows),
             Self::ImageReceived => EnablementState::Always,
             Self::FileExceededContextLimit => EnablementState::Always,
             Self::AgentModeError => EnablementState::Always,
@@ -5816,7 +5816,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::EnableAliasExpansionFromBanner => "Enable Alias Expansion From Banner",
             Self::InitiateReauth => "Initiate Reauth",
             Self::NeedsReauth => "Needs Reauth",
-            Self::WarpDriveOpened => "Yarp Drive Opened",
+            Self::YarpDriveOpened => "Yarp Drive Opened",
             Self::ToggleWarpAI => "Toggle Yarp AI",
             Self::ToggleSecretRedaction => "Toggle Secret Redaction",
             Self::CustomSecretRegexAdded => "Custom Secret Regex Added",
@@ -5976,7 +5976,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ActiveIndexedReposChanged => "Active Indexed Repos Changed",
             Self::AttachedImagesToAgentModeQuery => "AgentMode.AttachedImages",
             Self::AgentModeRatedResponse => "AgentMode.RatedResponse",
-            Self::ExecutedWarpDrivePrompt => "AgentMode.ExecutedWarpDrivePrompt",
+            Self::ExecutedYarpDrivePrompt => "AgentMode.ExecutedYarpDrivePrompt",
             Self::ImageReceived => "Image Received",
             Self::FileExceededContextLimit => "AgentMode.Code.FileExceededContextLimit",
             Self::AgentModeError => "AgentMode.Error",
@@ -6533,7 +6533,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             }
             Self::InitiateReauth => "Started the flow to re-authenticate the client",
             Self::NeedsReauth => "User needs to re-authenticate",
-            Self::WarpDriveOpened => "Opened Yarp Drive panel",
+            Self::YarpDriveOpened => "Opened Yarp Drive panel",
             Self::ToggleWarpAI => {
                 "Toggled Yarp AI--an AI assistant to help you debug errors, look up forgotten commands and more"
             }
@@ -6794,7 +6794,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ActiveIndexedReposChanged => {
                 "Active indexed repositories changed, affecting codebase context."
             }
-            Self::ExecutedWarpDrivePrompt => "Executed a saved prompt.",
+            Self::ExecutedYarpDrivePrompt => "Executed a saved prompt.",
             Self::ImageReceived => "Received an image through an image protocol over the pty",
             Self::FileExceededContextLimit => "File from AI exceeded context limit",
             Self::AgentModeError => "Received an error when getting Agent Mode response",

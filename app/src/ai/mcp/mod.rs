@@ -18,7 +18,7 @@ use crate::{
         JsonObjectType, Revision, ServerCloudObject,
     },
     drive::{
-        items::{mcp_server::WarpDriveMCPServer, WarpDriveItem},
+        items::{mcp_server::YarpDriveMCPServer, YarpDriveItem},
         CloudObjectTypeAndId,
     },
     server::{ids::SyncId, sync_queue::QueueItem},
@@ -339,17 +339,17 @@ impl StringModel for MCPServer {
         None
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_yarp_drive(&self) -> bool {
         false
     }
 
-    fn to_warp_drive_item(
+    fn to_yarp_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         mcp_server: &CloudMCPServer,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveMCPServer::new(
+    ) -> Option<Box<dyn YarpDriveItem>> {
+        Some(Box::new(YarpDriveMCPServer::new(
             CloudObjectTypeAndId::GenericStringObject {
                 object_type: GenericStringObjectFormat::Json(JsonObjectType::MCPServer),
                 id,

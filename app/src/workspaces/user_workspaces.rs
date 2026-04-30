@@ -256,7 +256,7 @@ impl UserWorkspaces {
         }
     }
 
-    pub fn is_at_tier_limit_for_some_warp_drive_objects(
+    pub fn is_at_tier_limit_for_some_yarp_drive_objects(
         team_uid: ServerId,
         ctx: &AppContext,
     ) -> bool {

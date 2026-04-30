@@ -34,7 +34,7 @@ use crate::search::binding_source::BindingSource;
 use crate::search::command_palette::conversations::{self};
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::command_palette::new_session::{AllowedSessionKinds, NewSessionDataSource};
-use crate::search::command_palette::{launch_config, warp_drive, CommandPaletteMixer};
+use crate::search::command_palette::{launch_config, yarp_drive, CommandPaletteMixer};
 use crate::search::command_search::projects::project_data_source::ProjectDataSource;
 use crate::search::command_search::projects::{ProjectSearchItem, SuggestedProjectsDataSource};
 use crate::search::data_source::QueryResult;
@@ -90,7 +90,7 @@ pub enum Event {
         id: SyncId,
     },
     /// View the relevant object in the Yarp Drive sidebar.
-    ViewInWarpDrive {
+    ViewInYarpDrive {
         id: CloudObjectTypeAndId,
     },
     /// Open a file at the given path.
@@ -238,14 +238,14 @@ impl WelcomePalette {
             NewSessionDataSource::new(binding_source.clone(), ctx)
                 .with_allowed_kinds(AllowedSessionKinds::tabs_only())
         });
-        let warp_drive_data_source = ctx.add_model(warp_drive::DataSource::new);
+        let yarp_drive_data_source = ctx.add_model(yarp_drive::DataSource::new);
 
         let mixer = ctx.add_model(|ctx| {
             let mut mixer = CommandPaletteMixer::new();
             mixer.add_sync_source(actions_data_source.clone(), HashSet::new());
             mixer.add_sync_source(project_data_source.clone(), HashSet::new());
             mixer.add_sync_source(suggested_projects_data_source.clone(), HashSet::new());
-            mixer.add_sync_source(warp_drive_data_source.clone(), HashSet::new());
+            mixer.add_sync_source(yarp_drive_data_source.clone(), HashSet::new());
 
             if AISettings::as_ref(ctx).is_any_ai_enabled(ctx) {
                 mixer.add_sync_source(conversations_data_source.clone(), HashSet::new());

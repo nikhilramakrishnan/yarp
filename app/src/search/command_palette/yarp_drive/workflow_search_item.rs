@@ -1,30 +1,28 @@
 use crate::appearance::Appearance;
 use crate::cloud_object::CloudObject;
-use crate::drive::cloud_object_styling::warp_drive_icon_color;
+use crate::drive::cloud_object_styling::yarp_drive_icon_color;
 use crate::drive::{CloudObjectTypeAndId, DriveObjectType};
-use crate::notebooks::CloudNotebook;
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::command_palette::render_util::render_search_item_icon;
 use crate::search::command_palette::styles::SEARCH_ITEM_TEXT_PADDING;
 use crate::search::item::{IconLocation, SearchItem};
-use crate::search::notebooks::fuzzy_match::{
-    render_notebook_matched_content_with_highlight, FuzzyMatchNotebookResult,
-};
 use crate::search::result_renderer::ItemHighlightState;
+use crate::search::workflows::fuzzy_match::FuzzyMatchWorkflowResult;
 use crate::ui_components::icons::Icon;
+use crate::workflows::CloudWorkflow;
 use ordered_float::OrderedFloat;
-use yarpui::elements::{Container, Flex, Highlight, ParentElement, Text};
+use yarpui::elements::{Clipped, Container, Flex, Highlight, ParentElement, Shrinkable, Text};
 use yarpui::fonts::{Properties, Weight};
 use yarpui::{AppContext, Element, SingletonEntity};
 
-/// Search item result for a cloud notebook.
+/// Search item result for a cloud workflow.
 #[derive(Debug)]
-pub struct NotebookSearchItem {
-    pub cloud_notebook: CloudNotebook,
-    pub match_result: FuzzyMatchNotebookResult,
+pub struct WorkflowSearchItem {
+    pub match_result: FuzzyMatchWorkflowResult,
+    pub cloud_workflow: CloudWorkflow,
 }
 
-impl SearchItem for NotebookSearchItem {
+impl SearchItem for WorkflowSearchItem {
     type Action = CommandPaletteItemAction;
 
     fn is_multiline(&self) -> bool {
@@ -36,13 +34,18 @@ impl SearchItem for NotebookSearchItem {
         highlight_state: ItemHighlightState,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
-        let color = warp_drive_icon_color(
-            appearance,
-            DriveObjectType::Notebook {
-                is_ai_document: false,
-            },
-        );
-        render_search_item_icon(appearance, Icon::Notebook, color, highlight_state)
+        let (icon, icon_color) = if self.cloud_workflow.model().data.is_agent_mode_workflow() {
+            (
+                Icon::Prompt,
+                yarp_drive_icon_color(appearance, DriveObjectType::AgentModeWorkflow),
+            )
+        } else {
+            (
+                Icon::Workflow,
+                yarp_drive_icon_color(appearance, DriveObjectType::Workflow),
+            )
+        };
+        render_search_item_icon(appearance, icon, icon_color, highlight_state)
     }
 
     fn icon_location(&self, appearance: &Appearance) -> IconLocation {
@@ -60,13 +63,8 @@ impl SearchItem for NotebookSearchItem {
         app: &AppContext,
     ) -> Box<dyn Element> {
         let appearance = Appearance::as_ref(app);
-        let title = if self.cloud_notebook.model().title.is_empty() {
-            "Untitled".to_string()
-        } else {
-            self.cloud_notebook.model().title.clone()
-        };
         let mut name_text = Text::new_inline(
-            title,
+            self.cloud_workflow.model().data.name().to_owned(),
             appearance.ui_font_family(),
             appearance.monospace_font_size(),
         )
@@ -83,7 +81,7 @@ impl SearchItem for NotebookSearchItem {
         }
 
         let mut breadcrumbs_text: Text = Text::new_inline(
-            self.cloud_notebook.breadcrumbs(app),
+            self.cloud_workflow.breadcrumbs(app),
             appearance.ui_font_family(),
             appearance.monospace_font_size() - 2.,
         )
@@ -97,15 +95,22 @@ impl SearchItem for NotebookSearchItem {
             );
         }
 
-        let notebook_content = render_notebook_matched_content_with_highlight(
-            self.cloud_notebook.id,
-            &self.cloud_notebook.model().data,
-            &self.match_result.content_match_result,
-            highlight_state,
-            app,
-        );
+        let mut content_text = Text::new_inline(
+            self.cloud_workflow.model().data.content().to_owned(),
+            appearance.monospace_font_family(),
+            appearance.monospace_font_size() - 2.,
+        )
+        .with_color(highlight_state.sub_text_fill(appearance).into_solid());
 
-        Flex::column()
+        if let Some(command_match_result) = &self.match_result.content_match_result {
+            content_text = content_text.with_single_highlight(
+                Highlight::new()
+                    .with_foreground_color(highlight_state.main_text_fill(appearance).into_solid()),
+                command_match_result.matched_indices.clone(),
+            );
+        }
+
+        let contents = Flex::column()
             .with_child(Container::new(name_text.finish()).finish())
             .with_child(
                 Container::new(breadcrumbs_text.finish())
@@ -113,11 +118,13 @@ impl SearchItem for NotebookSearchItem {
                     .finish(),
             )
             .with_child(
-                Container::new(notebook_content.finish())
+                Container::new(content_text.finish())
                     .with_padding_top(SEARCH_ITEM_TEXT_PADDING)
                     .finish(),
             )
-            .finish()
+            .finish();
+
+        Clipped::new(Shrinkable::new(1., contents).finish()).finish()
     }
 
     fn render_details(&self, _: &AppContext) -> Option<Box<dyn Element>> {
@@ -129,18 +136,18 @@ impl SearchItem for NotebookSearchItem {
     }
 
     fn accept_result(&self) -> Self::Action {
-        CommandPaletteItemAction::OpenNotebook {
-            id: self.cloud_notebook.id,
+        CommandPaletteItemAction::ExecuteWorkflow {
+            id: self.cloud_workflow.id,
         }
     }
 
     fn execute_result(&self) -> Self::Action {
-        CommandPaletteItemAction::ViewInWarpDrive {
-            id: CloudObjectTypeAndId::Notebook(self.cloud_notebook.id),
+        CommandPaletteItemAction::ViewInYarpDrive {
+            id: CloudObjectTypeAndId::Workflow(self.cloud_workflow.id),
         }
     }
 
     fn accessibility_label(&self) -> String {
-        format!("Notebook: {}", self.cloud_notebook.model().title)
+        format!("Workflow: {}", self.cloud_workflow.model().data.name())
     }
 }

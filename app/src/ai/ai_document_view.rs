@@ -6,7 +6,7 @@ use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::blocklist::agent_view::AgentViewEntryOrigin;
 use crate::ai::document::ai_document_model::{AIDocumentSaveStatus, AIDocumentUserEditStatus};
 use crate::appearance::Appearance;
-use crate::drive::{items::WarpDriveItemId, sharing::ShareableObject, CloudObjectTypeAndId};
+use crate::drive::{items::YarpDriveItemId, sharing::ShareableObject, CloudObjectTypeAndId};
 use crate::notebooks::editor::view::RichTextEditorConfig;
 use crate::pane_group::focus_state::PaneFocusHandle;
 use crate::pane_group::pane::view::header::components::{
@@ -108,12 +108,12 @@ pub enum AIDocumentAction {
     SelectVersion(AIDocumentVersion),
     Export,
     OpenVersionMenu,
-    CreateWarpDriveNotebook,
+    CreateYarpDriveNotebook,
     RevertToDocumentVersion,
     SendUpdatedPlan,
     CopyLink(String),
     CopyPlanId,
-    ShowInWarpDrive,
+    ShowInYarpDrive,
     AttachToActiveSession,
 }
 
@@ -121,7 +121,7 @@ pub enum AIDocumentAction {
 pub enum AIDocumentEvent {
     Pane(PaneEvent),
     CloseRequested,
-    ViewInWarpDrive(WarpDriveItemId),
+    ViewInYarpDrive(YarpDriveItemId),
     #[cfg(feature = "local_fs")]
     OpenCodeInWarp {
         source: CodeSource,
@@ -550,7 +550,7 @@ impl AIDocumentView {
             .and_then(|sync_id| sync_id.into_server());
 
         self.pane_configuration.update(ctx, |pc, ctx| {
-            pc.set_shareable_object(server_id.map(ShareableObject::WarpDriveObject), ctx);
+            pc.set_shareable_object(server_id.map(ShareableObject::YarpDriveObject), ctx);
             pc.refresh_pane_header_overflow_menu_items(ctx);
         });
         ctx.notify();
@@ -626,7 +626,7 @@ impl AIDocumentView {
                 .on_click(|ctx, _, _| {
                     ctx.dispatch_typed_action(
                         PaneHeaderAction::<AIDocumentAction, AIDocumentAction>::CustomAction(
-                            AIDocumentAction::CreateWarpDriveNotebook,
+                            AIDocumentAction::CreateYarpDriveNotebook,
                         ),
                     )
                 })
@@ -946,9 +946,9 @@ impl AIDocumentView {
         });
     }
 
-    fn create_warp_drive_notebook(&self, ctx: &mut ViewContext<Self>) {
+    fn create_yarp_drive_notebook(&self, ctx: &mut ViewContext<Self>) {
         let success = AIDocumentModel::handle(ctx).update(ctx, |model, ctx| {
-            model.sync_to_warp_drive(self.document_id, ctx)
+            model.sync_to_yarp_drive(self.document_id, ctx)
         });
         if !success {
             log::error!("Failed to create Yarp Drive notebook");
@@ -1052,7 +1052,7 @@ impl TypedActionView for AIDocumentView {
                 self.refresh(ctx);
             }
             AIDocumentAction::Export => self.export(ctx),
-            AIDocumentAction::CreateWarpDriveNotebook => self.create_warp_drive_notebook(ctx),
+            AIDocumentAction::CreateYarpDriveNotebook => self.create_yarp_drive_notebook(ctx),
             AIDocumentAction::CopyLink(link) => {
                 send_telemetry_from_ctx!(
                     TelemetryEvent::ObjectLinkCopied { link: link.clone() },
@@ -1169,12 +1169,12 @@ impl TypedActionView for AIDocumentView {
                 // Update UI to reflect the new query
                 self.update_header_buttons(ctx);
             }
-            AIDocumentAction::ShowInWarpDrive => {
+            AIDocumentAction::ShowInYarpDrive => {
                 if let Some(document) =
                     AIDocumentModel::as_ref(ctx).get_current_document(&self.document_id)
                 {
                     if let Some(sync_id) = document.sync_id {
-                        ctx.emit(AIDocumentEvent::ViewInWarpDrive(WarpDriveItemId::Object(
+                        ctx.emit(AIDocumentEvent::ViewInYarpDrive(YarpDriveItemId::Object(
                             CloudObjectTypeAndId::Notebook(sync_id),
                         )));
                     }
@@ -1224,7 +1224,7 @@ impl BackingView for AIDocumentView {
 
         // Only show shareable link when the document is synced to Yarp Drive
         if let Some(link) =
-            AIDocumentModel::as_ref(ctx).get_document_warp_drive_object_link(&self.document_id, ctx)
+            AIDocumentModel::as_ref(ctx).get_document_yarp_drive_object_link(&self.document_id, ctx)
         {
             menu_items.push(
                 MenuItemFields::new("Copy link")
@@ -1234,8 +1234,8 @@ impl BackingView for AIDocumentView {
             );
             menu_items.push(
                 MenuItemFields::new("Show in Yarp Drive")
-                    .with_on_select_action(AIDocumentAction::ShowInWarpDrive)
-                    .with_icon(Icon::WarpDrive)
+                    .with_on_select_action(AIDocumentAction::ShowInYarpDrive)
+                    .with_icon(Icon::YarpDrive)
                     .into_item(),
             );
         }

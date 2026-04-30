@@ -33,7 +33,7 @@ use crate::settings::{
     SharedBlockTitleGenerationEnabled, ShouldRenderCLIAgentToolbar,
     ShouldRenderUseAgentToolbarForUserCommands, ShouldShowOzUpdatesInZeroState, ShowAgentTips,
     ShowConversationHistory, ShowHintText, ThinkingDisplayMode, VoiceInputEnabled,
-    WarpDriveContextEnabled,
+    YarpDriveContextEnabled,
 };
 use crate::terminal::session_settings::{SessionSettings, SessionSettingsChangedEvent};
 use crate::terminal::CLIAgent;
@@ -2091,7 +2091,7 @@ pub enum AISettingsPageAction {
     RemoveDirectoryFromCodeReadAllowlist(PathBuf),
     ToggleRules,
     ToggleRuleSuggestions,
-    ToggleWarpDriveContext,
+    ToggleYarpDriveContext,
     SetApplyCodeDiffs(ActionPermission),
     SetReadFiles(ActionPermission),
     SetExecuteCommands(ActionPermission),
@@ -2657,10 +2657,10 @@ impl TypedActionView for AISettingsPageView {
                 });
                 ctx.notify();
             }
-            AISettingsPageAction::ToggleWarpDriveContext => {
+            AISettingsPageAction::ToggleYarpDriveContext => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     let _ = settings
-                        .warp_drive_context_enabled
+                        .yarp_drive_context_enabled
                         .toggle_and_save_value(ctx);
                 });
                 ctx.notify();
@@ -5011,7 +5011,7 @@ struct AIFactWidget {
     rules_link_index: HighlightedHyperlink,
     manage_rules_button: MouseStateHandle,
     rule_suggestions_toggle: SwitchStateHandle,
-    warp_drive_context_toggle: SwitchStateHandle,
+    yarp_drive_context_toggle: SwitchStateHandle,
 }
 
 impl AIFactWidget {
@@ -5095,18 +5095,18 @@ impl AIFactWidget {
             .finish()
     }
 
-    fn render_warp_drive_context_toggle(
+    fn render_yarp_drive_context_toggle(
         &self,
         view: &AISettingsPageView,
         ai_settings: &AISettings,
         app: &yarpui::AppContext,
     ) -> Box<dyn Element> {
-        let toggle = render_ai_setting_toggle::<WarpDriveContextEnabled>(
+        let toggle = render_ai_setting_toggle::<YarpDriveContextEnabled>(
             "Yarp Drive as agent context",
-            AISettingsPageAction::ToggleWarpDriveContext,
-            *ai_settings.warp_drive_context_enabled,
+            AISettingsPageAction::ToggleYarpDriveContext,
+            *ai_settings.yarp_drive_context_enabled,
             ai_settings.is_any_ai_enabled(app),
-            self.warp_drive_context_toggle.clone(),
+            self.yarp_drive_context_toggle.clone(),
             &view.local_only_icon_tooltip_states,
             app,
         );
@@ -5170,7 +5170,7 @@ impl SettingsWidget for AIFactWidget {
 
         column
             .with_child(button)
-            .with_child(self.render_warp_drive_context_toggle(view, ai_settings, app))
+            .with_child(self.render_yarp_drive_context_toggle(view, ai_settings, app))
             .finish()
     }
 }

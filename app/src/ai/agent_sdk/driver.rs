@@ -370,7 +370,7 @@ pub enum AgentDriverError {
         error: terminal::ShareSessionError,
     },
     #[error("Error syncing Yarp Drive")]
-    WarpDriveSyncFailed,
+    YarpDriveSyncFailed,
     #[error("Requested environment not found: {0}")]
     EnvironmentNotFound(String),
     #[error("Environment setup failed: {0}")]
@@ -1889,7 +1889,7 @@ impl AgentDriver {
 
             // Get the notebook link from the document model
             let Some(notebook_link) =
-                doc_model.get_document_warp_drive_object_link(document_id, ctx)
+                doc_model.get_document_yarp_drive_object_link(document_id, ctx)
             else {
                 return;
             };

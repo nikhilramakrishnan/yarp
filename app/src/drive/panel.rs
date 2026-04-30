@@ -31,14 +31,14 @@ use super::{
         has_feature_gated_anonymous_user_reached_workflow_limit,
     },
     index::{DriveIndex, DriveIndexAction, DriveIndexEvent},
-    items::WarpDriveItemId,
+    items::YarpDriveItemId,
     CloudObjectTypeAndId, DriveObjectType,
 };
 
 pub const MIN_SIDEBAR_WIDTH: f32 = 250.;
 pub const MAX_SIDEBAR_WIDTH_RATIO: f32 = 0.75;
 
-pub const YARP_DRIVE_POSITION_ID: &str = "warp_drive";
+pub const YARP_DRIVE_POSITION_ID: &str = "yarp_drive";
 
 /// The sidebar that houses Yarp Drive.
 /// `DrivePanel` is different from `DriveIndex` in that it is responsible for
@@ -86,7 +86,7 @@ pub enum DrivePanelEvent {
     OpenNotebook(NotebookSource),
     OpenEnvVarCollection(EnvVarCollectionSource),
     OpenWorkflowInPane(WorkflowOpenSource, WorkflowViewMode),
-    FocusWarpDrive,
+    FocusYarpDrive,
     AttachPlanAsContext(AIDocumentId),
 }
 
@@ -304,7 +304,7 @@ impl DrivePanel {
             DriveIndexEvent::OpenWorkflowModalWithCloudWorkflow(workflow_id) => {
                 self.open_workflow_modal_with_existing(*workflow_id, ctx)
             }
-            DriveIndexEvent::FocusWarpDrive => ctx.emit(DrivePanelEvent::FocusWarpDrive),
+            DriveIndexEvent::FocusYarpDrive => ctx.emit(DrivePanelEvent::FocusYarpDrive),
             DriveIndexEvent::OpenSharedObjectsCreationDeniedModal(object_type, team_uid) => ctx
                 .emit(DrivePanelEvent::OpenSharedObjectsCreationDeniedModal(
                     *object_type,
@@ -455,7 +455,7 @@ impl DrivePanel {
 
     pub fn set_selected_object(
         &mut self,
-        id: Option<WarpDriveItemId>,
+        id: Option<YarpDriveItemId>,
         ctx: &mut ViewContext<Self>,
     ) {
         self.index_view.update(ctx, |index_view, ctx| {
@@ -595,7 +595,7 @@ impl DrivePanel {
 
     pub fn expand_section_for_drive_item_id(
         &mut self,
-        item_id: WarpDriveItemId,
+        item_id: YarpDriveItemId,
         ctx: &mut ViewContext<Self>,
     ) {
         self.index_view.update(ctx, |index, ctx| {
@@ -604,7 +604,7 @@ impl DrivePanel {
     }
 
     /// This functions scrolls the relevant Yarp Drive item into view.
-    pub fn scroll_item_into_view(&mut self, item_id: WarpDriveItemId, ctx: &mut ViewContext<Self>) {
+    pub fn scroll_item_into_view(&mut self, item_id: YarpDriveItemId, ctx: &mut ViewContext<Self>) {
         self.index_view.update(ctx, |index, ctx| {
             index.scroll_item_into_view(item_id, ctx);
         })
@@ -617,7 +617,7 @@ impl DrivePanel {
         })
     }
 
-    pub fn set_focused_item(&mut self, item_id: WarpDriveItemId, ctx: &mut ViewContext<Self>) {
+    pub fn set_focused_item(&mut self, item_id: YarpDriveItemId, ctx: &mut ViewContext<Self>) {
         self.index_view.update(ctx, |index, ctx| {
             ctx.focus(&self.index_view);
             index.set_focused_item(item_id, true, ctx);
@@ -631,27 +631,27 @@ impl DrivePanel {
         source: SharingDialogSource,
         ctx: &mut ViewContext<Self>,
     ) {
-        let warp_drive_item_id = WarpDriveItemId::Object(object_id);
+        let yarp_drive_item_id = YarpDriveItemId::Object(object_id);
         self.index_view.update(ctx, |index, ctx| {
-            index.set_focused_item(warp_drive_item_id, true, ctx);
-            index.toggle_share_dialog(&warp_drive_item_id, invitee_email, source, ctx);
+            index.set_focused_item(yarp_drive_item_id, true, ctx);
+            index.toggle_share_dialog(&yarp_drive_item_id, invitee_email, source, ctx);
         });
     }
 
-    pub fn has_warp_drive_initialized_sections(
+    pub fn has_yarp_drive_initialized_sections(
         &self,
         app: &AppContext,
     ) -> impl Future<Output = ()> {
         self.index_view.as_ref(app).has_initialized_sections()
     }
 
-    pub fn reset_focused_index_in_warp_drive(
+    pub fn reset_focused_index_in_yarp_drive(
         &mut self,
         should_scroll: bool,
         ctx: &mut ViewContext<Self>,
     ) {
         self.index_view.update(ctx, |index, ctx| {
-            index.reset_focused_index_in_warp_drive(should_scroll, ctx);
+            index.reset_focused_index_in_yarp_drive(should_scroll, ctx);
         })
     }
 
@@ -674,7 +674,7 @@ impl DrivePanel {
 
 impl View for DrivePanel {
     fn ui_name() -> &'static str {
-        "WarpDrivePanel"
+        "YarpDrivePanel"
     }
 
     fn on_focus(&mut self, focus_ctx: &FocusContext, ctx: &mut ViewContext<Self>) {
@@ -723,7 +723,7 @@ impl TypedActionView for DrivePanel {
             DrivePanelAction::FocusDriveIndex => {
                 ctx.focus(&self.index_view);
                 // should_scroll is set to false here in order to not let menu clicks autoscroll WD index
-                self.reset_focused_index_in_warp_drive(false, ctx);
+                self.reset_focused_index_in_yarp_drive(false, ctx);
             }
         }
     }
