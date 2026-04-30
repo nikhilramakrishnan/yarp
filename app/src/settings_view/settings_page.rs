@@ -22,7 +22,7 @@ use super::{
     show_blocks_view::ShowBlocksView,
     teams_page::TeamsPageView,
     yarp_drive_page::YarpDriveSettingsPageView,
-    warpify_page::WarpifyPageView,
+    yarpify_page::YarpifyPageView,
     SettingsSection,
 };
 use crate::{
@@ -114,7 +114,7 @@ pub enum SettingsPageViewHandle {
     Teams(ViewHandle<TeamsPageView>),
     OzCloudAPIKeys(ViewHandle<super::platform_page::PlatformPageView>),
     Privacy(ViewHandle<PrivacyPageView>),
-    Warpify(ViewHandle<WarpifyPageView>),
+    Yarpify(ViewHandle<YarpifyPageView>),
     Referrals(ViewHandle<ReferralsPageView>),
     AI(ViewHandle<AISettingsPageView>),
     AIProvider(ViewHandle<AIProviderPageView>),
@@ -138,7 +138,7 @@ impl SettingsPageViewHandle {
             Teams(view_handle) => ChildView::new(view_handle).finish(),
             OzCloudAPIKeys(view_handle) => ChildView::new(view_handle).finish(),
             Privacy(view_handle) => ChildView::new(view_handle).finish(),
-            Warpify(view_handle) => ChildView::new(view_handle).finish(),
+            Yarpify(view_handle) => ChildView::new(view_handle).finish(),
             Referrals(view_handle) => ChildView::new(view_handle).finish(),
             AI(view_handle) => ChildView::new(view_handle).finish(),
             AIProvider(view_handle) => ChildView::new(view_handle).finish(),

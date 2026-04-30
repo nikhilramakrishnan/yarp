@@ -24,26 +24,26 @@ use yarpui::{
 };
 
 use super::render::{HORIZONTAL_TEXT_MARGIN, SSH_DOCS_URL, SUBSHELL_DOCS_URL};
-use super::settings::WarpifySettings;
-use super::{render, subshell_bootstrap_success_block_bytes, WarpificationSource};
+use super::settings::YarpifySettings;
+use super::{render, subshell_bootstrap_success_block_bytes, YarpificationSource};
 
 const VERTICAL_TEXT_MARGIN: f32 = 16.;
 
 #[derive(Debug, Clone)]
-pub enum WarpifySuccessBlockEvent {
-    OpenWarpifySettings,
+pub enum YarpifySuccessBlockEvent {
+    OpenYarpifySettings,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub enum WarpifySuccessBlockAction {
-    ClearAutoWarpifySnippet,
-    OpenWarpifySettings,
+pub enum YarpifySuccessBlockAction {
+    ClearAutoYarpifySnippet,
+    OpenYarpifySettings,
     OpenUrl(String),
 }
 
-struct AutoWarpifySnippet {
+struct AutoYarpifySnippet {
     /// On subshell initialization, this will contain the output grid to display,
-    /// containing info like how to auto-warpify the subshell.
+    /// containing info like how to auto-yarpify the subshell.
     output_grid: Cow<'static, str>,
     /// The output grid needs to be selectable to allow users to copy the command to their clipboard.
     selection_handle: SelectionHandle,
@@ -55,24 +55,24 @@ struct AutoWarpifySnippet {
     can_write_to_rc: bool,
 }
 
-pub struct WarpifySuccessBlock {
-    source: WarpificationSource,
+pub struct YarpifySuccessBlock {
+    source: YarpificationSource,
     spawning_command: String,
     learn_more_link_mouse_states: MouseStateHandle,
-    auto_warpify_snippet: Option<AutoWarpifySnippet>,
+    auto_yarpify_snippet: Option<AutoYarpifySnippet>,
 }
 
-impl WarpifySuccessBlock {
+impl YarpifySuccessBlock {
     #[allow(clippy::new_without_default)]
     pub fn new(
-        source: WarpificationSource,
+        source: YarpificationSource,
         spawning_command: String,
         subshell_info: Option<SubshellInitializationInfo>,
         shell: Shell,
         disable_tmux: bool,
         ctx: &mut ViewContext<Self>,
     ) -> Self {
-        ctx.subscribe_to_model(&WarpifySettings::handle(ctx), move |_, _, _, ctx| {
+        ctx.subscribe_to_model(&YarpifySettings::handle(ctx), move |_, _, _, ctx| {
             ctx.notify();
         });
 
@@ -80,17 +80,17 @@ impl WarpifySuccessBlock {
         // getting the OS to write to the correct RC file.
         let remote_os = TargetOS::Linux;
 
-        let is_auto_warpify_configured = subshell_info
+        let is_auto_yarpify_configured = subshell_info
             .as_ref()
             .map(|info| info.was_triggered_by_rc_file_snippet)
             .unwrap_or_default();
 
-        let auto_warpify_snippet = if is_auto_warpify_configured {
+        let auto_yarpify_snippet = if is_auto_yarpify_configured {
             None
         } else {
             subshell_info.and_then(|subshell_info| {
-                // If warpification wasn't triggered automatically, show a snippet about
-                // how to automatically warpify.
+                // If yarpification wasn't triggered automatically, show a snippet about
+                // how to automatically yarpify.
                 (!subshell_info.was_triggered_by_rc_file_snippet).then(|| {
                     let (command, is_executable) = subshell_bootstrap_success_block_bytes(
                         &subshell_info,
@@ -113,8 +113,8 @@ impl WarpifySuccessBlock {
                 })
             })
         };
-        let auto_warpify_snippet = auto_warpify_snippet.map(|(output_grid, can_write_to_rc)| {
-            AutoWarpifySnippet {
+        let auto_yarpify_snippet = auto_yarpify_snippet.map(|(output_grid, can_write_to_rc)| {
+            AutoYarpifySnippet {
                 description: (if !output_grid.is_empty() {
                     "Run the following to automatically Yarpify in the future:"
                 } else {
@@ -133,12 +133,12 @@ impl WarpifySuccessBlock {
             source,
             learn_more_link_mouse_states: Default::default(),
             spawning_command,
-            auto_warpify_snippet,
+            auto_yarpify_snippet,
         }
     }
 
     pub fn selected_text(&self) -> Option<String> {
-        self.auto_warpify_snippet
+        self.auto_yarpify_snippet
             .as_ref()
             .and_then(|snippet| snippet.selected_text.read().clone())
     }
@@ -185,8 +185,8 @@ impl WarpifySuccessBlock {
 
     fn render_learn_more_link(&self, appearance: &Appearance) -> Box<dyn Element> {
         let url = match self.source {
-            WarpificationSource::Ssh => SSH_DOCS_URL,
-            WarpificationSource::Subshell => SUBSHELL_DOCS_URL,
+            YarpificationSource::Ssh => SSH_DOCS_URL,
+            YarpificationSource::Subshell => SUBSHELL_DOCS_URL,
         };
 
         let font_family_id = appearance.monospace_font_family();
@@ -198,7 +198,7 @@ impl WarpifySuccessBlock {
                 None,
                 Some(Box::new({
                     move |ctx| {
-                        ctx.dispatch_typed_action(WarpifySuccessBlockAction::OpenUrl(
+                        ctx.dispatch_typed_action(YarpifySuccessBlockAction::OpenUrl(
                             url.to_owned(),
                         ));
                     }
@@ -215,13 +215,13 @@ impl WarpifySuccessBlock {
             .finish()
     }
 
-    /// Fired when a block ends and we are not in a Warpified session.
-    pub fn on_warpified_session_complete(&mut self, ctx: &mut ViewContext<Self>) {
-        self.clear_auto_warpify_snippet(ctx);
+    /// Fired when a block ends and we are not in a Yarpified session.
+    pub fn on_yarpified_session_complete(&mut self, ctx: &mut ViewContext<Self>) {
+        self.clear_auto_yarpify_snippet(ctx);
     }
 
-    pub fn clear_auto_warpify_snippet(&mut self, ctx: &mut ViewContext<Self>) {
-        self.auto_warpify_snippet = None;
+    pub fn clear_auto_yarpify_snippet(&mut self, ctx: &mut ViewContext<Self>) {
+        self.auto_yarpify_snippet = None;
         ctx.notify();
     }
 
@@ -232,16 +232,16 @@ impl WarpifySuccessBlock {
         appearance: &Appearance,
     ) -> Option<Box<dyn Element>> {
         let theme = appearance.theme();
-        let auto_warpify_snippet = self.auto_warpify_snippet.as_ref()?;
+        let auto_yarpify_snippet = self.auto_yarpify_snippet.as_ref()?;
 
-        if auto_warpify_snippet.output_grid.is_empty() {
+        if auto_yarpify_snippet.output_grid.is_empty() {
             return None;
         }
 
-        let shell_language = ProgrammingLanguage::Shell(auto_warpify_snippet.shell_type);
+        let shell_language = ProgrammingLanguage::Shell(auto_yarpify_snippet.shell_type);
         let runnable_command = render_runnable_code_snippet(
-            &auto_warpify_snippet.output_grid,
-            if auto_warpify_snippet.can_write_to_rc {
+            &auto_yarpify_snippet.output_grid,
+            if auto_yarpify_snippet.can_write_to_rc {
                 Some(&shell_language)
             } else {
                 None
@@ -252,7 +252,7 @@ impl WarpifySuccessBlock {
                         code_snippet.to_string(),
                     ));
 
-                    ctx.dispatch_typed_action(WarpifySuccessBlockAction::ClearAutoWarpifySnippet);
+                    ctx.dispatch_typed_action(YarpifySuccessBlockAction::ClearAutoYarpifySnippet);
                 }
             })),
             Some(Box::new({
@@ -260,19 +260,19 @@ impl WarpifySuccessBlock {
                     ctx.dispatch_typed_action(WorkspaceAction::CopyTextToClipboard(code_snippet));
                 }
             })),
-            Some(auto_warpify_snippet.code_snippet_handles.clone()),
+            Some(auto_yarpify_snippet.code_snippet_handles.clone()),
             app,
         );
 
         let semantic_selection = SemanticSelection::as_ref(app);
-        let selected_text = auto_warpify_snippet.selected_text.clone();
+        let selected_text = auto_yarpify_snippet.selected_text.clone();
 
-        // TODO(Simon): Implement full selection and copying functionality for the WarpifySuccessBlock.
+        // TODO(Simon): Implement full selection and copying functionality for the YarpifySuccessBlock.
         // Look to the `EnvVarCollectionBlock` for the existing implementation paradigm. We don't
         // yet have a robust way of ensuring that every aspect of text selection is implemented
         // properly, so be extra careful not to miss any details!
         let output_grid = SelectableArea::new(
-            auto_warpify_snippet.selection_handle.clone(),
+            auto_yarpify_snippet.selection_handle.clone(),
             move |selection_args, _, _| {
                 *selected_text.write() = selection_args.selection;
             },
@@ -286,7 +286,7 @@ impl WarpifySuccessBlock {
             .with_child(
                 Container::new(
                     Text::new(
-                        auto_warpify_snippet.description.clone(),
+                        auto_yarpify_snippet.description.clone(),
                         appearance.monospace_font_family(),
                         appearance.monospace_font_size(),
                     )
@@ -308,15 +308,15 @@ impl WarpifySuccessBlock {
     }
 }
 
-impl Entity for WarpifySuccessBlock {
-    type Event = WarpifySuccessBlockEvent;
+impl Entity for YarpifySuccessBlock {
+    type Event = YarpifySuccessBlockEvent;
 }
 
-pub const WARPIFY_SUCCESS_BLOCK_VISIBLE_KEY: &str = "WarpifySuccessBlockVisible";
+pub const WARPIFY_SUCCESS_BLOCK_VISIBLE_KEY: &str = "YarpifySuccessBlockVisible";
 
-impl View for WarpifySuccessBlock {
+impl View for YarpifySuccessBlock {
     fn ui_name() -> &'static str {
-        "WarpifySuccessBlock"
+        "YarpifySuccessBlock"
     }
 
     fn render(&self, app: &AppContext) -> Box<dyn Element> {
@@ -341,19 +341,19 @@ impl View for WarpifySuccessBlock {
     }
 }
 
-impl TypedActionView for WarpifySuccessBlock {
-    type Action = WarpifySuccessBlockAction;
+impl TypedActionView for YarpifySuccessBlock {
+    type Action = YarpifySuccessBlockAction;
 
     fn handle_action(&mut self, action: &Self::Action, ctx: &mut ViewContext<Self>) {
         match action {
-            WarpifySuccessBlockAction::OpenWarpifySettings => {
-                ctx.emit(WarpifySuccessBlockEvent::OpenWarpifySettings);
+            YarpifySuccessBlockAction::OpenYarpifySettings => {
+                ctx.emit(YarpifySuccessBlockEvent::OpenYarpifySettings);
             }
-            WarpifySuccessBlockAction::OpenUrl(url) => {
+            YarpifySuccessBlockAction::OpenUrl(url) => {
                 ctx.open_url(url);
             }
-            WarpifySuccessBlockAction::ClearAutoWarpifySnippet => {
-                self.clear_auto_warpify_snippet(ctx);
+            YarpifySuccessBlockAction::ClearAutoYarpifySnippet => {
+                self.clear_auto_yarpify_snippet(ctx);
             }
         }
     }

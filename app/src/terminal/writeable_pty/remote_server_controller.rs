@@ -3,13 +3,13 @@ use settings::Setting;
 use yarp_core::SessionId;
 use yarpui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
 
-use crate::terminal::warpify::settings::SshExtensionInstallMode;
+use crate::terminal::yarpify::settings::SshExtensionInstallMode;
 
 use crate::remote_server::manager::{RemoteServerManager, RemoteServerManagerEvent};
 use crate::remote_server::ssh_transport::SshTransport;
 use crate::terminal::model::session::{IsLegacySSHSession, SessionInfo};
 use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
-use crate::terminal::warpify::settings::WarpifySettings;
+use crate::terminal::yarpify::settings::YarpifySettings;
 use crate::{send_telemetry_from_ctx, TelemetryEvent};
 use remote_server::setup::RemotePlatform;
 
@@ -209,7 +209,7 @@ impl<T: EventLoopSender> RemoteServerController<T> {
                 });
             }
             Ok(false) => {
-                let install_mode = *WarpifySettings::as_ref(ctx)
+                let install_mode = *YarpifySettings::as_ref(ctx)
                     .ssh_extension_install_mode
                     .value();
                 match install_mode {

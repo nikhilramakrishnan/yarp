@@ -1,5 +1,5 @@
 //! Banner shown when the remote-server binary check, installation, or connection fails on the remote host.
-//! We fall back to the existing Warpification behavior and display this banner so the user knows why advanced features are unavailable.
+//! We fall back to the existing Yarpification behavior and display this banner so the user knows why advanced features are unavailable.
 
 use yarp_core::ui::theme::color::internal_colors;
 use yarpui::{
@@ -82,7 +82,7 @@ impl View for SshRemoteServerFailedBanner {
             "The binary could not be written or executed on the remote host. \
              This may be due to permission restrictions or missing dependencies. \
              While advanced features like file browsing and code review are currently \
-             disabled, the rest of your Warpified experience is fully available.",
+             disabled, the rest of your Yarpified experience is fully available.",
             appearance.ui_font_family(),
             small_font_size,
         )

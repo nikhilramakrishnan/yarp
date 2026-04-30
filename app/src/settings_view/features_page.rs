@@ -1938,7 +1938,7 @@ impl FeaturesPageView {
 
         ctx.subscribe_to_model(&SelectionSettings::handle(ctx), |_, _, _, ctx| ctx.notify());
 
-        // TODO(CORE-3029): Remove when we launch the new SSH Warpification.
+        // TODO(CORE-3029): Remove when we launch the new SSH Yarpification.
         ctx.subscribe_to_model(&SshSettings::handle(ctx), |_, _, _, ctx| ctx.notify());
         ctx.subscribe_to_model(&AltScreenReporting::handle(ctx), |_, _, _, ctx| {
             ctx.notify()
@@ -4898,7 +4898,7 @@ impl SettingsWidget for SSHWrapperWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
-                    "https://docs.warp.dev/terminal/warpify/ssh-legacy#implementation".into(),
+                    "https://docs.warp.dev/terminal/yarpify/ssh-legacy#implementation".into(),
                 )),
                 secondary_text: if view.ssh_wrapper_toggled {
                     Some("This change will take effect in new sessions".to_string())

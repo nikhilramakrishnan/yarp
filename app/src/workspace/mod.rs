@@ -1419,10 +1419,10 @@ fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::Settings.as_str())
         .with_context_predicate(id!("Workspace")),
         EditableBinding::new(
-            "workspace:show_settings_warpify_page",
+            "workspace:show_settings_yarpify_page",
             BindingDescription::new("Open Settings: Yarpify")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Configure Yarpify..."),
-            WorkspaceAction::ShowSettingsPage(SettingsSection::Warpify),
+            WorkspaceAction::ShowSettingsPage(SettingsSection::Yarpify),
         )
         .with_group(bindings::BindingGroup::Settings.as_str())
         .with_context_predicate(id!("Workspace")),

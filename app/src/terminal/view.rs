@@ -309,8 +309,8 @@ use crate::terminal::shared_session::{
 };
 use crate::terminal::ssh::ssh_detection::SshInteractiveSessionDetected;
 use crate::terminal::view::block_onboarding::onboarding_prompt_block::OnboardingPromptBlock;
-use crate::terminal::warpify::{
-    render::render_subshell_separator, settings::WarpifySettings, SubshellSource,
+use crate::terminal::yarpify::{
+    render::render_subshell_separator, settings::YarpifySettings, SubshellSource,
 };
 use crate::terminal::ShellLaunchData;
 use crate::terminal::{element_size_at_last_frame, HistoryEntry};
@@ -525,7 +525,7 @@ use super::available_shells::AvailableShell;
 use super::block_list_viewport::FindMatchScrollLocation;
 use super::event::SshLoginStatus;
 use super::find::FindOptions;
-use super::model::ansi::{SystemDetails, WarpificationUnavailableReason};
+use super::model::ansi::{SystemDetails, YarpificationUnavailableReason};
 use super::model::block::{
     BlockSection, BlocklistEnvVarMetadata, LONG_RUNNING_COMMAND_DURATION_MS,
 };
@@ -542,25 +542,25 @@ use super::ssh::install_tmux::{
     SshKeyEvent, TmuxInstallMethod,
 };
 use super::ssh::root_access::RootAccess;
-use super::ssh::ssh_detection::evaluate_warpify_ssh_host;
+use super::ssh::ssh_detection::evaluate_yarpify_ssh_host;
 use super::ssh::util::{
     convert_script_to_one_line, parse_interactive_ssh_command, InteractiveSshCommand,
-    SshWarpifyCommand,
+    SshYarpifyCommand,
 };
-use super::ssh::warpify::{
-    begin_warpify_ssh_session_command, warpify_ssh_session_command, SshWarpifyBlock,
-    SshWarpifyBlockEvent,
+use super::ssh::yarpify::{
+    begin_yarpify_ssh_session_command, yarpify_ssh_session_command, SshYarpifyBlock,
+    SshYarpifyBlockEvent,
 };
 use super::ssh::SSH_WARPIFY_TIMEOUT_DURATION;
-use super::warpify::success_block::{WarpifySuccessBlock, WarpifySuccessBlockEvent};
-use super::warpify::trigger_state::{SshBlockState, WarpifyState};
-use super::warpify::WarpificationSource;
+use super::yarpify::success_block::{YarpifySuccessBlock, YarpifySuccessBlockEvent};
+use super::yarpify::trigger_state::{SshBlockState, YarpifyState};
+use super::yarpify::YarpificationSource;
 use super::{GridType, HistoryEvent};
 use crate::antivirus::AntivirusInfo;
 use crate::terminal::links::should_directly_open_link;
 use crate::terminal::model_events::{AnsiHandlerEvent, ModelEvent, ModelEventDispatcher};
-use action::RememberForWarpification;
-use block_banner::{render_warpification_banner, WarpificationMode, WarpifyBannerState};
+use action::RememberForYarpification;
+use block_banner::{render_yarpification_banner, YarpificationMode, YarpifyBannerState};
 use bookmarks::render_floating_block_snapshot;
 use command_corrections::rules::generic::history::History as CommandCorrectionsHistoryRule;
 use init::{INPUT_BOX_VISIBLE_KEY, TOGGLE_BLOCK_FILTER_KEYBINDING};
@@ -675,7 +675,7 @@ const PROMPT_COMPATIBILITY_URL: &str =
 
 /// Link to troubleshooting steps for ControlMaster errors.
 const CONTROLMASTER_ISSUES_URL: &str =
-    "https://docs.warp.dev/terminal/warpify/ssh-legacy#troubleshooting";
+    "https://docs.warp.dev/terminal/yarpify/ssh-legacy#troubleshooting";
 
 /// Link to instructions on how to update p10k.
 const P10K_UPDATE_INSTRUCTIONS_URL: &str =
@@ -700,10 +700,10 @@ const DEBOUNCE_PERIOD: Duration = Duration::from_millis(40);
 /// Key used in user defaults to save whether the user has seen the banner.
 pub const ALIAS_EXPANSION_BANNER_SEEN_KEY: &str = "AliasExpansionBannerSeen";
 
-/// Delay between receiving preexec hook for a command we want to auto-warpify
-/// and triggering the warpification (subshell bootstrapping).
+/// Delay between receiving preexec hook for a command we want to auto-yarpify
+/// and triggering the yarpification (subshell bootstrapping).
 /// Reached this number after experimenting with different values to find a reliable delay.
-const AUTO_WARPIFY_DELAY: u64 = 1000;
+const AUTO_YARPIFY_DELAY: u64 = 1000;
 
 /// Binding names to be customized if the user indicates they prefer
 /// Emacs-style keybindings instead of IDE-style keybindings.
@@ -2594,7 +2594,7 @@ pub struct TerminalView {
     // If the agentic suggestions onboarding block is pending, mark it here.
     pending_onboarding_agentic_suggestions_block: bool,
 
-    /// The type of the subshell that we will bootstrap/"warpify"" on the next [`AfterBlockStarted`]
+    /// The type of the subshell that we will bootstrap/"yarpify"" on the next [`AfterBlockStarted`]
     /// terminal model event. Will only be `Some` with a [`ShellType`] we can bootstrap.
     pending_auto_bootstrap_shell_type: Option<ShellType>,
     env_vars: Vec<EnvVar>,
@@ -2656,7 +2656,7 @@ pub struct TerminalView {
 
     find_model: ModelHandle<TerminalFindModel>,
 
-    warpify_state: WarpifyState,
+    yarpify_state: YarpifyState,
 
     /// The keystroke bound to canceling a command.
     ///
@@ -3701,10 +3701,10 @@ impl TerminalView {
             Banner::new(BannerTextContent::formatted_text(vec![
                 FormattedTextFragment::plain_text("Seems like your completions are not working ("),
                 FormattedTextFragment::hyperlink("more info", CONTROLMASTER_ISSUES_URL),
-                FormattedTextFragment::plain_text("). Enabling tmux warpification in "),
+                FormattedTextFragment::plain_text("). Enabling tmux yarpification in "),
                 FormattedTextFragment::hyperlink_action(
                     "settings",
-                    TerminalAction::ShowWarpifySettings,
+                    TerminalAction::ShowYarpifySettings,
                 ),
                 FormattedTextFragment::plain_text(" may resolve this issue."),
             ]))
@@ -4111,7 +4111,7 @@ impl TerminalView {
             input_position_id,
             input_hoverable_handle: Default::default(),
             find_model,
-            warpify_state: Default::default(),
+            yarpify_state: Default::default(),
             cancel_command_keystroke: keybinding_name_to_keystroke(CANCEL_COMMAND_KEYBINDING, ctx),
             is_file_drop_target: false,
             is_ssh_file_uploader: false,
@@ -7236,7 +7236,7 @@ impl TerminalView {
     /// events, allow it to handle the event.
     ///
     /// TODO(CORE-3415): We should probably remove the FixedBindings for ctrl-c
-    /// in the SSH warpification blocks and handle them here as well.
+    /// in the SSH yarpification blocks and handle them here as well.
     fn maybe_handle_ctrl_c_in_rich_content_block(&mut self, ctx: &mut ViewContext<Self>) {
         if self.active_ai_block(ctx).is_some() {
             self.cancel_active_conversation_via_status_bar(ctx);
@@ -7348,7 +7348,7 @@ impl TerminalView {
 
     fn control_sequence_on_terminal(&mut self, bytes: &[u8], ctx: &mut ViewContext<Self>) {
         if self.is_long_running() {
-            self.on_ssh_warpification_key_event(Some(SshKeyEvent::from_bytes(bytes)), ctx);
+            self.on_ssh_yarpification_key_event(Some(SshKeyEvent::from_bytes(bytes)), ctx);
             self.write_user_bytes_to_pty(bytes.to_owned(), ctx);
         } else {
             safe_warn!(
@@ -7417,7 +7417,7 @@ impl TerminalView {
     /// Generally, this should be control characters rather than printable characters.
     fn keydown_on_terminal(&mut self, characters: &str, ctx: &mut ViewContext<Self>) {
         if self.is_long_running() {
-            self.on_ssh_warpification_key_event(Some(SshKeyEvent::from_chars(characters)), ctx);
+            self.on_ssh_yarpification_key_event(Some(SshKeyEvent::from_chars(characters)), ctx);
             self.highlighted_link.invalidate();
             self.report_possible_typeahead(characters);
             self.write_user_bytes_to_pty(characters.as_bytes().to_vec(), ctx);
@@ -7461,7 +7461,7 @@ impl TerminalView {
     /// We can assume `characters` consists of all printable characters, and therefore,
     /// can go into the input box.
     fn typed_characters_on_terminal(&mut self, characters: &str, ctx: &mut ViewContext<Self>) {
-        self.on_ssh_warpification_key_event(Some(SshKeyEvent::from_chars(characters)), ctx);
+        self.on_ssh_yarpification_key_event(Some(SshKeyEvent::from_chars(characters)), ctx);
 
         if self.should_write_typed_chars_to_pty(ctx) {
             self.highlighted_link.invalidate();
@@ -7932,7 +7932,7 @@ impl TerminalView {
         triggered_by_rc_file_snippet: bool,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.dismiss_warpify_banner(&RememberForWarpification::DoNotRememberSubshellCommand, ctx);
+        self.dismiss_yarpify_banner(&RememberForYarpification::DoNotRememberSubshellCommand, ctx);
 
         // Record the active long-running block so we can hide it later once the remote
         // actually confirms subshell bootstrap is in progress.
@@ -7945,7 +7945,7 @@ impl TerminalView {
                 .is_active_and_long_running()
             {
                 let block_id = model.block_list().active_block_id().clone();
-                self.warpify_state.set_block_id(block_id);
+                self.yarpify_state.set_block_id(block_id);
             }
         }
 
@@ -7968,7 +7968,7 @@ impl TerminalView {
 
     /// Util method to update the ssh block, with a lock
     fn update_long_running_ssh_block_with_lock(&self, f: impl FnOnce(&mut Block)) -> bool {
-        if let Some(block_id) = self.warpify_state.block_id() {
+        if let Some(block_id) = self.yarpify_state.block_id() {
             if let Some(block) = self
                 .model
                 .lock()
@@ -7987,7 +7987,7 @@ impl TerminalView {
         self.update_long_running_ssh_block_with_lock(|block| {
             block.unhide();
         });
-        self.warpify_state.delete_state();
+        self.yarpify_state.delete_state();
         ctx.notify();
     }
 
@@ -7999,33 +7999,33 @@ impl TerminalView {
     }
 
     fn clear_ssh_blocks(&mut self, ctx: &mut ViewContext<Self>) {
-        self.dismiss_warpify_banner(&RememberForWarpification::DoNotRememberSSHHost, ctx);
-        if let Some(ssh_block) = self.warpify_state.ssh_block_state() {
+        self.dismiss_yarpify_banner(&RememberForYarpification::DoNotRememberSSHHost, ctx);
+        if let Some(ssh_block) = self.yarpify_state.ssh_block_state() {
             let view_id = ssh_block.get_block_view_id();
 
             self.remove_ssh_block_by_id(view_id);
 
             self.redetermine_global_focus(ctx);
 
-            self.warpify_state.clear_ssh_block_state();
+            self.yarpify_state.clear_ssh_block_state();
         }
     }
 
     /// Collapses any expanded UX within SSH blocks.
     /// To ensure we can always see what we're typing, we collapse
     /// the SSH block when typing.
-    fn on_ssh_warpification_key_event(
+    fn on_ssh_yarpification_key_event(
         &mut self,
         key_event: Option<SshKeyEvent>,
         ctx: &mut ViewContext<Self>,
     ) {
-        if self.warpify_state.ssh_block_state().is_some() {
+        if self.yarpify_state.ssh_block_state().is_some() {
             if key_event.is_some_and(|key| key.is_ctrl_c()) {
-                send_telemetry_from_ctx!(TelemetryEvent::SshTmuxWarpifyBlockDismissed, ctx);
+                send_telemetry_from_ctx!(TelemetryEvent::SshTmuxYarpifyBlockDismissed, ctx);
                 self.cancel_bootstrap_workflow(ctx);
-            } else if self.warpify_state.should_prevent_input() {
-                self.warpify_state.focus(ctx);
-                self.warpify_state.collapse_ssh_block(ctx);
+            } else if self.yarpify_state.should_prevent_input() {
+                self.yarpify_state.focus(ctx);
+                self.yarpify_state.collapse_ssh_block(ctx);
                 self.update_scroll_position_locking(
                     ScrollPositionUpdate::AfterRichBlockUpdated,
                     ctx,
@@ -8035,15 +8035,15 @@ impl TerminalView {
         }
     }
 
-    fn handle_remote_warpification_is_unavailable(
+    fn handle_remote_yarpification_is_unavailable(
         &mut self,
-        reason: WarpificationUnavailableReason,
+        reason: YarpificationUnavailableReason,
         ctx: &mut ViewContext<Self>,
     ) {
-        // Stop the pending timeout on warpification.
-        self.warpify_state.abort_ssh_warpify_timeout();
+        // Stop the pending timeout on yarpification.
+        self.yarpify_state.abort_ssh_yarpify_timeout();
         match &reason {
-            WarpificationUnavailableReason::TmuxNotInstalled {
+            YarpificationUnavailableReason::TmuxNotInstalled {
                 system_details,
                 root_access,
             } => {
@@ -8075,7 +8075,7 @@ impl TerminalView {
                     return;
                 }
             }
-            WarpificationUnavailableReason::UnsupportedTmuxVersion { system_details } => {
+            YarpificationUnavailableReason::UnsupportedTmuxVersion { system_details } => {
                 if system_details.writable_home != Some(true) {
                     if let Some(shell_type) = ShellType::from_name(&system_details.shell) {
                         self.trigger_subshell_bootstrap(Some(shell_type), false, ctx);
@@ -8099,7 +8099,7 @@ impl TerminalView {
         self.add_ssh_error_block(reason, ctx);
     }
 
-    fn add_ssh_warpify_prompt(
+    fn add_ssh_yarpify_prompt(
         &mut self,
         command: &str,
         ssh_host: Option<String>,
@@ -8107,14 +8107,14 @@ impl TerminalView {
     ) {
         self.clear_ssh_blocks(ctx);
         self.handle_action(
-            &TerminalAction::ShowWarpifySshBanner(command.to_owned(), ssh_host),
+            &TerminalAction::ShowYarpifySshBanner(command.to_owned(), ssh_host),
             ctx,
         );
     }
 
     /// This method assumes the active block in the blocklist is a long-running SSH command.
-    fn add_ssh_warpifying_block(&mut self, ctx: &mut ViewContext<Self>) {
-        // Shared session viewers can't initiate warpification currently.
+    fn add_ssh_yarpifying_block(&mut self, ctx: &mut ViewContext<Self>) {
+        // Shared session viewers can't initiate yarpification currently.
         if self.model.lock().shared_session_status().is_viewer() {
             return;
         }
@@ -8136,17 +8136,17 @@ impl TerminalView {
             )
         };
 
-        let ssh_warpify_block_handle =
-            ctx.add_typed_action_view(|_| SshWarpifyBlock::new(full_ssh_command));
-        ctx.subscribe_to_view(&ssh_warpify_block_handle, move |me, _, event, ctx| {
-            me.handle_ssh_warpify_block_event(event, ctx);
+        let ssh_yarpify_block_handle =
+            ctx.add_typed_action_view(|_| SshYarpifyBlock::new(full_ssh_command));
+        ctx.subscribe_to_view(&ssh_yarpify_block_handle, move |me, _, event, ctx| {
+            me.handle_ssh_yarpify_block_event(event, ctx);
         });
 
         self.insert_rich_content(
             None,
-            ssh_warpify_block_handle.clone(),
-            Some(RichContentMetadata::SshWarpifyBlock {
-                ssh_warpify_block_handle: ssh_warpify_block_handle.clone(),
+            ssh_yarpify_block_handle.clone(),
+            Some(RichContentMetadata::SshYarpifyBlock {
+                ssh_yarpify_block_handle: ssh_yarpify_block_handle.clone(),
             }),
             RichContentInsertionPosition::Append {
                 insert_below_long_running_block: true,
@@ -8154,15 +8154,15 @@ impl TerminalView {
             ctx,
         );
 
-        ctx.focus(&ssh_warpify_block_handle);
+        ctx.focus(&ssh_yarpify_block_handle);
 
-        self.warpify_state.set_block_id(hidden_ssh_block_id);
-        self.warpify_state
-            .set_ssh_block_state(SshBlockState::Warpifying {
-                handle: ssh_warpify_block_handle,
+        self.yarpify_state.set_block_id(hidden_ssh_block_id);
+        self.yarpify_state
+            .set_ssh_block_state(SshBlockState::Yarpifying {
+                handle: ssh_yarpify_block_handle,
             });
 
-        self.warpify_ssh_session(ctx);
+        self.yarpify_ssh_session(ctx);
     }
 
     /// This method assumes the active block in the blocklist is a long-running SSH command.
@@ -8190,7 +8190,7 @@ impl TerminalView {
             )
         };
 
-        let ssh_host = self.warpify_state.get_pending_ssh_host();
+        let ssh_host = self.yarpify_state.get_pending_ssh_host();
 
         let ssh_install_tmux_block_handle = ctx.add_typed_action_view(|_| {
             SshInstallTmuxBlock::new(
@@ -8222,8 +8222,8 @@ impl TerminalView {
 
         send_telemetry_from_ctx!(TelemetryEvent::SshInstallTmuxBlockDisplayed, ctx);
 
-        self.warpify_state.set_block_id(hidden_ssh_block_id);
-        self.warpify_state
+        self.yarpify_state.set_block_id(hidden_ssh_block_id);
+        self.yarpify_state
             .set_ssh_block_state(SshBlockState::InstallTmux {
                 handle: ssh_install_tmux_block_handle,
             });
@@ -8231,12 +8231,12 @@ impl TerminalView {
 
     fn add_ssh_error_block(
         &mut self,
-        error_reason: WarpificationUnavailableReason,
+        error_reason: YarpificationUnavailableReason,
         ctx: &mut ViewContext<Self>,
     ) {
         // If there's already an error block showing, don't overwrite the existing one.
         if matches!(
-            self.warpify_state.ssh_block_state(),
+            self.yarpify_state.ssh_block_state(),
             Some(SshBlockState::Error { .. })
         ) {
             return;
@@ -8247,7 +8247,7 @@ impl TerminalView {
             block.unhide();
         });
 
-        let ssh_host = self.warpify_state.take_pending_ssh_host();
+        let ssh_host = self.yarpify_state.take_pending_ssh_host();
 
         let ssh_error_block_handle =
             ctx.add_typed_action_view(|_| SshErrorBlock::new(error_reason.clone(), ssh_host));
@@ -8268,18 +8268,18 @@ impl TerminalView {
         );
 
         send_telemetry_from_ctx!(
-            TelemetryEvent::SshTmuxWarpificationErrorBlock {
+            TelemetryEvent::SshTmuxYarpificationErrorBlock {
                 error: error_reason,
-                tmux_installation: self.warpify_state.tmux_installation(),
+                tmux_installation: self.yarpify_state.tmux_installation(),
             },
             ctx
         );
 
-        self.warpify_state
+        self.yarpify_state
             .set_ssh_block_state(SshBlockState::Error {
                 handle: ssh_error_block_handle,
             });
-        self.warpify_state.focus(ctx);
+        self.yarpify_state.focus(ctx);
     }
 
     fn add_bootstrap_success_block(
@@ -8302,16 +8302,16 @@ impl TerminalView {
             });
         }
 
-        let warpification_source = match session_type {
-            BootstrapSessionType::WarpifiedRemote => WarpificationSource::Ssh,
-            BootstrapSessionType::Local => WarpificationSource::Subshell,
+        let yarpification_source = match session_type {
+            BootstrapSessionType::YarpifiedRemote => YarpificationSource::Ssh,
+            BootstrapSessionType::Local => YarpificationSource::Subshell,
         };
         let disable_tmux = FeatureFlag::SSHTmuxWrapper.is_enabled()
-            && matches!(warpification_source, WarpificationSource::Ssh)
+            && matches!(yarpification_source, YarpificationSource::Ssh)
             && { !self.model.lock().tmux_control_mode_active() };
         let ssh_success_block_handle = ctx.add_typed_action_view(|ctx| {
-            WarpifySuccessBlock::new(
-                warpification_source,
+            YarpifySuccessBlock::new(
+                yarpification_source,
                 spawning_command,
                 subshell_info,
                 shell,
@@ -8325,9 +8325,9 @@ impl TerminalView {
 
         self.clear_ssh_blocks(ctx);
         self.insert_rich_content(
-            Some(RichContentType::WarpifySuccessBlock),
+            Some(RichContentType::YarpifySuccessBlock),
             ssh_success_block_handle.clone(),
-            Some(RichContentMetadata::WarpifySuccessBlock {
+            Some(RichContentMetadata::YarpifySuccessBlock {
                 bootstrap_success_block_handle: ssh_success_block_handle.clone(),
             }),
             RichContentInsertionPosition::Append {
@@ -8335,38 +8335,38 @@ impl TerminalView {
             },
             ctx,
         );
-        self.warpify_state
-            .set_ssh_block_state(SshBlockState::WarpifySuccess {
+        self.yarpify_state
+            .set_ssh_block_state(SshBlockState::YarpifySuccess {
                 handle: ssh_success_block_handle,
             });
         let active_session_id = self.active_block_session_id();
-        self.warpify_state.on_warpify_start(active_session_id);
+        self.yarpify_state.on_yarpify_start(active_session_id);
         self.refresh_yarp_prompt(ctx);
     }
 
-    fn handle_ssh_warpify_block_event(
+    fn handle_ssh_yarpify_block_event(
         &mut self,
-        event: &SshWarpifyBlockEvent,
+        event: &SshYarpifyBlockEvent,
         ctx: &mut ViewContext<Self>,
     ) {
-        fn dismiss_ssh_warpify_block(me: &mut TerminalView, ctx: &mut ViewContext<TerminalView>) {
-            send_telemetry_from_ctx!(TelemetryEvent::SshTmuxWarpifyBlockDismissed, ctx);
+        fn dismiss_ssh_yarpify_block(me: &mut TerminalView, ctx: &mut ViewContext<TerminalView>) {
+            send_telemetry_from_ctx!(TelemetryEvent::SshTmuxYarpifyBlockDismissed, ctx);
             me.cancel_bootstrap_workflow(ctx);
         }
 
         match event {
-            SshWarpifyBlockEvent::Cancel => {
-                self.warpify_state.replace_timeout_id();
-                dismiss_ssh_warpify_block(self, ctx);
+            SshYarpifyBlockEvent::Cancel => {
+                self.yarpify_state.replace_timeout_id();
+                dismiss_ssh_yarpify_block(self, ctx);
             }
-            SshWarpifyBlockEvent::Interrupt => {
-                dismiss_ssh_warpify_block(self, ctx);
-                self.warpify_state.abort_ssh_warpify_timeout();
+            SshYarpifyBlockEvent::Interrupt => {
+                dismiss_ssh_yarpify_block(self, ctx);
+                self.yarpify_state.abort_ssh_yarpify_timeout();
                 self.user_write_ctrl_c_to_pty(ctx);
             }
-            SshWarpifyBlockEvent::WarpifySession => {
-                send_telemetry_from_ctx!(TelemetryEvent::SshTmuxWarpifyBlockAccepted, ctx);
-                self.add_ssh_warpifying_block(ctx);
+            SshYarpifyBlockEvent::YarpifySession => {
+                send_telemetry_from_ctx!(TelemetryEvent::SshTmuxYarpifyBlockAccepted, ctx);
+                self.add_ssh_yarpifying_block(ctx);
                 self.update_scroll_position_locking(
                     ScrollPositionUpdate::AfterRichBlockUpdated,
                     ctx,
@@ -8392,13 +8392,13 @@ impl TerminalView {
             }
             SshInstallTmuxBlockEvent::Interrupt => {
                 cancel_tmux_install(self, ctx);
-                self.warpify_state.abort_ssh_warpify_timeout();
+                self.yarpify_state.abort_ssh_yarpify_timeout();
                 self.user_write_ctrl_c_to_pty(ctx);
             }
-            SshInstallTmuxBlockEvent::InstallTmuxAndWarpify(install_method) => {
+            SshInstallTmuxBlockEvent::InstallTmuxAndYarpify(install_method) => {
                 send_telemetry_from_ctx!(TelemetryEvent::SshInstallTmuxBlockAccepted, ctx);
                 self.clear_ssh_blocks(ctx);
-                self.install_tmux_and_warpify(ctx, install_method);
+                self.install_tmux_and_yarpify(ctx, install_method);
                 self.update_scroll_position_locking(
                     ScrollPositionUpdate::AfterRichBlockUpdated,
                     ctx,
@@ -8413,7 +8413,7 @@ impl TerminalView {
                 ctx.notify();
             }
             SshInstallTmuxBlockEvent::ToggleTmuxInstallVisibility => {
-                if let Some(ssh_block_id) = self.warpify_state.block_id() {
+                if let Some(ssh_block_id) = self.yarpify_state.block_id() {
                     if let Some(is_visible) = self
                         .model
                         .lock()
@@ -8428,7 +8428,7 @@ impl TerminalView {
                 }
             }
             SshInstallTmuxBlockEvent::UnhideTmuxInstall => {
-                if let Some(ssh_block_id) = self.warpify_state.block_id() {
+                if let Some(ssh_block_id) = self.yarpify_state.block_id() {
                     self.model
                         .lock()
                         .block_list_mut()
@@ -8446,12 +8446,12 @@ impl TerminalView {
         ctx: &mut ViewContext<Self>,
     ) {
         match event {
-            SshErrorBlockEvent::WarpifyWithoutTmux => {
-                let shell_type = self.warpify_state.get_shell_type();
+            SshErrorBlockEvent::YarpifyWithoutTmux => {
+                let shell_type = self.yarpify_state.get_shell_type();
                 self.clear_ssh_blocks(ctx);
                 self.trigger_subshell_bootstrap(shell_type, false, ctx);
             }
-            SshErrorBlockEvent::ContinueWithoutWarpification => {
+            SshErrorBlockEvent::ContinueWithoutYarpification => {
                 self.cancel_bootstrap_workflow(ctx);
             }
         }
@@ -8459,19 +8459,19 @@ impl TerminalView {
 
     fn handle_ssh_success_block_events(
         &mut self,
-        event: &WarpifySuccessBlockEvent,
+        event: &YarpifySuccessBlockEvent,
         ctx: &mut ViewContext<Self>,
     ) {
         match event {
-            WarpifySuccessBlockEvent::OpenWarpifySettings => {
-                ctx.emit(Event::OpenSettings(SettingsSection::Warpify));
+            YarpifySuccessBlockEvent::OpenYarpifySettings => {
+                ctx.emit(Event::OpenSettings(SettingsSection::Yarpify));
             }
         }
     }
 
-    fn dismiss_warpify_banner(
+    fn dismiss_yarpify_banner(
         &mut self,
-        remember_command: &RememberForWarpification,
+        remember_command: &RememberForYarpification,
         ctx: &mut ViewContext<Self>,
     ) {
         {
@@ -8479,66 +8479,66 @@ impl TerminalView {
             model.block_list_mut().set_active_block_banner(None);
         }
 
-        // Also clear the warpify footer so it doesn't linger after warpification
+        // Also clear the yarpify footer so it doesn't linger after yarpification
         // starts, fails, or is cancelled.
-        if FeatureFlag::WarpifyFooter.is_enabled() {
+        if FeatureFlag::YarpifyFooter.is_enabled() {
             self.use_agent_footer.update(ctx, |footer, ctx| {
-                footer.clear_warpify_mode(ctx);
+                footer.clear_yarpify_mode(ctx);
             });
         }
 
         match remember_command {
-            RememberForWarpification::RememberSubshellCommand(command) => {
-                WarpifySettings::handle(ctx).update(ctx, |warpify, ctx| {
-                    warpify.denylist_subshell_command(command, ctx);
+            RememberForYarpification::RememberSubshellCommand(command) => {
+                YarpifySettings::handle(ctx).update(ctx, |yarpify, ctx| {
+                    yarpify.denylist_subshell_command(command, ctx);
                 });
             }
-            RememberForWarpification::RememberSSHHost(host) => {
-                WarpifySettings::handle(ctx).update(ctx, |warpify, ctx| {
-                    warpify.denylist_ssh_host(host, ctx);
+            RememberForYarpification::RememberSSHHost(host) => {
+                YarpifySettings::handle(ctx).update(ctx, |yarpify, ctx| {
+                    yarpify.denylist_ssh_host(host, ctx);
                 });
             }
-            RememberForWarpification::DoNotRememberSubshellCommand
-            | RememberForWarpification::DoNotRememberSSHHost => {}
+            RememberForYarpification::DoNotRememberSubshellCommand
+            | RememberForYarpification::DoNotRememberSSHHost => {}
         }
     }
 
-    fn show_warpify_banner(
+    fn show_yarpify_banner(
         &mut self,
-        input: WarpificationMode,
+        input: YarpificationMode,
         title: &str,
         lowercase_title: &str,
-        warpify_keybinding: Option<Keystroke>,
+        yarpify_keybinding: Option<Keystroke>,
         telemetry_event: TelemetryEvent,
         ctx: &mut ViewContext<Self>,
     ) {
-        if FeatureFlag::WarpifyFooter.is_enabled() {
+        if FeatureFlag::YarpifyFooter.is_enabled() {
             return;
         }
 
         let mut model = self.model.lock();
 
-        // Shared session viewers can't initiate warpification currently.
-        // Don't show the warpify banner when an agent is monitoring the command either.
+        // Shared session viewers can't initiate yarpification currently.
+        // Don't show the yarpify banner when an agent is monitoring the command either.
         if model.shared_session_status().is_viewer()
             || model.block_list().active_block().is_agent_monitoring()
         {
             return;
         }
 
-        let a11y_message = match &warpify_keybinding {
+        let a11y_message = match &yarpify_keybinding {
             Some(keystroke) => format!(
-                "You can press {} to Warpify this {} for more Yarp features.",
+                "You can press {} to Yarpify this {} for more Yarp features.",
                 keystroke.displayed(),
                 lowercase_title
             ),
-            None => format!("You can Warpify this {lowercase_title} for more Yarp features."),
+            None => format!("You can Yarpify this {lowercase_title} for more Yarp features."),
         };
 
         model
             .block_list_mut()
-            .set_active_block_banner(Some(WithinBlockBanner::WarpifyBanner(
-                WarpifyBannerState::new(input, warpify_keybinding),
+            .set_active_block_banner(Some(WithinBlockBanner::YarpifyBanner(
+                YarpifyBannerState::new(input, yarpify_keybinding),
             )));
 
         let a11y_content = AccessibilityContent::new(
@@ -9802,7 +9802,7 @@ impl TerminalView {
     /// Returns true if the block is considered remote.
     ///
     /// Note that we don't know for sure if a block is remote, because we can only detect
-    /// warpified remote blocks.
+    /// yarpified remote blocks.
     ///
     /// For some organizations, we accept a regex list that we run against commands to
     /// further make the determination.
@@ -9812,7 +9812,7 @@ impl TerminalView {
         command: Option<&str>,
         app: &AppContext,
     ) -> bool {
-        let is_warpified_remote = session_id
+        let is_yarpified_remote = session_id
             .map(|id| {
                 self.sessions
                     .as_ref(app)
@@ -9822,7 +9822,7 @@ impl TerminalView {
             })
             .unwrap_or_default();
 
-        if is_warpified_remote {
+        if is_yarpified_remote {
             return true;
         }
 
@@ -10141,7 +10141,7 @@ impl TerminalView {
 
                 // If this block ran a possible subshell command, and it exited before the 1s timer
                 // completed, abort showing the banner.
-                if let Some(abort_handle) = self.warpify_state.take_subshell_banner_abort_handle() {
+                if let Some(abort_handle) = self.yarpify_state.take_subshell_banner_abort_handle() {
                     abort_handle.abort();
                 }
 
@@ -10175,9 +10175,9 @@ impl TerminalView {
                     self.on_user_block_completed(&block_completed_event.block_id, ctx);
                 }
 
-                // Clear any stale warpify mode so it doesn't leak into the next command's footer rendering.
+                // Clear any stale yarpify mode so it doesn't leak into the next command's footer rendering.
                 self.use_agent_footer.update(ctx, |footer, ctx| {
-                    footer.clear_warpify_mode(ctx);
+                    footer.clear_yarpify_mode(ctx);
                 });
                 self.hide_use_agent_footer_in_blocklist(ctx);
                 if matches!(block_completed_event.block_type, BlockType::User(_)) {
@@ -10262,7 +10262,7 @@ impl TerminalView {
                 self.drop_hidden_passive_ai_blocks(ctx);
 
                 // If the first word of the command is a shell alias, expand it
-                // for subshell/SSH detection. This enables warpification for
+                // for subshell/SSH detection. This enables yarpification for
                 // aliased SSH commands (e.g. `alias myssh='ssh user@host'`).
                 let expanded_command = self
                     .active_block_session_id()
@@ -10272,19 +10272,19 @@ impl TerminalView {
                         let alias_value = session.alias_value(first_word)?;
                         Some(format!("{alias_value}{rest}"))
                     });
-                let warpify_command = expanded_command.as_deref().unwrap_or(command.as_str());
+                let yarpify_command = expanded_command.as_deref().unwrap_or(command.as_str());
 
-                // Check if the current running command spawns a subshell eligible for Warpification.
+                // Check if the current running command spawns a subshell eligible for Yarpification.
                 let shell_family = self.shell_family(ctx);
-                let warpify_settings = WarpifySettings::as_ref(ctx);
-                let is_compatible_subshell_command = warpify_settings
+                let yarpify_settings = YarpifySettings::as_ref(ctx);
+                let is_compatible_subshell_command = yarpify_settings
                     .is_compatible_subshell_command(command, shell_family)
-                    || warpify_settings
-                        .is_compatible_subshell_command(warpify_command, shell_family);
-                let command_is_denylisted = warpify_settings
+                    || yarpify_settings
+                        .is_compatible_subshell_command(yarpify_command, shell_family);
+                let command_is_denylisted = yarpify_settings
                     .is_denylisted_subshell_command(command)
-                    || warpify_settings.is_denylisted_subshell_command(warpify_command);
-                // Never warpify or surface warpification for agent-requested commands.
+                    || yarpify_settings.is_denylisted_subshell_command(yarpify_command);
+                // Never yarpify or surface yarpification for agent-requested commands.
                 let has_ai_metadata = self
                     .model
                     .lock()
@@ -10295,31 +10295,31 @@ impl TerminalView {
 
                 if is_compatible_subshell_command {
                     if command_is_denylisted || has_ai_metadata {
-                        // Don't auto-warpify or surface warpification for these commands.
+                        // Don't auto-yarpify or surface yarpification for these commands.
                     } else if let Some(shell_type) = self.pending_auto_bootstrap_shell_type.take() {
                         // If there is a subshell we're waiting to bootstrap until we receive
                         // the preexec hook, now we can bootstrap it.
-                        let auto_warpify_abort_handle = ctx.spawn_abortable(
-                            Timer::after(Duration::from_millis(AUTO_WARPIFY_DELAY)),
+                        let auto_yarpify_abort_handle = ctx.spawn_abortable(
+                            Timer::after(Duration::from_millis(AUTO_YARPIFY_DELAY)),
                             move |me, _, ctx| {
                                 me.trigger_subshell_bootstrap(Some(shell_type), false, ctx);
                             },
                             |_, _| (),
                         );
-                        self.warpify_state
-                            .add_auto_warpify_abort_handle(auto_warpify_abort_handle);
+                        self.yarpify_state
+                            .add_auto_yarpify_abort_handle(auto_yarpify_abort_handle);
                     } else {
                         // Wait 1 second before showing the banner, just to make sure the
                         // command stays running for a bit. If the command fails instantly,
                         // we don't want to flicker the banner away so quickly.
                         let command = command.clone();
-                        self.warpify_state
+                        self.yarpify_state
                             .add_subshell_banner_abort_handle(ctx.spawn_abortable(
                                 Timer::after(*SUBSHELL_BANNER_DELAY_DURATION),
                                 |view, _, ctx| {
-                                    if FeatureFlag::WarpifyFooter.is_enabled() {
-                                        view.show_warpify_footer(
-                                            WarpificationMode::subshell(command),
+                                    if FeatureFlag::YarpifyFooter.is_enabled() {
+                                        view.show_yarpify_footer(
+                                            YarpificationMode::subshell(command),
                                             ctx,
                                         );
                                     } else {
@@ -10335,15 +10335,15 @@ impl TerminalView {
                 } else {
                     if !has_ai_metadata {
                         if let Some(ssh_host) =
-                            parse_interactive_ssh_command(warpify_command).map(|cmd| cmd.host)
+                            parse_interactive_ssh_command(yarpify_command).map(|cmd| cmd.host)
                         {
                             if !self.model.lock().tmux_control_mode_active() {
-                                self.warpify_state
-                                    .set_pending_ssh_host(warpify_command.to_string(), ssh_host);
+                                self.yarpify_state
+                                    .set_pending_ssh_host(yarpify_command.to_string(), ssh_host);
                                 self.model.lock().start_notify_on_end_of_ssh_login();
                             }
                         } else {
-                            self.warpify_state.clear_pending_ssh_host();
+                            self.yarpify_state.clear_pending_ssh_host();
 
                             ctx.spawn(
                                 Timer::after(Duration::from_millis(
@@ -10440,14 +10440,14 @@ impl TerminalView {
                 cloud_workflow_id,
                 cloud_env_var_collection_id,
             }) => {
-                // To automatically warpify a subshell, we run the relevant command to open the
+                // To automatically yarpify a subshell, we run the relevant command to open the
                 // subshell and create a future to delay bootstrapping the subshell long enough for
                 // the command to complete. We receive AfterBlockCompleted if the subshell command
                 // returns an error or the user exits the subshell. Here we abort the future to
                 // avoid an attempt to trigger bootstrapping if the subshell command failed. If the
                 // future already resolved, abort has no effect. We handle this as early as possible
                 // because the abort is time sensitive.
-                self.warpify_state.abort_auto_warpify();
+                self.yarpify_state.abort_auto_yarpify();
 
                 let active_session = self
                     .active_block_session_id()
@@ -10522,14 +10522,14 @@ impl TerminalView {
                 }
                 let active_session_id = self.active_block_session_id();
                 if let Some(block_id) = self
-                    .warpify_state
-                    .get_completed_warpify_session_id(active_session_id, ctx)
+                    .yarpify_state
+                    .get_completed_yarpify_session_id(active_session_id, ctx)
                 {
                     self.remove_ssh_block_by_id(block_id);
                 }
 
-                self.dismiss_warpify_banner(
-                    &RememberForWarpification::DoNotRememberSubshellCommand,
+                self.dismiss_yarpify_banner(
+                    &RememberForYarpification::DoNotRememberSubshellCommand,
                     ctx,
                 );
 
@@ -11061,21 +11061,21 @@ impl TerminalView {
             ModelEvent::DetectedEndOfSshLogin(check_type) => {
                 self.handle_detected_end_of_ssh_login(check_type, ctx);
             }
-            ModelEvent::RemoteWarpificationIsUnavailable(reason) => {
-                self.handle_remote_warpification_is_unavailable(reason.clone(), ctx);
+            ModelEvent::RemoteYarpificationIsUnavailable(reason) => {
+                self.handle_remote_yarpification_is_unavailable(reason.clone(), ctx);
             }
             ModelEvent::SshTmuxInstaller(tmux_installation) => {
-                self.warpify_state
+                self.yarpify_state
                     .set_tmux_installation_state(*tmux_installation);
             }
             ModelEvent::TmuxInstallFailed { line, command } => {
                 let system_details = self
-                    .warpify_state
+                    .yarpify_state
                     .ssh_block_state()
                     .and_then(|s| s.get_system_details(ctx));
-                self.warpify_state.abort_ssh_warpify_timeout();
+                self.yarpify_state.abort_ssh_yarpify_timeout();
                 self.add_ssh_error_block(
-                    WarpificationUnavailableReason::TmuxInstallFailed {
+                    YarpificationUnavailableReason::TmuxInstallFailed {
                         system_details,
                         line: Some(line.to_string()),
                         command: Some(command.to_string()),
@@ -11100,7 +11100,7 @@ impl TerminalView {
             ModelEvent::InitSsh(event) => {
                 let shell_type = event.shell_type;
                 let uname = event.uname.as_ref().unwrap_or(&String::default()).clone();
-                self.continue_warpify_ssh_session(&uname, shell_type, ctx);
+                self.continue_yarpify_ssh_session(&uname, shell_type, ctx);
             }
             ModelEvent::SourcedRcFileInSubshell(event) => {
                 send_telemetry_from_ctx!(TelemetryEvent::ReceivedSubshellRcFileDcs, ctx);
@@ -11128,16 +11128,16 @@ impl TerminalView {
                                 has_ai_metadata,
                             )
                         };
-                        // Never warpify for agent-requested commands.
+                        // Never yarpify for agent-requested commands.
                         if has_ai_metadata {
                             return;
                         }
-                        // To simplify the implementation, we do not support warpifying while SSH-warpified.
+                        // To simplify the implementation, we do not support yarpifying while SSH-yarpified.
                         if is_tmux_control_mode_active {
                             return;
                         }
                         if is_ssh && !disable_tmux {
-                            me.continue_warpify_ssh_session(&uname, shell_type, ctx);
+                            me.continue_yarpify_ssh_session(&uname, shell_type, ctx);
                         } else {
                             me.trigger_subshell_bootstrap(Some(shell_type), true, ctx);
                         }
@@ -11325,8 +11325,8 @@ impl TerminalView {
                 me.remove_ssh_remote_server_choice_block(session_id, ctx);
                 ctx.emit(Event::RemoteServerSkipRequested { session_id });
             }
-            SshRemoteServerChoiceViewEvent::OpenWarpifySettings => {
-                ctx.emit(Event::OpenSettings(SettingsSection::Warpify));
+            SshRemoteServerChoiceViewEvent::OpenYarpifySettings => {
+                ctx.emit(Event::OpenSettings(SettingsSection::Yarpify));
             }
         });
 
@@ -11821,7 +11821,7 @@ impl TerminalView {
         self.update_incompatible_configuration_banner(session.shell().plugins(), ctx);
 
         if let Some(subshell_info) = session.subshell_info() {
-            self.warpify_state
+            self.yarpify_state
                 .add_subshell_separator(subshell_info, self.model.clone(), ctx);
         }
 
@@ -11894,8 +11894,8 @@ impl TerminalView {
             },
         );
 
-        // If we were waiting for a successful warpification, it's come. Stop the timeout.
-        self.warpify_state.abort_ssh_warpify_timeout();
+        // If we were waiting for a successful yarpification, it's come. Stop the timeout.
+        self.yarpify_state.abort_ssh_yarpify_timeout();
 
         if bootstrap_event.subshell_info.is_some() {
             self.add_bootstrap_success_block(bootstrap_event, ctx);
@@ -13404,7 +13404,7 @@ impl TerminalView {
         // https://github.com/warpdotdev/command-corrections/blob/df7848d4fb3da7883623e959889a296a07d88053/src/rules/cd/mod.rs#L31-L36
         // We don't currently support dynamic rules over SSH, so we should not attempt to correct commands if
         // inside ssh session.
-        let is_ssh_command = SshWarpifyCommand::matches(input).is_some();
+        let is_ssh_command = SshYarpifyCommand::matches(input).is_some();
         if is_ssh_command {
             return vec![];
         }
@@ -17513,7 +17513,7 @@ impl TerminalView {
             .and_then(|id| self.sessions.as_ref(ctx).get(id))
         {
             if let Some(info) = session.subshell_info() {
-                self.warpify_state
+                self.yarpify_state
                     .add_subshell_separator(info, self.model.clone(), ctx);
             }
         }
@@ -18542,9 +18542,9 @@ impl TerminalView {
                         env_var_collection_block.clear_selection(ctx);
                     });
                 }
-                Some(RichContentMetadata::WarpifySuccessBlock { .. }) => {
-                    // TODO(Simon): We should be checking for WarpifySuccessBlocks here as well.
-                    // The `WarpifySuccessBlock` implements a `SelectableArea`.
+                Some(RichContentMetadata::YarpifySuccessBlock { .. }) => {
+                    // TODO(Simon): We should be checking for YarpifySuccessBlocks here as well.
+                    // The `YarpifySuccessBlock` implements a `SelectableArea`.
                 }
                 _ => {}
             }
@@ -20588,7 +20588,7 @@ impl TerminalView {
                 }
             }
         } else if self.is_long_running() {
-            self.on_ssh_warpification_key_event(None, ctx);
+            self.on_ssh_yarpification_key_event(None, ctx);
             let sequence =
                 EscCodes::build_escape_sequence(self.model.lock().deref(), &[EscCodes::ARROW_UP]);
             self.write_user_bytes_to_pty(sequence, ctx);
@@ -22034,7 +22034,7 @@ impl TerminalView {
 
         let mut subshell_separators = HashMap::new();
 
-        for (id, command) in self.warpify_state.get_subshell_separators() {
+        for (id, command) in self.yarpify_state.get_subshell_separators() {
             subshell_separators.insert(*id, render_subshell_separator(command.clone(), appearance));
         }
 
@@ -22046,8 +22046,8 @@ impl TerminalView {
             .active_block()
             .block_banner()
             .map(|banner| match banner {
-                WithinBlockBanner::WarpifyBanner(state) => {
-                    render_warpification_banner(state, appearance, app)
+                WithinBlockBanner::YarpifyBanner(state) => {
+                    render_yarpification_banner(state, appearance, app)
                 }
             });
 
@@ -23223,11 +23223,11 @@ impl TerminalView {
 
         match action {
             LearnMore => {
-                ctx.open_url("https://docs.warp.dev/terminal/warpify/ssh-legacy#implementation");
+                ctx.open_url("https://docs.warp.dev/terminal/yarpify/ssh-legacy#implementation");
             }
             Settings => {
                 if FeatureFlag::SSHTmuxWrapper.is_enabled() {
-                    ctx.emit(Event::OpenSettings(SettingsSection::Warpify));
+                    ctx.emit(Event::OpenSettings(SettingsSection::Yarpify));
                 } else {
                     ctx.emit(Event::OpenSettings(SettingsSection::Features));
                 }
@@ -23337,7 +23337,7 @@ impl TerminalView {
     }
 
     /// Replace the terminal input buffer with the given command that is meant to open a subshell.
-    /// Set a flag that we should automatically bootstrap AKA "warpify" the subshell when we
+    /// Set a flag that we should automatically bootstrap AKA "yarpify" the subshell when we
     /// receive the [`AfterBlockStarted`] event.
     pub fn insert_subshell_command_and_bootstrap_if_supported(
         &mut self,
@@ -23571,7 +23571,7 @@ impl TerminalView {
         shell_type: ShellType,
         ctx: &mut ViewContext<Self>,
     ) {
-        // Attempt to auto warpify the subshell when bootstrapped
+        // Attempt to auto yarpify the subshell when bootstrapped
         self.pending_auto_bootstrap_shell_type = Some(shell_type);
 
         self.input.update(ctx, |input, ctx| {
@@ -23690,7 +23690,7 @@ impl TerminalView {
             return;
         };
 
-        let sshed = self.model.lock().is_warpified_ssh() || session.is_legacy_ssh_session();
+        let sshed = self.model.lock().is_yarpified_ssh() || session.is_legacy_ssh_session();
         if sshed && !paths.is_empty() && FeatureFlag::SshDragAndDrop.is_enabled() {
             self.initiate_ssh_file_upload(paths, ctx);
         } else {
@@ -23768,31 +23768,31 @@ impl TerminalView {
             .and_then(|info| info.ssh_connection_info.clone())
     }
 
-    fn warpify_ssh_session(&mut self, ctx: &mut ViewContext<Self>) {
-        self.warpify_state.set_shell_detection_in_progress();
-        self.begin_ssh_warpify_timeout(SSH_WARPIFY_TIMEOUT_DURATION, ctx);
+    fn yarpify_ssh_session(&mut self, ctx: &mut ViewContext<Self>) {
+        self.yarpify_state.set_shell_detection_in_progress();
+        self.begin_ssh_yarpify_timeout(SSH_WARPIFY_TIMEOUT_DURATION, ctx);
         self.clear_line_editor_and_write_to_pty(
-            convert_script_to_one_line(&begin_warpify_ssh_session_command(ctx)).into_bytes(),
+            convert_script_to_one_line(&begin_yarpify_ssh_session_command(ctx)).into_bytes(),
             ctx,
         );
     }
 
-    fn continue_warpify_ssh_session(
+    fn continue_yarpify_ssh_session(
         &mut self,
         uname: &str,
         shell_type: ShellType,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.warpify_state.set_shell_type(&shell_type);
+        self.yarpify_state.set_shell_type(&shell_type);
         self.model.lock().set_pending_yarp_initiated_control_mode();
-        if let Some(script) = warpify_ssh_session_command(uname, shell_type, ctx) {
+        if let Some(script) = yarpify_ssh_session_command(uname, shell_type, ctx) {
             self.clear_line_editor_and_write_to_pty_with_mac_workaround_hack(
                 convert_script_to_one_line(&script).into_bytes(),
                 ctx,
             );
         } else {
             self.add_ssh_error_block(
-                WarpificationUnavailableReason::UnsupportedShell {
+                YarpificationUnavailableReason::UnsupportedShell {
                     shell_name: shell_type.name().to_string(),
                 },
                 ctx,
@@ -23800,7 +23800,7 @@ impl TerminalView {
         }
     }
 
-    fn install_tmux_and_warpify(
+    fn install_tmux_and_yarpify(
         &mut self,
         ctx: &mut ViewContext<Self>,
         install_method: &TmuxInstallMethod,
@@ -23816,27 +23816,27 @@ impl TerminalView {
         );
     }
 
-    fn begin_ssh_warpify_timeout(&mut self, duration: Duration, ctx: &mut ViewContext<Self>) {
-        let timeout_id = self.warpify_state.replace_timeout_id();
+    fn begin_ssh_yarpify_timeout(&mut self, duration: Duration, ctx: &mut ViewContext<Self>) {
+        let timeout_id = self.yarpify_state.replace_timeout_id();
         let active_block_id = self.model.lock().block_list().active_block_id().clone();
         let system_details = self
-            .warpify_state
+            .yarpify_state
             .ssh_block_state()
             .and_then(|s| s.get_system_details(ctx))
             .to_owned();
-        self.warpify_state.add_ssh_warpify_timeout_handle(ctx.spawn(
+        self.yarpify_state.add_ssh_yarpify_timeout_handle(ctx.spawn(
             async move {
                 Timer::after(duration).await;
                 (timeout_id, active_block_id, system_details)
             },
             |terminal_view, (timeout_id, active_block_id, system_details), ctx| {
                 let is_shell_detection =
-                    terminal_view.warpify_state.is_shell_detection_in_progress();
-                if timeout_id == terminal_view.warpify_state.timeout_id()
+                    terminal_view.yarpify_state.is_shell_detection_in_progress();
+                if timeout_id == terminal_view.yarpify_state.timeout_id()
                     && terminal_view.model.lock().block_list().active_block_id() == &active_block_id
                 {
                     terminal_view.add_ssh_error_block(
-                        WarpificationUnavailableReason::Timeout {
+                        YarpificationUnavailableReason::Timeout {
                             is_tmux_install: false,
                             is_shell_detection,
                             system_details,
@@ -23854,7 +23854,7 @@ impl TerminalView {
         ctx: &mut ViewContext<TerminalView>,
     ) {
         match check_type {
-            SshLoginStatus::RecheckBeforeWarpifying => {
+            SshLoginStatus::RecheckBeforeYarpifying => {
                 // After we receive a line of output from ssh that is NOT prompting for user input (unlike "Enter passphrase: "),
                 // we wait and repeat the check after a small delay in case the state returned to something that's user-input bound.
                 // For example, say the output that kicked off this event was "Permission denied, please try again." and
@@ -23876,35 +23876,35 @@ impl TerminalView {
                     },
                 );
             }
-            SshLoginStatus::ReadyToWarpify => {
-                // After the confirmation check, we are confident enough to auto-warpify or offer warpification.
-                let Some(command) = &self.warpify_state.get_pending_ssh_command() else {
+            SshLoginStatus::ReadyToYarpify => {
+                // After the confirmation check, we are confident enough to auto-yarpify or offer yarpification.
+                let Some(command) = &self.yarpify_state.get_pending_ssh_command() else {
                     return;
                 };
-                let ssh_host = &self.warpify_state.get_pending_ssh_host();
+                let ssh_host = &self.yarpify_state.get_pending_ssh_host();
 
                 let shell_family = self.shell_family(ctx);
-                let warpify_settings = WarpifySettings::as_ref(ctx);
+                let yarpify_settings = YarpifySettings::as_ref(ctx);
 
-                let ssh_interactive_session_event = evaluate_warpify_ssh_host(
+                let ssh_interactive_session_event = evaluate_yarpify_ssh_host(
                     command,
                     ssh_host.as_deref(),
                     shell_family,
-                    warpify_settings,
+                    yarpify_settings,
                 );
 
-                if let SshInteractiveSessionDetected::ShouldPromptWarpification {
+                if let SshInteractiveSessionDetected::ShouldPromptYarpification {
                     ref host,
                     ref command,
                 } = ssh_interactive_session_event
                 {
-                    if FeatureFlag::WarpifyFooter.is_enabled() {
-                        self.show_warpify_footer(
-                            WarpificationMode::ssh(command.clone(), host.to_owned()),
+                    if FeatureFlag::YarpifyFooter.is_enabled() {
+                        self.show_yarpify_footer(
+                            YarpificationMode::ssh(command.clone(), host.to_owned()),
                             ctx,
                         );
                     } else {
-                        self.add_ssh_warpify_prompt(command, host.to_owned(), ctx)
+                        self.add_ssh_yarpify_prompt(command, host.to_owned(), ctx)
                     }
                 }
 
@@ -23944,12 +23944,12 @@ impl TerminalView {
         self.shell_indicator_type
     }
 
-    /// Shows the warpify footer for a detected subshell/SSH command.
-    fn show_warpify_footer(&mut self, mode: WarpificationMode, ctx: &mut ViewContext<Self>) {
+    /// Shows the yarpify footer for a detected subshell/SSH command.
+    fn show_yarpify_footer(&mut self, mode: YarpificationMode, ctx: &mut ViewContext<Self>) {
         let model = self.model.lock();
 
-        // Shared session viewers can't initiate warpification currently.
-        // Don't show the warpify footer when an agent is monitoring the command either.
+        // Shared session viewers can't initiate yarpification currently.
+        // Don't show the yarpify footer when an agent is monitoring the command either.
         if model.shared_session_status().is_viewer()
             || model.block_list().active_block().is_agent_monitoring()
         {
@@ -23959,11 +23959,11 @@ impl TerminalView {
 
         let is_ssh = mode.is_ssh();
         self.use_agent_footer.update(ctx, |footer, ctx| {
-            footer.set_warpify_mode(mode, ctx);
+            footer.set_yarpify_mode(mode, ctx);
         });
         self.maybe_show_use_agent_footer_in_blocklist(ctx);
 
-        send_telemetry_from_ctx!(TelemetryEvent::WarpifyFooterShown { is_ssh }, ctx);
+        send_telemetry_from_ctx!(TelemetryEvent::YarpifyFooterShown { is_ssh }, ctx);
     }
 
     fn show_initialization_block(&mut self) {
@@ -24196,8 +24196,8 @@ impl TypedActionView for TerminalView {
                 "Showed initialization block",
                 YarpA11yRole::TextareaRole,
             )),
-            ShowWarpifySettings => Custom(AccessibilityContent::new_without_help(
-                "Opened Warpify Settings",
+            ShowYarpifySettings => Custom(AccessibilityContent::new_without_help(
+                "Opened Yarpify Settings",
                 YarpA11yRole::ButtonRole,
             )),
             OpenFilesPalette { .. } => Custom(AccessibilityContent::new_without_help(
@@ -24246,7 +24246,7 @@ impl TypedActionView for TerminalView {
             | ControlSequence(_)
             | TriggerSubshellBootstrap
             | ShowSubshellBanner(_)
-            | DismissWarpifyBanner(_)
+            | DismissYarpifyBanner(_)
             | OpenBlockListContextMenu
             | AliasExpansionBanner(_)
             | VimModeBanner(_)
@@ -24256,8 +24256,8 @@ impl TypedActionView for TerminalView {
             | OnboardingFlow(_)
             | ImportSettings
             | DragAndDropFiles(_)
-            | WarpifySSHSession
-            | ShowWarpifySshBanner(_, _)
+            | YarpifySSHSession
+            | ShowYarpifySshBanner(_, _)
             | NotifySshErrorBlock(_)
             | ToggleBlockFilterOnSelectedOrLastBlock(_)
             | SetMarkedText { .. }
@@ -24730,35 +24730,35 @@ impl TypedActionView for TerminalView {
             TriggerSubshellBootstrap => self.trigger_subshell_bootstrap(None, false, ctx),
             ShowSubshellBanner(command) => {
                 // Abort handle is no longer needed since we've waited the 1s already.
-                self.warpify_state.take_subshell_banner_abort_handle();
+                self.yarpify_state.take_subshell_banner_abort_handle();
 
-                let warpify_keybinding =
-                    keybinding_name_to_keystroke("terminal:warpify_subshell", ctx);
-                self.show_warpify_banner(
-                    WarpificationMode::subshell(command.to_owned()),
+                let yarpify_keybinding =
+                    keybinding_name_to_keystroke("terminal:yarpify_subshell", ctx);
+                self.show_yarpify_banner(
+                    YarpificationMode::subshell(command.to_owned()),
                     "Subshell",
                     "subshell",
-                    warpify_keybinding,
+                    yarpify_keybinding,
                     TelemetryEvent::ShowSubshellBanner,
                     ctx,
                 );
             }
-            ShowWarpifySshBanner(command, host) => {
-                let warpify_keybinding =
-                    keybinding_name_to_keystroke("terminal:warpify_ssh_session", ctx);
-                self.show_warpify_banner(
-                    WarpificationMode::ssh(command.to_string(), host.to_owned()),
+            ShowYarpifySshBanner(command, host) => {
+                let yarpify_keybinding =
+                    keybinding_name_to_keystroke("terminal:yarpify_ssh_session", ctx);
+                self.show_yarpify_banner(
+                    YarpificationMode::ssh(command.to_string(), host.to_owned()),
                     "SSH Session",
                     "SSH session",
-                    warpify_keybinding,
-                    TelemetryEvent::SshTmuxWarpifyBannerDisplayed,
+                    yarpify_keybinding,
+                    TelemetryEvent::SshTmuxYarpifyBannerDisplayed,
                     ctx,
                 );
             }
-            DismissWarpifyBanner(remember) => {
-                self.dismiss_warpify_banner(remember, ctx);
+            DismissYarpifyBanner(remember) => {
+                self.dismiss_yarpify_banner(remember, ctx);
                 if remember.is_ssh() {
-                    send_telemetry_from_ctx!(TelemetryEvent::SshTmuxWarpifyBlockDismissed, ctx);
+                    send_telemetry_from_ctx!(TelemetryEvent::SshTmuxYarpifyBlockDismissed, ctx);
                 } else {
                     send_telemetry_from_ctx!(
                         TelemetryEvent::DeclineSubshellBootstrap {
@@ -24838,11 +24838,11 @@ impl TypedActionView for TerminalView {
             DragAndDropFiles(paths) => {
                 self.drag_and_drop_files(paths, ctx);
             }
-            WarpifySSHSession => self.add_ssh_warpifying_block(ctx),
+            YarpifySSHSession => self.add_ssh_yarpifying_block(ctx),
             NotifySshErrorBlock(action) => {
                 if let Some(SshBlockState::Error {
                     handle: ssh_error_block_handle,
-                }) = self.warpify_state.ssh_block_state()
+                }) = self.yarpify_state.ssh_block_state()
                 {
                     ssh_error_block_handle.update(ctx, |error_block, ctx| {
                         error_block.handle_action(action, ctx);
@@ -24979,7 +24979,7 @@ impl TypedActionView for TerminalView {
                 else {
                     return;
                 };
-                let sshed = self.model.lock().is_warpified_ssh() || session.is_legacy_ssh_session();
+                let sshed = self.model.lock().is_yarpified_ssh() || session.is_legacy_ssh_session();
                 if sshed && !self.is_file_drop_target {
                     self.is_file_drop_target = true;
                     ctx.notify();
@@ -25023,7 +25023,7 @@ impl TypedActionView for TerminalView {
             LoadAgentModeConversation => {
                 self.load_agent_mode_conversation(ctx);
             }
-            ShowWarpifySettings => ctx.emit(Event::OpenSettings(SettingsSection::Warpify)),
+            ShowYarpifySettings => ctx.emit(Event::OpenSettings(SettingsSection::Yarpify)),
             DeleteAttachment { index } => {
                 self.ai_context_model.update(ctx, |context_model, ctx| {
                     context_model.remove_pending_attachment(*index, ctx);
@@ -26059,27 +26059,27 @@ impl View for TerminalView {
             context.set.insert(init::ROOT_CLOUD_MODE_PANE_KEY);
         }
 
-        if let Some(WithinBlockBanner::WarpifyBanner(state)) =
+        if let Some(WithinBlockBanner::YarpifyBanner(state)) =
             model_lock.block_list().active_block().block_banner()
         {
             if state.is_ssh() {
-                context.set.insert("SshWarpificationBanner");
+                context.set.insert("SshYarpificationBanner");
             } else {
                 context.set.insert("SubshellBanner");
             }
         }
 
-        // Also set the warpify context when the footer (flag-gated replacement
+        // Also set the yarpify context when the footer (flag-gated replacement
         // for the in-block banner) is active, so the ctrl-i keybinding works.
-        if let Some(warpify_mode) = self.use_agent_footer.as_ref(app).warpify_mode(app) {
-            if warpify_mode.is_ssh() {
-                context.set.insert("SshWarpificationBanner");
+        if let Some(yarpify_mode) = self.use_agent_footer.as_ref(app).yarpify_mode(app) {
+            if yarpify_mode.is_ssh() {
+                context.set.insert("SshYarpificationBanner");
             } else {
                 context.set.insert("SubshellBanner");
             }
         }
 
-        if let Some(SshBlockState::Error { .. }) = self.warpify_state.ssh_block_state() {
+        if let Some(SshBlockState::Error { .. }) = self.yarpify_state.ssh_block_state() {
             context.set.insert(SSH_ERROR_BLOCK_VISIBLE_KEY);
         }
 

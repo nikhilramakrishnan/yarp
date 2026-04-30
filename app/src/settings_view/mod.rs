@@ -57,7 +57,7 @@ use yarp_core::{
     settings::ToggleableSetting as _, ui::theme::color::internal_colors,
 };
 use yarp_editor::editor::NavigationKey;
-use warpify_page::{WarpifyPageAction, WarpifyPageView};
+use yarpify_page::{YarpifyPageAction, YarpifyPageView};
 use yarpui::Element;
 use yarpui::{
     elements::{
@@ -109,7 +109,7 @@ mod telemetry;
 mod transfer_ownership_confirmation_modal;
 pub mod update_environment_form;
 mod yarp_drive_page;
-mod warpify_page;
+mod yarpify_page;
 
 #[cfg(not(target_family = "wasm"))]
 pub(crate) use ai_page::cli_agent_settings_widget_id;
@@ -202,7 +202,7 @@ pub enum SettingsSection {
     SharedBlocks,
     Teams,
     YarpDrive,
-    Warpify,
+    Yarpify,
     /// Internal backing-page identifier for AISettingsPageView. Multiple subpages
     /// (YarpAgent, AgentProfiles, Knowledge, ThirdPartyCLIAgents) share this single
     /// backing page, so this variant is needed as the key in `settings_pages`.
@@ -338,7 +338,7 @@ impl FromStr for SettingsSection {
             "Referrals" => Ok(Self::Referrals),
             "Shared blocks" => Ok(Self::SharedBlocks),
             "Teams" => Ok(Self::Teams),
-            "Warpify" => Ok(Self::Warpify),
+            "Yarpify" => Ok(Self::Yarpify),
             "YarpDrive" | "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
             // This page was called "Oz" at one point, keep for backward compatibility.
             "Oz" | "Yarp Agent" => Ok(Self::YarpAgent),
@@ -389,7 +389,7 @@ pub mod flags {
     pub const EXTRA_META_KEYS_LEFT_CONTEXT_FLAG: &str = "Extra_Meta_Keys_Left";
     pub const SCROLL_REPORTING_CONTEXT_FLAG: &str = "Scroll_Reporting";
     pub const FOCUS_REPORTING_CONTEXT_FLAG: &str = "Focus_Reporting";
-    #[deprecated = "Use `SSH_TMUX_WRAPPER_CONTEXT_FLAG` for new ssh warpification logic"]
+    #[deprecated = "Use `SSH_TMUX_WRAPPER_CONTEXT_FLAG` for new ssh yarpification logic"]
     pub const LEGACY_SSH_WRAPPER_CONTEXT_FLAG: &str = "SSH_Wrapper";
     pub const SSH_TMUX_WRAPPER_CONTEXT_FLAG: &str = "SSH_Tmux_Wrapper";
     pub const NOTIFICATIONS_CONTEXT_FLAG: &str = "Notifications_Enabled";
@@ -465,7 +465,7 @@ pub mod flags {
     pub const IS_AUTOINDEXING_ENABLED: &str = "IsAutoIndexingEnabled";
     pub const LIGATURE_RENDERING_CONTEXT_FLAG: &str = "Ligature_Rendering_Enabled";
     pub const HAS_SETTINGS_TO_IMPORT_FLAG: &str = "HasSettingsToImport";
-    /// The user's setting enabled UDI, but we may show a classic input (e.g. ssh/subshell warpification)
+    /// The user's setting enabled UDI, but we may show a classic input (e.g. ssh/subshell yarpification)
     pub const UNIVERSAL_DEVELOPER_INPUT_ENABLED: &str = "UniversalDeveloperInputEnabled";
     pub const AGENT_MODE_INPUT: &str = "InputAgentMode";
     pub const TERMINAL_MODE_INPUT: &str = "InputTerminalMode";
@@ -503,7 +503,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     main_page::init_actions_from_parent_view(app, context, builder);
     appearance_page::init_actions_from_parent_view(app, context, builder);
     features_page::init_actions_from_parent_view(app, context, builder);
-    warpify_page::init_actions_from_parent_view(app, context, builder);
+    yarpify_page::init_actions_from_parent_view(app, context, builder);
     privacy_page::init_actions_from_parent_view(app, context, builder);
     ai_page::init_actions_from_parent_view(app, context, builder);
     code_page::init_actions_from_parent_view(app, context, builder);
@@ -818,7 +818,7 @@ pub enum SettingsAction {
     AI(AISettingsPageAction),
     Code(CodeSettingsPageAction),
     YarpDrive(yarp_drive_page::YarpDriveSettingsPageAction),
-    WarpifyPageToggle(WarpifyPageAction),
+    YarpifyPageToggle(YarpifyPageAction),
     Tab,
     Split(Direction),
     ToggleMaximizePane,
@@ -964,7 +964,7 @@ macro_rules! update_page {
             SettingsPageViewHandle::SharedBlocks(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Keybindings(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Teams(handle) => $ctx.update_view(handle, $update),
-            SettingsPageViewHandle::Warpify(handle) => $ctx.update_view(handle, $update),
+            SettingsPageViewHandle::Yarpify(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::OzCloudAPIKeys(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Privacy(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Referrals(handle) => $ctx.update_view(handle, $update),
@@ -1102,9 +1102,9 @@ impl SettingsView {
             }
         });
 
-        let warpify_page_handle = ctx.add_typed_action_view(WarpifyPageView::new);
-        ctx.subscribe_to_view(&warpify_page_handle, |me, _, event, ctx| {
-            me.handle_warpify_page_event(event, ctx);
+        let yarpify_page_handle = ctx.add_typed_action_view(YarpifyPageView::new);
+        ctx.subscribe_to_view(&yarpify_page_handle, |me, _, event, ctx| {
+            me.handle_yarpify_page_event(event, ctx);
         });
 
         // Render the privacy page only if telemetry opt-out is enabled.
@@ -1176,7 +1176,7 @@ impl SettingsView {
             SettingsPage::new(features_page_handle),
             SettingsPage::new(keybindings_handle),
             SettingsPage::new(platform_page_handle),
-            SettingsPage::new(warpify_page_handle),
+            SettingsPage::new(yarpify_page_handle),
             SettingsPage::new(referrals_page_handle),
             SettingsPage::new(show_blocks_view_handle),
             SettingsPage::new(yarp_drive_page_handle),
@@ -1214,7 +1214,7 @@ impl SettingsView {
             SettingsNavItem::Page(SettingsSection::Features),
             SettingsNavItem::Page(SettingsSection::Keybindings),
             SettingsNavItem::Page(SettingsSection::AIProvider),
-            SettingsNavItem::Page(SettingsSection::Warpify),
+            SettingsNavItem::Page(SettingsSection::Yarpify),
             SettingsNavItem::Page(SettingsSection::Privacy),
             SettingsNavItem::Page(SettingsSection::About),
         ];
@@ -1667,7 +1667,7 @@ impl SettingsView {
         }
     }
 
-    fn handle_warpify_page_event(
+    fn handle_yarpify_page_event(
         &mut self,
         event: &SettingsPageEvent,
         ctx: &mut ViewContext<Self>,
@@ -1959,7 +1959,7 @@ impl SettingsView {
             SettingsPageViewHandle::About(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::OzCloudAPIKeys(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Privacy(v) => v.as_ref(app).should_render(app),
-            SettingsPageViewHandle::Warpify(v) => v.as_ref(app).should_render(app),
+            SettingsPageViewHandle::Yarpify(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Referrals(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::AI(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::AIProvider(v) => v.as_ref(app).should_render(app),
@@ -2593,11 +2593,11 @@ impl TypedActionView for SettingsView {
                     }
                 }
             }
-            SettingsAction::WarpifyPageToggle(warpify_action) => {
-                if let Some(warpify_page) = self.settings_page(SettingsSection::Warpify) {
-                    if let SettingsPageViewHandle::Warpify(view) = &warpify_page.view_handle {
+            SettingsAction::YarpifyPageToggle(yarpify_action) => {
+                if let Some(yarpify_page) = self.settings_page(SettingsSection::Yarpify) {
+                    if let SettingsPageViewHandle::Yarpify(view) = &yarpify_page.view_handle {
                         view.update(ctx, |view, ctx| {
-                            view.handle_action(warpify_action, ctx);
+                            view.handle_action(yarpify_action, ctx);
                         })
                     }
                 }

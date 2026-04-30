@@ -16,30 +16,30 @@ use crate::{
 };
 
 use super::{AgentFooterButtonTheme, USE_AGENT_KEYSTROKE};
-use crate::terminal::view::block_banner::WarpificationMode;
+use crate::terminal::view::block_banner::YarpificationMode;
 
 /// Footer view rendered for detected subshell/SSH commands, offering both
-/// "Warpify" and "Use agent" buttons in a horizontal row.
-pub(super) struct WarpifyFooterView {
+/// "Yarpify" and "Use agent" buttons in a horizontal row.
+pub(super) struct YarpifyFooterView {
     terminal_model: Arc<FairMutex<TerminalModel>>,
-    warpify_button: ViewHandle<ActionButton>,
+    yarpify_button: ViewHandle<ActionButton>,
     use_agent_button: ViewHandle<ActionButton>,
     dismiss_button: ViewHandle<ActionButton>,
-    mode: Option<WarpificationMode>,
+    mode: Option<YarpificationMode>,
 }
 
-impl WarpifyFooterView {
+impl YarpifyFooterView {
     pub fn new(terminal_model: Arc<FairMutex<TerminalModel>>, ctx: &mut ViewContext<Self>) -> Self {
         let button_size = ButtonSize::XSmall;
 
-        let warpify_button = ctx.add_typed_action_view(|_ctx| {
+        let yarpify_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Yarpify subshell", AgentFooterButtonTheme::new(None))
                 .with_icon(Icon::Yarp)
                 .with_size(button_size)
                 .with_tooltip("Enable Yarp shell integration in this session")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
-                    ctx.dispatch_typed_action(WarpifyFooterViewAction::Warpify);
+                    ctx.dispatch_typed_action(YarpifyFooterViewAction::Yarpify);
                 })
         });
 
@@ -51,7 +51,7 @@ impl WarpifyFooterView {
                 .with_tooltip("Ask the Yarp agent to assist")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
-                    ctx.dispatch_typed_action(WarpifyFooterViewAction::UseAgent);
+                    ctx.dispatch_typed_action(YarpifyFooterViewAction::UseAgent);
                 })
         });
 
@@ -59,28 +59,28 @@ impl WarpifyFooterView {
             ActionButton::new("Dismiss", AgentFooterButtonTheme::new(None))
                 .with_size(button_size)
                 .on_click(|ctx| {
-                    ctx.dispatch_typed_action(WarpifyFooterViewAction::Dismiss);
+                    ctx.dispatch_typed_action(YarpifyFooterViewAction::Dismiss);
                 })
         });
 
         Self {
             terminal_model,
-            warpify_button,
+            yarpify_button,
             use_agent_button,
             dismiss_button,
             mode: None,
         }
     }
 
-    /// Updates the warpify button label, keybinding, and stores the current warpification mode.
-    pub fn set_mode(&mut self, mode: WarpificationMode, ctx: &mut ViewContext<Self>) {
+    /// Updates the yarpify button label, keybinding, and stores the current yarpification mode.
+    pub fn set_mode(&mut self, mode: YarpificationMode, ctx: &mut ViewContext<Self>) {
         let (label, binding_name) = match mode {
-            WarpificationMode::Ssh { .. } => {
-                ("Yarpify SSH session", "terminal:warpify_ssh_session")
+            YarpificationMode::Ssh { .. } => {
+                ("Yarpify SSH session", "terminal:yarpify_ssh_session")
             }
-            WarpificationMode::Subshell { .. } => ("Yarpify subshell", "terminal:warpify_subshell"),
+            YarpificationMode::Subshell { .. } => ("Yarpify subshell", "terminal:yarpify_subshell"),
         };
-        self.warpify_button.update(ctx, |button, ctx| {
+        self.yarpify_button.update(ctx, |button, ctx| {
             button.set_label(label, ctx);
             button.set_keybinding(Some(KeystrokeSource::Binding(binding_name)), ctx);
         });
@@ -88,15 +88,15 @@ impl WarpifyFooterView {
         ctx.notify();
     }
 
-    /// Returns the current warpification mode, if set.
-    pub fn mode(&self) -> Option<&WarpificationMode> {
+    /// Returns the current yarpification mode, if set.
+    pub fn mode(&self) -> Option<&YarpificationMode> {
         self.mode.as_ref()
     }
 
-    /// Clears the warpification mode.
+    /// Clears the yarpification mode.
     pub fn clear_mode(&mut self, ctx: &mut ViewContext<Self>) {
         self.mode = None;
-        self.warpify_button.update(ctx, |button, ctx| {
+        self.yarpify_button.update(ctx, |button, ctx| {
             button.set_keybinding(None, ctx);
         });
         ctx.notify();
@@ -104,25 +104,25 @@ impl WarpifyFooterView {
 }
 
 #[derive(Debug, Clone)]
-pub enum WarpifyFooterViewAction {
-    Warpify,
+pub enum YarpifyFooterViewAction {
+    Yarpify,
     UseAgent,
     Dismiss,
 }
 
-pub enum WarpifyFooterViewEvent {
-    Warpify { mode: WarpificationMode },
+pub enum YarpifyFooterViewEvent {
+    Yarpify { mode: YarpificationMode },
     UseAgent,
     Dismiss,
 }
 
-impl Entity for WarpifyFooterView {
-    type Event = WarpifyFooterViewEvent;
+impl Entity for YarpifyFooterView {
+    type Event = YarpifyFooterViewEvent;
 }
 
-impl View for WarpifyFooterView {
+impl View for YarpifyFooterView {
     fn ui_name() -> &'static str {
-        "WarpifyFooterView"
+        "YarpifyFooterView"
     }
 
     fn render(&self, _app: &AppContext) -> Box<dyn Element> {
@@ -132,7 +132,7 @@ impl View for WarpifyFooterView {
             .with_spacing(4.)
             .with_main_axis_size(MainAxisSize::Max)
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
-            .with_child(ChildView::new(&self.warpify_button).finish())
+            .with_child(ChildView::new(&self.yarpify_button).finish())
             .with_child(ChildView::new(&self.use_agent_button).finish())
             .with_child(Expanded::new(1., Empty::new().finish()).finish())
             .with_child(ChildView::new(&self.dismiss_button).finish());
@@ -151,24 +151,24 @@ impl View for WarpifyFooterView {
     }
 }
 
-impl TypedActionView for WarpifyFooterView {
-    type Action = WarpifyFooterViewAction;
+impl TypedActionView for YarpifyFooterView {
+    type Action = YarpifyFooterViewAction;
 
     fn handle_action(&mut self, action: &Self::Action, ctx: &mut ViewContext<Self>) {
         match action {
-            WarpifyFooterViewAction::Warpify => {
+            YarpifyFooterViewAction::Yarpify => {
                 if let Some(mode) = self.mode.clone() {
                     self.clear_mode(ctx);
-                    ctx.emit(WarpifyFooterViewEvent::Warpify { mode });
+                    ctx.emit(YarpifyFooterViewEvent::Yarpify { mode });
                 }
             }
-            WarpifyFooterViewAction::UseAgent => {
+            YarpifyFooterViewAction::UseAgent => {
                 self.clear_mode(ctx);
-                ctx.emit(WarpifyFooterViewEvent::UseAgent);
+                ctx.emit(YarpifyFooterViewEvent::UseAgent);
             }
-            WarpifyFooterViewAction::Dismiss => {
+            YarpifyFooterViewAction::Dismiss => {
                 self.clear_mode(ctx);
-                ctx.emit(WarpifyFooterViewEvent::Dismiss);
+                ctx.emit(YarpifyFooterViewEvent::Dismiss);
             }
         }
     }

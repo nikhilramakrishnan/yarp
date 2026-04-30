@@ -109,11 +109,11 @@ impl SessionContext {
         &self.current_working_directory
     }
 
-    /// Returns the remote host ID if this is a `WarpifiedRemote` session with
+    /// Returns the remote host ID if this is a `YarpifiedRemote` session with
     /// a connected `RemoteServerClient`.
     pub fn host_id(&self) -> Option<&yarp_core::HostId> {
         match &self.session_type {
-            Some(SessionType::WarpifiedRemote { host_id }) => host_id.as_ref(),
+            Some(SessionType::YarpifiedRemote { host_id }) => host_id.as_ref(),
             Some(SessionType::Local) | None => None,
         }
     }
@@ -121,7 +121,7 @@ impl SessionContext {
     /// Returns `true` if this is a remote session (regardless of whether
     /// the remote server client is connected).
     pub fn is_remote(&self) -> bool {
-        matches!(self.session_type, Some(SessionType::WarpifiedRemote { .. }))
+        matches!(self.session_type, Some(SessionType::YarpifiedRemote { .. }))
     }
 
     #[cfg(test)]

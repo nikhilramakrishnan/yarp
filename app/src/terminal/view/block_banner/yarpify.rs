@@ -16,8 +16,8 @@ use yarpui::{
 use crate::{
     appearance::Appearance,
     terminal::{
-        ssh::warpify::warpify_description,
-        view::{RememberForWarpification, TerminalAction},
+        ssh::yarpify::yarpify_description,
+        view::{RememberForYarpification, TerminalAction},
     },
     themes::theme::Fill,
     ui_components::blended_colors,
@@ -29,7 +29,7 @@ const CLOSE_BUTTON_DIAMETER: f32 = 20.0;
 const STANDARD_PADDING: f32 = 8.0;
 
 #[derive(Clone)]
-pub enum WarpificationMode {
+pub enum YarpificationMode {
     Ssh {
         command: String,
         host: Option<String>,
@@ -40,7 +40,7 @@ pub enum WarpificationMode {
     },
 }
 
-impl WarpificationMode {
+impl YarpificationMode {
     pub fn ssh(command: String, host: Option<String>) -> Self {
         Self::Ssh {
             command,
@@ -58,32 +58,32 @@ impl WarpificationMode {
     }
 }
 
-impl WarpificationMode {
+impl YarpificationMode {
     pub fn is_ssh(&self) -> bool {
         matches!(self, Self::Ssh { .. })
     }
 }
 
-pub struct WarpifyBannerState {
-    pub mode: WarpificationMode,
+pub struct YarpifyBannerState {
+    pub mode: YarpificationMode,
     pub height: f32,
     pub accept_button_mouse_state: MouseStateHandle,
     pub dont_ask_button_mouse_state: MouseStateHandle,
     pub dismiss_button_mouse_state: MouseStateHandle,
 
-    /// This keybinding gets rendered in the Warpification banner, but we can't look it up
+    /// This keybinding gets rendered in the Yarpification banner, but we can't look it up
     /// during render as a &mut AppContext is not available then. This needs to get
     /// looked up during action handling and cached here.
-    pub initialize_warpify_keybinding: Option<Keystroke>,
+    pub initialize_yarpify_keybinding: Option<Keystroke>,
     pub hover_state: MouseStateHandle,
 }
 
-impl WarpifyBannerState {
-    pub fn new(mode: WarpificationMode, initialize_warpify_keybinding: Option<Keystroke>) -> Self {
+impl YarpifyBannerState {
+    pub fn new(mode: YarpificationMode, initialize_yarpify_keybinding: Option<Keystroke>) -> Self {
         Self {
             mode,
             height: 0.0,
-            initialize_warpify_keybinding,
+            initialize_yarpify_keybinding,
             accept_button_mouse_state: Default::default(),
             dont_ask_button_mouse_state: Default::default(),
             dismiss_button_mouse_state: Default::default(),
@@ -97,40 +97,40 @@ impl WarpifyBannerState {
 
     pub fn title(&self) -> &str {
         match &self.mode {
-            WarpificationMode::Ssh { .. } => "Yarpify SSH session",
-            WarpificationMode::Subshell { .. } => "Yarpify subshell",
+            YarpificationMode::Ssh { .. } => "Yarpify SSH session",
+            YarpificationMode::Subshell { .. } => "Yarpify subshell",
         }
     }
 
     pub fn action(&self) -> TerminalAction {
         match &self.mode {
-            WarpificationMode::Ssh { .. } => TerminalAction::WarpifySSHSession,
-            WarpificationMode::Subshell { .. } => TerminalAction::TriggerSubshellBootstrap,
+            YarpificationMode::Ssh { .. } => TerminalAction::YarpifySSHSession,
+            YarpificationMode::Subshell { .. } => TerminalAction::TriggerSubshellBootstrap,
         }
     }
 
-    fn remember_for_warpification(&self, should_remember: bool) -> RememberForWarpification {
+    fn remember_for_yarpification(&self, should_remember: bool) -> RememberForYarpification {
         match &self.mode {
-            WarpificationMode::Ssh { command, host, .. } => {
+            YarpificationMode::Ssh { command, host, .. } => {
                 let Some(host) = host else {
                     if should_remember {
-                        return RememberForWarpification::RememberSubshellCommand(
+                        return RememberForYarpification::RememberSubshellCommand(
                             command.to_owned(),
                         );
                     }
-                    return RememberForWarpification::DoNotRememberSSHHost;
+                    return RememberForYarpification::DoNotRememberSSHHost;
                 };
                 if should_remember {
-                    RememberForWarpification::RememberSSHHost(host.to_owned())
+                    RememberForYarpification::RememberSSHHost(host.to_owned())
                 } else {
-                    RememberForWarpification::DoNotRememberSSHHost
+                    RememberForYarpification::DoNotRememberSSHHost
                 }
             }
-            WarpificationMode::Subshell { command } => {
+            YarpificationMode::Subshell { command } => {
                 if should_remember {
-                    RememberForWarpification::RememberSubshellCommand(command.to_owned())
+                    RememberForYarpification::RememberSubshellCommand(command.to_owned())
                 } else {
-                    RememberForWarpification::DoNotRememberSubshellCommand
+                    RememberForYarpification::DoNotRememberSubshellCommand
                 }
             }
         }
@@ -140,19 +140,19 @@ impl WarpifyBannerState {
 /// This banner is shown when the user runs a command which is recognized as a subshell-compatible
 /// command. It asks if they want to boostrap a subshell and, if so, whether we should ask again
 /// next time they run the same command.
-pub fn render_warpification_banner(
-    state: &WarpifyBannerState,
+pub fn render_yarpification_banner(
+    state: &YarpifyBannerState,
     appearance: &Appearance,
     app: &AppContext,
 ) -> Box<dyn Element> {
     let yes_button = render_yes_button(
         state,
-        &state.initialize_warpify_keybinding,
+        &state.initialize_yarpify_keybinding,
         &state.accept_button_mouse_state,
         appearance,
     );
 
-    let remember = state.remember_for_warpification(true);
+    let remember = state.remember_for_yarpification(true);
     let dont_ask_button = Container::new(
         appearance
             .ui_builder()
@@ -163,7 +163,7 @@ pub fn render_warpification_banner(
             .with_text_label("Do not show again".to_owned())
             .build()
             .on_click(move |ctx, _, _| {
-                ctx.dispatch_typed_action(TerminalAction::DismissWarpifyBanner(
+                ctx.dispatch_typed_action(TerminalAction::DismissYarpifyBanner(
                     remember.to_owned(),
                 ));
             })
@@ -172,7 +172,7 @@ pub fn render_warpification_banner(
     .with_margin_right(16.)
     .finish();
 
-    let do_not_remember = state.remember_for_warpification(false);
+    let do_not_remember = state.remember_for_yarpification(false);
     let close_button = appearance
         .ui_builder()
         .close_button(
@@ -181,7 +181,7 @@ pub fn render_warpification_banner(
         )
         .build()
         .on_click(move |ctx, _, _| {
-            ctx.dispatch_typed_action(TerminalAction::DismissWarpifyBanner(
+            ctx.dispatch_typed_action(TerminalAction::DismissYarpifyBanner(
                 do_not_remember.to_owned(),
             ));
         })
@@ -202,11 +202,11 @@ pub fn render_warpification_banner(
 
     render_block_banner(
         |hover_state| {
-            if let WarpificationMode::Ssh {
+            if let YarpificationMode::Ssh {
                 hyperlink_index, ..
             } = &state.mode
             {
-                let description = Container::new(warpify_description(app, hyperlink_index))
+                let description = Container::new(yarpify_description(app, hyperlink_index))
                     .with_uniform_margin(STANDARD_PADDING)
                     .with_margin_top(4.)
                     .finish();
@@ -227,12 +227,12 @@ pub fn render_warpification_banner(
 }
 
 fn render_yes_button(
-    state: &WarpifyBannerState,
-    initialize_warpification_keybinding: &Option<Keystroke>,
+    state: &YarpifyBannerState,
+    initialize_yarpification_keybinding: &Option<Keystroke>,
     mouse_state: &MouseStateHandle,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
-    let yes_button = match initialize_warpification_keybinding {
+    let yes_button = match initialize_yarpification_keybinding {
         Some(keystroke) => appearance
             .ui_builder()
             .keyboard_shortcut_button(state.title().to_owned(), keystroke, mouse_state.clone())

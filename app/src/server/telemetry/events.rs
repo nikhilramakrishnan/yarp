@@ -72,7 +72,7 @@ use crate::terminal::block_list_viewport::InputMode;
 use crate::terminal::cli_agent_sessions::CLIAgentInputEntrypoint;
 use crate::terminal::cli_agent_sessions::CLIAgentRichInputCloseReason;
 use crate::terminal::input::TelemetryInputSuggestionsMode;
-use crate::terminal::model::ansi::WarpificationUnavailableReason;
+use crate::terminal::model::ansi::YarpificationUnavailableReason;
 use crate::terminal::model::block::BlockId;
 use crate::terminal::model::session::SessionId;
 use crate::terminal::model::terminal_model::BlockSelectionCardinality;
@@ -1675,7 +1675,7 @@ pub enum TelemetryEvent {
     ToggleSshTmuxWrapper {
         enabled: bool,
     },
-    ToggleSshWarpification {
+    ToggleSshYarpification {
         enabled: bool,
     },
     /// User changed the SSH extension install mode.
@@ -1689,26 +1689,26 @@ pub enum TelemetryEvent {
     },
     /// An ssh interactive session was detected.
     SshInteractiveSessionDetected(SshInteractiveSessionDetected),
-    SshTmuxWarpifyBannerDisplayed,
-    /// A SSH Warpify Block was accepted
-    SshTmuxWarpifyBlockAccepted,
-    /// A SSH Warpify Block was dismissed
-    SshTmuxWarpifyBlockDismissed,
-    WarpifyFooterShown {
+    SshTmuxYarpifyBannerDisplayed,
+    /// A SSH Yarpify Block was accepted
+    SshTmuxYarpifyBlockAccepted,
+    /// A SSH Yarpify Block was dismissed
+    SshTmuxYarpifyBlockDismissed,
+    YarpifyFooterShown {
         is_ssh: bool,
     },
     AgentToolbarDismissed,
-    WarpifyFooterAcceptedWarpify {
+    YarpifyFooterAcceptedYarpify {
         is_ssh: bool,
     },
-    /// How long until the warpify process succeeded
-    SshTmuxWarpificationSuccess {
+    /// How long until the yarpify process succeeded
+    SshTmuxYarpificationSuccess {
         tmux_installation: Option<TmuxInstallationState>,
         duration_ms: u64,
     },
     /// An SSH Error block was displayed to the user.
-    SshTmuxWarpificationErrorBlock {
-        error: WarpificationUnavailableReason,
+    SshTmuxYarpificationErrorBlock {
+        error: YarpificationUnavailableReason,
         tmux_installation: Option<TmuxInstallationState>,
     },
     /// A SSH Install Tmux Block was displayed.
@@ -1820,7 +1820,7 @@ pub enum TelemetryEvent {
         team_uid: ServerId,
     },
     CopyObjectToClipboard(TelemetryCloudObjectType),
-    OpenAndWarpifyDockerSubshell {
+    OpenAndYarpifyDockerSubshell {
         /// Some variant if we support this shell type, and None otherwise.
         shell_type: Option<ShellType>,
     },
@@ -3272,8 +3272,8 @@ impl TelemetryEvent {
                 Some(json!({ "remember": remember }))
             }
             TelemetryEvent::AgentToolbarDismissed => None,
-            TelemetryEvent::WarpifyFooterShown { is_ssh }
-            | TelemetryEvent::WarpifyFooterAcceptedWarpify { is_ssh } => {
+            TelemetryEvent::YarpifyFooterShown { is_ssh }
+            | TelemetryEvent::YarpifyFooterAcceptedYarpify { is_ssh } => {
                 Some(json!({ "is_ssh": is_ssh }))
             }
             TelemetryEvent::ToggleSameLinePrompt { enabled } => Some(json!({ "enabled": enabled })),
@@ -3346,7 +3346,7 @@ impl TelemetryEvent {
             TelemetryEvent::CopyObjectToClipboard(object_type) => {
                 Some(json!({ "object_type": object_type }))
             }
-            TelemetryEvent::OpenAndWarpifyDockerSubshell { shell_type } => {
+            TelemetryEvent::OpenAndYarpifyDockerSubshell { shell_type } => {
                 Some(json!({ "shell_type": shell_type }))
             }
             TelemetryEvent::ToggleBlockFilterQuery { enabled, source } => {
@@ -3371,7 +3371,7 @@ impl TelemetryEvent {
                 Some(json!({"enabled": enabled}))
             }
             TelemetryEvent::ToggleSshTmuxWrapper { enabled } => Some(json!({"enabled": enabled})),
-            TelemetryEvent::ToggleSshWarpification { enabled } => Some(json!({"enabled": enabled})),
+            TelemetryEvent::ToggleSshYarpification { enabled } => Some(json!({"enabled": enabled})),
             TelemetryEvent::SetSshExtensionInstallMode { mode } => Some(json!({"mode": mode})),
             TelemetryEvent::SshRemoteServerChoiceDoNotAskAgainToggled { checked } => {
                 Some(json!({"checked": checked}))
@@ -3379,14 +3379,14 @@ impl TelemetryEvent {
             TelemetryEvent::SshInteractiveSessionDetected(ssh_interactive_session_detected) => {
                 Some(json!({"ssh_interactive_session": ssh_interactive_session_detected}))
             }
-            TelemetryEvent::SshTmuxWarpificationSuccess {
+            TelemetryEvent::SshTmuxYarpificationSuccess {
                 duration_ms,
                 tmux_installation,
             } => Some(json!({
                 "duration_ms": duration_ms,
                 "tmux_installation": *tmux_installation,
             })),
-            TelemetryEvent::SshTmuxWarpificationErrorBlock {
+            TelemetryEvent::SshTmuxYarpificationErrorBlock {
                 error,
                 tmux_installation,
             } => Some(json!({
@@ -4060,7 +4060,7 @@ impl TelemetryEvent {
             | TelemetryEvent::SetNewWindowsAtCustomSize
             | TelemetryEvent::DisableInputSync
             | TelemetryEvent::ShowSubshellBanner
-            | TelemetryEvent::SshTmuxWarpifyBannerDisplayed
+            | TelemetryEvent::SshTmuxYarpifyBannerDisplayed
             | TelemetryEvent::AddDenylistedSubshellCommand
             | TelemetryEvent::RemoveDenylistedSubshellCommand
             | TelemetryEvent::AddAddedSubshellCommand
@@ -4068,8 +4068,8 @@ impl TelemetryEvent {
             | TelemetryEvent::ReceivedSubshellRcFileDcs
             | TelemetryEvent::AddDenylistedSshTmuxWrapperHost
             | TelemetryEvent::RemoveDenylistedSshTmuxWrapperHost
-            | TelemetryEvent::SshTmuxWarpifyBlockAccepted
-            | TelemetryEvent::SshTmuxWarpifyBlockDismissed
+            | TelemetryEvent::SshTmuxYarpifyBlockAccepted
+            | TelemetryEvent::SshTmuxYarpifyBlockDismissed
             | TelemetryEvent::SshInstallTmuxBlockDisplayed
             | TelemetryEvent::SshInstallTmuxBlockAccepted
             | TelemetryEvent::SshInstallTmuxBlockDismissed
@@ -4747,14 +4747,14 @@ impl TelemetryEvent {
             | TelemetryEvent::RemoveDenylistedSshTmuxWrapperHost
             | TelemetryEvent::ToggleSshTmuxWrapper { .. }
             | TelemetryEvent::SshInteractiveSessionDetected(_)
-            | TelemetryEvent::SshTmuxWarpifyBannerDisplayed
-            | TelemetryEvent::SshTmuxWarpifyBlockAccepted
-            | TelemetryEvent::SshTmuxWarpifyBlockDismissed
-            | TelemetryEvent::WarpifyFooterShown { .. }
+            | TelemetryEvent::SshTmuxYarpifyBannerDisplayed
+            | TelemetryEvent::SshTmuxYarpifyBlockAccepted
+            | TelemetryEvent::SshTmuxYarpifyBlockDismissed
+            | TelemetryEvent::YarpifyFooterShown { .. }
             | TelemetryEvent::AgentToolbarDismissed
-            | TelemetryEvent::WarpifyFooterAcceptedWarpify { .. }
-            | TelemetryEvent::SshTmuxWarpificationSuccess { .. }
-            | TelemetryEvent::SshTmuxWarpificationErrorBlock { .. }
+            | TelemetryEvent::YarpifyFooterAcceptedYarpify { .. }
+            | TelemetryEvent::SshTmuxYarpificationSuccess { .. }
+            | TelemetryEvent::SshTmuxYarpificationErrorBlock { .. }
             | TelemetryEvent::SshInstallTmuxBlockDisplayed
             | TelemetryEvent::SshInstallTmuxBlockAccepted
             | TelemetryEvent::SshInstallTmuxBlockDismissed
@@ -4801,7 +4801,7 @@ impl TelemetryEvent {
             | TelemetryEvent::LogOut
             | TelemetryEvent::InviteTeammates { .. }
             | TelemetryEvent::CopyObjectToClipboard(_)
-            | TelemetryEvent::OpenAndWarpifyDockerSubshell { .. }
+            | TelemetryEvent::OpenAndYarpifyDockerSubshell { .. }
             | TelemetryEvent::UpdateBlockFilterQuery
             | TelemetryEvent::UpdateBlockFilterQueryContextLines { .. }
             | TelemetryEvent::ToggleBlockFilterQuery { .. }
@@ -4874,7 +4874,7 @@ impl TelemetryEvent {
             | TelemetryEvent::MCPServerSpawned { .. }
             | TelemetryEvent::MCPToolCallAccepted { .. }
             | TelemetryEvent::ExecutedYarpDrivePrompt { .. }
-            | TelemetryEvent::ToggleSshWarpification { .. }
+            | TelemetryEvent::ToggleSshYarpification { .. }
             | TelemetryEvent::SetSshExtensionInstallMode { .. }
             | TelemetryEvent::SshRemoteServerChoiceDoNotAskAgainToggled { .. }
             | TelemetryEvent::SettingsImportInitiated
@@ -5286,25 +5286,25 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ToggleTabIndicators => EnablementState::Always,
             Self::TogglePreserveActiveTabColor => EnablementState::Always,
             Self::ShowSubshellBanner => EnablementState::Always,
-            Self::SshTmuxWarpifyBannerDisplayed => EnablementState::Always,
+            Self::SshTmuxYarpifyBannerDisplayed => EnablementState::Always,
             Self::DeclineSubshellBootstrap => EnablementState::Always,
             Self::TriggerSubshellBootstrap => EnablementState::Always,
             Self::AddDenylistedSubshellCommand => EnablementState::Always,
             Self::RemoveDenylistedSubshellCommand => EnablementState::Always,
             Self::ToggleSshTmuxWrapper => EnablementState::Always,
-            Self::ToggleSshWarpification => EnablementState::Always,
+            Self::ToggleSshYarpification => EnablementState::Always,
             Self::SetSshExtensionInstallMode => EnablementState::Always,
             Self::SshRemoteServerChoiceDoNotAskAgainToggled => EnablementState::Always,
             Self::AddDenylistedSshTmuxWrapperHost => EnablementState::Always,
             Self::RemoveDenylistedSshTmuxWrapperHost => EnablementState::Always,
             Self::SshInteractiveSessionDetected => EnablementState::Always,
-            Self::SshTmuxWarpifyBlockAccepted => EnablementState::Always,
-            Self::SshTmuxWarpifyBlockDismissed => EnablementState::Always,
-            Self::WarpifyFooterShown
+            Self::SshTmuxYarpifyBlockAccepted => EnablementState::Always,
+            Self::SshTmuxYarpifyBlockDismissed => EnablementState::Always,
+            Self::YarpifyFooterShown
             | Self::AgentToolbarDismissed
-            | Self::WarpifyFooterAcceptedWarpify => EnablementState::Always,
-            Self::SshTmuxWarpificationSuccess => EnablementState::Always,
-            Self::SshTmuxWarpificationErrorBlock => EnablementState::Always,
+            | Self::YarpifyFooterAcceptedYarpify => EnablementState::Always,
+            Self::SshTmuxYarpificationSuccess => EnablementState::Always,
+            Self::SshTmuxYarpificationErrorBlock => EnablementState::Always,
             Self::SshInstallTmuxBlockDisplayed => EnablementState::Always,
             Self::SshInstallTmuxBlockAccepted => EnablementState::Always,
             Self::SshInstallTmuxBlockDismissed => EnablementState::Always,
@@ -5338,7 +5338,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::SettingsImportInitiated => EnablementState::Always,
             Self::InviteTeammates => EnablementState::Always,
             Self::CopyObjectToClipboard => EnablementState::Always,
-            Self::OpenAndWarpifyDockerSubshell => EnablementState::Always,
+            Self::OpenAndYarpifyDockerSubshell => EnablementState::Always,
             Self::UpdateBlockFilterQuery => EnablementState::Always,
             Self::UpdateBlockFilterQueryContextLines => EnablementState::Always,
             Self::ToggleBlockFilterQuery => EnablementState::Always,
@@ -5784,7 +5784,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ToggleTabIndicators => "Toggle Tab Indicators",
             Self::TogglePreserveActiveTabColor => "Toggle Preserve Active Tab Color",
             Self::ShowSubshellBanner => "Show Subshell Banner",
-            Self::SshTmuxWarpifyBannerDisplayed => "Show Warpify SSH Banner",
+            Self::SshTmuxYarpifyBannerDisplayed => "Show Yarpify SSH Banner",
             Self::DeclineSubshellBootstrap => "Decline Subshell Bootstrap",
             Self::TriggerSubshellBootstrap => "Trigger Subshell Bootstrap",
             Self::AddDenylistedSubshellCommand => "Add Denylisted Subshell Command",
@@ -5793,7 +5793,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::RemoveAddedSubshellCommand => "Remove Added Subshell Command",
             Self::ReceivedSubshellRcFileDcs => "Received Subshell RC File DCS",
             Self::ToggleSshTmuxWrapper => "Toggle SSH Tmux Wrapper",
-            Self::ToggleSshWarpification => "Toggle SSH Warpification",
+            Self::ToggleSshYarpification => "Toggle SSH Yarpification",
             Self::SetSshExtensionInstallMode => "Set SSH Extension Install Mode",
             Self::SshRemoteServerChoiceDoNotAskAgainToggled => {
                 "SSH Remote Server Choice Do Not Ask Again Toggled"
@@ -5801,13 +5801,13 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::AddDenylistedSshTmuxWrapperHost => "Add Denylisted SSH Tmux Wrapper Host",
             Self::RemoveDenylistedSshTmuxWrapperHost => "Remove Denylisted SSH Tmux Wrapper Host",
             Self::SshInteractiveSessionDetected => "SSH Interactive Session Detected",
-            Self::SshTmuxWarpifyBlockAccepted => "SSH Tmux Warpify Block Accepted",
-            Self::SshTmuxWarpifyBlockDismissed => "SSH Tmux Warpify Block Dismissed",
-            Self::WarpifyFooterShown => "Warpify Footer Shown",
+            Self::SshTmuxYarpifyBlockAccepted => "SSH Tmux Yarpify Block Accepted",
+            Self::SshTmuxYarpifyBlockDismissed => "SSH Tmux Yarpify Block Dismissed",
+            Self::YarpifyFooterShown => "Yarpify Footer Shown",
             Self::AgentToolbarDismissed => "Agent Toolbar Dismissed",
-            Self::WarpifyFooterAcceptedWarpify => "Warpify Footer Accepted Warpify",
-            Self::SshTmuxWarpificationSuccess => "SSH Tmux Warpification Succeeded",
-            Self::SshTmuxWarpificationErrorBlock => "SSH Tmux Warpification Error Block",
+            Self::YarpifyFooterAcceptedYarpify => "Yarpify Footer Accepted Yarpify",
+            Self::SshTmuxYarpificationSuccess => "SSH Tmux Yarpification Succeeded",
+            Self::SshTmuxYarpificationErrorBlock => "SSH Tmux Yarpification Error Block",
             Self::SshInstallTmuxBlockDisplayed => "SSH Install Tmux Block Displayed",
             Self::SshInstallTmuxBlockAccepted => "SSH Install Tmux Block Accepted",
             Self::SshInstallTmuxBlockDismissed => "SSH Install Tmux Block Dismissed",
@@ -5848,7 +5848,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::SettingsImportInitiated => "Settings Import Initiated",
             Self::InviteTeammates => "Invited Teammates",
             Self::CopyObjectToClipboard => "Copy Object To Clipboard",
-            Self::OpenAndWarpifyDockerSubshell => "OpenAndWarpifyDockerSubshell",
+            Self::OpenAndYarpifyDockerSubshell => "OpenAndYarpifyDockerSubshell",
             Self::UpdateBlockFilterQuery => "Update Block Filter Query",
             Self::ToggleBlockFilterQuery => "Toggle Block Filter Query",
             Self::ToggleBlockFilterCaseSensitivity => "Toggle Block Filter Case Sensitivity",
@@ -6459,34 +6459,34 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Enabled or disabled preserving the active tab color"
             }
             Self::ShowSubshellBanner => {
-                "Displayed the banner asking whether Warp should Warpify the current session via Warp's subshell wrapper"
+                "Displayed the banner asking whether Warp should Yarpify the current session via Warp's subshell wrapper"
             }
-            Self::SshTmuxWarpifyBannerDisplayed => {
-                "Displayed the banner asking whether Warp should Warpify the current SSH session via Warp's SSH Wrapper"
+            Self::SshTmuxYarpifyBannerDisplayed => {
+                "Displayed the banner asking whether Warp should Yarpify the current SSH session via Warp's SSH Wrapper"
             }
             Self::DeclineSubshellBootstrap => {
-                "Developer declined the Warp banner to Warpify the current session"
+                "Developer declined the Warp banner to Yarpify the current session"
             }
             Self::TriggerSubshellBootstrap => {
-                "Attempted to Warpify the current session via Warp's subshell wrapper"
+                "Attempted to Yarpify the current session via Warp's subshell wrapper"
             }
             Self::AddDenylistedSubshellCommand => {
-                "Explicitly prevent a command from being Warpified via Yarp's subshell wrapper"
+                "Explicitly prevent a command from being Yarpified via Yarp's subshell wrapper"
             }
             Self::RemoveDenylistedSubshellCommand => {
-                "Removed a command from the list of commands to IGNORE when trying to Warpify via Warp's subshell wrapper"
+                "Removed a command from the list of commands to IGNORE when trying to Yarpify via Warp's subshell wrapper"
             }
             Self::AddAddedSubshellCommand => {
-                "Added a command to be automatically Warpified via Yarp's subshell wrapper"
+                "Added a command to be automatically Yarpified via Yarp's subshell wrapper"
             }
             Self::RemoveAddedSubshellCommand => {
-                "Removed a command from the list of commands to automatically Warpify via Warp's subshell wrapper"
+                "Removed a command from the list of commands to automatically Yarpify via Warp's subshell wrapper"
             }
-            Self::ReceivedSubshellRcFileDcs => "Spawned a subshell to be automatically Warpified",
+            Self::ReceivedSubshellRcFileDcs => "Spawned a subshell to be automatically Yarpified",
             Self::ToggleSshTmuxWrapper => {
                 "Changed the setting for SSH sessions to prompt for Tmux Wrapper"
             }
-            Self::ToggleSshWarpification => "Changed the setting for SSH sessions to be warified",
+            Self::ToggleSshYarpification => "Changed the setting for SSH sessions to be warified",
             Self::SetSshExtensionInstallMode => {
                 "Changed the SSH extension install mode (always ask / always allow / always skip)"
             }
@@ -6501,15 +6501,15 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             }
             Self::AgentModeRatedResponse => "User rated an Agent Mode response",
             Self::SshInteractiveSessionDetected => "An interactive SSH session was detected",
-            Self::SshTmuxWarpifyBlockAccepted => "User accepted an ssh tmux warpify block",
-            Self::SshTmuxWarpifyBlockDismissed => "User dismissed an ssh tmux warpify block",
-            Self::WarpifyFooterShown => {
-                "Displayed the warpify footer for a detected subshell or SSH session"
+            Self::SshTmuxYarpifyBlockAccepted => "User accepted an ssh tmux yarpify block",
+            Self::SshTmuxYarpifyBlockDismissed => "User dismissed an ssh tmux yarpify block",
+            Self::YarpifyFooterShown => {
+                "Displayed the yarpify footer for a detected subshell or SSH session"
             }
             Self::AgentToolbarDismissed => "User dismissed the use-agent toolbar",
-            Self::WarpifyFooterAcceptedWarpify => "User clicked Warpify in the warpify footer",
-            Self::SshTmuxWarpificationSuccess => "Ssh tmux warpification succeeded",
-            Self::SshTmuxWarpificationErrorBlock => "Ssh tmux warpification errored out",
+            Self::YarpifyFooterAcceptedYarpify => "User clicked Yarpify in the yarpify footer",
+            Self::SshTmuxYarpificationSuccess => "Ssh tmux yarpification succeeded",
+            Self::SshTmuxYarpificationErrorBlock => "Ssh tmux yarpification errored out",
             Self::SshInstallTmuxBlockDisplayed => "Displayed an ssh install tmux block",
             Self::SshInstallTmuxBlockAccepted => "User accepted an ssh install tmux block",
             Self::SshInstallTmuxBlockDismissed => "User dismissed an ssh install tmux block",
@@ -6592,8 +6592,8 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::SettingsImportInitiated => "Started the import settings flow for new users",
             Self::InviteTeammates => "Sent emails to invite teammates to join Yarp Drive team",
             Self::CopyObjectToClipboard => "Copied an object to the user's keyboard",
-            Self::OpenAndWarpifyDockerSubshell => {
-                "Warpifying a docker subshell from using the docker extension"
+            Self::OpenAndYarpifyDockerSubshell => {
+                "Yarpifying a docker subshell from using the docker extension"
             }
             Self::UpdateBlockFilterQuery => "When a new filter is applied to a block",
             Self::UpdateBlockFilterQueryContextLines => {

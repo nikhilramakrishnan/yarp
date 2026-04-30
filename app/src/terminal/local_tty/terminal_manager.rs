@@ -10,7 +10,7 @@ use crate::terminal::shared_session::shared_handlers::{
     build_selected_conversation_update, RemoteUpdateGuard,
 };
 use crate::terminal::shell::ShellName;
-use crate::terminal::warpify::settings::WarpifySettings;
+use crate::terminal::yarpify::settings::YarpifySettings;
 use crate::terminal::TerminalManager as _;
 use anyhow::Context as _;
 use async_broadcast::InactiveReceiver;
@@ -1015,10 +1015,10 @@ impl TerminalManager {
 
         // The TMUX SSH wrapper supercedes the original ControlMaster wrapper.
         let enable_ssh_wrapper = if FeatureFlag::SSHTmuxWrapper.is_enabled() {
-            *WarpifySettings::as_ref(ctx)
-                .enable_ssh_warpification
+            *YarpifySettings::as_ref(ctx)
+                .enable_ssh_yarpification
                 .value()
-                && !*WarpifySettings::as_ref(ctx).use_ssh_tmux_wrapper.value()
+                && !*YarpifySettings::as_ref(ctx).use_ssh_tmux_wrapper.value()
         } else {
             *SshSettings::as_ref(ctx).enable_legacy_ssh_wrapper.value()
         };

@@ -18,7 +18,7 @@ use crate::terminal::ClipboardType;
 use crate::util::AsciiDebug;
 
 use super::history::HistoryEntry;
-use super::model::ansi::{FinishUpdateValue, WarpificationUnavailableReason};
+use super::model::ansi::{FinishUpdateValue, YarpificationUnavailableReason};
 use super::model::block::BlockId;
 use super::model::session::{SessionId, SessionInfo};
 use super::model::terminal_model::{BlockIndex, ExitReason, TmuxInstallationState};
@@ -82,7 +82,7 @@ pub enum Event {
     },
     /// See comment above [crate::terminal::ModelEvent::DetectedEndOfSshLogin].
     DetectedEndOfSshLogin(SshLoginStatus),
-    RemoteWarpificationIsUnavailable(WarpificationUnavailableReason),
+    RemoteYarpificationIsUnavailable(YarpificationUnavailableReason),
     SshTmuxInstaller(TmuxInstallationState),
     TmuxInstallFailed {
         line: String,
@@ -186,9 +186,9 @@ pub enum TerminalMode {
 #[derive(Clone, Debug)]
 pub enum SshLoginStatus {
     /// We have some evidence login is complete but should check again.
-    RecheckBeforeWarpifying,
+    RecheckBeforeYarpifying,
     /// We have high confidence login is complete.
-    ReadyToWarpify,
+    ReadyToYarpify,
 }
 
 #[derive(Clone, Debug)]
@@ -266,7 +266,7 @@ pub enum BlockType {
     /// This is a block containing background process output.
     Background(Arc<SerializedBlock>),
 
-    /// This is a block containing static/hardcoded content (e.g. the subshell Warpification
+    /// This is a block containing static/hardcoded content (e.g. the subshell Yarpification
     /// welcome block).
     Static,
 }
@@ -438,8 +438,8 @@ impl Debug for Event {
             Event::DetectedEndOfSshLogin(check_type) => {
                 write!(f, "DetectedEndOfSshLogin: {check_type:?}")
             }
-            Event::RemoteWarpificationIsUnavailable(_) => {
-                write!(f, "RemoteWarpificationIsUnavailable")
+            Event::RemoteYarpificationIsUnavailable(_) => {
+                write!(f, "RemoteYarpificationIsUnavailable")
             }
             Event::SshTmuxInstaller(installer) => {
                 write!(f, "SshTmuxInstaller({installer:?})")

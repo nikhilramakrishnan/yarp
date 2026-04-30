@@ -20,7 +20,7 @@ use crate::{
         session_settings::{SessionSettings, SessionSettingsChangedEvent},
         settings::TerminalSettings,
         shared_session::settings::SharedSessionSettings,
-        warpify::settings::WarpifySettings,
+        yarpify::settings::YarpifySettings,
         BlockListSettings,
     },
     undo_close::UndoCloseSettings,
@@ -87,7 +87,7 @@ pub fn register_all_settings(ctx: &mut AppContext) {
     AppIconSettings::register(ctx);
     AppEditorSettings::register(ctx);
     InputSettings::register(ctx);
-    WarpifySettings::register(ctx);
+    YarpifySettings::register(ctx);
     AltScreenReporting::register(ctx);
     UndoCloseSettings::register(ctx);
     SshSettings::register(ctx);

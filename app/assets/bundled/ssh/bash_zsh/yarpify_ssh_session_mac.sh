@@ -8,7 +8,7 @@ _log() {
 }
 
 _err() {
-    _log RemoteWarpificationIsUnavailable "$1"
+    _log RemoteYarpificationIsUnavailable "$1"
 }
 
 _sd() {

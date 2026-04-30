@@ -1,7 +1,7 @@
 //! Inline block view that asks the user whether they want to install
 //! Yarp's SSH extension on the remote host the shell just connected to,
 //! or continue without installing (falling back to the existing
-//! ControlMaster warpification path).
+//! ControlMaster yarpification path).
 //!
 //! Designed from frame 6050:2448 of the Figma file
 //! [Remote session initialization](https://www.figma.com/design/r0BO9cTZCK6pDE6qerg2K0/Remote-session-initialization).
@@ -37,7 +37,7 @@ use crate::{
     send_telemetry_from_ctx,
     server::telemetry::TelemetryEvent,
     terminal::model::session::SessionId,
-    terminal::warpify::settings::{SshExtensionInstallMode, WarpifySettings},
+    terminal::yarpify::settings::{SshExtensionInstallMode, YarpifySettings},
     ui_components::blended_colors,
     Appearance,
 };
@@ -49,14 +49,14 @@ pub enum SshRemoteServerChoiceViewAction {
     Install,
     Skip,
     ToggleDoNotAskAgain,
-    OpenWarpifySettings,
+    OpenYarpifySettings,
 }
 
 #[derive(Clone, Debug)]
 pub enum SshRemoteServerChoiceViewEvent {
     Install,
     Skip,
-    OpenWarpifySettings,
+    OpenYarpifySettings,
 }
 
 /// Choice block prompting the user to install the remote-server binary on the remote host or skip.
@@ -88,7 +88,7 @@ impl SshRemoteServerChoiceView {
                 rich_navigation_button(
                     "Continue without installing".to_string(),
                     Some(
-                        "You'll still get a Warpified experience just without the coding \
+                        "You'll still get a Yarpified experience just without the coding \
                          features."
                             .to_string(),
                     ),
@@ -179,7 +179,7 @@ impl SshRemoteServerChoiceView {
                 "Manage Yarpify settings".into(),
                 None,
                 Some(Box::new(|ctx| {
-                    ctx.dispatch_typed_action(SshRemoteServerChoiceViewAction::OpenWarpifySettings);
+                    ctx.dispatch_typed_action(SshRemoteServerChoiceViewAction::OpenYarpifySettings);
                 })),
                 self.manage_settings_mouse_state.clone(),
             )
@@ -265,7 +265,7 @@ impl TypedActionView for SshRemoteServerChoiceView {
             SshRemoteServerChoiceViewAction::Install => {
                 if self.do_not_ask_again {
                     let mode = SshExtensionInstallMode::AlwaysInstall;
-                    WarpifySettings::handle(ctx).update(ctx, |settings, ctx| {
+                    YarpifySettings::handle(ctx).update(ctx, |settings, ctx| {
                         if let Err(e) = settings.ssh_extension_install_mode.set_value(mode, ctx) {
                             log::error!("Failed to persist ssh_extension_install_mode: {e}");
                         }
@@ -282,7 +282,7 @@ impl TypedActionView for SshRemoteServerChoiceView {
             SshRemoteServerChoiceViewAction::Skip => {
                 if self.do_not_ask_again {
                     let mode = SshExtensionInstallMode::NeverInstall;
-                    WarpifySettings::handle(ctx).update(ctx, |settings, ctx| {
+                    YarpifySettings::handle(ctx).update(ctx, |settings, ctx| {
                         if let Err(e) = settings.ssh_extension_install_mode.set_value(mode, ctx) {
                             log::error!("Failed to persist ssh_extension_install_mode: {e}");
                         }
@@ -306,8 +306,8 @@ impl TypedActionView for SshRemoteServerChoiceView {
                 );
                 ctx.notify();
             }
-            SshRemoteServerChoiceViewAction::OpenWarpifySettings => {
-                ctx.emit(SshRemoteServerChoiceViewEvent::OpenWarpifySettings);
+            SshRemoteServerChoiceViewAction::OpenYarpifySettings => {
+                ctx.emit(SshRemoteServerChoiceViewEvent::OpenYarpifySettings);
             }
         }
     }
