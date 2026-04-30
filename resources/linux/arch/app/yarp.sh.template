@@ -3,8 +3,8 @@
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-~/.config}
 
 # Allow users to override command-line options
-if [[ -f $XDG_CONFIG_HOME/warp-terminal@@CHANNEL_SUFFIX@@-flags.conf ]]; then
-    YARP_USER_FLAGS="$(grep -v '^#' $XDG_CONFIG_HOME/warp-terminal@@CHANNEL_SUFFIX@@-flags.conf)"
+if [[ -f $XDG_CONFIG_HOME/yarp-terminal@@CHANNEL_SUFFIX@@-flags.conf ]]; then
+    YARP_USER_FLAGS="$(grep -v '^#' $XDG_CONFIG_HOME/yarp-terminal@@CHANNEL_SUFFIX@@-flags.conf)"
 fi
 
 # Launch

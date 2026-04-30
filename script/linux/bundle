@@ -173,8 +173,8 @@ elif [[ $RELEASE_CHANNEL = "stable" ]]; then
   BINARY_NAME="yarp"
   APP_NAME="Yarp"
 elif [[ $RELEASE_CHANNEL = "oss" ]]; then
-  YARP_BIN="warp-oss"
-  BINARY_NAME="warp-oss"
+  YARP_BIN="yarp-oss"
+  BINARY_NAME="yarp-oss"
   APP_NAME="YarpOss"
   # The OSS channel does not ship Sentry, so drop the crash_reporting feature
   # (which would otherwise pull in the Sentry SDK as a dependency).
@@ -184,7 +184,7 @@ fi
 # Artifact-specific binary naming
 if [[ "$ARTIFACT" == "cli" ]]; then
   # For CLI artifacts, use oz instead of yarp as the binary name.  The OSS
-  # channel is an exception: its CLI command name is `warp-oss`, matching
+  # channel is an exception: its CLI command name is `yarp-oss`, matching
   # `Channel::cli_command_name` in the Rust source.
   if [[ $RELEASE_CHANNEL != "oss" ]]; then
     BINARY_NAME="${BINARY_NAME/yarp/oz}"
