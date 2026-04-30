@@ -36,18 +36,18 @@ pub fn run_proxy() -> anyhow::Result<()> {
 pub fn run_daemon() -> anyhow::Result<()> {
     // Log to a rotating file so daemon output is preserved across invocations.
     // The file is written to the same directory as client logs (~/Library/Logs
-    // on macOS, ~/.local/share/warp-terminal on Linux). Since the daemon runs
+    // on macOS, ~/.local/share/yarp-terminal on Linux). Since the daemon runs
     // on the remote host, there is no conflict with client-side log files.
     yarp_logging::init(yarp_logging::LogConfig {
         is_cli: true,
         log_destination: Some(yarp_logging::LogDestination::File),
     })?;
 
-    // socket_path: ~/.warp[-channel]/remote-server/server.sock
+    // socket_path: ~/.yarp[-channel]/remote-server/server.sock
     //   The Unix domain socket the daemon binds on.  Proxy processes connect
     //   to it and bridge their SSH stdio channel through it.
     //
-    // pid_path:    ~/.warp[-channel]/remote-server/server.pid
+    // pid_path:    ~/.yarp[-channel]/remote-server/server.pid
     //   Contains the daemon's PID.  Proxy processes read it and use
     //   kill(pid, 0) to detect whether the daemon is still alive before
     //   deciding whether to start a new one.

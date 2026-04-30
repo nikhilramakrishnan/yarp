@@ -154,7 +154,7 @@ mod appimage {
             command.env("YARP_CHANNEL_VERSIONS_PATH", path);
         }
 
-        log::info!("Relaunching warp for update...");
+        log::info!("Relaunching yarp for update...");
         command.spawn()?;
         Ok(())
     }
@@ -286,7 +286,7 @@ mod package_manager {
         };
         log::info!("Relaunching using path: {program:?}");
         let mut command = command::blocking::Command::new(program);
-        // Add any arguments that were passed to warp, skipping the first
+        // Add any arguments that were passed to yarp, skipping the first
         // argument (the name of the executable) and dropping the flag for
         // finishing an update.
         let finish_update_flag = yarp_cli::finish_update_flag();
@@ -305,20 +305,20 @@ mod package_manager {
             command.env("YARP_CHANNEL_VERSIONS_PATH", path);
         }
 
-        log::info!("Relaunching warp for update...");
+        log::info!("Relaunching yarp for update...");
         command.spawn()?;
         Ok(())
     }
 }
 
-/// Returns which method should be used to update Warp.
+/// Returns which method should be used to update Yarp.
 #[derive(Debug)]
 pub(crate) enum UpdateMethod {
-    /// We don't know how to update Warp.
+    /// We don't know how to update Yarp.
     Unknown,
-    /// Warp is running as an AppImage and should be updated in-place.
+    /// Yarp is running as an AppImage and should be updated in-place.
     AppImage(PathBuf),
-    /// Warp can be updated using the given package manager.
+    /// Yarp can be updated using the given package manager.
     PackageManager(PackageManager),
 }
 
@@ -365,10 +365,10 @@ impl PackageManager {
                     ShellType::Zsh | ShellType::Bash | ShellType::Fish => {
                         "warp_handle_dist_upgrade"
                     }
-                    ShellType::PowerShell => "Warp-Handle-DistUpgrade",
+                    ShellType::PowerShell => "Yarp-Handle-DistUpgrade",
                 };
                 // If running with apt, attempt to handle a distribution update that may rename the
-                // warp source file to `{repo_name}.distUpgrade`.
+                // yarp source file to `{repo_name}.distUpgrade`.
                 // We explicitly use `or` here instead of `and` to limit the blast radius of this
                 // change, if handling a dist upgrade was unsuccessful we still want to try to
                 // install the new version.
@@ -415,7 +415,7 @@ impl PackageManager {
 
         let finish_update_fn = match shell_type {
             ShellType::Zsh | ShellType::Bash | ShellType::Fish => "warp_finish_update",
-            ShellType::PowerShell => "Warp-Finish-Update",
+            ShellType::PowerShell => "Yarp-Finish-Update",
         };
         format!("{base_command}{and}{finish_update_fn} {update_id}")
     }
@@ -471,7 +471,7 @@ impl PackageManager {
         match output {
             Ok(output) => {
                 if !output.status.success() {
-                    bail!("Failed to determine which package manager was used to install warp");
+                    bail!("Failed to determine which package manager was used to install yarp");
                 }
                 let Ok(stdout) = std::str::from_utf8(&output.stdout) else {
                     bail!("Could not parse package manager detection script output as UTF-8");
@@ -541,14 +541,14 @@ impl std::fmt::Display for PackageManager {
     }
 }
 
-/// Returns whether the warp apt repository is disabled due to a version update.
+/// Returns whether the yarp apt repository is disabled due to a version update.
 /// This occurs if there's a `warpdotdev.list.distUpgrade` file but no `warpdotdev.sources` or
 /// `warpdotdev.list` file.
 /// In a traditional Ubuntu distro update, Ubuntu renames each source file from `foo.list` to
 /// `foo.list.distUpgrade`. It then creates a new version of `foo.list` (or `foo.sources` if
 /// updating to Ubuntu 24+) with the repo disabled.
 ///
-/// However, Ubuntu incorrectly thinks the Warp source file is invalid (due to the addition of the
+/// However, Ubuntu incorrectly thinks the Yarp source file is invalid (due to the addition of the
 /// `signed-by` key) so it only leaves the `*.distUpgrade` source file. We use the existence of this
 /// file to determine whether we need to run the special `warp_handle_dist_upgrade` function to copy
 /// `warpdotdev.list.distUpgrade` back to `warpdotdev.list` to re-enable the repository.
@@ -653,11 +653,11 @@ fn is_pacman_signing_key_installed() -> bool {
 
 fn package_name(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "warp-terminal",
-        Channel::Preview => "warp-terminal-preview",
-        Channel::Dev => "warp-terminal-dev",
-        Channel::Integration => "warp-terminal-integration",
-        Channel::Local => "warp-terminal-local",
+        Channel::Stable => "yarp-terminal",
+        Channel::Preview => "yarp-terminal-preview",
+        Channel::Dev => "yarp-terminal-dev",
+        Channel::Integration => "yarp-terminal-integration",
+        Channel::Local => "yarp-terminal-local",
         Channel::Oss => "yarp",
     }
 }
@@ -665,7 +665,7 @@ fn package_name(channel: Channel) -> &'static str {
 fn repo_name(channel: Channel) -> String {
     let package_name = package_name(channel);
     let channel_suffix = package_name
-        .strip_prefix("warp-terminal")
+        .strip_prefix("yarp-terminal")
         .unwrap_or_default();
     format!("warpdotdev{channel_suffix}")
 }

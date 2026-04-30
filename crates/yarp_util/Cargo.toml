@@ -3,7 +3,7 @@ name = "yarp_util"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
-description = "General utilities and helpers used across warp crates"
+description = "General utilities and helpers used across yarp crates"
 publish.workspace = true
 license.workspace = true
 

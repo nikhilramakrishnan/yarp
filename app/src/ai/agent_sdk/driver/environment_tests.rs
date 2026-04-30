@@ -5,10 +5,10 @@ use crate::ai::cloud_environments::GithubRepo;
 fn single_repo_name_returns_repo_when_exactly_one_repo() {
     let repos = vec![GithubRepo::new(
         "warpdotdev".to_string(),
-        "warp-internal".to_string(),
+        "yarp-internal".to_string(),
     )];
     let selected_repo = single_repo_name(&repos);
-    assert_eq!(selected_repo, Some("warp-internal".to_string()));
+    assert_eq!(selected_repo, Some("yarp-internal".to_string()));
 }
 
 #[test]

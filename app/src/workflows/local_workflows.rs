@@ -39,17 +39,17 @@ impl LocalWorkflows {
     pub fn new(_ctx: &mut ModelContext<Self>) -> Self {
         Self {
             app_workflows: app_workflows(),
-            global_workflows: global_workflows().into_iter().map(Workflow::from).collect(), // convert from public-facing Workflow type to warp-internal Workflow type
+            global_workflows: global_workflows().into_iter().map(Workflow::from).collect(), // convert from public-facing Workflow type to yarp-internal Workflow type
             project_workflows: Default::default(),
         }
     }
 
-    /// Returns an iterator over hardcoded "application" workflows included in the Warp binary.
+    /// Returns an iterator over hardcoded "application" workflows included in the Yarp binary.
     pub fn app_workflows(&self) -> impl Iterator<Item = &Workflow> {
         self.app_workflows.iter()
     }
 
-    /// Returns an iterator over the static set of workflows for 3rd party tools loaded from Warp's
+    /// Returns an iterator over the static set of workflows for 3rd party tools loaded from Yarp's
     /// workflows GitHub repo.
     pub fn global_workflows(
         &self,
@@ -82,7 +82,7 @@ impl LocalWorkflows {
         })
     }
 
-    /// Returns an iterator over file-based workflows loaded from the `.warp/workflows` directory in
+    /// Returns an iterator over file-based workflows loaded from the `.yarp/workflows` directory in
     /// the `working_directory`.
     ///
     /// The loaded workflows vector is cached.
@@ -177,7 +177,7 @@ fn app_workflows() -> Vec<Workflow> {
     }
 }
 
-/// Loads project-level workflows (if any) from the warp config directory in the current working
+/// Loads project-level workflows (if any) from the yarp config directory in the current working
 /// directory.
 #[cfg(feature = "local_fs")]
 pub(super) fn load_project_workflows(path: &Path) -> Vec<Workflow> {
@@ -217,7 +217,7 @@ pub fn prompt_chip_logging_workflow(shell_family: ShellFamily) -> Option<Workflo
     Some(Workflow::Command {
         name: "Tail prompt chip log".into(),
         command: tail_command_for_shell(shell_family, &log_file_path),
-        tags: vec!["warp".into(), "debug".into()],
+        tags: vec!["yarp".into(), "debug".into()],
         description: Some(
             "Shows the diagnostic log of shell commands run by prompt context chips (dogfood only)"
                 .into(),

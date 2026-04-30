@@ -16,9 +16,9 @@ Param (
     [String]$RELEASE_TAG = '',
     [String]$FEATURES = 'release_bundle,crash_reporting,gui',
 
-    # Builds only the Warp binary, skips the installer.
+    # Builds only the Yarp binary, skips the installer.
     [Switch]$SKIP_BUILD_INSTALLER = $False,
-    # Builds only the installer, skips the Warp binary. Use this if the Warp
+    # Builds only the installer, skips the Yarp binary. Use this if the Yarp
     # binary has already been built.
     [Switch]$SKIP_BUILD_BINARY = $False,
 
@@ -89,8 +89,8 @@ $BUNDLE_ID = "dev.yarp.$app_name"
 # YARP_BIN is the name of the binary produced by cargo;
 # BINARY_NAME is the desired name of the binary in the final package.
 if ("$CHANNEL" -eq 'local') {
-    $YARP_BIN = 'warp'
-    $BINARY_NAME = 'warp.exe'
+    $YARP_BIN = 'yarp'
+    $BINARY_NAME = 'yarp.exe'
     $APP_NAME = 'YarpLocal'
     $FEATURES = "$FEATURES,nld_improvements"
 } elseif ("$CHANNEL" -eq 'dev') {
@@ -105,7 +105,7 @@ if ("$CHANNEL" -eq 'local') {
     $FEATURES = "$FEATURES,preview_channel,nld_improvements"
 } elseif ("$CHANNEL" -eq 'stable') {
     $YARP_BIN = 'stable'
-    $BINARY_NAME = 'warp.exe'
+    $BINARY_NAME = 'yarp.exe'
     $APP_NAME = 'Yarp'
     # TODO(vorporeal): Remove this once we get tests passing with this default enabled.
     $FEATURES = "$FEATURES,nld_improvements"
@@ -137,21 +137,21 @@ if ($DEBUG_BUILD) {
 # then exit.  We use this script to invoke `cargo check` to ensure that we are
 # using the same feature flags and profile that we would be using in production.
 if ($CHECK_ONLY) {
-    cargo check -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
+    cargo check -p yarp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
     if (-Not $?) {
-        Write-Error "Failed to verify Warp $YARP_BIN compilation with profile $CARGO_PROFILE"
+        Write-Error "Failed to verify Yarp $YARP_BIN compilation with profile $CARGO_PROFILE"
         exit 1
     }
     exit 0
 }
 
 if (-Not $SKIP_BUILD_BINARY) {
-    Write-Output "Building Warp for channel $CHANNEL and bundle id $BUNDLE_ID"
+    Write-Output "Building Yarp for channel $CHANNEL and bundle id $BUNDLE_ID"
     $env:CARGO_BIN_NAME = $CHANNEL
     $env:YARP_APP_NAME = $APP_NAME
-    cargo build -p warp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
+    cargo build -p yarp --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES" --target $PLATFORM_TARGET
     if (-Not $?) {
-        Write-Error "Failed to build Warp $YARP_BIN binary with profile $CARGO_PROFILE"
+        Write-Error "Failed to build Yarp $YARP_BIN binary with profile $CARGO_PROFILE"
         exit 1
     }
 
@@ -186,7 +186,7 @@ if (-Not $?) {
     exit 1
 }
 
-Write-Output 'Building Warp installer'
+Write-Output 'Building Yarp installer'
 $ISCC_ARGS = @(
     "$WINDOWS_INSTALLER_DIR\windows-installer.iss",
     "/DReleaseChannel=$CHANNEL",

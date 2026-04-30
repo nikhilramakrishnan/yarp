@@ -23,9 +23,9 @@ _sd() {
 
   # _check_tmux is used in tmux install script post install!
 _check_tmux() {
-    TMUX="$HOME/.warp/tmux/execute_tmux.sh"
+    TMUX="$HOME/.yarp/tmux/execute_tmux.sh"
     if _find "$TMUX"; then
-        _log SshTmuxInstaller "\"warp\""
+        _log SshTmuxInstaller "\"yarp\""
     elif _find tmux; then
         TMUX="tmux"
         _log SshTmuxInstaller "\"user\""

@@ -1,2 +1,2 @@
-#[cynic::schema("warp-server")]
+#[cynic::schema("yarp-server")]
 pub mod schema {}

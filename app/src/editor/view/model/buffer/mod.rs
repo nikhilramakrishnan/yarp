@@ -367,7 +367,7 @@ impl TextStyleOperation {
     /// ```
     /// use yarpui::color::ColorU;
     /// use yarpui::text_layout::TextStyle;
-    /// use warp::editor::TextStyleOperation;
+    /// use yarp::editor::TextStyleOperation;
     /// TextStyleOperation::apply_text_style_operation(
     ///     TextStyle::default(),
     ///     TextStyleOperation::default().set_error_underline_color(ColorU::black()),
@@ -1647,8 +1647,8 @@ impl Buffer {
     /// # Example
     /// ```ignore
     /// use yarpui::{color::ColorU, App, ModelHandle};
-    /// use warp::Assets;
-    /// use warp::editor::model::buffer::{Buffer, TextStyleOperation, EditOrigin};
+    /// use yarp::Assets;
+    /// use yarp::editor::model::buffer::{Buffer, TextStyleOperation, EditOrigin};
     /// use string_offset::CharOffset;
     /// App::test((), |mut app| async move {
     ///     let buffer_model: &mut ModelHandle<Buffer> =

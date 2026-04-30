@@ -1,4 +1,4 @@
-//! Shimmering Warp loading text - renders Warp logo with shimmering text for loading states.
+//! Shimmering Yarp loading text - renders Yarp logo with shimmering text for loading states.
 
 use yarp_core::ui::appearance::Appearance;
 use yarpui::elements::shimmering_text::{
@@ -10,7 +10,7 @@ use yarpui::{AppContext, SingletonEntity};
 /// Yarp icon glyph character
 const YARP_GLYPH: &str = "\u{E500}";
 
-/// Creates a shimmering text element with the Warp glyph.
+/// Creates a shimmering text element with the Yarp glyph.
 pub fn shimmering_warp_loading_text(
     text: impl Into<String>,
     font_size: f32,

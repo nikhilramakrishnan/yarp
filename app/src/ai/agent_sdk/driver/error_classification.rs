@@ -9,7 +9,7 @@ use super::AgentDriverError;
 /// suitable for reporting via `update_agent_task`.
 pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskStatusUpdate) {
     match error {
-        // --- Warp-side errors (task → ERROR) ---
+        // --- Yarp-side errors (task → ERROR) ---
         AgentDriverError::TerminalUnavailable | AgentDriverError::InvalidRuntimeState => (
             AgentTaskState::Error,
             TaskStatusUpdate::with_error_code(
@@ -71,7 +71,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
             ),
         ),
         AgentDriverError::NotLoggedIn => {
-            let bin = yarp_cli::binary_name().unwrap_or_else(|| "warp".to_string());
+            let bin = yarp_cli::binary_name().unwrap_or_else(|| "yarp".to_string());
             (
                 AgentTaskState::Error,
                 TaskStatusUpdate::with_error_code(

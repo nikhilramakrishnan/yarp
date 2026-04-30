@@ -4200,8 +4200,8 @@ fn compute_tab_group_color_mode(
                 })
             } else if let Some(code_view) = pane_group.code_view_from_pane_id(pane_id, app) {
                 // Code pane: determine color from the open file path using longest-prefix
-                // matching against configured directories, so e.g. warp-internal/code.rs
-                // inherits the color assigned to warp-internal.
+                // matching against configured directories, so e.g. yarp-internal/code.rs
+                // inherits the color assigned to yarp-internal.
                 code_view
                     .as_ref(app)
                     .local_path(app)

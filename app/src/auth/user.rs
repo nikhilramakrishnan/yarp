@@ -93,7 +93,7 @@ pub struct User {
     pub anonymous_user_type: Option<AnonymousUserType>,
     /// Whether or not this user is on what we consider a "work" domain, meaning the domain isn't
     /// from a general email provider (e.g. gmail.com, hotmail.com, proton.me, etc.).
-    /// Calculated on warp-server.
+    /// Calculated on yarp-server.
     pub is_on_work_domain: bool,
     pub linked_at: Option<ServerTimestamp>,
     pub personal_object_limits: Option<PersonalObjectLimits>,

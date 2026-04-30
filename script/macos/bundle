@@ -136,7 +136,7 @@ while (( "$#" )); do
       SELFSIGN=false
       shift
       ;;
-    # Sign with a local Apple Development cert instead of the official Warp cert.
+    # Sign with a local Apple Development cert instead of the official Yarp cert.
     # Useful for local debug builds when you don't have access to the company signing key.
     # Falls back to ad-hoc signing if no Apple Development cert is found.
     --selfsign)
@@ -269,7 +269,7 @@ if [[ "$CARGO_PROFILE" == "dev" ]]; then
 fi
 
 if [[ $RELEASE_CHANNEL = "local" ]]; then
-    YARP_BIN="warp"
+    YARP_BIN="yarp"
     BUNDLE_ID="dev.yarp.Yarp-Local"
     YARP_APP_NAME="YarpLocal"
     YARP_SCHEME_NAME="yarplocal"
@@ -448,7 +448,7 @@ if [[ "$ARTIFACT" == "app" ]]; then
     </array>" "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/Info.plist
   fi
 
-  # Temporary key that ChatGPT Desktop can use to determine if the latest version of Warp supports the ChatGPT integration.
+  # Temporary key that ChatGPT Desktop can use to determine if the latest version of Yarp supports the ChatGPT integration.
   # Once support has been rolled out for a sufficient amount of time we (and ChatGPT) can remove this.
   plutil -insert SUPPORTS_CHAT_GPT_WORK_WITH_APPS -bool true "$BUNDLE_DIR"/$YARP_APP_NAME.app/Contents/Info.plist
 
@@ -610,7 +610,7 @@ fi
 if [[ $CODESIGN = true ]]; then
   # TODO - does this need to change per user?  Seems like it's tied to the YARP_NOTARIZATION_PASSWORD password.
   APPLE_TEAM_ID="2BBY89MBSN"
-  CODESIGN_KEYCHAIN_NAME="warp-codesign-keychain"
+  CODESIGN_KEYCHAIN_NAME="yarp-codesign-keychain"
 
   echo "Starting codesigning..."
 

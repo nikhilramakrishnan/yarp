@@ -688,7 +688,7 @@ fn test_render_list_page_with_personal_and_team_environments_shows_section_heade
 
         app.update(|ctx| {
             // Ensure UserWorkspaces has a current team name so the "Team" section renders with the
-            // shared header copy ("Shared by Warp and <team>").
+            // shared header copy ("Shared by Yarp and <team>").
             UserWorkspaces::handle(ctx).update(ctx, |user_workspaces, ctx| {
                 user_workspaces.setup_test_workspace(ctx);
                 user_workspaces.update_current_workspace(
@@ -1180,7 +1180,7 @@ fn test_environments_page_edit_variant() {
 fn test_github_repo_new() {
     let repo = GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string());
     assert_eq!(repo.owner, "warpdotdev");
-    assert_eq!(repo.repo, "warp-internal");
+    assert_eq!(repo.repo, "yarp-internal");
 }
 
 #[test]
@@ -1219,17 +1219,17 @@ fn test_environment_matches_search_query_empty_query_matches_all() {
 #[test]
 fn test_environment_matches_search_query_name_description_image_repos() {
     let mut environment = make_test_environment(
-        "Warp Env",
+        "Yarp Env",
         "node:20-alpine",
         vec![("warpdotdev".to_string(), "warp-internal".to_string())],
         vec![],
     );
     environment.description = Some("Front end focused agents".to_string());
 
-    assert!(environment.matches_search_query("warp"));
+    assert!(environment.matches_search_query("yarp"));
     assert!(environment.matches_search_query("Front end"));
     assert!(environment.matches_search_query("node:20"));
-    assert!(environment.matches_search_query("warp-internal"));
+    assert!(environment.matches_search_query("yarp-internal"));
     assert!(environment.matches_search_query("warpdotdev"));
     assert!(environment.matches_search_query("warpdotdev/warp"));
 
@@ -1250,7 +1250,7 @@ fn test_environment_matches_search_query_env_id_substring() {
 #[test]
 fn test_environment_matches_search_query_is_case_insensitive() {
     let mut environment = make_test_environment(
-        "warp-env",
+        "yarp-env",
         "ubuntu:latest",
         vec![("WarpDotDev".to_string(), "Warp-Internal".to_string())],
         vec![],
@@ -1259,7 +1259,7 @@ fn test_environment_matches_search_query_is_case_insensitive() {
 
     assert!(environment.matches_search_query("WARP"));
     assert!(environment.matches_search_query("description"));
-    assert!(environment.matches_search_query("warp-internal"));
+    assert!(environment.matches_search_query("yarp-internal"));
 }
 
 #[test]

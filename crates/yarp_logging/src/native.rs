@@ -106,10 +106,10 @@ pub fn on_crash_recovery_process_killed() {
 }
 
 /// Handles the crash recovery process "recovering" from a parent crash by:
-/// 1) Renaming the log file from the main process (which just panicked) to `warp.log.old.temp`.
-/// 2) Moving the crash recovery process log (which is located at `warp.log.recovery`) to the usual
-///    path warp logs are located (log_directory/warp.log).
-///    The temp log file (`warp.log.old.temp`) will ultimately be rotated to `warp.log.old.0` the next
+/// 1) Renaming the log file from the main process (which just panicked) to `yarp.log.old.temp`.
+/// 2) Moving the crash recovery process log (which is located at `yarp.log.recovery`) to the usual
+///    path yarp logs are located (log_directory/yarp.log).
+///    The temp log file (`yarp.log.old.temp`) will ultimately be rotated to `yarp.log.old.0` the next
 ///    time [`rotate_log_files`] is called (which will get called when the event loop starts and we
 ///    have access to the `AppContext`)
 pub fn on_parent_process_crash() {
@@ -172,7 +172,7 @@ pub async fn rotate_files(channel_file_name: &str, max_rotation: usize) -> Resul
         let _ = fs::rename(old_file_path, new_file_path);
     }
 
-    // Rename `warp.log.old.temp` (the temporary file) to `warp.log.old.0`.
+    // Rename `yarp.log.old.temp` (the temporary file) to `yarp.log.old.0`.
     let temp_file_path = temp_log_file_path(&log_directory);
 
     let _ = fs::rename(
@@ -207,7 +207,7 @@ pub fn init(config: LogConfig) -> Result<()> {
 /// Return the path to the log file that is used within the crash recovery process.
 /// We use a separate log file for the crash recovery process. If the crash
 /// recovery process handles a crash, we'll move the crash recovery process log file to its usual
-/// location at `log_directory/warp.log`.
+/// location at `log_directory/yarp.log`.
 fn crash_recovery_process_log_file_path(log_directory: impl AsRef<Path>) -> PathBuf {
     log_directory
         .as_ref()
@@ -228,7 +228,7 @@ pub fn log_file_path() -> Result<PathBuf> {
     Ok(main_process_log_file_path(&dir))
 }
 
-/// Collects a list of the paths to both the current warp instance's log file,
+/// Collects a list of the paths to both the current yarp instance's log file,
 /// and any older log files (we keep up to 6 log files around at any time,
 /// all of which are potentially useful for debugging).
 fn current_and_rotated_log_paths() -> Result<Vec<PathBuf>> {
@@ -262,7 +262,7 @@ fn current_and_rotated_log_paths() -> Result<Vec<PathBuf>> {
 
     if files.is_empty() {
         return Err(anyhow::anyhow!(
-            "No warp logs were found for {}",
+            "No yarp logs were found for {}",
             ChannelState::logfile_name()
         ));
     }
@@ -336,7 +336,7 @@ fn sentry_log_filter(md: &log::Metadata) -> sentry_log::LogFilter {
 
         // Filter out logs from the crash-reporting implementation, in case it logs
         // anything in the process of forwarding logs to Sentry.
-        t if t.starts_with("warp::crash_reporting::") => sentry_log::LogFilter::Ignore,
+        t if t.starts_with("yarp::crash_reporting::") => sentry_log::LogFilter::Ignore,
 
         _ => sentry_log::default_filter(md),
     }
@@ -347,7 +347,7 @@ fn init_internal(
     is_cli: bool,
     log_destination: Option<LogDestination>,
 ) -> Result<()> {
-    /// Returns an empty file named `warp.log` to log the current execution, and
+    /// Returns an empty file named `yarp.log` to log the current execution, and
     /// renames the previous execution's log to a temporary name.
     fn setup_log_files_for_current_execution(
         log_directory: &Path,
@@ -357,13 +357,13 @@ fn init_internal(
 
         let main_log_path = if is_from_crash_recovery_process {
             // Use a temporary file for logs within the crash recovery process. We intentionally do
-            // not rename the old main log file to `warp.log.temp` like we do below because this
+            // not rename the old main log file to `yarp.log.temp` like we do below because this
             // would result in us moving the log file of the parent process.
             crash_recovery_process_log_file_path(log_directory)
         } else {
             let main_log_path = main_process_log_file_path(log_directory);
 
-            // Rename the old main log file to `warp.log.temp`.
+            // Rename the old main log file to `yarp.log.temp`.
             // We rotate the log files later in the background to make fewer blocking calls.
             let _ = fs::rename(main_log_path.clone(), temp_log_file_path(log_directory));
             main_log_path

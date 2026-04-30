@@ -4777,7 +4777,7 @@ impl SettingsWidget for DefaultTerminalWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "warp default terminal application"
+        "yarp default terminal application"
     }
 
     fn render(

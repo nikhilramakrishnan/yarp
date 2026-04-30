@@ -1,4 +1,4 @@
-//! `warp harness-support` CLI dispatch and the singleton model all subcommands run async work on.
+//! `yarp harness-support` CLI dispatch and the singleton model all subcommands run async work on.
 //!
 //! Subcommands:
 //! - [`ping`] — fetches the current run by task ID and prints its info.

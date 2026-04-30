@@ -6,13 +6,13 @@ Use these only to calibrate tone and structure. Do not copy them mechanically.
 
 Rough feedback:
 
-`Warp loses my selected theme after restart on macOS. I changed it twice and it keeps going back.`
+`Yarp loses my selected theme after restart on macOS. I changed it twice and it keeps going back.`
 
 Draft shape:
 
 - classification: `bug`
-- title: `Theme selection resets after restarting Warp on macOS`
-- missing details: Warp version, macOS version, whether the issue reproduces every restart
+- title: `Theme selection resets after restarting Yarp on macOS`
+- missing details: Yarp version, macOS version, whether the issue reproduces every restart
 
 Key body moves:
 

@@ -37,7 +37,7 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>CFBundleDisplayName</key>
     <string>YarpLocal</string>
     <key>CFBundleExecutable</key>
-    <string>warp</string>
+    <string>yarp</string>
     <key>CFBundleIdentifier</key>
     <string>dev.yarp.Yarp-Local</string>
     <key>CFBundleInfoDictionaryVersion</key>

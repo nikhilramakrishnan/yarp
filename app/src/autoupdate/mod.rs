@@ -67,7 +67,7 @@ pub enum AutoupdateStage {
     },
     /// A relaunch was initiated to use the new version, but failed.
     UnableToLaunchNewVersion { new_version: VersionInfo },
-    /// A new version was installed, but Warp hasn't restarted yet.
+    /// A new version was installed, but Yarp hasn't restarted yet.
     ///
     /// This state is only used on macOS, where the update isn't fully applied until right before
     /// restarting.
@@ -831,7 +831,7 @@ pub fn apply_update(
     }
 }
 
-/// Relaunch Warp to apply an update.
+/// Relaunch Yarp to apply an update.
 ///
 /// This will:
 /// 1. Perform any last update steps.

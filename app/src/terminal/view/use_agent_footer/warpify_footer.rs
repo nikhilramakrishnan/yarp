@@ -34,7 +34,7 @@ impl WarpifyFooterView {
 
         let warpify_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Yarpify subshell", AgentFooterButtonTheme::new(None))
-                .with_icon(Icon::Warp)
+                .with_icon(Icon::Yarp)
                 .with_size(button_size)
                 .with_tooltip("Enable Yarp shell integration in this session")
                 .with_tooltip_alignment(TooltipAlignment::Left)

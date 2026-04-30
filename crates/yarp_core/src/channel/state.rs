@@ -127,7 +127,7 @@ impl ChannelState {
     /// Returns a profile name for isolating user data. This should be used to
     /// sandbox how user data is stored.
     ///
-    /// This is a debugging tool for isolating development instances of Warp, and is not
+    /// This is a debugging tool for isolating development instances of Yarp, and is not
     /// supported in release builds.
     pub fn data_profile() -> Option<String> {
         if cfg!(debug_assertions) {
@@ -226,7 +226,7 @@ impl ChannelState {
     }
 
     /// Returns the HTTP(S) root URL for the RTC server. Used for HTTP endpoints
-    /// served by warp-server-rtc (e.g. the agent event SSE stream).
+    /// served by yarp-server-rtc (e.g. the agent event SSE stream).
     ///
     /// Derived from [`ws_server_url`] by rewriting the scheme (`wss`→`https`,
     /// `ws`→`http`) and stripping the path. Falls back to [`server_root_url`]

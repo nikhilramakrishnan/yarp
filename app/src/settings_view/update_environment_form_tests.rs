@@ -36,23 +36,23 @@ fn test_parse_repo_input_owner_repo() {
 
 #[test]
 fn test_parse_repo_input_github_url() {
-    let (owner, repo) = UpdateEnvironmentForm::parse_repo_input("https://github.com/warp/warp.git")
+    let (owner, repo) = UpdateEnvironmentForm::parse_repo_input("https://github.com/yarp/yarp.git")
         .expect("expected github url to parse");
-    assert_eq!(owner, "warp");
-    assert_eq!(repo, "warp");
+    assert_eq!(owner, "yarp");
+    assert_eq!(repo, "yarp");
 }
 
 #[test]
 fn test_parse_repo_inputs_multiple_entries() {
     let parsed = UpdateEnvironmentForm::parse_repo_inputs(
-        "https://github.com/warp/warp, warp/warp-internal\n git@github.com:warp/warp-server",
+        "https://github.com/yarp/yarp, yarp/yarp-internal\n git@github.com:yarp/yarp-server",
     );
     assert_eq!(
         parsed,
         vec![
-            ("warp".to_string(), "warp".to_string()),
-            ("warp".to_string(), "warp-internal".to_string()),
-            ("warp".to_string(), "warp-server".to_string()),
+            ("yarp".to_string(), "yarp".to_string()),
+            ("yarp".to_string(), "yarp-internal".to_string()),
+            ("yarp".to_string(), "yarp-server".to_string()),
         ]
     );
 }
@@ -110,7 +110,7 @@ fn test_build_auth_url_with_next_focus_cloud_mode() {
 
 #[test]
 fn test_build_auth_url_with_next_uses_scheme_param() {
-    let base_url = "https://example.com/oauth/connect/github?scheme=warp";
+    let base_url = "https://example.com/oauth/connect/github?scheme=yarp";
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::FocusCloudMode,
@@ -619,7 +619,7 @@ fn test_can_suggest_image_for_edit_requires_repos_modified() {
             description: "".to_string(),
             selected_repos: vec![GithubRepo::new(
                 "warpdotdev".to_string(),
-                "warp-internal".to_string(),
+                "yarp-internal".to_string(),
             )],
             docker_image: "ubuntu:latest".to_string(),
             setup_commands: vec![],
@@ -670,7 +670,7 @@ fn test_can_suggest_image_for_create_does_not_require_repos_modified() {
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
                     "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "yarp-internal".to_string(),
                 )];
                 form.edit_repos_modified = false;
                 form.suggest_image_last_attempt_key = None;
@@ -764,7 +764,7 @@ fn test_render_docker_image_field_shows_generating_state() {
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
                     "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "yarp-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -799,7 +799,7 @@ fn test_render_docker_image_field_shows_custom_image_warning() {
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
                     "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "yarp-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -846,7 +846,7 @@ fn test_render_docker_image_field_shows_github_auth_required_message() {
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
                     "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "yarp-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -966,48 +966,48 @@ fn test_create_environment_form_without_team_does_not_render_checkbox_and_defaul
 #[test]
 fn test_parse_docker_hub_url_bare_owner_repo() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("yarp/base-image"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_with_tag() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image:latest"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("yarp/base-image:latest"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image:v1.2.3"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("yarp/base-image:v1.2.3"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_with_digest() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image@sha256:abc123"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("yarp/base-image@sha256:abc123"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_explicit_docker_io() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/yarp/base-image"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/warp/base-image:latest"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/yarp/base-image:latest"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_explicit_index_docker_io() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("index.docker.io/warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("index.docker.io/yarp/base-image"),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }
 
@@ -1046,7 +1046,7 @@ fn test_parse_docker_hub_url_official_image_explicit_library_prefix() {
 #[test]
 fn test_parse_docker_hub_url_other_registry_returns_none() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("ghcr.io/warp/base-image"),
+        UpdateEnvironmentForm::parse_docker_hub_url("ghcr.io/yarp/base-image"),
         None
     );
     assert_eq!(
@@ -1068,7 +1068,7 @@ fn test_parse_docker_hub_url_empty_or_whitespace() {
 #[test]
 fn test_parse_docker_hub_url_trims_whitespace() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("  warp/base-image  "),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("  yarp/base-image  "),
+        Some("https://hub.docker.com/r/yarp/base-image".to_string())
     );
 }

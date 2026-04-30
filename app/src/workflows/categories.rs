@@ -375,7 +375,7 @@ impl CategoriesView {
             Self::categorize_workflows(
                 global_workflows()
                     .into_iter()
-                    .map(Workflow::from) // convert from the public-facing Workflow type to the warp-internal Workflow type
+                    .map(Workflow::from) // convert from the public-facing Workflow type to the yarp-internal Workflow type
                     .map(WorkflowType::Local)
                     .map(Arc::new),
             ),

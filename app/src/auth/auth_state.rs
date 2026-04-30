@@ -234,7 +234,7 @@ impl AuthState {
         }
     }
 
-    /// In yarp the user is always considered logged in — there is no Warp
+    /// In yarp the user is always considered logged in — there is no Yarp
     /// backend and no auth flow. The synthetic local user is set up in `initialize`.
     pub fn is_logged_in(&self) -> bool {
         true
@@ -277,7 +277,7 @@ impl AuthState {
             .map(|user| user.metadata.email.clone())
     }
 
-    /// Returns whether the user considered onboarded to Warp.
+    /// Returns whether the user considered onboarded to Yarp.
     pub fn is_onboarded(&self) -> Option<bool> {
         self.user.read().as_ref().map(|user| user.is_onboarded)
     }
@@ -296,7 +296,7 @@ impl AuthState {
     }
 
     /// Returns whether or not the user is anonymous.
-    /// Anonymous users are real Warp users, but have no providers linked in Firebase.
+    /// Anonymous users are real Yarp users, but have no providers linked in Firebase.
     /// Returns `None` if there is no user data.
     pub fn is_user_anonymous(&self) -> Option<bool> {
         self.user
@@ -306,7 +306,7 @@ impl AuthState {
     }
 
     /// Returns whether or not the user is a "web client anonymous user", aka their account
-    /// originated from viewing Warp on web.
+    /// originated from viewing Yarp on web.
     pub fn is_user_web_anonymous_user(&self) -> Option<bool> {
         self.user.read().as_ref().map(|user| {
             user.anonymous_user_type() == Some(AnonymousUserType::WebClientAnonymousUser)

@@ -89,7 +89,7 @@ lazy_static! {
 pub(crate) struct WindowManager {
     windows: HashMap<WindowId, Rc<Window>>,
     event_loop_proxy: EventLoopProxy<CustomEvent>,
-    /// We assume this won't change throughout the life of the Warp process.
+    /// We assume this won't change throughout the life of the Yarp process.
     os_window_manager_name: OnceCell<Option<String>>,
     /// This is a client for talking to the Xorg server directly instead of through winit.
     #[cfg(target_os = "linux")]

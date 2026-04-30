@@ -196,7 +196,7 @@ pub fn maybe_log_out(app: &mut AppContext) {
         );
 
         // On mac, we show the native platform modal. On platforms that don't support a native modal,
-        // we show the custom warp modal.
+        // we show the custom yarp modal.
         if cfg!(all(not(target_family = "wasm"), target_os = "macos")) {
             app.show_native_platform_modal(alert_data);
         } else {

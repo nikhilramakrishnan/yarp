@@ -13,4 +13,4 @@ The `images/` directory contains sample images and a test markdown file (`image_
 - Images in lists
 - Empty alt text
 
-To test image rendering, open `images/image_test.md` in Warp.
+To test image rendering, open `images/image_test.md` in Yarp.

@@ -19,7 +19,7 @@ set -e
 if [ "$ARTIFACT" = "cli" ]; then
   CHANNEL_SUFFIX="${BINARY_NAME#oz}"
 else
-  CHANNEL_SUFFIX="${BINARY_NAME#warp}"
+  CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
 
 # On Linux, we keep the `-stable` suffix for stable to avoid package conflicts.
@@ -29,7 +29,7 @@ if [ "$ARTIFACT" = "cli" -a "$RELEASE_CHANNEL" = "stable" ]; then
 fi
 
 if [ "$ARTIFACT" = "app" ]; then
-  PACKAGE_NAME="warp-terminal$CHANNEL_SUFFIX"
+  PACKAGE_NAME="yarp-terminal$CHANNEL_SUFFIX"
 elif [ "$ARTIFACT" = "cli" ]; then
   PACKAGE_NAME="oz$CHANNEL_SUFFIX"
 else
@@ -79,7 +79,7 @@ sed \
 if [ "$ARTIFACT" = "app" ]; then
   sed \
       "s#@@CHANNEL_SUFFIX@@#$CHANNEL_SUFFIX#g; s#@@BINARY_NAME@@#$BINARY_NAME#g" \
-      < "$WORKSPACE_ROOT_DIR/resources/linux/arch/$ARTIFACT/warp.sh.template" \
+      < "$WORKSPACE_ROOT_DIR/resources/linux/arch/$ARTIFACT/yarp.sh.template" \
       > "$PKGDIR/$PACKAGE_NAME.sh"
 fi
 

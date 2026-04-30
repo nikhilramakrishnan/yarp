@@ -256,7 +256,7 @@ pub(super) fn render_overflow_menu_button(
 
 /// Returns the font size to be used to render text in the AI block "prompt" line.
 ///
-/// This matches the font size used for the warp prompt in completed command blocks.
+/// This matches the font size used for the yarp prompt in completed command blocks.
 fn prompt_font_size(appearance: &Appearance) -> f32 {
     appearance.monospace_font_size() * YARP_PROMPT_HEIGHT_LINES
 }

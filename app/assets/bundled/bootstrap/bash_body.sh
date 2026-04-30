@@ -82,7 +82,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         fi
     }
 
-    # Emit the ExitShell hook right before the remote shell exits so the Warp
+    # Emit the ExitShell hook right before the remote shell exits so the Yarp
     # client can drop per-session resources (specifically the
     # `ssh … remote-server-proxy` child that holds a multiplexed channel on
     # the foreground ssh ControlMaster). This avoids a hang where the master
@@ -90,7 +90,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # session.
     #
     # Only relevant for remote SSH shells. YARP_IS_SSH is exported to "1"
-    # by `warp_ssh_helper` on the remote side of a Warp-managed SSH session
+    # by `warp_ssh_helper` on the remote side of a Yarp-managed SSH session
     # and is unset everywhere else (local shells, subshells, docker
     # sandboxes, etc.), so the hook only fires where a remote-server-proxy
     # actually needs tearing down.
@@ -446,7 +446,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         warp_maybe_send_reset_grid_osc
 
         if [[ $PS1 == "" ]]; then
-          # Use the saved PS1, if we've already unset it (due to active Warp prompt).
+          # Use the saved PS1, if we've already unset it (due to active Yarp prompt).
           YARP_PS1="$SAVED_PS1"
         else
           # If we haven't unset it yet, then we can use the current PS1 value.
@@ -521,7 +521,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
 
         # Reset the custom kill-whole-line binding as the user's bashrc (which is sourced after bashrc_warp)
         # could have added another bind. This won't have any user-impact because these shortcuts are only run
-        # in the context of the bash editor, which isn't displayed in Warp.
+        # in the context of the bash editor, which isn't displayed in Yarp.
         bind -r '"\C-p"'
         bind "\C-p":kill-whole-line
 
@@ -533,12 +533,12 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         fi
         
         # We need to register bindkeys to enable intra-session switching of the prompt 
-        # (these bindkeys are used by Warp to communicate the prompt mode switch to bash).
+        # (these bindkeys are used by Yarp to communicate the prompt mode switch to bash).
         # We remove any existing bindkey for ESC-P ("p" for prompt/PS1) and register the bindkey
         # to our custom function. Note that this specific keybinding is arbitrary.
         bind -r '"\ep"'
         bind -x '"\ep":"warp_change_prompt_modes_to_ps1"'
-        # We remove any existing bindkey for ESC-P ("w" for Warp prompt) and register the bindkey
+        # We remove any existing bindkey for ESC-P ("w" for Yarp prompt) and register the bindkey
         # to our custom function. Note that this specific keybinding is arbitrary.
         bind -r '"\ew"'
         bind -x '"\ew":"warp_change_prompt_modes_to_warp_prompt"'
@@ -635,18 +635,18 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # ctrl characters (like ESC) in the json, which will cause a JSON
         # parse error.
         # Note YARP_SESSION_ID doesn't need to be escaped since it's a number
-        # We also pass the shell's notion of `honor_ps1` to ensure it's synced correctly on the Warp-side for prompt handling.
+        # We also pass the shell's notion of `honor_ps1` to ensure it's synced correctly on the Yarp-side for prompt handling.
         # This is passed as a "real boolean" via the JSON payload (string interpolated into JSON string below).
         local honor_ps1
         if [[ "$YARP_HONOR_PS1" == "1" ]]; then
           honor_ps1="true"
-          # The Warp prompt preview can be rendered using the active prompt in this case (which uses prompt markers).
+          # The Yarp prompt preview can be rendered using the active prompt in this case (which uses prompt markers).
           escaped_ps1=""
           deref_ps1=""
         else
           honor_ps1="false"
         fi
-        # We send the escaped PS1, if we are in active Warp prompt mode, for prompt preview rendering (note the shell's PS1 is unset in this case).
+        # We send the escaped PS1, if we are in active Yarp prompt mode, for prompt preview rendering (note the shell's PS1 is unset in this case).
         if [ "$YARP_IN_MSYS2" = true ]; then
           warp_send_hook_via_kv_pairs_start "Precmd"
           warp_send_hook_kv_pair "pwd" "$PWD"
@@ -709,7 +709,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # and, well, the prompt itself). What is more, prompt can also include emojis - unicode characters
     # that sometimes contain special bytes (ie. ST, CAN or SUB) that are otherwise used as unhook
     # triggers for the precmd. Instead of escaping those and extracting the value of the prompt itself,
-    # we simply convert the entire data structure into a single line hex string, which Warp
+    # we simply convert the entire data structure into a single line hex string, which Yarp
     # later decodes and sends to the grid to show the prompt.
     # Note: before converting the prompt to a hex string, we remove the multi-line newlines and replace
     # them with a single space (to avoid prompts that span multiple empty lines).
@@ -755,7 +755,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         warp_at_least_bash_version "4.0"
     }
 
-    # Report the current input buffer contents to Warp. This only works correctly
+    # Report the current input buffer contents to Yarp. This only works correctly
     # if `warp_input_reporting_supported` returns "1".
     warp_report_input () {
         if [ "$YARP_IN_MSYS2" = true ]; then
@@ -791,20 +791,20 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       local prompt_prefix_with_cursor_marker_surrounded="\[$prompt_prefix\]"
       local suffix_with_cursor_marker_surrounded="\[$suffix\]"
 
-      # Clear the user-defined prompt again, if using Warp's built-in prompt, before the command 
+      # Clear the user-defined prompt again, if using Yarp's built-in prompt, before the command 
       # is rendered as it could have been reset by the user's bashrc or by setting 
       # the variable on the command line. This is used for same-line prompt and leads to the temporary
-      # product behavior of Warp prompt switches only taking effect in new sessions.
+      # product behavior of Yarp prompt switches only taking effect in new sessions.
       # Certain prompt plugins can reset the prompt to a non-empty value, after we've initially unset it.
-      # Confirm that it is unset, if using built-in Warp prompt (update prompt vars is forced to run as the last precmd fn).
+      # Confirm that it is unset, if using built-in Yarp prompt (update prompt vars is forced to run as the last precmd fn).
       if [[ "$YARP_HONOR_PS1" != "1" ]]; then
         if [[ "$PS1" != "" ]]; then
           # If the PS1 has its original value, then we save it in SAVED_PS1 so we can restore to this value, if we were to unset it for
-          # the Warp prompt case, but the user wants to switch back to PS1 later.
+          # the Yarp prompt case, but the user wants to switch back to PS1 later.
           SAVED_PS1=$PS1
         fi
         # Note that we DO NOT unset the PS1 here, since we want to pass it along as a "hidden left prompt" for 
-        # prompt preview purposes, if the Warp prompt is being used. Specifically, we want to show this prompt preview
+        # prompt preview purposes, if the Yarp prompt is being used. Specifically, we want to show this prompt preview
         # for the Edit Prompt modal and onboarding prompt block.
       fi
 
@@ -827,7 +827,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         PS1="$prompt_prefix$PS1$suffix"
       fi
 
-      # Unset the PS1, if we are using the Warp prompt.
+      # Unset the PS1, if we are using the Yarp prompt.
       if [[ "$YARP_HONOR_PS1" != "1" ]]; then
         PS1=""
       # Otherwise, if we are using the PS1, we use the normal prompt markers.
@@ -864,7 +864,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     }
     
     # Changes the YARP_HONOR_PS1 variable to 1, to indicate we want to use the PS1. Restores
-    # the original PS1 value (which we unset for Warp prompt) and calls warp_update_prompt_vars
+    # the original PS1 value (which we unset for Yarp prompt) and calls warp_update_prompt_vars
     # to refresh the prompt. Note that we use an "empty block" workaround to achieve instant
     # prompt switching in bash, since there is no built-in methods to repaint the prompt, unlike
     # Zsh/fish.
@@ -875,7 +875,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       warp_update_prompt_vars
     }
 
-    # Changes the YARP_HONOR_PS1 variable to 0, to indicate we want to use the Warp prompt. Calls 
+    # Changes the YARP_HONOR_PS1 variable to 0, to indicate we want to use the Yarp prompt. Calls 
     # warp_update_prompt_vars to refresh the prompt (note the PS1 will be unset in this logic). 
     # Note that we use an "empty block" workaround to achieve instant prompt switching in bash, 
     # since there is no built-in methods to repaint the prompt, unlike Zsh/fish.
@@ -910,7 +910,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # We purposefully skip this if either the `warpdotdev.list` file already exists (indicating that the user has already
     # done this themselves) _or_ if a `warpdotdev.sources` file exists (which is the new Deb822 format for source files).
     # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
-    # warp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
+    # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
     # contains a `signed-by` key.
     function warp_handle_dist_upgrade {
       local source_file_name="$1"
@@ -989,7 +989,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
             -t "${@:1}" \
 "
 export TERM_PROGRAM='WarpTerminal'
-# Mark the remote side of a Warp-managed SSH session so the bootstrap
+# Mark the remote side of a Yarp-managed SSH session so the bootstrap
 # body can distinguish it from local shells. Used to gate the ExitShell
 # hook which tears down the remote-server-proxy subprocess.
 export YARP_IS_SSH='1'
@@ -1001,7 +1001,7 @@ hook="'$(printf "{\"hook\": \"SSH\", \"value\": {\"socket_path\": \"'$SSH_SOCKET
 printf '$OSC_START$DCS_JSON_MARKER$OSC_PARAM_SEPARATOR%s$OSC_END' "'$hook'"
 
 if test "'"${SHELL##*/}" != "bash" -a "${SHELL##*/}" != "zsh"'"; then
-  # Emulate the SSHD logic to print the MotD. Because the Warp SSH wrapper passes
+  # Emulate the SSHD logic to print the MotD. Because the Yarp SSH wrapper passes
   # a command to run, SSHD does a quiet login, updating utmp and other login
   # state, but not printing the MotD. For bash and zsh, this is instead handled
   # by our bootstrap script.
@@ -1053,7 +1053,7 @@ if [[ "'$?'" == 0 ]]; then
     done > "'$YARP_TMP_DIR'"/.zshenv
   fi
 else
-  echo \"Failed to bootstrap warp. Continuing with a non-bootstrapped shell.\"
+  echo \"Failed to bootstrap yarp. Continuing with a non-bootstrapped shell.\"
 fi
 TMPPREFIX="'$HOME/.zshtmp-'" YARP_SSH_RCFILES="'${ZDOTDIR:-$HOME}'" ZDOTDIR="'$YARP_TMP_DIR'" exec -l zsh -g $TRACE_FLAG_IF_YARP_SHELL_DEBUG_MODE
       ;;
@@ -1082,14 +1082,14 @@ esac
     fi
 
 
-    # Send a precmd message to the terminal to differentiate between the warp
+    # Send a precmd message to the terminal to differentiate between the yarp
     # bootstrap logic pasted into the PTY and the output of shell startup files.
     warp_precmd
 
     # Before calling rcfiles, print the MotD.
     # In general, login(1) or pam_motd(8) is supposed to do this. However, we don't
-    # go through the normal login flow when bootstrapping a Warp session. In
-    # addition, Warp bash shells are _not_ login shells, because bash does not
+    # go through the normal login flow when bootstrapping a Yarp session. In
+    # addition, Yarp bash shells are _not_ login shells, because bash does not
     # support custom rcfiles in login shells.
     if [[ ! -e "$HOME/.hushlogin" ]]; then
       for motd_file in /etc/motd /run/motd /run/motd.dynamic /usr/lib/motd /usr/lib/motd.dynamic; do
@@ -1102,7 +1102,7 @@ esac
 
 
     # This reflects the bootstrap sequence in a login shell. We want to
-    # Do other shell startup first so we can ensure Warp goes last.
+    # Do other shell startup first so we can ensure Yarp goes last.
     #
     # If this is a subshell, the user and system RC files have already been sourced.
     if [[ -z $YARP_IS_SUBSHELL ]]; then
@@ -1187,7 +1187,7 @@ esac
     # If the user's rc files turned PROMPT_COMMAND into an array, we must undo that.
     # Since Bash 5.1, the PROMPT_COMMAND variable can be an array, see:
     #   https://tiswww.case.edu/php/chet/bash/NEWS
-    # Unfortunately, doing so will break Warp because of the way it interacts with bash-preexec.
+    # Unfortunately, doing so will break Yarp because of the way it interacts with bash-preexec.
     # When PROMPT_COMMAND is an array, the DEBUG signal fires for each array element, and since
     # bash-preexec uses a DEBUG trap to trigger the preexec functions, it will run our preexec
     # functions before the command at PROMPT_COMMAND[1], PROMPT_COMMAND[2], etc. This means our
@@ -1214,7 +1214,7 @@ esac
         # receive the command in preexec).
         __bp_adjust_histcontrol
     fi
-## ----- Warp initialization -----
+## ----- Yarp initialization -----
     
     # Append additional PATH entries if provided via YARP_PATH_APPEND. This is after the user's RC
     # files are sourced in case they reset PATH (/etc/profile on Debian does this, for example).

@@ -1,5 +1,5 @@
 // We can use `std::process:Command` here because this is invoked within a build script,
-// _not_ within the Warp binary (where it could cause a terminal to temporarily flash on
+// _not_ within the Yarp binary (where it could cause a terminal to temporarily flash on
 // Windows).
 #![allow(clippy::disallowed_types)]
 
@@ -147,7 +147,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-/// If `warp-channel-config` is available on PATH and the `release_bundle` feature is enabled,
+/// If `yarp-channel-config` is available on PATH and the `release_bundle` feature is enabled,
 /// invoke the config generator binary and write the JSON output to `OUT_DIR` so it can be
 /// embedded via `include_str!` in the binary entry points.
 fn generate_channel_config_if_needed(target_family: &str, target_os: &str) {
@@ -156,10 +156,10 @@ fn generate_channel_config_if_needed(target_family: &str, target_os: &str) {
         return;
     }
 
-    let config_bin = "warp-channel-config";
+    let config_bin = "yarp-channel-config";
 
     // Check if the config binary is available on PATH. If not, we can't generate embedded
-    // configs. This is expected for external contributors building Warp OSS.
+    // configs. This is expected for external contributors building Yarp OSS.
     if Command::new(config_bin)
         .arg("--help")
         .stdout(std::process::Stdio::null())
@@ -401,7 +401,7 @@ fn copy_async_assets() {
     }
 }
 
-/// Copies the DLLs needed to run Warp on Windows.
+/// Copies the DLLs needed to run Yarp on Windows.
 ///
 /// They are organized as follows:
 /// - `conpty.dll`

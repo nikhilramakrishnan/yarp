@@ -64,7 +64,7 @@ pub fn init() {
 pub fn uninit() {
     let maybe_guard = { GUARD.lock().take() };
     // Ensure we drop the `MinidumpGuard` after releasing the GUARD mutex. If there's an
-    // error stopping the server, we should log it as a Sentry breadcrumb in the Warp
+    // error stopping the server, we should log it as a Sentry breadcrumb in the Yarp
     // process, but not forward the breadcrumb to the server process.
     std::mem::drop(maybe_guard);
 }
@@ -128,7 +128,7 @@ pub fn run_server(socket_path: &Path) -> anyhow::Result<()> {
     // do if crash reporting fails, so creating the log file itself is best-effort.
     let log_dir = yarp_core::paths::state_dir().join(yarp_core::paths::YARP_LOGS_DIR);
     let _ = std::fs::create_dir_all(&log_dir);
-    let log_path = log_dir.join("warp-minidump.log");
+    let log_path = log_dir.join("yarp-minidump.log");
     let log_target = File::create(log_path)
         .map(|file| env_logger::Target::Pipe(Box::new(file)))
         .unwrap_or_else(|_| env_logger::Target::Stdout);
@@ -239,7 +239,7 @@ fn send_crash_report(details: Option<String>, dump: Option<minidumper::MinidumpB
 
         Some(Attachment {
             buffer,
-            filename: "warp-minidump.dmp".to_string(),
+            filename: "yarp-minidump.dmp".to_string(),
             ty: Some(AttachmentType::Minidump),
             ..Default::default()
         })
@@ -305,7 +305,7 @@ impl MinidumpGuard {
         })
         .context("Failed to attach crash signal handler")?;
 
-        // Ensure that the crash server process can ptrace Warp.
+        // Ensure that the crash server process can ptrace Yarp.
         #[cfg(target_os = "linux")]
         crash_handler.set_ptracer(Some(child.id()));
 

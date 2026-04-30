@@ -285,7 +285,7 @@ fn test_export_notebook_with_embeds() {
                 r#"
 # This is a notebook
 It has *text*.
-```warp-embedded-object
+```yarp-embedded-object
 id: {}
 ```
 
@@ -322,7 +322,7 @@ print("hello")
             r#"
 # This is a notebook
 It has *text*\.
-```warp-embedded-object
+```yarp-embedded-object
 ---
 name: Test workflow
 command: echo hello world
@@ -410,7 +410,7 @@ fn test_safe_filename() {
             "allowed $special %characters",
             "allowed $special %characters",
         ),
-        ("warp:drive", "warp_drive"),
+        ("yarp:drive", "warp_drive"),
         ("a/b/c/d:e", "a_b_c_d_e"),
         ("the\0sneaky\0null", "the_sneaky_null"),
         ("ascii\x03control\x1bchars", "ascii_control_chars"),

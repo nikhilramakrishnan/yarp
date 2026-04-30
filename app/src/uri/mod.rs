@@ -61,13 +61,13 @@ pub enum UriHost {
     Action,
     /// A host prefix for all actions that involve launch configurations
     Launch,
-    /// Supports joining shared sessions via a warp:// URI.
+    /// Supports joining shared sessions via a yarp:// URI.
     SharedSession,
-    /// Supports viewing AI conversations via a warp:// URI.
+    /// Supports viewing AI conversations via a yarp:// URI.
     Conversation,
     /// Supports WD object actions
     Drive,
-    /// Supports opening warp's settings panel via URI
+    /// Supports opening yarp's settings panel via URI
     Settings,
     /// A host prefix for a general-purpose home/landing page. Unlike other intent URIs, the home
     /// page behavior may change over time and vary from platform to platform.
@@ -186,7 +186,7 @@ impl UriHost {
             }
             UriHost::SharedSession => {
                 // We expect the uri to have the ID of the session to join as the last segment.
-                // e.g. warp://shared_session/{id}
+                // e.g. yarp://shared_session/{id}
                 let session_id = url
                     .path_segments()
                     .into_iter()
@@ -218,7 +218,7 @@ impl UriHost {
             }
             UriHost::Conversation => {
                 // We expect the uri to have the conversation ID as the last segment.
-                // e.g. warp://conversation/{conversation_id}
+                // e.g. yarp://conversation/{conversation_id}
                 let conversation_id: Option<ServerConversationToken> = url
                     .path_segments()
                     .into_iter()
@@ -252,7 +252,7 @@ impl UriHost {
             }
             UriHost::Drive => {
                 // We expect the uri to have the ID of the object we are trying to open and the object_type.
-                // e.g. warp://drive/{object_type}?id={UID}
+                // e.g. yarp://drive/{object_type}?id={UID}
                 // For folder links, we expect an additional query parameter primary_object_id which refers to the id object
                 // that should be opened
                 // When the user is directed here via the request access flow, we expect an additional query parameter invitee_email
@@ -292,7 +292,7 @@ impl UriHost {
                     if let Some((primary_window_id, root_view_id)) = primary_window_and_view {
                         // `args` may contain user-identifiable fields
                         // (e.g. `invitee_email`), so avoid writing the full
-                        // debug representation to `warp.log` on non-dogfood
+                        // debug representation to `yarp.log` on non-dogfood
                         // release channels.
                         safe_info!(
                             safe: (
@@ -317,12 +317,12 @@ impl UriHost {
             }
             UriHost::Settings => {
                 // We support opening different settings pages through URI:
-                // - warp://settings/teams?invite={email} - opens team settings with invite modal
-                // - warp://settings/billing_and_usage - opens billing and usage settings page
-                // - warp://settings/environments - opens environments settings page
-                // - warp://settings/mcp - opens MCP servers settings page
-                // - warp://settings/platform - opens platform settings page
-                // - warp://settings/appearance - opens appearance settings page (themes, fonts, etc.)
+                // - yarp://settings/teams?invite={email} - opens team settings with invite modal
+                // - yarp://settings/billing_and_usage - opens billing and usage settings page
+                // - yarp://settings/environments - opens environments settings page
+                // - yarp://settings/mcp - opens MCP servers settings page
+                // - yarp://settings/platform - opens platform settings page
+                // - yarp://settings/appearance - opens appearance settings page (themes, fonts, etc.)
                 let settings_sub_page: Option<String> = url
                     .path_segments()
                     .into_iter()
@@ -374,7 +374,7 @@ impl UriHost {
                             }
                         }
                         "mcp" => {
-                            // warp://settings/mcp?autoinstall=<name> auto-installs a gallery MCP server.
+                            // yarp://settings/mcp?autoinstall=<name> auto-installs a gallery MCP server.
                             // The value is matched case-insensitively against gallery titles.
                             let autoinstall =
                                 query_string.get("autoinstall").map(|v| v.to_string());
@@ -935,7 +935,7 @@ impl Action {
 pub fn handle_incoming_uri(url: &Url, ctx: &mut AppContext) {
     // Non-dogfood builds must never log the full URL here: URLs routed to this
     // handler can carry secrets in their query string (for example, the
-    // Firebase `refresh_token` on `warp://auth/desktop_redirect?...`). Log
+    // Firebase `refresh_token` on `yarp://auth/desktop_redirect?...`). Log
     // only the non-sensitive components (scheme, host, path) on release
     // channels; dogfood builds retain the full URL for local debugging.
     safe_info!(
@@ -1326,7 +1326,7 @@ fn validate_custom_uri(url: &Url) -> Result<UriHost> {
 /// The returned string contains only the URL's scheme, host, and path — never
 /// its query string, fragment, or userinfo component. URLs that reach
 /// [`handle_incoming_uri`] can carry secrets in their query (for example, the
-/// Firebase refresh token in `warp://auth/desktop_redirect?refresh_token=...`),
+/// Firebase refresh token in `yarp://auth/desktop_redirect?refresh_token=...`),
 /// so this helper exists to give [`safe_info!`] a redacted representation that
 /// still preserves enough signal for triage.
 ///

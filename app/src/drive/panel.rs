@@ -43,7 +43,7 @@ pub const YARP_DRIVE_POSITION_ID: &str = "warp_drive";
 /// The sidebar that houses Yarp Drive.
 /// `DrivePanel` is different from `DriveIndex` in that it is responsible for
 /// how Yarp Drive interacts with the workspace and the rest of the app, whereas
-/// `DriveIndex` is the main warp drive view and responsible for the internals of Yarp Drive.
+/// `DriveIndex` is the main yarp drive view and responsible for the internals of Yarp Drive.
 pub struct DrivePanel {
     index_view: ViewHandle<DriveIndex>,
     mouse_state_handles: MouseStateHandles,

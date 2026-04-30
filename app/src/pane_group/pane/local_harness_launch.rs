@@ -99,17 +99,17 @@ pub(super) async fn prepare_local_harness_child_launch(
                 .map_err(|error: AgentDriverError| error.to_string())?;
             // Local child harness panes inherit the user's existing local Claude
             // auth/session state. We still prepare Claude's config files here,
-            // but there are no Warp-managed secrets to materialize into the
+            // but there are no Yarp-managed secrets to materialize into the
             // hidden child pane.
             let managed_secrets: HashMap<String, ManagedSecretValue> = HashMap::new();
             claude_harness
                 .prepare_environment_config(&working_dir, None, &managed_secrets)
                 .map_err(|error: AgentDriverError| error.to_string())?;
-            // The Warp claude-code plugin (`warp@claude-code-warp`) is published from
+            // The Yarp claude-code plugin (`yarp@claude-code-yarp`) is published from
             // Yarp's plugin registry and provides the parent-bridge integration.
-            // yarp has no Warp backend, so the plugin can't be installed and
+            // yarp has no Yarp backend, so the plugin can't be installed and
             // wouldn't function even if it were. The harness still works without
-            // it — we just lose the Warp-side bridge enhancements.
+            // it — we just lose the Yarp-side bridge enhancements.
             let _ = plugin_manager_for(claude_harness.cli_agent());
             log::info!("yarp: skipping claude-code plugin install");
 

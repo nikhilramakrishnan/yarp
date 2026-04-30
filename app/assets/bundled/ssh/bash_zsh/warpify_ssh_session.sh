@@ -42,9 +42,9 @@ _system_details() {
 
   # _check_tmux is used in tmux install script post install!
 _check_tmux() {
-    if _find $HOME/.warp/tmux/execute_tmux.sh; then
-        _log SshTmuxInstaller "\"warp\""
-        TMUX="$HOME/.warp/tmux/execute_tmux.sh"
+    if _find $HOME/.yarp/tmux/execute_tmux.sh; then
+        _log SshTmuxInstaller "\"yarp\""
+        TMUX="$HOME/.yarp/tmux/execute_tmux.sh"
     elif _find tmux; then
         TMUX="tmux"
         _log SshTmuxInstaller "\"user\""

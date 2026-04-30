@@ -82,9 +82,9 @@ fn regex_right() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
         testing66\r\n\
-        Warp\n\
+        Yarp\n\
         123\r\n\
-        Warp\r\n\
+        Yarp\r\n\
         123\
     ");
 
@@ -107,9 +107,9 @@ fn regex_left() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
         testing66\r\n\
-        Warp\n\
+        Yarp\n\
         123\r\n\
-        Warp\r\n\
+        Yarp\r\n\
         123\
     ");
 
@@ -131,7 +131,7 @@ fn regex_left() {
 fn nested_regex() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
-        Wa -> Warp -> rp\r\n\
+        Wa -> Yarp -> rp\r\n\
         rp\
     ");
 
@@ -683,7 +683,7 @@ fn test_find_url_with_delimiter() {
         })
     );
 
-    let blockgrid = mock_blockgrid("https://google.com/search?q=warp");
+    let blockgrid = mock_blockgrid("https://google.com/search?q=yarp");
     assert_eq!(
         blockgrid
             .grid_handler

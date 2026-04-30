@@ -1,12 +1,12 @@
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '', Scope = 'Function', Target = 'Warp-*', Justification = 'Warp-* functions are ours')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '', Scope = 'Function', Target = 'Yarp-*', Justification = 'Yarp-* functions are ours')]
 param()
 
 # Wrap things in a module to avoid cluttering the global scope. We assign it to '$null' to suppress
 # the console output from creating the module.
 # NOTE: If you do need a function to be global and also have access to variables in this scope, add
 # the function name to the 'Export-ModuleMember' call at the end.
-$null = New-Module -Name Warp-Module -ScriptBlock {
-    # Byte sequence used to signal the start of an OSC for Warp JSON messages.
+$null = New-Module -Name Yarp-Module -ScriptBlock {
+    # Byte sequence used to signal the start of an OSC for Yarp JSON messages.
     $oscStart = "$([char]0x1b)]9278;"
 
     # Appended to $oscStart to signal that the following message is JSON-encoded.
@@ -14,18 +14,18 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     $oscParamSeparator = ';'
 
-    # Byte used to signal the end of an OSC for Warp JSON messages.
+    # Byte used to signal the end of an OSC for Yarp JSON messages.
     $oscEnd = "$([char]0x07)"
 
     # Writes a hex-encoded JSON message to the PTY.
-    function Warp-Send-JsonMessage([System.Collections.Hashtable]$table) {
+    function Yarp-Send-JsonMessage([System.Collections.Hashtable]$table) {
         $json = ConvertTo-Json -InputObject $table -Compress
         # Sends a message to the controlling terminal as an OSC control sequence.
         # TODO(CORE-2718): Determine if we need to hex encode the payload.
         # Note that because the JSON string may contain characters that we don't control (including
         # unicode), we encode it as hexadecimal string to avoid prematurely calling unhook if
         # one of the bytes in JSON is 9c (ST) or other (CAN, SUB, ESC).
-        $encodedMessage = Warp-Encode-HexString $json
+        $encodedMessage = Yarp-Encode-HexString $json
         Write-Host -NoNewline "$oscStart$oscJsonMarker$oscParamSeparator$encodedMessage$oscEnd"
     }
 
@@ -46,13 +46,13 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
         $oscResetGrid = "$([char]0x1b)]9279$oscEnd"
 
-        function Warp-Send-ResetGridOSC() {
+        function Yarp-Send-ResetGridOSC() {
             Write-Host -NoNewline $oscResetGrid
         }
 
         # Safely attempt to get Node.js version if available. Avoid literal 'node' invocation
         # to satisfy PSUseCompatibleCommands across target platforms.
-        function Warp-TryGet-NodeVersion {
+        function Yarp-TryGet-NodeVersion {
             try {
                 $cmd = Get-Command -CommandType Application node 2>$null
                 if ($null -eq $cmd) { return '' }
@@ -68,7 +68,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Encode a string as hex-encoded UTF-8.
-        function Warp-Encode-HexString([string]$str) {
+        function Yarp-Encode-HexString([string]$str) {
             [BitConverter]::ToString([System.Text.Encoding]::UTF8.GetBytes($str)).Replace('-', '')
         }
 
@@ -76,18 +76,18 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # sequences for generator output.
         #
         # The payload of the OSC is "<content_length>;<hex-encoded content>".
-        function Warp-Send-GeneratorOutputOsc {
+        function Yarp-Send-GeneratorOutputOsc {
             param([string]$message)
 
-            $hexEncodedMessage = Warp-Encode-HexString $message
+            $hexEncodedMessage = Yarp-Encode-HexString $message
             $byteCount = [System.Text.Encoding]::ASCII.GetByteCount($hexEncodedMessage)
 
             Write-Host -NoNewline "$oscStartGeneratorOutput$byteCount;$hexEncodedMessage$oscEndGeneratorOutput"
-            Warp-Send-ResetGridOSC
+            Yarp-Send-ResetGridOSC
         }
 
         # Do not run this in the main thread. It mucks around with some env vars
-        function Warp-Run-InBandGenerator {
+        function Yarp-Run-InBandGenerator {
             [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'We actually need it')]
             param([string]$commandId, [string]$command)
 
@@ -111,11 +111,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
                 # If the generator command returns multi-line output,
                 # we make sure to join the lines together with a newline, so
-                # they are properly parsed by warp
+                # they are properly parsed by yarp
                 $stringifiedOutput = $rawOutput -join "$([char]0x0a)"
 
                 # This is a best-effort attempt to get an error code.
-                # We cannot duplicate our error code logic from Warp-Precmd
+                # We cannot duplicate our error code logic from Yarp-Precmd
                 # b/c Invoke-Expression will swallow the value of $? and always
                 # return true. So we do our best to return a legit error code
                 Write-Output "$commandId;$stringifiedOutput;$exitCode"
@@ -127,14 +127,14 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    # Load the Warp Common functions in the current session
+    # Load the Yarp Common functions in the current session
     . $warpCommon
 
     function Get-EpochTime {
         [decimal]([DateTime]::UtcNow - [DateTime]::new(1970, 1, 1, 0, 0, 0, 0)).Ticks / 1e7
     }
 
-    function Warp-Bootstrapped {
+    function Yarp-Bootstrapped {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'YARP_BOOTSTRAPPED', Justification = 'False positive as we are assigning to global')]
         param([decimal]$rcStartTime, [decimal]$rcEndTime)
 
@@ -142,7 +142,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         (Get-Variable | Select-Object -ExpandProperty Name) -join ' '
         $aliasesRaw = Get-Command -CommandType Alias | Select-Object -ExpandProperty DisplayName
         $aliases = $aliasesRaw -join [Environment]::NewLine
-        $functionNamesRaw = Get-Command -CommandType Function | Where-Object { -not $_.Name.StartsWith('Warp') } | Select-Object -ExpandProperty Name
+        $functionNamesRaw = Get-Command -CommandType Function | Where-Object { -not $_.Name.StartsWith('Yarp') } | Select-Object -ExpandProperty Name
         $functionNames = $functionNamesRaw -join [Environment]::NewLine
         $builtinsRaw = Get-Command -CommandType Cmdlet | Select-Object -ExpandProperty Name
         $builtins = $builtinsRaw -join [Environment]::NewLine
@@ -221,11 +221,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 shell_path = (Get-Process -Id $PID).Path
             }
         }
-        Warp-Send-JsonMessage $bootstrappedMsg
+        Yarp-Send-JsonMessage $bootstrappedMsg
         $global:YARP_BOOTSTRAPPED = 1
     }
 
-    function Warp-Preexec([string]$command) {
+    function Yarp-Preexec([string]$command) {
         $HOST.UI.RawUI.WindowTitle = $command
         $preexecMsg = @{
             hook = 'Preexec'
@@ -233,34 +233,34 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 command = $command
             }
         }
-        Warp-Send-JsonMessage $preexecMsg
-        Warp-Send-ResetGridOSC
+        Yarp-Send-JsonMessage $preexecMsg
+        Yarp-Send-ResetGridOSC
 
         # If this preexec is called for user command, kill ongoing generator command jobs and clean
         # up the bookkeeping temp files used to bookkeep.
-        if (-not "$command" -match '^Warp-Run-GeneratorCommand') {
-            Warp-Stop-ActiveThread
+        if (-not "$command" -match '^Yarp-Run-GeneratorCommand') {
+            Yarp-Stop-ActiveThread
         }
 
-        # Clean up any completed warp jobs so they do not show up on the user's 'get-job'
+        # Clean up any completed yarp jobs so they do not show up on the user's 'get-job'
         # comands
-        Warp-Clean-CompletedThread
+        Yarp-Clean-CompletedThread
 
-        # Remove any instance of the 'Warp-Run-GeneratorCommand' call from the user's history
-        Clear-History -CommandLine 'Warp-Run-GeneratorCommand*'
+        # Remove any instance of the 'Yarp-Run-GeneratorCommand' call from the user's history
+        Clear-History -CommandLine 'Yarp-Run-GeneratorCommand*'
     }
 
-    function Warp-Finish-Update([string]$updateId) {
+    function Yarp-Finish-Update([string]$updateId) {
         $updateMsg = @{
             hook = 'FinishUpdate'
             value = @{
                 update_id = $updateId
             }
         }
-        Warp-Send-JsonMessage $updateMsg
+        Yarp-Send-JsonMessage $updateMsg
     }
 
-    function Warp-Handle-DistUpgrade {
+    function Yarp-Handle-DistUpgrade {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'We actually need it')]
         param([string]$sourceFileName)
 
@@ -292,7 +292,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     #    an escape sequence '^[i'. Since it made it more convenient to have a wrapper
     #    function anyway, I have not investigated this, but in case someone is working
     #    on this in the future, beware attempting to inline this function.
-    function Warp-Git {
+    function Yarp-Git {
         $GIT_OPTIONAL_LOCKS = $env:GIT_OPTIONAL_LOCKS
         $env:GIT_OPTIONAL_LOCKS = 0
         try {
@@ -308,7 +308,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     #
     # Make sure when you call this you call it with -ErrorAction SilentlyContinue
     # or it will print out error information when it is invoked.
-    function Warp-Restore-ErrorStatus {
+    function Yarp-Restore-ErrorStatus {
         [CmdletBinding()]
         param([boolean]$status, [int]$code)
 
@@ -316,7 +316,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         if ($status -eq $false) {
             $PSCmdlet.WriteError([System.Management.Automation.ErrorRecord]::new(
                     [Exception]::new("$([char]0x00)"),
-                    'warp-reset-error',
+                    'yarp-reset-error',
                     [System.Management.Automation.ErrorCategory]::NotSpecified,
                     $null
                 ))
@@ -325,11 +325,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     # Tracks whether or not powershell is unable to find a command.
     # See the $ExecutionContext.InvokeCommand.CommandNotFoundAction where it is set to $true,
-    # and both $ExecutionContext.InvokeCommand.PostCommandLookupAction and Warp-Precmd where
+    # and both $ExecutionContext.InvokeCommand.PostCommandLookupAction and Yarp-Precmd where
     # it is set to $false.
     $script:commandNotFound = $false
 
-    function Warp-Configure-PSReadLine {
+    function Yarp-Configure-PSReadLine {
         # Set-PSReadLineKeyHandler is the PowerShell equivalent of zsh's bindkey.
         Set-PSReadLineKeyHandler -Chord 'Alt+2' -Function BackwardDeleteLine
 
@@ -347,7 +347,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     buffer = $inputBuffer
                 }
             }
-            Warp-Send-JsonMessage $inputBufferMsg
+            Yarp-Send-JsonMessage $inputBufferMsg
             [Microsoft.PowerShell.PSConsoleReadLine]::BackwardDeleteLine()
             # This is triggered after precmd, so output here goes to the "early output" handler,
             # i.e. the background block. This clears the line the cursor is on. We clear it out b/c
@@ -364,32 +364,32 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # Is the equivalent of warp_change_prompt_modes_to_ps1 in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+p' -ScriptBlock {
             $env:YARP_HONOR_PS1 = '1'
-            Warp-Redraw-Prompt
+            Yarp-Redraw-Prompt
         }
 
-        # Sets the prompt mode to warp prompt
+        # Sets the prompt mode to yarp prompt
         # Is the equivalent of warp_change_prompt_modes_to_warp_prompt in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+w' -ScriptBlock {
             $env:YARP_HONOR_PS1 = '0'
-            Warp-Redraw-Prompt
+            Yarp-Redraw-Prompt
         }
 
         Set-PSReadLineOption -AddToHistoryHandler {
             param([string]$line)
 
-            if ($line -match '^Warp-Run-GeneratorCommand') {
+            if ($line -match '^Yarp-Run-GeneratorCommand') {
                 return $false
             }
             return $true
         }
 
-        Warp-Disable-PSPrediction
+        Yarp-Disable-PSPrediction
     }
 
     # Force use of the Inline PredictionViewStyle. The ListView style can occassionally cause some
-    # flickering when using Warp and it doesn't matter what the value of this setting is because
-    # Warp has its own input editor.
-    function Warp-Disable-PSPrediction {
+    # flickering when using Yarp and it doesn't matter what the value of this setting is because
+    # Yarp has its own input editor.
+    function Yarp-Disable-PSPrediction {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseCompatibleCommands', '', Justification = 'Errors are ignored')]
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingEmptyCatchBlock', '', Justification = 'Errors expected')]
         param()
@@ -400,8 +400,8 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Precmd {
-        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPositionalParameters', '', Justification = 'Warp-Git should use positionals')]
+    function Yarp-Precmd {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPositionalParameters', '', Justification = 'Yarp-Git should use positionals')]
         param([bool]$status, [int]$code)
         # Our logic here is:
         #
@@ -441,10 +441,10 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 next_block_id = "precmd-${global:_warpSessionId}-$blockId"
             }
         }
-        Warp-Send-JsonMessage $commandFinishedMsg
-        Warp-Send-ResetGridOSC
+        Yarp-Send-JsonMessage $commandFinishedMsg
+        Yarp-Send-ResetGridOSC
 
-        Warp-Configure-PSReadLine
+        Yarp-Configure-PSReadLine
 
         # If this is being called for a generator command, short circuit and send an unpopulated
         # precmd payload (except for pwd), since we don't re-render the prompt after generator commands
@@ -467,7 +467,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     is_after_in_band_command = $true
                 }
             }
-            Warp-Send-JsonMessage $precmdMsg
+            Yarp-Send-JsonMessage $precmdMsg
         } else {
             # TODO(CORE-2678): Figure out resetting bindkeys here
 
@@ -524,7 +524,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                             }
 
                             if ($inGitRepo) {
-                                $nodeVersion = Warp-TryGet-NodeVersion
+                                $nodeVersion = Yarp-TryGet-NodeVersion
                             }
                         }
                     } catch {
@@ -540,12 +540,12 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 $hasGitCommand = Get-Command -CommandType Application git 2>$null
                 if ($hasGitCommand) {
                     # This is deliberately not using || b/c || only works in Powershell >=7
-                    $gitBranchTmp = Warp-Git symbolic-ref --short HEAD 2>$null
+                    $gitBranchTmp = Yarp-Git symbolic-ref --short HEAD 2>$null
                     if ($null -ne $gitBranchTmp) {
                         $gitBranch = $gitBranchTmp
                         $gitHead = $gitBranchTmp
                     } else {
-                        $gitHeadTmp = Warp-Git rev-parse --short HEAD 2>$null
+                        $gitHeadTmp = Yarp-Git rev-parse --short HEAD 2>$null
                         if ($null -ne $gitHeadTmp) {
                             $gitHead = $gitHeadTmp
                         }
@@ -575,7 +575,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     kube_config = $kubeConfig
                 }
             }
-            Warp-Send-JsonMessage $precmdMsg
+            Yarp-Send-JsonMessage $precmdMsg
         }
     }
 
@@ -610,7 +610,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         [string]$Command
     }
 
-    function Warp-Run-GeneratorCommandImpl {
+    function Yarp-Run-GeneratorCommandImpl {
         param(
             [WarpGeneratorCommand[]]$commands
         )
@@ -623,7 +623,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             $command = $_.Command
 
             # Creates a powershell instance on one of our inner runspaces
-            # that first loads all the warp common functions, and then
+            # that first loads all the yarp common functions, and then
             # executes the in-band generator in the current directory
             $ps = [powershell]::Create()
             $ps.RunspacePool = $script:innerRunspacePool
@@ -631,10 +631,10 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             $ps.AddScript({
                     param([string]$loc, [string]$commandId, [string]$command)
                     Set-Location $loc
-                    Warp-Run-InBandGenerator -commandId $commandId -command "$command"
+                    Yarp-Run-InBandGenerator -commandId $commandId -command "$command"
                 }).AddParameters(@($PWD.Path, $commandId, "$command")) | Out-Null
 
-            $script:threadInner["Warp-Inner-$jobNumber-$batchNumber"] = $psInner
+            $script:threadInner["Yarp-Inner-$jobNumber-$batchNumber"] = $psInner
             $batchNumber++
 
             @{
@@ -644,7 +644,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Creates the outer job, which waits on all the inner jobs
-        # and then sends the results back to Warp via OSC
+        # and then sends the results back to Yarp via OSC
         $psOuter = [powershell]::Create()
         $psOuter.RunspacePool = $script:outerRunspacePool
         $psOuter.AddScript($warpCommon) | Out-Null
@@ -671,7 +671,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     } catch {
                         $output = "$commandId;1;"
                     }
-                    Warp-Send-GeneratorOutputOsc $output
+                    Yarp-Send-GeneratorOutputOsc $output
                 }
             }).AddParameters(@($jobs)) | Out-Null
 
@@ -679,16 +679,16 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # not stopping it as we do not want to block the main thread.
         $async = $psOuter.BeginInvoke()
 
-        $script:threadOuter["Warp-Outer-$jobNumber"] = $psOuter
+        $script:threadOuter["Yarp-Outer-$jobNumber"] = $psOuter
     }
 
-    function Warp-Stop-ActiveThread {
+    function Yarp-Stop-ActiveThread {
         $script:threadInner.values | ForEach-Object {
             $_.Stop()
         }
     }
 
-    function Warp-Clean-CompletedThread {
+    function Yarp-Clean-CompletedThread {
         # Powershell instances states > 2 are terminal.
         # See https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.psinvocationstate
         if ($script:threadInner.Count -gt 0) {
@@ -713,7 +713,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Run-GeneratorCommand {
+    function Yarp-Run-GeneratorCommand {
         [CmdletBinding()]
         param(
             [parameter(ValueFromRemainingArguments = $true)][string[]]$passedArgs
@@ -746,15 +746,15 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         try {
-            Warp-Run-GeneratorCommandImpl -commands $jobs
+            Yarp-Run-GeneratorCommandImpl -commands $jobs
         } finally {
-            # NOTE: for some reason the Warp-Restore-ErrorStatus does not work
+            # NOTE: for some reason the Yarp-Restore-ErrorStatus does not work
             # for this function, so we are inlining it in here.
             $global:LASTEXITCODE = $code
             if ($status -eq $false) {
                 $PSCmdlet.WriteError([System.Management.Automation.ErrorRecord]::new(
                         [Exception]::new("$([char]0x00)"),
-                        'warp-reset-error',
+                        'yarp-reset-error',
                         [System.Management.Automation.ErrorCategory]::NotSpecified,
                         $null
                     ))
@@ -763,7 +763,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     }
 
-    function Warp-Render-Prompt {
+    function Yarp-Render-Prompt {
         param([bool]$status, [int]$code, [bool]$isGeneratorCommand)
 
         # If this is a generator command, we do not want to recompute
@@ -787,7 +787,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         return $basePrompt
     }
 
-    function Warp-Decorate-Prompt {
+    function Yarp-Decorate-Prompt {
         param([string]$basePrompt)
 
         $e = "$([char]0x1b)"
@@ -820,7 +820,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     $script:dontRunPrecmdForPrompt = $false
     # Redraws the prompt. Since our prompt also triggers the precmd hook
     # we need to signal that we do not want that to happen
-    function Warp-Redraw-Prompt {
+    function Yarp-Redraw-Prompt {
         param()
 
         $y = $Host.UI.RawUI.CursorPosition.Y
@@ -832,27 +832,27 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Prompt {
+    function Yarp-Prompt {
         param()
 
         # We need to capture all the data related to exit codes and such
         # as soon as possible for a few reasons
         # 1. We need to make sure that these values are as fresh as possible
-        #    and are not impacted by our Warp- functions
-        # 2. After we finish running Warp-Precmd and Warp-Render-Prompt, we want to set these values
+        #    and are not impacted by our Yarp- functions
+        # 2. After we finish running Yarp-Precmd and Yarp-Render-Prompt, we want to set these values
         #    back to what they were originally
         $status = $?
         $code = $LASTEXITCODE
         $isGeneratorCommand = [bool]($script:generatorCommand -eq $true)
 
         if ($script:dontRunPrecmdForPrompt -ne $true) {
-            Warp-Precmd -status $status -code $code
+            Yarp-Precmd -status $status -code $code
         }
 
         $script:preexecHandled = $false
 
-        $renderedPrompt = Warp-Render-Prompt -status $status -code $code -isGeneratorCommand $isGeneratorCommand
-        $decoratedPrompt = Warp-Decorate-Prompt -basePrompt $renderedPrompt
+        $renderedPrompt = Yarp-Render-Prompt -status $status -code $code -isGeneratorCommand $isGeneratorCommand
+        $decoratedPrompt = Yarp-Decorate-Prompt -basePrompt $renderedPrompt
         $extraLines = ($decoratedPrompt -split "$([char]0x0a)").Length - 1
         Set-PSReadLineOption -ExtraPromptLineCount $extraLines
 
@@ -872,16 +872,16 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     # In some cases, the Clear-Host command will not interface properly with the blocklist.
     # Clear-Host defers to whatever the 'clear' command is defined, and if that command
-    # is not set up to work with Warp (or has funky other behaviors) it can cause problems.
+    # is not set up to work with Yarp (or has funky other behaviors) it can cause problems.
     #
     # Specific examples:
     # - The default /usr/bin/clear on mac creates a giant, empty block to clear content
     #   off of the screen.
     # - if miniconda is installed on an osx system, the miniconda 'clear' command will be
-    #   invoked for 'Clear-Host', which does not play with Warp and winds up doing nothing.
+    #   invoked for 'Clear-Host', which does not play with Yarp and winds up doing nothing.
 
     # Because of the above, we explicitly override both 'Clear-Host' and 'clear' to
-    # instead send a DCS command to Warp instructing it to clear the blocklist.
+    # instead send a DCS command to Yarp instructing it to clear the blocklist.
     # We are explicitly NOT calling the underlying clear implementation:
     # 1. B/c traditional clear sends an escape sequence that ends up creating an
     #    empty block that is the full height of the screen.
@@ -898,7 +898,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             hook = 'Clear'
             value = @{}
         }
-        Warp-Send-JsonMessage $inputBufferMsg
+        Yarp-Send-JsonMessage $inputBufferMsg
     }
 
     function clear() {
@@ -906,10 +906,10 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             hook = 'Clear'
             value = @{}
         }
-        Warp-Send-JsonMessage $inputBufferMsg
+        Yarp-Send-JsonMessage $inputBufferMsg
     }
 
-    function Warp-Finish-Bootstrap {
+    function Yarp-Finish-Bootstrap {
         param([decimal]$rcStartTime, [decimal]$rcEndTime)
         # This is the closest we can get in PowerShell to a proper preexec hook. We wrap the
         # invocation of PSConsoleHostReadline, and call our preexec hook before returning the
@@ -919,7 +919,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         $function:global:PSConsoleHostReadLine = {
             $line = & $script:oldPSConsoleHostReadLine
 
-            Warp-Preexec "$line"
+            Yarp-Preexec "$line"
 
             $line
         }
@@ -934,9 +934,9 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             # automatically by PowerShell internals. Runspace is for user-submitted/configured stuff.
             # However, Runspace still includes stuff like the prompt function, PostCommandLookupAction,
             # and the stuff we set during this bootstrap. So, add a condition to prevent preexec from
-            # triggering in those cases. Note that we prefix our own functions with the "Warp-" prefix
+            # triggering in those cases. Note that we prefix our own functions with the "Yarp-" prefix
             # so that we can ignore them here.
-            if ($EventArgs.CommandOrigin -ne 'Runspace' -or ($commandLine -match '^prompt$|^Warp-')) {
+            if ($EventArgs.CommandOrigin -ne 'Runspace' -or ($commandLine -match '^prompt$|^Yarp-')) {
                 return
             }
             $script:commandNotFound = $true
@@ -944,23 +944,23 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
         # This sets up our wrapper around $function:prompt, which runs the precmd hook
         # and computes the user's custom prompt.
-        $function:global:prompt = (Get-Command Warp-Prompt).ScriptBlock
-        Warp-Bootstrapped -rcStartTime $rcStartTime -rcEndTime $rcEndTime
+        $function:global:prompt = (Get-Command Yarp-Prompt).ScriptBlock
+        Yarp-Bootstrapped -rcStartTime $rcStartTime -rcEndTime $rcEndTime
     }
 
     ###########################################################
     # NOTE: NO non-bootstrap / non-user calls below this line #
     ###########################################################
 
-    # Send a precmd message to the terminal to differentiate between the warp
+    # Send a precmd message to the terminal to differentiate between the yarp
     # bootstrap logic pasted into the PTY and the output of shell startup files.
-    Warp-Precmd -status $global:? -code $global:LASTEXITCODE
+    Yarp-Precmd -status $global:? -code $global:LASTEXITCODE
 
-    Export-ModuleMember -Function clear, Clear-Host, Get-EpochTime, Warp-Finish-Update, Warp-Handle-DistUpgrade, Warp-Run-GeneratorCommand, Warp-Finish-Bootstrap
+    Export-ModuleMember -Function clear, Clear-Host, Get-EpochTime, Yarp-Finish-Update, Yarp-Handle-DistUpgrade, Yarp-Run-GeneratorCommand, Yarp-Finish-Bootstrap
 }
 
 # Finally, get ready to source the user's RC files. This must be done in the global scope (not
-# inside Warp-Module) in order to obey the expected scoping in PowerShell's typical startup process.
+# inside Yarp-Module) in order to obey the expected scoping in PowerShell's typical startup process.
 . {
     $rcStartTime = Get-EpochTime
     # Source the user's RC files
@@ -1003,7 +1003,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     # and then reset the prompt to our current noop prompt.
     $global:_warpOriginalPrompt = $function:global:prompt
 
-    Warp-Finish-Bootstrap -rcStartTime $rcStartTime -rcEndTime $rcEndTime
+    Yarp-Finish-Bootstrap -rcStartTime $rcStartTime -rcEndTime $rcEndTime
     Remove-Variable -Name enterHandler, ctrlcHandler, rcStartTime, rcEndTime -Scope global -ErrorAction Ignore
 
     # Restore the process's original execution policy now that the user's RC files have been loaded.

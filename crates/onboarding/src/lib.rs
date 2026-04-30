@@ -37,8 +37,8 @@ pub const AI_FEATURES: &[&str] = &[
     "Agents over SSH",
 ];
 
-/// User-facing names of the Warp Drive features enabled when the terminal
-/// intention is selected with Warp Drive turned on. Shared by the login slide's
+/// User-facing names of the Yarp Drive features enabled when the terminal
+/// intention is selected with Yarp Drive turned on. Shared by the login slide's
 /// skip-login confirmation dialog so the list stays in sync with any future
 /// surfaces that need it.
 pub const YARP_DRIVE_FEATURES: &[&str] = &["Yarp Drive", "Session Sharing"];

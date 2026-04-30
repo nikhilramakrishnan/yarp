@@ -17,7 +17,7 @@ use crate::{
 /// Core trait defining telemetry event behavior.
 ///
 /// This trait encapsulates the basic functionality required for any telemetry event
-/// in the Warp ecosystem. It enables events to be defined in any crate while maintaining
+/// in the Yarp ecosystem. It enables events to be defined in any crate while maintaining
 /// consistent telemetry reporting behavior.
 pub trait TelemetryEvent: RegisteredTelemetryEvent {
     /// Returns the name of the telemetry event.
@@ -73,7 +73,7 @@ macro_rules! register_telemetry_event {
 }
 
 /// Marker trait for known telemetry events. We rely on this to print an exhaustive telemetry
-/// table in Warp's documentation.
+/// table in Yarp's documentation.
 ///
 /// DO NOT implement this trait directly - use the [`register_telemetry_event!`] macro instead.
 pub trait RegisteredTelemetryEvent {}

@@ -199,10 +199,10 @@ pub struct SpawnAgentRequest {
     /// Not yet wired through the local start_agent flow.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_run_id: Option<String>,
-    /// Base64-encoded `warp.multi_agent.v1.Skill` payloads to restore as runtime skills.
+    /// Base64-encoded `yarp.multi_agent.v1.Skill` payloads to restore as runtime skills.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub runtime_skills: Vec<String>,
-    /// Base64-encoded `warp.multi_agent.v1.Attachment` payloads to restore as referenced attachments.
+    /// Base64-encoded `yarp.multi_agent.v1.Attachment` payloads to restore as referenced attachments.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub referenced_attachments: Vec<String>,
 }

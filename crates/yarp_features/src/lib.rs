@@ -26,7 +26,7 @@ pub enum FeatureFlag {
     /// Enables cloud object related features for an explicit allowlist of team testers.
     CloudObjects,
 
-    /// If `true`, fetch updated Warp channel versions from the Warp server endpoint instead of
+    /// If `true`, fetch updated Yarp channel versions from the Yarp server endpoint instead of
     /// from GCP directly.
     FetchChannelVersionsFromWarpServer,
 
@@ -80,10 +80,10 @@ pub enum FeatureFlag {
     /// discrete GPU.
     IntegratedGPU,
 
-    /// Warp Agent Mode.
+    /// Yarp Agent Mode.
     AgentMode,
 
-    /// Whether the user is part of the Warp Alpha Program (AI Trusted Testers).
+    /// Whether the user is part of the Yarp Alpha Program (AI Trusted Testers).
     /// This is enabled automatically for local and dev builds.
     /// Collect conversation and input autodetection data for agent mode.
     /// Also collects block data for Next Command, if enabled.
@@ -102,7 +102,7 @@ pub enum FeatureFlag {
     /// Feature flag for cursor reflow fix (fixes part of the Alacritty resizing logic).
     ResizeFix,
 
-    /// Enable multiselect in Notebooks and Warp Text.
+    /// Enable multiselect in Notebooks and Yarp Text.
     RichTextMultiselect,
 
     /// If enabled, the default input mode is set to waterfall for new users.
@@ -127,10 +127,10 @@ pub enum FeatureFlag {
     /// Enable dynamic enum parameter types for workflow arguments
     DynamicWorkflowEnums,
 
-    /// Enables next action prediction within Warp, powered by AI.
+    /// Enables next action prediction within Yarp, powered by AI.
     AgentPredict,
 
-    /// Enables receiving shared Warp Drive objects.
+    /// Enables receiving shared Yarp Drive objects.
     SharedWithMe,
 
     /// Enables workflows for use with Agent Mode.
@@ -175,7 +175,7 @@ pub enum FeatureFlag {
     /// tab.
     FullScreenZenMode,
 
-    /// Playground for reducing Warp UI clutter.
+    /// Playground for reducing Yarp UI clutter.
     MinimalistUI,
 
     /// Enables support for using native shell completions to supplement our
@@ -185,7 +185,7 @@ pub enum FeatureFlag {
     /// Adds avatar to the tab bar.
     AvatarInTabBar,
 
-    /// Adds aliases for executing Warp Drive workflows.
+    /// Adds aliases for executing Yarp Drive workflows.
     WorkflowAliases,
 
     SshDragAndDrop,
@@ -231,7 +231,7 @@ pub enum FeatureFlag {
     /// Enables Kitty image rendering
     KittyImages,
 
-    /// Enables support for Warp Packs.
+    /// Enables support for Yarp Packs.
     WarpPacks,
 
     /// Enables the revised AI analytics policy banner.
@@ -349,7 +349,7 @@ pub enum FeatureFlag {
     /// Enables code symbols in AI context menu
     AIContextMenuCode,
 
-    /// Enables Warp Drive objects (like workflows) as context in AI context menu
+    /// Enables Yarp Drive objects (like workflows) as context in AI context menu
     DriveObjectsAsContext,
 
     /// Expands code diff edits to replace the current pane instead of opening in a new tab.
@@ -489,7 +489,7 @@ pub enum FeatureFlag {
     /// Enables cloud environments management via CLI.
     CloudEnvironments,
 
-    /// Enables the /create-environment slash command for setting up Warp Environments
+    /// Enables the /create-environment slash command for setting up Yarp Environments
     CreateEnvironmentSlashCommand,
 
     /// Enables the local docker sandbox entrypoints in the client.
@@ -581,7 +581,7 @@ pub enum FeatureFlag {
     /// Enables host selection in cloud mode.
     CloudModeHostSelector,
 
-    /// Enables Warp Managed Secrets functionality.
+    /// Enables Yarp Managed Secrets functionality.
     WarpManagedSecrets,
 
     /// Enables support for AM file diffs backed by the V4A patch format.
@@ -649,12 +649,12 @@ pub enum FeatureFlag {
     /// Enables conversation artifacts.
     ConversationArtifacts,
 
-    /// Enables auto-syncing ambient plans to Warp Drive.
+    /// Enables auto-syncing ambient plans to Yarp Drive.
     SyncAmbientPlans,
 
     /// Enables platform skills support (--skill flag) for agent runs.
     ///
-    /// Skills are loaded from `.agents/skills/`, `.warp/skills/`, `.claude/skills/`, and `.codex/skills/`
+    /// Skills are loaded from `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/`
     /// directories to provide base prompts for agent runs.
     OzPlatformSkills,
     /// Enables Oz identity federation commands.
@@ -675,7 +675,7 @@ pub enum FeatureFlag {
     /// Enables the Oz launch modal for introducing cloud agent features.
     OzLaunchModal,
 
-    /// Enables the OpenWarp launch modal announcing Warp going open-source.
+    /// Enables the OpenWarp launch modal announcing Yarp going open-source.
     /// When enabled, the HOA onboarding flow is suppressed.
     OpenWarpLaunchModal,
 
@@ -696,7 +696,7 @@ pub enum FeatureFlag {
     ConversationsAsContext,
 
     /// Enables the rich input editor for CLI agents (e.g., Claude Code).
-    /// Ctrl-G intercepts the keystroke and opens Warp's input editor instead of $EDITOR.
+    /// Ctrl-G intercepts the keystroke and opens Yarp's input editor instead of $EDITOR.
     CLIAgentRichInput,
 
     /// Enables incremental (diff-based) buffer updates for auto-reload instead of full replace.
@@ -745,7 +745,7 @@ pub enum FeatureFlag {
     /// adopt the configured color when their working directory matches.
     DirectoryTabColors,
 
-    /// Enables the new settings to control visibility of Warp Drive, Code Review Panel,
+    /// Enables the new settings to control visibility of Yarp Drive, Code Review Panel,
     /// and Project Explorer & Global Search features.
     OpenWarpNewSettingsModes,
 
@@ -757,11 +757,11 @@ pub enum FeatureFlag {
     HoaCodeReview,
 
     /// Enables the `--harness` flag for `oz agent run`, allowing external agent
-    /// CLIs (e.g. `claude`) to execute prompts instead of Warp's agent harness.
+    /// CLIs (e.g. `claude`) to execute prompts instead of Yarp's agent harness.
     AgentHarness,
 
     /// Enables workspace- and block-snapshot handoff between cloud agent runs
-    /// and the local Warp client.
+    /// and the local Yarp client.
     /// When enabled:
     /// - The `AgentDriver` uploads a workspace snapshot (repo diffs + files) at the end of every
     ///   cloud agent run, regardless of harness.
@@ -773,15 +773,15 @@ pub enum FeatureFlag {
     /// Enables the upgraded CLI agent session tracking and notifications infrastructure.
     HOANotifications,
 
-    /// Enables the install/update chip for the OpenCode Warp plugin.
+    /// Enables the install/update chip for the OpenCode Yarp plugin.
     /// Requires HOANotifications to also be enabled.
     OpenCodeNotifications,
 
-    /// Enables the install/update chip for the Codex Warp notification plugin.
+    /// Enables the install/update chip for the Codex Yarp notification plugin.
     /// Requires HOANotifications to also be enabled.
     CodexNotifications,
 
-    /// Enables the install/update chip for the Gemini CLI Warp extension.
+    /// Enables the install/update chip for the Gemini CLI Yarp extension.
     /// Requires HOANotifications to also be enabled.
     GeminiNotifications,
 
@@ -889,7 +889,7 @@ pub const DOGFOOD_FLAGS: &[FeatureFlag] = &[
     FeatureFlag::OzChangelogUpdates,
     FeatureFlag::PendingUserQueryIndicator,
     FeatureFlag::QueueSlashCommand,
-    // These are enabled via 100% experiment on prod warp-server,
+    // These are enabled via 100% experiment on prod yarp-server,
     // but we need to enable here for dogfood builds.
     FeatureFlag::CrossRepoContext,
     FeatureFlag::CodebaseIndexPersistence,
@@ -913,7 +913,7 @@ pub const DOGFOOD_FLAGS: &[FeatureFlag] = &[
     FeatureFlag::CloudModeSetupV2,
 ];
 
-/// Features enabled for feature preview build users (e.g.: Friends of Warp).
+/// Features enabled for feature preview build users (e.g.: Friends of Yarp).
 /// All PREVIEW_FLAGS are also automatically added to dogfood builds (WarpDev).
 pub const PREVIEW_FLAGS: &[FeatureFlag] = &[
     FeatureFlag::Orchestration,

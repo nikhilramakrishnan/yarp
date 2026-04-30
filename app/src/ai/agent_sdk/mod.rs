@@ -119,7 +119,7 @@ fn maybe_warn_team_api_key(ctx: &AppContext) {
     );
 }
 
-/// Run a Warp CLI command.
+/// Run a Yarp CLI command.
 pub fn run(
     ctx: &mut AppContext,
     command: CliCommand,
@@ -855,7 +855,7 @@ impl AgentDriverRunner {
     }
 
     /// Creates a new task on the server for this agent run, sets the task ID on the driver
-    /// options, and updates the Server API provider so that all subsequent requests to warp-server
+    /// options, and updates the Server API provider so that all subsequent requests to yarp-server
     /// contain this new task ID.
     async fn initialize_new_task(
         foreground: &ModelSpawner<Self>,
@@ -1301,7 +1301,7 @@ fn launch_command(
         return dispatch_command(ctx, command, global_options);
     }
 
-    let cli_name = yarp_cli::binary_name().unwrap_or_else(|| "warp".to_string());
+    let cli_name = yarp_cli::binary_name().unwrap_or_else(|| "yarp".to_string());
 
     let auth_state = AuthStateProvider::handle(ctx).as_ref(ctx).get();
     if !auth_state.is_logged_in() {
@@ -1350,8 +1350,8 @@ fn launch_command(
     Ok(())
 }
 
-/// Check if we're running within Warp (for example, if this is an invocation of the Warp CLI
-/// within a Warp terminal session).
+/// Check if we're running within Yarp (for example, if this is an invocation of the Yarp CLI
+/// within a Yarp terminal session).
 pub fn is_running_in_warp() -> bool {
     std::env::var("TERM_PROGRAM")
         .map(|v| v == "WarpTerminal")

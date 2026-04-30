@@ -28,7 +28,7 @@ use yarp_completer::parsers::simple::top_level_command;
 use yarp_util::path::EscapeChar;
 
 /// UID for the Uber team.
-/// See https://warp.metabaseapp.com/dashboard/1454?team_id=46347
+/// See https://yarp.metabaseapp.com/dashboard/1454?team_id=46347
 const UBER_TEAM_UID: &str = "BdVbYjy9LRZcZrYBemSfAF";
 
 /// Gemini brand blue color

@@ -391,7 +391,7 @@ fn test_ignore_duplicate_prompt_updates() {
         // First prompt update should go through.
         network.update(&mut app, |network, _ctx| {
             network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
-                "test warp prompt".to_owned(),
+                "test yarp prompt".to_owned(),
             ));
         });
         assert_eq!(ws_proxy_rx.len(), 1);
@@ -399,13 +399,13 @@ fn test_ignore_duplicate_prompt_updates() {
         // Duplicate prompt updates should be ignored.
         network.update(&mut app, |network, _ctx| {
             network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
-                "test warp prompt".to_owned(),
+                "test yarp prompt".to_owned(),
             ));
         });
         assert_eq!(ws_proxy_rx.len(), 1);
         network.update(&mut app, |network, _ctx| {
             network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
-                "test warp prompt".to_owned(),
+                "test yarp prompt".to_owned(),
             ));
         });
         assert_eq!(ws_proxy_rx.len(), 1);
@@ -413,7 +413,7 @@ fn test_ignore_duplicate_prompt_updates() {
         // Different prompt should go through.
         network.update(&mut app, |network, _ctx| {
             network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
-                "different warp prompt".to_owned(),
+                "different yarp prompt".to_owned(),
             ));
         });
         assert_eq!(ws_proxy_rx.len(), 2);

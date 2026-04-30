@@ -65,8 +65,8 @@ use yarpui::{
 pub enum ReviewDestination {
     /// No terminal is available to receive comments.
     None,
-    /// A Warp agent terminal is available (input box visible, not executing).
-    Warp,
+    /// A Yarp agent terminal is available (input box visible, not executing).
+    Yarp,
     /// A CLI agent (e.g. Claude Code, Gemini) is running in a terminal.
     Cli(CLIAgent),
 }
@@ -1454,7 +1454,7 @@ impl RightPanelView {
     /// (CLI agents are long-running commands that accept review input).
     ///
     /// When `ai_enabled` is `false`, only terminals with an active CLI agent are
-    /// considered available (non-CLI Warp terminals require AI to be on).
+    /// considered available (non-CLI Yarp terminals require AI to be on).
     fn is_terminal_available_for_review(
         tv: &ViewHandle<TerminalView>,
         repo_path: &Path,
@@ -1557,7 +1557,7 @@ impl RightPanelView {
                 tv.read(ctx, |t, ctx| {
                     t.active_cli_agent(ctx)
                         .map(ReviewDestination::Cli)
-                        .unwrap_or(ReviewDestination::Warp)
+                        .unwrap_or(ReviewDestination::Yarp)
                 })
             })
             .unwrap_or(ReviewDestination::None);

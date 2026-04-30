@@ -1,4 +1,4 @@
-//! This module contains utilities for dealing with file/directory paths throughout Warp.
+//! This module contains utilities for dealing with file/directory paths throughout Yarp.
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::env::{self, VarError};

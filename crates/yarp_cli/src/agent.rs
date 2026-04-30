@@ -121,7 +121,7 @@ impl HiddenComputerUseArgs {
 /// The execution harness for an agent run.
 #[derive(Debug, Copy, Clone, ValueEnum, Eq, PartialEq, Default)]
 pub enum Harness {
-    /// Use Warp's built-in MAA infrastructure (default).
+    /// Use Yarp's built-in MAA infrastructure (default).
     #[default]
     #[value(name = "oz")]
     Oz,
@@ -224,7 +224,7 @@ pub struct RunAgentArgs {
     ///
     /// Format: `skill_name`, `repo:skill_name`, or `org/repo:skill_name`
     ///
-    /// Skills are searched in `.agents/skills/`, `.warp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
+    /// Skills are searched in `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
     /// If a repo is specified, searches only that repo. If org is also specified,
     /// validates the repo's git remote matches the expected org.
     ///
@@ -240,7 +240,7 @@ pub struct RunAgentArgs {
     /// Working directory for the agent
     #[arg(short = 'C', long = "cwd")]
     pub cwd: Option<PathBuf>,
-    /// Display agent progress in the Warp interface.
+    /// Display agent progress in the Yarp interface.
     #[arg(long = "gui", hide = true)]
     pub gui: bool,
     #[command(flatten)]
@@ -301,7 +301,7 @@ pub struct RunAgentArgs {
 
     /// Execution harness for the agent run.
     ///
-    /// "oz" (default) uses Warp's built-in agent infrastructure.
+    /// "oz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Oz, hide = true)]
     pub harness: Harness,
@@ -357,7 +357,7 @@ pub struct RunCloudArgs {
     ///
     /// Format: `skill_name`, `repo:skill_name`, or `org/repo:skill_name`
     ///
-    /// Skills are searched in `.agents/skills/`, `.warp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
+    /// Skills are searched in `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
     /// If a repo is specified, searches only that repo. If org is also specified,
     /// validates the repo's git remote matches the expected org.
     ///
@@ -384,7 +384,7 @@ pub struct RunCloudArgs {
     /// The environment to run this ambient agent in.
     #[command(flatten)]
     pub environment: EnvironmentCreateArgs,
-    /// Open the agent's session in Warp once it's available.
+    /// Open the agent's session in Yarp once it's available.
     #[arg(long = "open")]
     pub open: bool,
 
@@ -395,7 +395,7 @@ pub struct RunCloudArgs {
     #[command(flatten)]
     pub scope: ObjectScope,
 
-    /// Where this job should be hosted. Setting "warp" runs it on Warp's infrastructure. Any other
+    /// Where this job should be hosted. Setting "yarp" runs it on Yarp's infrastructure. Any other
     /// value is treated is a self-hosted job and the value will be matched with the self-hosted
     /// worker's name.
     #[arg(long = "host", value_name = "WORKER_ID")]
@@ -422,7 +422,7 @@ pub struct RunCloudArgs {
 
     /// Execution harness for the agent run.
     ///
-    /// "oz" (default) uses Warp's built-in agent infrastructure.
+    /// "oz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Oz, hide = true)]
     pub harness: Harness,

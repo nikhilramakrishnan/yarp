@@ -972,7 +972,7 @@ impl TerminalView {
                 for viewer in active_viewers {
                     if let Some(existing_viewer) = shared_session.viewers().get(viewer.id()) {
                         // A change to the viewer's ACL may have originated from
-                        // warp-server, so we need to update the avatar's role.
+                        // yarp-server, so we need to update the avatar's role.
                         existing_viewer.avatar.update(ctx, |avatar, ctx| {
                             if avatar.role() != viewer.role {
                                 avatar.set_role(viewer.role);

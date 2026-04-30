@@ -1,4 +1,4 @@
-//! Context chips built into Warp
+//! Context chips built into Yarp
 
 use chrono::Local;
 use yarp_util::path::user_friendly_path;

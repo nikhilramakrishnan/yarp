@@ -125,7 +125,7 @@ async fn async_main(executor: Arc<Background>, workspace_root: PathBuf) -> anyho
         LSPServerType::RustAnalyzer,
         workspace_root,
         None,
-        "warp-dev-example".to_string(),
+        "yarp-dev-example".to_string(),
         Arc::new(http_client::Client::new()),
     );
 

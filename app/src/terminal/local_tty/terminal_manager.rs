@@ -332,9 +332,9 @@ impl TerminalManager {
         let prompt_type = ctx.add_model(|ctx| PromptType::new_dynamic(current_prompt.clone(), ctx));
         let session_sharer_clone = session_sharer.clone();
 
-        // Send warp prompt updates.
+        // Send yarp prompt updates.
         ctx.observe_model(&current_prompt, move |current_prompt, ctx| {
-            // If for some reason ctx.notify() was called on the warp prompt but we're using ps1, do nothing.
+            // If for some reason ctx.notify() was called on the yarp prompt but we're using ps1, do nothing.
             if *SessionSettings::as_ref(ctx).honor_ps1 {
                 return
             }
@@ -440,7 +440,7 @@ impl TerminalManager {
             if let SessionSettingsChangedEvent::HonorPS1 { .. } = event {
                 if !*SessionSettings::as_ref(ctx).honor_ps1 {
                     // We don't need to send a WarpPrompt message here when turning off PS1 because this will be sent
-                    // as part of observing the warp prompt and sending messages on updates.
+                    // as part of observing the yarp prompt and sending messages on updates.
                     return;
                 }
                 if let Some(network) = session_sharer_clone.borrow().as_ref() {
@@ -956,7 +956,7 @@ impl TerminalManager {
         });
     }
 
-    /// Sends bindkey to notify shell process to switch to Warp prompt logic for prompt
+    /// Sends bindkey to notify shell process to switch to Yarp prompt logic for prompt
     /// with the combined prompt/command grid (we unset the PS1, but save the value for potential
     /// future restoration).
     pub fn send_switch_to_warp_prompt_bindkey(&self, app_ctx: &mut AppContext) {

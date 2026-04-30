@@ -39,7 +39,7 @@ impl ipc::ServiceImpl for UriServiceImpl {
     }
 }
 
-/// Forwards the given URLs to the main running instance of Warp.
+/// Forwards the given URLs to the main running instance of Yarp.
 pub(super) async fn forward_uri_to_sole_running_instance(
     urls: Vec<Url>,
 ) -> Result<(), ipc::ClientError> {

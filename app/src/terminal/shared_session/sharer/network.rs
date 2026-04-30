@@ -1174,7 +1174,7 @@ impl Network {
 
     /// Stores the event if it's an OrderedTerminalEvent, and sends the message to the server if we're connected.
     /// If we're not connected, the event will be flushed to the server once we've connected.
-    /// TODO(roland): non OrderedTerminalEvents (like warp prompt) can be dropped if we're not connected. For non OrderedTerminalEvents,
+    /// TODO(roland): non OrderedTerminalEvents (like yarp prompt) can be dropped if we're not connected. For non OrderedTerminalEvents,
     /// we only need the latest value and can drop old values. We can send the latest value of needed events as part of reconnection.
     fn send_message_to_server(&mut self, message: UpstreamMessage) {
         if let UpstreamMessage::OrderedTerminalEvent(event) = &message {

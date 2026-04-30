@@ -86,10 +86,10 @@ static FETCH_ACCESS_TOKEN_HARD_ERROR_MESSAGES: &[&str] = &["USER_DISABLED", "USE
 const FETCH_ACCESS_TOKEN_TIMEOUT: Duration = Duration::from_secs(5);
 
 /// Header key for the ambient workload token attached to multi-agent requests.
-pub const AMBIENT_WORKLOAD_TOKEN_HEADER: &str = "X-Warp-Ambient-Workload-Token";
+pub const AMBIENT_WORKLOAD_TOKEN_HEADER: &str = "X-Yarp-Ambient-Workload-Token";
 
 /// Header key for the cloud agent task ID attached to requests from ambient agents.
-pub const CLOUD_AGENT_ID_HEADER: &str = "X-Warp-Cloud-Agent-ID";
+pub const CLOUD_AGENT_ID_HEADER: &str = "X-Yarp-Cloud-Agent-ID";
 
 /// Duration for which the ambient workload token is valid (3 hours).
 const AMBIENT_WORKLOAD_TOKEN_DURATION: Duration = Duration::from_secs(3 * 60 * 60);
@@ -118,7 +118,7 @@ pub struct FetchUserResult {
 #[cfg_attr(not(target_family = "wasm"), async_trait)]
 #[cfg_attr(target_family = "wasm", async_trait(?Send))]
 pub trait AuthClient: 'static + Send + Sync {
-    /// Creates an anonymous user, who is allowed to use Warp but may lack the ability
+    /// Creates an anonymous user, who is allowed to use Yarp but may lack the ability
     /// to interact with particular features.
     async fn create_anonymous_user(
         &self,
@@ -150,7 +150,7 @@ pub trait AuthClient: 'static + Send + Sync {
         response: Result<MintCustomTokenResult>,
     ) -> Result<String, MintCustomTokenError>;
 
-    /// Queries warp-server for a set of the currently logged-in user's fields.
+    /// Queries yarp-server for a set of the currently logged-in user's fields.
     async fn fetch_user_properties<'a>(&self, auth_token: Option<&'a str>)
         -> Result<GqlUserOutput>;
 
@@ -241,7 +241,7 @@ impl AuthClient for ServerApi {
     }
 
     async fn get_or_refresh_access_token(&self) -> Result<AuthToken> {
-        // yarp has no Warp backend and no real credentials. Every consumer
+        // yarp has no Yarp backend and no real credentials. Every consumer
         // of this token must accept `NoAuth` (downstream HTTP code already
         // handles that — `Authorization` header is just omitted).
         Ok(AuthToken::NoAuth)

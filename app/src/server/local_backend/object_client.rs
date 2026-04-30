@@ -1,6 +1,6 @@
 //! Stub `ObjectClient` implementation for yarp.
 //!
-//! Yarp does not have a cloud object store. The Warp Drive UI surfaces are
+//! Yarp does not have a cloud object store. The Yarp Drive UI surfaces are
 //! still wired up (workflows / notebooks / generic string objects), but every
 //! mutation flows through this stub which returns a friendly error rather
 //! than reaching `app.warp.dev`.

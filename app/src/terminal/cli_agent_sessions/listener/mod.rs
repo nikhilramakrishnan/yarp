@@ -52,8 +52,8 @@ pub fn is_agent_supported(agent: &CLIAgent) -> bool {
 /// Creates the appropriate handler for the given CLI agent.
 fn create_handler(agent: &CLIAgent) -> Option<Box<dyn CLIAgentSessionHandler>> {
     match agent {
-        // Auggie is supported via the community-maintained auggie-warp plugin
-        // (https://github.com/augmentmoogi/auggie-warp), which emits the same
+        // Auggie is supported via the community-maintained auggie-yarp plugin
+        // (https://github.com/augmentmoogi/auggie-yarp), which emits the same
         // structured OSC 777 events as the first-party Claude/OpenCode/Gemini
         // plugins. We don't ship an install flow for it — we just listen.
         CLIAgent::Claude | CLIAgent::OpenCode | CLIAgent::Gemini | CLIAgent::Auggie => {

@@ -23,25 +23,25 @@ use yarp_core::{
 };
 
 pub mod headers {
-    /// Custom Warp header indicating the version of the Warp app.
-    pub const CLIENT_RELEASE_VERSION_HEADER_KEY: &str = "X-Warp-Client-Version";
+    /// Custom Yarp header indicating the version of the Yarp app.
+    pub const CLIENT_RELEASE_VERSION_HEADER_KEY: &str = "X-Yarp-Client-Version";
 
-    /// Custom Warp header indicating the OS category the request was sent from.
-    pub(crate) const YARP_OS_CATEGORY: &str = "X-Warp-OS-Category";
-    /// Custom Warp header indicating the OS name the request was sent from. On Linux this is the
+    /// Custom Yarp header indicating the OS category the request was sent from.
+    pub(crate) const YARP_OS_CATEGORY: &str = "X-Yarp-OS-Category";
+    /// Custom Yarp header indicating the OS name the request was sent from. On Linux this is the
     /// name of the distribution. On all other platforms it should be equivalent to
     /// `YARP_OS_CATEGORY`.
-    pub(crate) const YARP_OS_NAME: &str = "X-Warp-OS-Name";
-    /// Custom Warp header indicating the version of the operating system. On Linux this is the
+    pub(crate) const YARP_OS_NAME: &str = "X-Yarp-OS-Name";
+    /// Custom Yarp header indicating the version of the operating system. On Linux this is the
     /// version of the distribution, not the Linux kernel version.
-    pub(crate) const YARP_OS_VERSION: &str = "X-Warp-OS-Version";
+    pub(crate) const YARP_OS_VERSION: &str = "X-Yarp-OS-Version";
 
-    /// Custom Warp header indicating the linux kernel version. This is only sent from Linux.
-    pub(crate) const YARP_OS_LINUX_KERNEL_VERSION: &str = "X-Warp-OS-Linux-Kernel-Version";
+    /// Custom Yarp header indicating the linux kernel version. This is only sent from Linux.
+    pub(crate) const YARP_OS_LINUX_KERNEL_VERSION: &str = "X-Yarp-OS-Linux-Kernel-Version";
 
-    /// Custom Warp header indicating the client role. We don't use the User-Agent header
+    /// Custom Yarp header indicating the client role. We don't use the User-Agent header
     /// because it can't be set from WASM.
-    pub(crate) const YARP_CLIENT_ID: &str = "X-Warp-Client-ID";
+    pub(crate) const YARP_CLIENT_ID: &str = "X-Yarp-Client-ID";
 }
 
 /// The environment variable containing extra HTTP headers to attach to requests.
@@ -224,7 +224,7 @@ impl Client {
         )
     }
 
-    /// Helper method to determine if the request should include warp-specific headers. The only case
+    /// Helper method to determine if the request should include yarp-specific headers. The only case
     /// where we should include custom headers is if the request is same-origin and is targetted to our server.
     /// For example, app.warp.dev --> app.warp.dev.
     #[cfg(target_family = "wasm")]
@@ -568,7 +568,7 @@ impl<'a> RequestBuilder<'a> {
 }
 
 /// An error returned from `Response::error_for_status` that includes response headers.
-/// This allows callers to inspect headers (like X-Warp-Error-Code) when handling errors.
+/// This allows callers to inspect headers (like X-Yarp-Error-Code) when handling errors.
 #[derive(Debug)]
 pub struct ResponseError {
     pub source: reqwest::Error,

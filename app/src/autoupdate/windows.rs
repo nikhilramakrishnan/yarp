@@ -22,7 +22,7 @@ lazy_static! {
     static ref INSTALLER_PATH: Arc<Mutex<Option<TempPath>>> = Default::default();
 }
 
-/// Download the Inno Setup install wizard, the same one users run on the first Warp install, and
+/// Download the Inno Setup install wizard, the same one users run on the first Yarp install, and
 /// place it into the "data dir".
 pub(super) async fn download_update_and_cleanup(
     version_info: &VersionInfo,
@@ -128,7 +128,7 @@ pub(super) fn check_and_report_update_errors(ctx: &mut AppContext) {
 
     // Fired when the mutex polling loop timed out and a force-kill was attempted.
     let has_mutex_timeout =
-        memchr::memmem::find(&contents_lowercase, b"warp mutex still held after timeout").is_some();
+        memchr::memmem::find(&contents_lowercase, b"yarp mutex still held after timeout").is_some();
     if has_mutex_timeout {
         crate::send_telemetry_sync_from_app_ctx!(TelemetryEvent::AutoupdateMutexTimeout, ctx);
     }
@@ -201,7 +201,7 @@ pub(super) fn relaunch() -> Result<()> {
         }
     };
 
-    // The Inno Setup install wizard will run without user input. It will re-launch Warp after
+    // The Inno Setup install wizard will run without user input. It will re-launch Yarp after
     // installing the update files.
     // https://jrsoftware.org/ishelp/index.php?topic=setupcmdline
     Command::new(&installer_path)
@@ -219,7 +219,7 @@ pub(super) fn relaunch() -> Result<()> {
             &log_arg,
             "/update=1",
             // Do not forcibly kill Yarp via RestartManager. The installer will wait for
-            // Warp to exit naturally by polling the single-instance mutex instead.
+            // Yarp to exit naturally by polling the single-instance mutex instead.
             "/NOCLOSEAPPLICATIONS",
             &format!("/DIR={}", install_dir.display()),
         ])
@@ -254,9 +254,9 @@ fn installer_file_name() -> Result<String> {
 
 fn app_name_prefix(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "Warp",
+        Channel::Stable => "Yarp",
         Channel::Preview => "WarpPreview",
-        Channel::Local => "warp",
+        Channel::Local => "yarp",
         Channel::Integration => "integration",
         Channel::Dev => "WarpDev",
         Channel::Oss => "yarp",

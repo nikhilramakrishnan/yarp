@@ -3497,7 +3497,7 @@ impl UpdateManager {
         ctx: &mut ModelContext<Self>,
     ) {
         self.create_object(
-            // TODO(INT-789): support creating folders as warp packs
+            // TODO(INT-789): support creating folders as yarp packs
             CloudFolderModel::new(&name, false),
             owner,
             client_id,

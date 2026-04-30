@@ -45,7 +45,7 @@ const SSH_GITHUB_ISSUE_URL: &str = "https://github.com/warpdotdev/Warp/issues/ne
 
 fn get_ssh_github_issue_url(title: &str) -> String {
     let url = if let Some(version) = ChannelState::app_version() {
-        format!("{SSH_GITHUB_ISSUE_URL}&warp-version={version}")
+        format!("{SSH_GITHUB_ISSUE_URL}&yarp-version={version}")
     } else {
         SSH_GITHUB_ISSUE_URL.to_string()
     };

@@ -6,7 +6,7 @@ use crate::{
     cloud_object::model::generic_string_model::GenericStringObjectId, server::ids::SyncId,
 };
 
-/// Workflow model to be used inside of `warp-internal`
+/// Workflow model to be used inside of `yarp-internal`
 #[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
@@ -263,7 +263,7 @@ impl Workflow {
     }
 }
 
-/// Create a warp-internal Workflow model from a public-facing workflow
+/// Create a yarp-internal Workflow model from a public-facing workflow
 /// https://github.com/warpdotdev/workflows/blob/main/workflow-types/src/lib.rs
 impl From<warp_workflows::Workflow> for Workflow {
     fn from(workflow: warp_workflows::Workflow) -> Self {
@@ -282,7 +282,7 @@ impl From<warp_workflows::Workflow> for Workflow {
     }
 }
 
-/// Argument model to be used in `warp-internal`
+/// Argument model to be used in `yarp-internal`
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash, Default)]
 pub struct Argument {
     pub name: String,

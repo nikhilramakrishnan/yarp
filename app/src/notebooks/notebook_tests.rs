@@ -576,7 +576,7 @@ fn test_not_eager_baton_grab_different_editor() {
 }
 
 /// Test to make sure we do not eagerly enter edit mode when another editor took the baton
-/// while Warp was closed.
+/// while Yarp was closed.
 #[test]
 fn test_baton_grab_editor_changed_offline() {
     App::test((), |mut app| async move {

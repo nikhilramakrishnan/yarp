@@ -567,8 +567,8 @@ mod full_text_searcher {
     use yarpui::r#async::executor::Background;
     use yarpui::{AppContext, SingletonEntity};
 
-    /// Memory budget for the search index of warp drive.
-    /// Warp could potentially have a lot of objects, so we increase it from the default of 50MB to 100MB
+    /// Memory budget for the search index of yarp drive.
+    /// Yarp could potentially have a lot of objects, so we increase it from the default of 50MB to 100MB
     const MEMORY_BUDGET: usize = 100_000_000; // TODO: is 100MB really necessary?
 
     // All Yarp Drive objects are boosted due to multiple fields being a part of the same total score,

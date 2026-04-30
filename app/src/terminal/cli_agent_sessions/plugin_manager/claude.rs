@@ -15,11 +15,11 @@ use super::{
 use crate::terminal::model::session::LocalCommandExecutor;
 use crate::terminal::shell::ShellType;
 
-const PLUGIN_KEY: &str = "warp@claude-code-warp";
+const PLUGIN_KEY: &str = "yarp@claude-code-yarp";
 const MARKETPLACE_REPO: &str = "warpdotdev/claude-code-warp";
-const MARKETPLACE_NAME: &str = "claude-code-warp";
+const MARKETPLACE_NAME: &str = "claude-code-yarp";
 
-const PLATFORM_PLUGIN_KEY: &str = "oz-harness-support@claude-code-warp";
+const PLATFORM_PLUGIN_KEY: &str = "oz-harness-support@claude-code-yarp";
 // Note: we will eventually publish this to the same marketplace repo, but are using the internal one as we build out multi-harness.
 const PLATFORM_MARKETPLACE_REPO: &str = "warpdotdev/claude-code-warp-internal";
 
@@ -174,7 +174,7 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
             },
             PluginInstructionStep {
                 description: "Install the Yarp plugin",
-                command: "claude plugin install warp@claude-code-warp",
+                command: "claude plugin install yarp@claude-code-yarp",
                 executable: true,
                 link: None,
             },
@@ -193,7 +193,7 @@ static UPDATE_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plug
     steps: &[
         PluginInstructionStep {
             description: "Remove the existing marketplace (if present)",
-            command: "claude plugin marketplace remove claude-code-warp",
+            command: "claude plugin marketplace remove claude-code-yarp",
             executable: true,
             link: None,
         },
@@ -205,7 +205,7 @@ static UPDATE_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plug
         },
         PluginInstructionStep {
             description: "Install the latest plugin version",
-            command: "claude plugin install warp@claude-code-warp",
+            command: "claude plugin install yarp@claude-code-yarp",
             executable: true,
             link: None,
         },
@@ -229,7 +229,7 @@ fn check_installed(claude_dir: &Path) -> bool {
         .unwrap_or(false)
 }
 
-/// Reads the installed version string for the Warp plugin, if present.
+/// Reads the installed version string for the Yarp plugin, if present.
 fn installed_version(claude_dir: &Path) -> Option<String> {
     let plugins_path = claude_dir.join("plugins").join("installed_plugins.json");
     let contents = fs::read_to_string(plugins_path).ok()?;

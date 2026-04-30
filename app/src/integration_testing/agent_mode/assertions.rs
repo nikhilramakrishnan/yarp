@@ -94,7 +94,7 @@ pub fn assert_latest_exchange_text(
 }
 
 // Make an assertion on the action requested in the exchange at exchange_index.
-/// This is private because `AIAgentActionType` is not public outside the warp app crate
+/// This is private because `AIAgentActionType` is not public outside the yarp app crate
 /// for use within agent mode evals, so they can't write the `ActionAssertion` directly.
 /// We need to define other functions for specific action assertions that don't expose the type.
 /// TODO: consider exposing `AIAgentActionType`

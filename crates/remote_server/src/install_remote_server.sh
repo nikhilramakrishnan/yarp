@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Installs the Warp remote server binary on a remote host.
+# Installs the Yarp remote server binary on a remote host.
 #
 # Placeholders (substituted at runtime by setup.rs):
 #   {download_base_url}  — e.g. https://app.warp.dev/download/cli
 #   {channel}            — stable | preview | dev
-#   {install_dir}        — e.g. ~/.warp/remote-server
+#   {install_dir}        — e.g. ~/.yarp/remote-server
 #   {binary_name}        — e.g. oz | oz-dev | oz-preview
 set -e
 

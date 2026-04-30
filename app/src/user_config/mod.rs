@@ -44,7 +44,7 @@ lazy_static! {
 # windows:
 #  - tabs:
 #      - layout:
-#          cwd: /Users/warp-user/project
+#          cwd: /Users/yarp-user/project
 #          commands:
 #            - exec: code .
 ",
@@ -218,7 +218,7 @@ pub fn is_tab_config_toml(path: &Path) -> bool {
         .any(|dir| path.starts_with(dir))
 }
 
-/// Ensures `~/.warp/default_tab_configs/worktree.toml` exists, creating it
+/// Ensures `~/.yarp/default_tab_configs/worktree.toml` exists, creating it
 /// from the embedded template if missing. Returns the path to the file.
 #[cfg(feature = "local_fs")]
 pub(crate) fn ensure_default_worktree_config() -> PathBuf {

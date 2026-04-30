@@ -19,7 +19,7 @@ set -e
 if [ "$ARTIFACT" = "cli" ]; then
   CHANNEL_SUFFIX="${BINARY_NAME#oz}"
 else
-  CHANNEL_SUFFIX="${BINARY_NAME#warp}"
+  CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
 REPO_NAME="warpdotdev$CHANNEL_SUFFIX"
 
@@ -31,7 +31,7 @@ fi
 
 case "$ARTIFACT" in
   app)
-    PACKAGE_NAME="warp-terminal$CHANNEL_SUFFIX"
+    PACKAGE_NAME="yarp-terminal$CHANNEL_SUFFIX"
     ;;
   cli)
     PACKAGE_NAME="oz$CHANNEL_SUFFIX"

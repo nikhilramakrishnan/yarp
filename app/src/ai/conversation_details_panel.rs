@@ -589,7 +589,7 @@ impl ConversationDetailsPanel {
                     return None;
                 }
                 // Hide for non-Oz harnesses (e.g. Claude, Gemini): they can't be
-                // forked into a local Warp conversation.
+                // forked into a local Yarp conversation.
                 if matches!(self.data.harness, Some(h) if h != Harness::Oz) {
                     return None;
                 }
@@ -1040,7 +1040,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
         let sub_color = blended_colors::text_sub(theme, theme.surface_1());
 
-        let icon = ConstrainedBox::new(Icon::Warp.to_warpui_icon(theme.foreground()).finish())
+        let icon = ConstrainedBox::new(Icon::Yarp.to_warpui_icon(theme.foreground()).finish())
             .with_width(20.)
             .with_height(20.)
             .finish();

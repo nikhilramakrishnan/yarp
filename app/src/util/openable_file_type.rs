@@ -1,4 +1,4 @@
-//! File type detection utilities for determining if files can be opened in Warp.
+//! File type detection utilities for determining if files can be opened in Yarp.
 
 #[cfg(feature = "local_fs")]
 use crate::util::file::external_editor::{settings::EditorChoice, Editor, EditorSettings};
@@ -26,7 +26,7 @@ pub enum EditorLayout {
     NewTab,
 }
 
-/// The type of file that can be opened in Warp. The in-product treatment for "opening" a file
+/// The type of file that can be opened in Yarp. The in-product treatment for "opening" a file
 /// depends on its type.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum OpenableFileType {
@@ -81,7 +81,7 @@ pub fn is_supported_image_file(path: impl AsRef<Path>) -> bool {
         .unwrap_or(false)
 }
 
-/// Determines if a file can be opened in Warp and returns its type.
+/// Determines if a file can be opened in Yarp and returns its type.
 /// Returns `None` if the file is binary and should not be opened.
 pub fn is_file_openable_in_warp(path: &Path) -> Option<OpenableFileType> {
     if is_binary_file(path) {
@@ -99,9 +99,9 @@ pub fn is_file_openable_in_warp(path: &Path) -> Option<OpenableFileType> {
     }
 }
 
-/// Only use this for UI elements that must explicitly open a file in Warp (i.e. "Open in New Tab").
+/// Only use this for UI elements that must explicitly open a file in Yarp (i.e. "Open in New Tab").
 /// Prefer `resolve_file_target` for all other cases to respect users' preferences.
-/// This would also force any binary file to be opened in Warp's Code Editor, so you should likely check
+/// This would also force any binary file to be opened in Yarp's Code Editor, so you should likely check
 /// `is_file_openable_in_warp` before rendering any such UI Elements.
 #[cfg(feature = "local_fs")]
 pub fn resolve_file_target_to_open_in_warp(
@@ -153,8 +153,8 @@ pub fn resolve_file_target_with_editor_choice(
         return FileTarget::MarkdownViewer(layout);
     }
 
-    // 2. Warp Code Editor (Explicit user preference)
-    if is_openable_in_warp && matches!(editor_choice, EditorChoice::Warp) {
+    // 2. Yarp Code Editor (Explicit user preference)
+    if is_openable_in_warp && matches!(editor_choice, EditorChoice::Yarp) {
         return FileTarget::CodeEditor(layout);
     }
 
@@ -172,7 +172,7 @@ pub fn resolve_file_target_with_editor_choice(
     match editor_choice {
         EditorChoice::ExternalEditor(editor) => FileTarget::ExternalEditor(editor),
         EditorChoice::SystemDefault => FileTarget::SystemDefault,
-        EditorChoice::Warp | EditorChoice::EnvEditor => unreachable!("Already matched above"),
+        EditorChoice::Yarp | EditorChoice::EnvEditor => unreachable!("Already matched above"),
     }
 }
 
@@ -198,7 +198,7 @@ mod tests {
 
         assert_eq!(
             OpenCodePanelsFileEditor::default_value(),
-            EditorChoice::Warp
+            EditorChoice::Yarp
         );
     }
 
@@ -221,7 +221,7 @@ mod tests {
     fn test_resolve_file_target_warp_uses_default_layout() {
         let target = resolve_file_target_with_editor_choice(
             Path::new("data.txt"),
-            EditorChoice::Warp,
+            EditorChoice::Yarp,
             true, /* prefer_markdown_viewer */
             EditorLayout::NewTab,
             None,
@@ -235,7 +235,7 @@ mod tests {
     fn test_resolve_file_target_binary_is_system_generic() {
         let target = resolve_file_target_with_editor_choice(
             Path::new("image.png"),
-            EditorChoice::Warp,
+            EditorChoice::Yarp,
             true, /* prefer_markdown_viewer */
             EditorLayout::SplitPane,
             None,

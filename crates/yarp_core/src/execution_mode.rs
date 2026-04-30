@@ -4,12 +4,12 @@ use yarpui::{Entity, ModelContext, SingletonEntity};
 // Global execution mode, for logic that runs outside the UI framework.
 static GLOBAL_EXECUTION_MODE: OnceLock<ExecutionMode> = OnceLock::new();
 
-/// Execution mode that Warp is running under.
+/// Execution mode that Yarp is running under.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExecutionMode {
-    /// Warp is running as a normal desktop app.
+    /// Yarp is running as a normal desktop app.
     App,
-    /// Warp is running as a CLI.
+    /// Yarp is running as a CLI.
     Sdk,
 }
 
@@ -18,15 +18,15 @@ impl ExecutionMode {
     /// This must stay in sync with the util/client.go constants on the server.
     pub fn client_id(&self) -> &'static str {
         match self {
-            ExecutionMode::App => "warp-app",
-            ExecutionMode::Sdk => "warp-cli",
+            ExecutionMode::App => "yarp-app",
+            ExecutionMode::Sdk => "yarp-cli",
         }
     }
 }
 
-/// Model tracking the mode that Warp is running in.
+/// Model tracking the mode that Yarp is running in.
 ///
-/// This gates functionality that's disabled when Warp is running in SDK mode.
+/// This gates functionality that's disabled when Yarp is running in SDK mode.
 #[derive(Clone, Debug)]
 pub struct AppExecutionMode {
     mode: ExecutionMode,
@@ -99,7 +99,7 @@ impl AppExecutionMode {
         self.mode.client_id()
     }
 
-    /// If true, Warp is running in a sandbox like a Docker container or VM, rather than directly
+    /// If true, Yarp is running in a sandbox like a Docker container or VM, rather than directly
     /// on a user machine.
     pub fn is_sandboxed(&self) -> bool {
         self.is_sandboxed
@@ -112,7 +112,7 @@ impl Entity for AppExecutionMode {
 
 impl SingletonEntity for AppExecutionMode {}
 
-/// Returns the current global client ID string ("warp-app" or "warp-cli").
+/// Returns the current global client ID string ("yarp-app" or "yarp-cli").
 /// This is set when AppExecutionMode is constructed during application start.
 /// Returns None if the execution mode has not been set yet.
 pub fn current_client_id() -> Option<&'static str> {

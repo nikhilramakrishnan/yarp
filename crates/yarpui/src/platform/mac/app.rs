@@ -90,7 +90,7 @@ pub fn create_native_platform_modal(dialog: AlertDialog) -> id {
 const RUST_WRAPPER_IVAR_NAME: &str = "rustWrapper";
 
 extern "C" {
-    // Implemented in ObjC to get the warp NSApplication subclass.
+    // Implemented in ObjC to get the yarp NSApplication subclass.
     pub(super) fn get_warp_app() -> id;
 }
 

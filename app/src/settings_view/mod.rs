@@ -1194,7 +1194,7 @@ impl SettingsView {
         // with subpages; the actual AI SettingsPage is hidden from direct sidebar listing.
         //
         // Yarp: Account / BillingAndUsage / Teams / Referrals / SharedBlocks /
-        // WarpDrive / Cloud platform are hidden — they all rely on the Warp
+        // WarpDrive / Cloud platform are hidden — they all rely on the Yarp
         // backend, which Yarp has replaced with local-first impls. The
         // underlying SettingsSection variants stay in the enum so the rest of
         // the app keeps compiling, they're just not surfaced in the sidebar.
@@ -1918,7 +1918,7 @@ impl SettingsView {
 
         #[cfg(feature = "crash_reporting")]
         {
-            crate::crash_reporting::set_tag("warp.settings_page", section.to_string());
+            crate::crash_reporting::set_tag("yarp.settings_page", section.to_string());
         }
 
         if let Some(settings_page) = self.current_settings_page() {

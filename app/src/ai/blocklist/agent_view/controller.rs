@@ -136,7 +136,7 @@ pub enum AgentViewEntryOrigin {
     /// Entered agent view by opening an existing non-Oz cloud agent run (live shared-session
     /// viewer or transcript viewer).
     ThirdPartyCloudAgent,
-    /// Entered agent view via the CLI (e.g. `warp agent run`).
+    /// Entered agent view via the CLI (e.g. `yarp agent run`).
     Cli,
     /// Entered agent view by adding an image (drag-and-drop or paste).
     ImageAdded,

@@ -233,7 +233,7 @@ fn new_command_executor_for_local_tty_session(
     //
     // TODO(advait): For production this should be a dedicated
     // `SandboxCommandExecutor` that runs generators via
-    // `sbx exec warp-sandbox-<id> -- sh -c "<cmd>"` (analogous to
+    // `sbx exec yarp-sandbox-<id> -- sh -c "<cmd>"` (analogous to
     // how `LocalCommandExecutor` spawns fresh subprocesses for the
     // host-shell path). That would avoid serializing generators
     // through the user's live PTY (slower, blocked by long-running
@@ -336,7 +336,7 @@ fn new_command_executor_for_local_tty_session(
                 // This code path exists as a fail-safe for disabling in-band
                 // generators if some unforeseen severe issue surfaces during or
                 // shortly after subshells launch. The setting that triggers this
-                // codepath is only accessible via a user defaults command that a Warp
+                // codepath is only accessible via a user defaults command that a Yarp
                 // engineer would have given to the user via some first-hand
                 // correspondance (e.g. GitHub issues).
                 log::info!("creating a no-op executor!");

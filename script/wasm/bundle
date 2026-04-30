@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Builds a Warp binary and bundles it up for distribution.
+# Builds a Yarp binary and bundles it up for distribution.
 
 set -e
 
@@ -115,9 +115,9 @@ mkdir -p "$EXTRAS_DIR"
 # Update parameters based on the target release channel.
 #
 # YARP_BIN is the name of the binary produced by cargo.
-# N.B. The bundled outputs will always be warp.js and warp_bg.wasm.
+# N.B. The bundled outputs will always be yarp.js and warp_bg.wasm.
 if [[ $RELEASE_CHANNEL = "local" ]]; then
-  YARP_BIN="warp"
+  YARP_BIN="yarp"
   FEATURES="$FEATURES,remote_tty"
 elif [[ $RELEASE_CHANNEL = "dev" ]]; then
   YARP_BIN="dev"
@@ -143,12 +143,12 @@ if [[ "$CHECK_ONLY" == "true" ]]; then
 fi
 
 # Build the wasm binary.
-echo "Building and bundling Warp for channel $RELEASE_CHANNEL"
+echo "Building and bundling Yarp for channel $RELEASE_CHANNEL"
 ASSET_TARGET_DIR="$ASSET_TARGET_DIR" cargo build --target wasm32-unknown-unknown --profile "$CARGO_PROFILE" --bin "$YARP_BIN" --features "$FEATURES"
 
 # Generate linked JS and wasm files that can be run in the browser.
 echo "Running wasm-bindgen on $CARGO_TARGET_OUTPUT_DIR/$YARP_BIN.wasm"
-wasm-bindgen --target web --out-dir "$OUT_DIR" --out-name "warp" --keep-debug --no-typescript "$CARGO_TARGET_OUTPUT_DIR/$YARP_BIN.wasm"
+wasm-bindgen --target web --out-dir "$OUT_DIR" --out-name "yarp" --keep-debug --no-typescript "$CARGO_TARGET_OUTPUT_DIR/$YARP_BIN.wasm"
 
 WASM_BINARY_OUT="${OUT_DIR}/warp_bg.wasm"
 WASM_BINARY_DEBUG="${EXTRAS_DIR}/warp_bg.debug.wasm"

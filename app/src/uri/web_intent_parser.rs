@@ -128,7 +128,7 @@ impl WebIntent {
                         }
                         let action_type = segments[1];
                         // Allowlist of valid actions,
-                        // since we shouldn't expose all Warp actions as web URLs.
+                        // since we shouldn't expose all Yarp actions as web URLs.
                         const ALLOWED_ACTIONS: &[&str] = &["open-repo", "focus_cloud_mode"];
                         if !ALLOWED_ACTIONS.contains(&action_type) {
                             return Err(anyhow!("Unknown action type in url: {}", action_type));
@@ -159,15 +159,15 @@ impl WebIntent {
     }
 }
 
-/// Attempts to rewrite a Warp web URL into a native desktop intent URL (warp://...).
-/// Returns `None` if the URL is not a recognized Warp web intent.
+/// Attempts to rewrite a Yarp web URL into a native desktop intent URL (yarp://...).
+/// Returns `None` if the URL is not a recognized Yarp web intent.
 pub fn maybe_rewrite_web_url_to_intent(url: &Url) -> Option<Url> {
     WebIntent::try_from_url(url)
         .ok()
         .map(WebIntent::into_intent_url)
 }
 
-/// On WASM warp, fires an event to try and open the given link on the desktop app.
+/// On WASM yarp, fires an event to try and open the given link on the desktop app.
 #[cfg(target_family = "wasm")]
 pub fn open_url_on_desktop(url: &Url) {
     match WebIntent::try_from_url(url) {

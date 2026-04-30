@@ -96,7 +96,7 @@ pub struct SshInstallTmuxBlock {
     show_tmux_install_block: bool,
     script_status: RequestedScriptStatus,
     system_details: SystemDetails,
-    /// The script to install tmux locally, in a ~/.warp directory
+    /// The script to install tmux locally, in a ~/.yarp directory
     tmux_local_install_script: String,
     ssh_host: Option<String>,
     ssh_command: String,
@@ -261,7 +261,7 @@ impl SshInstallTmuxBlock {
                 content: tmux_system_install_script.to_string(),
             },
             TitledScript {
-                title: "Install to ~/.warp".to_string(),
+                title: "Install to ~/.yarp".to_string(),
                 content: self.tmux_local_install_script.clone(),
             },
             *is_first_script_active,
@@ -320,7 +320,7 @@ impl SshInstallTmuxBlock {
     ) -> Box<dyn Element> {
         let header_contents = render::build_header_row(
             "Install tmux?",
-            Icon::new(UiIcon::Warp.into(), theme.active_ui_detail()),
+            Icon::new(UiIcon::Yarp.into(), theme.active_ui_detail()),
             theme,
             appearance,
         )

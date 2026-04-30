@@ -4,7 +4,7 @@ use crate::context_chips::{github_pr_display_text_from_url, ContextChipKind};
 #[test]
 fn test_github_pr_display_text_from_url() {
     assert_eq!(
-        github_pr_display_text_from_url("https://github.com/warp/warp/pull/123"),
+        github_pr_display_text_from_url("https://github.com/yarp/yarp/pull/123"),
         Some("PR #123".to_string())
     );
 }
@@ -12,11 +12,11 @@ fn test_github_pr_display_text_from_url() {
 #[test]
 fn test_github_pr_display_text_from_url_rejects_non_pr_urls() {
     assert_eq!(
-        github_pr_display_text_from_url("https://github.com/warp/warp/issues/123"),
+        github_pr_display_text_from_url("https://github.com/yarp/yarp/issues/123"),
         None
     );
     assert_eq!(
-        github_pr_display_text_from_url("https://github.com/warp/warp/pull/not-a-number"),
+        github_pr_display_text_from_url("https://github.com/yarp/yarp/pull/not-a-number"),
         None
     );
 }
@@ -24,7 +24,7 @@ fn test_github_pr_display_text_from_url_rejects_non_pr_urls() {
 #[test]
 fn test_github_pr_chip_display_value_formats_url() {
     let value =
-        crate::context_chips::ChipValue::Text("https://github.com/warp/warp/pull/456".to_string());
+        crate::context_chips::ChipValue::Text("https://github.com/yarp/yarp/pull/456".to_string());
     assert_eq!(
         ContextChipKind::GithubPullRequest.display_value(&value),
         "PR #456"

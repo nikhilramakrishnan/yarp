@@ -84,10 +84,10 @@ fn test_export_expands_embeds() {
     App::test((), |mut app| async move {
         let (buffer, _selection) = Buffer::mock_from_markdown(
             r#"
-```warp-embedded-object
+```yarp-embedded-object
 id: embed-123
 ```
-```warp-embedded-object
+```yarp-embedded-object
 id: embed-456
 ignored: value
 ```"#,
@@ -110,13 +110,13 @@ ignored: value
         assert_eq!(
             exported,
             r#"
-```warp-embedded-object
+```yarp-embedded-object
 ---
 id: embed-123
 export: true
 
 ```
-```warp-embedded-object
+```yarp-embedded-object
 ---
 id: embed-456
 export: true

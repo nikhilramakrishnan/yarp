@@ -337,7 +337,7 @@ pub struct QuakeModeSettings {
     #[schemars(description = "Display to pin the hotkey window to.")]
     pub pin_screen: Option<DisplayIdx>,
     /// Whether we should hide quake mode window when it loses focus, this could happen either when
-    /// user focuses on another warp window or another app.
+    /// user focuses on another yarp window or another app.
     #[schemars(description = "Whether to hide the hotkey window when it loses focus.")]
     pub hide_window_when_unfocused: bool,
 }

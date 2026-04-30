@@ -3,7 +3,7 @@ name = "repo_metadata"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
-description = "Repository metadata utilities for Warp"
+description = "Repository metadata utilities for Yarp"
 publish.workspace = true
 license.workspace = true
 

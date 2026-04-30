@@ -55,9 +55,9 @@ function _check_tmux
     if _is tmux
         set TMUX "tmux"
         _log SshTmuxInstaller "\"user\""
-    else if _is $HOME/.warp/tmux/execute_tmux.sh
-        set TMUX "$HOME/.warp/tmux/execute_tmux.sh"
-        _log SshTmuxInstaller "\"warp\""
+    else if _is $HOME/.yarp/tmux/execute_tmux.sh
+        set TMUX "$HOME/.yarp/tmux/execute_tmux.sh"
+        _log SshTmuxInstaller "\"yarp\""
     end
 
     if test -n "$TMUX"

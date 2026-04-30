@@ -382,15 +382,15 @@ pub struct SubshellSuccessBlockInfo {
 #[derive(Debug, Default, Clone, Copy, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TmuxInstallationState {
-    /// This means tmux was installed by Warp in this session, successfully or unsuccessfully.
+    /// This means tmux was installed by Yarp in this session, successfully or unsuccessfully.
     /// It also means we had root access and used a package manager to install tmux and all
     /// dependencies.
     InstalledByWarpRootInThisSession,
-    /// This means tmux was installed by Warp in this session, successfully or unsuccessfully.
+    /// This means tmux was installed by Yarp in this session, successfully or unsuccessfully.
     InstalledByWarpInThisSession,
     InstalledByWarpInPriorSession,
-    /// This means that warp did not install it locally. It was either installed by the user
-    /// or it was installed by warp in a prior session using the package manager.
+    /// This means that yarp did not install it locally. It was either installed by the user
+    /// or it was installed by yarp in a prior session using the package manager.
     InstalledByUser,
     /// This means we never tried to install tmux in this session.
     #[default]
@@ -408,7 +408,7 @@ impl FromStr for TmuxInstallationState {
             "installed_by_warp_in_this_session" => {
                 Ok(TmuxInstallationState::InstalledByWarpInThisSession)
             }
-            "warp" | "installed_by_warp_in_prior_session" => {
+            "yarp" | "installed_by_warp_in_prior_session" => {
                 Ok(TmuxInstallationState::InstalledByWarpInPriorSession)
             }
             "user" | "installed_by_user" => Ok(TmuxInstallationState::InstalledByUser),
@@ -488,7 +488,7 @@ pub struct TerminalModel {
     /// machine) and when the remote shell sends the `InitShell` DCS.
     pending_legacy_ssh_session: Option<SSHValue>,
 
-    /// This variable allows us to differentiate between warp-initiated and user-initiated invocations of
+    /// This variable allows us to differentiate between yarp-initiated and user-initiated invocations of
     /// control mode. Whenever we attempt to warpify an ssh session, we track the context of when warp initiated
     /// control mode, indicating that we expect the shell to enter control mode. We reset to None whenever
     /// the active block finishes. If we enter control mode and option is None, then we know it's user-initiated.
@@ -1011,7 +1011,7 @@ impl SelectedBlocks {
 pub enum TerminalInputState {
     /// Alt-screen on which programs like vim run is visible.
     AltScreen,
-    /// Warp Input View is visible.
+    /// Yarp Input View is visible.
     InputEditor,
     /// Block-list is visible but input will go to the running command.
     LongRunningCommand,
@@ -2176,7 +2176,7 @@ impl TerminalModel {
     pub fn set_custom_title(&mut self, custom_title: Option<String>) {
         self.custom_title.clone_from(&custom_title);
         // If the custom title set by the user is None, we "reset" to whatever the title was set by
-        // the shell / Warp itself.
+        // the shell / Yarp itself.
         self.send_title_event(match custom_title {
             Some(_) => custom_title,
             None => self.title.clone(),

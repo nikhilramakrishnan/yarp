@@ -39,10 +39,10 @@ use crate::{
 /// See `specs/GH686/product.md`.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum InstallOrigin {
-    /// Triggered by a user gesture inside Warp (gallery card click,
+    /// Triggered by a user gesture inside Yarp (gallery card click,
     /// reinstall button, programmatic in-app flows, etc.).
     InApp,
-    /// Triggered by a `warp://settings/mcp?autoinstall=...` deeplink; must be
+    /// Triggered by a `yarp://settings/mcp?autoinstall=...` deeplink; must be
     /// gated by an explicit in-app confirmation before install or spawn.
     Deeplink,
 }
@@ -289,7 +289,7 @@ impl MCPServersSettingsPageView {
 
     /// Auto-installs an MCP server from the gallery.
     ///
-    /// This is the single sink for `warp://settings/mcp?autoinstall=<title>`
+    /// This is the single sink for `yarp://settings/mcp?autoinstall=<title>`
     /// deeplinks; callers must therefore treat the `autoinstall_param` as
     /// untrusted input. The `autoinstall_param` is matched case-insensitively
     /// against gallery titles.

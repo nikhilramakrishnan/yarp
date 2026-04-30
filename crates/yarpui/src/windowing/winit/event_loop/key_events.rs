@@ -183,7 +183,7 @@ fn get_input_key(logical_key: &Key, is_shift: bool) -> Key {
         // If the key is a character AND shift is NOT pressed, we force the key to lowercase.
         // This is to align with existing behavior where we expect bindings with shift
         // to have uppercase characters, and bindings without shift to have lowercase characters.
-        // See yarpui::keymap::Keystroke::parse and warp::util::bindings::cmd_or_ctrl_shift.
+        // See yarpui::keymap::Keystroke::parse and yarp::util::bindings::cmd_or_ctrl_shift.
         (Character(character), true) => Character(character.to_uppercase().into()),
         (Character(character), false) => Character(character.to_lowercase().into()),
         (non_char_key, _) => non_char_key.clone(),

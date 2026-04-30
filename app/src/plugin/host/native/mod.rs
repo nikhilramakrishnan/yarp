@@ -34,7 +34,7 @@ pub fn run() -> Result<()> {
     yarpui::r#async::block_on(async move {
         let executor = Arc::new(Background::default());
 
-        // Initialize a client connection to the warp app process.
+        // Initialize a client connection to the yarp app process.
         let connection_address: ipc::ConnectionAddress = std::env::var(PLUGIN_HOST_ADDRESS_ENV_VAR)
             .context("Failed to retrieve connection key from env var.")?
             .into();
@@ -44,7 +44,7 @@ pub fn run() -> Result<()> {
                 .context("Failed to instantiate LocalSocketClient.")?,
         );
 
-        // Initialize logging, which internally transmits logs from this process to the warp app
+        // Initialize logging, which internally transmits logs from this process to the yarp app
         // process via `LogService`.
         initialize_logging(&client, &executor);
 
@@ -70,7 +70,7 @@ pub fn run() -> Result<()> {
             .build_and_run(executor.clone())
             .expect("Failed to instantiate Plugin Host server ");
 
-        // Send the connection address for the plugin host server back to the warp app.
+        // Send the connection address for the plugin host server back to the yarp app.
         let bootstrap_service = ipc::service_caller::<PluginHostBootstrapService>(client.clone());
         if !matches!(
             bootstrap_service
@@ -93,9 +93,9 @@ pub fn run() -> Result<()> {
 
 /// Returns a vector of validated plugin directory paths in the plugins directory.
 ///
-/// This assumes that all plugins are located in ~/.warp/plugins.
+/// This assumes that all plugins are located in ~/.yarp/plugins.
 fn plugin_paths() -> Vec<PathBuf> {
-    const PLUGIN_PATH_SUFFIX: &str = ".warp/plugins";
+    const PLUGIN_PATH_SUFFIX: &str = ".yarp/plugins";
 
     dirs::home_dir()
         .map(|home_dir| home_dir.join(PLUGIN_PATH_SUFFIX))
@@ -115,7 +115,7 @@ fn plugin_paths() -> Vec<PathBuf> {
         .collect()
 }
 
-/// Returns `true` if the directory at the given path is directory containing JS source for a Warp plugin.
+/// Returns `true` if the directory at the given path is directory containing JS source for a Yarp plugin.
 fn is_plugin_dir(path: &Path) -> bool {
     if !path.is_dir() {
         return false;

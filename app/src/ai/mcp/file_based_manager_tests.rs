@@ -255,46 +255,46 @@ fn test_update_file_based_servers_removes_unreferenced_servers() {
     });
 }
 
-/// A globally-scoped Warp installation always auto-spawns, regardless of the
+/// A globally-scoped Yarp installation always auto-spawns, regardless of the
 /// `file_based_mcp_enabled` toggle.
 #[test]
 fn test_global_warp_server_always_spawns() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let warp_root = warp_data_dir();
-    let parsed = parse_mcp_json(r#"{"global-warp": {"command": "npx", "args": ["warp"]}}"#);
+    let parsed = parse_mcp_json(r#"{"global-yarp": {"command": "npx", "args": ["yarp"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);
         let events = subscribe_events(&mut app, &manager);
 
-        // Toggle is off by default; global Warp server should still spawn.
+        // Toggle is off by default; global Yarp server should still spawn.
         manager.update(&mut app, |m, ctx| {
-            m.apply_parsed_servers(warp_root.clone(), MCPProvider::Warp, parsed, ctx);
+            m.apply_parsed_servers(warp_root.clone(), MCPProvider::Yarp, parsed, ctx);
         });
 
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.spawned_uuids.len(),
                 1,
-                "Global Warp server should auto-spawn regardless of toggle"
+                "Global Yarp server should auto-spawn regardless of toggle"
             );
         });
 
-        // Flipping the toggle must not despawn the global Warp server.
+        // Flipping the toggle must not despawn the global Yarp server.
         set_file_based_mcp_enabled(&mut app, true);
         set_file_based_mcp_enabled(&mut app, false);
 
         events.update(&mut app, |e, _| {
             assert!(
                 e.despawned_uuids.is_empty(),
-                "Global Warp server should never be despawned by toggle changes, got: {:?}",
+                "Global Yarp server should never be despawned by toggle changes, got: {:?}",
                 e.despawned_uuids
             );
         });
     });
 }
 
-/// A globally-scoped non-Warp installation only auto-spawns when the toggle is on.
+/// A globally-scoped non-Yarp installation only auto-spawns when the toggle is on.
 #[test]
 fn test_global_non_warp_server_respects_toggle() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
@@ -316,7 +316,7 @@ fn test_global_non_warp_server_respects_toggle() {
         events.update(&mut app, |e, _| {
             assert!(
                 e.spawned_uuids.is_empty(),
-                "Global non-Warp server must not auto-spawn while toggle is off, got: {:?}",
+                "Global non-Yarp server must not auto-spawn while toggle is off, got: {:?}",
                 e.spawned_uuids
             );
         });
@@ -327,37 +327,37 @@ fn test_global_non_warp_server_respects_toggle() {
             servers[0].uuid()
         });
 
-        // Toggle on: the global non-Warp server should be spawned.
+        // Toggle on: the global non-Yarp server should be spawned.
         set_file_based_mcp_enabled(&mut app, true);
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.spawned_uuids,
                 vec![installation_uuid],
-                "Global non-Warp server should spawn when toggle flips on"
+                "Global non-Yarp server should spawn when toggle flips on"
             );
         });
 
-        // Toggle off: the global non-Warp server should be despawned.
+        // Toggle off: the global non-Yarp server should be despawned.
         set_file_based_mcp_enabled(&mut app, false);
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.despawned_uuids,
                 vec![installation_uuid],
-                "Global non-Warp server should despawn when toggle flips off"
+                "Global non-Yarp server should despawn when toggle flips off"
             );
         });
     });
 }
 
-/// Project-scoped installations (both Warp and third-party) never auto-spawn on
+/// Project-scoped installations (both Yarp and third-party) never auto-spawn on
 /// detection, and the toggle must not spawn or despawn them either.
 #[test]
 fn test_project_scoped_servers_never_auto_spawn() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
-    let repo_path = PathBuf::from("/tmp/warp-test-repo");
+    let repo_path = PathBuf::from("/tmp/yarp-test-repo");
     let claude_parsed =
         parse_mcp_json(r#"{"proj-claude": {"command": "npx", "args": ["proj-claude"]}}"#);
-    let warp_parsed = parse_mcp_json(r#"{"proj-warp": {"command": "npx", "args": ["proj-warp"]}}"#);
+    let warp_parsed = parse_mcp_json(r#"{"proj-yarp": {"command": "npx", "args": ["proj-yarp"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);
@@ -365,7 +365,7 @@ fn test_project_scoped_servers_never_auto_spawn() {
 
         manager.update(&mut app, |m, ctx| {
             m.apply_parsed_servers(repo_path.clone(), MCPProvider::Claude, claude_parsed, ctx);
-            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Warp, warp_parsed, ctx);
+            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Yarp, warp_parsed, ctx);
         });
 
         // Neither detection should emit a spawn event.
@@ -406,14 +406,14 @@ fn test_project_scoped_servers_never_auto_spawn() {
 }
 
 /// An installation referenced from both a global location and a project location
-/// is considered global (and thus gated only by the toggle for non-Warp providers).
+/// is considered global (and thus gated only by the toggle for non-Yarp providers).
 #[test]
 fn test_server_referenced_from_both_global_and_project_is_global() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let Some(home_dir) = dirs::home_dir() else {
         return;
     };
-    let repo_path = PathBuf::from("/tmp/warp-test-repo-shared");
+    let repo_path = PathBuf::from("/tmp/yarp-test-repo-shared");
     let json = r#"{"shared-claude": {"command": "npx", "args": ["shared"]}}"#;
     let global_parsed = parse_mcp_json(json);
     let project_parsed = parse_mcp_json(json);

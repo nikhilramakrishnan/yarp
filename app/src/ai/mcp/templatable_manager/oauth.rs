@@ -50,7 +50,7 @@ pub type PersistedCredentialsMap = HashMap<Uuid, PersistedCredentials>;
 pub type FileBasedPersistedCredentialsMap = HashMap<u64, PersistedCredentials>;
 
 /// A credential store that wraps [`InMemoryCredentialStore`] and persists token
-/// updates to Warp's secure storage via a channel.
+/// updates to Yarp's secure storage via a channel.
 ///
 /// When rmcp auto-refreshes an expired access token at runtime, the rotated
 /// tokens are only saved to the in-memory store by default. This wrapper
@@ -126,7 +126,7 @@ impl CredentialStore for PersistingCredentialStore {
 }
 
 /// Installs a [`PersistingCredentialStore`] on the given auth manager so that
-/// runtime token auto-refreshes are written back to Warp's secure storage.
+/// runtime token auto-refreshes are written back to Yarp's secure storage.
 ///
 /// A background tokio task is spawned to receive credential updates and persist
 /// them via the [`ModelSpawner`]. The task terminates when the auth manager (and
@@ -291,12 +291,12 @@ pub async fn make_authenticated_client(
             log::warn!(
                 "File-based MCP server {uuid} requires OAuth authentication; \
                  skipping in headless mode. To use this server, authenticate it \
-                 in the Warp desktop app first."
+                 in the Yarp desktop app first."
             );
         }
         return Err(AuthError::AuthorizationFailed(
             "MCP server requires OAuth authentication. Please authenticate this server in the \
-             Warp desktop app first, then try again."
+             Yarp desktop app first, then try again."
                 .to_string(),
         ));
     }

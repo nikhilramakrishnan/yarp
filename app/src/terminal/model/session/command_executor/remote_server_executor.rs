@@ -14,7 +14,7 @@ use crate::terminal::model::session::command_executor::{CommandExecutor, Execute
 use crate::terminal::shell::Shell;
 
 /// `CommandExecutor` implementation that executes commands via a persistent
-/// `warp remote-server` process running on the remote host over SSH.
+/// `yarp remote-server` process running on the remote host over SSH.
 ///
 /// The executor is always constructed with a live `RemoteServerClient` that
 /// was obtained from [`crate::remote_server::manager::RemoteServerManager`]

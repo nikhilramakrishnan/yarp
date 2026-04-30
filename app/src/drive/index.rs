@@ -1239,7 +1239,7 @@ impl DriveIndex {
         ctx.notify();
     }
 
-    /// Expand the section for warp drive item. This is called when we perform deep link to warp
+    /// Expand the section for yarp drive item. This is called when we perform deep link to yarp
     /// drive items.
     pub fn expand_section_for_drive_item_id(
         &mut self,
@@ -1473,7 +1473,7 @@ impl DriveIndex {
             Hoverable::new(
                 section_state.header_hover_state.clone(),
                 move |mouse_state| {
-                    // If the item is hovered, set a hover background that matches the hover state of warp drive items.
+                    // If the item is hovered, set a hover background that matches the hover state of yarp drive items.
                     if mouse_state.is_hovered() && !is_focused || section_state.menu_open {
                         container = container.with_background(
                             yarp_core::ui::theme::color::internal_colors::fg_overlay_2(
@@ -1676,7 +1676,7 @@ impl DriveIndex {
         Hoverable::new(
             section_state.header_hover_state.clone(),
             move |mouse_state| {
-                // If the item is hovered, set a hover background that matches the hover state of warp drive items.
+                // If the item is hovered, set a hover background that matches the hover state of yarp drive items.
                 if mouse_state.is_hovered() && !is_focused || section_state.menu_open {
                     container = container.with_background(
                         yarp_core::ui::theme::color::internal_colors::fg_overlay_2(
@@ -2645,7 +2645,7 @@ impl DriveIndex {
             .finish()
     }
 
-    /// Renders a warp drive item within the index. If the item is a folder, we recursively call
+    /// Renders a yarp drive item within the index. If the item is a folder, we recursively call
     /// this function in order to render the folder's children (if it's open).
     /// This index refers to the idx within a given space, and is needed to render the context menu at the
     /// correct position. If the item should not be shown, this returns [`None`].
@@ -3354,7 +3354,7 @@ impl DriveIndex {
         ctx.notify();
     }
 
-    /// If the given space is tied to a section in warp drive, ensures that that section is open.
+    /// If the given space is tied to a section in yarp drive, ensures that that section is open.
     fn open_section_of_space(&mut self, space: Space) {
         if let Some(target_section) = self
             .sections

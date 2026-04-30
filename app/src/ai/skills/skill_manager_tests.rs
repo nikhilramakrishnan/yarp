@@ -377,7 +377,7 @@ fn test_read_bundled_skills_preserves_other_content() {
     let temp_dir = TempDir::new().unwrap();
     let skills_dir = temp_dir.path();
 
-    // Create a test skill with both warp and non-warp variables
+    // Create a test skill with both yarp and non-yarp variables
     let skill_dir = skills_dir.join("test-skill");
     fs::create_dir_all(&skill_dir).unwrap();
     let skill_file = skill_dir.join("SKILL.md");
@@ -480,7 +480,7 @@ fn make_skill(name: &str, provider_dir: &str) -> ParsedSkill {
         provider: get_provider_for_path(&PathBuf::from(format!(
             "/repo/{provider_dir}/skills/{name}/SKILL.md"
         )))
-        .unwrap_or(SkillProvider::Warp),
+        .unwrap_or(SkillProvider::Yarp),
         scope: SkillScope::Project,
     }
 }

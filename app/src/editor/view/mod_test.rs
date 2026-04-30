@@ -472,12 +472,12 @@ fn test_select_word_with_smart_select() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml thing",
+                "word ~/.yarp/themes/foo-bar.yaml thing",
                 Default::default(),
                 ctx,
             );
             editor.select_word(&DisplayPoint::new(0, 8), ctx);
-            assert_eq!(editor.selected_text(ctx), "~/.warp/themes/foo-bar.yaml");
+            assert_eq!(editor.selected_text(ctx), "~/.yarp/themes/foo-bar.yaml");
             editor
         });
     });
@@ -501,12 +501,12 @@ fn test_select_word_with_custom_boundaries() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml thing",
+                "word ~/.yarp/themes/foo-bar.yaml thing",
                 Default::default(),
                 ctx,
             );
             editor.select_word(&DisplayPoint::new(0, 8), ctx);
-            assert_eq!(editor.selected_text(ctx), "/.warp/themes/foo-bar.yaml");
+            assert_eq!(editor.selected_text(ctx), "/.yarp/themes/foo-bar.yaml");
             editor
         });
     });
@@ -534,7 +534,7 @@ fn test_smart_select_with_drag() {
             editor.update_selection(DisplayPoint::new(0, 34), Vector2F::zero(), ctx);
             assert_eq!(
                 editor.selected_text(ctx),
-                "~/.warp/themes/foo-bar.yaml andy"
+                "~/.yarp/themes/foo-bar.yaml andy"
             );
             editor
         });
@@ -3318,7 +3318,7 @@ fn test_autocomplete_symbols() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor =
-                EditorView::new_with_base_text("word warp word", Default::default(), ctx);
+                EditorView::new_with_base_text("word yarp word", Default::default(), ctx);
 
             editor.set_autocomplete_symbols_allowed(true);
             editor
@@ -3332,12 +3332,12 @@ fn test_autocomplete_symbols() {
                 .unwrap();
             editor.add_next_occurrence(ctx);
             editor.user_insert("[", ctx);
-            assert_eq!(editor.buffer_text(ctx), "[word] warp [word]");
+            assert_eq!(editor.buffer_text(ctx), "[word] yarp [word]");
 
             editor.undo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "word warp word");
+            assert_eq!(editor.buffer_text(ctx), "word yarp word");
             editor.redo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "[word] warp [word]");
+            assert_eq!(editor.buffer_text(ctx), "[word] yarp [word]");
 
             editor
         });
@@ -3358,11 +3358,11 @@ fn test_autocomplete_symbols() {
                 autocomplete_symbols: true,
                 ..Default::default()
             };
-            let mut editor = EditorView::new_with_base_text("word warp word", options, ctx);
+            let mut editor = EditorView::new_with_base_text("word yarp word", options, ctx);
 
             editor.cursor_end(ctx);
             editor.user_insert("(", ctx);
-            assert_eq!(editor.buffer_text(ctx), "word warp word(");
+            assert_eq!(editor.buffer_text(ctx), "word yarp word(");
 
             editor
         });

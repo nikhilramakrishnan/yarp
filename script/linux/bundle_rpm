@@ -19,7 +19,7 @@ set -e
 if [ "$ARTIFACT" = "cli" ]; then
   CHANNEL_SUFFIX="${BINARY_NAME#oz}"
 else
-  CHANNEL_SUFFIX="${BINARY_NAME#warp}"
+  CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
 REPO_NAME="warpdotdev$CHANNEL_SUFFIX"
 
@@ -31,7 +31,7 @@ fi
 
 ARTIFACT="${ARTIFACT:-app}"
 if [ "$ARTIFACT" = "app" ]; then
-  PACKAGE_NAME="warp-terminal$CHANNEL_SUFFIX"
+  PACKAGE_NAME="yarp-terminal$CHANNEL_SUFFIX"
 elif [ "$ARTIFACT" = "cli" ]; then
   PACKAGE_NAME="oz$CHANNEL_SUFFIX"
 else
@@ -78,11 +78,11 @@ sed \
      s#@@BUNDLEID@@#$BUNDLE_ID#g; \
      s#@@REPO_NAME@@#$REPO_NAME#g; \
      s#@@RELEASE_CHANNEL@@#$RELEASE_CHANNEL#g" \
-    < "$WORKSPACE_ROOT_DIR/resources/linux/rpm/$ARTIFACT/warp.spec.template" \
-    > "$RPMBUILD_DIR/SPEC/warp.spec"
+    < "$WORKSPACE_ROOT_DIR/resources/linux/rpm/$ARTIFACT/yarp.spec.template" \
+    > "$RPMBUILD_DIR/SPEC/yarp.spec"
 
 # Build the actual package.
-fakeroot rpmbuild -v -bb "$RPMBUILD_DIR/SPEC/warp.spec" --target="$ARCH" --define "_topdir $RPMBUILD_DIR"
+fakeroot rpmbuild -v -bb "$RPMBUILD_DIR/SPEC/yarp.spec" --target="$ARCH" --define "_topdir $RPMBUILD_DIR"
 
 # Copy the package to the output directory.
 RPM_NAME="$PACKAGE_NAME-$VERSION-$RELEASE.$ARCH.rpm"

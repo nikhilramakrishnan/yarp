@@ -197,7 +197,7 @@ fn extract_skill_parent_directory_different_providers() {
         return;
     };
     let repo = home_dir.join("repo");
-    let providers = [".warp", ".claude", ".codex", ".cursor", ".gemini"];
+    let providers = [".yarp", ".claude", ".codex", ".cursor", ".gemini"];
     for provider in providers {
         let path = repo
             .join(provider)
@@ -351,7 +351,7 @@ fn extract_skill_parent_directory_returns_home_dir_for_warp_home_skill() {
         return;
     };
     let Some(warp_home_skills_dir) = yarp_core::paths::warp_home_skills_dir() else {
-        eprintln!("Skipping test: Warp home skills directory not available");
+        eprintln!("Skipping test: Yarp home skills directory not available");
         return;
     };
 

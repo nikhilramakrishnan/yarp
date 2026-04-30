@@ -23,9 +23,9 @@ end
 
   # _check_tmux is used in tmux install script post install!
 function _check_tmux
-    set -g TMUX "$HOME/.warp/tmux/execute_tmux.sh"
+    set -g TMUX "$HOME/.yarp/tmux/execute_tmux.sh"
     if _is "$TMUX"
-        _l SshTmuxInstaller "\"warp\""
+        _l SshTmuxInstaller "\"yarp\""
     else if _is tmux
         set TMUX "tmux"
         _l SshTmuxInstaller "\"user\""

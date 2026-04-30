@@ -616,7 +616,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
         let executor = Arc::new(RecordingCommandExecutor::with_success_responses([
             "gh\ngit\n",
             "",
-            "https://github.com/warp/warp/pull/456\n",
+            "https://github.com/yarp/yarp/pull/456\n",
             "",
         ]));
         let sessions = app.add_model(|ctx| {
@@ -685,7 +685,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/yarp/yarp/pull/456")
             );
         });
 
@@ -757,7 +757,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
         let executor = Arc::new(RecordingCommandExecutor::with_outputs([
             RecordingCommandExecutor::success_output("gh\ngit\n"),
             RecordingCommandExecutor::failure_output("authentication required", ExitCode::from(4)),
-            RecordingCommandExecutor::success_output("https://github.com/warp/warp/pull/456\n"),
+            RecordingCommandExecutor::success_output("https://github.com/yarp/yarp/pull/456\n"),
         ]));
         let sessions = app.add_model(|ctx| {
             let mut sessions = Sessions::new_for_test().with_command_executor(executor.clone());
@@ -831,7 +831,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/yarp/yarp/pull/456")
             );
         });
 
@@ -903,7 +903,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
                 "Post \"https://api.github.com/graphql\": dial tcp: lookup api.github.com: no such host",
                 ExitCode::from(1),
             ),
-            RecordingCommandExecutor::success_output("https://github.com/warp/warp/pull/456\n"),
+            RecordingCommandExecutor::success_output("https://github.com/yarp/yarp/pull/456\n"),
         ]));
         let sessions = app.add_model(|ctx| {
             let mut sessions = Sessions::new_for_test().with_command_executor(executor.clone());
@@ -984,7 +984,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/yarp/yarp/pull/456")
             );
             assert_eq!(state.last_failure_fingerprint, None);
             assert_eq!(state.update_status, ChipUpdateStatus::Ready);

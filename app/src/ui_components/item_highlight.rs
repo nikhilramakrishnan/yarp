@@ -7,7 +7,7 @@ use yarpui::elements::{CornerRadius, MouseState, Radius};
 use yarpui::Element;
 
 /// Shared item highlight state for left-panel style lists (file tree, global search results,
-/// warp drive rows, etc.).
+/// yarp drive rows, etc.).
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub(crate) enum ItemHighlightState {
     None,

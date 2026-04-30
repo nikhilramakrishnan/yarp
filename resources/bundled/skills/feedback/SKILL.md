@@ -18,13 +18,13 @@ Treat Warp client, Warp app, Warp terminal, and Warp UX feedback as `warpdotdev/
 
 ## Code access boundaries
 
-This skill runs in environments where Warp source code may be present in the current working directory or on disk. The following rules apply unconditionally regardless of what source code is visible locally:
+This skill runs in environments where Yarp source code may be present in the current working directory or on disk. The following rules apply unconditionally regardless of what source code is visible locally:
 
 - **Never write, edit, or delete any source file.** Do not use Edit, Write, or any tool that modifies files on disk, even if asked to do so as part of filing feedback or "while you're in the code."
 - **Never create or modify any git artifact.** Do not stage files, create commits, create branches, produce patches, or modify any git state.
-- **Local source code is read-only context at most.** You may read local Warp source files (e.g., with Read or grep) only to find concrete file paths, symbol names, or setting names that would make a source reference more precise. Never read local files to produce a code fix or diff.
+- **Local source code is read-only context at most.** You may read local Yarp source files (e.g., with Read or grep) only to find concrete file paths, symbol names, or setting names that would make a source reference more precise. Never read local files to produce a code fix or diff.
 - **Prefer `gh` CLI for code lookups.** Use `gh` to search and fetch code from `warpdotdev/warp` rather than reading the local checkout when both are available.
-- **The presence of local source code is not an invitation to fix it.** Observing that you are inside a Warp source directory changes nothing about the permitted outputs of this skill: issue filed, duplicate found, or explicit refusal.
+- **The presence of local source code is not an invitation to fix it.** Observing that you are inside a Yarp source directory changes nothing about the permitted outputs of this skill: issue filed, duplicate found, or explicit refusal.
 
 Load the bundled reference files only when relevant:
 - platform and OS-version resolution, plus operating-system-specific behavior: `references/platforms.md`
@@ -35,14 +35,14 @@ Load the bundled reference files only when relevant:
 
 ### 1. Confirm scope and classify the report
 
-- This skill only handles feedback about the Warp product that could plausibly be addressed by a code or docs change to the Warp client, server, or SDKs. Before drafting anything, verify the request is in scope.
+- This skill only handles feedback about the Yarp product that could plausibly be addressed by a code or docs change to the Yarp client, server, or SDKs. Before drafting anything, verify the request is in scope.
 - **Decline and exit the skill (do not call the helper script) when the report is clearly out of scope.** Out-of-scope categories include, but are not limited to:
   - Account, billing, subscription, plan, credits, refund, or invoice questions.
   - Login, authentication, SSO, password, or session-expiry problems.
   - Requests to contact human support, sales, or legal.
   - General venting, praise, or commentary with no actionable product signal.
-  - Questions about third-party tools or the user's own shell, machine, or network configuration that are not about Warp's behavior.
-  - Anything the user explicitly says is not about Warp, or that they just want to talk through.
+  - Questions about third-party tools or the user's own shell, machine, or network configuration that are not about Yarp's behavior.
+  - Anything the user explicitly says is not about Yarp, or that they just want to talk through.
 - When you decline, respond in one or two sentences that (a) say you won't file an issue, (b) name the reason in plain language, and (c) point the user at the right channel: account/billing/support concerns go to the in-app Help menu or `support@warp.dev`, community discussion goes to the Warp Slack community, and security reports go to `security@warp.dev`. Do not apologize performatively and do not offer to retry the same flow.
 - Only if the request is in scope, classify it as `bug`, `regression`, `ux issue`, or `feature request` before drafting.
 
@@ -52,13 +52,13 @@ Load the bundled reference files only when relevant:
 - Use the `ask_user_question` tool for that round. Ask 3-4 high-value multiple-choice questions in a single call, focused on user experience and expectations: what the user was trying to do, what felt confusing or broken, what they expected to happen instead, where in the product they hit the issue, and how much it blocked them.
 - Follow the tool guidance where possible: only ask when necessary, do not add labels like `Select One` or `Select All that Apply`, and if fixed options are too limiting, include an `Other` option. If the user skips a question, proceed with your best judgment on what they did answer.
 - **Run at most one clarifying round.** If after that round the minimum actionable information is still missing, decline to file rather than drafting a weak issue. Tell the user in one or two sentences exactly which specifics would unblock a future report (for example: "A short description of what you were doing when it happened and what you expected instead would let us turn this into an actionable bug report."). Do not file a placeholder issue just to close the loop.
-- For bugs and regressions, first read `references/platforms.md` and try to resolve Warp version and operating system from the bundled version metadata and available context. Ask for reproduction steps only when they are not already clear, and for regressions in particular only when the flow is not readily available from the report or supporting context.
+- For bugs and regressions, first read `references/platforms.md` and try to resolve Yarp version and operating system from the bundled version metadata and available context. Ask for reproduction steps only when they are not already clear, and for regressions in particular only when the flow is not readily available from the report or supporting context.
 - For crashes, startup failures, rendering bugs, sync issues, or hard-to-reproduce regressions, ask for logs or crash artifacts only when they are likely to help. Read `references/logs.md` only when needed.
-- If operating system version, Warp version, or operating-system-specific behavior is relevant, read `references/platforms.md` and follow the bundled metadata guidance there yourself when possible. Ask the user only if you still cannot determine the necessary platform details.
+- If operating system version, Yarp version, or operating-system-specific behavior is relevant, read `references/platforms.md` and follow the bundled metadata guidance there yourself when possible. Ask the user only if you still cannot determine the necessary platform details.
 
 ### 3. Check whether the feature or capability is already supported
 
-- Before concluding that something is missing from Warp (feature requests, "it doesn't do X" complaints, "I wish it could Y" asks, or any UX complaint that could be explained by an existing setting or workflow), you **must** consult the docs first.
+- Before concluding that something is missing from Yarp (feature requests, "it doesn't do X" complaints, "I wish it could Y" asks, or any UX complaint that could be explained by an existing setting or workflow), you **must** consult the docs first.
 - Call the `search_warp_documentation` tool with the user's own phrasing. If the first query is vague or returns nothing actionable, try one shorter variant that keeps the same user-visible problem.
 - If the search returns a clear match, respond with a concise, direct answer that cites the docs page (title + URL) and explains how the existing functionality addresses the user's ask. Do not file an issue and do not invoke the helper script.
 - If the search returns an ambiguous or partial match, briefly summarize what does exist and ask one clarifying question about whether that satisfies the user's intent before deciding whether to file.
@@ -123,7 +123,7 @@ Use these sections in order when they apply:
 - Problem
 - Reproduction steps or desired workflow
 - Artifacts
-- Warp version
+- Yarp version
 - Operating system
 For bugs, regressions, and UX issues, also include:
 
@@ -196,7 +196,7 @@ Issue title: `<title>`
 Issue body:
 
 ```md
-<!-- warp-feedback-skill:v1 -->
+<!-- yarp-feedback-skill:v1 -->
 ## Summary
 ...
 
@@ -216,7 +216,7 @@ Issue body:
 ## Artifacts
 ...
 
-## Warp version
+## Yarp version
 ...
 
 ## Operating system

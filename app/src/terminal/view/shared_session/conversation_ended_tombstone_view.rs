@@ -218,7 +218,7 @@ impl ConversationEndedTombstoneView {
         });
 
         // In wasm, continuing locally is impossible so we instead
-        // offer to open the conversation in warp (where you can continue locally).
+        // offer to open the conversation in yarp (where you can continue locally).
         #[cfg(target_family = "wasm")]
         let open_in_warp_button = conversation_id.map(|conv_id| {
             ctx.add_typed_action_view(move |_| {
@@ -477,7 +477,7 @@ impl ConversationEndedTombstoneView {
         #[cfg(not(target_family = "wasm"))]
         {
             // Hide for non-Oz harnesses (e.g. Claude, Gemini): they can't be
-            // forked into a local Warp conversation. Unknown harness (None) is
+            // forked into a local Yarp conversation. Unknown harness (None) is
             // treated as allowed so plain conversations and pre-load tasks still
             // show the button.
             let harness_allows_continue =

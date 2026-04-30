@@ -72,7 +72,7 @@ pub enum AuthManagerEvent {
     AttemptedLoginGatedFeature {
         auth_view_variant: AuthViewVariant,
     },
-    // The current user is anonymous and the client has received a browser intent to sign in with a different Warp account.
+    // The current user is anonymous and the client has received a browser intent to sign in with a different Yarp account.
     // Holds an auth payload from the received browser intent.
     LoginOverrideDetected(AuthRedirectPayload),
     /// Failed to mint a new custom token for an anonymous user.
@@ -267,7 +267,7 @@ impl AuthManager {
 
     /// Authenticate asynchronously using the OAuth2 device authorization flow.
     ///
-    /// This is only used by the Warp CLI if running on a devic that does not have the Yarp app installed.
+    /// This is only used by the Yarp CLI if running on a devic that does not have the Yarp app installed.
     #[cfg_attr(target_family = "wasm", allow(dead_code))]
     pub fn authorize_device(&self, ctx: &mut ModelContext<Self>) {
         // Clear any stale user state so old credentials don't interfere
@@ -319,7 +319,7 @@ impl AuthManager {
         }
     }
 
-    /// Callback for handling a successful fetch of a user from warp-server and Firebase.
+    /// Callback for handling a successful fetch of a user from yarp-server and Firebase.
     /// This does the heavy-lifting of setting up all components of the application that depend
     /// on a user's authenticated state, and emits events to subscribers that let them know
     /// an auth event has occurred.
@@ -481,7 +481,7 @@ impl AuthManager {
                     |_, _, _| {},
                 );
 
-                // Once the user is authenticated, attempt to report the sandbox that Warp is running in, if any.
+                // Once the user is authenticated, attempt to report the sandbox that Yarp is running in, if any.
                 ctx.spawn(
                     async { yarp_isolation_platform::detect() },
                     |_, platform, ctx| {

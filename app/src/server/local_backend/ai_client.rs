@@ -1,6 +1,6 @@
 //! Local-only `AIClient` implementation used by yarp.
 //!
-//! yarp does not have a Warp backend. The five methods that drive an LLM
+//! yarp does not have a Yarp backend. The five methods that drive an LLM
 //! call (dialogue, command suggestions, command metadata, code review copy)
 //! will eventually route through a local provider — for now they return a
 //! clear error so callers see something actionable instead of a `localhost.invalid`

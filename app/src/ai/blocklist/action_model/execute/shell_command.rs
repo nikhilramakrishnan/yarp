@@ -82,7 +82,7 @@ impl ShellCommandExecutor {
     fn handle_terminal_model_event(&mut self, event: &ModelEvent, _ctx: &mut ModelContext<Self>) {
         // We wait for precmd for the block _after_ the requested command's block so that
         // downstream checks for current working directory are fresh. The precmd hook is when
-        // the shell relays current working directory to warp.
+        // the shell relays current working directory to yarp.
         if let ModelEvent::BlockMetadataReceived(BlockMetadataReceivedEvent { .. }) = event {
             let model = self.terminal_model.lock();
             let block_finished_senders = self.block_finished_senders.drain().collect_vec();

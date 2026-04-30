@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 pub struct LLMGenerateRequest {
     pub prompt: String,
     pub user_messages: Vec<String>,
-    /// These are model IDs internal to warp-server.
-    /// See warp-server/logic/ai/llm/llm.go
+    /// These are model IDs internal to yarp-server.
+    /// See yarp-server/logic/ai/llm/llm.go
     pub model_id: String,
 }
 

@@ -14,4 +14,4 @@ cargo check --bin yarp
 - AI requests go through `OssAiClient`, with provider selection and credentials supplied by environment configuration.
 - Object sync does not use the hosted backend; `OssObjectClient` is a local-first stub.
 - The Yarp app entry point is the `yarp` binary.
-- The `warp` binary in `src/bin/local.rs` remains the internal Local-channel build.
+- The `yarp` binary in `src/bin/local.rs` remains the internal Local-channel build.

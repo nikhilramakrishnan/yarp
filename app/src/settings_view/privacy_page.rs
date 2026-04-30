@@ -99,8 +99,8 @@ const TELEMETRY_DOCS_URL: &str =
 
 const DATA_MANAGEMENT_TITLE: &str = "Manage your data";
 const DATA_MANAGEMENT_DESCRIPTION: &str =
-    "At any time, you may choose to delete your Warp account permanently. \
-    You will no longer be able to use Warp.";
+    "At any time, you may choose to delete your Yarp account permanently. \
+    You will no longer be able to use Yarp.";
 const DATA_MANAGEMENT_LINK_TEXT: &str = "Visit the data management page";
 
 const PRIVACY_POLICY_TITLE: &str = "Privacy policy";

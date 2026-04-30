@@ -5,7 +5,7 @@ edition = "2021"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 publish.workspace = true
 license.workspace = true
-description = "Language Server Protocol implementation for Warp"
+description = "Language Server Protocol implementation for Yarp"
 
 [features]
 local_fs = []

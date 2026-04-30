@@ -119,7 +119,7 @@ impl SettingsWidget for WarpDriveHeaderWidget {
     type View = WarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "warp drive sign up"
+        "yarp drive sign up"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {
@@ -202,7 +202,7 @@ impl SettingsWidget for WarpDriveToggleWidget {
     type View = WarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "warp drive tools panel command palette search workflows prompts notebooks environment variables"
+        "yarp drive tools panel command palette search workflows prompts notebooks environment variables"
     }
 
     fn render(

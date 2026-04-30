@@ -1738,7 +1738,7 @@ fn test_parse_escapes_inline() {
 #[test]
 fn test_parse_embedded() {
     assert_eq!(
-        test_parse_markdown("```warp-embedded-object\nid: workflow-123\n```"),
+        test_parse_markdown("```yarp-embedded-object\nid: workflow-123\n```"),
         vec![FormattedTextLine::Embedded(Mapping::from_iter([(
             Value::String("id".to_string()),
             Value::String("workflow-123".to_string())
@@ -1746,7 +1746,7 @@ fn test_parse_embedded() {
     );
 
     assert_eq!(
-        test_parse_markdown("```warp-embedded-object\nid: notebook-123\ntype: notebook\n```"),
+        test_parse_markdown("```yarp-embedded-object\nid: notebook-123\ntype: notebook\n```"),
         vec![FormattedTextLine::Embedded(Mapping::from_iter([
             (
                 Value::String("id".to_string()),
@@ -1761,9 +1761,9 @@ fn test_parse_embedded() {
 
     // Fallback to code block.
     assert_eq!(
-        test_parse_markdown("```warp-embedded-object\ncargo run --features abc\n```"),
+        test_parse_markdown("```yarp-embedded-object\ncargo run --features abc\n```"),
         vec![FormattedTextLine::CodeBlock(CodeBlockText {
-            lang: "warp-embedded-object".to_string(),
+            lang: "yarp-embedded-object".to_string(),
             code: "cargo run --features abc\n".to_string()
         })]
     );
@@ -2710,7 +2710,7 @@ fn test_parse_table_with_links() {
         assert_eq!(table.rows.len(), 1);
         let link_cell = &table.rows[0][0];
         assert_eq!(link_cell.len(), 1);
-        assert_eq!(link_cell[0].text, "Warp");
+        assert_eq!(link_cell[0].text, "Yarp");
         assert!(matches!(
             &link_cell[0].styles.hyperlink,
             Some(Hyperlink::Url(url)) if url == "https://warp.dev"

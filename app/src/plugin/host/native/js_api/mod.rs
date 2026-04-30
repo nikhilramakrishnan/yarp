@@ -10,11 +10,11 @@ cfg_if::cfg_if! {
     }
 }
 
-/// Returns a JS object representing the Warp Plugin API exposed to external JavaScript plugins.
+/// Returns a JS object representing the Yarp Plugin API exposed to external JavaScript plugins.
 ///
 /// Currently, the API contains a single "completions" namespace for registering command
 /// signatures.
-pub fn warp(
+pub fn yarp(
     #[allow(unused_variables)] plugin: PluginHandle,
     ctx: Ctx<'_>,
 ) -> rquickjs::Result<Object<'_>> {
@@ -43,7 +43,7 @@ pub fn console(ctx: Ctx<'_>) -> rquickjs::Result<Object<'_>> {
     Ok(console)
 }
 
-/// Returns a JS object representing the Completions namespace for the Warp Plugin API.
+/// Returns a JS object representing the Completions namespace for the Yarp Plugin API.
 ///
 /// API methods:
 ///

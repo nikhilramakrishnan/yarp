@@ -10,8 +10,8 @@ use yarp_core::{
 };
 
 // Features enabled for Yarp. We commit to OSS as the sole channel and
-// replace Warp's backend with a local-first implementation, so we can enable
-// every flag whose feature works without a Warp account or a cloud service.
+// replace Yarp's backend with a local-first implementation, so we can enable
+// every flag whose feature works without a Yarp account or a cloud service.
 //
 // What's intentionally NOT here: ProviderCommand, ArtifactCommand,
 // OzIdentityFederation, CloudEnvironments, ScheduledAmbientAgents,

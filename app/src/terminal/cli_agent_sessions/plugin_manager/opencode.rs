@@ -4,7 +4,7 @@ use async_trait::async_trait;
 
 use super::{CliAgentPluginManager, PluginInstructionStep, PluginInstructions};
 
-// Keep in sync with the opencode-warp npm package version.
+// Keep in sync with the opencode-yarp npm package version.
 // This version is also hardcoded into UPDATE_INSTRUCTIONS below (so the update
 // instructions tell users to pin to this specific version to force OpenCode's
 // plugin cache to re-fetch). Update both together.
@@ -44,8 +44,8 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
                 link: None,
             },
             PluginInstructionStep {
-                description: "Add \"@warp-dot-dev/opencode-warp\" to the \"plugin\" array in the top-level JSON object:",
-                command: "\"plugin\": [\"@warp-dot-dev/opencode-warp\"]",
+                description: "Add \"@yarp-dot-dev/opencode-yarp\" to the \"plugin\" array in the top-level JSON object:",
+                command: "\"plugin\": [\"@yarp-dot-dev/opencode-yarp\"]",
                 executable: false,
                 link: None,
             },
@@ -66,8 +66,8 @@ static UPDATE_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
                 link: None,
             },
             PluginInstructionStep {
-                description: "Replace the existing \"@warp-dot-dev/opencode-warp\" entry in the \"plugin\" array with the explicit version:",
-                command: "\"plugin\": [\"@warp-dot-dev/opencode-warp@0.1.5\"]",
+                description: "Replace the existing \"@yarp-dot-dev/opencode-yarp\" entry in the \"plugin\" array with the explicit version:",
+                command: "\"plugin\": [\"@yarp-dot-dev/opencode-yarp@0.1.5\"]",
                 executable: false,
                 link: None,
             },

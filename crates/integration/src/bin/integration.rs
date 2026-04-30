@@ -8,9 +8,9 @@ use yarp_cli::WorkerCommand;
 use yarp_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig};
 use yarp_core::AppId;
 
-/// The Warp integration test runner.
+/// The Yarp integration test runner.
 #[derive(Debug, Default, Parser, Clone)]
-#[command(name = "warp-integration-test")]
+#[command(name = "yarp-integration-test")]
 #[clap(args_conflicts_with_subcommands = true)]
 pub struct Args {
     #[command(subcommand)]
@@ -28,9 +28,9 @@ pub fn main() -> Result<()> {
         ChannelConfig {
             app_id: AppId::new(
                 "dev",
-                "warp",
+                "yarp",
                 if cfg!(target_os = "macos") {
-                    "Warp-Integration"
+                    "Yarp-Integration"
                 } else {
                     "WarpIntegration"
                 },

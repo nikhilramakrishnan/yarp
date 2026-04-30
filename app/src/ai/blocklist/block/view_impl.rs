@@ -478,7 +478,7 @@ pub(crate) fn add_highlights_to_rich_text(
                     .detected_links
                     .iter()
                     .filter_map(|(range, link)| {
-                        // Stylings like [](https://example.com) would cause warp to panic. We need to filter that out.
+                        // Stylings like [](https://example.com) would cause yarp to panic. We need to filter that out.
                         if range.is_empty() {
                             return None;
                         }
@@ -693,7 +693,7 @@ pub fn render_citation(
             )
         }
         AIAgentCitation::WarpDocumentation { .. } => {
-            let icon = Icon::Warp.to_warpui_icon(theme.foreground()).finish();
+            let icon = Icon::Yarp.to_warpui_icon(theme.foreground()).finish();
             let name = String::from("Yarp Docs");
             (Some(icon), name)
         }

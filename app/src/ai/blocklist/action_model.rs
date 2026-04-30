@@ -1248,7 +1248,7 @@ impl BlocklistAIActionModel {
                 let doc_model = AIDocumentModel::handle(ctx);
                 doc_model.update(ctx, |doc_model, doc_ctx| {
                     for (index, doc_context) in created_documents.iter_mut().enumerate() {
-                        // If a user is re-opening a shared session that they previously closed in the current warp session,
+                        // If a user is re-opening a shared session that they previously closed in the current yarp session,
                         // we should delete the previously created document so that the verseion history doesn't get messed up.
                         doc_model.delete_document(&doc_context.document_id);
 

@@ -12,7 +12,7 @@
 
 REPO="ssh://git@github.com/warpdotdev/warp-channel-config.git"
 REVISION="97a199b5bba11af9c7d3bd43dfb3669316d1f0f8"
-BIN_NAME="warp-channel-config"
+BIN_NAME="yarp-channel-config"
 
 # Check for repo access before attempting to `cargo install` the binary.
 if ! git ls-remote --exit-code "${REPO}" HEAD >/dev/null 2>&1; then

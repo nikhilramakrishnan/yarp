@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Cross-platform entrypoint for running a local Warp build.
+# Cross-platform entrypoint for running a local Yarp build.
 #
-# On macOS this delegates to `./script/macos/run`, which builds and runs Warp
+# On macOS this delegates to `./script/macos/run`, which builds and runs Yarp
 # as a real `.app` bundle (with code signing, plist updates, etc.). On Linux
 # and Windows it invokes `cargo run` directly for the appropriate binary.
 #
@@ -23,8 +23,8 @@ FEATURES="gui"
 ./script/install_channel_config || echo "Skipping internal channel config installation (no repo access)."
 
 # If warp_channel_config is on PATH, build the Local channel binary; otherwise build the OSS channel.
-if command -v warp-channel-config &>/dev/null; then
-    YARP_BIN="warp"
+if command -v yarp-channel-config &>/dev/null; then
+    YARP_BIN="yarp"
     YARP_CHANNEL="local"
 else
     YARP_BIN="yarp"
@@ -88,7 +88,7 @@ while (( "$#" )); do
 done
 
 # These cargo features were removed and replaced by environment variables read
-# by warp-channel-config. Intercept them here so that existing --features
+# by yarp-channel-config. Intercept them here so that existing --features
 # invocations keep working.
 for mapping in \
     "with_local_server:WITH_LOCAL_SERVER" \

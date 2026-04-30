@@ -289,7 +289,7 @@ impl CloudSetupGuideView {
     }
 
     /// Render a description that includes a link at the end
-    /// (e.g. "Use warp's environment setup command to have an agent help you through it. LINK[Visit docs]")
+    /// (e.g. "Use yarp's environment setup command to have an agent help you through it. LINK[Visit docs]")
     fn render_description_with_link(
         prefix: &'static str,
         link_text: &'static str,

@@ -414,7 +414,7 @@ impl SyncQueue {
     }
 
     pub fn start_dequeueing(&mut self, ctx: &mut ModelContext<Self>) {
-        // yarp has no Warp backend, so the cloud-object sync queue has
+        // yarp has no Yarp backend, so the cloud-object sync queue has
         // nothing to drain. We keep `should_dequeue=false` to short-circuit
         // every retry, dependency-resolve, and rate-limit path that would
         // otherwise hammer `localhost.invalid`.

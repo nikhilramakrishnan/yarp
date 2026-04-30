@@ -759,7 +759,7 @@ impl TextFrame {
         positions
     }
 
-    /// We can't mark this as cfg(test) because we need this in the warp crate tests.
+    /// We can't mark this as cfg(test) because we need this in the yarp crate tests.
     pub fn mock(text: &str) -> Self {
         let mut acc = 0;
         let lines = text
@@ -923,7 +923,7 @@ impl Line {
         }
     }
 
-    /// We can't mark this as cfg(test) because we need this in the warp crate tests.
+    /// We can't mark this as cfg(test) because we need this in the yarp crate tests.
     pub fn mock(runs: Vec<Run>) -> Self {
         Line {
             width: Default::default(),

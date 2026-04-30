@@ -212,7 +212,7 @@ fn parse_tool_complete_notification() {
 
 #[test]
 fn parse_auggie_stop_notification() {
-    // Mirrors what the community auggie-warp plugin emits on the Stop hook.
+    // Mirrors what the community auggie-yarp plugin emits on the Stop hook.
     let body = r#"{"v":1,"agent":"auggie","event":"stop","session_id":"abc","cwd":"/tmp/proj","project":"proj","query":"write a haiku","response":"Memory is safe"}"#;
     let notif = parse_event(Some("yarp://cli-agent"), body).unwrap();
 

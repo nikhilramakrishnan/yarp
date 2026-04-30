@@ -10,7 +10,7 @@ pub fn feedback_form_url() -> String {
     let mut url = url::Url::parse("https://github.com/warpdotdev/Warp/issues/new/choose")
         .expect("Should not fail to parse");
     if let Some(version) = ChannelState::app_version() {
-        url.query_pairs_mut().append_pair("warp-version", version);
+        url.query_pairs_mut().append_pair("yarp-version", version);
     }
     url.query_pairs_mut()
         .append_pair("os-version", &os_info::get().version().to_string());

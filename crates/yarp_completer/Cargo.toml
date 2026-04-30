@@ -3,7 +3,7 @@ name = "yarp_completer"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
-description = "Warp completions engine"
+description = "Yarp completions engine"
 publish.workspace = true
 license.workspace = true
 

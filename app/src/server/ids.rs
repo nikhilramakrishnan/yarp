@@ -8,7 +8,7 @@ pub use yarp_server_client::ids::{
 /// ServerId. It implements different To/From and Display, and HashableId traits.
 /// Takes type and desired prefix for HashableId.
 ///
-/// Note: This macro uses `$crate::server::ids::*` paths, so it only works within the warp crate.
+/// Note: This macro uses `$crate::server::ids::*` paths, so it only works within the yarp crate.
 /// For types defined in yarp_server_client, use `yarp_server_client::server_id_traits!` instead.
 #[macro_export]
 macro_rules! server_id_traits {

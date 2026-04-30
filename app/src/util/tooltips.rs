@@ -240,7 +240,7 @@ where
 ///
 /// This checks:
 /// - Whether Yarp is already the default editor (skip if so)
-/// - Whether this file is openable in Warp (skips binary files and directories)
+/// - Whether this file is openable in Yarp (skips binary files and directories)
 /// - Whether Yarp is an OS-level default editor (skips Markdown files)
 #[cfg(feature = "local_fs")]
 pub fn should_show_open_in_warp_link(path: &Path, app: &AppContext) -> bool {
@@ -253,7 +253,7 @@ pub fn should_show_open_in_warp_link(path: &Path, app: &AppContext) -> bool {
 
     let settings = EditorSettings::as_ref(app);
 
-    if matches!(*settings.open_file_editor, EditorChoice::Warp) {
+    if matches!(*settings.open_file_editor, EditorChoice::Yarp) {
         return false;
     }
 

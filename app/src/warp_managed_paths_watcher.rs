@@ -14,7 +14,7 @@ use yarpui::{Entity, ModelContext, SingletonEntity};
 #[cfg(not(target_family = "wasm"))]
 use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 
-/// Duration between filesystem watch events for the Warp managed paths watcher, in milliseconds.
+/// Duration between filesystem watch events for the Yarp managed paths watcher, in milliseconds.
 #[cfg(not(target_family = "wasm"))]
 const YARP_MANAGED_PATHS_WATCHER_DEBOUNCE_MILLI_SECS: u64 = 500;
 
@@ -396,8 +396,8 @@ mod tests {
 
     #[test]
     fn filter_repository_update_by_prefix_keeps_only_matching_paths() {
-        let skills_dir = PathBuf::from("/tmp/.warp-local/skills");
-        let other_dir = PathBuf::from("/tmp/.warp-local/worktrees/repo");
+        let skills_dir = PathBuf::from("/tmp/.yarp-local/skills");
+        let other_dir = PathBuf::from("/tmp/.yarp-local/worktrees/repo");
         let skill_file = skills_dir.join("deploy").join("SKILL.md");
         let other_file = other_dir.join("README.md");
 
@@ -422,9 +422,9 @@ mod tests {
 
     #[test]
     fn filter_repository_update_by_prefix_converts_cross_boundary_moves() {
-        let skills_dir = PathBuf::from("/tmp/.warp-local/skills");
+        let skills_dir = PathBuf::from("/tmp/.yarp-local/skills");
         let skill_file = skills_dir.join("deploy").join("SKILL.md");
-        let ignored_file = PathBuf::from("/tmp/.warp-local/worktrees/repo/SKILL.md");
+        let ignored_file = PathBuf::from("/tmp/.yarp-local/worktrees/repo/SKILL.md");
 
         let update = RepositoryUpdate {
             added: HashSet::new(),

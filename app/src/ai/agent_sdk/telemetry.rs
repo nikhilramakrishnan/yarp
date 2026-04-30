@@ -6,7 +6,7 @@ use yarp_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 #[derive(Debug, EnumDiscriminants)]
 #[strum_discriminants(derive(EnumIter))]
 pub(super) enum CliTelemetryEvent {
-    /// Executing `warp agent run`
+    /// Executing `yarp agent run`
     AgentRun {
         gui: bool,
         requested_mcp_servers: usize,
@@ -16,101 +16,101 @@ pub(super) enum CliTelemetryEvent {
         /// Which execution harness was selected (e.g. "oz", "claude").
         harness: String,
     },
-    /// Executing `warp agent run-ambient`
+    /// Executing `yarp agent run-ambient`
     AgentRunAmbient,
-    /// Executing `warp agent profile list`
+    /// Executing `yarp agent profile list`
     AgentProfileList,
-    /// Executing `warp agent list`
+    /// Executing `yarp agent list`
     AgentList,
-    /// Executing `warp environment list`
+    /// Executing `yarp environment list`
     EnvironmentList,
-    /// Executing `warp environment create`
+    /// Executing `yarp environment create`
     EnvironmentCreate,
-    /// Executing `warp environment delete`
+    /// Executing `yarp environment delete`
     EnvironmentDelete,
-    /// Executing `warp environment update`
+    /// Executing `yarp environment update`
     EnvironmentUpdate,
-    /// Executing `warp environment get`
+    /// Executing `yarp environment get`
     EnvironmentGet,
-    /// Executing `warp environment image list`
+    /// Executing `yarp environment image list`
     EnvironmentImageList,
-    /// Executing `warp mcp list`
+    /// Executing `yarp mcp list`
     MCPList,
-    /// Executing `warp model list`
+    /// Executing `yarp model list`
     ModelList,
-    /// Executing `warp task list`
+    /// Executing `yarp task list`
     TaskList,
-    /// Executing `warp task get`
+    /// Executing `yarp task get`
     TaskGet,
-    /// Executing `warp run conversation get`
+    /// Executing `yarp run conversation get`
     ConversationGet,
-    /// Executing `warp run get <id> --conversation`
+    /// Executing `yarp run get <id> --conversation`
     RunConversationGet,
-    /// Executing `warp run message watch`
+    /// Executing `yarp run message watch`
     RunMessageWatch { harness: &'static str },
-    /// Executing `warp run message send`
+    /// Executing `yarp run message send`
     RunMessageSend { harness: &'static str },
-    /// Executing `warp run message list`
+    /// Executing `yarp run message list`
     RunMessageList { harness: &'static str },
-    /// Executing `warp run message read`
+    /// Executing `yarp run message read`
     RunMessageRead { harness: &'static str },
-    /// Executing `warp run message mark-delivered`
+    /// Executing `yarp run message mark-delivered`
     RunMessageMarkDelivered { harness: &'static str },
-    /// Executing `warp login`
+    /// Executing `yarp login`
     Login,
-    /// Executing `warp logout`
+    /// Executing `yarp logout`
     Logout,
-    /// Executing `warp whoami`
+    /// Executing `yarp whoami`
     Whoami,
-    /// Executing `warp provider setup`
+    /// Executing `yarp provider setup`
     ProviderSetup,
-    /// Executing `warp provider list`
+    /// Executing `yarp provider list`
     ProviderList,
-    /// Executing `warp integration create`
+    /// Executing `yarp integration create`
     IntegrationCreate,
-    /// Executing `warp integration update`
+    /// Executing `yarp integration update`
     IntegrationUpdate,
-    /// Executing `warp integration list`
+    /// Executing `yarp integration list`
     IntegrationList,
-    /// Executing `warp artifact upload`
+    /// Executing `yarp artifact upload`
     ArtifactUpload,
-    /// Executing `warp artifact get`
+    /// Executing `yarp artifact get`
     ArtifactGet,
-    /// Executing `warp artifact download`
+    /// Executing `yarp artifact download`
     ArtifactDownload,
-    /// Executing `warp schedule create`
+    /// Executing `yarp schedule create`
     ScheduleCreate,
-    /// Executing `warp schedule list`
+    /// Executing `yarp schedule list`
     ScheduleList,
-    /// Executing `warp schedule get`
+    /// Executing `yarp schedule get`
     ScheduleGet,
-    /// Executing `warp schedule pause`
+    /// Executing `yarp schedule pause`
     SchedulePause,
-    /// Executing `warp schedule unpause`
+    /// Executing `yarp schedule unpause`
     ScheduleUnpause,
-    /// Executing `warp schedule update`
+    /// Executing `yarp schedule update`
     ScheduleUpdate,
-    /// Executing `warp schedule delete`
+    /// Executing `yarp schedule delete`
     ScheduleDelete,
-    /// Executing `warp secret create`
+    /// Executing `yarp secret create`
     SecretCreate,
-    /// Executing `warp secret delete`
+    /// Executing `yarp secret delete`
     SecretDelete,
-    /// Executing `warp secret update`
+    /// Executing `yarp secret update`
     SecretUpdate,
-    /// Executing `warp secret list`
+    /// Executing `yarp secret list`
     SecretList,
-    /// Executing `warp federate issue-token`
+    /// Executing `yarp federate issue-token`
     FederateIssueToken,
-    /// Executing `warp federate issue-gcp-token`
+    /// Executing `yarp federate issue-gcp-token`
     FederateIssueGcpToken,
-    /// Executing `warp harness-support ping`
+    /// Executing `yarp harness-support ping`
     HarnessSupportPing,
-    /// Executing `warp harness-support report-artifact`
+    /// Executing `yarp harness-support report-artifact`
     HarnessSupportReportArtifact { artifact_type: &'static str },
-    /// Executing `warp harness-support notify-user`
+    /// Executing `yarp harness-support notify-user`
     HarnessSupportNotifyUser,
-    /// Executing `warp harness-support finish-task`
+    /// Executing `yarp harness-support finish-task`
     HarnessSupportFinishTask { success: bool },
 }
 
@@ -279,122 +279,122 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            CliTelemetryEventDiscriminants::AgentRun => "Ran an agent from the Warp CLI",
+            CliTelemetryEventDiscriminants::AgentRun => "Ran an agent from the Yarp CLI",
             CliTelemetryEventDiscriminants::AgentRunAmbient => {
-                "Ran an ambient agent from the Warp CLI"
+                "Ran an ambient agent from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::AgentProfileList => {
-                "Listed agent profiles from the Warp CLI"
+                "Listed agent profiles from the Yarp CLI"
             }
-            CliTelemetryEventDiscriminants::AgentList => "Listed agents from the Warp CLI",
+            CliTelemetryEventDiscriminants::AgentList => "Listed agents from the Yarp CLI",
             CliTelemetryEventDiscriminants::EnvironmentList => {
-                "Listed cloud environments from the Warp CLI"
+                "Listed cloud environments from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentCreate => {
-                "Created a cloud environment from the Warp CLI"
+                "Created a cloud environment from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentDelete => {
-                "Deleted a cloud environment from the Warp CLI"
+                "Deleted a cloud environment from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentUpdate => {
-                "Updated a cloud environment from the Warp CLI"
+                "Updated a cloud environment from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentGet => {
-                "Got cloud environment details from the Warp CLI"
+                "Got cloud environment details from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentImageList => {
-                "Listed available base images from the Warp CLI"
+                "Listed available base images from the Yarp CLI"
             }
-            CliTelemetryEventDiscriminants::MCPList => "Listed MCP servers from the Warp CLI",
-            CliTelemetryEventDiscriminants::ModelList => "Listed models from the Warp CLI",
-            CliTelemetryEventDiscriminants::TaskList => "Listed tasks from the Warp CLI",
-            CliTelemetryEventDiscriminants::TaskGet => "Got status of task from the Warp CLI",
+            CliTelemetryEventDiscriminants::MCPList => "Listed MCP servers from the Yarp CLI",
+            CliTelemetryEventDiscriminants::ModelList => "Listed models from the Yarp CLI",
+            CliTelemetryEventDiscriminants::TaskList => "Listed tasks from the Yarp CLI",
+            CliTelemetryEventDiscriminants::TaskGet => "Got status of task from the Yarp CLI",
             CliTelemetryEventDiscriminants::ConversationGet => {
-                "Got conversation by ID from the Warp CLI"
+                "Got conversation by ID from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunConversationGet => {
-                "Got run conversation from the Warp CLI"
+                "Got run conversation from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageWatch => {
-                "Watched run messages from the Warp CLI"
+                "Watched run messages from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageSend => {
-                "Sent a run message from the Warp CLI"
+                "Sent a run message from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageList => {
-                "Listed run messages from the Warp CLI"
+                "Listed run messages from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageRead => {
-                "Read a run message from the Warp CLI"
+                "Read a run message from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageMarkDelivered => {
-                "Marked a run message as delivered from the Warp CLI"
+                "Marked a run message as delivered from the Yarp CLI"
             }
-            CliTelemetryEventDiscriminants::Login => "Logged in via the Warp CLI",
-            CliTelemetryEventDiscriminants::Logout => "Logged out via the Warp CLI",
-            CliTelemetryEventDiscriminants::Whoami => "Printed current user info from the Warp CLI",
-            CliTelemetryEventDiscriminants::ProviderSetup => "Set up a provider via the Warp CLI",
-            CliTelemetryEventDiscriminants::ProviderList => "Listed providers from the Warp CLI",
+            CliTelemetryEventDiscriminants::Login => "Logged in via the Yarp CLI",
+            CliTelemetryEventDiscriminants::Logout => "Logged out via the Yarp CLI",
+            CliTelemetryEventDiscriminants::Whoami => "Printed current user info from the Yarp CLI",
+            CliTelemetryEventDiscriminants::ProviderSetup => "Set up a provider via the Yarp CLI",
+            CliTelemetryEventDiscriminants::ProviderList => "Listed providers from the Yarp CLI",
             CliTelemetryEventDiscriminants::IntegrationCreate => {
-                "Created an integration from the Warp CLI"
+                "Created an integration from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::IntegrationUpdate => {
-                "Updated an integration from the Warp CLI"
+                "Updated an integration from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::IntegrationList => {
-                "Listed integrations from the Warp CLI"
+                "Listed integrations from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactUpload => {
-                "Uploaded an artifact from the Warp CLI"
+                "Uploaded an artifact from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactGet => {
-                "Got artifact metadata from the Warp CLI"
+                "Got artifact metadata from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactDownload => {
-                "Downloaded an artifact from the Warp CLI"
+                "Downloaded an artifact from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleCreate => {
-                "Created a scheduled agent from the Warp CLI"
+                "Created a scheduled agent from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleList => {
-                "Listed scheduled agents from the Warp CLI"
+                "Listed scheduled agents from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleGet => {
-                "Got scheduled agent configuration from the Warp CLI"
+                "Got scheduled agent configuration from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::SchedulePause => {
-                "Paused a scheduled agent from the Warp CLI"
+                "Paused a scheduled agent from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUnpause => {
-                "Unpaused a scheduled agent from the Warp CLI"
+                "Unpaused a scheduled agent from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUpdate => {
-                "Updated a scheduled agent from the Warp CLI"
+                "Updated a scheduled agent from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleDelete => {
-                "Deleted a scheduled agent from the Warp CLI"
+                "Deleted a scheduled agent from the Yarp CLI"
             }
-            CliTelemetryEventDiscriminants::SecretCreate => "Created a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretDelete => "Deleted a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretUpdate => "Updated a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretList => "Listed secrets from the Warp CLI",
+            CliTelemetryEventDiscriminants::SecretCreate => "Created a secret from the Yarp CLI",
+            CliTelemetryEventDiscriminants::SecretDelete => "Deleted a secret from the Yarp CLI",
+            CliTelemetryEventDiscriminants::SecretUpdate => "Updated a secret from the Yarp CLI",
+            CliTelemetryEventDiscriminants::SecretList => "Listed secrets from the Yarp CLI",
             CliTelemetryEventDiscriminants::FederateIssueToken => {
-                "Issued a federated identity token from the Warp CLI"
+                "Issued a federated identity token from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::FederateIssueGcpToken => {
-                "Issued a GCP federated identity token from the Warp CLI"
+                "Issued a GCP federated identity token from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportPing => {
-                "Pinged harness-support from the Warp CLI"
+                "Pinged harness-support from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportReportArtifact => {
-                "Reported an artifact via harness-support from the Warp CLI"
+                "Reported an artifact via harness-support from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportNotifyUser => {
-                "Sent a user notification via harness-support from the Warp CLI"
+                "Sent a user notification via harness-support from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportFinishTask => {
-                "Reported task completion via harness-support from the Warp CLI"
+                "Reported task completion via harness-support from the Yarp CLI"
             }
         }
     }

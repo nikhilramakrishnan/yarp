@@ -182,7 +182,7 @@ pub trait CloudObject: Debug {
     /// in the sync queue item.
     fn update_object_queue_item(&self, revision_ts: Option<Revision>) -> QueueItem;
 
-    /// Returns whether this model type should render as a warp drive item.
+    /// Returns whether this model type should render as a yarp drive item.
     fn renders_in_warp_drive(&self) -> bool;
 
     /// Returns whether this model type should show update toasts in the UI.
@@ -463,7 +463,7 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
     /// Returns the ObjectType for this model.
     fn object_type(&self) -> ObjectType;
 
-    /// Returns whether this model type should render as a warp drive item.
+    /// Returns whether this model type should render as a yarp drive item.
     fn renders_in_warp_drive(&self) -> bool;
 
     /// Returns whether this model type should show update toasts in the UI.
@@ -477,7 +477,7 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
         true
     }
 
-    /// Creates a new warp drive item for this model type. Returns None
+    /// Creates a new yarp drive item for this model type. Returns None
     /// if this object does not render in Yarp Drive.
     fn to_warp_drive_item(
         &self,
@@ -931,8 +931,8 @@ where
 }
 
 /// Extracts the server id and object type from a (caller validated) Drive link.
-/// Intended use is deriving metadata from links such that Warp objects
-/// can be opened natively in Warp with no web interaction.
+/// Intended use is deriving metadata from links such that Yarp objects
+/// can be opened natively in Yarp with no web interaction.
 pub fn extract_server_id_and_object_type_from_warp_drive_link(
     url: &Url,
 ) -> Option<OpenWarpDriveObjectArgs> {
@@ -1531,7 +1531,7 @@ impl Space {
     }
 }
 
-/// Enum for specifying the location of a warp drive object.
+/// Enum for specifying the location of a yarp drive object.
 /// Objects can live in top level spaces, or a specific folder.
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub enum CloudObjectLocation {

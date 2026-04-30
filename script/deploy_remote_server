@@ -110,9 +110,9 @@ case "$PROFILE_MODE" in
 esac
 
 FEATURES="release_bundle,crash_reporting,standalone,agent_mode_debug"
-YARP_BIN="warp"
+YARP_BIN="yarp"
 BINARY_NAME="oz-local"
-REMOTE_DIR=".warp-local/remote-server"
+REMOTE_DIR=".yarp-local/remote-server"
 
 # Determine the output directory
 CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$WORKSPACE_ROOT/target}"
@@ -136,7 +136,7 @@ echo ""
 CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER=x86_64-linux-musl-gcc \
 CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-C symbol-mangling-version=v0" \
   cargo build \
-    -p warp \
+    -p yarp \
     --bin "$YARP_BIN" \
     --target "$TARGET" \
     --profile "$CARGO_PROFILE" \
@@ -152,7 +152,7 @@ echo ""
 echo "==> Build complete ($BINARY_SIZE)"
 
 # Resolve $HOME on the remote so our upload lands in the same directory the
-# Warp client checks. The client runs `test -x ~/.warp-local/...` and lets
+# Yarp client checks. The client runs `test -x ~/.yarp-local/...` and lets
 # the remote login shell expand `~` to $HOME, while rsync's remote path
 # expansion can differ (e.g. on Namespace devboxes, the initial directory
 # is /workspaces but $HOME is elsewhere). Using an absolute path derived

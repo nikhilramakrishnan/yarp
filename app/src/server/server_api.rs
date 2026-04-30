@@ -67,13 +67,13 @@ use super::graphql::GraphQLError;
 
 pub const FETCH_CHANNEL_VERSIONS_TIMEOUT: std::time::Duration = Duration::from_secs(60);
 
-const EXPERIMENT_ID_HEADER: &str = "X-Warp-Experiment-Id";
+const EXPERIMENT_ID_HEADER: &str = "X-Yarp-Experiment-Id";
 
-/// We use a special error code header `X-Warp-Error-Code` to allow the server to send
+/// We use a special error code header `X-Yarp-Error-Code` to allow the server to send
 /// more specific error code information, so that the client can discern between different
 /// errors with the same error code.
 /// See errors/http_error_codes.go on the server for possible values.
-const YARP_ERROR_CODE_HEADER: &str = "X-Warp-Error-Code";
+const YARP_ERROR_CODE_HEADER: &str = "X-Yarp-Error-Code";
 
 /// An error indicating the user is out of credits. The server sends 429s to communicate this
 /// state, but if Cloud Run is overloaded, it can also send 429s that aren't credit-related.
@@ -94,7 +94,7 @@ pub const EVAL_USER_ID_HEADER: &str = "X-Eval-User-ID";
 /// DO NOT REMOVE OR CHANGE THESE USERS!
 ///
 /// Keep this list in sync with `script/populate_agent_mode_eval_user.sql`
-/// in warp-server. Those rows need to exist in the DB so the authz user loader
+/// in yarp-server. Those rows need to exist in the DB so the authz user loader
 /// can resolve these IDs during task creation; otherwise the server will 500
 /// on every eval request with a nil-deref in `UserIDFromUser`.
 #[cfg(feature = "agent_mode_evals")]
@@ -205,7 +205,7 @@ impl AIApiError {
     /// Converts a reqwest error to an AIApiError, using response headers to distinguish
     /// between different types of 429 errors.
     fn from_response_error(err: reqwest::Error, headers: &::http::HeaderMap) -> Self {
-        // For HTTP 429 errors, check the X-Warp-Error-Code header to distinguish
+        // For HTTP 429 errors, check the X-Yarp-Error-Code header to distinguish
         // between out-of-credits and server-overload.
         if err.status() == Some(http::StatusCode::TOO_MANY_REQUESTS) {
             return Self::error_for_429(headers);
@@ -243,7 +243,7 @@ impl AIApiError {
         AIApiError::Transport(err)
     }
 
-    /// Returns the appropriate error for a 429 response by checking the X-Warp-Error-Code header.
+    /// Returns the appropriate error for a 429 response by checking the X-Yarp-Error-Code header.
     fn error_for_429(headers: &::http::HeaderMap) -> Self {
         if headers
             .get(YARP_ERROR_CODE_HEADER)
@@ -360,13 +360,13 @@ pub enum ServerApiEvent {
     /// We made a staging API call that was blocked, which may indicate a firewall misconfiguration.
     StagingAccessBlocked,
     /// The user's access token was invalid, so they need to reauth before they can make
-    /// requests to warp-server.
+    /// requests to yarp-server.
     NeedsReauth,
     /// The user's account has been disabled.
     UserAccountDisabled,
 }
 
-/// An API wrapper struct with methods to requests to warp-server.
+/// An API wrapper struct with methods to requests to yarp-server.
 ///
 /// Prefer NOT adding new methods directly on this struct; instead, add to one of the existing
 /// client trait objects, or create your own. This helps keep `ServerApi` from being overloaded
@@ -482,7 +482,7 @@ impl ServerApi {
             .join("/api/v1/oauth/device/auth")
             .expect("Invalid device URL");
 
-        oauth2::basic::BasicClient::new(oauth2::ClientId::new("warp-cli".to_string()))
+        oauth2::basic::BasicClient::new(oauth2::ClientId::new("yarp-cli".to_string()))
             .set_token_uri(oauth2::TokenUrl::from_url(token_url))
             .set_device_authorization_url(oauth2::DeviceAuthorizationUrl::from_url(device_url))
     }
@@ -543,7 +543,7 @@ impl ServerApi {
                     full: ("graphql response for {:?} had errors {:?}", operation_name, errors)
                 );
 
-                // "User not in context: Not found" comes from warp-server as an error when attempting
+                // "User not in context: Not found" comes from yarp-server as an error when attempting
                 // to get a required user for some gql field. If we see that, since we have already
                 // successfully refreshed the user's access token earlier in this function, we know
                 // that this error is the result of the user's account being disabled/deleted.
@@ -655,7 +655,7 @@ impl ServerApi {
     /// items until the connection closes or an error occurs. The caller is
     /// responsible for reading the stream and handling reconnection.
     ///
-    /// The stream is served by warp-server-rtc (not the main warp-server pool),
+    /// The stream is served by yarp-server-rtc (not the main yarp-server pool),
     /// so the URL is built from `ChannelState::rtc_http_url()` rather than
     /// `server_root_url()`.
     pub async fn stream_agent_events(
@@ -1210,7 +1210,7 @@ impl ServerApi {
         }
     }
 
-    /// Fetches updated Warp Channel Versions from Warp Server. If it is the first such request of
+    /// Fetches updated Yarp Channel Versions from Yarp Server. If it is the first such request of
     /// the current calendar day, first attempts to call the '/client_version/daily'. If that call
     /// fails or if it not the first request of the calendar day, returns the result of a call to
     /// `/client_version'. The caller can specify whether or not changelog information should be
@@ -1257,7 +1257,7 @@ impl ServerApi {
 
         let response = request_builder.send().await?;
         let versions: ChannelVersions = response.json().await?;
-        log::info!("Received channel versions from Warp server: {versions}");
+        log::info!("Received channel versions from Yarp server: {versions}");
         Ok(versions)
     }
 }
@@ -1394,7 +1394,7 @@ impl ServerApiProvider {
     }
 
     /// Returns the shared HTTP client. This client is wired into network logging
-    /// and includes standard Warp request headers.
+    /// and includes standard Yarp request headers.
     pub fn get_http_client(&self) -> Arc<http_client::Client> {
         self.server_api.client.clone()
     }

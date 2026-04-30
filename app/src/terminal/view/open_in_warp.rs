@@ -129,7 +129,7 @@ impl TerminalView {
     }
 
     /// Insert a suggestion banner for opening the file `openable_path`, originating from
-    /// `session`, in a Warp pane.
+    /// `session`, in a Yarp pane.
     fn suggest_open_in_warp(
         &mut self,
         openable_path: OpenablePath,

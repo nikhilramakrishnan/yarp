@@ -1,7 +1,7 @@
 //! Local-only `HarnessSupportClient` for yarp.
 //!
 //! Third-party CLI harnesses (Claude Code, OpenCode, Gemini) want a place to
-//! park transcripts and block snapshots. In warp proper this is GCS via signed
+//! park transcripts and block snapshots. In yarp proper this is GCS via signed
 //! upload URLs; here we hand out `https://localhost.invalid/...` sentinel URLs.
 //! The actual upload-PUT calls fail silently (logged as `warn` by the harness
 //! driver — non-blocking), and we serve `fetch_transcript` from disk when a

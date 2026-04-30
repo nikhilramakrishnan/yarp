@@ -36,7 +36,7 @@ pub trait Operation<QF> {
 }
 
 /// The various errors we could encounter when making a GraphQL request to
-/// warp-server.
+/// yarp-server.
 #[derive(Debug, thiserror::Error)]
 pub enum GraphQLError {
     /// Encountered an error while sending the request.

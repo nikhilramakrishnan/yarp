@@ -22,7 +22,7 @@ use yarpui::{AppContext, SingletonEntity as _};
 pub struct GithubRepo {
     /// Repository owner (e.g. "warpdotdev")
     pub owner: String,
-    /// Repository name (e.g. "warp-internal")
+    /// Repository name (e.g. "yarp-internal")
     pub repo: String,
 }
 
@@ -83,7 +83,7 @@ impl ProvidersConfig {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-/// An AmbientAgentEnvironment represents an environment that we would run a Warp agent in.
+/// An AmbientAgentEnvironment represents an environment that we would run a Yarp agent in.
 pub struct AmbientAgentEnvironment {
     /// Environment name
     #[serde(default)]

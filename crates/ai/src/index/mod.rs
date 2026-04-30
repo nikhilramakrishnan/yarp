@@ -36,7 +36,7 @@ mod native {
             .unwrap_or(MAX_PARALLEL_THREADS);
 
         rayon::ThreadPoolBuilder::new()
-            .thread_name(|index| format!("warp-code-indexing-{index}"))
+            .thread_name(|index| format!("yarp-code-indexing-{index}"))
             .num_threads(num_threads)
             .build()
             .ok()

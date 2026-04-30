@@ -274,7 +274,7 @@ mod internal {
 
             // When we insert rich content (including agent view blocks) we insert it immediately before
             // the active block (unless explicitly inserting below a long-running block). The active
-            // block is a special "warp input" block that often exists even when it isn't user-visible.
+            // block is a special "yarp input" block that often exists even when it isn't user-visible.
             //
             // So, for dedupe we check the first visible (non-zero height) item *immediately before the
             // active block*. This avoids false negatives caused by the active block itself.

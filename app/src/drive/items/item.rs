@@ -124,8 +124,8 @@ impl WarpDriveItemStyles {
     }
 }
 
-/// A UI wrapper around a row in warp drive that holds important UI state for the row and implements
-/// a unified look for all rows in warp drive, like padding and hover states.
+/// A UI wrapper around a row in yarp drive that holds important UI state for the row and implements
+/// a unified look for all rows in yarp drive, like padding and hover states.
 ///
 /// The item-specific information like icon, name, click_action, and preview modal are abstracted as much as
 /// possible into the WarpDriveType enum.

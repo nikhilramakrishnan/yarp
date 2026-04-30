@@ -403,7 +403,7 @@ impl UserWorkspaces {
 
     /// Returns `true` if the current team's enterprise status allows AI features that have an
     /// enterprise gate. Non-enterprise teams always pass; enterprise teams pass only if they
-    /// are on the Warp Plan or the build is dogfood (both our internal Warp team and dogfood
+    /// are on the Yarp Plan or the build is dogfood (both our internal Yarp team and dogfood
     /// team are billed as enterprise).
     pub fn ai_allowed_for_current_team(&self) -> bool {
         !self

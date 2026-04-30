@@ -128,7 +128,7 @@ pub struct EditorModal {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum PromptType {
     PS1,
-    Warp,
+    Yarp,
     WarpDefault,
 }
 
@@ -138,7 +138,7 @@ impl PromptType {
         if matches!(*session_settings.saved_prompt, PromptSelection::Default) {
             PromptType::WarpDefault
         } else {
-            PromptType::Warp
+            PromptType::Yarp
         }
     }
 
@@ -322,7 +322,7 @@ impl EditorModal {
                         report_if_error!(prompt.reset(ctx));
                     });
                 }
-                PromptType::Warp => {
+                PromptType::Yarp => {
                     let new_setup = self
                         .chip_configurator
                         .used_chips
@@ -356,7 +356,7 @@ impl EditorModal {
             let prompt_info = match self.prompt_type {
                 PromptType::PS1 => PromptChoice::PS1,
                 PromptType::WarpDefault => PromptChoice::Default,
-                PromptType::Warp => PromptChoice::Custom {
+                PromptType::Yarp => PromptChoice::Custom {
                     builtin_chips: self
                         .chip_configurator
                         .used_chips
@@ -403,21 +403,21 @@ impl TypedActionView for EditorModal {
                 let mutated = self.chip_configurator.handle_action(chip_action, ctx);
                 if mutated {
                     self.is_dirty = true;
-                    self.prompt_type = PromptType::Warp;
+                    self.prompt_type = PromptType::Yarp;
                 }
                 ctx.notify();
             }
             Self::Action::UsePS1 => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::PS1;
-                // Disable the Warp separator dropdown (only applies to Yarp prompt).
+                // Disable the Yarp separator dropdown (only applies to Yarp prompt).
                 self.update_warp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
             Self::Action::UseWarpPrompt => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::warp_prompt_from_settings(ctx);
-                // Enable the Warp separator dropdown, if SLP is on.
+                // Enable the Yarp separator dropdown, if SLP is on.
                 self.update_warp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
@@ -428,7 +428,7 @@ impl TypedActionView for EditorModal {
                 let default_prompt = PromptConfiguration::default_prompt();
                 self.same_line_prompt_enabled = default_prompt.same_line_prompt_enabled();
                 self.warp_prompt_separator = default_prompt.separator();
-                // Disable the Warp separator dropdown, since SLP is off for the default Yarp prompt.
+                // Disable the Yarp separator dropdown, since SLP is off for the default Yarp prompt.
                 self.update_warp_separator_dropdown_state(ctx);
                 let restored_chips = default_prompt.chip_kinds();
                 self.update_used_chips(restored_chips, ctx);
@@ -440,7 +440,7 @@ impl TypedActionView for EditorModal {
 
                 // In case we had previously picked default Yarp prompt, but now the user toggled
                 // same line prompt - it's no longer the default prompt.
-                self.prompt_type = PromptType::Warp;
+                self.prompt_type = PromptType::Yarp;
 
                 self.update_warp_separator_dropdown_state(ctx);
                 ctx.notify();
@@ -691,7 +691,7 @@ impl EditorModal {
 
         self.render_prompt_section(
             appearance,
-            matches!(self.prompt_type, PromptType::Warp | PromptType::WarpDefault),
+            matches!(self.prompt_type, PromptType::Yarp | PromptType::WarpDefault),
             header_row,
             None,
             body,
@@ -796,7 +796,7 @@ impl EditorModal {
         // - there are no changes
         // - the Yarp prompt is used but there are no chips selected
         let save_disabled = !self.is_dirty
-            || (matches!(self.prompt_type, PromptType::Warp)
+            || (matches!(self.prompt_type, PromptType::Yarp)
                 && self.chip_configurator.used_chips.is_empty());
         let save_button = self.render_primary_button(
             "Save changes".to_string(),

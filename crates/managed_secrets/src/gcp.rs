@@ -46,7 +46,7 @@ pub struct GcpFederationConfig {
 pub struct GcpCredentials {
     /// Temporary file holding the GCP credentials configuration file.
     config_file: NamedTempFile,
-    /// Temporary file where Warp OIDC tokens are cached.
+    /// Temporary file where Yarp OIDC tokens are cached.
     output_file: NamedTempFile,
 }
 

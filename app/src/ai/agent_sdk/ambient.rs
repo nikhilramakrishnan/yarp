@@ -1,4 +1,4 @@
-//! Commands to interact with ambient agents on Warp's platform.
+//! Commands to interact with ambient agents on Yarp's platform.
 use std::io::Write as _;
 use std::sync::Arc;
 use std::time::Duration;

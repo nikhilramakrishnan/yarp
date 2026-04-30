@@ -27,7 +27,7 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 /// Icon size for the error icon
 const ERROR_ICON_SIZE: f32 = 24.;
 
-/// Renders the cloud mode loading screen with shimmering warp logo and tips.
+/// Renders the cloud mode loading screen with shimmering yarp logo and tips.
 pub fn render_cloud_mode_loading_screen(
     message: &str,
     appearance: &Appearance,
@@ -39,7 +39,7 @@ pub fn render_cloud_mode_loading_screen(
     // Larger font size for the main loading text
     let loading_font_size = appearance.monospace_font_size() + 2.;
 
-    // Create the shimmering warp loading text element
+    // Create the shimmering yarp loading text element
     let shimmer_element =
         shimmering_warp_loading_text(message, loading_font_size, shimmer_handle.clone(), app);
 

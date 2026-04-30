@@ -253,7 +253,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
         context.to_owned(),
     )]);
 
-    // Add command palette entry for toggling between Warp and Classic input modes
+    // Add command palette entry for toggling between Yarp and Classic input modes
     app.register_fixed_bindings(vec![FixedBinding::empty(
         "Toggle Input Mode (Yarp/Classic)".to_string(),
         builder(SettingsAction::AppearancePageToggle(
@@ -3255,7 +3255,7 @@ impl SettingsWidget for ToolsPanelStateScopeWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "left tools panel open closed across tabs file tree project explorer global search warp drive conversation list"
+        "left tools panel open closed across tabs file tree project explorer global search yarp drive conversation list"
     }
 
     fn render(
@@ -3308,7 +3308,7 @@ impl SettingsWidget for InputTypeWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "input type warp universal classic style prompt terminal ai developer mode interface shell chips ps1"
+        "input type yarp universal classic style prompt terminal ai developer mode interface shell chips ps1"
     }
 
     fn render(
@@ -3397,7 +3397,7 @@ impl SettingsWidget for PromptWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "prompt ps1 terminal warp shell custom"
+        "prompt ps1 terminal yarp shell custom"
     }
 
     fn render(

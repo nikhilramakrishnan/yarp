@@ -270,7 +270,7 @@ impl PrivacySettings {
             .unwrap_or(true);
 
         // Make sure the user-preferences stores match what's in memory.
-        // Needed for warp drive preferences to work and no harm in doing in general.
+        // Needed for yarp drive preferences to work and no harm in doing in general.
         let _ = ctx.private_user_preferences().write_value(
             TELEMETRY_ENABLED_DEFAULTS_KEY,
             serde_json::to_string(&is_telemetry_enabled)
@@ -722,14 +722,14 @@ impl PrivacySettings {
         }
     }
 
-    /// We wait until warp drive prefs have loaded and then either
+    /// We wait until yarp drive prefs have loaded and then either
     /// 1) use them as the data store for is_telemetry_enabled and is_crash_reporting_enabled, if those
-    ///    values are set in warp drive, or
-    /// 2) update the warp drive prefs to match the values from the legacy user_settings endpoint so
-    ///    that we can use warp drive prefs going forward.
+    ///    values are set in yarp drive, or
+    /// 2) update the yarp drive prefs to match the values from the legacy user_settings endpoint so
+    ///    that we can use yarp drive prefs going forward.
     pub fn maybe_sync_with_warp_drive_prefs(&mut self, ctx: &mut ModelContext<Self>) {
-        // Wait for cloud objects to load, and, if telemetry & crash reporting are synced to warp drive
-        // initialize from the warp drive values.
+        // Wait for cloud objects to load, and, if telemetry & crash reporting are synced to yarp drive
+        // initialize from the yarp drive values.
         let update_manager = UpdateManager::as_ref(ctx);
         ctx.spawn(
             update_manager.initial_load_complete(),
@@ -739,9 +739,9 @@ impl PrivacySettings {
 
     fn handle_warp_drive_objects_loaded(&mut self, _: (), ctx: &mut ModelContext<Self>) {
         self.initialize_default_regexes_once(ctx);
-        // Check if the warp drive preferences are set. If they are, and telemetry and crash reporting
-        // are set as warp drive prefs, then use those.  Otherwise, update the warp drive prefs to match
-        // the values from the legacy user_settings endpoint so that we can use warp drive prefs going forward.
+        // Check if the yarp drive preferences are set. If they are, and telemetry and crash reporting
+        // are set as yarp drive prefs, then use those.  Otherwise, update the yarp drive prefs to match
+        // the values from the legacy user_settings endpoint so that we can use yarp drive prefs going forward.
         let cloud_model = CloudModel::as_ref(ctx);
         let cloud_prefs = cloud_model.get_all_cloud_preferences_by_storage_key();
         let cloud_telemetry_value =

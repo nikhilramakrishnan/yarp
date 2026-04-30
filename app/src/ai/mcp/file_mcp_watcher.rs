@@ -29,13 +29,13 @@ static ENV_VAR_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"\$\{([^}]+)\}").expect("Regex is valid"));
 
 /// Matches home config paths that are exactly one directory deep (e.g. `.codex/config.toml`,
-/// `.warp/.mcp.json`), capturing the parent directory component.
+/// `.yarp/.mcp.json`), capturing the parent directory component.
 static HOME_SUBDIR_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^([^/]+)/[^/]+$").expect("Regex is valid"));
 
 /// Returns the subdirectory under the home directory that needs its own [`DirectoryWatcher`],
 /// inferred from the provider's home config path. Matches paths that are exactly one directory
-/// deep (e.g. `.codex/config.toml` → `.codex`, `.warp/.mcp.json` → `.warp`). Returns `None`
+/// deep (e.g. `.codex/config.toml` → `.codex`, `.yarp/.mcp.json` → `.yarp`). Returns `None`
 /// when the config file lives directly in the home dir (e.g. `.claude.json`) and is already
 /// covered by `HomeDirectoryWatcher`.
 fn home_subdir_to_watch(provider: MCPProvider) -> Option<PathBuf> {
@@ -182,14 +182,14 @@ impl FileMCPWatcher {
             Self::spawn_config_parse(
                 mcp_config_path.config_path,
                 mcp_config_path.root_path,
-                MCPProvider::Warp,
+                MCPProvider::Yarp,
                 ctx,
             );
         }
 
         if let Some(home_dir) = dirs::home_dir() {
             for provider in MCPProvider::iter() {
-                if provider == MCPProvider::Warp {
+                if provider == MCPProvider::Yarp {
                     continue;
                 }
                 match home_subdir_to_watch(provider) {
@@ -347,7 +347,7 @@ impl FileMCPWatcher {
         };
 
         for provider in MCPProvider::iter() {
-            if provider == MCPProvider::Warp {
+            if provider == MCPProvider::Yarp {
                 continue;
             }
             match home_subdir_to_watch(provider) {
@@ -440,7 +440,7 @@ impl FileMCPWatcher {
             || update.moved.keys().any(|target| target.path == config_path);
         self.handle_single_config_update(
             mcp_config_path.root_path,
-            MCPProvider::Warp,
+            MCPProvider::Yarp,
             config_path,
             was_deleted,
             was_added,
@@ -679,7 +679,7 @@ async fn parse_mcp_config_file(
                 return vec![];
             }
         },
-        MCPProvider::Claude | MCPProvider::Warp | MCPProvider::Agents => file_contents,
+        MCPProvider::Claude | MCPProvider::Yarp | MCPProvider::Agents => file_contents,
     };
 
     let resolved_contents = match substitute_env_vars(&json) {

@@ -88,7 +88,7 @@ pub trait StringModel: Clone + Debug + PartialEq + Send + Sync + 'static {
     /// Sets the display name for this model
     fn set_display_name(&mut self, _name: &str) {}
 
-    /// Creates a new warp drive item for this model type. Returns None
+    /// Creates a new yarp drive item for this model type. Returns None
     /// if this object does not render in Yarp Drive.
     fn to_warp_drive_item(
         &self,

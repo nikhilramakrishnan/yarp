@@ -1,9 +1,9 @@
 //! One-time migration that gives the Preview channel its own config
-//! directory (`~/.warp-preview`) on macOS.
+//! directory (`~/.yarp-preview`) on macOS.
 //!
-//! Historically, Stable and Preview shared `~/.warp` on macOS. To give
+//! Historically, Stable and Preview shared `~/.yarp` on macOS. To give
 //! Preview its own directory without breaking existing users, this migration
-//! symlinks each top-level entry from `~/.warp` into `~/.warp-preview` on
+//! symlinks each top-level entry from `~/.yarp` into `~/.yarp-preview` on
 //! first launch, so existing configuration (keybindings, themes, workflows,
 //! etc.) remains available to Preview.
 //!
@@ -19,15 +19,15 @@ use yarp_core::paths::{data_dir, YARP_CONFIG_DIR};
 /// Preview so each channel has independent settings.
 const MIGRATION_EXCLUDED_FILES: &[&str] = &["settings.toml"];
 
-/// Migrates Preview's config directory from the shared `.warp` location to
-/// `.warp-preview` by creating symlinks from each top-level entry in `.warp`
+/// Migrates Preview's config directory from the shared `.yarp` location to
+/// `.yarp-preview` by creating symlinks from each top-level entry in `.yarp`
 /// into the new directory.
 ///
 /// This runs once — on the first launch after the Preview channel is given
 /// its own config directory. It is a no-op if:
 /// - The channel is not Preview.
-/// - `~/.warp-preview` already exists.
-/// - `~/.warp` does not exist.
+/// - `~/.yarp-preview` already exists.
+/// - `~/.yarp` does not exist.
 pub(crate) fn migrate_preview_config_dir_if_needed() {
     if ChannelState::channel() != Channel::Preview {
         return;
@@ -39,7 +39,7 @@ pub(crate) fn migrate_preview_config_dir_if_needed() {
 
     let old_dir = home.join(YARP_CONFIG_DIR);
     // `data_dir()` is already channel-aware; for Preview it resolves to
-    // `~/.warp-preview`.
+    // `~/.yarp-preview`.
     let new_dir = data_dir();
 
     migrate_config_dir_via_symlinks(&old_dir, &new_dir);

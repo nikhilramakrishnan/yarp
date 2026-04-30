@@ -1,4 +1,4 @@
-Implements a dock tile plugin for Warp.
+Implements a dock tile plugin for Yarp.
 
 The plugin is used to update the dock tile icon when the app icon changes and allows for app icon changes to be persisted across app restarts. Without the plugin, the icon state reverts to the default upon the first time the app quits (although for some reason after the first quit the icon state is preserved).
 

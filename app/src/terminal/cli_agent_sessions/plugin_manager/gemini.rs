@@ -15,7 +15,7 @@ use crate::terminal::model::session::LocalCommandExecutor;
 use crate::terminal::shell::ShellType;
 
 const EXTENSION_REPO: &str = "https://github.com/warpdotdev/gemini-cli-warp";
-const EXTENSION_NAME: &str = "gemini-warp";
+const EXTENSION_NAME: &str = "gemini-yarp";
 
 // Keep in sync with the plugin version in warpdotdev/gemini-warp.
 const MINIMUM_PLUGIN_VERSION: &str = "1.0.0";
@@ -141,7 +141,7 @@ static UPDATE_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plug
     subtitle: "Run the following command, then restart Gemini CLI.",
     steps: &[PluginInstructionStep {
         description: "Update the Yarp extension",
-        command: "gemini extensions update gemini-warp",
+        command: "gemini extensions update gemini-yarp",
         executable: true,
         link: None,
     }],
@@ -158,7 +158,7 @@ fn check_installed(extensions_dir: &Path) -> bool {
     serde_json::from_str::<Value>(&contents).is_ok()
 }
 
-/// Reads the installed version string for the Warp extension, if present.
+/// Reads the installed version string for the Yarp extension, if present.
 fn installed_version(extensions_dir: &Path) -> Option<String> {
     let manifest_path = extensions_dir
         .join(EXTENSION_NAME)

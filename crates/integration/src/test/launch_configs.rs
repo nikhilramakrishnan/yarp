@@ -28,7 +28,7 @@ use yarp::{
     search::data_source::Query,
 };
 
-/// Adds a launch config to the mocked out warp config directory and verifies that
+/// Adds a launch config to the mocked out yarp config directory and verifies that
 /// the launch config appears in the launch config palette.
 pub fn test_add_launch_config_to_warp_config() -> Builder {
     new_builder()

@@ -141,7 +141,7 @@ const COMMANDS_COUNT_LIMIT: i64 = 10000;
 
 use yarp_server_client::persistence::{upsert_cloud_object, CloudObjectId};
 
-const YARP_SQLITE_FILE_NAME: &str = "warp.sqlite";
+const YARP_SQLITE_FILE_NAME: &str = "yarp.sqlite";
 
 /// When delete a cloud object, this callback is used to delete the cloud
 /// object. It takes the id of the cloud object to delete as a parameter.
@@ -2642,7 +2642,7 @@ fn read_node(conn: &mut SqliteConnection, node: model::PaneNode) -> Result<PaneN
 /// and makes it invalid to write the logic recursively. It's ok it's not in a
 /// transaction because we should be the only connection using the database.
 ///
-/// One notable exception is the case where there may be two warp apps running
+/// One notable exception is the case where there may be two yarp apps running
 /// in the same bundle. In this case, we may read some garbage, but all that will
 /// happen is the user won't have session restoration.
 ///

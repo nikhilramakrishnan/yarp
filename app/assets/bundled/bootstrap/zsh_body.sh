@@ -91,7 +91,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       fi
   }
 
-  # Emit the ExitShell hook right before the remote shell exits so the Warp
+  # Emit the ExitShell hook right before the remote shell exits so the Yarp
   # client can drop per-session resources (specifically the
   # `ssh … remote-server-proxy` child that holds a multiplexed channel on
   # the foreground ssh ControlMaster). This avoids a hang where the master
@@ -99,7 +99,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # session.
   #
   # Only relevant for remote SSH shells. YARP_IS_SSH is exported to "1"
-  # by `warp_ssh_helper` on the remote side of a Warp-managed SSH session
+  # by `warp_ssh_helper` on the remote side of a Yarp-managed SSH session
   # and is unset everywhere else (local shells, subshells, docker
   # sandboxes, etc.), so the hook only fires where a remote-server-proxy
   # actually needs tearing down.
@@ -239,7 +239,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     # Remove all precmd functions other than ones defined by us or p10k.  If we remove the
     # p10k precmd functions, p10k will see that we started running an in-band command but
     # not know when it finishes, which causes a variety of undesirable side-effects.
-    precmd_functions=(${(M)precmd_functions:#*(warp|p9k)*})
+    precmd_functions=(${(M)precmd_functions:#*(yarp|p9k)*})
 
     (_warp_run_generator_command_internal "$@" &)
   }
@@ -343,7 +343,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
 
       # Reset the custom kill-buffer binding as the user's zshrc (which is sourced after zshrc_warp)
       # could have added a bindkey. This won't have any user-impact because these shortcuts are only run
-      # in the context of the zsh line editor, which isn't displayed in Warp.
+      # in the context of the zsh line editor, which isn't displayed in Yarp.
       bindkey -r '^P'
       bindkey '^P' kill-buffer
 
@@ -354,14 +354,14 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       bindkey -r '\ei'
       bindkey '\ei' warp_report_input
 
-      # Introduce keybinding to switch prompt modes (PS1 vs built-in Warp prompt).
+      # Introduce keybinding to switch prompt modes (PS1 vs built-in Yarp prompt).
       # This is arbitrarily bound to ESC-p in all supported shells ("p" for PS1),
       # and we can change it to any other keybinding if needed.
       bindkey -r '\ep'
       bindkey '\ep' warp_change_prompt_modes_to_ps1
 
-      # Introduce keybinding to switch prompt modes (PS1 vs built-in Warp prompt).
-      # This is arbitrarily bound to ESC-w in all supported shells ("w" for Warp prompt),
+      # Introduce keybinding to switch prompt modes (PS1 vs built-in Yarp prompt).
+      # This is arbitrarily bound to ESC-w in all supported shells ("w" for Yarp prompt),
       # and we can change it to any other keybinding if needed.
       bindkey -r '\ew'
       bindkey '\ew' warp_change_prompt_modes_to_warp_prompt
@@ -451,7 +451,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       fi
 
 
-      # We also pass the shell's notion of `honor_ps1` to ensure it's synced correctly on the Warp-side for prompt handling.
+      # We also pass the shell's notion of `honor_ps1` to ensure it's synced correctly on the Yarp-side for prompt handling.
       # This is passed as a "real boolean" via the JSON payload (string interpolated into JSON string below).
       local honor_ps1
       if [[ "$YARP_HONOR_PS1" == "1" ]]; then
@@ -510,7 +510,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       # and, well, the prompt itself). What is more, prompt can also include emojis - unicode characters
       # that sometimes contain special bytes (ie. ST, CAN or SUB) that are otherwise used as unhook
       # triggers for the precmd. Instead of escaping those and extracting the value of the prompt itself,
-      # we simply convert the entire data structure into a single line hex string, which Warp
+      # we simply convert the entire data structure into a single line hex string, which Yarp
       # later decodes and sends to the grid to show the prompt.
       # Note: before converting the prompt to a hex string, we remove the multi-line newlines and replace
       # them with a single space (to avoid prompts that span multiple empty lines).
@@ -547,7 +547,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     [[ -n "${INSIDE_EMACS:-}" && "${INSIDE_EMACS:-}" != vterm ]] && return
 
     title="%25<..<$1" # shorten the tab_title to 25 characters
-    print -Pn "\e]0;${title:q}\a" # set tab & window name (they're the same in Warp)
+    print -Pn "\e]0;${title:q}\a" # set tab & window name (they're the same in Yarp)
   }
 
   ZSH_THEME_TERM_TITLE_IDLE="%~"
@@ -642,7 +642,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # We purposefully skip this if either the `warpdotdev.list` file already exists (indicating that the user has already
   # done this themselves) _or_ if a `warpdotdev.sources` file exists (which is the new Deb822 format for source files).
   # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
-  # warp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
+  # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
   # contains a `signed-by` key.
   function warp_handle_dist_upgrade {
       local source_file_name="$1"
@@ -682,15 +682,15 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     local prompt_prefix_with_cursor_marker_surrounded="%{$prompt_prefix%}"
     local suffix_with_cursor_marker_surrounded="%{$suffix%}"
 
-    # Clear the user-defined prompt again, if using Warp's built-in prompt, before the command 
+    # Clear the user-defined prompt again, if using Yarp's built-in prompt, before the command 
     # is rendered as it could have been reset by the user's zshrc or by setting 
     # the variable on the command line. This is used for same-line prompt and leads to the temporary
-    # product behavior of Warp prompt switches only taking effect in new sessions.
+    # product behavior of Yarp prompt switches only taking effect in new sessions.
     # Certain prompt plugins like p10k can reset the prompt to a non-empty value, after we've initially unset it.
-    # Confirm that it is unset, if using built-in Warp prompt (update prompt vars is forced to run as the last precmd fn).
+    # Confirm that it is unset, if using built-in Yarp prompt (update prompt vars is forced to run as the last precmd fn).
     if [[ "$YARP_HONOR_PS1" != "1" ]]; then
       # If the PROMPT has its original value (i.e. we haven't modified it yet), we save it to SAVED_PROMPT
-      # so we can recover it, via bindkey, if we switch back from Warp prompt to PS1 (intra-session).
+      # so we can recover it, via bindkey, if we switch back from Yarp prompt to PS1 (intra-session).
       if [[ "$PROMPT" != "%{$prompt_prefix"*"%}" ]]; then
         SAVED_PROMPT=$PROMPT
       fi
@@ -711,7 +711,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
       # We may have previously modified the prompt to add prompt and cursor
       # markers. If they exist, we remove the first occurrence of the prefix
       # and the last occurrence of the suffix, which should be the ones that
-      # Warp has added, to avoid duplicating the prefix and suffix. Shell
+      # Yarp has added, to avoid duplicating the prefix and suffix. Shell
       # parameter expansion is used to remove the first and last occurences.
       # Specifically note that virtualenvs can add content to the prompt, so we need to 
       # remove the markers before re-adding them.
@@ -759,15 +759,15 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     # columns leads to undesired artifacts in the command grid.
     # Note that we only need cursor markers for the prefix/suffix when using a combined prompt &
     # command grid.
-    # If we are using the Warp prompt, we pass a "hidden left prompt" to the prompt
+    # If we are using the Yarp prompt, we pass a "hidden left prompt" to the prompt
     # preview grid (the hidden prompt grid) with cursor markers surrounding the entire prompt.
     if [[ "$YARP_HONOR_PS1" != "1" ]]; then
       if [[ "$PROMPT" != "%{$prompt_prefix$ORIGINAL_PROMPT$suffix%}" ]]; then
         # We purposefully surround this entire prompt with cursor markers to prevent
         # the shell from moving its internal state of the cursor position, for purposes
-        # of printing the command with the Warp prompt.
-        # Note that the Warp prompt is always ABOVE the combined grid in finished blocks
-        # (same line prompt only affects the input editor with Warp prompt, not
+        # of printing the command with the Yarp prompt.
+        # Note that the Yarp prompt is always ABOVE the combined grid in finished blocks
+        # (same line prompt only affects the input editor with Yarp prompt, not
         # finished blocks).
         PROMPT="%{$prompt_prefix$ORIGINAL_PROMPT$suffix%}"
       fi
@@ -794,7 +794,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   }
 
   # Switches to PS1 prompt by restoring the prompt/rprompt to their original values and flipping
-  # YARP_HONOR_PS1 to "1" (they had originally been unset for the Warp prompt). Resets the prompt,
+  # YARP_HONOR_PS1 to "1" (they had originally been unset for the Yarp prompt). Resets the prompt,
   # forcing a re-print.
   function warp_change_prompt_modes_to_ps1() {
     PROMPT="$SAVED_PROMPT"
@@ -809,7 +809,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   # so we can reference this when we register it with a bindkey.
   zle -N warp_change_prompt_modes_to_ps1
 
-  # Switches to Warp prompt by flipping YARP_HONOR_PS1 to "0", which will result
+  # Switches to Yarp prompt by flipping YARP_HONOR_PS1 to "0", which will result
   # in unsetting the PROMPT variables to avoid a double prompt. Resets the prompt, forcing
   # a re-print.
   function warp_change_prompt_modes_to_warp_prompt() {
@@ -880,7 +880,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
           -t "${@:1}" \
 "
 export TERM_PROGRAM='WarpTerminal'
-# Mark the remote side of a Warp-managed SSH session so the bootstrap
+# Mark the remote side of a Yarp-managed SSH session so the bootstrap
 # body can distinguish it from local shells. Used to gate the ExitShell
 # hook which tears down the remote-server-proxy subprocess.
 export YARP_IS_SSH='1'
@@ -891,7 +891,7 @@ hook="'$(printf "{\"hook\": \"SSH\", \"value\": {\"socket_path\": \"'$SSH_SOCKET
 printf '$OSC_START$DCS_JSON_MARKER$OSC_PARAM_SEPARATOR%s$OSC_END' "'$hook'"
 
 if test "'"${SHELL##*/}" != "bash" -a "${SHELL##*/}" != "zsh"'"; then
-  # Emulate the SSHD logic to print the MotD. Because the Warp SSH wrapper passes
+  # Emulate the SSHD logic to print the MotD. Because the Yarp SSH wrapper passes
   # a command to run, SSHD does a quiet login, updating utmp and other login
   # state, but not printing the MotD. For bash and zsh, this is instead handled
   # by our bootstrap script.
@@ -945,7 +945,7 @@ case "'${SHELL##*/}'" in
         done > "'$YARP_TMP_DIR'"/.zshenv
       fi
     else
-      echo \"Failed to bootstrap warp. Continuing with a non-bootstrapped shell.\"
+      echo \"Failed to bootstrap yarp. Continuing with a non-bootstrapped shell.\"
     fi
     TMPPREFIX="'$HOME/.zshtmp-'" YARP_SSH_RCFILES="'${ZDOTDIR:-$HOME}'" YARP_HONOR_PS1="'$YARP_HONOR_PS1'" ZDOTDIR="'$YARP_TMP_DIR'" exec -l zsh -g $TRACE_FLAG_IF_YARP_SHELL_DEBUG_MODE
       ;;
@@ -973,12 +973,12 @@ esac
       }
   fi
 
-  # Send a precmd message to the terminal to differentiate between the warp
+  # Send a precmd message to the terminal to differentiate between the yarp
   # bootstrap logic pasted into the PTY and the output of shell startup files.
   warp_precmd
 
   # Before calling rcfiles, print the MotD if this is a login shell. Normally,
-  # login(1) or pam_motd(8) would do this. However, Warp does not use login(1)
+  # login(1) or pam_motd(8) would do this. However, Yarp does not use login(1)
   # for local sessions and for remote sessions, SSHD thinks it is starting a
   # non-interactive session, so it does not print PAM messages.
   if [[ -o login && ! -e "$HOME/.hushlogin" ]]; then
@@ -995,11 +995,11 @@ esac
   setopt ZLE
 
   # If powerlevel instant prompt is on, we need to disable it because it
-  # interferes with warp bootstrapping. The functionality is part of warp anyways.
+  # interferes with yarp bootstrapping. The functionality is part of yarp anyways.
   typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
-  # Add the Warp title precmd functions before the bootstrap sequence is sourced so that a user's custom tab title
-  # behavior is respected over Warp's.
+  # Add the Yarp title precmd functions before the bootstrap sequence is sourced so that a user's custom tab title
+  # behavior is respected over Yarp's.
   precmd_functions+=(warp_set_title_idle_on_precmd)
   preexec_functions+=(warp_set_title_active_on_preexec)
 
@@ -1027,7 +1027,7 @@ esac
   local rcfiles_start_time="$(LC_ALL="C"; echo $EPOCHREALTIME)"
 
   # This reflects the bootstrap sequence in a login shell. We want to
-  # Do other shell startup first so we can ensure Warp goes last.
+  # Do other shell startup first so we can ensure Yarp goes last.
 
   # If this is a subshell, the user and system RC files have already been sourced.
   if [[ -z $YARP_IS_SUBSHELL ]]; then
@@ -1058,10 +1058,10 @@ esac
 
   # If the user is running powerlevel10k and they selected "sparse" for the "Prompt Spacing"
   # option, this var will be true. It tells p10k to output an extra newline in its precmd function
-  # which visually separates commands. These are generally undesired in Warp, since blocks provide
+  # which visually separates commands. These are generally undesired in Yarp, since blocks provide
   # enough visual separation. Although generally benign, this causes an issue on Windows when
-  # ConPTY is involved. The extra newline is output by p10k's precmd which runs after Warp's
-  # precmd, i.e. after the "reset grid" sequence. It ends up causing Warp's grid content to be out
+  # ConPTY is involved. The extra newline is output by p10k's precmd which runs after Yarp's
+  # precmd, i.e. after the "reset grid" sequence. It ends up causing Yarp's grid content to be out
   # of sync with ConPTY, causing cursor positioning problems.
   if [[ ${POWERLEVEL9K_PROMPT_ADD_NEWLINE:-} == true ]]; then
     POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
@@ -1095,7 +1095,7 @@ esac
 
   if [[ ${precmd_functions[(I)_p9k_precmd]} != 0 ]]; then
     # The variable P9K_VERSION was added in the first version of p10k that
-    # supports Warp, so if it is non-empty, the user is on a supported version.
+    # supports Yarp, so if it is non-empty, the user is on a supported version.
     if [[ -z "${P9K_VERSION:-}" ]]; then
       # If the user is running an unsupported version of p10k, remove the precmd
       # hook entirely to prevent the p10k prompt from appearing in typeahead and
@@ -1174,7 +1174,7 @@ esac
 
   YARP_BOOTSTRAPPED=1
 
-  # Unset the prompt environment variable: Warp doesn't render the user's default prompt.
+  # Unset the prompt environment variable: Yarp doesn't render the user's default prompt.
   # We explicitly unset this for performance optimizations and so that the we can read the
   # command directly from the command grid without having to parse the prompt.
   export CONDA_CHANGEPS1=false
