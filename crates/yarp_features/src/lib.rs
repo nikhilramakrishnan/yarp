@@ -28,7 +28,7 @@ pub enum FeatureFlag {
 
     /// If `true`, fetch updated Yarp channel versions from the Yarp server endpoint instead of
     /// from GCP directly.
-    FetchChannelVersionsFromWarpServer,
+    FetchChannelVersionsFromYarpServer,
 
     /// Does grid storage go forwards or backwards
     SequentialStorage,
@@ -675,7 +675,7 @@ pub enum FeatureFlag {
     /// Enables the Oz launch modal for introducing cloud agent features.
     OzLaunchModal,
 
-    /// Enables the OpenWarp launch modal announcing Yarp going open-source.
+    /// Enables the OpenYarp launch modal announcing Yarp going open-source.
     /// When enabled, the HOA onboarding flow is suppressed.
     OpenYarpLaunchModal,
 

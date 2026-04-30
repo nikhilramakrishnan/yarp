@@ -2103,7 +2103,7 @@ fn test_vim_delete_word_dge() {
         });
 
         editor.read(&app, |view, app_ctx| {
-            assert_eq!(view.buffer_text(app_ctx), "echo hello-hi warpev");
+            assert_eq!(view.buffer_text(app_ctx), "echo hello-hi yarpev");
             assert_eq!(
                 view.selected_ranges(app_ctx),
                 vec![DisplayPoint::new(0, 18)..DisplayPoint::new(0, 18)]
@@ -3094,7 +3094,7 @@ fn test_vim_change_word_cge() {
         });
 
         editor.read(&app, |view, app_ctx| {
-            assert_eq!(view.buffer_text(app_ctx), "echo hello-hi warpev");
+            assert_eq!(view.buffer_text(app_ctx), "echo hello-hi yarpev");
             assert_eq!(
                 view.selected_ranges(app_ctx),
                 vec![DisplayPoint::new(0, 18)..DisplayPoint::new(0, 18)]

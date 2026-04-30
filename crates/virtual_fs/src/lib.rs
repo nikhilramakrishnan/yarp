@@ -59,13 +59,13 @@ impl VirtualFS {
             tests,
         };
 
-        let warpbox = VirtualFS {
+        let yarpbox = VirtualFS {
             root,
             cwd: yarpbox_dir,
             tests: tag.to_string(),
         };
 
-        test_callback(directories, warpbox);
+        test_callback(directories, yarpbox);
     }
 
     pub fn back_to_root(&mut self) -> &mut Self {
