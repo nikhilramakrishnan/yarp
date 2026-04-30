@@ -892,7 +892,7 @@ impl BlocklistAIStatusBar {
         Some(render_warping_indicator_base(
             WarpingIndicatorProps {
                 icon: None,
-                warping_indicator_text: MaybeShimmeringText::Shimmering {
+                yarping_indicator_text: MaybeShimmeringText::Shimmering {
                     text: progress_text.into(),
                     shimmering_text_handle: self.shimmering_text_handle.clone(),
                 },
@@ -1151,7 +1151,7 @@ impl View for BlocklistAIStatusBar {
                 render_warping_indicator_base(
                     WarpingIndicatorProps {
                         icon: None,
-                        warping_indicator_text: MaybeShimmeringText::Shimmering {
+                        yarping_indicator_text: MaybeShimmeringText::Shimmering {
                             text: "Setting up environment".into(),
                             shimmering_text_handle: self.shimmering_text_handle.clone(),
                         },
@@ -1178,7 +1178,7 @@ impl View for BlocklistAIStatusBar {
                 render_warping_indicator_base(
                     WarpingIndicatorProps {
                         icon: Some(icons::gray_clock_icon(appearance).finish()),
-                        warping_indicator_text: MaybeShimmeringText::Static(
+                        yarping_indicator_text: MaybeShimmeringText::Static(
                             WAITING_FOR_USER_INPUT_MESSAGE.into(),
                         ),
                         non_shimmering_text: None,

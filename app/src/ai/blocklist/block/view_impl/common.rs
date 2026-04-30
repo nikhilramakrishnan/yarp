@@ -55,7 +55,7 @@ use crate::{
             block::status_bar::BlocklistAIStatusBarAction, history_model::BlocklistAIHistoryModel,
             BlocklistAIActionModel, ShellCommandExecutor,
         },
-        loading::shimmering_warp_loading_text,
+        loading::shimmering_yarp_loading_text,
     },
     terminal::{self, TerminalModel},
     util::link_detection::{add_link_detection_mouse_interactions, DetectedLinksState},
@@ -476,7 +476,7 @@ pub fn render_warping_indicator<V: View>(
             .with_spacing(4.);
     }
 
-    let warping_indicator_text = if !should_render_waiting_icon {
+    let yarping_indicator_text = if !should_render_waiting_icon {
         MaybeShimmeringText::Shimmering {
             text: message.into(),
             shimmering_text_handle: props.shimmering_text_handle.clone(),
@@ -499,7 +499,7 @@ pub fn render_warping_indicator<V: View>(
     render_warping_indicator_base(
         WarpingIndicatorProps {
             icon: should_render_waiting_icon.then(|| icons::gray_clock_icon(appearance).finish()),
-            warping_indicator_text,
+            yarping_indicator_text,
             non_shimmering_text,
             non_shimmering_suffix,
             buttons: if has_buttons {
@@ -524,7 +524,7 @@ pub enum MaybeShimmeringText {
 
 pub struct WarpingIndicatorProps {
     pub icon: Option<Box<dyn Element>>,
-    pub warping_indicator_text: MaybeShimmeringText,
+    pub yarping_indicator_text: MaybeShimmeringText,
     pub non_shimmering_text: Option<String>,
     /// Optional element rendered inline to the right of `non_shimmering_text`. Used
     /// today for the `Check now` affordance next to `Last seen by agent ...`.
@@ -544,7 +544,7 @@ pub fn render_warping_indicator_base(
 ) -> Box<dyn Element> {
     let WarpingIndicatorProps {
         icon,
-        warping_indicator_text,
+        yarping_indicator_text,
         non_shimmering_text,
         non_shimmering_suffix,
         buttons,
@@ -559,11 +559,11 @@ pub fn render_warping_indicator_base(
     let appearance = Appearance::as_ref(app);
 
     let should_indent_tip_for_warp_glyph = matches!(
-        warping_indicator_text,
+        yarping_indicator_text,
         MaybeShimmeringText::Shimmering { .. }
     );
 
-    let text = render_output_status_text(warping_indicator_text, appearance, app);
+    let text = render_output_status_text(yarping_indicator_text, appearance, app);
 
     let mut row = Flex::row()
         .with_cross_axis_alignment(CrossAxisAlignment::Start)
@@ -703,7 +703,7 @@ pub fn render_output_status_text(
         MaybeShimmeringText::Shimmering {
             text,
             shimmering_text_handle,
-        } => shimmering_warp_loading_text(
+        } => shimmering_yarp_loading_text(
             text.to_string(),
             appearance.monospace_font_size() - 2.,
             shimmering_text_handle,

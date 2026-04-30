@@ -11,7 +11,7 @@ use yarpui::{AppContext, SingletonEntity};
 const YARP_GLYPH: &str = "\u{E500}";
 
 /// Creates a shimmering text element with the Yarp glyph.
-pub fn shimmering_warp_loading_text(
+pub fn shimmering_yarp_loading_text(
     text: impl Into<String>,
     font_size: f32,
     shimmer_handle: ShimmeringTextStateHandle,

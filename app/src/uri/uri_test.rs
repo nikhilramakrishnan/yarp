@@ -1,4 +1,4 @@
-use self::parse_url_paths::{get_item_data_from_warp_link, YarpWebLink};
+use self::parse_url_paths::{get_item_data_from_yarp_link, YarpWebLink};
 use super::*;
 use crate::launch_configs::launch_config::make_mock_single_window_launch_config;
 use crate::linear::{LinearAction, LinearIssueWork};
@@ -148,7 +148,7 @@ fn test_remove_extension() {
 #[test]
 fn test_warp_web_link_notebook() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_yarp_link(
             &Url::parse(&format!(
                 "{}/drive/notebook/Performance-Analysis-LkDlnAe34vfYD2JXsAkssc?focused_folder_id=test_uid00000000000123&invitee_email=test@example.com",
                 ChannelState::server_root_url()
@@ -169,7 +169,7 @@ server_id: ServerId::from_string_lossy("LkDlnAe34vfYD2JXsAkssc"),
 #[test]
 fn test_warp_web_link_session() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_yarp_link(
             &Url::parse(&format!(
                 "{}/session/317d0686-7a0b-4b67-806b-aaa3e9df501b?
                 pwd=6f727249-af9f-4025-a240-59df40a4c64b",
@@ -184,7 +184,7 @@ fn test_warp_web_link_session() {
 #[test]
 fn test_warp_web_link_workflow() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_yarp_link(
             &Url::parse(&format!(
                 "{}/drive/workflow/Remove-all-stopped-docker-container-image-and-volumes-ZCJSkai2gpwTqpBFs5HOfZ",
                 ChannelState::server_root_url()
@@ -202,7 +202,7 @@ server_id: ServerId::from_string_lossy("ZCJSkai2gpwTqpBFs5HOfZ"),
 #[test]
 fn test_warp_web_link_failure() {
     assert_eq!(
-        get_item_data_from_warp_link(&Url::parse("https://google.com").unwrap()),
+        get_item_data_from_yarp_link(&Url::parse("https://google.com").unwrap()),
         None
     );
 }

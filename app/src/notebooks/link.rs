@@ -23,7 +23,7 @@ use crate::util::openable_file_type::{is_supported_image_file, resolve_file_targ
 use crate::{
     drive::OpenYarpDriveObjectArgs,
     terminal::model::session::Session,
-    uri::parse_url_paths::{get_item_data_from_warp_link, YarpWebLink},
+    uri::parse_url_paths::{get_item_data_from_yarp_link, YarpWebLink},
     workspace::ActiveSession,
 };
 
@@ -265,7 +265,7 @@ impl NotebookLinks {
     pub fn open(&self, link: LinkTarget, ctx: &mut ModelContext<Self>) {
         match link {
             LinkTarget::Url(url) => {
-                if let Some(YarpWebLink::DriveObject(args)) = get_item_data_from_warp_link(&url) {
+                if let Some(YarpWebLink::DriveObject(args)) = get_item_data_from_yarp_link(&url) {
                     return ctx.emit(LinkEvent::OpenYarpDriveLink {
                         open_yarp_drive_args: *args,
                     });

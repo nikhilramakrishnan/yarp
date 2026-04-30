@@ -54,7 +54,7 @@ use super::{tmux, Secret, SecretHandle};
 use crate::terminal::model::ansi::{
     ClearValue, CommandFinishedValue, ExitShellValue, InitShellValue, InitSshValue,
     InitSubshellValue, PreInteractiveSSHSessionValue, PrecmdValue, PreexecValue, SSHValue,
-    SourcedRcFileForWarpValue,
+    SourcedRcFileForYarpValue,
 };
 use crate::terminal::model::grid::IndexRegion;
 use crate::terminal::model::session::SessionInfo;
@@ -492,7 +492,7 @@ pub struct TerminalModel {
     /// control mode. Whenever we attempt to warpify an ssh session, we track the context of when warp initiated
     /// control mode, indicating that we expect the shell to enter control mode. We reset to None whenever
     /// the active block finishes. If we enter control mode and option is None, then we know it's user-initiated.
-    pending_warp_initiated_control_mode: Option<YarpInitiatedTmuxControlMode>,
+    pending_yarp_initiated_control_mode: Option<YarpInitiatedTmuxControlMode>,
 
     tmux_control_mode_context: Option<TmuxControlModeContext>,
 
@@ -1163,7 +1163,7 @@ impl TerminalModel {
             is_receiving_agent_conversation_replay: false,
             tmux_background_outputs: HashMap::new(),
             tmux_control_mode_context: None,
-            pending_warp_initiated_control_mode: None,
+            pending_yarp_initiated_control_mode: None,
             notify_on_end_of_ssh_login: None,
             is_receiving_hook: IsReceivingHook::No,
             image_id_to_metadata: HashMap::new(),
@@ -2208,16 +2208,16 @@ impl TerminalModel {
         self.env_var_collection_name = value;
     }
 
-    pub fn set_pending_warp_initiated_control_mode(&mut self) {
+    pub fn set_pending_yarp_initiated_control_mode(&mut self) {
         let tmux_installation = self
             .tmux_control_mode_context
             .and_then(|context| context.tmux_installation());
-        self.pending_warp_initiated_control_mode =
+        self.pending_yarp_initiated_control_mode =
             Some(YarpInitiatedTmuxControlMode::new(tmux_installation));
     }
 
-    pub fn set_pending_warp_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
-        self.pending_warp_initiated_control_mode =
+    pub fn set_pending_yarp_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
+        self.pending_yarp_initiated_control_mode =
             Some(YarpInitiatedTmuxControlMode::new(Some(if with_root {
                 TmuxInstallationState::InstalledByWarpRootInThisSession
             } else {
@@ -2225,8 +2225,8 @@ impl TerminalModel {
             })));
     }
 
-    pub fn clear_pending_warp_initiated_control_mode(&mut self) {
-        self.pending_warp_initiated_control_mode = None;
+    pub fn clear_pending_yarp_initiated_control_mode(&mut self) {
+        self.pending_yarp_initiated_control_mode = None;
     }
 
     /// Informs the terminal model to start watching for ssh output that indicates the session
@@ -2327,8 +2327,8 @@ impl TerminalModel {
         self.tmux_control_mode_context.is_some()
     }
 
-    pub fn is_pending_warp_initiated_control_mode(&self) -> bool {
-        self.pending_warp_initiated_control_mode.is_some()
+    pub fn is_pending_yarp_initiated_control_mode(&self) -> bool {
+        self.pending_yarp_initiated_control_mode.is_some()
     }
 
     pub fn is_warpified_ssh(&self) -> bool {
@@ -2953,7 +2953,7 @@ impl ansi::Handler for TerminalModel {
     }
 
     fn init_subshell(&mut self, data: InitSubshellValue) {
-        let is_tmux_ssh = self.pending_warp_initiated_control_mode.is_some();
+        let is_tmux_ssh = self.pending_yarp_initiated_control_mode.is_some();
         let shell_type = ShellType::from_name(data.shell.as_str());
         if let Some(shell_type) = shell_type {
             self.event_proxy
@@ -2978,7 +2978,7 @@ impl ansi::Handler for TerminalModel {
         }
     }
 
-    fn sourced_rc_file(&mut self, data: SourcedRcFileForWarpValue) {
+    fn sourced_rc_file(&mut self, data: SourcedRcFileForYarpValue) {
         // If the blocklist is already bootstrapped, the user's RC file must be sourced in a
         // subshell.
         if self.block_list.is_bootstrapped() {
@@ -2997,7 +2997,7 @@ impl ansi::Handler for TerminalModel {
                 }
                 None => {
                     log::error!(
-                        "Received invalid shell name in SourcedRCFileForWarpValue: {}",
+                        "Received invalid shell name in SourcedRCFileForYarpValue: {}",
                         data.shell
                     );
                 }
@@ -3035,7 +3035,7 @@ impl ansi::Handler for TerminalModel {
     }
 
     fn notify_ssh_tmux_is_installed(&mut self, tmux_installation: TmuxInstallationState) {
-        if let Some(ref mut yarp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
+        if let Some(ref mut yarp_initiated_for_ssh) = self.pending_yarp_initiated_control_mode {
             yarp_initiated_for_ssh.tmux_installation = Some(tmux_installation);
         }
         self.event_proxy
@@ -3169,7 +3169,7 @@ impl ansi::Handler for TerminalModel {
                 }
             }
             tmux::ControlModeEvent::Starting => {
-                if let Some(yarp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
+                if let Some(yarp_initiated_for_ssh) = self.pending_yarp_initiated_control_mode {
                     self.tmux_control_mode_context = Some(
                         TmuxControlModeContext::YarpInitiatedForSsh(yarp_initiated_for_ssh),
                     );

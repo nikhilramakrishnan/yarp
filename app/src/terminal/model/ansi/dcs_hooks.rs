@@ -61,7 +61,7 @@ pub(super) enum DProtoHook {
         value: InitSubshellValue,
     },
     SourcedRcFileForWarp {
-        value: SourcedRcFileForWarpValue,
+        value: SourcedRcFileForYarpValue,
     },
     InitSsh {
         value: InitSshValue,
@@ -649,7 +649,7 @@ pub struct InitSubshellValue {
 /// created; if the session is for a subshell, this triggers Yarp's bootstrap process.
 /// Otherwise, it's ignored.
 #[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
-pub struct SourcedRcFileForWarpValue {
+pub struct SourcedRcFileForYarpValue {
     pub shell: String,
     pub uname: Option<String>,
     pub tmux: Option<bool>,

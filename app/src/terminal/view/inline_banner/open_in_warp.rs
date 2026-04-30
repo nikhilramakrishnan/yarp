@@ -18,7 +18,7 @@ use super::{
 };
 
 #[derive(Clone, Copy, Debug)]
-pub enum OpenInWarpBannerAction {
+pub enum OpenInYarpBannerAction {
     OpenFile,
     LearnMore,
     Close,
@@ -88,7 +88,7 @@ pub fn render_open_in_yarp_banner(
         text: button_text.to_string(),
         text_color: appearance.theme().active_ui_text_color().into_solid(),
         button_state: InlineBannerButtonState {
-            on_click_event: TerminalAction::OpenInWarpBanner(OpenInWarpBannerAction::OpenFile),
+            on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::OpenFile),
             mouse_state_handle: state.open_button_mouse_state.clone(),
         },
         font: InlineBannerTextButtonFont {
@@ -103,7 +103,7 @@ pub fn render_open_in_yarp_banner(
         text: "Learn more".to_string(),
         text_color: appearance.theme().active_ui_text_color().into_solid(),
         button_state: InlineBannerButtonState {
-            on_click_event: TerminalAction::OpenInWarpBanner(OpenInWarpBannerAction::LearnMore),
+            on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::LearnMore),
             mouse_state_handle: state.learn_more_button_mouse_state.clone(),
         },
         font: Default::default(),
@@ -112,7 +112,7 @@ pub fn render_open_in_yarp_banner(
     };
 
     let close_button = InlineBannerCloseButton(InlineBannerButtonState {
-        on_click_event: TerminalAction::OpenInWarpBanner(OpenInWarpBannerAction::Close),
+        on_click_event: TerminalAction::OpenInWarpBanner(OpenInYarpBannerAction::Close),
         mouse_state_handle: state.close_button_mouse_state.clone(),
     });
 

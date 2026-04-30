@@ -183,7 +183,7 @@ impl Client {
         };
 
         if include_warp_headers {
-            builder = Self::add_warp_http_headers(builder);
+            builder = Self::add_yarp_http_headers(builder);
         }
 
         builder
@@ -192,35 +192,35 @@ impl Client {
     pub fn get<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.get(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_yarp_http_headers(url),
         )
     }
 
     pub fn post<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.post(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_yarp_http_headers(url),
         )
     }
 
     pub fn patch<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.patch(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_yarp_http_headers(url),
         )
     }
 
     pub fn put<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.put(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_yarp_http_headers(url),
         )
     }
 
     pub fn delete<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.delete(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_yarp_http_headers(url),
         )
     }
 
@@ -228,7 +228,7 @@ impl Client {
     /// where we should include custom headers is if the request is same-origin and is targetted to our server.
     /// For example, app.warp.dev --> app.warp.dev.
     #[cfg(target_family = "wasm")]
-    fn include_warp_http_headers<U: IntoUrl + Clone>(url: U) -> bool {
+    fn include_yarp_http_headers<U: IntoUrl + Clone>(url: U) -> bool {
         url.into_url().is_ok_and(|url| {
             url.host_str().is_some_and(|dest_host| {
                 let window_hostname = gloo::utils::window()
@@ -246,11 +246,11 @@ impl Client {
     }
 
     #[cfg(not(target_family = "wasm"))]
-    fn include_warp_http_headers<U: IntoUrl + Clone>(_url: U) -> bool {
+    fn include_yarp_http_headers<U: IntoUrl + Clone>(_url: U) -> bool {
         true
     }
 
-    fn add_warp_http_headers(mut builder: RequestBuilder) -> RequestBuilder {
+    fn add_yarp_http_headers(mut builder: RequestBuilder) -> RequestBuilder {
         // Include the client ID header.
         if let Some(client_id) = execution_mode::current_client_id() {
             builder = builder.header(headers::YARP_CLIENT_ID, client_id);
@@ -663,7 +663,7 @@ impl<'c> oauth2::AsyncHttpClient<'c> for Client {
 
     fn call(&'c self, request: oauth2::HttpRequest) -> Self::Future {
         Box::pin(async move {
-            let include_warp_headers = Self::include_warp_http_headers(request.uri().to_string());
+            let include_warp_headers = Self::include_yarp_http_headers(request.uri().to_string());
             let builder = reqwest::RequestBuilder::from_parts(
                 self.wrapped.clone(),
                 request.try_into().map_err(Box::new)?,

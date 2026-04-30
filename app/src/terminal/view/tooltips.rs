@@ -51,12 +51,12 @@ fn open_in_warp_tooltip(
 ) -> Option<GridTooltipLink> {
     use crate::{
         settings::CodeSettings, util::file::external_editor::EditorSettings,
-        util::tooltips::should_show_open_in_warp_link,
+        util::tooltips::should_show_open_in_yarp_link,
     };
     use settings::Setting as _;
     use yarpui::SingletonEntity;
 
-    if !should_show_open_in_warp_link(&path, app) {
+    if !should_show_open_in_yarp_link(&path, app) {
         return None;
     }
 

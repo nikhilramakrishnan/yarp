@@ -71,7 +71,7 @@ use crate::{
     ui_components::icons::ICON_DIMENSIONS,
     util::{
         bindings::CustomAction,
-        tooltips::{render_tooltip, should_show_open_in_warp_link, TooltipLink, TooltipRedaction},
+        tooltips::{render_tooltip, should_show_open_in_yarp_link, TooltipLink, TooltipRedaction},
     },
     view_components::DismissibleToast,
 };
@@ -2420,7 +2420,7 @@ impl RichTextEditorView {
             "Open file"
         }
         .to_string();
-        let show_open_in_warp = should_show_open_in_warp_link(&path, ctx);
+        let show_open_in_warp = should_show_open_in_yarp_link(&path, ctx);
         let path_for_primary = path.clone();
         let modifier = directly_open_link_keybinding_string();
 

@@ -92,7 +92,7 @@ use crate::ai::blocklist::usage::conversation_usage_view::{
 };
 use crate::ai::blocklist::{block_context_from_terminal_model, SlashCommandRequest};
 use crate::ai::document::ai_document_model::{AIDocumentId, AIDocumentModel, AIDocumentVersion};
-use crate::ai::loading::shimmering_warp_loading_text;
+use crate::ai::loading::shimmering_yarp_loading_text;
 #[cfg(feature = "local_fs")]
 use crate::code_review::context::{
     convert_file_diffs_to_diffset_hunks, create_attachment_reference_and_key,
@@ -9726,7 +9726,7 @@ impl TerminalView {
         {
             self.model
                 .lock()
-                .clear_pending_warp_initiated_control_mode();
+                .clear_pending_yarp_initiated_control_mode();
         }
         self.model.lock().end_notify_on_ssh_login_complete();
 
@@ -11400,7 +11400,7 @@ impl TerminalView {
             })
             .unwrap_or_else(|| "Starting shell...".to_string());
 
-        let shimmer_element = shimmering_warp_loading_text(
+        let shimmer_element = shimmering_yarp_loading_text(
             message,
             appearance.monospace_font_size() - 2.,
             self.remote_server_shimmer_handle.clone(),
@@ -23784,7 +23784,7 @@ impl TerminalView {
         ctx: &mut ViewContext<Self>,
     ) {
         self.warpify_state.set_shell_type(&shell_type);
-        self.model.lock().set_pending_warp_initiated_control_mode();
+        self.model.lock().set_pending_yarp_initiated_control_mode();
         if let Some(script) = warpify_ssh_session_command(uname, shell_type, ctx) {
             self.clear_line_editor_and_write_to_pty_with_mac_workaround_hack(
                 convert_script_to_one_line(&script).into_bytes(),
@@ -23809,7 +23809,7 @@ impl TerminalView {
         let install_script = &install_method.script;
         self.model
             .lock()
-            .set_pending_warp_initiated_control_mode_with_install_tmux(install_with_root_method);
+            .set_pending_yarp_initiated_control_mode_with_install_tmux(install_with_root_method);
         self.clear_line_editor_and_write_to_pty(
             convert_script_to_one_line(install_script).into_bytes(),
             ctx,

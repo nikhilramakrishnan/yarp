@@ -1194,13 +1194,13 @@ define_settings_group!(AISettings, settings: [
 
     // Whether or not the user has enabled the ability to use Yarp credits even when providing
     // their own LLM provider API key.
-    can_use_warp_credits_with_byok: CanUseWarpCreditsWithByok {
+    can_use_yarp_credits_with_byok: CanUseWarpCreditsWithByok {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "cloud_platform.third_party_api_keys.can_use_warp_credits_with_byok",
+        toml_path: "cloud_platform.third_party_api_keys.can_use_yarp_credits_with_byok",
         description: "Whether Yarp credits can be used even when providing your own API key.",
     }
 

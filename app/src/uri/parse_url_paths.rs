@@ -9,7 +9,7 @@ pub enum YarpWebLink {
     DriveObject(Box<OpenYarpDriveObjectArgs>),
 }
 
-pub fn get_item_data_from_warp_link(url: &Url) -> Option<YarpWebLink> {
+pub fn get_item_data_from_yarp_link(url: &Url) -> Option<YarpWebLink> {
     if url.origin() == ChannelState::server_root_domain() {
         url.path_segments().and_then(|mut path_segments| {
             path_segments.next().and_then(|segment| match segment {

@@ -286,7 +286,7 @@ pub trait Handler {
     /// Callback emitted when executing the user's RC file, which signals a new session is being
     /// created. If the session is for a subshell, this should triggers Yarp's bootstrap process.
     /// Otherwise, it's ignored.
-    fn sourced_rc_file(&mut self, _data: SourcedRcFileForWarpValue) {}
+    fn sourced_rc_file(&mut self, _data: SourcedRcFileForYarpValue) {}
 
     /// Callback emitted during the initialization process for ssh sessions
     fn init_ssh(&mut self, _data: InitSshValue) {}

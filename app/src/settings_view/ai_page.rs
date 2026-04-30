@@ -2457,7 +2457,7 @@ impl TypedActionView for AISettingsPageView {
             AISettingsPageAction::ToggleCanUseWarpCreditsWithByok => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     report_if_error!(settings
-                        .can_use_warp_credits_with_byok
+                        .can_use_yarp_credits_with_byok
                         .toggle_and_save_value(ctx));
                 });
                 ctx.notify();
@@ -5969,7 +5969,7 @@ struct ApiKeysWidget {
     anthropic_api_key_editor: ViewHandle<EditorView>,
     google_api_key_editor: ViewHandle<EditorView>,
 
-    can_use_warp_credits_with_byok: SwitchStateHandle,
+    can_use_yarp_credits_with_byok: SwitchStateHandle,
     upgrade_highlight_index: HighlightedHyperlink,
 }
 
@@ -6077,7 +6077,7 @@ impl ApiKeysWidget {
             anthropic_api_key_editor,
             google_api_key_editor,
 
-            can_use_warp_credits_with_byok: Default::default(),
+            can_use_yarp_credits_with_byok: Default::default(),
             upgrade_highlight_index: Default::default(),
         }
     }
@@ -6227,7 +6227,7 @@ impl ApiKeysWidget {
         column.finish()
     }
 
-    fn render_can_use_warp_credits_with_byok_toggle(
+    fn render_can_use_yarp_credits_with_byok_toggle(
         &self,
         view: &AISettingsPageView,
         app: &AppContext,
@@ -6237,9 +6237,9 @@ impl ApiKeysWidget {
         let toggle = render_ai_setting_toggle::<CanUseWarpCreditsWithByok>(
             "Yarp credit fallback",
             AISettingsPageAction::ToggleCanUseWarpCreditsWithByok,
-            *ai_settings.can_use_warp_credits_with_byok,
+            *ai_settings.can_use_yarp_credits_with_byok,
             ai_settings.is_any_ai_enabled(app),
-            self.can_use_warp_credits_with_byok.clone(),
+            self.can_use_yarp_credits_with_byok.clone(),
             &view.local_only_icon_tooltip_states,
             app,
         );
@@ -6289,7 +6289,7 @@ impl SettingsWidget for ApiKeysWidget {
 
         if is_byo_enabled {
             column.add_child(
-                Container::new(self.render_can_use_warp_credits_with_byok_toggle(view, app))
+                Container::new(self.render_can_use_yarp_credits_with_byok_toggle(view, app))
                     .with_margin_top(16.)
                     .finish(),
             );

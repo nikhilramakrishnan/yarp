@@ -20,7 +20,7 @@ use crate::{
         event::UserBlockCompleted,
         general_settings::GeneralSettings,
         model::session::Session,
-        view::inline_banner::{OpenInWarpBannerAction, OpenInWarpBannerState},
+        view::inline_banner::{OpenInYarpBannerAction, OpenInWarpBannerState},
     },
     util::openable_file_type::{is_file_openable_in_warp, OpenableFileType},
 };
@@ -163,11 +163,11 @@ impl TerminalView {
 
     pub fn handle_open_in_yarp_banner_action(
         &mut self,
-        action: OpenInWarpBannerAction,
+        action: OpenInYarpBannerAction,
         ctx: &mut ViewContext<Self>,
     ) {
         match action {
-            OpenInWarpBannerAction::OpenFile => {
+            OpenInYarpBannerAction::OpenFile => {
                 if let Some(banner_state) = self.inline_banners_state.open_in_yarp_banner.take() {
                     match banner_state.target.file_type {
                         OpenableFileType::Markdown => {
@@ -194,7 +194,7 @@ impl TerminalView {
                     ctx.notify();
                 }
             }
-            OpenInWarpBannerAction::LearnMore => {
+            OpenInYarpBannerAction::LearnMore => {
                 if let Some(banner_state) = &self.inline_banners_state.open_in_yarp_banner {
                     let url = match banner_state.target.file_type {
                         OpenableFileType::Markdown => LEARN_MORE_MARKDOWN_URL,
@@ -203,7 +203,7 @@ impl TerminalView {
                     ctx.open_url(url);
                 }
             }
-            OpenInWarpBannerAction::Close => {
+            OpenInYarpBannerAction::Close => {
                 if let Some(banner_state) = self.inline_banners_state.open_in_yarp_banner.take() {
                     self.close_open_in_yarp_banner(banner_state.id);
                     match banner_state.target.file_type {
@@ -230,10 +230,10 @@ impl TerminalView {
 
     pub fn open_in_yarp_banner_accessibility_content(
         &self,
-        action: OpenInWarpBannerAction,
+        action: OpenInYarpBannerAction,
     ) -> ActionAccessibilityContent {
         match action {
-            OpenInWarpBannerAction::OpenFile => {
+            OpenInYarpBannerAction::OpenFile => {
                 match &self.inline_banners_state.open_in_yarp_banner {
                     Some(banner_state) => {
                         ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
@@ -244,13 +244,13 @@ impl TerminalView {
                     None => ActionAccessibilityContent::Empty,
                 }
             }
-            OpenInWarpBannerAction::Close => {
+            OpenInYarpBannerAction::Close => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Close View in Yarp banner",
                     YarpA11yRole::UserAction,
                 ))
             }
-            OpenInWarpBannerAction::LearnMore => {
+            OpenInYarpBannerAction::LearnMore => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new(
                     "Learn more",
                     "Learn more about opening Markdown files in Yarp",

@@ -173,7 +173,7 @@ pub struct ConversationEndedTombstoneView {
     #[cfg(not(target_family = "wasm"))]
     continue_locally_button: Option<ViewHandle<ActionButton>>,
     #[cfg(target_family = "wasm")]
-    open_in_warp_button: Option<ViewHandle<ActionButton>>,
+    open_in_yarp_button: Option<ViewHandle<ActionButton>>,
 }
 
 impl ConversationEndedTombstoneView {
@@ -220,7 +220,7 @@ impl ConversationEndedTombstoneView {
         // In wasm, continuing locally is impossible so we instead
         // offer to open the conversation in yarp (where you can continue locally).
         #[cfg(target_family = "wasm")]
-        let open_in_warp_button = conversation_id.map(|conv_id| {
+        let open_in_yarp_button = conversation_id.map(|conv_id| {
             ctx.add_typed_action_view(move |_| {
                 ActionButton::new("Open in Yarp", PrimaryTheme)
                     .with_tooltip("Open this conversation in the Yarp desktop app")
@@ -238,7 +238,7 @@ impl ConversationEndedTombstoneView {
             #[cfg(not(target_family = "wasm"))]
             continue_locally_button,
             #[cfg(target_family = "wasm")]
-            open_in_warp_button,
+            open_in_yarp_button,
         };
 
         ctx.subscribe_to_view(
@@ -497,8 +497,8 @@ impl ConversationEndedTombstoneView {
         {
             // Don't show on mobile devices - they can't use the desktop app
             if !yarpui::platform::wasm::is_mobile_device() {
-                if let Some(ref open_in_warp_button) = self.open_in_warp_button {
-                    row.add_child(ChildView::new(open_in_warp_button).finish());
+                if let Some(ref open_in_yarp_button) = self.open_in_yarp_button {
+                    row.add_child(ChildView::new(open_in_yarp_button).finish());
                     has_button = true;
                 }
             }
