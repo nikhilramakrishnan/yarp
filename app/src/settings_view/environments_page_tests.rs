@@ -754,7 +754,7 @@ fn test_render_list_page_with_personal_and_team_environments_shows_section_heade
                 "Expected 'Personal' section header in rendered content: {text_content}"
             );
             assert!(
-                text_content.contains("SHARED BY WARP AND KATARINA'S TEAM"),
+                text_content.contains("SHARED BY YARP AND KATARINA'S TEAM"),
                 "Expected shared section header in rendered content: {text_content}"
             );
         });
@@ -1257,7 +1257,7 @@ fn test_environment_matches_search_query_is_case_insensitive() {
     );
     environment.description = Some("Some Description".to_string());
 
-    assert!(environment.matches_search_query("WARP"));
+    assert!(environment.matches_search_query("YARP"));
     assert!(environment.matches_search_query("description"));
     assert!(environment.matches_search_query("yarp-internal"));
 }
