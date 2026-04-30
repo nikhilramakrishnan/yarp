@@ -73,19 +73,19 @@ pub fn init(app: &mut AppContext) {
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
-        OpenWarpLaunchModalAction::Close,
-        id!(OpenWarpLaunchModal::ui_name()),
+        OpenYarpLaunchModalAction::Close,
+        id!(OpenYarpLaunchModal::ui_name()),
     )]);
 }
 
 #[derive(Clone, Debug)]
-pub enum OpenWarpLaunchModalAction {
+pub enum OpenYarpLaunchModalAction {
     Close,
     VisitRepo,
 }
 
 #[derive(Clone, Debug)]
-pub enum OpenWarpLaunchModalEvent {
+pub enum OpenYarpLaunchModalEvent {
     Close,
 }
 
@@ -127,24 +127,24 @@ impl ActionButtonTheme for CtaButtonTheme {
     }
 }
 
-pub struct OpenWarpLaunchModal {
+pub struct OpenYarpLaunchModal {
     close_button: ViewHandle<ActionButton>,
     cta_button: ViewHandle<ActionButton>,
 }
 
-impl OpenWarpLaunchModal {
+impl OpenYarpLaunchModal {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
         let close_button = ctx.add_view(|_ctx| {
             ActionButton::new("", CloseButtonTheme)
                 .with_icon(Icon::X)
                 .with_size(ButtonSize::Small)
-                .on_click(|ctx| ctx.dispatch_typed_action(OpenWarpLaunchModalAction::Close))
+                .on_click(|ctx| ctx.dispatch_typed_action(OpenYarpLaunchModalAction::Close))
         });
 
         let cta_button = ctx.add_view(|_ctx| {
             ActionButton::new("Visit the repo", CtaButtonTheme)
                 .with_full_width(true)
-                .on_click(|ctx| ctx.dispatch_typed_action(OpenWarpLaunchModalAction::VisitRepo))
+                .on_click(|ctx| ctx.dispatch_typed_action(OpenYarpLaunchModalAction::VisitRepo))
         });
 
         Self {
@@ -361,13 +361,13 @@ impl OpenWarpLaunchModal {
     }
 }
 
-impl Entity for OpenWarpLaunchModal {
-    type Event = OpenWarpLaunchModalEvent;
+impl Entity for OpenYarpLaunchModal {
+    type Event = OpenYarpLaunchModalEvent;
 }
 
-impl View for OpenWarpLaunchModal {
+impl View for OpenYarpLaunchModal {
     fn ui_name() -> &'static str {
-        "OpenWarpLaunchModal"
+        "OpenYarpLaunchModal"
     }
 
     fn on_focus(&mut self, _focus_ctx: &yarpui::FocusContext, ctx: &mut ViewContext<Self>) {
@@ -399,17 +399,17 @@ impl View for OpenWarpLaunchModal {
     }
 }
 
-impl TypedActionView for OpenWarpLaunchModal {
-    type Action = OpenWarpLaunchModalAction;
+impl TypedActionView for OpenYarpLaunchModal {
+    type Action = OpenYarpLaunchModalAction;
 
     fn handle_action(&mut self, action: &Self::Action, ctx: &mut ViewContext<Self>) {
         match action {
-            OpenWarpLaunchModalAction::Close => {
-                ctx.emit(OpenWarpLaunchModalEvent::Close);
+            OpenYarpLaunchModalAction::Close => {
+                ctx.emit(OpenYarpLaunchModalEvent::Close);
             }
-            OpenWarpLaunchModalAction::VisitRepo => {
+            OpenYarpLaunchModalAction::VisitRepo => {
                 ctx.open_url(REPO_URL);
-                ctx.emit(OpenWarpLaunchModalEvent::Close);
+                ctx.emit(OpenYarpLaunchModalEvent::Close);
             }
         }
     }

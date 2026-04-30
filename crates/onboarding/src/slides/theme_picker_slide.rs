@@ -159,7 +159,7 @@ impl ThemePickerSlide {
 
         let mut content = vec![self.render_header_text(appearance), theme_options_section];
 
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             content.push(self.render_sync_with_os_section(appearance));
         }
 
@@ -172,7 +172,7 @@ impl ThemePickerSlide {
         let state = self.onboarding_state.as_ref(app);
         let is_terminal = matches!(state.intention(), OnboardingIntention::Terminal);
         let yarp_drive_enabled = state.ui_customization().show_yarp_drive;
-        if is_terminal && !yarp_drive_enabled && FeatureFlag::OpenWarpNewSettingsModes.is_enabled()
+        if is_terminal && !yarp_drive_enabled && FeatureFlag::OpenYarpNewSettingsModes.is_enabled()
         {
             content.push(self.render_disclaimer_section(appearance));
         }
@@ -266,7 +266,7 @@ impl ThemePickerSlide {
             },
         );
 
-        let theme_picker_last = FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+        let theme_picker_last = FeatureFlag::OpenYarpNewSettingsModes.is_enabled();
         let next_label = if theme_picker_last {
             "Start using Yarp"
         } else {
@@ -481,7 +481,7 @@ impl ThemePickerSlide {
         appearance: &Appearance,
         app: &AppContext,
     ) -> Box<dyn Element> {
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             let path = self.theme_visual_path(app);
             layout::onboarding_right_panel_with_bg(path, layout::FOREGROUND_LAYOUT_DEFAULT)
         } else {
@@ -646,7 +646,7 @@ impl ThemePickerSlide {
 
     fn next(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
-            if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
                 model.complete(ctx);
             } else {
                 model.next(ctx);

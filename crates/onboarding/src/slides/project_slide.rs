@@ -291,7 +291,7 @@ impl ProjectSlide {
         );
 
         let theme_picker_last =
-            yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+            yarp_core::features::FeatureFlag::OpenYarpNewSettingsModes.is_enabled();
 
         let (label, keystroke, action) = match settings {
             ProjectOnboardingSettings::Project { .. } => (
@@ -483,7 +483,7 @@ impl ProjectSlide {
         }
 
         self.onboarding_state.update(ctx, |model, ctx| {
-            if yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if yarp_core::features::FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);
@@ -494,7 +494,7 @@ impl ProjectSlide {
     fn skip(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
             model.set_project_selected_local_folder(None, ctx);
-            if yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if yarp_core::features::FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);

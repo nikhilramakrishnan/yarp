@@ -283,7 +283,7 @@ impl CodeSettingsPageView {
 
         #[cfg(feature = "local_fs")]
         let external_editor_view;
-        let page = if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        let page = if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             #[cfg(feature = "local_fs")]
             {
                 external_editor_view = Some(ctx.add_typed_action_view(ExternalEditorView::new));
@@ -400,7 +400,7 @@ impl CodeSettingsPageView {
     /// Builds the full categorized page with all Code widgets.
     /// Used for the default/legacy view and when resetting to all-widgets mode for search.
     fn build_full_page(ctx: &mut ViewContext<Self>) -> PageType<Self> {
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             let manual_add_directory_button = ctx.add_typed_action_view(|_| {
                 ActionButton::new("Index new folder", SecondaryTheme)
                     .with_icon(Icon::FindAll)
@@ -2267,7 +2267,7 @@ impl SettingsPageMeta for CodeSettingsPageView {
 
     fn should_render(&self, _ctx: &AppContext) -> bool {
         FeatureFlag::FullSourceCodeEmbedding.is_enabled()
-            || FeatureFlag::OpenWarpNewSettingsModes.is_enabled()
+            || FeatureFlag::OpenYarpNewSettingsModes.is_enabled()
     }
 
     fn on_page_selected(&mut self, _: bool, ctx: &mut ViewContext<Self>) {

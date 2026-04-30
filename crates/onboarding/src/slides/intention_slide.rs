@@ -396,7 +396,7 @@ impl IntentionSlide {
             },
         );
 
-        let new_settings_modes = FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+        let new_settings_modes = FeatureFlag::OpenYarpNewSettingsModes.is_enabled();
         let next_text = if !new_settings_modes && selected_index == 1 {
             "Start using Yarp"
         } else {
@@ -446,7 +446,7 @@ impl IntentionSlide {
     fn render_visual(&self, appearance: &Appearance, selected_index: usize) -> Box<dyn Element> {
         let theme = appearance.theme();
 
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             let path = if selected_index == 1 {
                 Self::VISUAL_IMAGE_PATHS[1]
             } else {
@@ -519,7 +519,7 @@ impl IntentionSlide {
 
     fn next(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
-            if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
                 // Always advance to Customize slide; both intentions continue the flow.
                 model.next(ctx);
             } else {

@@ -130,7 +130,7 @@ use crate::workspace::view::free_tier_limit_hit_modal::{
 };
 use crate::workspace::view::launch_modal::{LaunchModal, LaunchModalEvent, OzLaunchSlide};
 use crate::workspace::view::openwarp_launch_modal::{
-    OpenWarpLaunchModal, OpenWarpLaunchModalEvent,
+    OpenYarpLaunchModal, OpenYarpLaunchModalEvent,
 };
 use crate::workspace::{ForkFromExchange, ForkedConversationDestination};
 use crate::BlocklistAIHistoryModel;
@@ -967,7 +967,7 @@ pub struct Workspace {
     suggested_agent_mode_workflow_modal: ViewHandle<SuggestedAgentModeWorkflowModal>,
     suggested_rule_modal: ViewHandle<SuggestedRuleModal>,
     oz_launch_modal: ModalWithTab<LaunchModal<OzLaunchSlide>>,
-    openwarp_launch_modal: ViewHandle<OpenWarpLaunchModal>,
+    openwarp_launch_modal: ViewHandle<OpenYarpLaunchModal>,
     enable_auto_reload_modal: ViewHandle<EnableAutoReloadModal>,
     build_plan_migration_modal: ViewHandle<BuildPlanMigrationModal>,
     codex_modal: ViewHandle<CodexModal>,
@@ -2664,7 +2664,7 @@ impl Workspace {
             me.handle_oz_launch_modal_event(event, ctx);
         });
 
-        let openwarp_launch_view = ctx.add_typed_action_view(OpenWarpLaunchModal::new);
+        let openwarp_launch_view = ctx.add_typed_action_view(OpenYarpLaunchModal::new);
         ctx.subscribe_to_view(&openwarp_launch_view, |me, _, event, ctx| {
             me.handle_openwarp_launch_modal_event(event, ctx);
         });
@@ -15774,11 +15774,11 @@ impl Workspace {
 
     fn handle_openwarp_launch_modal_event(
         &mut self,
-        event: &OpenWarpLaunchModalEvent,
+        event: &OpenYarpLaunchModalEvent,
         ctx: &mut ViewContext<Self>,
     ) {
         match event {
-            OpenWarpLaunchModalEvent::Close => {
+            OpenYarpLaunchModalEvent::Close => {
                 OneTimeModalModel::handle(ctx).update(ctx, |model, ctx| {
                     model.mark_openwarp_launch_modal_dismissed(ctx);
                 });
@@ -17363,7 +17363,7 @@ impl Workspace {
         }
 
         if self.auth_state.is_anonymous_or_logged_out()
-            && !FeatureFlag::OpenWarpNewSettingsModes.is_enabled()
+            && !FeatureFlag::OpenYarpNewSettingsModes.is_enabled()
         {
             if is_web_anonymous_user {
                 target.add_child(
@@ -21276,7 +21276,7 @@ impl TypedActionView for Workspace {
                 );
             }
             #[cfg(debug_assertions)]
-            OpenOpenWarpLaunchModal => {
+            OpenOpenYarpLaunchModal => {
                 // Force open the OpenYarp launch modal for debugging
                 OneTimeModalModel::handle(ctx).update(ctx, |model, ctx| {
                     model.force_open_openwarp_launch_modal(ctx);
@@ -21284,7 +21284,7 @@ impl TypedActionView for Workspace {
                 ctx.notify();
             }
             #[cfg(debug_assertions)]
-            ResetOpenWarpLaunchModalState => {
+            ResetOpenYarpLaunchModalState => {
                 // Reset the OpenYarp launch modal dismissed state for debugging
                 let old_value = *GeneralSettings::as_ref(ctx)
                     .did_check_to_trigger_openwarp_launch_modal
@@ -21304,7 +21304,7 @@ impl TypedActionView for Workspace {
                     "OpenYarp launch modal state: old={}, new={}, feature_flag_enabled={}",
                     old_value,
                     new_value,
-                    FeatureFlag::OpenWarpLaunchModal.is_enabled()
+                    FeatureFlag::OpenYarpLaunchModal.is_enabled()
                 );
             }
             #[cfg(debug_assertions)]

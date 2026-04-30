@@ -323,7 +323,7 @@ impl AgentOnboardingView {
         ctx.focus_self();
 
         // Preload customize-slide images so they're ready when the user reaches that slide.
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             Self::preload_onboarding_images(ctx);
         }
 

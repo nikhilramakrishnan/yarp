@@ -1,11 +1,11 @@
-//! Contains `FromWarpJs` trait implementations for converting JavaScript command signatures to
-//! `yarp_completer::signatures::CommandSignature`s, as well as `IntoWarpJs` implementations for
+//! Contains `FromYarpJs` trait implementations for converting JavaScript command signatures to
+//! `yarp_completer::signatures::CommandSignature`s, as well as `IntoYarpJs` implementations for
 //! Rust structs that may be passed to JS functions defined on the Command Signature (e.g.
 //! `GeneratorCompletionContext`).
 use rquickjs::{FromJs, Function, Object, Value};
 use yarp_js::{
     util::{get_one_or_more_optional, get_one_or_more_required, get_optional, get_required},
-    FromWarpJs, IntoWarpJs, JsFunctionRegistry,
+    FromYarpJs, IntoYarpJs, JsFunctionRegistry,
 };
 
 use super::{
@@ -13,7 +13,7 @@ use super::{
     GeneratorResults, GeneratorScript, Opt, Priority, Suggestion, TemplateType,
 };
 
-impl<'js> FromWarpJs<'js> for CommandSignature {
+impl<'js> FromYarpJs<'js> for CommandSignature {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -25,7 +25,7 @@ impl<'js> FromWarpJs<'js> for CommandSignature {
     }
 }
 
-impl<'js> FromWarpJs<'js> for Command {
+impl<'js> FromYarpJs<'js> for Command {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -57,7 +57,7 @@ impl<'js> FromWarpJs<'js> for Command {
     }
 }
 
-impl<'js> FromWarpJs<'js> for Argument {
+impl<'js> FromYarpJs<'js> for Argument {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -82,7 +82,7 @@ impl<'js> FromWarpJs<'js> for Argument {
     }
 }
 
-impl<'js> FromWarpJs<'js> for ArgumentValue {
+impl<'js> FromYarpJs<'js> for ArgumentValue {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -131,7 +131,7 @@ impl<'js> FromWarpJs<'js> for ArgumentValue {
     }
 }
 
-impl<'js> FromWarpJs<'js> for Suggestion {
+impl<'js> FromYarpJs<'js> for Suggestion {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -154,7 +154,7 @@ impl<'js> FromWarpJs<'js> for Suggestion {
     }
 }
 
-impl<'js> FromWarpJs<'js> for TemplateType {
+impl<'js> FromYarpJs<'js> for TemplateType {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -174,7 +174,7 @@ impl<'js> FromWarpJs<'js> for TemplateType {
     }
 }
 
-impl<'js> FromWarpJs<'js> for GeneratorFn {
+impl<'js> FromYarpJs<'js> for GeneratorFn {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -213,7 +213,7 @@ impl<'js> FromWarpJs<'js> for GeneratorFn {
     }
 }
 
-impl<'js> FromWarpJs<'js> for GeneratorScript {
+impl<'js> FromYarpJs<'js> for GeneratorScript {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -236,7 +236,7 @@ impl<'js> FromWarpJs<'js> for GeneratorScript {
     }
 }
 
-impl<'js> FromWarpJs<'js> for Opt {
+impl<'js> FromYarpJs<'js> for Opt {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -263,7 +263,7 @@ impl<'js> FromWarpJs<'js> for Opt {
     }
 }
 
-impl<'js> FromWarpJs<'js> for GeneratorResults {
+impl<'js> FromYarpJs<'js> for GeneratorResults {
     fn from_warp_js(
         ctx: rquickjs::Ctx<'js>,
         value: rquickjs::Value<'js>,
@@ -282,7 +282,7 @@ impl<'js> FromWarpJs<'js> for GeneratorResults {
     }
 }
 
-impl<'js> IntoWarpJs<'js> for GeneratorCompletionContext {
+impl<'js> IntoYarpJs<'js> for GeneratorCompletionContext {
     fn into_warp_js(self, ctx: rquickjs::Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         let object = Object::new(ctx)?;
         object.set("tokens", self.tokens)?;

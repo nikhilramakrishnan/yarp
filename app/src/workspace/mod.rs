@@ -218,13 +218,13 @@ pub fn init(app: &mut AppContext) {
                 EditableBinding::new(
                     "workspace:open_openwarp_launch_modal",
                     "[Debug] Open OpenYarp Launch Modal",
-                    WorkspaceAction::OpenOpenWarpLaunchModal,
+                    WorkspaceAction::OpenOpenYarpLaunchModal,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
                     "workspace:reset_openwarp_launch_modal_state",
                     "[Debug] Reset OpenYarp Launch Modal State",
-                    WorkspaceAction::ResetOpenWarpLaunchModalState,
+                    WorkspaceAction::ResetOpenYarpLaunchModalState,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(

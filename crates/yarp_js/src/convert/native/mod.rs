@@ -10,7 +10,7 @@ use crate::JsFunctionRegistry;
 ///
 /// This is similar to `rquickjs`'s native `FromJs` trait, except it enables registering JS
 /// functions in the given `JsFunctionRegistry` so these functions can be called arbitrarily.
-pub trait FromWarpJs<'js>: Sized {
+pub trait FromYarpJs<'js>: Sized {
     fn from_warp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
@@ -26,13 +26,13 @@ pub trait FromWarpJs<'js>: Sized {
 /// `IntoJs`. `rquickjs` contains recursive blanket implementations of `IntoJs` for generic types
 /// like `Vec`, which causes issues when the Rust compiler attempts to generate `CallableJsFunction`
 /// for monomorphized `TypedJsFunction`s (which have generic type params).
-pub trait IntoWarpJs<'js>: Sized {
+pub trait IntoYarpJs<'js>: Sized {
     fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>>;
 }
 
-impl<'js, T> FromWarpJs<'js> for Vec<T>
+impl<'js, T> FromYarpJs<'js> for Vec<T>
 where
-    T: FromWarpJs<'js>,
+    T: FromYarpJs<'js>,
 {
     fn from_warp_js(
         ctx: Ctx<'js>,
@@ -55,7 +55,7 @@ where
     }
 }
 
-impl<'js> FromWarpJs<'js> for String {
+impl<'js> FromYarpJs<'js> for String {
     fn from_warp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
@@ -65,7 +65,7 @@ impl<'js> FromWarpJs<'js> for String {
     }
 }
 
-impl<'js> FromWarpJs<'js> for bool {
+impl<'js> FromYarpJs<'js> for bool {
     fn from_warp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
@@ -75,7 +75,7 @@ impl<'js> FromWarpJs<'js> for bool {
     }
 }
 
-impl<'js> FromWarpJs<'js> for i32 {
+impl<'js> FromYarpJs<'js> for i32 {
     fn from_warp_js(
         ctx: Ctx<'js>,
         value: Value<'js>,
@@ -85,13 +85,13 @@ impl<'js> FromWarpJs<'js> for i32 {
     }
 }
 
-impl<'js> IntoWarpJs<'js> for String {
+impl<'js> IntoYarpJs<'js> for String {
     fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         self.into_js(ctx)
     }
 }
 
-impl<'js> IntoWarpJs<'js> for Vec<String> {
+impl<'js> IntoYarpJs<'js> for Vec<String> {
     fn into_warp_js(self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         self.into_js(ctx)
     }

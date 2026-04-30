@@ -550,10 +550,10 @@ pub enum WorkspaceAction {
     ResetOzLaunchModalState,
     /// Open the OpenWarp Launch Modal (for debugging)
     #[cfg(debug_assertions)]
-    OpenOpenWarpLaunchModal,
+    OpenOpenYarpLaunchModal,
     /// Reset the OpenYarp launch modal dismissed state (for debugging)
     #[cfg(debug_assertions)]
-    ResetOpenWarpLaunchModalState,
+    ResetOpenYarpLaunchModalState,
     /// Install the opencode-yarp plugin from GitHub into the global opencode config.
     #[cfg(debug_assertions)]
     InstallOpenCodeWarpPlugin,
@@ -944,8 +944,8 @@ impl WorkspaceAction {
             | DebugResetAwsBedrockLoginBannerDismissed
             | OpenOzLaunchModal
             | ResetOzLaunchModalState
-            | OpenOpenWarpLaunchModal
-            | ResetOpenWarpLaunchModalState
+            | OpenOpenYarpLaunchModal
+            | ResetOpenYarpLaunchModalState
             | InstallOpenCodeWarpPlugin
             | UseLocalOpenCodeWarpPlugin => false,
             #[cfg(not(target_family = "wasm"))]

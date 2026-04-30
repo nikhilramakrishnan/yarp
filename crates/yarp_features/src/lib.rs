@@ -677,7 +677,7 @@ pub enum FeatureFlag {
 
     /// Enables the OpenWarp launch modal announcing Yarp going open-source.
     /// When enabled, the HOA onboarding flow is suppressed.
-    OpenWarpLaunchModal,
+    OpenYarpLaunchModal,
 
     /// Updated tab styling (background colors, border, close button positioning, margins).
     NewTabStyling,
@@ -747,7 +747,7 @@ pub enum FeatureFlag {
 
     /// Enables the new settings to control visibility of Yarp Drive, Code Review Panel,
     /// and Project Explorer & Global Search features.
-    OpenWarpNewSettingsModes,
+    OpenYarpNewSettingsModes,
 
     /// Enables vertical tab layout as an alternative to the horizontal tab bar.
     VerticalTabs,
