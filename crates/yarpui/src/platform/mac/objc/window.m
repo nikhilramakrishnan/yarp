@@ -11,7 +11,7 @@
 #import "window_blur.h"
 
 // NSWindow.delegate is a weak reference, so the WarpWindowDelegate we create in
-// `create_warp_nswindow` / `create_warp_nspanel` would otherwise be leaked with a +1
+// `create_yarp_nswindow` / `create_yarp_nspanel` would otherwise be leaked with a +1
 // retain count. Associating it with the window ties its lifetime to the window: the
 // associated object is released by the runtime when the window itself is deallocated.
 static const void *kWarpWindowDelegateAssocKey = &kWarpWindowDelegateAssocKey;
@@ -77,11 +77,11 @@ dispatch_once_t fullscreenQueueOnce;
 @class WarpPanel;
 
 // Declaration of functions implemented in Rust.
-void warp_dealloc_window(id self);
-void warp_dispatch_standard_action(id self, NSInteger tag);
-void warp_app_window_moved(id self, NSRect rect);
-void warp_open_panel_file_selected(id urls, void *callback);
-void warp_save_panel_file_selected(id url, void *callback);
+void yarp_dealloc_window(id self);
+void yarp_dispatch_standard_action(id self, NSInteger tag);
+void yarp_app_window_moved(id self, NSRect rect);
+void yarp_open_panel_file_selected(id urls, void *callback);
+void yarp_save_panel_file_selected(id url, void *callback);
 
 NSNumber *previouslyActiveAppPID;
 
@@ -127,26 +127,26 @@ NSNumber *previouslyActiveAppPID;
 - (void)windowDidMove:(NSNotification *)notification {
     if (windowState) {
         NSWindow *window = notification.object;
-        warp_app_window_moved(self, window.frame);
+        yarp_app_window_moved(self, window.frame);
     }
 }
 
 - (void)windowWillStartLiveResize:(NSNotification *)notification {
-    WarpWindow *warp_window = notification.object;
-    WarpHostView *warp_view = warp_window.contentView;
+    WarpWindow *yarp_window = notification.object;
+    WarpHostView *yarp_view = yarp_window.contentView;
 
     // This is a hack to get around `borrowMut` errors within the UI framework
     // caused by the fact that it incorrectly assumes that callbacks cannot
     // synchronously cause another callback to be triggered. To avoid this for now,
     // we explicitly force callbacks to be synchronous if it's caused by the user instead
     // of another system call (such as the active screen changing)
-    [warp_view setAsyncCallback:NO];
+    [yarp_view setAsyncCallback:NO];
 }
 
 - (void)windowDidEndLiveResize:(NSNotification *)notification {
-    WarpWindow *warp_window = notification.object;
-    WarpHostView *warp_view = warp_window.contentView;
-    [warp_view setAsyncCallback:YES];
+    WarpWindow *yarp_window = notification.object;
+    WarpHostView *yarp_view = yarp_window.contentView;
+    [yarp_view setAsyncCallback:YES];
 }
 
 - (void)setForceTermination {
@@ -159,7 +159,7 @@ NSNumber *previouslyActiveAppPID;
     }
 
     NSApplication *application = [NSApplication sharedApplication];
-    BOOL okToClose = warp_app_should_close_window(application, window);
+    BOOL okToClose = yarp_app_should_close_window(application, window);
 
     if (okToClose) {
         return YES;
@@ -170,7 +170,7 @@ NSNumber *previouslyActiveAppPID;
 
 - (void)windowWillClose:(NSNotification *)note {
     if (windowState) {
-        warp_app_window_will_close([NSApplication sharedApplication], self);
+        yarp_app_window_will_close([NSApplication sharedApplication], self);
     }
 }
 
@@ -417,7 +417,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    warp_dealloc_window(self);
+    yarp_dealloc_window(self);
     [super dealloc];
 }
 
@@ -435,11 +435,11 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
         NSApplication *application = [NSApplication sharedApplication];
 
         // If we are recording a keystroke for an EditableBinding.
-        BOOL keyBindingsDisabled = warp_app_are_key_bindings_disabled_for_window(application, self);
+        BOOL keyBindingsDisabled = yarp_app_are_key_bindings_disabled_for_window(application, self);
         // If Yarp has assigned a binding for this keystroke.
-        BOOL keystrokeIsAssigned = warp_app_has_binding_for_keystroke(application, event);
+        BOOL keystrokeIsAssigned = yarp_app_has_binding_for_keystroke(application, event);
 
-        BOOL triggersCustomAction = warp_app_has_custom_action_for_keystroke(application, event);
+        BOOL triggersCustomAction = yarp_app_has_custom_action_for_keystroke(application, event);
 
         if (keyBindingsDisabled || (keystrokeIsAssigned && !triggersCustomAction)) {
             if ([self.contentView keyDownImpl:event]) {
@@ -591,7 +591,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    warp_dealloc_window(self);
+    yarp_dealloc_window(self);
     [super dealloc];
 }
 
@@ -611,7 +611,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 }
 
 - (void)performClose:(id)sender {
-    warp_dispatch_standard_action(self, [sender tag]);
+    yarp_dispatch_standard_action(self, [sender tag]);
 }
 
 - (void)makeKeyAndOrderFront:(id)sender {
@@ -703,7 +703,7 @@ static void attach_warp_window_delegate(NSWindow *window) {
 }
 
 // \return a new, retained WarpPanel with the given content rect.
-id create_warp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
+id create_yarp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                        uint8 backgroundBlurRadiusPixels, BOOL testMode) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -734,7 +734,7 @@ id create_warp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
 }
 
 // \return a new, retained WarpWindow with the given content rect.
-id create_warp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
+id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                         uint8 backgroundBlurRadiusPixels, BOOL testMode) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -883,14 +883,14 @@ void open_file_picker(void *callback, NSArray<NSString *> *fileTypes, BOOL allow
 
     // Open panel as sheet on main window.
     [openPanel beginWithCompletionHandler:^(NSInteger result) {
-      // warp_open_panel_file_selected must be called unconditionally to avoid a memory leak
+      // yarp_open_panel_file_selected must be called unconditionally to avoid a memory leak
       if (result == NSModalResponseOK) {
           dispatch_async(dispatch_get_main_queue(), ^{
-            warp_open_panel_file_selected([openPanel URLs], callback);
+            yarp_open_panel_file_selected([openPanel URLs], callback);
           });
       } else {
           dispatch_async(dispatch_get_main_queue(), ^{
-            warp_open_panel_file_selected([NSArray array], callback);
+            yarp_open_panel_file_selected([NSArray array], callback);
           });
       }
     }];
@@ -912,14 +912,14 @@ void open_save_file_picker(void *callback, NSString *defaultFilename, NSString *
 
     // Show save panel as sheet
     [savePanel beginWithCompletionHandler:^(NSInteger result) {
-      // warp_save_panel_file_selected must be called unconditionally to avoid a memory leak
+      // yarp_save_panel_file_selected must be called unconditionally to avoid a memory leak
       if (result == NSModalResponseOK) {
           dispatch_async(dispatch_get_main_queue(), ^{
-            warp_save_panel_file_selected([savePanel URL], callback);
+            yarp_save_panel_file_selected([savePanel URL], callback);
           });
       } else {
           dispatch_async(dispatch_get_main_queue(), ^{
-            warp_save_panel_file_selected(nil, callback);
+            yarp_save_panel_file_selected(nil, callback);
           });
       }
     }];

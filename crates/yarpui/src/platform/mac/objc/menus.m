@@ -1,8 +1,8 @@
 #import "menus.h"
 
-void warp_menu_item_needs_update(NSMenuItem *, void *);
-void warp_menu_item_triggered(NSMenuItem *, void *);
-void warp_menu_item_deallocated(void *);
+void yarp_menu_item_needs_update(NSMenuItem *, void *);
+void yarp_menu_item_triggered(NSMenuItem *, void *);
+void yarp_menu_item_deallocated(void *);
 
 @implementation WarpCustomMenuItemHandler
 
@@ -13,15 +13,15 @@ void warp_menu_item_deallocated(void *);
 }
 
 - (void)itemWasTriggered:(NSMenuItem *)item {
-    if (rustContext && ![item hasSubmenu]) warp_menu_item_triggered(item, rustContext);
+    if (rustContext && ![item hasSubmenu]) yarp_menu_item_triggered(item, rustContext);
 }
 
 - (void)itemNeedsUpdate:(NSMenuItem *)item {
-    if (rustContext) warp_menu_item_needs_update(item, rustContext);
+    if (rustContext) yarp_menu_item_needs_update(item, rustContext);
 }
 
 - (void)dealloc {
-    if (rustContext) warp_menu_item_deallocated(rustContext);
+    if (rustContext) yarp_menu_item_deallocated(rustContext);
     [super dealloc];
 }
 

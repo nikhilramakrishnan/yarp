@@ -2,20 +2,20 @@
 
 #import <Metal/Metal.h>
 
-void warp_view_did_change_backing_properties(WarpHostView *, BOOL);
-void warp_view_set_frame_size(WarpHostView *, NSSize, BOOL);
-void warp_update_layer(WarpHostView *);
-BOOL warp_handle_view_event(WarpHostView *, NSEvent *, BOOL);
-BOOL warp_handle_first_mouse_event(WarpHostView *, NSEvent *);
-void warp_handle_insert_text(WarpHostView *, id);
-void warp_update_ime_state(WarpHostView *, BOOL);
-void warp_handle_drag_and_drop(WarpHostView *, NSArray *, NSPoint);
-void warp_handle_file_drag(WarpHostView *, NSPoint);
-void warp_handle_file_drag_exit(WarpHostView *);
-NSRect warp_ime_position(WarpHostView *, NSRect *);
-id warp_get_accessibility_contents(WarpHostView *);
-void warp_marked_text_updated(WarpHostView *, NSString *, NSRange);
-void warp_marked_text_cleared(WarpHostView *);
+void yarp_view_did_change_backing_properties(WarpHostView *, BOOL);
+void yarp_view_set_frame_size(WarpHostView *, NSSize, BOOL);
+void yarp_update_layer(WarpHostView *);
+BOOL yarp_handle_view_event(WarpHostView *, NSEvent *, BOOL);
+BOOL yarp_handle_first_mouse_event(WarpHostView *, NSEvent *);
+void yarp_handle_insert_text(WarpHostView *, id);
+void yarp_update_ime_state(WarpHostView *, BOOL);
+void yarp_handle_drag_and_drop(WarpHostView *, NSArray *, NSPoint);
+void yarp_handle_file_drag(WarpHostView *, NSPoint);
+void yarp_handle_file_drag_exit(WarpHostView *);
+NSRect yarp_ime_position(WarpHostView *, NSRect *);
+id yarp_get_accessibility_contents(WarpHostView *);
+void yarp_marked_text_updated(WarpHostView *, NSString *, NSRange);
+void yarp_marked_text_cleared(WarpHostView *);
 
 @implementation NSPasteboard (Yarp)
 
@@ -118,7 +118,7 @@ void warp_marked_text_cleared(WarpHostView *);
 }
 
 - (void)viewDidChangeBackingProperties {
-    if (self.readyForWarp) warp_view_did_change_backing_properties(self, asyncCallback);
+    if (self.readyForWarp) yarp_view_did_change_backing_properties(self, asyncCallback);
     [super viewDidChangeBackingProperties];
 }
 
@@ -131,14 +131,14 @@ void warp_marked_text_cleared(WarpHostView *);
         [super setFrameSize:size];
         // It's an important optimization to only invoke this if the size changed.
         if (self.readyForWarp && changed) {
-            warp_view_set_frame_size(self, size, asyncCallback);
+            yarp_view_set_frame_size(self, size, asyncCallback);
         }
     }
 }
 
 - (void)displayLayer:(CALayer *)layer {
     if (!testMode && self.readyForWarp) {
-        warp_update_layer(self);
+        yarp_update_layer(self);
     }
 }
 
@@ -162,7 +162,7 @@ void warp_marked_text_cleared(WarpHostView *);
 
     BOOL handled = NO;
     if (self.readyForWarp) {
-        handled = warp_handle_view_event(self, event, wasComposing || [self hasMarkedText]);
+        handled = yarp_handle_view_event(self, event, wasComposing || [self hasMarkedText]);
     }
 
     // It's possible to have keybinding conflicts between terminal apps which use the meta key and
@@ -181,7 +181,7 @@ void warp_marked_text_cleared(WarpHostView *);
 
     // Dispatch TypedCharacter event after KeyDown has been dispatched.
     if ([textToInsert length] > 0 && !handled) {
-        warp_handle_insert_text(self, (NSString *)textToInsert);
+        yarp_handle_insert_text(self, (NSString *)textToInsert);
         [self unmarkText];
     }
 
@@ -191,7 +191,7 @@ void warp_marked_text_cleared(WarpHostView *);
 - (BOOL)acceptsFirstMouse:(NSEvent *)event {
     // We want to receive mouseDown events even if the window is not key
     // and we explicity fire the event here so that Yarp can handle it.
-    if (self.readyForWarp) warp_handle_first_mouse_event(self, event);
+    if (self.readyForWarp) yarp_handle_first_mouse_event(self, event);
 
     // We return NO though so that the event is not fired twice (returning YES
     // would result in the event being passed to the mouseDown handler).
@@ -200,7 +200,7 @@ void warp_marked_text_cleared(WarpHostView *);
 
 - (void)mouseDown:(NSEvent *)event {
     if (self.readyForWarp) {
-        BOOL eventHandled = warp_handle_view_event(self, event, NO);
+        BOOL eventHandled = yarp_handle_view_event(self, event, NO);
         if (self->titlebarDragEnabled && !eventHandled && [self mouseInTitleBar:event]) {
             // If Yarp doesn't do anything with the event, indicated by returning `false`, and
             // if the drag starts in the titlebar, begin dragging the window
@@ -212,37 +212,37 @@ void warp_marked_text_cleared(WarpHostView *);
 - (void)mouseUp:(NSEvent *)event {
     // Our content view is full-size so we don't get the default behavior
     // on titlebar clicks. Implement it manually.
-    BOOL warp_handled = NO;
+    BOOL yarp_handled = NO;
     if (self.readyForWarp) {
-        warp_handled = warp_handle_view_event(self, event, NO);
+        yarp_handled = yarp_handle_view_event(self, event, NO);
     }
-    if (!warp_handled) {
+    if (!yarp_handled) {
         [self handleTitleBarDoubleClick:event];
     }
 }
 
 - (void)otherMouseDown:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)rightMouseDown:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)mouseDragged:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)scrollWheel:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)mouseMoved:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)flagsChanged:(NSEvent *)event {
-    if (self.readyForWarp) warp_handle_view_event(self, event, NO);
+    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)dealloc {
@@ -310,7 +310,7 @@ void warp_marked_text_cleared(WarpHostView *);
     if (self.readyForWarp) {
         NSArray *types = [pasteboard types];
         if ([types containsObject:NSPasteboardTypeFileURL]) {
-            warp_handle_file_drag(self, localPoint);
+            yarp_handle_file_drag(self, localPoint);
             return YES;
         }
     }
@@ -319,7 +319,7 @@ void warp_marked_text_cleared(WarpHostView *);
 
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
     if (self.readyForWarp) {
-        warp_handle_file_drag_exit(self);
+        yarp_handle_file_drag_exit(self);
     }
 }
 
@@ -333,7 +333,7 @@ void warp_marked_text_cleared(WarpHostView *);
     if (self.readyForWarp && (dragOperation & NSDragOperationCopy)) {
         NSArray *types = [pasteboard types];
         if ([types containsObject:NSPasteboardTypeFileURL]) {
-            warp_handle_drag_and_drop(self, [pasteboard getFilePaths], localPoint);
+            yarp_handle_drag_and_drop(self, [pasteboard getFilePaths], localPoint);
             return YES;
         }
     }
@@ -367,7 +367,7 @@ void warp_marked_text_cleared(WarpHostView *);
 }
 
 - (id)accessibilityValue {
-    return warp_get_accessibility_contents(self);
+    return yarp_get_accessibility_contents(self);
 }
 
 - (NSInteger)accessibilityNumberOfCharacters {
@@ -405,7 +405,7 @@ void warp_marked_text_cleared(WarpHostView *);
     NSWindow *window = self.window;
     if (self.readyForWarp) {
         NSRect contentRect = [window contentRectForFrameRect:[window frame]];
-        NSRect rect = warp_ime_position(self, &contentRect);
+        NSRect rect = yarp_ime_position(self, &contentRect);
         return rect;
     } else {
         return NSZeroRect;
@@ -439,7 +439,7 @@ void warp_marked_text_cleared(WarpHostView *);
         if (interpretingKeyEvents) {
             [textToInsert appendString:characters];
         } else {
-            warp_handle_insert_text(self, (NSString *)characters);
+            yarp_handle_insert_text(self, (NSString *)characters);
         }
 
         [characters release];
@@ -472,11 +472,11 @@ void warp_marked_text_cleared(WarpHostView *);
         markedText = [[NSMutableAttributedString alloc] initWithString:string];
 
     if (self.readyForWarp) {
-        warp_marked_text_updated(self, markedText.string, selectedRange);
+        yarp_marked_text_updated(self, markedText.string, selectedRange);
         if ([markedText length] > 0) {
-            warp_update_ime_state(self, YES);
+            yarp_update_ime_state(self, YES);
         } else {
-            warp_update_ime_state(self, NO);
+            yarp_update_ime_state(self, NO);
         }
     }
 }
@@ -484,8 +484,8 @@ void warp_marked_text_cleared(WarpHostView *);
 - (void)unmarkText {
     [[markedText mutableString] setString:@""];
     if (self.readyForWarp) {
-        warp_update_ime_state(self, NO);
-        warp_marked_text_cleared(self);
+        yarp_update_ime_state(self, NO);
+        yarp_marked_text_cleared(self);
     }
 }
 

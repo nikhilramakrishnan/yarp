@@ -30,7 +30,7 @@ OSStatus HotkeyPressedHandler(EventHandlerCallRef _inCaller __unused, EventRef i
 
     WarpHotKey *hotkey = _hotKeys[@(hotKeyID.id)];
     if (hotkey) {
-        warp_app_send_global_keybinding((NSApplication *)inUserData, hotkey->_modifierKeys,
+        yarp_app_send_global_keybinding((NSApplication *)inUserData, hotkey->_modifierKeys,
                                         hotkey->_keyCode);
         return noErr;
     }
@@ -214,7 +214,7 @@ NSUInteger activeScreenId() {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:NO forKey:@"NSAutoFillHeuristicControllerEnabled"];
 
-    if (rustWrapper) warp_app_will_finish_launching(note.object);
+    if (rustWrapper) yarp_app_will_finish_launching(note.object);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)note {
@@ -229,7 +229,7 @@ NSUInteger activeScreenId() {
                         change:(NSDictionary *)change
                        context:(void *)context {
     if (context == NSAppThemeChangeContext) {
-        if (rustWrapper) warp_app_os_appearance_changed(self);
+        if (rustWrapper) yarp_app_os_appearance_changed(self);
     } else {
         // Any unrecognized context must belong to super
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -237,7 +237,7 @@ NSUInteger activeScreenId() {
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)note {
-    if (rustWrapper) warp_app_did_become_active(note.object);
+    if (rustWrapper) yarp_app_did_become_active(note.object);
 }
 
 - (void)setForceTermination {
@@ -266,7 +266,7 @@ NSUInteger activeScreenId() {
     if (!forceTermination) {
         // Make sure the rust app doesn't have any reasons to interrupt quit, e.g. needs to relaunch
         // for autoupdate, but launching the new process failed.
-        okToTerminate = warp_app_should_terminate_app(application);
+        okToTerminate = yarp_app_should_terminate_app(application);
     }
 
     if (okToTerminate) {
@@ -304,26 +304,26 @@ NSUInteger activeScreenId() {
 }
 
 - (void)applicationDidResignActive:(NSNotification *)note {
-    if (rustWrapper) warp_app_did_resign_active(note.object);
+    if (rustWrapper) yarp_app_did_resign_active(note.object);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)note {
-    if (rustWrapper) warp_app_will_terminate(note.object);
+    if (rustWrapper) yarp_app_will_terminate(note.object);
 }
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames {
-    if (rustWrapper) warp_app_open_files(sender, filenames);
+    if (rustWrapper) yarp_app_open_files(sender, filenames);
 }
 
 - (void)application:(NSApplication *)application openURLs:(NSArray<NSURL *> *)urls {
-    if (rustWrapper) warp_app_open_urls(application, urls);
+    if (rustWrapper) yarp_app_open_urls(application, urls);
 }
 
 // This is called when clicking on the app in the Dock or from Finder.
 // If there's no visible windows, we will open one.
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)app hasVisibleWindows:(BOOL)flag {
     if (rustWrapper && !flag) {
-        warp_app_new_window(app);
+        yarp_app_new_window(app);
         return NO;  // do nothing
     }
     return YES;
@@ -339,7 +339,7 @@ NSUInteger activeScreenId() {
         hasPendingActiveWindowChange = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
           self->hasPendingActiveWindowChange = NO;
-          if (self->rustWrapper) warp_app_active_window_changed(self);
+          if (self->rustWrapper) yarp_app_active_window_changed(self);
         });
     }
 }
@@ -351,19 +351,19 @@ NSUInteger activeScreenId() {
     // callback gets triggered after the window notification. Thus using the async dispatch
     // here ensures we always save the most up-to-date value within the database.
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (self->rustWrapper) warp_app_window_did_move(self);
+      if (self->rustWrapper) yarp_app_window_did_move(self);
     });
 }
 
 - (void)windowResized:(NSNotification *)note {
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (self->rustWrapper) warp_app_window_did_resize(self);
+      if (self->rustWrapper) yarp_app_window_did_resize(self);
     });
 }
 
 - (void)screenChanged:(NSNotification *)note {
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (self->rustWrapper) warp_app_screen_did_change(self);
+      if (self->rustWrapper) yarp_app_screen_did_change(self);
     });
 }
 
@@ -380,7 +380,7 @@ NSUInteger activeScreenId() {
 }
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
-    // Trigger warp_menu_item_needs_update for every item with our class set as its represented
+    // Trigger yarp_menu_item_needs_update for every item with our class set as its represented
     // object.
     Class warpHandlerClass = [WarpCustomMenuItemHandler class];
     for (NSMenuItem *item in menu.itemArray) {
@@ -400,7 +400,7 @@ NSUInteger activeScreenId() {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self->isReachable == nil || [self->isReachable intValue] == 0) {
             self->isReachable = [NSNumber numberWithBool:YES];
-            if (self->rustWrapper) warp_app_internet_reachability_changed(self, YES);
+            if (self->rustWrapper) yarp_app_internet_reachability_changed(self, YES);
         }
       });
     };
@@ -411,7 +411,7 @@ NSUInteger activeScreenId() {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self->isReachable == nil || [self->isReachable intValue] > 0) {
             self->isReachable = [NSNumber numberWithBool:NO];
-            if (self->rustWrapper) warp_app_internet_reachability_changed(self, NO);
+            if (self->rustWrapper) yarp_app_internet_reachability_changed(self, NO);
         }
       });
     };
@@ -424,7 +424,7 @@ NSUInteger activeScreenId() {
         if (self->isReachable == nil) {
             self->isReachable = [NSNumber numberWithBool:internetIsReachable];
             if (self->rustWrapper)
-                warp_app_internet_reachability_changed(self, internetIsReachable);
+                yarp_app_internet_reachability_changed(self, internetIsReachable);
         }
       });
     });
@@ -447,7 +447,7 @@ NSUInteger activeScreenId() {
         NSString *data = userInfo[@"DATA"];
 
         if (rustWrapper) {
-            warp_app_notification_clicked(self, response.notification.date.timeIntervalSince1970,
+            yarp_app_notification_clicked(self, response.notification.date.timeIntervalSince1970,
                                           data);
         }
     }
@@ -472,14 +472,14 @@ NSUInteger activeScreenId() {
       BOOL disable_modal = alert.suppressionButton.state == NSControlStateValueOn;
       // Subtracting `NSAlertFirstButtonReturn` from `response` yields the 0-based index of the
       // button that was actually clicked.
-      warp_app_process_modal_response(self, modalId, response - NSAlertFirstButtonReturn,
+      yarp_app_process_modal_response(self, modalId, response - NSAlertFirstButtonReturn,
                                       disable_modal);
     });
 }
 
 @end
 
-WarpApplication *get_warp_app() {
+WarpApplication *get_yarp_app() {
     // Set up the delegate (once).
     // The delegate is deliberately leaked.
     WarpApplication *app = [WarpApplication sharedApplication];

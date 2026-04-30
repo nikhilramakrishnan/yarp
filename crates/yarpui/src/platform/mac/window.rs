@@ -426,7 +426,7 @@ extern "C" {
         backgroundBlurRadiusPixels: u8,
         testMode: BOOL,
     ) -> id;
-    fn create_warp_nspanel(
+    fn create_yarp_nspanel(
         contentRect: NSRect,
         metalDevice: id,
         hideTitleBar: BOOL,
@@ -538,7 +538,7 @@ impl Window {
 
             let native_window: id = match options.style {
                 WindowStyle::Pin => {
-                    let panel: id = create_warp_nspanel(
+                    let panel: id = create_yarp_nspanel(
                         frame,
                         metal_device_ptr,
                         options.hide_title_bar as BOOL,
