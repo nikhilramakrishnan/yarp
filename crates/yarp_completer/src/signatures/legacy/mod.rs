@@ -76,7 +76,7 @@ impl CommandRegistry {
 
     /// Returns a [`CommandRegistry`] that uses the provided set of signatures
     /// and generators.  This does not utilize any data from the
-    /// warp-command-signatures crate.
+    /// yarp-command-signatures crate.
     #[cfg(feature = "test-util")]
     pub fn new_for_test(
         signatures: impl IntoIterator<Item = Signature>,

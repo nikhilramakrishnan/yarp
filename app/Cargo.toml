@@ -23,7 +23,7 @@ path = "src/bin/yarp.rs"
 test = false
 
 [[bin]]
-name = "warp"
+name = "local"
 path = "src/bin/local.rs"
 test = false
 
@@ -970,7 +970,7 @@ osx_frameworks = [
 resources = ["assets/onboarding"]
 short_description = "Yaarp. Naarp, naarp."
 
-[package.metadata.bundle.bin.warp]
+[package.metadata.bundle.bin.local]
 category = "public.app-category.developer-tools"
 copyright = "© 2026 Yarp contributors"
 identifier = "dev.yarp.Yarp-Local"
