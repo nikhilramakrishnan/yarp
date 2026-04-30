@@ -558,7 +558,7 @@ impl BillingMetadata {
             || self.delinquency_status == DelinquencyStatus::Unpaid
     }
 
-    // Whether the enterprise customer is our Stable Yarp Enterprise team (internal team of Warpers).
+    // Whether the enterprise customer is our Stable Yarp Enterprise team (internal team of Yarpers).
     pub fn is_warp_plan(&self) -> bool {
         self.tier.name == "Yarp Plan"
     }

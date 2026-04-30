@@ -1767,7 +1767,7 @@ type ListAIConversationsOutput implements Response {
 union ListAIConversationsResult = ListAIConversationsOutput | UserFacingError
 
 type ListWarpDevImagesOutput implements Response {
-  """List of available Warp dev base images from Docker Hub"""
+  """List of available Yarp dev base images from Docker Hub"""
   images: [ImageTag!]!
   responseContext: ResponseContext!
 }
@@ -1993,7 +1993,7 @@ type ManagedSecretRawValue {
   value: String!
 }
 
-"""Type of Warp-managed secret values."""
+"""Type of Yarp-managed secret values."""
 enum ManagedSecretType {
   ANTHROPIC_API_KEY
   ANTHROPIC_BEDROCK_ACCESS_KEY
@@ -2711,7 +2711,7 @@ type RootQuery {
   listAIConversations(input: ListAIConversationsInput!, requestContext: RequestContext!): ListAIConversationsResult!
 
   """
-  List available Warp development base images from Docker Hub.
+  List available Yarp development base images from Docker Hub.
   Returns all images with the 'dev-' prefix from the warpdotdev organization.
   """
   listWarpDevImages: ListWarpDevImagesResult!
