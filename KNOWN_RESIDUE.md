@@ -1,9 +1,12 @@
 # Known `warp` / `Warp` residue after the Yarp rebrand
 
 This document tracks the deliberate residue that was **not** flipped during
-the Step 1–4 Warp → Yarp rebrand. Every category below is intentional.
+the Step 1–5 Warp → Yarp rebrand. Every category below is intentional.
 Before flipping anything here, read the reasoning and confirm it still
 applies.
+
+Step 5 (the compound-identifier sweep) brought unfiltered `warp` hits from
+~5,500 down to ~1,250 — the rest is the categories below.
 
 ## 1. Upstream URLs (KEEP)
 
