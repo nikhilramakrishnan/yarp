@@ -95,7 +95,7 @@ fn test_build_auth_url_with_next_focus_cloud_mode() {
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::FocusCloudMode,
-        "warplocal",
+        "yarplocal",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let next_value = parsed
@@ -104,7 +104,7 @@ fn test_build_auth_url_with_next_focus_cloud_mode() {
         .map(|(_, value)| value.into_owned());
     assert_eq!(
         next_value,
-        Some("warplocal://action/focus_cloud_mode".to_string())
+        Some("yarplocal://action/focus_cloud_mode".to_string())
     );
 }
 
@@ -114,7 +114,7 @@ fn test_build_auth_url_with_next_uses_scheme_param() {
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::FocusCloudMode,
-        "warplocal",
+        "yarplocal",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let next_value = parsed

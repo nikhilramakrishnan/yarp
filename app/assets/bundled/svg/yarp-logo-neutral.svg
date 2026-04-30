@@ -1,5 +1,5 @@
 <!-- Yarp brand mark — small/neutral. 38x30 viewBox.
-     warpui renders SVGs as alpha masks and tints them with the color passed
+     yarpui renders SVGs as alpha masks and tints them with the color passed
      to Icon::new(...), so fill values here only need to mark "ink" vs
      "background"; the actual hue comes from the call site. -->
 <svg width="38" height="30" viewBox="0 0 38 30" xmlns="http://www.w3.org/2000/svg">

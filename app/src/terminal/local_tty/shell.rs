@@ -329,7 +329,7 @@ pub enum ShellStarterSource {
     /// The user chose the path to the shell by setting the `YARP_SHELL_PATH` environment variable.
     Environment(DirectShellStarter),
     /// The default shell for the user (as indicated by the user's passwd entry on UNIX).
-    /// On Windows, this an ordered list of shells hardcoded _by Warp_.
+    /// On Windows, this an ordered list of shells hardcoded _by Yarp_.
     UserDefault(DirectShellStarter),
     /// We weren't able to find a shell that could be bootstrapped for the user.
     Fallback {

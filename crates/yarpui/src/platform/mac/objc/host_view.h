@@ -5,7 +5,7 @@
 - (NSArray *)getFilePaths;
 @end
 
-/// YarpHostView is the Content view of a Warp window.
+/// YarpHostView is the Content view of a Yarp window.
 // It is backed by a Metal CALayer.
 @interface YarpHostView : NSView <CALayerDelegate, NSTextInputClient>
 - (YarpHostView *)initWithFrame:(NSRect)frame

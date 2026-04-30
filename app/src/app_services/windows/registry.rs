@@ -13,7 +13,7 @@ pub(super) fn register_uri_handler() {
     };
 
     // The Windows Registry entry for Yarp (assuming the channel is YarpLocal):
-    // warplocal
+    // yarplocal
     //   (Default) = "YarpLocal"
     //   URL Protocol = ""
     //   DefaultIcon

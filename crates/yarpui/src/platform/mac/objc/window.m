@@ -794,7 +794,7 @@ NSWindow *get_frontmost_window() {
 // @param value - the value of the hovered field
 // @param help - helper text (the difference between this and value is mostly in semantics)
 // @param yarpRole - the role of the given element (we're using our own, internally defined roles,
-//                    check warpui::accessibility)
+//                    check yarpui::accessibility)
 // @param setFrame - boolean value that determines whether the passed frame should be set
 // @param frame - rectangle that describes where the actual highlighted element is on the screen
 void set_accessibility_contents(id window, NSString *value, NSString *help, NSString *yarpRole,

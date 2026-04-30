@@ -768,7 +768,7 @@ enum AdapterSupport {
     Supported = 0,
     /// The adapter is somewhat usable, but there have been some problems.
     SupportedWithIssues = 1,
-    /// The adapter is basically not viable. Warpui will either crash or not render.
+    /// The adapter is basically not viable. Yarpui will either crash or not render.
     Unsupported = 2,
 }
 

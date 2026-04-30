@@ -103,7 +103,7 @@ pub fn init(app: &mut AppContext) {
     app.register_binding_validator::<TerminalView>(is_binding_pty_compliant);
 
     init_overlapping_keybindings(app);
-    // Register input mode bindings before yarpify bindings so ctrl-i warpifies
+    // Register input mode bindings before yarpify bindings so ctrl-i yarpifies
     // instead of opening inline agent when a yarpify banner is visible.
     register_input_mode_bindings(app);
 

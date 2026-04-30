@@ -312,7 +312,7 @@ impl Entity for YarpifySuccessBlock {
     type Event = YarpifySuccessBlockEvent;
 }
 
-pub const WARPIFY_SUCCESS_BLOCK_VISIBLE_KEY: &str = "YarpifySuccessBlockVisible";
+pub const YARPIFY_SUCCESS_BLOCK_VISIBLE_KEY: &str = "YarpifySuccessBlockVisible";
 
 impl View for YarpifySuccessBlock {
     fn ui_name() -> &'static str {

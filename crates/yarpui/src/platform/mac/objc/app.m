@@ -167,7 +167,7 @@ NSUInteger activeScreenId() {
     // Tell the shared notification center to use the current view as the
     // `UNUserNotificationCenterDelegate` delegate. We only do this if the application
     // is bundled, otherwise the app will crash when trying to set the delegate. This allows
-    // warpui to still be run via `cargo run` since the app is not bundled in this case. Note this
+    // yarpui to still be run via `cargo run` since the app is not bundled in this case. Note this
     // has no functional change in the non-bundled case since the app must be bundled for
     // notifications to actually be sent/received.
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
