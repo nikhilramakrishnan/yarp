@@ -28,23 +28,23 @@ use crate::{
 ///
 /// This should be used, for example, as the base directory under which
 /// repository workflows would be stored (in "./.warp/workflows").
-pub const WARP_CONFIG_DIR: &str = ".warp";
+pub const YARP_CONFIG_DIR: &str = ".warp";
 
 /// The name of the folder that stores Warp execution logs and network logs.
 /// This is currently only used on Windows to maintain backwards compatibility.
-pub const WARP_LOGS_DIR: &str = "logs";
+pub const YARP_LOGS_DIR: &str = "logs";
 
 fn base_warp_config_dir_name() -> String {
     match ChannelState::channel() {
         // Preview shares the same directory as Stable for backward
         // compatibility — existing users already have config in `.warp`.
-        Channel::Stable | Channel::Preview => WARP_CONFIG_DIR.to_owned(),
+        Channel::Stable | Channel::Preview => YARP_CONFIG_DIR.to_owned(),
         // Yarp is a fork of yarp; we use `.yarp` so a user can run both
         // Yarp and Warp side by side without sharing state.
         Channel::Oss => ".yarp".to_owned(),
-        Channel::Dev => format!("{WARP_CONFIG_DIR}-dev"),
-        Channel::Integration => format!("{WARP_CONFIG_DIR}-integration"),
-        Channel::Local => format!("{WARP_CONFIG_DIR}-local"),
+        Channel::Dev => format!("{YARP_CONFIG_DIR}-dev"),
+        Channel::Integration => format!("{YARP_CONFIG_DIR}-integration"),
+        Channel::Local => format!("{YARP_CONFIG_DIR}-local"),
     }
 }
 /// Returns the home-relative Warp config directory name for the current channel and data profile.
@@ -88,12 +88,12 @@ pub fn warp_home_mcp_config_file_path() -> Option<PathBuf> {
 #[cfg(target_os = "macos")]
 fn macos_config_dir_name() -> String {
     match ChannelState::channel() {
-        Channel::Stable => WARP_CONFIG_DIR.to_owned(),
-        Channel::Preview => format!("{WARP_CONFIG_DIR}-preview"),
+        Channel::Stable => YARP_CONFIG_DIR.to_owned(),
+        Channel::Preview => format!("{YARP_CONFIG_DIR}-preview"),
         Channel::Oss => ".yarp".to_owned(),
-        Channel::Dev => format!("{WARP_CONFIG_DIR}-dev"),
-        Channel::Integration => format!("{WARP_CONFIG_DIR}-integration"),
-        Channel::Local => format!("{WARP_CONFIG_DIR}-local"),
+        Channel::Dev => format!("{YARP_CONFIG_DIR}-dev"),
+        Channel::Integration => format!("{YARP_CONFIG_DIR}-integration"),
+        Channel::Local => format!("{YARP_CONFIG_DIR}-local"),
     }
 }
 
@@ -241,12 +241,12 @@ fn project_dirs_for_app_id(
     cfg_if::cfg_if! {
         if #[cfg(target_os = "linux")] {
             // Adjust the base application name so that we end up with
-            // directories like "warp-terminal" and "warp-terminal-dev", to
+            // directories like "yarp-terminal" and "yarp-terminal-dev", to
             // match our Linux package name.
             let base_app_name = match app_id.application_name() {
-                "Warp" => "Warp-Terminal".to_owned(),
-                "WarpOss" => "Warp-Oss".to_owned(),
-                other if other.starts_with("Warp") => other.replace("Warp", "Warp-Terminal-"),
+                "Yarp" => "Yarp-Terminal".to_owned(),
+                "YarpOss" => "Yarp-Oss".to_owned(),
+                other if other.starts_with("Yarp") => other.replace("Yarp", "Yarp-Terminal-"),
                 _ => app_id.application_name().to_owned(),
             };
         } else {
@@ -311,7 +311,7 @@ pub fn app_group_container_path() -> Option<PathBuf> {
 ///
 /// ## Windows
 /// The resources directory is `$INSTALL_DIR/resources`, where `$INSTALL_DIR` is the directory
-/// containing the Warp executable (e.g. `C:\Program Files\WarpDev\resources`).
+/// containing the Yarp executable (e.g. `C:\Program Files\YarpDev\resources`).
 pub fn bundled_resources_dir() -> Option<PathBuf> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "macos")] {
