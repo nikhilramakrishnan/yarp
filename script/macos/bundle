@@ -694,7 +694,7 @@ fi
 ########################
 
 if [[ "$ARTIFACT" = app ]]; then
-  function create_warp_dmg() {
+  function create_yarp_dmg() {
     echo "Creating $DMG_DIR/$DMG_NAME..."
     rm "$DMG_DIR/$DMG_NAME" || true
     local source_folder="$1"
@@ -739,7 +739,7 @@ if [[ "$ARTIFACT" = app ]]; then
     mkdir -p "$DMG_DIR"
     cp -R "$BUNDLE_DIR/$YARP_APP_NAME.app" "$DMG_DIR"
 
-    create_warp_dmg "$DMG_DIR"
+    create_yarp_dmg "$DMG_DIR"
 
     echo "Codesigning $DMG_DIR/$DMG_NAME..."
     codesign -s "$APPLE_TEAM_ID" --timestamp "$DMG_DIR/$DMG_NAME"
@@ -753,7 +753,7 @@ if [[ "$ARTIFACT" = app ]]; then
     echo "Cleaning up any existing DMG files before creating new ones..."
     cleanup_dmg_files "$DMG_DIR"
 
-    create_warp_dmg "$BUNDLE_DIR"
+    create_yarp_dmg "$BUNDLE_DIR"
   fi
 fi
 
