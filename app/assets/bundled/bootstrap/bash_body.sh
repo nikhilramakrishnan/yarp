@@ -67,12 +67,12 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     trap __yarp_generator_pid_file_cleanup EXIT
 
     # Writes a hex-encoded JSON message to the pty.
-    warp_send_json_message () {
+    yarp_send_json_message () {
         # Sends a message to the controlling terminal as a DSC control sequence.
         # Note that because the JSON string may contain characters that we don't control (including
         # unicode), we encode it as hexadecimal string to avoid prematurely calling unhook if
         # one of the bytes in JSON is 9c (ST) or other (CAN, SUB, ESC).
-        encoded_message=$(warp_hex_encode_string "$1")
+        encoded_message=$(yarp_hex_encode_string "$1")
         # We send the InitShell hook via OSCs when on WSL or MSYS2 or SSH from Windows and via DCSs otherwise.
         # Note that $YARP_USING_WINDOWS_CON_PTY is set in the init shell script.
         if [ "$YARP_USING_WINDOWS_CON_PTY" = true ]; then
@@ -90,17 +90,17 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # session.
     #
     # Only relevant for remote SSH shells. YARP_IS_SSH is exported to "1"
-    # by `warp_ssh_helper` on the remote side of a Yarp-managed SSH session
+    # by `yarp_ssh_helper` on the remote side of a Yarp-managed SSH session
     # and is unset everywhere else (local shells, subshells, docker
     # sandboxes, etc.), so the hook only fires where a remote-server-proxy
     # actually needs tearing down.
     #
-    # Installed after warp_send_json_message is defined so the handler is
+    # Installed after yarp_send_json_message is defined so the handler is
     # callable the moment the trap is registered.
     if [[ "$YARP_IS_SSH" == "1" ]]; then
         __yarp_emit_exit_shell() {
             if [[ -n "$YARP_SESSION_ID" ]]; then
-                warp_send_json_message \
+                yarp_send_json_message \
                     "{\"hook\": \"ExitShell\", \"value\": {\"session_id\": $YARP_SESSION_ID}}"
             fi
         }
@@ -114,19 +114,19 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         trap __yarp_on_exit EXIT HUP
     fi
 
-    warp_maybe_send_reset_grid_osc () {
+    yarp_maybe_send_reset_grid_osc () {
         if [ "$YARP_USING_WINDOWS_CON_PTY" = true ]; then
             printf $RESET_GRID_OSC
         fi
     }
 
     # Expects the first argument to be the shell hook.
-    warp_send_hook_via_kv_pairs_start () {
+    yarp_send_hook_via_kv_pairs_start () {
       printf "${OSC_START}k;A;%s\a" $1
     }
 
     # Expects the first argument to be the key and the second argument to be the value.
-    warp_send_hook_kv_pair_escaped () {
+    yarp_send_hook_kv_pair_escaped () {
       # Note that we only escape the value.
       if [[ -n "$2" ]]; then
         printf "${OSC_START}k;B;%s;%q\a" "$1" "$2"
@@ -137,7 +137,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     }
 
     # Expects the first argument to be the key and the second argument to be the value.
-    warp_send_hook_kv_pair () {
+    yarp_send_hook_kv_pair () {
       # Note that we only escape the value.
       if [[ -n "$2" ]]; then
         printf "${OSC_START}k;B;%s;%s\a" "$1" "$2"
@@ -147,7 +147,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       fi
     }
 
-    warp_send_hook_via_kv_pairs_end () {
+    yarp_send_hook_via_kv_pairs_end () {
       printf "${OSC_START}k;C\a"
     }
 
@@ -156,20 +156,20 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     #
     #
     # Usage:
-    #   warp_send_generator_output_osc $my_message
+    #   yarp_send_generator_output_osc $my_message
     #
     # The payload of the OSC is "<content_length>;<hex-encoded content>".
-    warp_send_generator_output_osc () {
-        local hex_encoded_message=$(warp_hex_encode_string "$1")
-        warp_send_generator_output_osc_pre_hex_encoded "$hex_encoded_message"
+    yarp_send_generator_output_osc () {
+        local hex_encoded_message=$(yarp_hex_encode_string "$1")
+        yarp_send_generator_output_osc_pre_hex_encoded "$hex_encoded_message"
     }
 
     # Note: If we're on windows, we send a reset grid to erase any cursor mutations caused by
     # the in-band command.
-    warp_send_generator_output_osc_pre_hex_encoded () {
+    yarp_send_generator_output_osc_pre_hex_encoded () {
         local byte_count=$(LC_ALL="C"; printf "${#1}")
         printf "%b%i;%s%b" $OSC_START_GENERATOR_OUTPUT $byte_count $1 $OSC_END_GENERATOR_OUTPUT
-        warp_maybe_send_reset_grid_osc
+        yarp_maybe_send_reset_grid_osc
     }
 
 
@@ -198,7 +198,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         eval "$command" 2>&1;
         echo -n ";$?";
       } | command -p od -An -v -tx1 | command -p tr -d ' \n')"
-      warp_send_generator_output_osc_pre_hex_encoded "$generator_output"
+      yarp_send_generator_output_osc_pre_hex_encoded "$generator_output"
     }
 
     # Runs the given command in the background, records its PID in
@@ -220,14 +220,14 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       # _warp_execute_command function itself). In this case, send empty output with
       # exit code 1 to indicate generator execution failed.
       if [[ $? -ne 0 ]]; then
-          warp_send_generator_output_osc "$1;;1"
+          yarp_send_generator_output_osc "$1;;1"
       fi
 
 
       # Add the PID to the completed generators PID file.
       # 
       # The completed generator PIDs file may not exist if this generator was (by
-      # error) left running/not cancelled properly in warp_preexec.
+      # error) left running/not cancelled properly in yarp_preexec.
       if [[ -f $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE ]]; then
         echo $pid >> $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE
       fi
@@ -241,9 +241,9 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # not substituted until the command string is actually evaluated.
     #
     # Usage:
-    #   warp_run_generator_command <command_id> '<command> <arg1> ... <argn>'
-    warp_run_generator_command() {
-      # Setting this environment variable prevents warp_precmd from emitting the
+    #   yarp_run_generator_command <command_id> '<command> <arg1> ... <argn>'
+    yarp_run_generator_command() {
+      # Setting this environment variable prevents yarp_precmd from emitting the
       # 'Block started' hook to the Rust app.
       _YARP_GENERATOR_COMMAND=1
 
@@ -256,10 +256,10 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       fi
 
       # To minimize latency and prevent the user from being blocked from entering a command,
-      # cache the user's precmd_functions and only register warp_precmd. In the warp_precmd
+      # cache the user's precmd_functions and only register yarp_precmd. In the yarp_precmd
       # execution following this generator command, the user's precmd_functions are restored.
       _USER_PRECMD_FUNCTIONS=(${precmd_functions[@]})
-      precmd_functions=(warp_precmd)
+      precmd_functions=(yarp_precmd)
 
       # $@ must be double-quoted to prevent word-splitting, which would cause the given command to
       # be split into a bash list on $IFS chars (spaces, tabs, newlines), which could invalidate
@@ -270,7 +270,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
 
     # Note that this is very performance sensitive code, so try not to
     # invoke any external commands in here.
-    warp_preexec () {
+    yarp_preexec () {
         # Use the $BASH_COMMAND environment variable instead of $1, which is passed in by bash_preeexec.
         #
         # Bash_preexec intends to pass the command to preexec functions (as $1), but it utilizes session
@@ -278,20 +278,20 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # by history (e.g. via $HISTCONTROL or $HISTIGNORE); for example, all in-band generators are ignored
         # by history.
         if [ "$YARP_IN_MSYS2" = true ]; then
-          warp_send_hook_via_kv_pairs_start "Preexec"
-          warp_send_hook_kv_pair "command" "$BASH_COMMAND"
-          warp_send_hook_via_kv_pairs_end
+          yarp_send_hook_via_kv_pairs_start "Preexec"
+          yarp_send_hook_kv_pair "command" "$BASH_COMMAND"
+          yarp_send_hook_via_kv_pairs_end
         else
-          local truncated_command=$(warp_escape_json "$BASH_COMMAND")
-          warp_send_json_message "{\"hook\": \"Preexec\", \"value\": {\"command\": \"$truncated_command\"}}"
+          local truncated_command=$(yarp_escape_json "$BASH_COMMAND")
+          yarp_send_json_message "{\"hook\": \"Preexec\", \"value\": {\"command\": \"$truncated_command\"}}"
         fi
-        warp_maybe_send_reset_grid_osc
+        yarp_maybe_send_reset_grid_osc
 
 
         # Since we did not early-return above, this hook is for a user-entered
         # command. Kill ongoing generator jobs so their output does not interfere
         # with the user command's output.
-        if [[ "$BASH_COMMAND" != warp_run_generator_command* ]] && [[ -f $_YARP_GENERATOR_PIDS_STARTED_TMP_FILE ]] && [[ -f $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE ]]
+        if [[ "$BASH_COMMAND" != yarp_run_generator_command* ]] && [[ -f $_YARP_GENERATOR_PIDS_STARTED_TMP_FILE ]] && [[ -f $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE ]]
         then
           # Read PIDs from the started generators tmp file that are not present in
           # the completed generators tmp file into a bash array.
@@ -335,9 +335,9 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
 
     # Set terminal window and tab title to the same title value. Note that for values longer than 25
     # characters, we truncate the title and prepend "..".
-    # Usage warp_title "title"
+    # Usage yarp_title "title"
     # Users can disable the auto title if they chose to by setting YARP_DISABLE_AUTO_TITLE.
-    warp_title () {
+    yarp_title () {
       DISABLE_AUTO_TITLE="1"
 
       # truncating the title's len to 25 characters and leading ".."
@@ -355,7 +355,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     }
 
     # Runs before executing the command
-    warp_set_title_idle_on_precmd () {
+    yarp_set_title_idle_on_precmd () {
       # If the user wants to set the title themselves, they can set the YARP_DISABLE_AUTO_TITLE flag.
       if [ ! -z "$YARP_DISABLE_AUTO_TITLE" ]; then
         return
@@ -371,22 +371,22 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       bash_term_tab_title="${PWD/#$HOME/$new_home}"
 
       if [[ $YARP_IS_LOCAL_SHELL_SESSION == "1" ]]; then
-        warp_title "$bash_term_tab_title"
+        yarp_title "$bash_term_tab_title"
       else
         bash_term_tab_title_remote="${HOSTNAME%%.*}:$bash_term_tab_title"
-        warp_title "$bash_term_tab_title_remote"
+        yarp_title "$bash_term_tab_title_remote"
       fi
     }
 
     # Runs before executing the command
-    warp_set_title_active_on_preexec () {
+    yarp_set_title_active_on_preexec () {
       # If the user wants to set the title themselves, they can set the YARP_DISABLE_AUTO_TITLE flag.
       if [ ! -z "$YARP_DISABLE_AUTO_TITLE" ]; then
         return
       fi
 
       cmd="$1"
-      # warp_set_title_active_on_preexec is a preexec_function, which accepts 1 argument 
+      # yarp_set_title_active_on_preexec is a preexec_function, which accepts 1 argument 
       #(currently invoked command)
       local this_command_spec
       read -r -a this_command_spec <<< "$1"
@@ -412,7 +412,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         cmd="$fg_command_name"
       fi
 
-      warp_title "$cmd"
+      yarp_title "$cmd"
     }
 
     # The git prompt's git commands are read-only and should not interfere with
@@ -422,28 +422,28 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     #
     # We wrap in a local function instead of exporting the variable directly in
     # order to avoid interfering with manually-run git commands by the user.
-    warp_git () {
+    yarp_git () {
       GIT_OPTIONAL_LOCKS=0 command git "$@"
     }
 
     # Note that this is very performance sensitive code, so try not to
     # invoke any external commands in here.
-    warp_precmd () {
+    yarp_precmd () {
         # $? is relative to the process so we MUST check this first
         # or else the exit code will correspond to the commands
         # executed within this block instead of the actual last
         # command that was run.
         local exit_code=$?
         if [ "$YARP_IN_MSYS2" = true ]; then
-          warp_send_hook_via_kv_pairs_start "CommandFinished"
-          warp_send_hook_kv_pair "exit_code" "$exit_code"
-          warp_send_hook_kv_pair "next_block_id" "precmd-$YARP_SESSION_ID-$((block_id++))"
-          warp_send_hook_via_kv_pairs_end
+          yarp_send_hook_via_kv_pairs_start "CommandFinished"
+          yarp_send_hook_kv_pair "exit_code" "$exit_code"
+          yarp_send_hook_kv_pair "next_block_id" "precmd-$YARP_SESSION_ID-$((block_id++))"
+          yarp_send_hook_via_kv_pairs_end
         else
-          warp_send_json_message "{\"hook\": \"CommandFinished\", \"value\": {\"exit_code\": $exit_code, \"next_block_id\": \"precmd-$YARP_SESSION_ID-$((block_id++))\"}}"
+          yarp_send_json_message "{\"hook\": \"CommandFinished\", \"value\": {\"exit_code\": $exit_code, \"next_block_id\": \"precmd-$YARP_SESSION_ID-$((block_id++))\"}}"
         fi
 
-        warp_maybe_send_reset_grid_osc
+        yarp_maybe_send_reset_grid_osc
 
         if [[ $PS1 == "" ]]; then
           # Use the saved PS1, if we've already unset it (due to active Yarp prompt).
@@ -462,7 +462,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
             precmd_functions=(${_USER_PRECMD_FUNCTIONS[@]})
 
             unset _YARP_GENERATOR_COMMAND
-            warp_send_json_message "{\"hook\": \"Precmd\", \"value\": {
+            yarp_send_json_message "{\"hook\": \"Precmd\", \"value\": {
             \"pwd\": \"\",
             \"ps1\": \"\",
             \"git_head\": \"\",
@@ -485,12 +485,12 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         fi
 
         if [[ -z $YARP_INPUT_REPORTING_SUPPORTED ]]; then
-          YARP_INPUT_REPORTING_SUPPORTED=$(warp_input_reporting_supported)
+          YARP_INPUT_REPORTING_SUPPORTED=$(yarp_input_reporting_supported)
         fi
 
         # If we haven't already, cache information about supported features.
         if [[ -z $YARP_PS1_EXPANSION_SUPPORTED ]]; then
-          YARP_PS1_EXPANSION_SUPPORTED=$(warp_ps1_expanding_supported)
+          YARP_PS1_EXPANSION_SUPPORTED=$(yarp_ps1_expanding_supported)
         fi
 
         if [[ $YARP_PS1_EXPANSION_SUPPORTED  == "1" ]]; then
@@ -513,7 +513,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # Escaped PS1 variable
         local escaped_ps1
         if [ "$YARP_IN_MSYS2" = false ]; then
-          escaped_ps1=$(warp_escape_ps1 "$(echo "$deref_ps1")")
+          escaped_ps1=$(yarp_escape_ps1 "$(echo "$deref_ps1")")
         fi
 
         # Flush history
@@ -529,7 +529,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # This is arbitrarily bound to ESC-i in all supported shells ("i" for input).
         if [[ $YARP_INPUT_REPORTING_SUPPORTED == "1" ]]; then
           bind -r '"\ei"'
-          bind -x '"\ei":"warp_report_input"'
+          bind -x '"\ei":"yarp_report_input"'
         fi
         
         # We need to register bindkeys to enable intra-session switching of the prompt 
@@ -537,19 +537,19 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # We remove any existing bindkey for ESC-P ("p" for prompt/PS1) and register the bindkey
         # to our custom function. Note that this specific keybinding is arbitrary.
         bind -r '"\ep"'
-        bind -x '"\ep":"warp_change_prompt_modes_to_ps1"'
+        bind -x '"\ep":"yarp_change_prompt_modes_to_ps1"'
         # We remove any existing bindkey for ESC-P ("w" for Yarp prompt) and register the bindkey
         # to our custom function. Note that this specific keybinding is arbitrary.
         bind -r '"\ew"'
-        bind -x '"\ew":"warp_change_prompt_modes_to_warp_prompt"'
+        bind -x '"\ew":"yarp_change_prompt_modes_to_warp_prompt"'
 
         local escaped_pwd
         if [ "$YARP_IN_MSYS2" = false ]; then
           if [ -n "$WSL_DISTRO_NAME" ]; then
             # In WSL, avoid symlinks b/c on Windows `std::fs` is unable to resolve symlink inside WSL containers.
-            escaped_pwd=$(warp_escape_json "$(pwd -P)")
+            escaped_pwd=$(yarp_escape_json "$(pwd -P)")
           else
-            escaped_pwd=$(warp_escape_json "$PWD")
+            escaped_pwd=$(yarp_escape_json "$PWD")
           fi
         fi
 
@@ -567,11 +567,11 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # user's rcfiles and have a fully-populated PATH.
         if [[ -n "$YARP_BOOTSTRAPPED" ]]; then
           if [[ -n "$VIRTUAL_ENV" ]] && [ "$YARP_IN_MSYS2" = false ]; then
-              escaped_virtual_env=$(warp_escape_json "$VIRTUAL_ENV")
+              escaped_virtual_env=$(yarp_escape_json "$VIRTUAL_ENV")
           fi
 
           if [[ -n "$CONDA_DEFAULT_ENV" ]] && [ "$YARP_IN_MSYS2" = false ]; then
-              escaped_conda_env=$(warp_escape_json "$CONDA_DEFAULT_ENV")
+              escaped_conda_env=$(yarp_escape_json "$CONDA_DEFAULT_ENV")
           fi
 
           # Get Node.js version if node is available and we're in a Node.js project
@@ -604,7 +604,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
                   if [[ "$in_git_repo" = true ]]; then
                       local node_version=$(node --version 2>/dev/null)
                       if [[ -n "$node_version" ]]; then
-                          escaped_node_version=$(warp_escape_json "$node_version")
+                          escaped_node_version=$(yarp_escape_json "$node_version")
                       fi
                   fi
               fi
@@ -616,13 +616,13 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
           # available to their session, it is unlikely they will be looking for git branch
           # information from the prompt.
           if command -v git >/dev/null 2>&1; then
-            git_branch=$(warp_git symbolic-ref --short HEAD 2> /dev/null)
+            git_branch=$(yarp_git symbolic-ref --short HEAD 2> /dev/null)
             # The git branch the user is on, or the git commit hash if they're not on a branch.
-            git_head="${git_branch:-$(warp_git rev-parse --short HEAD 2> /dev/null)}"
+            git_head="${git_branch:-$(yarp_git rev-parse --short HEAD 2> /dev/null)}"
           fi
           if [ "$YARP_IN_MSYS2" = false ]; then
-            escaped_git_head=$(warp_escape_json "$git_head")
-            escaped_git_branch=$(warp_escape_json "$git_branch")
+            escaped_git_head=$(yarp_escape_json "$git_head")
+            escaped_git_branch=$(yarp_escape_json "$git_branch")
           fi
         fi
 
@@ -648,18 +648,18 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         fi
         # We send the escaped PS1, if we are in active Yarp prompt mode, for prompt preview rendering (note the shell's PS1 is unset in this case).
         if [ "$YARP_IN_MSYS2" = true ]; then
-          warp_send_hook_via_kv_pairs_start "Precmd"
-          warp_send_hook_kv_pair "pwd" "$PWD"
-          warp_send_hook_kv_pair_escaped "ps1" "$deref_ps1"
-          warp_send_hook_kv_pair "ps1_is_encoded" "false"
-          warp_send_hook_kv_pair "honor_ps1" "$honor_ps1"
-          warp_send_hook_kv_pair "git_head" "$git_head"
-          warp_send_hook_kv_pair "git_branch" "$git_branch"
-          warp_send_hook_kv_pair "virtual_env" "$VIRTUAL_ENV"
-          warp_send_hook_kv_pair "conda_env" "$CONDA_DEFAULT_ENV"
-          warp_send_hook_kv_pair "node_version" "$node_version"
-          warp_send_hook_kv_pair "session_id" "$YARP_SESSION_ID"
-          warp_send_hook_via_kv_pairs_end
+          yarp_send_hook_via_kv_pairs_start "Precmd"
+          yarp_send_hook_kv_pair "pwd" "$PWD"
+          yarp_send_hook_kv_pair_escaped "ps1" "$deref_ps1"
+          yarp_send_hook_kv_pair "ps1_is_encoded" "false"
+          yarp_send_hook_kv_pair "honor_ps1" "$honor_ps1"
+          yarp_send_hook_kv_pair "git_head" "$git_head"
+          yarp_send_hook_kv_pair "git_branch" "$git_branch"
+          yarp_send_hook_kv_pair "virtual_env" "$VIRTUAL_ENV"
+          yarp_send_hook_kv_pair "conda_env" "$CONDA_DEFAULT_ENV"
+          yarp_send_hook_kv_pair "node_version" "$node_version"
+          yarp_send_hook_kv_pair "session_id" "$YARP_SESSION_ID"
+          yarp_send_hook_via_kv_pairs_end
         else
           local escaped_json="{\"hook\": \"Precmd\", \"value\": {
           \"pwd\": \"$escaped_pwd\",
@@ -673,16 +673,16 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
           \"node_version\": \"$escaped_node_version\",
           \"session_id\": $YARP_SESSION_ID
           }}"
-          warp_send_json_message "$escaped_json"
+          yarp_send_json_message "$escaped_json"
         fi
     }
 
-    warp_clear_on_next_block () {
-        warp_send_json_message '{"hook": "ClearOnNextBlock"}'
+    yarp_clear_on_next_block () {
+        yarp_send_json_message '{"hook": "ClearOnNextBlock"}'
     }
 
     # Format a string value according to JSON syntax.
-    warp_escape_json () {
+    yarp_escape_json () {
         # Explanation of the sed replacements (each command is separated by a `;`):
         # s/(["\\])/\\\1/g - Replace all double-quote (") and backslash (\) characters with the escaped versions (\" and \\)
         # s/\b/\\b/g - Replace all backspace characters with \b
@@ -713,15 +713,15 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # later decodes and sends to the grid to show the prompt.
     # Note: before converting the prompt to a hex string, we remove the multi-line newlines and replace
     # them with a single space (to avoid prompts that span multiple empty lines).
-    warp_escape_ps1 () {
+    yarp_escape_ps1 () {
        command -p tr '\n\n' ' ' <<< "$*" | command -p od -An -v -tx1 | command -p tr -d ' \n'
     }
 
-    # warp_hex_encode_string encodes the entire DCS string (JSON) with od making it essentially
+    # yarp_hex_encode_string encodes the entire DCS string (JSON) with od making it essentially
     # a very long hexadecimal string.
     # Afterwards it's decoded in rust and parsed as usual.
     # Accepts one argument: DCS JSON string
-    warp_hex_encode_string () {
+    yarp_hex_encode_string () {
       echo "$1" | command -p od -An -v -tx1 | command -p tr -d ' \n'
     }
 
@@ -729,13 +729,13 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # Accepts one argument: shell [bash, zsh, fish (future)]
     init_shell_hook () {
       init_shell="{\"hook\": \"InitShell\", \"value\": {\"shell\": \"$1\"}}"
-      echo $(warp_hex_encode_string "$init_shell")
+      echo $(yarp_hex_encode_string "$init_shell")
     }
 
     # Checks whether the current version of bash is at least as high as the expected ($1) one.
     # To match rest of our codebase, it returns "1" if the bash version is higher or equal, and 
     # 0 otherwise.
-    warp_at_least_bash_version () {
+    yarp_at_least_bash_version () {
       if [[ $(printf '%s\n%s\n' "$BASH_VERSION" "$1" | command -p sort -rVC ; echo $?) -eq 0 ]]; then
         echo "1"
       else 
@@ -745,26 +745,26 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
 
     # @P substitution was introduced in 4.4 bash version, so it returns "1" if the current bash
     # version is 4.4 or higher.
-    warp_ps1_expanding_supported () {
-      warp_at_least_bash_version "4.4"
+    yarp_ps1_expanding_supported () {
+      yarp_at_least_bash_version "4.4"
     }
 
     # The $READLINE_LINE variable in `bind -x` sequences was introduced in bash 4.0,
     # so we can only report the input buffer if the bash version is 4.0 or higher.
-    warp_input_reporting_supported () {
-        warp_at_least_bash_version "4.0"
+    yarp_input_reporting_supported () {
+        yarp_at_least_bash_version "4.0"
     }
 
     # Report the current input buffer contents to Yarp. This only works correctly
-    # if `warp_input_reporting_supported` returns "1".
-    warp_report_input () {
+    # if `yarp_input_reporting_supported` returns "1".
+    yarp_report_input () {
         if [ "$YARP_IN_MSYS2" = true ]; then
-            warp_send_hook_via_kv_pairs_start "InputBuffer"
-            warp_send_hook_kv_pair "buffer" "$READLINE_LINE"
-            warp_send_hook_via_kv_pairs_end
+            yarp_send_hook_via_kv_pairs_start "InputBuffer"
+            yarp_send_hook_kv_pair "buffer" "$READLINE_LINE"
+            yarp_send_hook_via_kv_pairs_end
         else
-            local escaped_input="$(warp_escape_json "$READLINE_LINE")"
-            warp_send_json_message "{ \"hook\": \"InputBuffer\", \"value\": { \"buffer\": \"$escaped_input\" } }"
+            local escaped_input="$(yarp_escape_json "$READLINE_LINE")"
+            yarp_send_json_message "{ \"hook\": \"InputBuffer\", \"value\": { \"buffer\": \"$escaped_input\" } }"
         fi
         # This prevents bash from re-printing typeahead after we've removed it.
         READLINE_LINE=""
@@ -773,7 +773,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # Check whether the prompt-related variables have OSC prompt marker sequences,
     # and if not, wrap them with the appropriate markers so that we can direct the
     # prompt bytes to the appropriate grids.
-    function warp_update_prompt_vars() {
+    function yarp_update_prompt_vars() {
       # 133;A and 133;B are standard prompt marker OSCs.
       # See https://learn.microsoft.com/en-us/windows/terminal/tutorials/shell-integration and
       # https://gitlab.freedesktop.org/terminal-wg/specifications/-/merge_requests/6/diffs for details.
@@ -842,7 +842,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       # Ensure that this is always the last precmd hook. This prevents any other precmd hook, which might
       # modify $PS1, from interfering with our prompt-escaping logic.
       #
-      # Remove warp_update_prompt_vars from the precmd_functions list and then re-append it to ensure it's
+      # Remove yarp_update_prompt_vars from the precmd_functions list and then re-append it to ensure it's
       # ordered last.
 
       # Initialize an empty array to hold the filtered functions.
@@ -850,8 +850,8 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
 
       # Loop through each function in the original precmd_functions array.
       for func in "${precmd_functions[@]}"; do
-        # Add the function to the filtered array if it's not warp_update_prompt_vars
-        if [[ "$func" != "warp_update_prompt_vars" ]]; then
+        # Add the function to the filtered array if it's not yarp_update_prompt_vars
+        if [[ "$func" != "yarp_update_prompt_vars" ]]; then
           filtered_precmd_functions+=("$func")
         fi
       done
@@ -859,49 +859,49 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       # Assign the filtered array back to precmd_functions.
       precmd_functions=("${filtered_precmd_functions[@]}")
 
-      # Append warp_update_prompt_vars to the end of the precmd_functions array.
-      precmd_functions+=("warp_update_prompt_vars")
+      # Append yarp_update_prompt_vars to the end of the precmd_functions array.
+      precmd_functions+=("yarp_update_prompt_vars")
     }
     
     # Changes the YARP_HONOR_PS1 variable to 1, to indicate we want to use the PS1. Restores
-    # the original PS1 value (which we unset for Yarp prompt) and calls warp_update_prompt_vars
+    # the original PS1 value (which we unset for Yarp prompt) and calls yarp_update_prompt_vars
     # to refresh the prompt. Note that we use an "empty block" workaround to achieve instant
     # prompt switching in bash, since there is no built-in methods to repaint the prompt, unlike
     # Zsh/fish.
-    function warp_change_prompt_modes_to_ps1() {
+    function yarp_change_prompt_modes_to_ps1() {
       PS1="$SAVED_PS1"
       YARP_HONOR_PS1="1"
 
-      warp_update_prompt_vars
+      yarp_update_prompt_vars
     }
 
     # Changes the YARP_HONOR_PS1 variable to 0, to indicate we want to use the Yarp prompt. Calls 
-    # warp_update_prompt_vars to refresh the prompt (note the PS1 will be unset in this logic). 
+    # yarp_update_prompt_vars to refresh the prompt (note the PS1 will be unset in this logic). 
     # Note that we use an "empty block" workaround to achieve instant prompt switching in bash, 
     # since there is no built-in methods to repaint the prompt, unlike Zsh/fish.
-    function warp_change_prompt_modes_to_warp_prompt() {
+    function yarp_change_prompt_modes_to_warp_prompt() {
       YARP_HONOR_PS1="0"
 
-      warp_update_prompt_vars
+      yarp_update_prompt_vars
     }
 
     function clear() {
         if [ "$YARP_IN_MSYS2" = true ]; then
-            warp_send_hook_via_kv_pairs_start "Clear"
-            warp_send_hook_via_kv_pairs_end
+            yarp_send_hook_via_kv_pairs_start "Clear"
+            yarp_send_hook_via_kv_pairs_end
         else
-            warp_send_json_message "{\"hook\": \"Clear\", \"value\": {}}"
+            yarp_send_json_message "{\"hook\": \"Clear\", \"value\": {}}"
         fi
     }
 
-    function warp_finish_update {
+    function yarp_finish_update {
       local update_id="$1"
       if [ "$YARP_IN_MSYS2" = true ]; then
-        warp_send_hook_via_kv_pairs_start "FinishUpdate"
-        warp_send_hook_kv_pair "update_id" "$update_id"
-        warp_send_hook_via_kv_pairs_end
+        yarp_send_hook_via_kv_pairs_start "FinishUpdate"
+        yarp_send_hook_kv_pair "update_id" "$update_id"
+        yarp_send_hook_via_kv_pairs_end
       else
-        warp_send_json_message "{ \"hook\": \"FinishUpdate\", \"value\": { \"update_id\": \"$update_id\"} }"
+        yarp_send_json_message "{ \"hook\": \"FinishUpdate\", \"value\": { \"update_id\": \"$update_id\"} }"
       fi
     }
 
@@ -912,7 +912,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
     # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
     # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
     # contains a `signed-by` key.
-    function warp_handle_dist_upgrade {
+    function yarp_handle_dist_upgrade {
       local source_file_name="$1"
 
       eval "$(command apt-config shell APT_SOURCESDIR 'Dir::Etc::sourceparts/d')"
@@ -969,7 +969,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
             fi
         }
 
-        function warp_ssh_helper() {
+        function yarp_ssh_helper() {
             init_shell_bash=$(init_shell_hook "bash")
             init_shell_zsh=$(init_shell_hook "zsh")
 
@@ -1063,7 +1063,7 @@ esac
 
         function ssh() {
             if is_interactive_ssh_session "$@"; then
-                warp_send_json_message "{\"hook\": \"PreInteractiveSSHSession\", \"value\": {}}"
+                yarp_send_json_message "{\"hook\": \"PreInteractiveSSHSession\", \"value\": {}}"
 
                 # If the SSH wrapper is not enabled for this session, don't use it.
                 if [ "$YARP_USE_SSH_WRAPPER" = "1" ]; then
@@ -1071,7 +1071,7 @@ esac
                     if [[ "$YARP_SHELL_DEBUG_MODE" == "1" ]]; then
                         TRACE_FLAG_IF_YARP_SHELL_DEBUG_MODE="-x"
                     fi
-                    warp_ssh_helper "$@"
+                    yarp_ssh_helper "$@"
                 else
                     command ssh "$@"
                 fi
@@ -1084,7 +1084,7 @@ esac
 
     # Send a precmd message to the terminal to differentiate between the yarp
     # bootstrap logic pasted into the PTY and the output of shell startup files.
-    warp_precmd
+    yarp_precmd
 
     # Before calling rcfiles, print the MotD.
     # In general, login(1) or pam_motd(8) is supposed to do this. However, we don't
@@ -1153,9 +1153,9 @@ esac
     # HISTIGNORE value which may been set in an RC file sourced above. It is important to
     # ensure that this happens _after_ the user's RC files have been sourced.
     if [[ ! -z $HISTIGNORE ]]; then
-        HISTIGNORE="*warp_run_generator_command*:$HISTIGNORE"
+        HISTIGNORE="*yarp_run_generator_command*:$HISTIGNORE"
     else
-        HISTIGNORE="*warp_run_generator_command*"
+        HISTIGNORE="*yarp_run_generator_command*"
     fi
 
     # If the user has PROMPT_COMMAND set in their bootstrap scripts,
@@ -1251,11 +1251,11 @@ esac
     fi
   fi
 
-    precmd_functions+=(warp_precmd)
-    preexec_functions+=(warp_preexec)
+    precmd_functions+=(yarp_precmd)
+    preexec_functions+=(yarp_preexec)
 
-    precmd_functions+=(warp_set_title_idle_on_precmd)
-    preexec_functions+=(warp_set_title_active_on_preexec)
+    precmd_functions+=(yarp_set_title_idle_on_precmd)
+    preexec_functions+=(yarp_set_title_active_on_preexec)
 
     if declare -f user_prompt_command 2>&1 >/dev/null; then
         precmd_functions+=(user_prompt_command)
@@ -1263,14 +1263,14 @@ esac
 
     YARP_BOOTSTRAPPED=1
 
-    warp_update_prompt_vars
+    yarp_update_prompt_vars
 
     # Set the history file to append
     shopt -s histappend
 
     shell_plugins=()
 
-    function warp_bootstrapped () {
+    function yarp_bootstrapped () {
         local aliases="`alias`"
         local env_var_names="`compgen -e`"
         local function_names="`compgen -A function`"
@@ -1278,13 +1278,13 @@ esac
         local keywords="`compgen -k`"
         if [ "$YARP_IN_MSYS2" = false ]; then
           # Note that for now we don't support dynamically changing HISTFILE within a session.
-          local escaped_histfile="$(warp_escape_json "$HISTFILE")"
+          local escaped_histfile="$(yarp_escape_json "$HISTFILE")"
           local escaped_abbrs=""
-          local escaped_aliases="$(warp_escape_json "$aliases")"
-          local escaped_env_var_names="$(warp_escape_json "$env_var_names")"
-          local escaped_function_names="$(warp_escape_json "$function_names")"
-          local escaped_builtins="$(warp_escape_json "$builtins")"
-          local escaped_keywords="$(warp_escape_json "$keywords")"
+          local escaped_aliases="$(yarp_escape_json "$aliases")"
+          local escaped_env_var_names="$(yarp_escape_json "$env_var_names")"
+          local escaped_function_names="$(yarp_escape_json "$function_names")"
+          local escaped_builtins="$(yarp_escape_json "$builtins")"
+          local escaped_keywords="$(yarp_escape_json "$keywords")"
         fi
 
         local shell_options="`shopt -s | command -p cut -f 1`"
@@ -1302,45 +1302,45 @@ esac
         fi
 
         if [ "$YARP_IN_MSYS2" = false ]; then
-          local escaped_shell_plugins=$(warp_escape_json "$shell_plugins")
-          local escaped_path="$(warp_escape_json "$PATH")"
-          local escaped_shell_options=$(warp_escape_json "$shell_options")
+          local escaped_shell_plugins=$(yarp_escape_json "$shell_plugins")
+          local escaped_path="$(yarp_escape_json "$PATH")"
+          local escaped_shell_options=$(yarp_escape_json "$shell_options")
         fi
 
         local _user=$(command -pv whoami >/dev/null 2>&1 && command -p whoami 2>/dev/null || echo $USER)
         local _hostname=$(command -pv hostname >/dev/null 2>&1 && command -p hostname 2>/dev/null || command -p uname -n)
         if [ "$YARP_IN_MSYS2" = true ]; then
-          warp_send_hook_via_kv_pairs_start "Bootstrapped"
-          warp_send_hook_kv_pair "histfile" "$HISTFILE"
-          warp_send_hook_kv_pair "session_id" "$YARP_SESSION_ID"
-          warp_send_hook_kv_pair "shell" "bash"
-          warp_send_hook_kv_pair "home_dir" "$HOME"
-          warp_send_hook_kv_pair "user" "$_user"
-          warp_send_hook_kv_pair "hostname" "$_hostname"
-          warp_send_hook_kv_pair "path" "$PATH"
-          warp_send_hook_kv_pair_escaped "env_var_names" "$env_var_names"
-          warp_send_hook_kv_pair "abbreviations" ""
-          warp_send_hook_kv_pair_escaped "aliases" "$aliases"
-          warp_send_hook_kv_pair_escaped "function_names" "$function_names"
-          warp_send_hook_kv_pair_escaped "builtins" "$builtins"
-          warp_send_hook_kv_pair_escaped "keywords" "$keywords"
-          warp_send_hook_kv_pair "shell_plugins" "$shell_plugins"
-          warp_send_hook_kv_pair "shell_version" "$BASH_VERSION"
-          warp_send_hook_kv_pair "shell_options" "$shell_options"
-          warp_send_hook_kv_pair "rcfiles_start_time" "$rcfiles_start_time"
-          warp_send_hook_kv_pair "rcfiles_end_time" "$rcfiles_end_time"
-          warp_send_hook_kv_pair "vi_mode_enabled" "$vi_mode_enabled"
-          warp_send_hook_kv_pair "os_category" "$os_category"
-          warp_send_hook_kv_pair "linux_distribution" "$linux_distribution"
-          warp_send_hook_kv_pair "wsl_name" "$WSL_DISTRO_NAME"
-          warp_send_hook_kv_pair "shell_path" "$BASH"
-          warp_send_hook_via_kv_pairs_end
+          yarp_send_hook_via_kv_pairs_start "Bootstrapped"
+          yarp_send_hook_kv_pair "histfile" "$HISTFILE"
+          yarp_send_hook_kv_pair "session_id" "$YARP_SESSION_ID"
+          yarp_send_hook_kv_pair "shell" "bash"
+          yarp_send_hook_kv_pair "home_dir" "$HOME"
+          yarp_send_hook_kv_pair "user" "$_user"
+          yarp_send_hook_kv_pair "hostname" "$_hostname"
+          yarp_send_hook_kv_pair "path" "$PATH"
+          yarp_send_hook_kv_pair_escaped "env_var_names" "$env_var_names"
+          yarp_send_hook_kv_pair "abbreviations" ""
+          yarp_send_hook_kv_pair_escaped "aliases" "$aliases"
+          yarp_send_hook_kv_pair_escaped "function_names" "$function_names"
+          yarp_send_hook_kv_pair_escaped "builtins" "$builtins"
+          yarp_send_hook_kv_pair_escaped "keywords" "$keywords"
+          yarp_send_hook_kv_pair "shell_plugins" "$shell_plugins"
+          yarp_send_hook_kv_pair "shell_version" "$BASH_VERSION"
+          yarp_send_hook_kv_pair "shell_options" "$shell_options"
+          yarp_send_hook_kv_pair "rcfiles_start_time" "$rcfiles_start_time"
+          yarp_send_hook_kv_pair "rcfiles_end_time" "$rcfiles_end_time"
+          yarp_send_hook_kv_pair "vi_mode_enabled" "$vi_mode_enabled"
+          yarp_send_hook_kv_pair "os_category" "$os_category"
+          yarp_send_hook_kv_pair "linux_distribution" "$linux_distribution"
+          yarp_send_hook_kv_pair "wsl_name" "$WSL_DISTRO_NAME"
+          yarp_send_hook_kv_pair "shell_path" "$BASH"
+          yarp_send_hook_via_kv_pairs_end
         else
-          local escaped_editor="$(warp_escape_json "$EDITOR")"
-          local escaped_shell_path="$(warp_escape_json "$BASH")"
+          local escaped_editor="$(yarp_escape_json "$EDITOR")"
+          local escaped_shell_path="$(yarp_escape_json "$BASH")"
           local escaped_json="{\"hook\": \"Bootstrapped\", \"value\": {\"histfile\": \"$escaped_histfile\", \"session_id\": $YARP_SESSION_ID, \"shell\": \"bash\",  \"home_dir\": \"$HOME\", \"user\":\"$_user\", \"host\":\"$_hostname\", \"path\": \"$escaped_path\", \"editor\": \"$escaped_editor\", \"env_var_names\": \"$escaped_env_var_names\", \"abbreviations\": \"$escaped_abbrs\", \"aliases\": \"$escaped_aliases\", \"function_names\": \"$escaped_function_names\", \"builtins\": \"$escaped_builtins\", \"keywords\": \"$escaped_keywords\", \"shell_version\": \"$BASH_VERSION\", \"shell_options\": \"$escaped_shell_options\", \"rcfiles_start_time\": \"$rcfiles_start_time\", \"rcfiles_end_time\": \"$rcfiles_end_time\", \"vi_mode_enabled\": \"$vi_mode_enabled\", \"os_category\": \"$os_category\", \"linux_distribution\": \"$linux_distribution\", \"wsl_name\": \"$WSL_DISTRO_NAME\", \"shell_path\": \"$escaped_shell_path\"}}"
-          warp_send_json_message "$escaped_json"
+          yarp_send_json_message "$escaped_json"
         fi
     }
-    warp_bootstrapped
+    yarp_bootstrapped
 fi

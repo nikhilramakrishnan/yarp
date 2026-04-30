@@ -361,14 +361,14 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         }
 
         # Sets the prompt mode to custom prompt (PS1)
-        # Is the equivalent of warp_change_prompt_modes_to_ps1 in other shells
+        # Is the equivalent of yarp_change_prompt_modes_to_ps1 in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+p' -ScriptBlock {
             $env:YARP_HONOR_PS1 = '1'
             Yarp-Redraw-Prompt
         }
 
         # Sets the prompt mode to yarp prompt
-        # Is the equivalent of warp_change_prompt_modes_to_warp_prompt in other shells
+        # Is the equivalent of yarp_change_prompt_modes_to_warp_prompt in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+w' -ScriptBlock {
             $env:YARP_HONOR_PS1 = '0'
             Yarp-Redraw-Prompt
@@ -722,7 +722,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         $status = $?
         $code = $global:LASTEXITCODE
 
-        # Setting this environment variable prevents warp_precmd from emitting the
+        # Setting this environment variable prevents yarp_precmd from emitting the
         # 'Block started' hook to the Rust app.
         $script:generatorCommand = $true
 
