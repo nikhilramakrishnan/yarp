@@ -58,7 +58,7 @@ const OSS_FLAGS: &[FeatureFlag] = &[
     FeatureFlag::OzPlatformSkills,
 ];
 
-// Simple wrapper around warp::run() for Yarp builds.
+// Simple wrapper around yarp::run() for Yarp builds.
 fn main() -> Result<()> {
     let mut state = ChannelState::new(
         Channel::Oss,
@@ -81,7 +81,7 @@ fn main() -> Result<()> {
 
     write_default_llm_config_if_missing();
 
-    warp::run()
+    yarp::run()
 }
 
 /// On first launch, drop a commented template at `~/.yarp/llm_provider.json`

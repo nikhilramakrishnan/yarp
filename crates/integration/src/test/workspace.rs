@@ -3,10 +3,10 @@
 use std::fs;
 
 use settings::Setting as _;
-use warp::integration_testing::terminal::assert_long_running_block_executing_for_single_terminal_in_tab;
-use warp::integration_testing::view_getters::terminal_view;
-use warp::integration_testing::workspace::{assert_tab_count, press_native_modal_button};
-use warp::{
+use yarp::integration_testing::terminal::assert_long_running_block_executing_for_single_terminal_in_tab;
+use yarp::integration_testing::view_getters::terminal_view;
+use yarp::integration_testing::workspace::{assert_tab_count, press_native_modal_button};
+use yarp::{
     cmd_or_ctrl_shift,
     integration_testing::{
         pane_group::assert_focused_pane_index,

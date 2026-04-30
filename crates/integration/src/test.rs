@@ -84,7 +84,7 @@ use warpui::{
     AssetProvider, Event, SingletonEntity, UpdateView, ViewHandle,
 };
 
-use warp::{terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint};
+use yarp::{terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint};
 
 use sysinfo::{Pid, ProcessesToUpdate, System};
 use version_compare::Cmp;
@@ -96,19 +96,19 @@ use crate::builder::cargo_target_tmpdir;
 use crate::user_defaults;
 use crate::Builder;
 use sum_tree::SeekBias;
-use warp::integration_testing::terminal::assert_focused_editor_in_tab;
-use warp::integration_testing::{
+use yarp::integration_testing::terminal::assert_focused_editor_in_tab;
+use yarp::integration_testing::{
     settings::assert_theme_chooser_contains,
     tab::{assert_pane_title, assert_tab_title},
 };
-use warp::settings::CtrlTabBehavior;
-use warp::terminal::keys_settings::KeysSettings;
-use warp::terminal::{
+use yarp::settings::CtrlTabBehavior;
+use yarp::terminal::keys_settings::KeysSettings;
+use yarp::terminal::{
     model::{blocks::BlockHeightSummary, terminal_model::BlockIndex},
     view::TerminalViewState,
 };
-use warp::workflows::categories::CategoriesView;
-use warp::{
+use yarp::workflows::categories::CategoriesView;
+use yarp::{
     appearance::Appearance,
     cmd_or_ctrl_shift,
     integration_testing::{
@@ -168,8 +168,8 @@ use warp::{
     },
 };
 
-use warp::terminal::view::ALIAS_EXPANSION_BANNER_SEEN_KEY;
-use warp::{
+use yarp::terminal::view::ALIAS_EXPANSION_BANNER_SEEN_KEY;
+use yarp::{
     features::FeatureFlag,
     integration_testing::{
         find::{Find, FindWithinBlockState},
@@ -180,13 +180,13 @@ use warp::{
         window::add_and_save_window,
     },
 };
-use warp::{
+use yarp::{
     integration_testing::warp_drive::{
         assert_is_left_panel_open, assert_warp_drive_is_closed, assert_warp_drive_is_open,
     },
     settings::CompletionsOpenWhileTyping,
 };
-use warp::{
+use yarp::{
     integration_testing::{
         self,
         input::{input_contains_string, input_is_empty},
@@ -196,11 +196,11 @@ use warp::{
     },
     settings::MonospaceFontSize,
 };
-use warp::{
+use yarp::{
     integration_testing::{assertions::join_a_workspace, view_getters::single_terminal_view},
     terminal::view::TerminalAction,
 };
-use warp::{
+use yarp::{
     integration_testing::{
         command_palette::{
             close_command_palette, open_command_palette, open_command_palette_and_run_action,
@@ -210,11 +210,11 @@ use warp::{
     },
     pane_group::AGENT_MODE_PANE_DEFAULT_MINIMUM_WIDTH,
 };
-use warp::{
+use yarp::{
     integration_testing::{terminal::util::ExactLine, workspace::assert_tab_count},
     terminal::available_shells::AvailableShells,
 };
-use warp::{
+use yarp::{
     integration_testing::{
         terminal::{
             assert_active_block_output, assert_alt_grid_active, assert_alt_screen_output,
@@ -225,8 +225,8 @@ use warp::{
     },
     workspace::WorkspaceAction,
 };
-use warp::{settings_view::SettingsAction, terminal::block_list_viewport::ScrollLines};
-use warp::{
+use yarp::{settings_view::SettingsAction, terminal::block_list_viewport::ScrollLines};
+use yarp::{
     settings_view::{keybindings::KeybindingsView, SettingsSection, SettingsView},
     terminal::{
         input::{Input, InputSuggestionsMode},
@@ -2053,7 +2053,7 @@ pub fn test_add_and_close_session() -> Builder {
                                     .expect("pane at index 0 is a terminal pane")
                                     .as_ref(ctx)
                                     .as_any()
-                                    .downcast_ref::<warp::terminal::local_tty::TerminalManager>()
+                                    .downcast_ref::<yarp::terminal::local_tty::TerminalManager>()
                                     .expect("terminal pane at index 0 contains a local session")
                                     .pid()
                                     .expect("shell should be spawned")

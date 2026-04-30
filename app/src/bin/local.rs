@@ -22,7 +22,7 @@ fn main() -> Result<()> {
 
     ChannelState::set(state);
 
-    warp::run()
+    yarp::run()
 }
 
 // If we're not using an external plist, embed the following as the Info.plist.

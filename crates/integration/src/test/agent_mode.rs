@@ -8,7 +8,7 @@ use crate::{util::skip_if_powershell_core_2303, Builder};
 use lazy_static::lazy_static;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use settings::ToggleableSetting;
-use warp::{
+use yarp::{
     cmd_or_ctrl_shift,
     features::FeatureFlag,
     integration_testing::{

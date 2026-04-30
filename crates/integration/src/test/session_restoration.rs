@@ -1,5 +1,5 @@
 use settings::{RespectUserSyncSetting, SyncToCloud};
-use warp::{
+use yarp::{
     features::FeatureFlag,
     integration_testing::{
         self,

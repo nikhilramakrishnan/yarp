@@ -1,8 +1,8 @@
 use std::time::Duration;
-use warp::integration_testing::workflow::{
+use yarp::integration_testing::workflow::{
     assert_no_team_workflow_pane_open, assert_open_team_workflow_pane_count_equals,
 };
-use warp::{
+use yarp::{
     integration_testing::{
         self,
         assertions::{go_offline, go_online, join_a_workspace},
