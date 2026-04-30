@@ -102,7 +102,7 @@ The existing `render_terminal_primary_line` and `render_terminal_secondary_line`
 `app/src/workspace/view/vertical_tabs.rs` — rewrite the `else` branch in `render_pane_row` (line 739):
 
 New structure:
-1. **Primary row**: `Flex::row` with kind icon (12px) + title text. For code panes, resolve the icon via `crate::code::icon_from_file_path` on the title string (which is the file path), falling back to `WarpIcon::Code2.to_warpui_icon(sub_text_color)`. For other types, use `TypedPane::icon().to_warpui_icon(sub_text_color)`.
+1. **Primary row**: `Flex::row` with kind icon (12px) + title text. For code panes, resolve the icon via `crate::code::icon_from_file_path` on the title string (which is the file path), falling back to `WarpIcon::Code2.to_yarpui_icon(sub_text_color)`. For other types, use `TypedPane::icon().to_yarpui_icon(sub_text_color)`.
 
 2. **Secondary row** (if non-empty subtitle): subtitle in sub text color.
 

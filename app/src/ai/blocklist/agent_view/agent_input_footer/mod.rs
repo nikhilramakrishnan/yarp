@@ -1364,7 +1364,7 @@ impl AgentInputFooter {
                     .unwrap_or_else(|| appearance.theme().foreground().into_solid());
                 left_buttons.add_child(
                     Container::new(
-                        ConstrainedBox::new(icon.to_warpui_icon(Fill::Solid(icon_color)).finish())
+                        ConstrainedBox::new(icon.to_yarpui_icon(Fill::Solid(icon_color)).finish())
                             .with_width(cli_icon_size)
                             .with_height(cli_icon_size)
                             .finish(),
@@ -2098,7 +2098,7 @@ fn render_ftu_callout(
         .with_child(
             ConstrainedBox::new(
                 Icon::CalloutTriangleBorderDown
-                    .to_warpui_icon(Fill::Solid(theme.accent().into_solid()))
+                    .to_yarpui_icon(Fill::Solid(theme.accent().into_solid()))
                     .finish(),
             )
             .with_width(24.)
@@ -2108,7 +2108,7 @@ fn render_ftu_callout(
         .with_child(
             ConstrainedBox::new(
                 Icon::CalloutTriangleFillDown
-                    .to_warpui_icon(background)
+                    .to_yarpui_icon(background)
                     .finish(),
             )
             .with_width(24.)

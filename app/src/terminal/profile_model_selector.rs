@@ -1286,7 +1286,7 @@ impl ProfileModelSelector {
         let (vertical_padding, horizontal_padding) = self.get_padding_values(scaled_font_size);
 
         let profile_icon = Icon::Psychology
-            .to_warpui_icon(Fill::Solid(text_color))
+            .to_yarpui_icon(Fill::Solid(text_color))
             .finish();
 
         let max_label_width = calculate_max_profile_name_width(appearance);
@@ -1417,7 +1417,7 @@ impl ProfileModelSelector {
         let mut content = Flex::row().with_cross_axis_alignment(CrossAxisAlignment::Center);
         if is_lrc {
             let terminal_icon = Icon::Terminal
-                .to_warpui_icon(Fill::Solid(text_color))
+                .to_yarpui_icon(Fill::Solid(text_color))
                 .finish();
             content = content.with_child(
                 Container::new(
@@ -1438,7 +1438,7 @@ impl ProfileModelSelector {
         // (when enabled, clicking opens the inline model selector instead of a dropdown).
         if has_edit_access && !FeatureFlag::InlineMenuHeaders.is_enabled() {
             let chevron_icon = Icon::ChevronDown
-                .to_warpui_icon(Fill::Solid(text_color))
+                .to_yarpui_icon(Fill::Solid(text_color))
                 .finish();
 
             content = content.with_child(

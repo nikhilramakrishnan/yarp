@@ -154,7 +154,7 @@ impl View for TerminalViewZeroStateBlock {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::Yarp
-                            .to_warpui_icon(theme.main_text_color(theme.background()))
+                            .to_yarpui_icon(theme.main_text_color(theme.background()))
                             .finish(),
                     )
                     .with_height(title_font_size)

@@ -407,10 +407,10 @@ impl CreateApiKeyModal {
             "Copy"
         };
         let copy_icon = if self.raw_key_copied {
-            yarp_core::ui::icons::Icon::Check.to_warpui_icon(appearance.theme().background())
+            yarp_core::ui::icons::Icon::Check.to_yarpui_icon(appearance.theme().background())
         } else {
             yarp_core::ui::icons::Icon::Copy
-                .to_warpui_icon(appearance.theme().active_ui_text_color())
+                .to_yarpui_icon(appearance.theme().active_ui_text_color())
         };
         let mut copy_button_builder = appearance
             .ui_builder()

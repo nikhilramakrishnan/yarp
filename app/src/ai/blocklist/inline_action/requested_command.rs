@@ -752,7 +752,7 @@ impl RequestedCommandView {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::Info
-                                .to_warpui_icon(
+                                .to_yarpui_icon(
                                     blended_colors::text_sub(theme, theme.surface_1()).into(),
                                 )
                                 .finish(),

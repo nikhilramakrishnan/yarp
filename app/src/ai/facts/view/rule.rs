@@ -591,7 +591,7 @@ impl RuleView {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::Info
-                                .to_warpui_icon(
+                                .to_yarpui_icon(
                                     appearance
                                         .theme()
                                         .sub_text_color(appearance.theme().background()),

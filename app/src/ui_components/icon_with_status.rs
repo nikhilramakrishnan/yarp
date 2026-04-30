@@ -58,7 +58,7 @@ pub(crate) fn render_icon_with_status(
 
     match variant {
         IconWithStatusVariant::Neutral { icon, icon_color } => {
-            let inner = ConstrainedBox::new(icon.to_warpui_icon(icon_color).finish())
+            let inner = ConstrainedBox::new(icon.to_yarpui_icon(icon_color).finish())
                 .with_width(sizing.icon_size)
                 .with_height(sizing.icon_size)
                 .finish();
@@ -90,7 +90,7 @@ pub(crate) fn render_icon_with_status(
                 WarpIcon::Oz
             };
             let inner = ConstrainedBox::new(
-                icon.to_warpui_icon(theme.main_text_color(theme.background()))
+                icon.to_yarpui_icon(theme.main_text_color(theme.background()))
                     .finish(),
             )
             .with_width(sizing.icon_size)
@@ -119,10 +119,10 @@ pub(crate) fn render_icon_with_status(
             let icon_element = agent
                 .icon()
                 .map(|icon| {
-                    icon.to_warpui_icon(WarpThemeFill::Solid(icon_color))
+                    icon.to_yarpui_icon(WarpThemeFill::Solid(icon_color))
                         .finish()
                 })
-                .unwrap_or_else(|| WarpIcon::Terminal.to_warpui_icon(sub_text).finish());
+                .unwrap_or_else(|| WarpIcon::Terminal.to_yarpui_icon(sub_text).finish());
             let inner = ConstrainedBox::new(icon_element)
                 .with_width(sizing.icon_size)
                 .with_height(sizing.icon_size)
@@ -157,7 +157,7 @@ fn render_with_optional_status_badge(
         return circle;
     };
     let (icon, color) = status.status_icon_and_color(theme);
-    let badge_icon = ConstrainedBox::new(icon.to_warpui_icon(WarpThemeFill::Solid(color)).finish())
+    let badge_icon = ConstrainedBox::new(icon.to_yarpui_icon(WarpThemeFill::Solid(color)).finish())
         .with_width(sizing.badge_icon_size)
         .with_height(sizing.badge_icon_size)
         .finish();

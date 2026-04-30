@@ -693,13 +693,13 @@ pub fn render_citation(
             )
         }
         AIAgentCitation::WarpDocumentation { .. } => {
-            let icon = Icon::Yarp.to_warpui_icon(theme.foreground()).finish();
+            let icon = Icon::Yarp.to_yarpui_icon(theme.foreground()).finish();
             let name = String::from("Yarp Docs");
             (Some(icon), name)
         }
         AIAgentCitation::WebPage { url } => {
             let icon = Icon::LinkExternal
-                .to_warpui_icon(theme.foreground())
+                .to_yarpui_icon(theme.foreground())
                 .finish();
             let name = url.clone();
             (Some(icon), name)

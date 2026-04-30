@@ -620,13 +620,13 @@ impl From<Icon> for &'static str {
 }
 
 impl Icon {
-    pub fn to_warpui_icon(self, color: Fill) -> WarpUiIcon {
+    pub fn to_yarpui_icon(self, color: Fill) -> WarpUiIcon {
         WarpUiIcon::new(self.into(), color.into_solid())
     }
 
     pub fn icon_for_key(key: &str) -> Option<WarpUiIcon> {
         match key {
-            "⏎" => Some(Self::CornerDownLeft.to_warpui_icon(Fill::black())),
+            "⏎" => Some(Self::CornerDownLeft.to_yarpui_icon(Fill::black())),
             _ => None,
         }
     }

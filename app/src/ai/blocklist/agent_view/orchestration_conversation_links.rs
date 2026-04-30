@@ -179,7 +179,7 @@ pub(crate) fn conversation_navigation_card_with_icon(
         if let Some((icon, color)) = icon {
             row.add_child(
                 Container::new(
-                    ConstrainedBox::new(icon.to_warpui_icon(Fill::Solid(color)).finish())
+                    ConstrainedBox::new(icon.to_yarpui_icon(Fill::Solid(color)).finish())
                         .with_width(16.)
                         .with_height(16.)
                         .finish(),
@@ -199,7 +199,7 @@ pub(crate) fn conversation_navigation_card_with_icon(
             Container::new(
                 ConstrainedBox::new(
                     Icon::ChevronRight
-                        .to_warpui_icon(blended_colors::text_sub(theme, theme.background()).into())
+                        .to_yarpui_icon(blended_colors::text_sub(theme, theme.background()).into())
                         .finish(),
                 )
                 .with_height(20.)

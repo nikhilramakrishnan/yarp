@@ -57,7 +57,7 @@ fn render_upgrade_footer(
 
     let info_icon = ConstrainedBox::new(
         yarp_core::ui::Icon::Info
-            .to_warpui_icon(text_color)
+            .to_yarpui_icon(text_color)
             .finish(),
     )
     .with_width(16.)

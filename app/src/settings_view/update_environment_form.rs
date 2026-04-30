@@ -1987,7 +1987,7 @@ impl UpdateEnvironmentForm {
                         .with_child(
                             ConstrainedBox::new(
                                 Icon::Github
-                                    .to_warpui_icon(theme.active_ui_text_color())
+                                    .to_yarpui_icon(theme.active_ui_text_color())
                                     .finish(),
                             )
                             .with_width(icon_size)
@@ -2104,7 +2104,7 @@ impl UpdateEnvironmentForm {
                             .with_child(
                                 ConstrainedBox::new(
                                     Icon::Refresh
-                                        .to_warpui_icon(theme.active_ui_text_color())
+                                        .to_yarpui_icon(theme.active_ui_text_color())
                                         .finish(),
                                 )
                                 .with_width(icon_size)
@@ -3085,7 +3085,7 @@ impl UpdateEnvironmentForm {
                 };
 
                 let icon_size = appearance.ui_font_size();
-                let icon = ConstrainedBox::new(Icon::Lightbulb.to_warpui_icon(text_fill).finish())
+                let icon = ConstrainedBox::new(Icon::Lightbulb.to_yarpui_icon(text_fill).finish())
                     .with_width(icon_size)
                     .with_height(icon_size)
                     .finish();

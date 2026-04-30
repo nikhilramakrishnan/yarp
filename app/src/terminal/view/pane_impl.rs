@@ -304,7 +304,7 @@ impl TerminalView {
                 Some(
                     ConstrainedBox::new(
                         icons::Icon::Sharing
-                            .to_warpui_icon(shared_session_indicator_color(appearance).into())
+                            .to_yarpui_icon(shared_session_indicator_color(appearance).into())
                             .finish(),
                     )
                     .with_height(appearance.ui_font_size())
@@ -800,7 +800,7 @@ impl TerminalView {
                 } else {
                     WarpIcon::Oz
                 }
-                .to_warpui_icon(blended_colors::text_sub(theme, theme.background()).into())
+                .to_yarpui_icon(blended_colors::text_sub(theme, theme.background()).into())
                 .finish(),
             )
             .with_height(appearance.ui_font_size())
@@ -828,7 +828,7 @@ impl TerminalView {
             return Some(
                 ConstrainedBox::new(
                     icons::Icon::AlertTriangle
-                        .to_warpui_icon(appearance.theme().ui_error_color().into())
+                        .to_yarpui_icon(appearance.theme().ui_error_color().into())
                         .finish(),
                 )
                 .with_height(font_size)
@@ -841,7 +841,7 @@ impl TerminalView {
         if let Some(shell_indicator_type) = self.shell_indicator_type {
             let shell_indicator_icon = shell_indicator_type
                 .to_icon()
-                .to_warpui_icon(
+                .to_yarpui_icon(
                     blended_colors::text_sub(appearance.theme(), appearance.theme().background())
                         .into(),
                 )
@@ -871,7 +871,7 @@ impl TerminalView {
                 .clone(),
             move |state| {
                 let mut stack = Stack::new().with_child(
-                    ConstrainedBox::new(icons::Icon::OzCloud.to_warpui_icon(icon_color).finish())
+                    ConstrainedBox::new(icons::Icon::OzCloud.to_yarpui_icon(icon_color).finish())
                         .with_height(font_size * 1.5)
                         .with_width(font_size * 1.5)
                         .finish(),

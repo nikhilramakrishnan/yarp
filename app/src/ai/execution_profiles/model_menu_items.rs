@@ -91,7 +91,7 @@ fn make_item_fields<A: Action + Clone>(
                 let icon_container = Container::new(
                     ConstrainedBox::new(if is_using_api_key {
                         Icon::Key
-                            .to_warpui_icon(appearance.theme().foreground())
+                            .to_yarpui_icon(appearance.theme().foreground())
                             .finish()
                     } else {
                         Empty::new().finish()

@@ -1992,7 +1992,7 @@ impl AgentManagementView {
 
         let loading_icon = ConstrainedBox::new(
             Icon::Refresh
-                .to_warpui_icon(theme.sub_text_color(theme.surface_1()))
+                .to_yarpui_icon(theme.sub_text_color(theme.surface_1()))
                 .finish(),
         )
         .with_height(icon_size)
@@ -2036,7 +2036,7 @@ impl AgentManagementView {
 
         let loading_icon = ConstrainedBox::new(
             Icon::Loading
-                .to_warpui_icon(Fill::Solid(internal_colors::neutral_6(theme)))
+                .to_yarpui_icon(Fill::Solid(internal_colors::neutral_6(theme)))
                 .finish(),
         )
         .with_height(appearance.ui_font_size() + 2.)
@@ -2096,7 +2096,7 @@ impl AgentManagementView {
         let appearance = Appearance::as_ref(app);
         let icon = ConstrainedBox::new(
             Icon::FilterOff
-                .to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+                .to_yarpui_icon(appearance.theme().nonactive_ui_text_color())
                 .finish(),
         )
         .with_width(24.)

@@ -1140,11 +1140,11 @@ impl BlockListElement {
             let icon = Container::new(
                 ConstrainedBox::new(if FeatureFlag::AgentView.is_enabled() {
                     UIIcon::Icon::Paperclip
-                        .to_warpui_icon(icon_color.into())
+                        .to_yarpui_icon(icon_color.into())
                         .finish()
                 } else if FeatureFlag::AgentMode.is_enabled() {
                     UIIcon::Icon::Stars
-                        .to_warpui_icon(icon_color.into())
+                        .to_yarpui_icon(icon_color.into())
                         .finish()
                 } else {
                     Icon::new(AI_ASSISTANT_SVG_PATH, icon_color).finish()
@@ -1207,7 +1207,7 @@ impl BlockListElement {
             let icon = Container::new(
                 ConstrainedBox::new(
                     ui_components::icons::Icon::Save
-                        .to_warpui_icon(icon_color.into())
+                        .to_yarpui_icon(icon_color.into())
                         .finish(),
                 )
                 .with_height(16.)

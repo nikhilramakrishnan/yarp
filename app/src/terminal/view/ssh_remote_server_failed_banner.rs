@@ -60,7 +60,7 @@ impl View for SshRemoteServerFailedBanner {
 
         // Alert-circle icon
         let icon = Container::new(
-            ConstrainedBox::new(Icon::AlertCircle.to_warpui_icon(fg_color.into()).finish())
+            ConstrainedBox::new(Icon::AlertCircle.to_yarpui_icon(fg_color.into()).finish())
                 .with_width(16.)
                 .with_height(16.)
                 .finish(),
@@ -93,7 +93,7 @@ impl View for SshRemoteServerFailedBanner {
         // Close (X) button
         let close_icon_color = muted_color;
         let close = Hoverable::new(self.close_mouse_state.clone(), move |_| {
-            ConstrainedBox::new(Icon::X.to_warpui_icon(close_icon_color.into()).finish())
+            ConstrainedBox::new(Icon::X.to_yarpui_icon(close_icon_color.into()).finish())
                 .with_width(16.)
                 .with_height(16.)
                 .finish()

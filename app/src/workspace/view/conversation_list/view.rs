@@ -649,7 +649,7 @@ fn render_zero_state(
 
     let chat_icon = ConstrainedBox::new(
         Icon::ChatDashed
-            .to_warpui_icon(theme.sub_text_color(theme.background()))
+            .to_yarpui_icon(theme.sub_text_color(theme.background()))
             .finish(),
     )
     .with_width(24.)
@@ -693,7 +693,7 @@ fn render_zero_state(
                 .with_child(
                     ConstrainedBox::new(
                         Icon::Plus
-                            .to_warpui_icon(theme.main_text_color(theme.background()))
+                            .to_yarpui_icon(theme.main_text_color(theme.background()))
                             .finish(),
                     )
                     .with_width(14.)
@@ -776,7 +776,7 @@ fn render_section_header(
     };
     let chevron = ConstrainedBox::new(
         chevron_icon
-            .to_warpui_icon(theme.sub_text_color(theme.background()))
+            .to_yarpui_icon(theme.sub_text_color(theme.background()))
             .finish(),
     )
     .with_width(12.)

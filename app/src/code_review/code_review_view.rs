@@ -3953,7 +3953,7 @@ impl CodeReviewView {
 
         let header_text = "Loading open changes...";
         let loading_icon = Icon::Loading
-            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                 internal_colors::neutral_6(theme),
             ))
             .finish();
@@ -4091,7 +4091,7 @@ impl CodeReviewView {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::AlertTriangle
-                            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+                            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                                 internal_colors::neutral_6(theme),
                             ))
                             .finish(),
@@ -4149,7 +4149,7 @@ impl CodeReviewView {
                         .with_text_and_icon_label(TextAndIcon::new(
                             TextAndIconAlignment::IconFirst,
                             " Retry".to_string(),
-                            Icon::Refresh.to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+                            Icon::Refresh.to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                                 theme.main_text_color(theme.background()).into(),
                             )),
                             MainAxisSize::Min,
@@ -4201,7 +4201,7 @@ impl CodeReviewView {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::FolderClosed
-                            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+                            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                                 internal_colors::neutral_6(theme),
                             ))
                             .finish(),
@@ -4281,7 +4281,7 @@ impl CodeReviewView {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::FolderClosed
-                            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+                            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                                 internal_colors::neutral_6(theme),
                             ))
                             .finish(),
@@ -4450,7 +4450,7 @@ impl CodeReviewView {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::Diff
-                            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+                            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                                 internal_colors::neutral_6(theme),
                             ))
                             .finish(),
@@ -4777,7 +4777,7 @@ impl CodeReviewView {
 
         // Add file icon
         let file_icon = Icon::File
-            .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(
+            .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(
                 internal_colors::neutral_6(theme),
             ))
             .finish();

@@ -2279,7 +2279,7 @@ impl Workspace {
             |hover_state| {
                 let icon = ConstrainedBox::new(
                     icons::Icon::X
-                        .to_warpui_icon(Fill::Solid(PhenomenonStyle::modal_close_button_text()))
+                        .to_yarpui_icon(Fill::Solid(PhenomenonStyle::modal_close_button_text()))
                         .finish(),
                 )
                 .with_width(16.)
@@ -8511,7 +8511,7 @@ impl Workspace {
                 let theme = appearance.theme();
                 let search_icon = ConstrainedBox::new(
                     icons::Icon::SearchSmall
-                        .to_warpui_icon(theme.sub_text_color(theme.surface_2()))
+                        .to_yarpui_icon(theme.sub_text_color(theme.surface_2()))
                         .finish(),
                 )
                 .with_width(16.)
@@ -16715,7 +16715,7 @@ impl Workspace {
         };
 
         // Build the button content: Diff icon + optional diff stats
-        let icon = ConstrainedBox::new(icons::Icon::Diff.to_warpui_icon(font_color).finish())
+        let icon = ConstrainedBox::new(icons::Icon::Diff.to_yarpui_icon(font_color).finish())
             .with_width(16.)
             .with_height(16.)
             .finish();
@@ -16871,7 +16871,7 @@ impl Workspace {
                     .with_spacing(10.)
                     .with_child(
                         ConstrainedBox::new(
-                            icons::Icon::Search.to_warpui_icon(text_color).finish(),
+                            icons::Icon::Search.to_yarpui_icon(text_color).finish(),
                         )
                         .with_width(16.)
                         .with_height(16.)
@@ -16947,7 +16947,7 @@ impl Workspace {
             let warp_logo = Hoverable::new(self.mouse_states.warp_logo.clone(), |_state| {
                 ConstrainedBox::new(
                     yarp_core::ui::Icon::Yarp
-                        .to_warpui_icon(appearance.theme().foreground())
+                        .to_yarpui_icon(appearance.theme().foreground())
                         .finish(),
                 )
                 .with_height(24.)
@@ -17906,7 +17906,7 @@ impl Workspace {
         let icon = ConstrainedBox::new(
             Container::new(
                 icons::Icon::CloudOffline
-                    .to_warpui_icon(appearance.theme().foreground())
+                    .to_yarpui_icon(appearance.theme().foreground())
                     .finish(),
             )
             .with_uniform_padding(3.)
@@ -18422,7 +18422,7 @@ impl Workspace {
 
         // Left side: alert icon + bold heading + regular description, all inline.
         let icon =
-            ConstrainedBox::new(Icon::AlertCircle.to_warpui_icon(text_color.into()).finish())
+            ConstrainedBox::new(Icon::AlertCircle.to_yarpui_icon(text_color.into()).finish())
                 .with_width(16.)
                 .with_height(16.)
                 .finish();
@@ -18523,7 +18523,7 @@ impl Workspace {
                                     // `x-close.svg`), matching the Figma
                                     // design. `Icon::XCircle` wraps the x in
                                     // a circle which is not what we want.
-                                    Icon::X.to_warpui_icon(text_color.into()).finish(),
+                                    Icon::X.to_yarpui_icon(text_color.into()).finish(),
                                 )
                                 .with_width(16.)
                                 .with_height(16.)
@@ -18586,7 +18586,7 @@ impl Workspace {
             if let Some(icon) = icon {
                 row.add_child(
                     Container::new(
-                        ConstrainedBox::new(icon.to_warpui_icon(text_color.into()).finish())
+                        ConstrainedBox::new(icon.to_yarpui_icon(text_color.into()).finish())
                             .with_width(14.)
                             .with_height(14.)
                             .finish(),

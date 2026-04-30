@@ -93,7 +93,7 @@ For code panes with a single tab, render normally using the title from `PaneConf
 
 #### Kind icon for code panes
 
-Use `crate::code::icon_from_file_path` to attempt to get a language-specific icon (Rust, TypeScript, Python, etc.) from the active file's path. If `icon_from_file_path` returns `None`, fall back to the generic `WarpIcon::Code2` icon rendered as a `to_warpui_icon` in sub text color.
+Use `crate::code::icon_from_file_path` to attempt to get a language-specific icon (Rust, TypeScript, Python, etc.) from the active file's path. If `icon_from_file_path` returns `None`, fall back to the generic `WarpIcon::Code2` icon rendered as a `to_yarpui_icon` in sub text color.
 
 For non-code, non-terminal panes (Notebook, Settings, Workflow, etc.), use the existing `TypedPane::icon()` value.
 

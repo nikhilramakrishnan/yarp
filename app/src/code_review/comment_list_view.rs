@@ -691,7 +691,7 @@ impl CommentListView {
                 };
 
                 let icon_element = icon
-                    .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(text_sub(
+                    .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(text_sub(
                         theme,
                         neutral_1(theme),
                     )))
@@ -835,7 +835,7 @@ impl CommentListView {
                 };
 
                 let icon_element = icon
-                    .to_warpui_icon(yarp_core::ui::theme::Fill::Solid(text_sub(
+                    .to_yarpui_icon(yarp_core::ui::theme::Fill::Solid(text_sub(
                         theme,
                         neutral_3(theme),
                     )))

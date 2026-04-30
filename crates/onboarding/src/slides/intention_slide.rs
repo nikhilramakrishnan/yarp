@@ -73,7 +73,7 @@ impl IntentionSlide {
         let theme = appearance.theme();
 
         let logo_fill = internal_colors::fg_overlay_4(theme);
-        let logo = ConstrainedBox::new(Icon::WarpLogoLight.to_warpui_icon(logo_fill).finish())
+        let logo = ConstrainedBox::new(Icon::WarpLogoLight.to_yarpui_icon(logo_fill).finish())
             .with_width(64.)
             .with_height(64.)
             .finish();
@@ -216,7 +216,7 @@ impl IntentionSlide {
                 .iter()
                 .enumerate()
             {
-                let el = ConstrainedBox::new(icon.to_warpui_icon(icon_fill).finish())
+                let el = ConstrainedBox::new(icon.to_yarpui_icon(icon_fill).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish();
@@ -260,7 +260,7 @@ impl IntentionSlide {
                 .with_main_axis_size(MainAxisSize::Min)
                 .with_cross_axis_alignment(CrossAxisAlignment::Start);
             for &item in items {
-                let icon_el = ConstrainedBox::new(Icon::Check.to_warpui_icon(check_fill).finish())
+                let icon_el = ConstrainedBox::new(Icon::Check.to_yarpui_icon(check_fill).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish();

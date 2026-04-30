@@ -1082,22 +1082,22 @@ impl<'a> TabComponent<'a> {
             Indicator::None => None,
             Indicator::Synced => Some(
                 Icon::LinkHorizontal
-                    .to_warpui_icon(self.styles.synced_input_indicator_color.into())
+                    .to_yarpui_icon(self.styles.synced_input_indicator_color.into())
                     .finish(),
             ),
             Indicator::Error => Some(
                 Icon::AlertTriangle
-                    .to_warpui_icon(self.styles.error_color.into())
+                    .to_yarpui_icon(self.styles.error_color.into())
                     .finish(),
             ),
             Indicator::Shared => Some(
                 Icon::Sharing
-                    .to_warpui_icon(self.styles.sharing_color.into())
+                    .to_yarpui_icon(self.styles.sharing_color.into())
                     .finish(),
             ),
             Indicator::Maximized => Some(
                 Icon::Maximize
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         self.styles
                             .default
                             .font_color
@@ -1109,7 +1109,7 @@ impl<'a> TabComponent<'a> {
             Indicator::Shell(shell_indicator_type) => Some(
                 shell_indicator_type
                     .to_icon()
-                    .to_warpui_icon(internal_colors::neutral_5(self.appearance.theme()).into())
+                    .to_yarpui_icon(internal_colors::neutral_5(self.appearance.theme()).into())
                     .finish(),
             ),
             Indicator::Agent {
@@ -1124,7 +1124,7 @@ impl<'a> TabComponent<'a> {
                     }
                 } else {
                     let icon_color = self.appearance.theme().nonactive_ui_text_color();
-                    Some(Icon::Oz.to_warpui_icon(icon_color).finish())
+                    Some(Icon::Oz.to_yarpui_icon(icon_color).finish())
                 }
             }
             Indicator::AmbientAgent => {
@@ -1139,7 +1139,7 @@ impl<'a> TabComponent<'a> {
                 Some(
                     Hoverable::new(mouse_state, move |state| {
                         let mut stack = Stack::new()
-                            .with_child(Icon::OzCloud.to_warpui_icon(icon_color.into()).finish());
+                            .with_child(Icon::OzCloud.to_yarpui_icon(icon_color.into()).finish());
 
                         if state.is_hovered() {
                             let tooltip = ui_builder
@@ -1287,7 +1287,7 @@ impl<'a> TabComponent<'a> {
             } else {
                 // Fallback to terminal icon if no indicator is present
                 Icon::Terminal
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         self.styles
                             .default
                             .font_color
@@ -1515,7 +1515,7 @@ impl UiComponent for TabComponent<'_> {
 
                         if let Some(directory) = &tooltip_directory_clone {
                             let folder_icon = Icon::Folder
-                                .to_warpui_icon(ThemeFill::Solid(font_color))
+                                .to_yarpui_icon(ThemeFill::Solid(font_color))
                                 .finish();
 
                             let directory_row = Flex::row()
@@ -1548,7 +1548,7 @@ impl UiComponent for TabComponent<'_> {
 
                         if let Some(branch) = &tooltip_git_branch_clone {
                             let branch_icon = Icon::GitBranch
-                                .to_warpui_icon(ThemeFill::Solid(font_color))
+                                .to_yarpui_icon(ThemeFill::Solid(font_color))
                                 .finish();
 
                             let branch_row = Flex::row()

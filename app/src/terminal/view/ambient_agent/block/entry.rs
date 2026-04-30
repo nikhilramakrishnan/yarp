@@ -155,7 +155,7 @@ impl AmbientAgentEntryBlock {
         };
 
         Container::new(
-            ConstrainedBox::new(icon.to_warpui_icon(color.into()).finish())
+            ConstrainedBox::new(icon.to_yarpui_icon(color.into()).finish())
                 .with_width(STATUS_ICON_SIZE)
                 .with_height(STATUS_ICON_SIZE)
                 .finish(),
@@ -232,7 +232,7 @@ impl View for AmbientAgentEntryBlock {
             .with_child(
                 ConstrainedBox::new(
                     Icon::ChevronRight
-                        .to_warpui_icon(theme.sub_text_color(theme.background()))
+                        .to_yarpui_icon(theme.sub_text_color(theme.background()))
                         .finish(),
                 )
                 .with_height(20.)

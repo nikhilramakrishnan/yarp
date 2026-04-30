@@ -834,7 +834,7 @@ impl<A: Action + Clone> MenuItemFields<A> {
                 Shrinkable::new(
                     1.,
                     Container::new(
-                        ConstrainedBox::new(icon.to_warpui_icon(icon_color).finish())
+                        ConstrainedBox::new(icon.to_yarpui_icon(icon_color).finish())
                             .with_width(icon_size)
                             .with_height(icon_size)
                             .finish(),

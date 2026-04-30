@@ -295,7 +295,7 @@ impl OpenWarpLaunchModal {
     fn render_feature_row(item: &FeatureItem, appearance: &Appearance) -> Box<dyn Element> {
         let icon_el = ConstrainedBox::new(
             item.icon
-                .to_warpui_icon(Fill::Solid(
+                .to_yarpui_icon(Fill::Solid(
                     PhenomenonStyle::modal_feature_description_text(),
                 ))
                 .finish(),

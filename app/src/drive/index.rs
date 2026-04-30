@@ -1314,7 +1314,7 @@ impl DriveIndex {
         let icon = Container::new(
             ConstrainedBox::new(
                 Icon::CreateTeam
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         appearance
                             .theme()
                             .main_text_color(appearance.theme().surface_1()),
@@ -1801,7 +1801,7 @@ impl DriveIndex {
     fn render_trash_row(&self, appearance: &Appearance, _: &AppContext) -> Box<dyn Element> {
         let font_color = self.font_color_based_on_focused_state(appearance, WarpDriveItemId::Trash);
         let icon = Container::new(
-            ConstrainedBox::new(Icon::Trash.to_warpui_icon(font_color.into()).finish())
+            ConstrainedBox::new(Icon::Trash.to_yarpui_icon(font_color.into()).finish())
                 .with_width(SECTION_HEADER_FONT_SIZE)
                 .with_height(SECTION_HEADER_FONT_SIZE)
                 .finish(),
@@ -2042,7 +2042,7 @@ impl DriveIndex {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let rendered_icon = ConstrainedBox::new(
-            icon.to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+            icon.to_yarpui_icon(appearance.theme().nonactive_ui_text_color())
                 .finish(),
         )
         .with_width(ITEM_FONT_SIZE)
@@ -2384,7 +2384,7 @@ impl DriveIndex {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::CloudOffline
-                                .to_warpui_icon(
+                                .to_yarpui_icon(
                                     appearance
                                         .theme()
                                         .sub_text_color(appearance.theme().surface_2()),
@@ -2600,7 +2600,7 @@ impl DriveIndex {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::Info
-                                .to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+                                .to_yarpui_icon(appearance.theme().nonactive_ui_text_color())
                                 .finish(),
                         )
                         .with_height(15.)
@@ -2937,7 +2937,7 @@ impl DriveIndex {
 
         // This icon should render the same as other WarpDrive icons but with no click or hover states.
         Container::new(
-            ConstrainedBox::new(icon.to_warpui_icon(icon_color).finish())
+            ConstrainedBox::new(icon.to_yarpui_icon(icon_color).finish())
                 .with_width(SECTION_HEADER_FONT_SIZE)
                 .with_height(SECTION_HEADER_FONT_SIZE)
                 .finish(),
@@ -2952,7 +2952,7 @@ impl DriveIndex {
         let loading_icon = Container::new(
             ConstrainedBox::new(
                 Icon::Refresh
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         appearance
                             .theme()
                             .sub_text_color(appearance.theme().surface_1()),
@@ -3940,7 +3940,7 @@ impl DriveIndex {
             |_| {
                 ConstrainedBox::new(
                     Icon::X
-                        .to_warpui_icon(appearance.theme().main_text_color(background_color))
+                        .to_yarpui_icon(appearance.theme().main_text_color(background_color))
                         .finish(),
                 )
                 .with_width(12.)

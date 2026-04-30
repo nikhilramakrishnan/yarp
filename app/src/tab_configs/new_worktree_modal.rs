@@ -365,7 +365,7 @@ impl View for NewWorktreeModal {
             // X close icon
             let close_icon = ConstrainedBox::new(
                 yarp_core::ui::Icon::X
-                    .to_warpui_icon(theme.sub_text_color(theme.background()))
+                    .to_yarpui_icon(theme.sub_text_color(theme.background()))
                     .finish(),
             )
             .with_width(CLOSE_ICON_SIZE)

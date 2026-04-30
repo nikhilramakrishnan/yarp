@@ -940,7 +940,7 @@ impl ConversationDetailsPanel {
             }
         };
 
-        let status_icon = ConstrainedBox::new(icon.to_warpui_icon(color.into()).finish())
+        let status_icon = ConstrainedBox::new(icon.to_yarpui_icon(color.into()).finish())
             .with_width(STATUS_ICON_SIZE)
             .with_height(STATUS_ICON_SIZE)
             .finish();
@@ -997,7 +997,7 @@ impl ConversationDetailsPanel {
 
         let icon = ConstrainedBox::new(
             harness_display::icon_for(harness)
-                .to_warpui_icon(icon_tint)
+                .to_yarpui_icon(icon_tint)
                 .finish(),
         )
         .with_width(16.)
@@ -1040,7 +1040,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
         let sub_color = blended_colors::text_sub(theme, theme.surface_1());
 
-        let icon = ConstrainedBox::new(Icon::Yarp.to_warpui_icon(theme.foreground()).finish())
+        let icon = ConstrainedBox::new(Icon::Yarp.to_yarpui_icon(theme.foreground()).finish())
             .with_width(20.)
             .with_height(20.)
             .finish();

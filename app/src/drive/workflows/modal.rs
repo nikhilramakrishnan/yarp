@@ -1412,7 +1412,7 @@ impl WorkflowModal {
         let workflow_icon = Container::new(
             ConstrainedBox::new(
                 Icon::from(DriveObjectType::Workflow)
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         warp_drive_icon_color(appearance, DriveObjectType::Workflow).into(),
                     )
                     .finish(),
@@ -1710,7 +1710,7 @@ impl WorkflowModal {
             let text_and_icon = TextAndIcon::new(
                 TextAndIconAlignment::TextFirst,
                 label.to_string(),
-                icon.to_warpui_icon(appearance.theme().active_ui_text_color()),
+                icon.to_yarpui_icon(appearance.theme().active_ui_text_color()),
                 MainAxisSize::Min,
                 MainAxisAlignment::Center,
                 vec2f(16., 16.),

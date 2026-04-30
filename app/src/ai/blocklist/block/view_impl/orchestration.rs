@@ -655,7 +655,7 @@ fn render_collapse_chevron(
 
     Some(
         Hoverable::new(toggle_mouse_state, move |_| {
-            ConstrainedBox::new(chevron_icon.to_warpui_icon(text_color).finish())
+            ConstrainedBox::new(chevron_icon.to_yarpui_icon(text_color).finish())
                 .with_width(icon_sz)
                 .with_height(icon_sz)
                 .finish()

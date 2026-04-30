@@ -98,7 +98,7 @@ pub fn render_static_item(props: StaticItemProps<'_>, app: &AppContext) -> Box<d
 
     let icon_color = theme.main_text_color(theme.background());
     let icon = Container::new(
-        ConstrainedBox::new(Icon::Plus.to_warpui_icon(icon_color).finish())
+        ConstrainedBox::new(Icon::Plus.to_yarpui_icon(icon_color).finish())
             .with_width(appearance.ui_font_size())
             .with_height(appearance.ui_font_size())
             .finish(),
@@ -198,7 +198,7 @@ pub fn render_item(props: ItemProps<'_>, app: &AppContext) -> Box<dyn Element> {
     let icon_element: Box<dyn Element> = if conversation.is_ambient_agent_conversation() {
         ConstrainedBox::new(
             Icon::Cloud
-                .to_warpui_icon(theme.sub_text_color(theme.background()))
+                .to_yarpui_icon(theme.sub_text_color(theme.background()))
                 .finish(),
         )
         .with_width(status_element_size)

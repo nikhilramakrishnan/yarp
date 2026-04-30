@@ -741,7 +741,7 @@ impl FileNotebookView {
                             TextAndIcon::new(
                                 TextAndIconAlignment::TextFirst,
                                 "Try again".to_string(),
-                                Icon::Refresh.to_warpui_icon(error_text_color),
+                                Icon::Refresh.to_yarpui_icon(error_text_color),
                                 MainAxisSize::Min,
                                 MainAxisAlignment::Center,
                                 vec2f(16., 16.),

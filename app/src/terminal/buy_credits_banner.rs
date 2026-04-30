@@ -384,7 +384,7 @@ impl BuyCreditsBanner {
         let alert_icon = Container::new(
             ConstrainedBox::new(
                 Icon::AlertCircle
-                    .to_warpui_icon(theme.foreground())
+                    .to_yarpui_icon(theme.foreground())
                     .finish(),
             )
             .with_height(16.)
@@ -505,7 +505,7 @@ impl BuyCreditsBanner {
             Container::new(
                 ConstrainedBox::new(
                     Icon::AlertCircle
-                        .to_warpui_icon(theme.foreground())
+                        .to_yarpui_icon(theme.foreground())
                         .finish(),
                 )
                 .with_height(16.)

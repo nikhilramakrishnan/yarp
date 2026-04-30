@@ -273,7 +273,7 @@ impl SearchItem for ModelSearchItem {
         let icon = self
             .provider_icon
             .unwrap_or(Icon::Oz)
-            .to_warpui_icon(icon_color)
+            .to_yarpui_icon(icon_color)
             .finish();
 
         Container::new(
@@ -332,7 +332,7 @@ impl SearchItem for ModelSearchItem {
 
         if is_using_api_key_for_provider(&self.provider, app) {
             let key_icon =
-                ConstrainedBox::new(Icon::Key.to_warpui_icon(secondary_text_color).finish())
+                ConstrainedBox::new(Icon::Key.to_yarpui_icon(secondary_text_color).finish())
                     .with_width(font_size)
                     .with_height(font_size)
                     .finish();

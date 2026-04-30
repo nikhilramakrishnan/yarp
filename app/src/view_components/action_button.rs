@@ -752,7 +752,7 @@ impl View for ActionButton {
                     })
                     .unwrap_or(Fill::Solid(text_color));
                 row.add_child(
-                    ConstrainedBox::new(icon.to_warpui_icon(icon_fill).finish())
+                    ConstrainedBox::new(icon.to_yarpui_icon(icon_fill).finish())
                         .with_width(icon_size)
                         .with_height(icon_size)
                         .finish(),
@@ -820,7 +820,7 @@ impl View for ActionButton {
                 row.add_child(
                     Container::new(
                         ConstrainedBox::new(
-                            Icon::ChevronDown.to_warpui_icon(text_color.into()).finish(),
+                            Icon::ChevronDown.to_yarpui_icon(text_color.into()).finish(),
                         )
                         .with_width(icon_size)
                         .with_height(icon_size)

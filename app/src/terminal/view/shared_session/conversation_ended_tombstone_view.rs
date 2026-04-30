@@ -349,7 +349,7 @@ impl ConversationEndedTombstoneView {
             Fill::Solid(theme.ansi_fg_green())
         };
         let icon_element = Container::new(
-            ConstrainedBox::new(icon.to_warpui_icon(icon_color).finish())
+            ConstrainedBox::new(icon.to_yarpui_icon(icon_color).finish())
                 .with_height(14.)
                 .with_width(14.)
                 .finish(),

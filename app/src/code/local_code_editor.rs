@@ -2284,7 +2284,7 @@ pub fn render_unsaved_changes_banner(
             Container::new(
                 ConstrainedBox::new(
                     Icon::Warning
-                        .to_warpui_icon(appearance.theme().active_ui_text_color())
+                        .to_yarpui_icon(appearance.theme().active_ui_text_color())
                         .finish(),
                 )
                 .with_height(16.)

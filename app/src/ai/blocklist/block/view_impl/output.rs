@@ -1936,7 +1936,7 @@ fn render_stopped_output(props: Props, app: &AppContext) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder().clone();
 
         let play_icon = Container::new(
-            ConstrainedBox::new(Icon::Play.to_warpui_icon(theme.foreground()).finish())
+            ConstrainedBox::new(Icon::Play.to_yarpui_icon(theme.foreground()).finish())
                 .with_height(appearance.ui_font_size() + 1.)
                 .with_width(appearance.ui_font_size() + 1.)
                 .finish(),
@@ -2832,7 +2832,7 @@ fn render_references_footer(
                 .finish(),
         )
         .with_child(
-            ConstrainedBox::new(chevron.to_warpui_icon(title_row_color).finish())
+            ConstrainedBox::new(chevron.to_yarpui_icon(title_row_color).finish())
                 .with_height(icon_size(app) - 2.)
                 .with_width(icon_size(app) - 2.)
                 .finish(),
@@ -3247,7 +3247,7 @@ fn render_usage_button(props: Props, app: &AppContext) -> Box<dyn Element> {
                 // Expansion icon
                 ConstrainedBox::new(
                     expansion_icon
-                        .to_warpui_icon(
+                        .to_yarpui_icon(
                             appearance
                                 .theme()
                                 .sub_text_color(appearance.theme().background()),
@@ -3412,7 +3412,7 @@ fn render_collapsible_header(
             )
             .with_child(
                 Container::new(
-                    ConstrainedBox::new(chevron_icon.to_warpui_icon(text_color.into()).finish())
+                    ConstrainedBox::new(chevron_icon.to_yarpui_icon(text_color.into()).finish())
                         .with_width(icon_size - 2.)
                         .with_height(icon_size - 2.)
                         .finish(),
@@ -3627,7 +3627,7 @@ fn render_collapsible_debug_output(
         // Chevron icon
         row.add_child(
             Container::new(
-                ConstrainedBox::new(chevron_icon.to_warpui_icon(text_color.into()).finish())
+                ConstrainedBox::new(chevron_icon.to_yarpui_icon(text_color.into()).finish())
                     .with_width(icon_size - 2.)
                     .with_height(icon_size - 2.)
                     .finish(),

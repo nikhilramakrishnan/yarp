@@ -1014,7 +1014,7 @@ impl<T: Action + Clone> View for SearchBar<T> {
             let magnifying_glass = Container::new(
                 ConstrainedBox::new(
                     Icon::Search
-                        .to_warpui_icon(blended_colors::text_sub(theme, theme.surface_2()).into())
+                        .to_yarpui_icon(blended_colors::text_sub(theme, theme.surface_2()).into())
                         .finish(),
                 )
                 .with_height(size)

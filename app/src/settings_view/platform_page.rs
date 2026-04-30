@@ -645,7 +645,7 @@ impl PlatformPageWidget {
                     .with_child(
                         ConstrainedBox::new(
                             Icon::Key
-                                .to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+                                .to_yarpui_icon(appearance.theme().nonactive_ui_text_color())
                                 .finish(),
                         )
                         .with_width(48.)

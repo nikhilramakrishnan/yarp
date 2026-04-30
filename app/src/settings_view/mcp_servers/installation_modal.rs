@@ -269,7 +269,7 @@ impl InstallationModalBody {
                     let mut icon = Container::new(
                         ConstrainedBox::new(
                             Icon::X
-                                .to_warpui_icon(theme.active_ui_text_color())
+                                .to_yarpui_icon(theme.active_ui_text_color())
                                 .finish(),
                         )
                         .with_width(16.)
@@ -411,7 +411,7 @@ impl InstallationModalBody {
     fn render_source_indicator(is_shared: bool, appearance: &Appearance) -> Box<dyn Element> {
         let info_icon = ConstrainedBox::new(
             Icon::Info
-                .to_warpui_icon(appearance.theme().disabled_ui_text_color())
+                .to_yarpui_icon(appearance.theme().disabled_ui_text_color())
                 .finish(),
         )
         .with_width(16.)
@@ -462,7 +462,7 @@ impl InstallationModalBody {
         let corner_down_left_icon = Container::new(
             ConstrainedBox::new(
                 Icon::CornerDownLeft
-                    .to_warpui_icon(appearance.theme().active_ui_text_color())
+                    .to_yarpui_icon(appearance.theme().active_ui_text_color())
                     .finish(),
             )
             .with_width(appearance.monospace_font_size())

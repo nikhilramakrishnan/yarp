@@ -854,7 +854,7 @@ fn render_queue_next_prompt_button(
     };
     let icon_size = get_icon_size(appearance);
     let icon = Container::new(
-        ConstrainedBox::new(Icon::ClockPlus.to_warpui_icon(icon_color).finish())
+        ConstrainedBox::new(Icon::ClockPlus.to_yarpui_icon(icon_color).finish())
             .with_height(icon_size)
             .with_width(icon_size)
             .finish(),
@@ -889,7 +889,7 @@ fn render_auto_approve_button(props: ButtonProps, appearance: &Appearance) -> Bo
     let icon_size = get_icon_size(appearance);
     let icon = Container::new(
         ConstrainedBox::new(
-            icon.to_warpui_icon(appearance.theme().active_ui_text_color())
+            icon.to_yarpui_icon(appearance.theme().active_ui_text_color())
                 .finish(),
         )
         .with_height(icon_size)
@@ -2232,7 +2232,7 @@ fn render_visual_card(
     let theme = appearance.theme();
     let header_background = theme.surface_2();
     let header_text_color = blended_colors::text_main(theme, header_background);
-    let header_icon = ConstrainedBox::new(icon.to_warpui_icon(header_text_color.into()).finish())
+    let header_icon = ConstrainedBox::new(icon.to_yarpui_icon(header_text_color.into()).finish())
         .with_width(16.)
         .with_height(16.)
         .finish();
@@ -3066,7 +3066,7 @@ fn render_invalid_api_key_error(
 
     let alert_icon = ConstrainedBox::new(
         Icon::AlertTriangle
-            .to_warpui_icon(error_color(appearance.theme()).into())
+            .to_yarpui_icon(error_color(appearance.theme()).into())
             .finish(),
     )
     .with_width(icon_size(app))

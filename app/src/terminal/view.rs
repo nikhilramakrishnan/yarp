@@ -21402,11 +21402,11 @@ impl TerminalView {
         let icon = Container::new(
             ConstrainedBox::new(if has_active_filter {
                 icons::Icon::FilterFunnelFilled
-                    .to_warpui_icon(appearance.theme().accent())
+                    .to_yarpui_icon(appearance.theme().accent())
                     .finish()
             } else {
                 icons::Icon::FilterFunnel
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         appearance
                             .theme()
                             .sub_text_color(appearance.theme().surface_2()),

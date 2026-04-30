@@ -1505,7 +1505,7 @@ impl UsageWidget {
         let theme = appearance.theme();
         ConstrainedBox::new(
             Icon::AlertTriangle
-                .to_warpui_icon(theme.ui_error_color().into())
+                .to_yarpui_icon(theme.ui_error_color().into())
                 .finish(),
         )
         .with_height(16.)
@@ -1655,7 +1655,7 @@ impl UsageWidget {
         .finish();
 
         let icon = Container::new(
-            ConstrainedBox::new(Icon::Credits.to_warpui_icon(fg).finish())
+            ConstrainedBox::new(Icon::Credits.to_yarpui_icon(fg).finish())
                 .with_height(16.)
                 .with_width(16.)
                 .finish(),
@@ -2294,7 +2294,7 @@ impl UsageWidget {
             row.add_child(
                 ConstrainedBox::new(
                     Icon::AlertTriangle
-                        .to_warpui_icon(appearance.theme().ui_error_color().into())
+                        .to_yarpui_icon(appearance.theme().ui_error_color().into())
                         .finish(),
                 )
                 .with_height(16.)
@@ -2642,7 +2642,7 @@ impl UsageWidget {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::Conversation
-                                .to_warpui_icon(
+                                .to_yarpui_icon(
                                     blended_colors::text_sub(
                                         appearance.theme(),
                                         appearance.theme().surface_1(),
@@ -2708,7 +2708,7 @@ impl UsageWidget {
         let icon = Container::new(
             ConstrainedBox::new(
                 Icon::AlertCircle
-                    .to_warpui_icon(blended_colors::text_sub(theme, theme.surface_1()).into())
+                    .to_yarpui_icon(blended_colors::text_sub(theme, theme.surface_1()).into())
                     .finish(),
             )
             .with_width(16.)
@@ -3419,7 +3419,7 @@ impl PlanWidget {
                         TextAndIcon::new(
                             TextAndIconAlignment::IconFirst,
                             "Compare plans",
-                            Icon::CoinsStacked.to_warpui_icon(appearance.theme().accent()),
+                            Icon::CoinsStacked.to_yarpui_icon(appearance.theme().accent()),
                             MainAxisSize::Min,
                             MainAxisAlignment::Center,
                             vec2f(14., 14.),
@@ -3487,7 +3487,7 @@ impl PlanWidget {
                     TextAndIcon::new(
                         TextAndIconAlignment::IconFirst,
                         "Manage billing",
-                        Icon::CoinsStacked.to_warpui_icon(appearance.theme().accent()),
+                        Icon::CoinsStacked.to_yarpui_icon(appearance.theme().accent()),
                         MainAxisSize::Min,
                         MainAxisAlignment::Center,
                         vec2f(14., 14.),
@@ -3548,7 +3548,7 @@ impl PlanWidget {
                     TextAndIcon::new(
                         TextAndIconAlignment::IconFirst,
                         "Open admin panel",
-                        Icon::Users.to_warpui_icon(appearance.theme().accent()),
+                        Icon::Users.to_yarpui_icon(appearance.theme().accent()),
                         MainAxisSize::Min,
                         MainAxisAlignment::Center,
                         vec2f(14., 14.),
@@ -3589,7 +3589,7 @@ impl PlanWidget {
                     TextAndIcon::new(
                         TextAndIconAlignment::IconFirst,
                         "Compare plans",
-                        Icon::CoinsStacked.to_warpui_icon(appearance.theme().accent()),
+                        Icon::CoinsStacked.to_yarpui_icon(appearance.theme().accent()),
                         MainAxisSize::Min,
                         MainAxisAlignment::Center,
                         vec2f(14., 14.),

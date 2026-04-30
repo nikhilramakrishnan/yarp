@@ -152,7 +152,7 @@ impl TerminationType {
         Container::new(
             ConstrainedBox::new(
                 icon_type
-                    .to_warpui_icon(appearance.theme().background())
+                    .to_yarpui_icon(appearance.theme().background())
                     .finish(),
             )
             .with_width(ICON_SIZE)

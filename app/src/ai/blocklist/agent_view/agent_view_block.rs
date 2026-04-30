@@ -321,7 +321,7 @@ impl View for AgentViewEntryBlock {
         row.add_child(
             ConstrainedBox::new(
                 Icon::ChevronRight
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         blended_colors::text_sub(
                             appearance.theme(),
                             appearance.theme().background(),

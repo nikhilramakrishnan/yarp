@@ -641,7 +641,7 @@ impl AIDocumentView {
                         Container::new(
                             ConstrainedBox::new(
                                 Icon::RefreshCw04
-                                    .to_warpui_icon(ThemeFill::Solid(color))
+                                    .to_yarpui_icon(ThemeFill::Solid(color))
                                     .finish(),
                             )
                             .with_width(16.)
@@ -672,7 +672,7 @@ impl AIDocumentView {
                             Hoverable::new(synced_status_mouse_state, move |state| {
                                 let icon = {
                                     let icon_elem = Icon::RefreshCw04
-                                        .to_warpui_icon(ThemeFill::Solid(color))
+                                        .to_yarpui_icon(ThemeFill::Solid(color))
                                         .finish();
                                     ConstrainedBox::new(icon_elem)
                                         .with_width(16.)

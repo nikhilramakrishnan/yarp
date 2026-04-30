@@ -499,7 +499,7 @@ impl View for PromptAlertView {
             chip_row.add_child(
                 ConstrainedBox::new(
                     Icon::AlertTriangle
-                        .to_warpui_icon(error_color(appearance.theme()).into())
+                        .to_yarpui_icon(error_color(appearance.theme()).into())
                         .finish(),
                 )
                 .with_width(icon_size)

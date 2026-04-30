@@ -437,7 +437,7 @@ pub fn render_full_pane_width_ai_button(
                 .with_child(
                     ConstrainedBox::new(
                         Icon::ChevronRight
-                            .to_warpui_icon(appearance.theme().main_text_color(icon_bg))
+                            .to_yarpui_icon(appearance.theme().main_text_color(icon_bg))
                             .finish(),
                     )
                     .with_width(16.)
@@ -657,7 +657,7 @@ pub fn render_body_item_label_internal<T: Clone + Action>(
     if let Some(icon) = label_icon {
         label.add_child(
             Container::new(
-                ConstrainedBox::new(icon.to_warpui_icon(label_color).finish())
+                ConstrainedBox::new(icon.to_yarpui_icon(label_color).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish(),
@@ -945,7 +945,7 @@ pub(crate) fn render_settings_info_banner(
     let icon = Container::new(
         ConstrainedBox::new(
             Icon::AlertCircle
-                .to_warpui_icon(appearance.theme().active_ui_text_color())
+                .to_yarpui_icon(appearance.theme().active_ui_text_color())
                 .finish(),
         )
         .with_width(16.)

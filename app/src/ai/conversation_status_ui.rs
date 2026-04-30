@@ -38,7 +38,7 @@ pub fn render_status_element(
     let (icon, color) = status.status_icon_and_color(theme);
 
     Container::new(
-        ConstrainedBox::new(icon.to_warpui_icon(Fill::from(color)).finish())
+        ConstrainedBox::new(icon.to_yarpui_icon(Fill::from(color)).finish())
             .with_width(icon_size)
             .with_height(icon_size)
             .finish(),

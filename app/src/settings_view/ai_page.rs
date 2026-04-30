@@ -3211,7 +3211,7 @@ impl UsageWidget {
             row.add_child(
                 ConstrainedBox::new(
                     Icon::AlertTriangle
-                        .to_warpui_icon(appearance.theme().ui_error_color().into())
+                        .to_yarpui_icon(appearance.theme().ui_error_color().into())
                         .finish(),
                 )
                 .with_height(16.)
@@ -4138,7 +4138,7 @@ impl AgentsWidget {
         let alert_icon = Container::new(
             ConstrainedBox::new(
                 Icon::AlertCircle
-                    .to_warpui_icon(
+                    .to_yarpui_icon(
                         appearance
                             .theme()
                             .sub_text_color(appearance.theme().surface_2()),
@@ -6595,7 +6595,7 @@ impl AwsBedrockWidget {
                 .user_facing_components();
 
             let icon = Container::new(
-                ConstrainedBox::new(icon.to_warpui_icon(title_color).finish())
+                ConstrainedBox::new(icon.to_yarpui_icon(title_color).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish(),

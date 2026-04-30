@@ -2086,7 +2086,7 @@ impl AIBlock {
                         button = button.with_text_and_icon_label(TextAndIcon::new(
                             TextAndIconAlignment::TextFirst,
                             accept_text.clone(),
-                            Icon::CornerDownLeft.to_warpui_icon(appearance.theme().foreground()),
+                            Icon::CornerDownLeft.to_yarpui_icon(appearance.theme().foreground()),
                             MainAxisSize::Max,
                             MainAxisAlignment::SpaceBetween,
                             vec2f(
@@ -2128,7 +2128,7 @@ impl AIBlock {
                         button = button.with_text_and_icon_label(TextAndIcon::new(
                             TextAndIconAlignment::TextFirst,
                             reject_text.clone(),
-                            Icon::CornerDownLeft.to_warpui_icon(appearance.theme().foreground()),
+                            Icon::CornerDownLeft.to_yarpui_icon(appearance.theme().foreground()),
                             MainAxisSize::Max,
                             MainAxisAlignment::SpaceBetween,
                             vec2f(
