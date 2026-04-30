@@ -1,6 +1,6 @@
 ---
 name: oz-platform
-description: Use Warp's REST API and command line to run, configure, and inspect Oz cloud agents
+description: Use Yarp's REST API and command line to run, configure, and inspect Oz cloud agents
 ---
 
 # oz-platform
@@ -225,15 +225,15 @@ When you are a cloud agent instructed to use a third-party CLI:
 
 2. **Authentication**: API keys are available as environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`). These were configured as Oz secrets by the user.
 
-3. **Task Delegation (IMPORTANT)**: The user's task should be completed **entirely by the third-party CLI**. Do NOT use Warp's built-in tools to complete the task yourself:
-   - Do NOT use `edit_files`, `read_files`, `grep`, `codebase_semantic_search`, or other Warp coding tools to perform the user's task
+3. **Task Delegation (IMPORTANT)**: The user's task should be completed **entirely by the third-party CLI**. Do NOT use Yarp's built-in tools to complete the task yourself:
+   - Do NOT use `edit_files`, `read_files`, `grep`, `codebase_semantic_search`, or other Yarp coding tools to perform the user's task
    - The third-party CLI should do all the coding, file editing, searching, and analysis work
    - Your role is to:
      - Set up the CLI (e.g., authenticate if needed)
      - Construct the prompt for the CLI with the user's task
      - Run the CLI and monitor its execution
      - Debug any issues with the CLI itself
-     - Report artifacts back to Warp (see below)
+     - Report artifacts back to Yarp (see below)
 
 4. **CLI Invocation**: Read [references/third-party-clis.md](./references/third-party-clis.md) for detailed instructions on:
    - Non-interactive mode flags for each CLI (e.g. `claude -p`, `codex exec`, `gemini -p`)
@@ -241,7 +241,7 @@ When you are a cloud agent instructed to use a third-party CLI:
    - Useful flags and options
    - Example commands
 
-5. **Artifact Reporting**: When the third-party CLI creates a PR, parse its output for the PR URL and branch name, then call `report_pr` to register the artifact in the Warp UI.
+5. **Artifact Reporting**: When the third-party CLI creates a PR, parse its output for the PR URL and branch name, then call `report_pr` to register the artifact in the Yarp UI.
 
 **Example workflow**:
 ```sh
