@@ -574,8 +574,8 @@ pub enum CommandCorrectionEvent {
 pub enum CommandSearchResultType {
     History,
     Workflow,
-    OpenWarpAI,
-    TranslateUsingWarpAI,
+    OpenYarpAI,
+    TranslateUsingYarpAI,
     Notebook,
     EnvVarCollection,
     ViewInYarpDrive,
@@ -591,8 +591,8 @@ impl From<&CommandSearchItemAction> for CommandSearchResultType {
             AcceptWorkflow(_) => Self::Workflow,
             AcceptNotebook(_) => Self::Notebook,
             AcceptEnvVarCollection(_) => Self::EnvVarCollection,
-            OpenWarpAI => Self::OpenWarpAI,
-            TranslateUsingWarpAI => Self::TranslateUsingWarpAI,
+            OpenYarpAI => Self::OpenYarpAI,
+            TranslateUsingYarpAI => Self::TranslateUsingYarpAI,
             AcceptAIQuery(_) | RunAIQuery(_) => Self::AIQuery,
         }
     }
@@ -620,7 +620,7 @@ pub enum PtySpawnMode {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub enum OpenedWarpAISource {
+pub enum OpenedYarpAISource {
     GlobalEntryButton,
     HelpWithBlock,
     HelpWithTextSelection,
@@ -1603,8 +1603,8 @@ pub enum TelemetryEvent {
         advanced_mode_enabled: bool,
     },
     /// Opened legacy Yarp AI.
-    OpenedWarpAI {
-        source: OpenedWarpAISource,
+    OpenedYarpAI {
+        source: OpenedYarpAISource,
     },
     /// Issued legacy Yarp AI request.
     YarpAIRequestIssued {
@@ -1614,7 +1614,7 @@ pub enum TelemetryEvent {
         action_type: YarpAIActionType,
     },
     /// This is purely for static prompts! Do not send user-written prompts with this event.
-    UsedWarpAIPreparedPrompt {
+    UsedYarpAIPreparedPrompt {
         prompt: &'static str,
     },
     ToggleFocusPaneOnHover {
@@ -1628,7 +1628,7 @@ pub enum TelemetryEvent {
     InputPaste,
     InputCommandSearch,
     InputAICommandSearch,
-    InputAskWarpAI,
+    InputAskYarpAI,
     SaveAsWorkflowModal {
         source: SaveAsWorkflowModalSource,
     },
@@ -1739,7 +1739,7 @@ pub enum TelemetryEvent {
         is_code_mode_v2: bool,
     },
     // Toggled the legacy Yarp AI side panel.
-    ToggleWarpAI {
+    ToggleYarpAI {
         opened: bool,
     },
     ToggleSecretRedaction {
@@ -3162,7 +3162,7 @@ impl TelemetryEvent {
             TelemetryEvent::InitialWorkingDirectoryConfigurationChanged {
                 advanced_mode_enabled,
             } => Some(json!({ "advanced_mode_enabled": advanced_mode_enabled })),
-            TelemetryEvent::OpenedWarpAI { source } => Some(json!({ "source": source })),
+            TelemetryEvent::OpenedYarpAI { source } => Some(json!({ "source": source })),
             TelemetryEvent::YarpAIRequestIssued { result } => Some(json!({ "result": result })),
             TelemetryEvent::YarpAIAction { action_type } => {
                 Some(json!({ "action_type": action_type }))
@@ -3248,7 +3248,7 @@ impl TelemetryEvent {
             TelemetryEvent::AISuggestedRuleContentChanged { rule_id, is_saved } => {
                 Some(json!({ "rule_id": rule_id, "is_saved": is_saved }))
             }
-            TelemetryEvent::UsedWarpAIPreparedPrompt { prompt } => {
+            TelemetryEvent::UsedYarpAIPreparedPrompt { prompt } => {
                 Some(json!({ "prompt": prompt }))
             }
             TelemetryEvent::ExperimentTriggered {
@@ -3288,7 +3288,7 @@ impl TelemetryEvent {
             } => Some(
                 json!({ "ui_location": ui_location, "open_in_active_window": open_in_active_window }),
             ),
-            TelemetryEvent::ToggleWarpAI { opened } => Some(json!({ "opened": opened })),
+            TelemetryEvent::ToggleYarpAI { opened } => Some(json!({ "opened": opened })),
             TelemetryEvent::ToggleSecretRedaction { enabled } => {
                 Some(json!({ "enabled": enabled }))
             }
@@ -4056,7 +4056,7 @@ impl TelemetryEvent {
             | TelemetryEvent::InputPaste
             | TelemetryEvent::InputCommandSearch
             | TelemetryEvent::InputAICommandSearch
-            | TelemetryEvent::InputAskWarpAI
+            | TelemetryEvent::InputAskYarpAI
             | TelemetryEvent::SetNewWindowsAtCustomSize
             | TelemetryEvent::DisableInputSync
             | TelemetryEvent::ShowSubshellBanner
@@ -4711,10 +4711,10 @@ impl TelemetryEvent {
             | TelemetryEvent::InputModeChanged { .. }
             | TelemetryEvent::PtySpawned { .. }
             | TelemetryEvent::InitialWorkingDirectoryConfigurationChanged { .. }
-            | TelemetryEvent::OpenedWarpAI { .. }
+            | TelemetryEvent::OpenedYarpAI { .. }
             | TelemetryEvent::YarpAIRequestIssued { .. }
             | TelemetryEvent::YarpAIAction { .. }
-            | TelemetryEvent::UsedWarpAIPreparedPrompt { .. }
+            | TelemetryEvent::UsedYarpAIPreparedPrompt { .. }
             | TelemetryEvent::ToggleFocusPaneOnHover { .. }
             | TelemetryEvent::YarpAICharacterLimitExceeded
             | TelemetryEvent::OpenInputContextMenu
@@ -4724,7 +4724,7 @@ impl TelemetryEvent {
             | TelemetryEvent::InputPaste
             | TelemetryEvent::InputCommandSearch
             | TelemetryEvent::InputAICommandSearch
-            | TelemetryEvent::InputAskWarpAI
+            | TelemetryEvent::InputAskYarpAI
             | TelemetryEvent::SaveAsWorkflowModal { .. }
             | TelemetryEvent::ExperimentTriggered { .. }
             | TelemetryEvent::ToggleSyncAllPanesInAllTabs { .. }
@@ -4772,7 +4772,7 @@ impl TelemetryEvent {
             | TelemetryEvent::AnonymousUserHitCloudObjectLimit
             | TelemetryEvent::NeedsReauth
             | TelemetryEvent::YarpDriveOpened { .. }
-            | TelemetryEvent::ToggleWarpAI { .. }
+            | TelemetryEvent::ToggleYarpAI { .. }
             | TelemetryEvent::ToggleSecretRedaction { .. }
             | TelemetryEvent::CustomSecretRegexAdded
             | TelemetryEvent::ToggleObfuscateSecret { .. }
@@ -5262,10 +5262,10 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InputModeChanged => EnablementState::Always,
             Self::PtySpawned => EnablementState::Always,
             Self::InitialWorkingDirectoryConfigurationChanged => EnablementState::Always,
-            Self::OpenedWarpAI => EnablementState::Always,
+            Self::OpenedYarpAI => EnablementState::Always,
             Self::YarpAIRequestIssued => EnablementState::Always,
             Self::YarpAIAction => EnablementState::Always,
-            Self::UsedWarpAIPreparedPrompt => EnablementState::Always,
+            Self::UsedYarpAIPreparedPrompt => EnablementState::Always,
             Self::YarpAICharacterLimitExceeded => EnablementState::Always,
             Self::OpenInputContextMenu => EnablementState::Always,
             Self::InputCutSelectedText => EnablementState::Always,
@@ -5274,7 +5274,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InputPaste => EnablementState::Always,
             Self::InputCommandSearch => EnablementState::Always,
             Self::InputAICommandSearch => EnablementState::Always,
-            Self::InputAskWarpAI => EnablementState::Always,
+            Self::InputAskYarpAI => EnablementState::Always,
             Self::SaveAsWorkflowModal => EnablementState::Always,
             Self::ExperimentTriggered => EnablementState::Always,
             Self::ToggleSyncAllPanesInAllTabs => EnablementState::Always,
@@ -5320,7 +5320,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InitiateReauth => EnablementState::Always,
             Self::NeedsReauth => EnablementState::Always,
             Self::YarpDriveOpened => EnablementState::Always,
-            Self::ToggleWarpAI => EnablementState::Always,
+            Self::ToggleYarpAI => EnablementState::Always,
             Self::ToggleSecretRedaction => EnablementState::Always,
             Self::CustomSecretRegexAdded => EnablementState::Always,
             Self::ToggleObfuscateSecret => EnablementState::Always,
@@ -5762,10 +5762,10 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "InitialWorkingDirectoryConfigurationChanged"
             }
             Self::InputModeChanged => "Input Mode Changed",
-            Self::OpenedWarpAI => "Opened Yarp AI",
+            Self::OpenedYarpAI => "Opened Yarp AI",
             Self::YarpAIRequestIssued => "Yarp AI Request Issued",
             Self::YarpAIAction => "Yarp AI Action",
-            Self::UsedWarpAIPreparedPrompt => "Used Yarp AI Prepared Prompt",
+            Self::UsedYarpAIPreparedPrompt => "Used Yarp AI Prepared Prompt",
             Self::YarpAICharacterLimitExceeded => "Yarp AI Character Limit Exceeded",
             Self::OpenInputContextMenu => "OpenInputBoxContextMenu",
             Self::InputCutSelectedText => "InputBoxCutSelectedText",
@@ -5774,7 +5774,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InputPaste => "InputBoxPaste",
             Self::InputCommandSearch => "InputBoxCommandSearch",
             Self::InputAICommandSearch => "InputBoxAICommandSearch",
-            Self::InputAskWarpAI => "InputBoxAskWarpAI",
+            Self::InputAskYarpAI => "InputBoxAskYarpAI",
             Self::SaveAsWorkflowModal => "Opened Save As Workflow Modal",
             Self::ExperimentTriggered => "experiments.client.enroll_client",
             Self::ToggleSyncAllPanesInAllTabs => "Toggle Sync Inputs Across All Panes in All Tabs",
@@ -5817,7 +5817,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InitiateReauth => "Initiate Reauth",
             Self::NeedsReauth => "Needs Reauth",
             Self::YarpDriveOpened => "Yarp Drive Opened",
-            Self::ToggleWarpAI => "Toggle Yarp AI",
+            Self::ToggleYarpAI => "Toggle Yarp AI",
             Self::ToggleSecretRedaction => "Toggle Secret Redaction",
             Self::CustomSecretRegexAdded => "Custom Secret Regex Added",
             Self::ToggleObfuscateSecret => "Toggle Obfuscate Secret",
@@ -6402,10 +6402,10 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InitialWorkingDirectoryConfigurationChanged => {
                 "Replaced the default working directory with a different path"
             }
-            Self::OpenedWarpAI => "Activated Yarp AI",
+            Self::OpenedYarpAI => "Activated Yarp AI",
             Self::YarpAIRequestIssued => "Issued a question to Yarp AI",
             Self::YarpAIAction => "Executed a Yarp AI action: Restart, Copy, Insert into terminal",
-            Self::UsedWarpAIPreparedPrompt => {
+            Self::UsedYarpAIPreparedPrompt => {
                 "Used one of the Yarp-provided prompts, like \"Show examples\""
             }
             Self::YarpAICharacterLimitExceeded => {
@@ -6428,7 +6428,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InputAICommandSearch => {
                 "Opened AI Command Search via the Input Editor's context menu (right clicking the buffer)"
             }
-            Self::InputAskWarpAI => "Clicked \"Ask Yarp AI\" from the Input Editor's context menu",
+            Self::InputAskYarpAI => "Clicked \"Ask Yarp AI\" from the Input Editor's context menu",
             Self::SaveAsWorkflowModal => {
                 "Opened the modal to create a new workflow using a Block's context--command, etc."
             }
@@ -6534,7 +6534,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::InitiateReauth => "Started the flow to re-authenticate the client",
             Self::NeedsReauth => "User needs to re-authenticate",
             Self::YarpDriveOpened => "Opened Yarp Drive panel",
-            Self::ToggleWarpAI => {
+            Self::ToggleYarpAI => {
                 "Toggled Yarp AI--an AI assistant to help you debug errors, look up forgotten commands and more"
             }
             Self::ToggleSecretRedaction => {

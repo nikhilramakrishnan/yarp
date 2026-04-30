@@ -127,15 +127,15 @@ impl SearchItem for YarpAISearchItem {
 
     fn accept_result(&self) -> CommandSearchItemAction {
         match self {
-            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
-            YarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
+            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingYarpAI,
+            YarpAISearchItem::Open => CommandSearchItemAction::OpenYarpAI,
         }
     }
 
     fn execute_result(&self) -> CommandSearchItemAction {
         match self {
-            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingWarpAI,
-            YarpAISearchItem::Open => CommandSearchItemAction::OpenWarpAI,
+            YarpAISearchItem::Translate => CommandSearchItemAction::TranslateUsingYarpAI,
+            YarpAISearchItem::Open => CommandSearchItemAction::OpenYarpAI,
         }
     }
 

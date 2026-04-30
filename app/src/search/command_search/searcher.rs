@@ -61,10 +61,10 @@ pub enum CommandSearchItemAction {
     RunAIQuery(String),
 
     /// The user accepted the search item to open Yarp AI.
-    OpenWarpAI,
+    OpenYarpAI,
 
     /// The user accepted the search item to translate the query to a command using Yarp AI.
-    TranslateUsingWarpAI,
+    TranslateUsingYarpAI,
 }
 
 #[cfg(test)]

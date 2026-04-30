@@ -508,9 +508,9 @@ impl CommandSearchView {
                 AcceptHistory(_)
                 | AcceptWorkflow(_)
                 | AcceptNotebook(_)
-                | OpenWarpAI
+                | OpenYarpAI
                 | AcceptEnvVarCollection(_)
-                | TranslateUsingWarpAI
+                | TranslateUsingYarpAI
                 | AcceptAIQuery(_) => false,
             };
 

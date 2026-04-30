@@ -279,7 +279,7 @@ use crate::server::server_api::{ServerApi, ServerApiEvent, ServerApiProvider, Se
 use crate::server::telemetry::{
     AddTabWithShellSource, AnonymousUserSignupEntrypoint, CloseTarget, EnvVarTelemetryMetadata,
     FileTreeSource, KnowledgePaneEntrypoint, LaunchConfigUiLocation,
-    MCPServerCollectionPaneEntrypoint, OpenedWarpAISource, SharingDialogSource, TierLimitHitEvent,
+    MCPServerCollectionPaneEntrypoint, OpenedYarpAISource, SharingDialogSource, TierLimitHitEvent,
     YarpDriveSource,
 };
 use crate::session_management::{SessionNavigationData, SessionSource};
@@ -14873,7 +14873,7 @@ impl Workspace {
                             ctx.notify();
                         });
                     }
-                    TranslateUsingWarpAI => {
+                    TranslateUsingYarpAI => {
                         active_input_handle.update(ctx, |input, ctx| {
                             let content = format!("# {query}");
                             input.focus_input_box(ctx);
@@ -14898,7 +14898,7 @@ impl Workspace {
                             ctx,
                         );
                     }
-                    OpenWarpAI => {
+                    OpenYarpAI => {
                         if !AISettings::as_ref(ctx).is_any_ai_enabled(ctx) {
                             return;
                         }
@@ -15752,7 +15752,7 @@ impl Workspace {
                 self.run_workflow_in_active_input(
                     &WorkflowType::AIGenerated {
                         workflow,
-                        origin: AIWorkflowOrigin::LegacyWarpAI,
+                        origin: AIWorkflowOrigin::LegacyYarpAI,
                     },
                     WorkflowSource::YarpAI,
                     WorkflowSelectionSource::YarpAI,
@@ -20535,7 +20535,7 @@ impl TypedActionView for Workspace {
             ToggleAIAssistant => {
                 self.toggle_ai_assistant_panel(ctx);
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::ToggleWarpAI {
+                    TelemetryEvent::ToggleYarpAI {
                         opened: self.current_workspace_state.is_ai_assistant_panel_open
                     },
                     ctx
@@ -20546,8 +20546,8 @@ impl TypedActionView for Workspace {
                     self.toggle_ai_assistant_panel(ctx);
                     if self.current_workspace_state.is_ai_assistant_panel_open {
                         send_telemetry_from_ctx!(
-                            TelemetryEvent::OpenedWarpAI {
-                                source: OpenedWarpAISource::GlobalEntryButton
+                            TelemetryEvent::OpenedYarpAI {
+                                source: OpenedYarpAISource::GlobalEntryButton
                             },
                             ctx
                         );
@@ -20561,8 +20561,8 @@ impl TypedActionView for Workspace {
             ClickedAIAssistantWarmWelcome => {
                 self.toggle_ai_assistant_panel(ctx);
                 send_telemetry_from_ctx!(
-                    TelemetryEvent::OpenedWarpAI {
-                        source: OpenedWarpAISource::WarmWelcome
+                    TelemetryEvent::OpenedYarpAI {
+                        source: OpenedYarpAISource::WarmWelcome
                     },
                     ctx
                 );

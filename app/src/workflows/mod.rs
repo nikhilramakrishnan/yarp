@@ -146,7 +146,7 @@ crate::server_id_traits! { WorkflowId, "Workflow" }
 pub enum AIWorkflowOrigin {
     CommandSearch,
     AgentMode,
-    LegacyWarpAI,
+    LegacyYarpAI,
 }
 
 /// Wrapper type for a workflow that may be saved locally or using cloud sync.
