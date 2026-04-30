@@ -1,4 +1,4 @@
-interface Warp {
+interface Yarp {
   completions: Completions,
 }
 

@@ -58,7 +58,7 @@ if [ ! -f "$SRC_BIN" ]; then
 fi
 
 # Create the /opt install directory inside the AppDir.
-OPT_DIR="$APPDIR/opt/warpdotdev/$YARP_PACKAGE_NAME"
+OPT_DIR="$APPDIR/opt/yarp/$YARP_PACKAGE_NAME"
 mkdir -p "$OPT_DIR"
 
 # Move the binary from usr/bin/ to opt/warpdotdev/<package>/.
@@ -66,9 +66,9 @@ echo "Relocating binary to $OPT_DIR/$YARP_BINARY_NAME"
 mv "$SRC_BIN" "$OPT_DIR/$YARP_BINARY_NAME"
 
 # Create a relative symlink so usr/bin/<name> still resolves to the binary.
-# From usr/bin/ to opt/warpdotdev/<package>/ is ../../opt/warpdotdev/<package>/.
+# From usr/bin/ to opt/warpdotdev/<package>/ is ../../opt/yarp/<package>/.
 echo "Creating symlink at usr/bin/$YARP_BINARY_NAME"
-ln -s "../../opt/warpdotdev/$YARP_PACKAGE_NAME/$YARP_BINARY_NAME" "$SRC_BIN"
+ln -s "../../opt/yarp/$YARP_PACKAGE_NAME/$YARP_BINARY_NAME" "$SRC_BIN"
 
 # Copy bundled resources alongside the binary.
 DEST_RESOURCES="$OPT_DIR/resources"

@@ -116,7 +116,7 @@ pub enum CodeSource {
     },
     /// Opened from an active AI agent conversation.
     AIAction { id: AIAgentActionId },
-    /// Opened from project rules (WARP.md) file.
+    /// Opened from project rules (YARP.md) file.
     ProjectRules { path: PathBuf },
     /// Opened from file tree.
     FileTree { path: PathBuf },

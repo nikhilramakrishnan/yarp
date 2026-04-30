@@ -54,7 +54,7 @@ pub enum InitStepStatus {
     Pending,
     /// Ready for user interaction (contains data for view to render)
     Ready(InitStepData),
-    /// User initiated action, e.g. AI generating WARP.md
+    /// User initiated action, e.g. AI generating YARP.md
     Running,
     /// Done (accepted, skipped, or auto-completed)
     Completed(InitActionResult),
@@ -527,7 +527,7 @@ impl InitProjectModel {
                 });
 
                 if has_agents_md {
-                    // Already has AGENTS.md or WARP.md, mark as completed
+                    // Already has AGENTS.md or YARP.md, mark as completed
                     me.set_step(
                         InitStepKind::ProjectScopedRules,
                         Some(InitStep::new_completed(

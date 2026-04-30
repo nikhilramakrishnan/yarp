@@ -304,7 +304,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "`/init` to generate a `WARP.md` file and define project rules for the agent.".to_string(),
+            description: "`/init` to generate a `YARP.md` file and define project rules for the agent.".to_string(),
             link: Some("https://docs.warp.dev/agent-platform/capabilities/rules".to_string()),
             binding_name: None,
             action: None,

@@ -716,7 +716,7 @@ const DEFAULT_AI_BLOCK_HEIGHT: f32 = 96.;
 
 pub const DEFAULT_ASK_AI_AUTOSUGGESTION_TEXT: &str = "What happened here?";
 
-const YARP_MD_PATH: &str = "WARP.md";
+const YARP_MD_PATH: &str = "YARP.md";
 
 pub const LONG_RUNNING_AGENT_REQUESTED_COMMAND_CONTEXT_KEY: &str = "LongRunningRequestedCommand";
 pub const LONG_RUNNING_AGENT_REQUESTED_COMMAND_USER_TOOK_OVER_CONTEXT_KEY: &str =

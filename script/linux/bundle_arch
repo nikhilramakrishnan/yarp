@@ -63,7 +63,7 @@ mkdir -p "$PKGDIR"
 
 # Bundle the base filesystem into an archive to be unpacked by makepkg.
 mkdir "$PKGDIR/stage"
-OPT_DIR="/opt/warpdotdev/$PACKAGE_NAME"
+OPT_DIR="/opt/yarp/$PACKAGE_NAME"
 source "$WORKSPACE_ROOT_DIR/script/linux/bundle_install" "$PKGDIR/stage"
 tar cvf "$PKGDIR/data.tar" -C "$PKGDIR/stage" .
 

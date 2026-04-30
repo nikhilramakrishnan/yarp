@@ -79,7 +79,7 @@ mkdir -p "$PKGDIR"
 
 # Populate the directory with the package contents, in the appropriate
 # locations.
-OPT_DIR="/opt/warpdotdev/$PACKAGE_NAME"
+OPT_DIR="/opt/yarp/$PACKAGE_NAME"
 source "$WORKSPACE_ROOT_DIR/script/linux/bundle_install" "$PKGDIR"
 
 # Move the Debian-specific package metadata into the package directory.

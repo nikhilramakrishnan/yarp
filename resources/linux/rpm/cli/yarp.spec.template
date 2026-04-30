@@ -10,7 +10,7 @@ Vendor:      Denver Technologies, Inc.
 Url:         https://warp.dev
 Packager:    Warp Linux Maintainers <linux-maintainers@warp.dev>
 License:     https://warp.dev/terms-of-service
-Obsoletes:   warp-cli@@CHANNEL_SUFFIX@@ < %{version}
+Obsoletes:   yarp-cli@@CHANNEL_SUFFIX@@ < %{version}
 Obsoletes:   oz = v0.2026.02.09.06.06.stable_00
 Obsoletes:   oz = v0.2026.02.09.06.06.stable_02
 Obsoletes:   oz = v0.2026.02.10.11.37.stable_00

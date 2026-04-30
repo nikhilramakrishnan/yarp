@@ -13,7 +13,7 @@ cfg_if::cfg_if! {
         use ignore::gitignore::Gitignore;
         use async_channel::Sender;
 
-        const RULES_FILE_PATTERN: [&str; 2] = ["WARP.md", "AGENTS.md"];
+        const RULES_FILE_PATTERN: [&str; 2] = ["YARP.md", "AGENTS.md"];
         const MAX_SCAN_DEPTH: usize = 3;
         const MAX_FILES_TO_SCAN: usize = 5000;
     }
@@ -164,7 +164,7 @@ impl ProjectRules {
 }
 
 /// Singleton model that keeps track of mapping between paths and rule files
-/// Currently supports WARP.md files, but designed to be extensible
+/// Currently supports YARP.md files, but designed to be extensible
 #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
 #[derive(Debug, Default)]
 pub struct ProjectContextModel {
@@ -489,7 +489,7 @@ impl ProjectContextModel {
         (existing_rules, rules_delta)
     }
 
-    /// Scan a directory for rule files (currently WARP.md, extensible for future file types)
+    /// Scan a directory for rule files (currently YARP.md, extensible for future file types)
     /// Uses repo_metadata::entry::build_tree for efficient directory traversal
     #[cfg(feature = "local_fs")]
     async fn scan_directory_for_rules(dir_path: &Path) -> Result<ProjectRules> {
