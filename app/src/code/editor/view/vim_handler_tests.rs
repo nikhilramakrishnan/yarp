@@ -1026,7 +1026,7 @@ fn test_vim_delete_word_dge() {
 
         set_cursor_position(&editor, 1, 20, &mut app);
         vim_user_insert(&editor, "dge", &mut app);
-        assert_eq!(buffer_text(&editor, &app), "echo hello-hi warpev");
+        assert_eq!(buffer_text(&editor, &app), "echo hello-hi yarpev");
         assert_eq!(cursor_position(&editor, &app), (1, 18));
 
         vim_user_insert(&editor, "dge", &mut app);

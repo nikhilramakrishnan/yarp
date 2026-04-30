@@ -28,7 +28,7 @@ use crate::cloud_object::{
 };
 use crate::server::cloud_objects::update_manager::InitiatedBy;
 
-use crate::drive::items::workflow::WarpDriveWorkflow;
+use crate::drive::items::workflow::YarpDriveWorkflow;
 use crate::drive::items::YarpDriveItem;
 use crate::drive::CloudObjectTypeAndId;
 use crate::notebooks::{NotebookId, NotebookLocation};
@@ -354,7 +354,7 @@ impl CloudModelType for CloudWorkflowModel {
         _appearance: &Appearance,
         workflow: &CloudWorkflow,
     ) -> Option<Box<dyn YarpDriveItem>> {
-        Some(Box::new(WarpDriveWorkflow::new(
+        Some(Box::new(YarpDriveWorkflow::new(
             self.cloud_object_type_and_id(id),
             workflow.clone(),
         )))

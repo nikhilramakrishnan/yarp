@@ -237,7 +237,7 @@ macro_rules! generate_can_bootstrap_tmux_ssh_test_for_shell {
             let builder = yarpify(builder).with_step(
                 accept_tmux_install().set_post_step_pause(std::time::Duration::from_secs(3)),
             );
-            // Quit SSH Session once we validate warpificaiton works with Tmux Install
+            // Quit SSH Session once we validate yarpificaiton works with Tmux Install
             let builder = assert_yarpification(builder).with_step(run_exit_command());
 
             // Validate we can Yarpify when Tmux is already installed
