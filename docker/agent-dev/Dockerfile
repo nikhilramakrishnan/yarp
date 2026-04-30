@@ -5,7 +5,7 @@ ENV CARGO_HOME=/usr/local/cargo
 ENV PATH=/usr/local/cargo/bin:/usr/local/go/bin:$PATH
 
 # This set of packages is adapted from ./script/bootstrap in warp-internal and warp-server.
-# It doesn't include *everything* (ex. no wgslfmt or gcloud), but is enough to build and test Warp.
+# It doesn't include *everything* (ex. no wgslfmt or gcloud), but is enough to build and test Yarp.
 # Note: currently, only x86_64 builds are supported.
 
 # Install system-level packages. These are needed to build on Linux, and/or to run integration tests.
@@ -72,7 +72,7 @@ RUN set -eux; \
 COPY ./rust-toolchain.toml ./setup/rust-toolchain.toml
 RUN cd ./setup && rustup toolchain install
 
-# Install all dependencies needed to build, run, and test Warp
+# Install all dependencies needed to build, run, and test Yarp
 COPY ./script ./setup/script
 RUN cd ./setup && ./script/linux/install_test_deps
 

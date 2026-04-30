@@ -1,4 +1,4 @@
-# Warp Launch Configuration
+# Yarp Launch Configuration
 #
 #
 # Use this to start a certain configuration of windows, tabs, and panes
@@ -7,7 +7,7 @@
 # This file defines your launch configuration
 # More on how to do so here: [link to docs]
 #
-# All launch configurations are stored under ~/.warp/launch_configurations/
+# All launch configurations are stored under ~/.yarp/launch_configurations/
 # Edit them anytime!
 
 ---

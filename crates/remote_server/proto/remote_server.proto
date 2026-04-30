@@ -1,5 +1,5 @@
 // A protobuf-based API for communication between
-// the Warp client and the remote server binary.
+// the Yarp client and the remote server binary.
 //
 // Messages are length-prefixed: [4-byte little-endian length][protobuf bytes].
 
