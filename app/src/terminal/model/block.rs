@@ -610,7 +610,7 @@ pub struct BlockSize {
     pub block_padding: BlockPadding,
     pub size: SizeInfo,
     pub max_block_scroll_limit: usize,
-    pub warp_prompt_height_lines: f32,
+    pub yarp_prompt_height_lines: f32,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]

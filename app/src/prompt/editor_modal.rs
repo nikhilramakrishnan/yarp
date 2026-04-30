@@ -87,7 +87,7 @@ struct MouseStateHandles {
     cancel_button_handle: MouseStateHandle,
     save_button_handle: MouseStateHandle,
     restore_default_warp_prompt_handle: MouseStateHandle,
-    warp_prompt_mouse_state_handle: MouseStateHandle,
+    yarp_prompt_mouse_state_handle: MouseStateHandle,
     ps1_mouse_state_handle: MouseStateHandle,
     same_line_prompt_checkbox_state_handle: MouseStateHandle,
 }
@@ -115,9 +115,9 @@ pub struct EditorModal {
 
     /// Dropdown to select the separator for the Yarp prompt, in the case of
     /// same line prompt. This separator is added at the end of the Yarp prompt.
-    warp_prompt_separator_dropdown: ViewHandle<Dropdown<EditorModalAction>>,
+    yarp_prompt_separator_dropdown: ViewHandle<Dropdown<EditorModalAction>>,
     /// The separator currently selected for the Yarp prompt.
-    warp_prompt_separator: YarpPromptSeparator,
+    yarp_prompt_separator: YarpPromptSeparator,
 
     /// True if there was any change while the modal was open.
     is_dirty: bool,
@@ -133,7 +133,7 @@ enum PromptType {
 }
 
 impl PromptType {
-    fn warp_prompt_from_settings(app: &AppContext) -> PromptType {
+    fn yarp_prompt_from_settings(app: &AppContext) -> PromptType {
         let session_settings = SessionSettings::as_ref(app);
         if matches!(*session_settings.saved_prompt, PromptSelection::Default) {
             PromptType::YarpDefault
@@ -147,7 +147,7 @@ impl PromptType {
         if *session_settings.honor_ps1 {
             PromptType::PS1
         } else {
-            Self::warp_prompt_from_settings(app)
+            Self::yarp_prompt_from_settings(app)
         }
     }
 }
@@ -173,14 +173,14 @@ impl EditorModal {
             .value()
             .same_line_prompt_enabled();
 
-        let warp_prompt_separator = match SessionSettings::as_ref(ctx).saved_prompt.value() {
+        let yarp_prompt_separator = match SessionSettings::as_ref(ctx).saved_prompt.value() {
             PromptSelection::CustomChipSelection(config) => config.separator(),
             // If the "default Yarp prompt" i.e. no context chips, is selected, then default to no Yarp prompt separator.
             _ => YarpPromptSeparator::None,
         };
-        let warp_prompt_separator_label = warp_prompt_separator.dropdown_item_label().to_owned();
+        let yarp_prompt_separator_label = yarp_prompt_separator.dropdown_item_label().to_owned();
 
-        let warp_prompt_separator_dropdown = ctx.add_typed_action_view(|ctx| {
+        let yarp_prompt_separator_dropdown = ctx.add_typed_action_view(|ctx| {
             let mut dropdown = Dropdown::new(ctx);
             dropdown.set_top_bar_max_width(DROPDOWN_WIDTH);
             dropdown.set_menu_width(DROPDOWN_WIDTH, ctx);
@@ -218,7 +218,7 @@ impl EditorModal {
             }
 
             dropdown.set_items(items, ctx);
-            dropdown.set_selected_by_name(warp_prompt_separator_label, ctx);
+            dropdown.set_selected_by_name(yarp_prompt_separator_label, ctx);
             dropdown
         });
 
@@ -230,8 +230,8 @@ impl EditorModal {
             prompt_type,
             chip_runtime_capabilities: Default::default(),
             same_line_prompt_enabled,
-            warp_prompt_separator_dropdown,
-            warp_prompt_separator,
+            yarp_prompt_separator_dropdown,
+            yarp_prompt_separator,
         }
     }
 
@@ -296,12 +296,12 @@ impl EditorModal {
     fn update_warp_separator_dropdown_state(&mut self, ctx: &mut ViewContext<Self>) {
         // If we are using the Yarp prompt and SLP is enabled, then we enable the dropdown. Otherwise, disable it.
         if self.prompt_type != PromptType::PS1 && self.same_line_prompt_enabled {
-            self.warp_prompt_separator_dropdown
+            self.yarp_prompt_separator_dropdown
                 .update(ctx, |dropdown, ctx| {
                     dropdown.set_enabled(ctx);
                 });
         } else {
-            self.warp_prompt_separator_dropdown
+            self.yarp_prompt_separator_dropdown
                 .update(ctx, |dropdown, ctx| {
                     dropdown.set_disabled(ctx);
                 });
@@ -346,7 +346,7 @@ impl EditorModal {
                         report_if_error!(prompt.update(
                             new_setup,
                             self.same_line_prompt_enabled,
-                            self.warp_prompt_separator,
+                            self.yarp_prompt_separator,
                             ctx
                         ));
                     });
@@ -416,7 +416,7 @@ impl TypedActionView for EditorModal {
             }
             Self::Action::UseWarpPrompt => {
                 self.is_dirty = true;
-                self.prompt_type = PromptType::warp_prompt_from_settings(ctx);
+                self.prompt_type = PromptType::yarp_prompt_from_settings(ctx);
                 // Enable the Yarp separator dropdown, if SLP is on.
                 self.update_warp_separator_dropdown_state(ctx);
                 ctx.notify();
@@ -427,7 +427,7 @@ impl TypedActionView for EditorModal {
 
                 let default_prompt = PromptConfiguration::default_prompt();
                 self.same_line_prompt_enabled = default_prompt.same_line_prompt_enabled();
-                self.warp_prompt_separator = default_prompt.separator();
+                self.yarp_prompt_separator = default_prompt.separator();
                 // Disable the Yarp separator dropdown, since SLP is off for the default Yarp prompt.
                 self.update_warp_separator_dropdown_state(ctx);
                 let restored_chips = default_prompt.chip_kinds();
@@ -447,7 +447,7 @@ impl TypedActionView for EditorModal {
             }
             Self::Action::SetWarpPromptSeparator { separator } => {
                 self.is_dirty = true;
-                self.warp_prompt_separator = *separator;
+                self.yarp_prompt_separator = *separator;
                 ctx.notify();
             }
         }
@@ -650,7 +650,7 @@ impl EditorModal {
                 .finish(),
             )
             .with_child(
-                Container::new(ChildView::new(&self.warp_prompt_separator_dropdown).finish())
+                Container::new(ChildView::new(&self.yarp_prompt_separator_dropdown).finish())
                     .with_margin_left(DROPDOWN_LABEL_MARGIN_RIGHT)
                     .finish(),
             )
@@ -696,7 +696,7 @@ impl EditorModal {
             None,
             body,
             self.mouse_state_handles
-                .warp_prompt_mouse_state_handle
+                .yarp_prompt_mouse_state_handle
                 .clone(),
             EditorModalAction::UseWarpPrompt,
         )

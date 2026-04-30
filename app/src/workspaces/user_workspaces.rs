@@ -392,7 +392,7 @@ impl UserWorkspaces {
         self.current_team().is_none_or(|team| {
             team.billing_metadata
                 .tier
-                .yarp_ai_policy
+                .warp_ai_policy
                 .is_none_or(|policy| {
                     policy.is_prompt_suggestions_toggleable
                         || policy.is_next_command_enabled
@@ -423,7 +423,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .yarp_ai_policy
+                    .warp_ai_policy
                     .is_some_and(|policy| policy.is_prompt_suggestions_toggleable)
             })
     }
@@ -436,7 +436,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .yarp_ai_policy
+                    .warp_ai_policy
                     .is_some_and(|policy| policy.is_code_suggestions_toggleable)
             })
     }
@@ -449,7 +449,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .yarp_ai_policy
+                    .warp_ai_policy
                     .is_some_and(|policy| policy.is_next_command_enabled)
             })
     }
@@ -465,7 +465,7 @@ impl UserWorkspaces {
                 .is_none_or(|team| {
                     team.billing_metadata
                         .tier
-                        .yarp_ai_policy
+                        .warp_ai_policy
                         .is_some_and(|policy| policy.is_voice_enabled)
                 })
     }

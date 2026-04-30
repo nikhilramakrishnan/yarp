@@ -115,7 +115,7 @@ mkdir -p "$EXTRAS_DIR"
 # Update parameters based on the target release channel.
 #
 # YARP_BIN is the name of the binary produced by cargo.
-# N.B. The bundled outputs will always be yarp.js and warp_bg.wasm.
+# N.B. The bundled outputs will always be yarp.js and yarp_bg.wasm.
 if [[ $RELEASE_CHANNEL = "local" ]]; then
   YARP_BIN="yarp"
   FEATURES="$FEATURES,remote_tty"
@@ -150,8 +150,8 @@ ASSET_TARGET_DIR="$ASSET_TARGET_DIR" cargo build --target wasm32-unknown-unknown
 echo "Running wasm-bindgen on $CARGO_TARGET_OUTPUT_DIR/$YARP_BIN.wasm"
 wasm-bindgen --target web --out-dir "$OUT_DIR" --out-name "yarp" --keep-debug --no-typescript "$CARGO_TARGET_OUTPUT_DIR/$YARP_BIN.wasm"
 
-WASM_BINARY_OUT="${OUT_DIR}/warp_bg.wasm"
-WASM_BINARY_DEBUG="${EXTRAS_DIR}/warp_bg.debug.wasm"
+WASM_BINARY_OUT="${OUT_DIR}/yarp_bg.wasm"
+WASM_BINARY_DEBUG="${EXTRAS_DIR}/yarp_bg.debug.wasm"
 
 if [[ "$NO_SPLIT" != "true" ]]; then
   # Run Sentry's wasm-split binary to separate out debug information from the

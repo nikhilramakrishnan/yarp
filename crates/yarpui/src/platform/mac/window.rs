@@ -603,7 +603,7 @@ impl Window {
             (*native_window_delegate).set_ivar(WINDOW_STATE_IVAR, Ivar::from_state(&window_state));
 
             // Set the initial scale properly.
-            warp_view_did_change_backing_properties(&*native_view, true);
+            yarp_view_did_change_backing_properties(&*native_view, true);
 
             match options.style {
                 WindowStyle::Normal | WindowStyle::Pin => {
@@ -1179,7 +1179,7 @@ impl WindowExt for &dyn platform::Window {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_view_did_change_backing_properties(this: &Object, async_callback: bool) {
+extern "C-unwind" fn yarp_view_did_change_backing_properties(this: &Object, async_callback: bool) {
     let window;
     unsafe {
         window = get_window_state(this);
@@ -1224,7 +1224,7 @@ extern "C-unwind" fn warp_view_did_change_backing_properties(this: &Object, asyn
 }
 
 #[no_mangle]
-pub extern "C-unwind" fn warp_get_accessibility_contents(object: &mut Object) -> id {
+pub extern "C-unwind" fn yarp_get_accessibility_contents(object: &mut Object) -> id {
     let state = unsafe { get_window_state(object) };
     let window_id = state.window_id;
     let accessibility_data = app::callback_dispatcher()
@@ -1237,7 +1237,7 @@ pub extern "C-unwind" fn warp_get_accessibility_contents(object: &mut Object) ->
 }
 
 #[no_mangle]
-pub extern "C-unwind" fn warp_ime_position(object: &mut Object, content_rect: NSRect) -> NSRect {
+pub extern "C-unwind" fn yarp_ime_position(object: &mut Object, content_rect: NSRect) -> NSRect {
     let state = unsafe { get_window_state(object) };
 
     let cursor_info = app::callback_dispatcher()
@@ -1266,7 +1266,7 @@ pub extern "C-unwind" fn warp_ime_position(object: &mut Object, content_rect: NS
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_view_set_frame_size(this: &Object, size: NSSize, async_callback: bool) {
+extern "C-unwind" fn yarp_view_set_frame_size(this: &Object, size: NSSize, async_callback: bool) {
     let window;
     unsafe {
         window = get_window_state(this);
@@ -1305,7 +1305,7 @@ extern "C-unwind" fn warp_view_set_frame_size(this: &Object, size: NSSize, async
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_update_layer(this: &Object) {
+extern "C-unwind" fn yarp_update_layer(this: &Object) {
     if !app::callback_dispatcher().can_borrow_mut() {
         #[cfg(debug_assertions)]
         log::warn!(
@@ -1340,19 +1340,19 @@ extern "C-unwind" fn warp_update_layer(this: &Object) {
             "Should not be holding a borrow of the scene RefCell before beginning to render."
         );
 
-        // SAFETY: warp_update_layer should only be invoked for windows
+        // SAFETY: yarp_update_layer should only be invoked for windows
         // created via Window::open(), which always sets a non-None device.
         let device = window
             .device
             .as_ref()
-            .expect("warp_update_layer should not be called for a window that has no real display");
-        // SAFETY: warp_update_layer is only invoked by the event loop,
+            .expect("yarp_update_layer should not be called for a window that has no real display");
+        // SAFETY: yarp_update_layer is only invoked by the event loop,
         // which should never attempt to draw a window while it is already
         // being drawn.
         let mut renderer_manager = window
             .renderer_manager
             .as_ref()
-            .expect("warp_update_layer should never be called twice in parallel")
+            .expect("yarp_update_layer should never be called twice in parallel")
             .borrow_mut();
         let renderer = renderer_manager.renderer_for_device(device, window.physical_size());
 
@@ -1368,7 +1368,7 @@ extern "C-unwind" fn warp_update_layer(this: &Object) {
 
 /// Returns whether this event was handled.
 #[no_mangle]
-extern "C-unwind" fn warp_handle_view_event(
+extern "C-unwind" fn yarp_handle_view_event(
     this: &Object,
     native_event: id,
     composing_state: bool,
@@ -1413,7 +1413,7 @@ extern "C-unwind" fn warp_handle_view_event(
 /// gain focus.
 /// Returns whether this event was handled.
 #[no_mangle]
-extern "C-unwind" fn warp_handle_first_mouse_event(this: &Object, native_event: id) -> bool {
+extern "C-unwind" fn yarp_handle_first_mouse_event(this: &Object, native_event: id) -> bool {
     let window = unsafe { get_window_state(this) };
     let event =
         unsafe { super::event::from_native(native_event, Some(window.logical_size().y()), true) };
@@ -1427,7 +1427,7 @@ extern "C-unwind" fn warp_handle_first_mouse_event(this: &Object, native_event: 
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_handle_insert_text(this: &Object, characters: id) {
+extern "C-unwind" fn yarp_handle_insert_text(this: &Object, characters: id) {
     let string = unsafe { to_string(characters) };
     let window = unsafe { get_window_state(this) };
     app::callback_dispatcher()
@@ -1436,7 +1436,7 @@ extern "C-unwind" fn warp_handle_insert_text(this: &Object, characters: id) {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_handle_drag_and_drop(this: &Object, paths: id, point: NSPoint) {
+extern "C-unwind" fn yarp_handle_drag_and_drop(this: &Object, paths: id, point: NSPoint) {
     let paths = unsafe {
         (0..paths.count())
             .map(|i| {
@@ -1454,7 +1454,7 @@ extern "C-unwind" fn warp_handle_drag_and_drop(this: &Object, paths: id, point: 
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_handle_file_drag(this: &Object, point: NSPoint) {
+extern "C-unwind" fn yarp_handle_file_drag(this: &Object, point: NSPoint) {
     let window = unsafe { get_window_state(this) };
     let location = vec2f(point.x as f32, window.logical_size().y() - point.y as f32);
 
@@ -1464,7 +1464,7 @@ extern "C-unwind" fn warp_handle_file_drag(this: &Object, point: NSPoint) {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_handle_file_drag_exit(this: &Object) {
+extern "C-unwind" fn yarp_handle_file_drag_exit(this: &Object) {
     let window = unsafe { get_window_state(this) };
 
     app::callback_dispatcher()
@@ -1473,7 +1473,7 @@ extern "C-unwind" fn warp_handle_file_drag_exit(this: &Object) {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_update_ime_state(this: &mut Object, ime_active: bool) {
+extern "C-unwind" fn yarp_update_ime_state(this: &mut Object, ime_active: bool) {
     let state = unsafe { get_window_state(this) };
     state.ime_active.set(ime_active);
 }
@@ -1487,7 +1487,7 @@ fn nsrange_to_rust_range(ns_range: NSRange) -> std::ops::Range<usize> {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_marked_text_updated(
+extern "C-unwind" fn yarp_marked_text_updated(
     this: &mut Object,
     marked_text: id,
     selected_range: NSRange,
@@ -1504,7 +1504,7 @@ extern "C-unwind" fn warp_marked_text_updated(
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_marked_text_cleared(this: &mut Object) {
+extern "C-unwind" fn yarp_marked_text_cleared(this: &mut Object) {
     let state = unsafe { get_window_state(&*this) };
     app::callback_dispatcher()
         .for_window(&Window(state.clone()))
@@ -1512,7 +1512,7 @@ extern "C-unwind" fn warp_marked_text_cleared(this: &mut Object) {
 }
 
 #[no_mangle]
-pub extern "C-unwind" fn warp_dispatch_standard_action(this: id, tag: NSInteger) {
+pub extern "C-unwind" fn yarp_dispatch_standard_action(this: id, tag: NSInteger) {
     if let Some(action) = StandardAction::from_isize(tag as isize) {
         let state = unsafe { get_window_state(&*this) };
         app::callback_dispatcher()
@@ -1522,7 +1522,7 @@ pub extern "C-unwind" fn warp_dispatch_standard_action(this: id, tag: NSInteger)
 }
 
 #[no_mangle]
-pub extern "C-unwind" fn warp_app_window_moved(this: id, rect: NSRect) {
+pub extern "C-unwind" fn yarp_app_window_moved(this: id, rect: NSRect) {
     let state = unsafe { get_window_state(&*this) };
     let point = Vector2F::new(rect.origin.x as f32, rect.origin.y as f32);
     let size = Vector2F::new(rect.size.width as f32, rect.size.height as f32);
@@ -1557,7 +1557,7 @@ unsafe fn remove_state_ivar_from_object(object: &mut Object) -> Rc<WindowState> 
 // because its retain count has dropped to zero. This is our chance to release
 // our Rust resources. Do not call this manually.
 #[no_mangle]
-pub extern "C-unwind" fn warp_dealloc_window(native_window: &mut Object) {
+pub extern "C-unwind" fn yarp_dealloc_window(native_window: &mut Object) {
     log::info!("dealloc native window {native_window:p}");
     let state;
     unsafe {

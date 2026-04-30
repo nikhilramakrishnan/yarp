@@ -12,7 +12,7 @@ use regex::Regex;
 use repo_metadata::{local_model::GetContentsArgs, RepoContent, RepoMetadataModel};
 use yarpui::AppContext;
 
-use crate::warp_managed_paths_watcher::warp_managed_skill_dirs;
+use crate::yarp_managed_paths_watcher::yarp_managed_skill_dirs;
 
 /// Finds all skill directories in a repository by querying the RepoMetadataModel tree.
 ///
@@ -100,7 +100,7 @@ pub fn extract_skill_parent_directory(path: &Path) -> Result<PathBuf, Error> {
         && path
             .parent()
             .and_then(Path::parent)
-            .is_some_and(|parent| warp_managed_skill_dirs().iter().any(|dir| parent == dir));
+            .is_some_and(|parent| yarp_managed_skill_dirs().iter().any(|dir| parent == dir));
     if is_warp_home_skill {
         return dirs::home_dir()
             .ok_or_else(|| anyhow::anyhow!("Home directory not available for {}", path.display()));
@@ -136,7 +136,7 @@ pub fn is_home_skill_directory(path: &Path) -> bool {
 pub fn is_home_provider_path(path: &Path) -> bool {
     SKILL_PROVIDER_DEFINITIONS.iter().any(|provider| {
         if provider.provider == SkillProvider::Yarp {
-            return warp_managed_skill_dirs().iter().any(|dir| path == dir);
+            return yarp_managed_skill_dirs().iter().any(|dir| path == dir);
         }
         home_skills_path(provider.provider)
             .as_ref()

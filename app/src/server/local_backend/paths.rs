@@ -1,7 +1,7 @@
 //! Path resolution for the local backend's on-disk state.
 //!
 //! Everything lives under `~/.yarp/` (resolved via
-//! `yarp_core::paths::warp_home_config_dir`, which maps `Channel::Oss` to
+//! `yarp_core::paths::yarp_home_config_dir`, which maps `Channel::Oss` to
 //! `.yarp`). When the home directory can't be located we fall back to a temp
 //! directory so the app still launches.
 
@@ -14,7 +14,7 @@ pub struct LocalPaths {
 
 impl LocalPaths {
     pub fn resolve() -> Self {
-        let root = yarp_core::paths::warp_home_config_dir().unwrap_or_else(|| {
+        let root = yarp_core::paths::yarp_home_config_dir().unwrap_or_else(|| {
             // Last-resort fallback. Should not happen on macOS / Linux / Windows
             // where `dirs::home_dir()` is reliable, but we'd rather start with a
             // temp dir than panic.

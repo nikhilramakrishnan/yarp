@@ -134,7 +134,7 @@ fn test_searcher_scores() {
         id_fields: [id: u64]
     );
 
-    let search_strings = ["run yarp on web server", "run warp_on_web:server"];
+    let search_strings = ["run yarp on web server", "run yarp_on_web:server"];
 
     let searcher = TEST_SCHEMA.create_searcher(MIN_MEMORY_BUDGET);
     searcher

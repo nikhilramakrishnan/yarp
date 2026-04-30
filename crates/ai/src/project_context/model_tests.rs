@@ -63,7 +63,7 @@ fn test_find_applicable_rules_multiple_patterns() {
     let mut rules = ProjectRules::default();
 
     rules.upsert_rule(Path::new("/a/b/AGENTS.md"), "agents_content".to_string());
-    rules.upsert_rule(Path::new("/a/WARP.md"), "warp_content".to_string());
+    rules.upsert_rule(Path::new("/a/WARP.md"), "yarp_content".to_string());
 
     let path = PathBuf::from("/a/b/file.rs");
 
@@ -73,7 +73,7 @@ fn test_find_applicable_rules_multiple_patterns() {
     assert_eq!(result[0].path, PathBuf::from("/a/b/AGENTS.md"));
     assert_eq!(result[0].content, "agents_content");
     assert_eq!(result[1].path, PathBuf::from("/a/WARP.md"));
-    assert_eq!(result[1].content, "warp_content");
+    assert_eq!(result[1].content, "yarp_content");
 }
 
 #[test]

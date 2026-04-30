@@ -948,7 +948,7 @@ impl MetalDrawContext<'_> {
 
 impl super::super::Renderer for Renderer {
     fn render(&mut self, scene: &Scene, window: &WindowState, font_cache: &fonts::Cache) {
-        // SAFETY: `render` is called via `warp_update_layer`, which is only be invoked for
+        // SAFETY: `render` is called via `yarp_update_layer`, which is only be invoked for
         // windows created via Window::open() and always sets a non-`None` device.
         #[allow(irrefutable_let_patterns)]
         let Device::Metal(metal_device) = window

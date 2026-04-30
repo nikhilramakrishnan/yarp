@@ -4,12 +4,12 @@ use yarp_completer::completer::{CommandExitStatus, CommandOutput};
 #[test]
 fn test_prompt_chip_log_filename_uses_channel_logfile_stem() {
     assert_eq!(
-        prompt_chip_log_filename("warp_dev.log"),
-        "warp_dev.prompt_chips.log"
+        prompt_chip_log_filename("yarp_dev.log"),
+        "yarp_dev.prompt_chips.log"
     );
     assert_eq!(
-        prompt_chip_log_filename("warp_local"),
-        "warp_local.prompt_chips.log"
+        prompt_chip_log_filename("yarp_local"),
+        "yarp_local.prompt_chips.log"
     );
 }
 

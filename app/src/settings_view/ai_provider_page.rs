@@ -16,7 +16,7 @@ use crate::{
     appearance::Appearance,
     server::local_backend::llm_provider::{LocalLlmProvider, StoredLlmConfig},
 };
-use yarp_core::paths::warp_home_config_dir;
+use yarp_core::paths::yarp_home_config_dir;
 use yarpui::{
     elements::{Container, CrossAxisAlignment, Element, Flex, ParentElement},
     ui_components::components::UiComponent,
@@ -53,7 +53,7 @@ impl View for AIProviderPageView {
 struct AIProviderWidget;
 
 fn config_path_str() -> String {
-    warp_home_config_dir()
+    yarp_home_config_dir()
         .map(|p| p.join("llm_provider.json").display().to_string())
         .unwrap_or_else(|| "~/.yarp/llm_provider.json".to_string())
 }

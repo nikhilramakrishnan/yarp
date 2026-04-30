@@ -134,7 +134,7 @@ if [ "$DONT_OPEN" = false ] ; then
     if  [ "$OPEN_WITH_LAUNCHD" = true ]; then
         echo "Launching with MacOS application launcher"
         PATH="" /usr/bin/open "./$YARP_APP_PATH"
-        tail -f ~/Library/Logs/warp_local.log
+        tail -f ~/Library/Logs/yarp_local.log
     else
         echo "Opening app at ./$YARP_APP_PATH/Contents/MacOS/$YARP_BIN"
         "./$YARP_APP_PATH/Contents/MacOS/$YARP_BIN" "${YARP_ARGS[@]}"

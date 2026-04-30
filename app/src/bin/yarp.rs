@@ -88,7 +88,7 @@ fn main() -> Result<()> {
 /// so users can configure the local LLM without grepping the source for env
 /// var names. Existing files are never overwritten.
 fn write_default_llm_config_if_missing() {
-    let Some(home) = yarp_core::paths::warp_home_config_dir() else {
+    let Some(home) = yarp_core::paths::yarp_home_config_dir() else {
         return;
     };
     let _ = std::fs::create_dir_all(&home);

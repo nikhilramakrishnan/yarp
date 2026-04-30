@@ -69,7 +69,7 @@ impl TerminalView {
             block_padding,
             size: size_info,
             max_block_scroll_limit,
-            warp_prompt_height_lines: YARP_PROMPT_HEIGHT_LINES,
+            yarp_prompt_height_lines: YARP_PROMPT_HEIGHT_LINES,
         };
 
         let server_api = ServerApiProvider::new_for_test().get();

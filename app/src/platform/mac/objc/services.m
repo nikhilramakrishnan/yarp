@@ -35,7 +35,7 @@
         NSMutableArray<NSURL *> *warpUrls = [NSMutableArray array];
         for (NSString *path in filePaths) {
             NSURLComponents *components = [[[NSURLComponents alloc] init] autorelease];
-            NSString *scheme = warp_services_provider_custom_url_scheme();
+            NSString *scheme = yarp_services_provider_custom_url_scheme();
             [components setScheme:scheme];
             [components setHost:@"action"];
             [components setPath:action];
@@ -46,7 +46,7 @@
         };
 
         NSApplication *app = [NSApplication sharedApplication];
-        warp_app_open_urls(app, warpUrls);
+        yarp_app_open_urls(app, warpUrls);
     }
 }
 
@@ -54,7 +54,7 @@
 
 // Creates a new YarpServicesProvider and registers it as the global services
 // provider for the application
-void warp_register_services_provider() {
+void yarp_register_services_provider() {
     YarpServicesProvider *provider = [[YarpServicesProvider alloc] init];
 
     // Set the global NSServices provider for the application.  This holds a

@@ -1411,7 +1411,7 @@ impl CloudModel {
     pub fn current_revision(&self, id: &SyncId) -> Option<&Revision> {
         self.objects_by_id
             .get(&id.uid())
-            .and_then(|warp_cloud_object| warp_cloud_object.metadata().revision.as_ref())
+            .and_then(|yarp_cloud_object| yarp_cloud_object.metadata().revision.as_ref())
     }
 
     /// Returns only active (not trashed) notebooks in cloud model.

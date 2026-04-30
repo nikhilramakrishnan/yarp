@@ -72,7 +72,7 @@ pub(super) fn compute_block_size(initial_size: Vector2F, ctx: &mut AppContext) -
         block_padding: terminal_spacing.block_padding,
         size: size_info,
         max_block_scroll_limit: maximum_grid_size,
-        warp_prompt_height_lines: YARP_PROMPT_HEIGHT_LINES,
+        yarp_prompt_height_lines: YARP_PROMPT_HEIGHT_LINES,
     }
 }
 

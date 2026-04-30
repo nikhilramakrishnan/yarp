@@ -14436,7 +14436,7 @@ impl TerminalView {
                 bootstrap_duration_seconds: None,
                 shell_version: None,
                 rcfiles_duration_seconds: None,
-                warp_attributed_bootstrap_duration_seconds: None,
+                yarp_attributed_bootstrap_duration_seconds: None,
                 terminal_session_id: None,
             }),
             ctx
@@ -25221,11 +25221,11 @@ impl TypedActionView for TerminalView {
             }
             OpenProjectRulesPane => {
                 if let Some(current_dir) = self.pwd() {
-                    let mut warp_md_path = PathBuf::from(&current_dir);
-                    warp_md_path.push(YARP_MD_PATH);
+                    let mut yarp_md_path = PathBuf::from(&current_dir);
+                    yarp_md_path.push(YARP_MD_PATH);
                     #[cfg(feature = "local_fs")]
                     ctx.emit(Event::OpenCodeInWarp {
-                        source: CodeSource::ProjectRules { path: warp_md_path },
+                        source: CodeSource::ProjectRules { path: yarp_md_path },
                         layout: *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                             .open_file_layout
                             .value(),

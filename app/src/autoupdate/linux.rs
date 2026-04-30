@@ -234,7 +234,7 @@ mod package_manager {
                     FormattedTextFragment::plain_text(
                         "\nThe ",
                     ),
-                    FormattedTextFragment::inline_code("warp_handle_dist_upgrade"),
+                    FormattedTextFragment::inline_code("yarp_handle_dist_upgrade"),
                     FormattedTextFragment::plain_text(
                         " function ensures the Yarp package repository is enabled, as we've detected you recently upgraded your distribution.",
                     ),
@@ -363,7 +363,7 @@ impl PackageManager {
             } => {
                 let dist_upgrade_fn = match shell_type {
                     ShellType::Zsh | ShellType::Bash | ShellType::Fish => {
-                        "warp_handle_dist_upgrade"
+                        "yarp_handle_dist_upgrade"
                     }
                     ShellType::PowerShell => "Yarp-Handle-DistUpgrade",
                 };
@@ -414,7 +414,7 @@ impl PackageManager {
         };
 
         let finish_update_fn = match shell_type {
-            ShellType::Zsh | ShellType::Bash | ShellType::Fish => "warp_finish_update",
+            ShellType::Zsh | ShellType::Bash | ShellType::Fish => "yarp_finish_update",
             ShellType::PowerShell => "Yarp-Finish-Update",
         };
         format!("{base_command}{and}{finish_update_fn} {update_id}")
@@ -550,7 +550,7 @@ impl std::fmt::Display for PackageManager {
 ///
 /// However, Ubuntu incorrectly thinks the Yarp source file is invalid (due to the addition of the
 /// `signed-by` key) so it only leaves the `*.distUpgrade` source file. We use the existence of this
-/// file to determine whether we need to run the special `warp_handle_dist_upgrade` function to copy
+/// file to determine whether we need to run the special `yarp_handle_dist_upgrade` function to copy
 /// `warpdotdev.list.distUpgrade` back to `warpdotdev.list` to re-enable the repository.
 fn is_apt_repository_disabled_due_to_version_update(repo_name: &str) -> bool {
     let apt_sources_directory = match get_apt_sources_directory() {

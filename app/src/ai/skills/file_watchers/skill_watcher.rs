@@ -15,8 +15,8 @@ use super::{
 use watcher::{BulkFilesystemWatcherEvent, HomeDirectoryWatcher, HomeDirectoryWatcherEvent};
 
 use crate::server::datetime_ext::DateTimeExt;
-use crate::warp_managed_paths_watcher::{
-    filter_repository_update_by_prefix, warp_managed_skill_dirs, YarpManagedPathsWatcher,
+use crate::yarp_managed_paths_watcher::{
+    filter_repository_update_by_prefix, yarp_managed_skill_dirs, YarpManagedPathsWatcher,
     YarpManagedPathsWatcherEvent,
 };
 use ai::skills::{
@@ -138,7 +138,7 @@ impl SkillWatcher {
         // We use a separate HomeDirectoryWatcher to detect when those are created and start watching them after they are created.
         let mut home_provider_watchers = HashMap::new();
         if let Some(home_path) = home_dir {
-            Self::spawn_read_skills_from_directories(warp_managed_skill_dirs(), ctx);
+            Self::spawn_read_skills_from_directories(yarp_managed_skill_dirs(), ctx);
             let skills_parent_paths: HashSet<PathBuf> = SKILL_PROVIDER_DEFINITIONS
                 .iter()
                 .filter(|provider| provider.provider != SkillProvider::Yarp)
@@ -810,7 +810,7 @@ impl SkillWatcher {
         ctx: &mut ModelContext<Self>,
     ) {
         let YarpManagedPathsWatcherEvent::FilesChanged(update) = event;
-        for skill_dir in warp_managed_skill_dirs() {
+        for skill_dir in yarp_managed_skill_dirs() {
             if let Some(filtered_update) = filter_repository_update_by_prefix(update, &skill_dir) {
                 self.handle_repository_update(&filtered_update, ctx);
             }

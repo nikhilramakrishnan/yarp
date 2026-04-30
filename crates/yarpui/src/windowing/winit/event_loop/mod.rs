@@ -1298,11 +1298,11 @@ impl EventLoop {
                 }
 
                 let event_text = event.text.as_ref().map(|text| text.to_string());
-                let warp_ui_event =
+                let yarp_ui_event =
                     convert_keyboard_input_event(event, window_state, is_synthetic)?;
                 Some(ConvertedEvent::KeyDownWithTypedCharacters {
                     chars: event_text,
-                    event: warp_ui_event,
+                    event: yarp_ui_event,
                 })
             }
             WindowEvent::Resized(_) => Some(ConvertedEvent::Resize),

@@ -1077,7 +1077,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.knowledge.warp_drive_context_enabled",
+        toml_path: "agents.knowledge.yarp_drive_context_enabled",
         description: "Whether Yarp Drive context is included in AI requests.",
     }
 

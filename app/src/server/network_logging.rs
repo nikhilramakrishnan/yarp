@@ -123,7 +123,7 @@ pub(super) fn init<'a>(
 /// Represents an item (either a request or response) captured for the network
 /// activity log. The inner string contains a timestamp and the
 /// [`Debug`]-formatted representation of the request or response, matching the
-/// format previously written to `warp_network.log`.
+/// format previously written to `yarp_network.log`.
 #[derive(Clone, Debug)]
 pub struct NetworkLogItem(String);
 

@@ -48,7 +48,7 @@ cfg_if::cfg_if! {
 
 pub(crate) fn home_config_file_path(provider: MCPProvider) -> Option<PathBuf> {
     match provider {
-        MCPProvider::Yarp => yarp_core::paths::warp_home_mcp_config_file_path(),
+        MCPProvider::Yarp => yarp_core::paths::yarp_home_mcp_config_file_path(),
         _ => dirs::home_dir().map(|home_dir| home_dir.join(provider.home_config_path())),
     }
 }
@@ -146,11 +146,11 @@ mod tests {
 
     #[test]
     fn mcp_provider_from_file_path_recognizes_warp_home_path() {
-        if let Some(warp_home_mcp_config_file_path) =
-            yarp_core::paths::warp_home_mcp_config_file_path()
+        if let Some(yarp_home_mcp_config_file_path) =
+            yarp_core::paths::yarp_home_mcp_config_file_path()
         {
             assert_eq!(
-                mcp_provider_from_file_path(&warp_home_mcp_config_file_path),
+                mcp_provider_from_file_path(&yarp_home_mcp_config_file_path),
                 Some(MCPProvider::Yarp)
             );
         }

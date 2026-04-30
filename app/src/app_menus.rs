@@ -55,7 +55,7 @@ const HIDE_SSH_COMMAND_BLOCKS_MENU_ITEM_NAME: &str = "Hide Yarpified SSH Blocks"
 const EXPORT_DEFAULT_SETTINGS_CSV_MENU_ITEM_NAME: &str =
     "Export Default Settings as CSV to home dir";
 
-const SETTINGS_CSV_FILE_NAME: &str = "warp_default_settings.csv";
+const SETTINGS_CSV_FILE_NAME: &str = "yarp_default_settings.csv";
 const MAX_RECENT_REPOS_IN_MENU: usize = 10;
 
 /// Creates the root app menu bar

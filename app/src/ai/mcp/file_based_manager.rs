@@ -14,7 +14,7 @@ use crate::{
         ParsedTemplatableMCPServerResult,
     },
     settings::{ai::AISettings, AISettingsChangedEvent},
-    warp_managed_paths_watcher::warp_data_dir,
+    yarp_managed_paths_watcher::yarp_data_dir,
 };
 
 /// Singleton model to manage file-based MCP servers.
@@ -235,7 +235,7 @@ impl FileBasedMCPManager {
     /// config location.
     ///
     /// "Global" means the installation was detected outside of a user repository:
-    /// - For `MCPProvider::Yarp`: `warp_data_dir()` (i.e. `~/.yarp/.mcp.json`).
+    /// - For `MCPProvider::Yarp`: `yarp_data_dir()` (i.e. `~/.yarp/.mcp.json`).
     /// - For any other provider: the user's home directory (e.g. `~/.claude.json`).
     ///
     /// Project-scoped installations (those detected inside a repo) are not considered
@@ -243,7 +243,7 @@ impl FileBasedMCPManager {
     /// case this returns `true` due to the global reference).
     fn is_global_server(&self, hash: u64) -> bool {
         let home_dir = dirs::home_dir();
-        let warp_root = warp_data_dir();
+        let yarp_root = yarp_data_dir();
         self.file_based_servers_by_root
             .iter()
             .any(|(root_path, provider_map)| {
@@ -252,7 +252,7 @@ impl FileBasedMCPManager {
                         return false;
                     }
                     match provider {
-                        MCPProvider::Yarp => root_path == &warp_root,
+                        MCPProvider::Yarp => root_path == &yarp_root,
                         MCPProvider::Claude | MCPProvider::Codex | MCPProvider::Agents => {
                             home_dir.as_ref().is_some_and(|home| root_path == home)
                         }
@@ -264,9 +264,9 @@ impl FileBasedMCPManager {
     /// Returns `true` if the server identified by `hash` is referenced from the global
     /// Yarp config (`~/.yarp/.mcp.json`). Global Yarp servers always auto-spawn.
     fn is_global_warp_server(&self, hash: u64) -> bool {
-        let warp_root = warp_data_dir();
+        let yarp_root = yarp_data_dir();
         self.file_based_servers_by_root
-            .get(&warp_root)
+            .get(&yarp_root)
             .and_then(|provider_map| provider_map.get(&MCPProvider::Yarp))
             .is_some_and(|hashes| hashes.contains(&hash))
     }
@@ -432,7 +432,7 @@ impl FileBasedMCPManager {
         // Global Yarp installs live under `~/.yarp/`, which is internal Yarp state
         // rather than a meaningful working directory. Map them to the home dir so
         // all global installs (Yarp and third-party) share a consistent cwd.
-        if discovery_root == warp_data_dir() {
+        if discovery_root == yarp_data_dir() {
             return dirs::home_dir().or(Some(discovery_root));
         }
         Some(discovery_root)

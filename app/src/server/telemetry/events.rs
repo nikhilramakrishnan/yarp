@@ -127,7 +127,7 @@ pub struct BootstrappingInfo {
     /// time, which roughly equals the time cost of running our bootstrap
     /// script.  Will be None if `bootstrap_duration_seconds` or
     /// `rcfiles_duration_seconds` is None.
-    pub warp_attributed_bootstrap_duration_seconds: Option<f64>,
+    pub yarp_attributed_bootstrap_duration_seconds: Option<f64>,
     pub shell_version: Option<String>,
     pub terminal_session_id: Option<SessionId>,
 }
@@ -3220,9 +3220,9 @@ impl TelemetryEvent {
             TelemetryEvent::CodePanelsFileOpened { entrypoint, target } => {
                 let (target, layout, editor) = match target {
                     FileTarget::MarkdownViewer(layout) => {
-                        ("warp_markdown_viewer", Some(*layout), None)
+                        ("yarp_markdown_viewer", Some(*layout), None)
                     }
-                    FileTarget::CodeEditor(layout) => ("warp_code_editor", Some(*layout), None),
+                    FileTarget::CodeEditor(layout) => ("yarp_code_editor", Some(*layout), None),
                     FileTarget::EnvEditor => ("env_editor", None, None),
                     FileTarget::SystemDefault => ("system_default", None, None),
                     FileTarget::SystemGeneric => ("system_generic", None, None),

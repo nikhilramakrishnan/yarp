@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Installs the warp_channel_config binary at a pinned revision.
+# Installs the yarp_channel_config binary at a pinned revision.
 #
 # This script acts as a lockfile: the REVISION variable pins the exact version
 # of the config binary to the code that reads its output. Update REVISION when

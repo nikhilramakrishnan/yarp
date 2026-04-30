@@ -117,7 +117,7 @@ impl MenuItemData {
 /// The NSMenuItem logically holds a reference count on this Rc, which is balanced in our dealloc callback below.
 /// The following functions are invoked from Cocoa.
 #[no_mangle]
-extern "C-unwind" fn warp_menu_item_needs_update(item: id, ctx: *mut c_void) {
+extern "C-unwind" fn yarp_menu_item_needs_update(item: id, ctx: *mut c_void) {
     let ctx = MenuItemData::read_context(ctx);
     let props: MenuItemProperties = ctx.props.borrow().clone();
     let func = &ctx.update;
@@ -141,13 +141,13 @@ extern "C-unwind" fn warp_menu_item_needs_update(item: id, ctx: *mut c_void) {
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_menu_item_triggered(_item: id, ctx: *mut c_void) {
+extern "C-unwind" fn yarp_menu_item_triggered(_item: id, ctx: *mut c_void) {
     let func = &MenuItemData::read_context(ctx).triggered;
     callback_dispatcher().menu_item_triggered(func);
 }
 
 #[no_mangle]
-extern "C-unwind" fn warp_menu_item_deallocated(ctx: *mut c_void) {
+extern "C-unwind" fn yarp_menu_item_deallocated(ctx: *mut c_void) {
     MenuItemData::consume_context(ctx)
 }
 
@@ -236,7 +236,7 @@ fn resolve_key_equivalent(keystroke: Option<&Keystroke>) -> (id, NSEventModifier
 
 // Apply any differences between the two states to the menu item.
 unsafe fn apply_changes(changes: MenuItemPropertyChanges, item: id) {
-    // Wrap in a local autorelease pool: AppKit invokes `warp_menu_item_needs_update`
+    // Wrap in a local autorelease pool: AppKit invokes `yarp_menu_item_needs_update`
     // on every menu validation (per menu open and per keystroke for shortcut matching),
     // so this is a hot path. A local pool bounds peak memory for the NSString temporaries
     // created here (item title, key equivalent) without relying on the outer AppKit pool.

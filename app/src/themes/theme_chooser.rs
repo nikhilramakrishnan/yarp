@@ -224,8 +224,8 @@ impl ThemeChooser {
             me.update_themes(ctx);
         });
 
-        let warp_config_handle = YarpConfig::handle(ctx);
-        ctx.subscribe_to_model(&warp_config_handle, |me, _, event, ctx| {
+        let yarp_config_handle = YarpConfig::handle(ctx);
+        ctx.subscribe_to_model(&yarp_config_handle, |me, _, event, ctx| {
             if let YarpConfigUpdateEvent::Themes = event {
                 me.update_themes(ctx);
                 ctx.notify();
@@ -311,8 +311,8 @@ impl ThemeChooser {
         ctx.spawn(
             async move { load_theme_configs(&themes_dir()) },
             move |theme_chooser, loaded_themes, ctx| {
-                ctx.update_model(&YarpConfig::handle(ctx), move |warp_config, ctx| {
-                    warp_config.update_theme_config(loaded_themes, ctx);
+                ctx.update_model(&YarpConfig::handle(ctx), move |yarp_config, ctx| {
+                    yarp_config.update_theme_config(loaded_themes, ctx);
                 });
                 theme_chooser.update_themes(ctx);
                 theme_chooser.select_and_save_theme(&theme, ctx);
@@ -324,8 +324,8 @@ impl ThemeChooser {
         ctx.spawn(
             async move { load_theme_configs(&themes_dir()) },
             move |theme_chooser, loaded_themes, ctx| {
-                ctx.update_model(&YarpConfig::handle(ctx), move |warp_config, ctx| {
-                    warp_config.update_theme_config(loaded_themes, ctx);
+                ctx.update_model(&YarpConfig::handle(ctx), move |yarp_config, ctx| {
+                    yarp_config.update_theme_config(loaded_themes, ctx);
                 });
                 theme_chooser.update_themes(ctx);
                 theme_chooser.select_latest_theme(ctx);

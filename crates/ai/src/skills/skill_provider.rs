@@ -159,7 +159,7 @@ pub fn provider_rank(provider: SkillProvider) -> usize {
 
 pub fn home_skills_path(provider: SkillProvider) -> Option<PathBuf> {
     if provider == SkillProvider::Yarp {
-        return yarp_core::paths::warp_home_skills_dir();
+        return yarp_core::paths::yarp_home_skills_dir();
     }
     let definition = SKILL_PROVIDER_DEFINITIONS
         .iter()
@@ -217,20 +217,20 @@ mod tests {
     };
 
     #[test]
-    fn warp_home_skills_path_uses_warp_home_path() {
+    fn yarp_home_skills_path_uses_warp_home_path() {
         assert_eq!(
             home_skills_path(SkillProvider::Yarp),
-            yarp_core::paths::warp_home_skills_dir()
+            yarp_core::paths::yarp_home_skills_dir()
         );
     }
 
     #[test]
-    fn warp_home_skill_path_is_home_warp_skill() {
-        let Some(warp_home_skills_dir) = yarp_core::paths::warp_home_skills_dir() else {
+    fn yarp_home_skill_path_is_home_warp_skill() {
+        let Some(yarp_home_skills_dir) = yarp_core::paths::yarp_home_skills_dir() else {
             eprintln!("Skipping test: home directory not available");
             return;
         };
-        let path = warp_home_skills_dir.join("my-skill").join("SKILL.md");
+        let path = yarp_home_skills_dir.join("my-skill").join("SKILL.md");
 
         assert_eq!(get_provider_for_path(&path), Some(SkillProvider::Yarp));
         assert_eq!(get_scope_for_path(&path), SkillScope::Home);

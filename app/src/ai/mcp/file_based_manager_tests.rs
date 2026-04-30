@@ -3,7 +3,7 @@ use crate::ai::mcp::FileMCPWatcher;
 use crate::ai::mcp::ParsedTemplatableMCPServerResult;
 use crate::auth::AuthStateProvider;
 use crate::settings::{AISettings, FocusedTerminalInfo};
-use crate::warp_managed_paths_watcher::{warp_data_dir, YarpManagedPathsWatcher};
+use crate::yarp_managed_paths_watcher::{yarp_data_dir, YarpManagedPathsWatcher};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
@@ -260,7 +260,7 @@ fn test_update_file_based_servers_removes_unreferenced_servers() {
 #[test]
 fn test_global_warp_server_always_spawns() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
-    let warp_root = warp_data_dir();
+    let yarp_root = yarp_data_dir();
     let parsed = parse_mcp_json(r#"{"global-yarp": {"command": "npx", "args": ["yarp"]}}"#);
 
     App::test((), |mut app| async move {
@@ -269,7 +269,7 @@ fn test_global_warp_server_always_spawns() {
 
         // Toggle is off by default; global Yarp server should still spawn.
         manager.update(&mut app, |m, ctx| {
-            m.apply_parsed_servers(warp_root.clone(), MCPProvider::Yarp, parsed, ctx);
+            m.apply_parsed_servers(yarp_root.clone(), MCPProvider::Yarp, parsed, ctx);
         });
 
         events.update(&mut app, |e, _| {
@@ -357,7 +357,7 @@ fn test_project_scoped_servers_never_auto_spawn() {
     let repo_path = PathBuf::from("/tmp/yarp-test-repo");
     let claude_parsed =
         parse_mcp_json(r#"{"proj-claude": {"command": "npx", "args": ["proj-claude"]}}"#);
-    let warp_parsed = parse_mcp_json(r#"{"proj-yarp": {"command": "npx", "args": ["proj-yarp"]}}"#);
+    let yarp_parsed = parse_mcp_json(r#"{"proj-yarp": {"command": "npx", "args": ["proj-yarp"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);
@@ -365,7 +365,7 @@ fn test_project_scoped_servers_never_auto_spawn() {
 
         manager.update(&mut app, |m, ctx| {
             m.apply_parsed_servers(repo_path.clone(), MCPProvider::Claude, claude_parsed, ctx);
-            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Yarp, warp_parsed, ctx);
+            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Yarp, yarp_parsed, ctx);
         });
 
         // Neither detection should emit a spawn event.

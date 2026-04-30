@@ -1552,10 +1552,10 @@ impl MCPServersListPageView {
             }
         }
 
-        // If the path is the Yarp data directory (e.g. ~/.yarp or ~/.warp_dev), set the text to
+        // If the path is the Yarp data directory (e.g. ~/.yarp or ~/.yarp_dev), set the text to
         // "global". The Yarp provider stores its data directory as the root path rather than the
         // home directory, unlike other providers that store the home directory directly.
-        if root_path == &crate::warp_managed_paths_watcher::warp_data_dir() {
+        if root_path == &crate::yarp_managed_paths_watcher::yarp_data_dir() {
             return Some("global".to_string());
         }
 

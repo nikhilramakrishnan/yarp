@@ -502,7 +502,7 @@ pub fn test_block_emits_block_completed_event_for_in_band_command() {
     block.start_for_in_band_command();
     block.precmd(Default::default());
     block.preexec(PreexecValue {
-        command: "warp_run_generator_command 1234 foo".to_owned(),
+        command: "yarp_run_generator_command 1234 foo".to_owned(),
     });
     block.finish(0);
 
@@ -1142,7 +1142,7 @@ fn test_command_is_empty_warp_prompt() {
     let block_index = BlockIndex::zero();
     // Combined grid contents:
     // -----
-    // warp_prompt
+    // yarp_prompt
     // abcde
     // -----
 

@@ -22,7 +22,7 @@ Use the script output directly when filling `Operating system`. Ask the user onl
 ## Yarp version
 
 For packaged native Yarp installs, read the bundled version metadata file directly:
-The bundled version metadata file lives at `../../metadata/version.json` relative to the skill root. Read its `warp_version` field and use that value directly.
+The bundled version metadata file lives at `../../metadata/version.json` relative to the skill root. Read its `yarp_version` field and use that value directly.
 
 Use the file contents directly when filling `Yarp version`. Ask the user only if Python is unavailable, the bundled metadata file is missing or unreadable, or the report is about a browser or web session rather than a packaged native install.
 

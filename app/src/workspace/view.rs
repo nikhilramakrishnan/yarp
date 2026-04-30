@@ -1937,8 +1937,8 @@ impl Workspace {
                         );
                     });
                 } else {
-                    YarpConfig::handle(ctx).update(ctx, |warp_config, ctx| {
-                        warp_config.remove_tab_config_by_path(path, ctx);
+                    YarpConfig::handle(ctx).update(ctx, |yarp_config, ctx| {
+                        yarp_config.remove_tab_config_by_path(path, ctx);
                     });
                 }
                 self.current_workspace_state
@@ -8868,8 +8868,8 @@ impl Workspace {
                 ctx.notify();
             }
             LaunchConfigModalEvent::SuccessfullySavedConfig(launch_config) => {
-                ctx.update_model(&YarpConfig::handle(ctx), move |warp_config, ctx| {
-                    warp_config.append_launch_config(launch_config, ctx);
+                ctx.update_model(&YarpConfig::handle(ctx), move |yarp_config, ctx| {
+                    yarp_config.append_launch_config(launch_config, ctx);
                 });
                 ctx.notify();
             }
@@ -16944,7 +16944,7 @@ impl Workspace {
             let bg_color = blended_colors::neutral_1(appearance.theme());
 
             // Left: Warp logo - clickable to link to warp.dev
-            let warp_logo = Hoverable::new(self.mouse_states.warp_logo.clone(), |_state| {
+            let yarp_logo = Hoverable::new(self.mouse_states.yarp_logo.clone(), |_state| {
                 ConstrainedBox::new(
                     yarp_core::ui::Icon::Yarp
                         .to_yarpui_icon(appearance.theme().foreground())
@@ -16959,7 +16959,7 @@ impl Workspace {
             })
             .with_cursor(Cursor::PointingHand)
             .finish();
-            tab_bar.add_child(warp_logo);
+            tab_bar.add_child(yarp_logo);
 
             // Right: Info button + "View all cloud runs" button (for ambient agent sessions) + "Open in Yarp" button
             let mut right_row = Flex::row()
@@ -21336,7 +21336,7 @@ impl TypedActionView for Workspace {
                     .unwrap_or_default()
                     .as_secs();
                 let output_path = env::temp_dir()
-                    .join(format!("warp_sample_{timestamp}.txt"))
+                    .join(format!("yarp_sample_{timestamp}.txt"))
                     .display()
                     .to_string();
 

@@ -14,7 +14,7 @@ define_settings_group!(YarpDriveSettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "warp_drive.sorting_choice",
+        toml_path: "yarp_drive.sorting_choice",
         description: "The sort order for items in Yarp Drive.",
     },
     sharing_onboarding_block_shown: YarpDriveSharingOnboardingBlockShown {
@@ -31,7 +31,7 @@ define_settings_group!(YarpDriveSettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "warp_drive.enabled",
+        toml_path: "yarp_drive.enabled",
         description: "Whether Yarp Drive is enabled.",
     },
 ]);

@@ -62,7 +62,7 @@ if [ -n "$GIT_RELEASE_TAG" ]; then
 
   echo "Writing bundled Yarp version metadata to $VERSION_METADATA_PATH"
   mkdir -p "$VERSION_METADATA_DIR"
-  printf '{\n  "warp_version": "%s"\n}\n' "$GIT_RELEASE_TAG" > "$VERSION_METADATA_PATH"
+  printf '{\n  "yarp_version": "%s"\n}\n' "$GIT_RELEASE_TAG" > "$VERSION_METADATA_PATH"
 fi
 
 # Copy channel-gated skills matching the current release channel.

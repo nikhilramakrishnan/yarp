@@ -49,7 +49,7 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
     undo_close::UndoCloseStack,
-    warp_managed_paths_watcher::YarpManagedPathsWatcher,
+    yarp_managed_paths_watcher::YarpManagedPathsWatcher,
     workflows::local_workflows::LocalWorkflows,
     workspace::{
         sync_inputs::SyncedInputState, ActiveSession, OneTimeModalModel, WorkspaceRegistry,

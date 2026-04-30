@@ -2955,7 +2955,7 @@ impl UsageWidget {
             if t.billing_metadata.customer_type == CustomerType::Enterprise
                 && t.billing_metadata
                     .tier
-                    .yarp_ai_policy
+                    .warp_ai_policy
                     .is_some_and(|p| p.limit == 0)
             {
                 usage.add_child(self.render_enterprise_usage_card(

@@ -51,7 +51,7 @@ fn base_warp_config_dir_name() -> String {
 ///
 /// This preserves the historical `.warp*` directory shape while still isolating dev, local,
 /// integration, oss, and optional development profiles.
-pub fn warp_home_config_dir_name() -> String {
+pub fn yarp_home_config_dir_name() -> String {
     let base_dir_name = base_warp_config_dir_name();
 
     if let Some(data_profile) = ChannelState::data_profile() {
@@ -66,16 +66,16 @@ pub fn warp_home_config_dir_name() -> String {
 /// Unlike [`data_dir`] and [`config_local_dir`] on non-macOS platforms, this intentionally keeps
 /// Warp-authored, user-facing config under a `.warp*` directory in the home directory instead of
 /// using the platform XDG/AppData project directories.
-pub fn warp_home_config_dir() -> Option<PathBuf> {
-    dirs::home_dir().map(|home_dir| home_dir.join(warp_home_config_dir_name()))
+pub fn yarp_home_config_dir() -> Option<PathBuf> {
+    dirs::home_dir().map(|home_dir| home_dir.join(yarp_home_config_dir_name()))
 }
 
-pub fn warp_home_skills_dir() -> Option<PathBuf> {
-    warp_home_config_dir().map(|warp_config_dir| warp_config_dir.join("skills"))
+pub fn yarp_home_skills_dir() -> Option<PathBuf> {
+    yarp_home_config_dir().map(|yarp_config_dir| yarp_config_dir.join("skills"))
 }
 
-pub fn warp_home_mcp_config_file_path() -> Option<PathBuf> {
-    warp_home_config_dir().map(|warp_config_dir| warp_config_dir.join(".mcp.json"))
+pub fn yarp_home_mcp_config_file_path() -> Option<PathBuf> {
+    yarp_home_config_dir().map(|yarp_config_dir| yarp_config_dir.join(".mcp.json"))
 }
 
 /// Returns the macOS config directory name for the current channel.

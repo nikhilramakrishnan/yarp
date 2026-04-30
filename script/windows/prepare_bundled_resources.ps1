@@ -61,7 +61,7 @@ if ($env:GIT_RELEASE_TAG) {
         New-Item -ItemType Directory -Path $VersionMetadataDir -Force | Out-Null
     }
 
-    @{ warp_version = $env:GIT_RELEASE_TAG } |
+    @{ yarp_version = $env:GIT_RELEASE_TAG } |
         ConvertTo-Json |
         Set-Content -Path $VersionMetadataPath -Encoding utf8
 }

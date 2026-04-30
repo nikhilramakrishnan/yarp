@@ -1819,7 +1819,7 @@ pub fn test_emits_after_block_completed_event() {
     );
     block_list.start_active_block_for_in_band_command();
     block_list.preexec(PreexecValue {
-        command: "warp_run_generator_command 1234 foo".to_owned(),
+        command: "yarp_run_generator_command 1234 foo".to_owned(),
     });
     command_finished_and_precmd(&mut block_list);
 
@@ -1890,7 +1890,7 @@ fn test_background_blocks_finished() {
     // Running an in-band command should not finish the background block.
     block_list.start_active_block_for_in_band_command();
     block_list.preexec(PreexecValue {
-        command: "warp_run_generator_command abc".to_owned(),
+        command: "yarp_run_generator_command abc".to_owned(),
     });
     command_finished_and_precmd(&mut block_list);
 

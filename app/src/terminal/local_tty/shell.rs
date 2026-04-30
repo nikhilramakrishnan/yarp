@@ -8,7 +8,7 @@ use std::{
 };
 use typed_path::UnixPathBuf;
 use yarp_core::channel::{Channel, ChannelState};
-use yarp_util::path::{canonicalize_git_bash_path, is_msys2_path, warp_shell_path};
+use yarp_util::path::{canonicalize_git_bash_path, is_msys2_path, yarp_shell_path};
 
 use crate::{
     terminal::{
@@ -156,18 +156,18 @@ impl ShellStarter {
             }
         }
 
-        if let Some(warp_shell_env_var) = warp_shell_path() {
-            let (warp_shell_path, shell_type) = supported_shell_path_and_type(&warp_shell_env_var)
+        if let Some(yarp_shell_env_var) = yarp_shell_path() {
+            let (yarp_shell_path, shell_type) = supported_shell_path_and_type(&yarp_shell_env_var)
                 .unwrap_or_else(|| {
-                    panic!("Cannot spawn shell; $YARP_SHELL_PATH is invalid: {warp_shell_env_var}")
+                    panic!("Cannot spawn shell; $YARP_SHELL_PATH is invalid: {yarp_shell_env_var}")
                 });
             return Some(
                 ShellStarterSource::Environment(DirectShellStarter {
                     args: arguments_for_session_spawning_command(
-                        warp_shell_path.as_path().to_string_lossy().as_ref(),
+                        yarp_shell_path.as_path().to_string_lossy().as_ref(),
                         shell_type,
                     ),
-                    shell_path: warp_shell_path,
+                    shell_path: yarp_shell_path,
                     shell_type,
                 })
                 .into(),
@@ -582,7 +582,7 @@ fn arguments_for_session_spawning_command(
              * 4. Process substitution i.e. <() send the output of a process via
              * /dev/fd/<n> (or temp files if this is unavailable) to another process
              * 5. Send an InitShell message to Yarp through escape sequences.
-             * The warp_send_message function is inlined here.
+             * The yarp_send_message function is inlined here.
              * 6. We disable PS2 and the line editor to work around a gnarly bug involving
              * garbage being inserted in every line. We further disable PS1 and echo'ing
              * in order to show nothing to the user when we input characters. We later

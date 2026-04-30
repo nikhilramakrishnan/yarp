@@ -276,7 +276,7 @@ pub struct BlockList {
     bootstrap_stage: BootstrapStage,
 
     padding: BlockPadding,
-    warp_prompt_height_lines: f32,
+    yarp_prompt_height_lines: f32,
 
     /// Executor used for spawning threads in the background.
     background_executor: Arc<Background>,
@@ -302,7 +302,7 @@ pub struct BlockList {
     ///
     /// This isn't a simple boolean 'is_in_band_command_in_flight' because it is possible that
     /// with two in-band commands queued in quick succession, the second command may be written
-    /// to the PTY before warp_precmd is executed after the first command. `warp_precmd` is used
+    /// to the PTY before yarp_precmd is executed after the first command. `yarp_precmd` is used
     /// to emit the `CommandFinished` hook, and so it would be possible to mistakenly mark the
     /// boolean `false`.
     in_flight_in_band_command_count: usize,
@@ -626,7 +626,7 @@ impl BlockList {
             smart_select_override: None,
             bootstrap_stage,
             padding: sizes.block_padding,
-            warp_prompt_height_lines: sizes.warp_prompt_height_lines,
+            yarp_prompt_height_lines: sizes.yarp_prompt_height_lines,
             background_executor,
             show_warp_bootstrap_block: show_warp_bootstrap_input,
             show_in_band_command_blocks,
@@ -2709,7 +2709,7 @@ impl BlockList {
             block_padding: self.padding,
             size: self.size,
             max_block_scroll_limit: self.max_grid_size_limit,
-            warp_prompt_height_lines: self.warp_prompt_height_lines,
+            yarp_prompt_height_lines: self.yarp_prompt_height_lines,
         }
     }
 

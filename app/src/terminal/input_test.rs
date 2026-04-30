@@ -22,7 +22,7 @@ use crate::search::files::model::FileSearchModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::terminal::input::slash_command_model::SlashCommandEntryState;
 use crate::terminal::input::slash_commands::SlashCommandsEvent;
-use crate::warp_managed_paths_watcher::YarpManagedPathsWatcher;
+use crate::yarp_managed_paths_watcher::YarpManagedPathsWatcher;
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 use repo_metadata::RepoMetadataModel;
@@ -2608,7 +2608,7 @@ fn test_open_slash_command_expands_tilde() {
         initialize_app(&mut app);
 
         let home_dir = dirs::home_dir().expect("home directory must exist");
-        let file_path = home_dir.join("warp_tilde_test_file.txt");
+        let file_path = home_dir.join("yarp_tilde_test_file.txt");
         std::fs::File::create(&file_path).unwrap();
 
         let session_id: SessionId = 1.into();
@@ -2633,7 +2633,7 @@ fn test_open_slash_command_expands_tilde() {
 
         input.update(&mut app, |input, ctx| {
             input.editor.update(ctx, |editor, ctx| {
-                editor.set_buffer_text("/open-file ~/warp_tilde_test_file.txt", ctx)
+                editor.set_buffer_text("/open-file ~/yarp_tilde_test_file.txt", ctx)
             });
         });
 

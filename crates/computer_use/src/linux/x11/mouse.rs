@@ -29,7 +29,7 @@ impl<'a> Mouse<'a> {
         // reliably updates the server's pointer position, ensuring that subsequent
         // button events are delivered to the correct window.
         self.conn
-            .warp_pointer(
+            .yarp_pointer(
                 x11rb::NONE,      // src_window (unconstrained)
                 self.root_window, // dst_window (absolute coordinates)
                 0,                // src_x (unused)

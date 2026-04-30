@@ -35,7 +35,7 @@ pub fn main() -> Result<()> {
                     "YarpIntegration"
                 },
             ),
-            logfile_name: "warp_integration.log".into(),
+            logfile_name: "yarp_integration.log".into(),
             server_config: YarpServerConfig {
                 firebase_auth_api_key: "".into(),
                 // Use an IP in the IANA testing range, with the TCP discard port, to

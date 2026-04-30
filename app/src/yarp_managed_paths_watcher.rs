@@ -18,7 +18,7 @@ use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 #[cfg(not(target_family = "wasm"))]
 const YARP_MANAGED_PATHS_WATCHER_DEBOUNCE_MILLI_SECS: u64 = 500;
 
-pub(crate) fn warp_data_dir() -> PathBuf {
+pub(crate) fn yarp_data_dir() -> PathBuf {
     yarp_core::paths::data_dir()
 }
 
@@ -27,7 +27,7 @@ pub(crate) fn ensure_warp_watch_roots_exist() {}
 
 #[cfg(not(target_family = "wasm"))]
 pub(crate) fn ensure_warp_watch_roots_exist() {
-    let data_dir = warp_data_dir();
+    let data_dir = yarp_data_dir();
     if let Err(err) = fs::create_dir_all(&data_dir) {
         log::warn!(
             "Failed to create Yarp data directory {}: {err}",
@@ -47,17 +47,17 @@ pub(crate) fn ensure_warp_watch_roots_exist() {
 }
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
-pub(crate) fn warp_home_config_dir() -> Option<PathBuf> {
-    yarp_core::paths::warp_home_config_dir()
+pub(crate) fn yarp_home_config_dir() -> Option<PathBuf> {
+    yarp_core::paths::yarp_home_config_dir()
 }
 
-pub(crate) fn warp_home_skills_dir() -> Option<PathBuf> {
-    yarp_core::paths::warp_home_skills_dir()
+pub(crate) fn yarp_home_skills_dir() -> Option<PathBuf> {
+    yarp_core::paths::yarp_home_skills_dir()
 }
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
-pub(crate) fn warp_home_mcp_config_file_path() -> Option<PathBuf> {
-    yarp_core::paths::warp_home_mcp_config_file_path()
+pub(crate) fn yarp_home_mcp_config_file_path() -> Option<PathBuf> {
+    yarp_core::paths::yarp_home_mcp_config_file_path()
 }
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
@@ -67,15 +67,15 @@ pub(crate) struct YarpMcpConfigPath {
     pub(crate) config_path: PathBuf,
 }
 
-pub(crate) fn warp_managed_skill_dirs() -> Vec<PathBuf> {
-    warp_home_skills_dir().into_iter().collect()
+pub(crate) fn yarp_managed_skill_dirs() -> Vec<PathBuf> {
+    yarp_home_skills_dir().into_iter().collect()
 }
 
 #[cfg_attr(target_family = "wasm", allow(dead_code))]
-pub(crate) fn warp_managed_mcp_config_path() -> Option<YarpMcpConfigPath> {
+pub(crate) fn yarp_managed_mcp_config_path() -> Option<YarpMcpConfigPath> {
     Some(YarpMcpConfigPath {
         root_path: home_dir()?,
-        config_path: warp_home_mcp_config_file_path()?,
+        config_path: yarp_home_mcp_config_file_path()?,
     })
 }
 
@@ -240,7 +240,7 @@ impl YarpManagedPathsWatcher {
         ctx.subscribe_to_model(&watcher, Self::handle_fs_event);
 
         if should_register_watcher {
-            let data_dir = warp_data_dir();
+            let data_dir = yarp_data_dir();
             let config_local_dir = yarp_core::paths::config_local_dir();
             let should_register_config_local_dir = config_local_dir != data_dir;
             let worktrees_dir = data_dir.join("worktrees");
@@ -262,36 +262,36 @@ impl YarpManagedPathsWatcher {
                     "Yarp config directory",
                 );
             }
-            if let Some(warp_home_skills_dir) = warp_home_skills_dir() {
-                if warp_home_skills_dir.exists()
-                    && !warp_home_skills_dir.starts_with(&data_dir)
+            if let Some(yarp_home_skills_dir) = yarp_home_skills_dir() {
+                if yarp_home_skills_dir.exists()
+                    && !yarp_home_skills_dir.starts_with(&data_dir)
                     && (!should_register_config_local_dir
-                        || !warp_home_skills_dir.starts_with(&config_local_dir))
+                        || !yarp_home_skills_dir.starts_with(&config_local_dir))
                 {
                     Self::register_path(
                         ctx,
                         &watcher,
-                        warp_home_skills_dir,
+                        yarp_home_skills_dir,
                         WatchFilter::accept_all(),
                         RecursiveMode::Recursive,
                         "Yarp home skills directory",
                     );
                 }
             }
-            if let (Some(warp_home_config_dir), Some(warp_home_mcp_config_path)) =
-                (warp_home_config_dir(), warp_home_mcp_config_file_path())
+            if let (Some(yarp_home_config_dir), Some(yarp_home_mcp_config_path)) =
+                (yarp_home_config_dir(), yarp_home_mcp_config_file_path())
             {
-                if warp_home_config_dir.exists()
-                    && !warp_home_config_dir.starts_with(&data_dir)
+                if yarp_home_config_dir.exists()
+                    && !yarp_home_config_dir.starts_with(&data_dir)
                     && (!should_register_config_local_dir
-                        || !warp_home_config_dir.starts_with(&config_local_dir))
+                        || !yarp_home_config_dir.starts_with(&config_local_dir))
                 {
                     Self::register_path(
                         ctx,
                         &watcher,
-                        warp_home_config_dir,
+                        yarp_home_config_dir,
                         WatchFilter::with_filter(Arc::new(move |path| {
-                            path == warp_home_mcp_config_path
+                            path == yarp_home_mcp_config_path
                         })),
                         RecursiveMode::NonRecursive,
                         "Yarp home MCP config directory",
@@ -365,29 +365,29 @@ mod tests {
     use repo_metadata::{RepositoryUpdate, TargetFile};
 
     use super::{
-        filter_repository_update_by_prefix, warp_home_mcp_config_file_path, warp_home_skills_dir,
-        warp_managed_mcp_config_path, warp_managed_skill_dirs,
+        filter_repository_update_by_prefix, yarp_home_mcp_config_file_path, yarp_home_skills_dir,
+        yarp_managed_mcp_config_path, yarp_managed_skill_dirs,
     };
 
     #[test]
-    fn warp_managed_skill_dirs_contains_only_warp_home_path() {
-        let dirs = warp_managed_skill_dirs();
-        match warp_home_skills_dir() {
-            Some(warp_home_skills_dir) => assert_eq!(dirs, vec![warp_home_skills_dir]),
+    fn yarp_managed_skill_dirs_contains_only_warp_home_path() {
+        let dirs = yarp_managed_skill_dirs();
+        match yarp_home_skills_dir() {
+            Some(yarp_home_skills_dir) => assert_eq!(dirs, vec![yarp_home_skills_dir]),
             None => assert!(dirs.is_empty()),
         }
     }
 
     #[test]
-    fn warp_managed_mcp_config_path_contains_only_warp_home_path() {
+    fn yarp_managed_mcp_config_path_contains_only_warp_home_path() {
         match (
             home_dir(),
-            warp_home_mcp_config_file_path(),
-            warp_managed_mcp_config_path(),
+            yarp_home_mcp_config_file_path(),
+            yarp_managed_mcp_config_path(),
         ) {
-            (Some(home_dir), Some(warp_home_mcp_config_path), Some(path)) => {
+            (Some(home_dir), Some(yarp_home_mcp_config_path), Some(path)) => {
                 assert_eq!(path.root_path, home_dir);
-                assert_eq!(path.config_path, warp_home_mcp_config_path);
+                assert_eq!(path.config_path, yarp_home_mcp_config_path);
             }
             (_, _, None) => {}
             _ => panic!("Expected Yarp MCP path when home directory is available"),

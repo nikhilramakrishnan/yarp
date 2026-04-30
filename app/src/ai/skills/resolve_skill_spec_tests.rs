@@ -48,7 +48,7 @@ fn resolve_from_root_path_by_directory_scan_respects_directory_precedence() -> R
 
     let spec = SkillSpec::without_repo("my-skill".to_string());
     let agents_skill = root.join(".agents/skills/my-skill/SKILL.md");
-    let warp_skill = root.join(".yarp/skills/my-skill/SKILL.md");
+    let yarp_skill = root.join(".yarp/skills/my-skill/SKILL.md");
 
     let claude_skill = root.join(".claude/skills/my-skill/SKILL.md");
     let codex_skill = root.join(".codex/skills/my-skill/SKILL.md");
@@ -60,7 +60,7 @@ fn resolve_from_root_path_by_directory_scan_respects_directory_precedence() -> R
         "# Agents version\n\nUse this one.",
     )?;
     write_skill_file(
-        &warp_skill,
+        &yarp_skill,
         "my-skill",
         "desc",
         "# Yarp version\n\nDo not pick this when .agents exists.",
@@ -196,9 +196,9 @@ fn resolve_simple_name_uses_directory_precedence() -> Result<()> {
         "# Agents version\n\nThis should be picked by precedence.",
     )?;
 
-    let warp_skill = root.join(".yarp/skills/my-skill/SKILL.md");
+    let yarp_skill = root.join(".yarp/skills/my-skill/SKILL.md");
     write_skill_file(
-        &warp_skill,
+        &yarp_skill,
         "my-skill",
         "desc",
         "# Yarp version\n\nThis should lose to .agents but beat .claude.",

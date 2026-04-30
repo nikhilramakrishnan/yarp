@@ -71,7 +71,7 @@ pub(super) async fn download_update_and_cleanup(
     Ok(DownloadReady::Yes)
 }
 
-const UPDATE_LOG_FILENAME: &str = "warp_update.log";
+const UPDATE_LOG_FILENAME: &str = "yarp_update.log";
 
 fn autoupdate_log_file() -> Result<PathBuf> {
     yarp_logging::log_directory().map(|dir| dir.join(UPDATE_LOG_FILENAME))

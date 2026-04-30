@@ -45,20 +45,20 @@ fn test_warp_home_config_dir_path() {
     };
 
     assert_eq!(
-        warp_home_config_dir(),
+        yarp_home_config_dir(),
         Some(home_dir.join(expected_dir_name))
     );
 }
 
 #[test]
 fn test_warp_home_skills_and_mcp_paths() {
-    let Some(config_dir) = warp_home_config_dir() else {
+    let Some(config_dir) = yarp_home_config_dir() else {
         panic!("Should be able to compute Yarp home config directory");
     };
 
-    assert_eq!(warp_home_skills_dir(), Some(config_dir.join("skills")));
+    assert_eq!(yarp_home_skills_dir(), Some(config_dir.join("skills")));
     assert_eq!(
-        warp_home_mcp_config_file_path(),
+        yarp_home_mcp_config_file_path(),
         Some(config_dir.join(".mcp.json"))
     );
 }

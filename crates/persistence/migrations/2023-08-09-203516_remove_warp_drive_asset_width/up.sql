@@ -1,1 +1,1 @@
-ALTER TABLE windows DROP warp_drive_asset_width;
+ALTER TABLE windows DROP yarp_drive_asset_width;

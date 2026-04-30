@@ -42,7 +42,7 @@ use yarp_graphql::object_permissions::AccessLevel;
 
 /// Stub object-client. All cloud-only operations (sharing, owner transfers,
 /// trash, etc.) return `Err`. The two methods the boot path depends on -
-/// `get_yarp_drive_updates` and `fetch_changed_objects` - return empty so
+/// `get_warp_drive_updates` and `fetch_changed_objects` - return empty so
 /// the UI never blocks on a network round-trip.
 pub struct OssObjectClient;
 
@@ -151,7 +151,7 @@ impl ObjectClient for OssObjectClient {
         err()
     }
 
-    async fn get_yarp_drive_updates(
+    async fn get_warp_drive_updates(
         &self,
         _message_sender: Sender<ObjectUpdateMessage>,
         stream_ready_sender: Sender<()>,

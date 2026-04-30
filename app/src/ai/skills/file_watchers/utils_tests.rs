@@ -327,7 +327,7 @@ fn is_home_provider_path_true_for_known_providers() {
     let path = home_dir.join(".agents").join("skills");
     assert!(is_home_provider_path(&path));
 
-    if let Some(path) = yarp_core::paths::warp_home_skills_dir() {
+    if let Some(path) = yarp_core::paths::yarp_home_skills_dir() {
         assert!(is_home_provider_path(&path));
     }
 
@@ -350,12 +350,12 @@ fn extract_skill_parent_directory_returns_home_dir_for_warp_home_skill() {
         eprintln!("Skipping test: home directory not available");
         return;
     };
-    let Some(warp_home_skills_dir) = yarp_core::paths::warp_home_skills_dir() else {
+    let Some(yarp_home_skills_dir) = yarp_core::paths::yarp_home_skills_dir() else {
         eprintln!("Skipping test: Yarp home skills directory not available");
         return;
     };
 
-    let skill_path = warp_home_skills_dir.join("test-skill").join("SKILL.md");
+    let skill_path = yarp_home_skills_dir.join("test-skill").join("SKILL.md");
     let result = extract_skill_parent_directory(&skill_path);
     assert_eq!(result.ok(), Some(home_dir));
 }
@@ -437,7 +437,7 @@ fn find_skill_directories_in_tree_finds_root_skills() {
             ignored: false,
             loaded: true,
         });
-        let warp_skills = Entry::Directory(DirectoryEntry {
+        let yarp_skills = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join(".agents/skills"),
             )
@@ -446,12 +446,12 @@ fn find_skill_directories_in_tree_finds_root_skills() {
             ignored: false,
             loaded: true,
         });
-        let warp_dir = Entry::Directory(DirectoryEntry {
+        let yarp_dir = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join(".agents"),
             )
             .unwrap(),
-            children: vec![warp_skills],
+            children: vec![yarp_skills],
             ignored: false,
             loaded: true,
         });
@@ -490,7 +490,7 @@ fn find_skill_directories_in_tree_finds_root_skills() {
 
         let root = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(&repo).unwrap(),
-            children: vec![warp_dir, claude_dir],
+            children: vec![yarp_dir, claude_dir],
             ignored: false,
             loaded: true,
         });

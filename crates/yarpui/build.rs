@@ -156,7 +156,7 @@ fn compile_objc_lib() {
         .file("src/platform/mac/objc/fullscreen_queue.m")
         .file("src/platform/mac/objc/window_blur.m")
         .file("src/platform/mac/objc/alert.m")
-        .compile("warp_objc");
+        .compile("yarp_objc");
 }
 
 /// Determine the path containing the macOS standard libraries by querying

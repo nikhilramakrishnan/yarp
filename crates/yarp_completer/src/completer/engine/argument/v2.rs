@@ -551,9 +551,9 @@ async fn generate_suggestions_for_argument_value(
     // TODO(completions-v2): Implement generator support.
     match argument_value {
         ArgumentValue::Suggestion(suggestion) => {
-            let warp_suggestion: Suggestion = suggestion.clone().into();
-            match matcher.get_match_type(parsed_token.as_str(), warp_suggestion.display.as_str()) {
-                Some(match_type) => vec![MatchedSuggestion::new(warp_suggestion, match_type)],
+            let yarp_suggestion: Suggestion = suggestion.clone().into();
+            match matcher.get_match_type(parsed_token.as_str(), yarp_suggestion.display.as_str()) {
+                Some(match_type) => vec![MatchedSuggestion::new(yarp_suggestion, match_type)],
                 None => vec![],
             }
         }

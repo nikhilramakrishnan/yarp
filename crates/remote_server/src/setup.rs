@@ -123,7 +123,7 @@ pub fn parse_uname_output(output: &str) -> Result<RemotePlatform> {
 /// - integration: `~/.yarp-dev/remote-server`
 /// - yarp:    `~/.yarp/remote-server`
 pub fn remote_server_dir() -> String {
-    let warp_dir = match ChannelState::channel() {
+    let yarp_dir = match ChannelState::channel() {
         Channel::Stable => ".yarp",
         Channel::Preview => ".yarp-preview",
         Channel::Dev | Channel::Integration => ".yarp-dev",
@@ -134,7 +134,7 @@ pub fn remote_server_dir() -> String {
             ".yarp-dev"
         }
     };
-    format!("~/{warp_dir}/remote-server")
+    format!("~/{yarp_dir}/remote-server")
 }
 
 /// Returns the binary name, keyed by channel.
