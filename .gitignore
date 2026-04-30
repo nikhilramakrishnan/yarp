@@ -55,3 +55,8 @@ desired_behavior.md
 
 # Don't include the python cache for bundled skills.
 __pycache__/
+
+# Yarp: tooling artifacts that don't belong in source control.
+.claude/scheduled_tasks.lock
+.serena/
+OSS_FEATURE_RESTORATION.md
