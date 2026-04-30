@@ -9,7 +9,7 @@ type EventParser = fn(&str) -> Option<CLIAgentEvent>;
 
 /// Sentinel title that identifies structured CLI agent events sent via OSC 777.
 /// The `"agent"` field in the JSON body distinguishes which agent sent it.
-pub const CLI_AGENT_NOTIFICATION_SENTINEL: &str = "warp://cli-agent";
+pub const CLI_AGENT_NOTIFICATION_SENTINEL: &str = "yarp://cli-agent";
 
 /// The event type encoded in the `"event"` field of the JSON body.
 #[derive(Debug, Clone, PartialEq, Eq)]

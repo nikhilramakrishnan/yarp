@@ -123,7 +123,7 @@ fn test_build_auth_url_with_next_uses_scheme_param() {
         .map(|(_, value)| value.into_owned());
     assert_eq!(
         next_value,
-        Some("warp://action/focus_cloud_mode".to_string())
+        Some("yarp://action/focus_cloud_mode".to_string())
     );
 }
 

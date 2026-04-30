@@ -6947,7 +6947,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::CodexModalOpened => "User opened the Codex modal",
             Self::CodexModalUseCodexClicked => "User clicked 'Use Codex' in the Codex modal",
             Self::LinearIssueLinkOpened => {
-                "User opened a warp://linear deeplink to work on an issue"
+                "User opened a yarp://linear deeplink to work on an issue"
             }
             Self::CloudAgentCapacityModalOpened => "User opened the cloud agent capacity modal",
             Self::CloudAgentCapacityModalDismissed => {

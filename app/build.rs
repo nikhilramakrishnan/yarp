@@ -44,7 +44,7 @@ fn main() -> Result<()> {
         cc::Build::new()
             .file("src/platform/mac/objc/app_bundle.m")
             .file("src/platform/mac/objc/services.m")
-            .compile("warp_objc");
+            .compile("yarp_objc");
 
         // Build the dock tile plugin
         println!("cargo:rerun-if-changed=DockTilePlugin/YarpDockTilePlugin.m");
@@ -326,7 +326,7 @@ fn compile_sentry_objc_lib(sentry_framework_path: &str) {
     cc::Build::new()
         .file("src/platform/mac/objc/crash_reporting.m")
         .flag(format!("-F{sentry_framework_path}").as_str())
-        .compile("warp_sentry_objc");
+        .compile("yarp_sentry_objc");
 }
 
 #[cfg(unix)]
@@ -461,7 +461,7 @@ fn embed_resource_file(target_dir: &Path) {
     use std::io::Write;
 
     let version = env::var("GIT_RELEASE_TAG").unwrap_or("v0".to_owned());
-    let app_name = env::var("WARP_APP_NAME").unwrap_or("Warp".to_owned());
+    let app_name = env::var("WARP_APP_NAME").unwrap_or("Yarp".to_owned());
     let bin_name = env::var("CARGO_BIN_NAME").unwrap_or("local".to_owned());
 
     let icon_path = Path::new("channels")
