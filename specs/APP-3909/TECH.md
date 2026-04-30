@@ -18,9 +18,9 @@ The goal is to give tab-layout-dependent bindings a single source of truth for t
 - `app/src/workspace/mod.rs:772-797` — registration of `workspace:move_tab_left` / `workspace:move_tab_right` with static descriptions.
 - `app/src/workspace/mod.rs:892-899` — registration of `workspace:close_tabs_right_active_tab` with a static description.
 - `app/src/tab.rs:266-356` — `modify_tab_menu_items` and `close_tab_menu_items`, which already branch on `uses_vertical_tabs` inline.
-- `crates/warpui_core/src/keymap.rs:64-116` — `BindingDescription` definition and the `in_context` lookup API.
-- `crates/warpui_core/src/keymap.rs:145-221` — `BindingLens`, `EditableBinding`, `EditableBindingLens`.
-- `crates/warpui_core/src/core/app.rs:1718-1726` — `AppContext::description_for_custom_action`, used by the menu bar to resolve a custom action's description.
+- `crates/yarpui_core/src/keymap.rs:64-116` — `BindingDescription` definition and the `in_context` lookup API.
+- `crates/yarpui_core/src/keymap.rs:145-221` — `BindingLens`, `EditableBinding`, `EditableBindingLens`.
+- `crates/yarpui_core/src/core/app.rs:1718-1726` — `AppContext::description_for_custom_action`, used by the menu bar to resolve a custom action's description.
 - `app/src/app_menus.rs:486-511` — `make_new_tab_menu`, where `CustomAction::CloseTabsRight`, `MoveTabLeft`, and `MoveTabRight` are wired.
 - `app/src/app_menus.rs:1163-1186` — `custom_action_updater`, the per-menu-item update callback that pulls `description.in_context(MAC_MENUS_CONTEXT)` into `MenuItemPropertyChanges.name` on every menu open.
 - `app/src/util/bindings.rs:714-782` — `CommandBinding` and its `from_binding` / `From<BindingLens<'_>>` / `From<EditableBindingLens<'_>>` constructors. These are the cache-population entry points that clone `BindingDescription` into a reusable value type.
@@ -70,7 +70,7 @@ Add first-class support for dynamic description overrides in `warpui_core::keyma
 
 ### 1. Framework: optional dynamic override on `BindingDescription`
 
-In `crates/warpui_core/src/keymap.rs`:
+In `crates/yarpui_core/src/keymap.rs`:
 
 - Add a new private field `dynamic_override: Option<Arc<dyn Fn(&AppContext) -> Option<String> + Send + Sync>>` to `BindingDescription`. Using a boxed closure (via `Arc` so `Clone` stays cheap) lets registrations define resolvers inline with captured state, rather than forcing every dynamic binding to have a free function.
 - Replace the `#[derive(PartialEq, Eq, Debug)]` on `BindingDescription` with manual impls. The derived impls don't work because `Arc<dyn Fn>` is neither `PartialEq` nor `Debug`. The manual `PartialEq`/`Eq` compares the static `description` + `custom` overrides and ignores `dynamic_override`; this is safe because the only consumers of description equality (the dedup loops in `settings_view/keybindings.rs` and `resource_center/keybindings_page.rs`) operate on post-materialization `CommandBinding`s whose `dynamic_override` is always `None`. The manual `Debug` impl prints `dynamic_override: "<dynamic>"` when present.
@@ -79,7 +79,7 @@ In `crates/warpui_core/src/keymap.rs`:
 - Add `BindingDescription::has_dynamic_override(&self) -> bool` for cache-population code that only needs to know whether to materialize.
 - Keep `in_context` unchanged. It still returns `&str` and still returns the static default even for bindings with a dynamic override. That keeps the non-context read paths compiling during migration and gives downstream consumers a safe static fallback if a cache was somehow populated without resolution.
 
-`BindingDescription` is defined in the same crate as `AppContext` (`crates/warpui_core/src/core/app.rs`), and `AppContext` already owns the `keystroke_matcher: Matcher` that holds bindings. There is no layering or crate-graph concern here.
+`BindingDescription` is defined in the same crate as `AppContext` (`crates/yarpui_core/src/core/app.rs`), and `AppContext` already owns the `keystroke_matcher: Matcher` that holds bindings. There is no layering or crate-graph concern here.
 
 ### 2. App layer: inline override closures at registration
 
@@ -137,7 +137,7 @@ The menu bar is the only surface that can safely call `resolve` at render time, 
 
 ### 6. Tests
 
-Add unit tests in `crates/warpui_core/src/keymap_test.rs` exercising:
+Add unit tests in `crates/yarpui_core/src/keymap_test.rs` exercising:
 
 - `BindingDescription::new("static").resolve(ctx, Default)` returns `Cow::Borrowed("Static")` (preserves title-casing).
 - `BindingDescription::new("static").with_dynamic_override(|_| Some("dynamic".into())).resolve(ctx, Default)` returns `Cow::Owned("Dynamic")`.
@@ -277,7 +277,7 @@ Mitigation: `resolve` title-cases any dynamic override before returning it, matc
 
 ### Unit tests
 
-- `crates/warpui_core/src/keymap_test.rs`:
+- `crates/yarpui_core/src/keymap_test.rs`:
   - `BindingDescription::new("foo").resolve(&ctx, Default)` returns `Cow::Borrowed("Foo")`.
   - `BindingDescription::new("foo").with_dynamic_override(|_| Some("bar".into())).resolve(&ctx, Default)` returns `Cow::Owned("Bar")`.
   - `has_dynamic_override()` returns true after `with_dynamic_override`.

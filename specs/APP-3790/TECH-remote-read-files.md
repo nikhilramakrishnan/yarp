@@ -10,8 +10,8 @@ The remote server already runs on the host machine with full filesystem access a
 
 - `app/src/ai/blocklist/action_model/execute/read_files.rs` — `ReadFilesExecutor`; dispatches to `read_local_file_context`
 - `app/src/ai/blocklist/action_model/execute.rs:941` — `read_local_file_context`; per-file reading logic (metadata, binary detection, text/binary read, image processing, byte limits)
-- `crates/warp_files/src/lib.rs:528` — `FileModel::read_text_file`; line-range extraction and byte-limit truncation
-- `crates/warp_util/src/file_type.rs:46` — `is_binary_file`; extension-based binary detection
+- `crates/yarp_files/src/lib.rs:528` — `FileModel::read_text_file`; line-range extraction and byte-limit truncation
+- `crates/yarp_util/src/file_type.rs:46` — `is_binary_file`; extension-based binary detection
 - `app/src/util/image.rs:96` — `process_image_for_agent`; image processing for LLM context
 - `crates/remote_server/proto/remote_server.proto:234-249` — current `ReadFile`/`ReadFileResponse`/`ReadFileSuccess` proto (too simple)
 - `crates/remote_server/src/client.rs:266` — `RemoteServerClient::read_file`; current simple read

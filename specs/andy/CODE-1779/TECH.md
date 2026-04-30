@@ -13,7 +13,7 @@ There are two drop paths relevant to this ticket:
 Why the fix doesn't belong inside `EditorView`: `EditorView` is a general-purpose text editor used across dozens of surfaces (notebooks, settings, code editors, modals, etc. — see the many `EditorView::new(...)` / `single_line(...)` call sites). It already carries `shell_family` for escaping, which is a shell concern but not tied to any particular parent; WSL / MSYS2 path conversion is a terminal-session concern and must not leak into the editor.
 
 Existing helpers:
-- `warp_util::path::convert_windows_path_to_wsl` in `crates/warp_util/src/path.rs (673-691)`, with tests at `crates/warp_util/src/path_test.rs (629-649)`.
+- `warp_util::path::convert_windows_path_to_wsl` in `crates/yarp_util/src/path.rs (673-691)`, with tests at `crates/yarp_util/src/path_test.rs (629-649)`.
 - **No equivalent exists yet for MSYS2.** We'll add `convert_windows_path_to_msys2` alongside it (same shape, `/<drive>/…` instead of `/mnt/<drive>/…`).
 - `Session::is_wsl()` at `app/src/terminal/model/session.rs:972` and `Session::is_msys2()` at `app/src/terminal/model/session.rs:980` both already exist and return `false` on non-Windows platforms.
 - `TerminalInput::active_session` is available in `app/src/terminal/input.rs:11011`.
@@ -24,7 +24,7 @@ Shell-family setup on the editor already happens in `TerminalInput::set_active_b
 
 ### 1. Add `convert_windows_path_to_msys2` to `warp_util::path`
 
-In `crates/warp_util/src/path.rs`, alongside `convert_windows_path_to_wsl`, add:
+In `crates/yarp_util/src/path.rs`, alongside `convert_windows_path_to_wsl`, add:
 
 ```rust path=null start=null
 /// Converts a Windows-native path string to an MSYS2 / Git Bash POSIX-style path.
@@ -37,7 +37,7 @@ pub fn convert_windows_path_to_msys2(windows_path: &str) -> String { /* ... */ }
 
 Implementation mirrors `convert_windows_path_to_wsl` but emits `/<drive>` instead of `/mnt/<drive>`. Consider factoring both into a shared internal helper that takes a `&'static str` drive prefix (`"/mnt/"` vs `"/"`) to avoid duplication.
 
-Add unit tests in `crates/warp_util/src/path_test.rs` matching PRODUCT.md invariant (2):
+Add unit tests in `crates/yarp_util/src/path_test.rs` matching PRODUCT.md invariant (2):
 - `C:\Users\andy\file.txt` → `/c/Users/andy/file.txt`
 - Spaces preserved
 - `C:\` and `C:` both → `/c`
@@ -77,9 +77,9 @@ We rely on `set_active_block_metadata` being called whenever the active session 
 
 Covers the invariants in `PRODUCT.md`.
 
-- **Unit tests for `convert_windows_path_to_msys2` (invariant 2, MSYS2 cases).** In `crates/warp_util/src/path_test.rs`, mirror the existing `test_convert_windows_path_to_wsl` test with MSYS2-equivalent expectations (`/c/...`, `/d/...`, etc.).
+- **Unit tests for `convert_windows_path_to_msys2` (invariant 2, MSYS2 cases).** In `crates/yarp_util/src/path_test.rs`, mirror the existing `test_convert_windows_path_to_wsl` test with MSYS2-equivalent expectations (`/c/...`, `/d/...`, etc.).
 
-- **Existing coverage for the WSL conversion itself (invariant 2, WSL cases).** `test_convert_windows_path_to_wsl` in `crates/warp_util/src/path_test.rs (629-649)` already verifies drive-letter lowercasing, spaces, UNC, and empty-suffix behavior. No new tests needed there.
+- **Existing coverage for the WSL conversion itself (invariant 2, WSL cases).** `test_convert_windows_path_to_wsl` in `crates/yarp_util/src/path_test.rs (629-649)` already verifies drive-letter lowercasing, spaces, UNC, and empty-suffix behavior. No new tests needed there.
 
 - **Unit test — transformer wiring (invariants 1, 2, 5, 9).** In `app/src/editor/view/mod_test.rs`, add a test that:
   - Creates an `EditorView` with `shell_family: Some(Posix)` and runs two scenarios:

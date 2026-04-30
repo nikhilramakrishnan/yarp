@@ -104,7 +104,7 @@ fn builder_with_setup() -> Builder {
 }
 
 fn markdown_visuals_fixture_directory() -> String {
-    let fixture_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../warpui_core/test_data");
+    let fixture_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../yarpui_core/test_data");
     fixture_dir
         .canonicalize()
         .unwrap_or(fixture_dir)

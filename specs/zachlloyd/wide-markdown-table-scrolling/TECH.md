@@ -20,16 +20,16 @@ Separately, the shared clipped-scrollable path could re-use stale screen-space c
 - `crates/editor/src/content/text.rs` — `BufferBlockStyle::Table` variant, `TableCache` / `TableBlockCache`, and `table_cell_offset_maps`
 - `crates/editor/src/content/edit.rs` — `layout_table_block`, `measure_table_cells`, per-cell size clamp
 - `crates/editor/src/content/buffer.rs` — table-aware clipboard text extraction and partial-table HTML filtering
-- `crates/warpui_core/src/elements/shared_scrollbar.rs` — shared `ScrollbarAppearance` / `ScrollbarGeometry` and scrollbar math
-- `crates/warpui_core/src/elements/clipped_scrollable.rs` — selection anchor (`anchor_and_adjust_selection_for_scroll`)
-- `crates/warpui_core/src/elements/new_scrollable/mod.rs` — dispatches selection APIs through the anchor helper
-- `crates/warpui_core/src/elements/formatted_text_element.rs` — horizontal bounds check for smart selection
+- `crates/yarpui_core/src/elements/shared_scrollbar.rs` — shared `ScrollbarAppearance` / `ScrollbarGeometry` and scrollbar math
+- `crates/yarpui_core/src/elements/clipped_scrollable.rs` — selection anchor (`anchor_and_adjust_selection_for_scroll`)
+- `crates/yarpui_core/src/elements/new_scrollable/mod.rs` — dispatches selection APIs through the anchor helper
+- `crates/yarpui_core/src/elements/formatted_text_element.rs` — horizontal bounds check for smart selection
 - `app/src/notebooks/editor/mod.rs` — notebook table appearance (scrollbar colors, etc.)
 
 ## Proposed changes
 
 ### Shared scrollbar primitives in `warpui_core`
-`crates/warpui_core/src/elements/shared_scrollbar.rs` is the single source of truth for:
+`crates/yarpui_core/src/elements/shared_scrollbar.rs` is the single source of truth for:
 - `ScrollbarAppearance` / `ScrollbarGeometry` (overlay scrollbar geometry, thumb bounds, track bounds)
 - Minimum thumb sizing (`MIN_SCROLLBAR_THUMB_LENGTH`)
 - `compute_scrollbar_geometry(...)`
@@ -116,7 +116,7 @@ The cap is applied unconditionally — including when `horizontal_scroll_allowed
 - HTML export in `selected_text_as_html` filters only the ranges that contain a partial table selection, serializing the remaining clean ranges to HTML normally. Only when every range is a partial-table range does it return `None`.
 
 ### Clipped scrollables keep selections anchored to content
-`crates/warpui_core/src/elements/clipped_scrollable.rs`:
+`crates/yarpui_core/src/elements/clipped_scrollable.rs`:
 - `ClippedScrollStateHandle` stores a `selection_scroll_anchor` (original selection + scroll position at the time it was observed).
 - `anchor_and_adjust_selection_for_scroll(selection, axis)` either records the anchor (first time) or shifts the selection by the delta between current scroll and the anchored scroll. Doc comment spells out the three branches (None clears anchor; unmatched Selection installs a new anchor; matched Selection returns a scroll-compensated copy).
 - `clear_selection_scroll_anchor()` resets that state when a fresh mouse-down starts a new interaction.

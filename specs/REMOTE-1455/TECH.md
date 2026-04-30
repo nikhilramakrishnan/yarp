@@ -9,7 +9,7 @@ Relevant code:
 - `app/src/ai/conversation_details_panel.rs (950-1028)` — `render_skill_section`, the closest existing precedent for a single icon + label row.
 - `app/src/ai/conversation_details_panel.rs (1426-1781)` — `View::render` composes the sidebar; sections are appended to a `Flex::column` in a fixed order with `FIELD_SPACING` / `HEADER_SPACING` margins. This is where the new row is inserted.
 - `app/src/ai/ambient_agents/task.rs (57-83)` — `AgentConfigSnapshot.harness: Option<HarnessConfig>`, where `HarnessConfig { harness_type: String }` — the source of truth for a task's harness once the snapshot is loaded.
-- `crates/warp_cli/src/agent.rs (118-138)` — `Harness` enum (`Oz` / `Claude` / `Gemini`) with `clap::ValueEnum`; `Harness::from_str` (via `ValueEnum`) is the canonical parser for `harness_type` strings (values: `oz`, `claude`, `gemini`).
+- `crates/yarp_cli/src/agent.rs (118-138)` — `Harness` enum (`Oz` / `Claude` / `Gemini`) with `clap::ValueEnum`; `Harness::from_str` (via `ValueEnum`) is the canonical parser for `harness_type` strings (values: `oz`, `claude`, `gemini`).
 - `app/src/terminal/view/ambient_agent/harness_selector.rs (59-75)` — existing `display_name` / `icon_for` helpers used by the harness selector dropdown. We reuse and centralize these so the two surfaces cannot diverge.
 - `app/src/ai/conversation_details_panel_tests.rs` — existing unit-test harness (`App::test`) used for `ConversationDetailsData`.
 ## Proposed changes

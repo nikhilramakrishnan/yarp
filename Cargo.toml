@@ -16,10 +16,10 @@ default-members = [
   "crates/graphql",
   "crates/markdown_parser",
   "crates/sum_tree",
-  "crates/warpui",
-  "crates/warp_completer",
-  "crates/warp_terminal",
-  "crates/warp_util",
+  "crates/yarpui",
+  "crates/yarp_completer",
+  "crates/yarp_terminal",
+  "crates/yarp_util",
 ]
 
 [workspace.package]
@@ -68,27 +68,27 @@ vim = { path = "crates/vim" }
 virtual-fs = { path = "crates/virtual_fs" }
 voice_input = { path = "crates/voice_input" }
 yarp = { path = "app" }
-yarp_cli = { path = "crates/warp_cli" }
-yarp_completer = { path = "crates/warp_completer" }
-yarp_core = { path = "crates/warp_core" }
+yarp_cli = { path = "crates/yarp_cli" }
+yarp_completer = { path = "crates/yarp_completer" }
+yarp_core = { path = "crates/yarp_core" }
 yarp_editor = { path = "crates/editor" }
-yarp_features = { path = "crates/warp_features" }
+yarp_features = { path = "crates/yarp_features" }
 remote_server = { path = "crates/remote_server" }
-yarp_files = { path = "crates/warp_files" }
+yarp_files = { path = "crates/yarp_files" }
 yarp_graphql = { path = "crates/graphql" }
-yarp_graphql_schema = { path = "crates/warp_graphql_schema" }
+yarp_graphql_schema = { path = "crates/yarp_graphql_schema" }
 yarp_isolation_platform = { path = "crates/isolation_platform" }
-yarp_js = { path = "crates/warp_js" }
-yarp_logging = { path = "crates/warp_logging" }
+yarp_js = { path = "crates/yarp_js" }
+yarp_logging = { path = "crates/yarp_logging" }
 yarp_managed_secrets = { path = "crates/managed_secrets" }
-yarp_ripgrep = { path = "crates/warp_ripgrep" }
-yarp_server_client = { path = "crates/warp_server_client" }
-yarp_terminal = { path = "crates/warp_terminal" }
-yarp_util = { path = "crates/warp_util" }
-yarp_web_event_bus = { path = "crates/warp_web_event_bus" }
-yarpui = { path = "crates/warpui" }
-yarpui_core = { path = "crates/warpui_core" }
-yarpui_extras = { path = "crates/warpui_extras", default-features = false }
+yarp_ripgrep = { path = "crates/yarp_ripgrep" }
+yarp_server_client = { path = "crates/yarp_server_client" }
+yarp_terminal = { path = "crates/yarp_terminal" }
+yarp_util = { path = "crates/yarp_util" }
+yarp_web_event_bus = { path = "crates/yarp_web_event_bus" }
+yarpui = { path = "crates/yarpui" }
+yarpui_core = { path = "crates/yarpui_core" }
+yarpui_extras = { path = "crates/yarpui_extras", default-features = false }
 watcher = { path = "crates/watcher" }
 websocket = { path = "crates/websocket" }
 

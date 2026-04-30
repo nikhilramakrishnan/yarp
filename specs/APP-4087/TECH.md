@@ -6,7 +6,7 @@ The technical goal is to preserve centralized watching while separating three pa
 - `config_local_dir()` for platform-specific local config such as settings and preferences
 - a new Warp home config directory helper for user-facing Warp Skills and MCP, preserving `.warp*` home-relative names and channel/profile isolation across all OSes
 ## Relevant code
-- `crates/warp_core/src/paths.rs` — owns app data/config paths and the new Warp home config directory helpers.
+- `crates/yarp_core/src/paths.rs` — owns app data/config paths and the new Warp home config directory helpers.
 - `app/src/warp_managed_paths_watcher.rs` — singleton watcher for safe Warp-managed roots and app-local wrappers around the core helpers.
 - `app/src/lib.rs` — startup registration for the Warp watcher and watch root preparation.
 - `app/src/ai/skills/file_watchers/skill_watcher.rs` — subscribes to Warp watcher events and filters Warp home skill updates.

@@ -19,7 +19,7 @@ SSH-ing to the same host each spin up a separate server process.
 
 ## Relevant Code
 
-- `crates/warp_cli/src/lib.rs` — `WorkerCommand::RemoteServerProxy` / `RemoteServerDaemon`
+- `crates/yarp_cli/src/lib.rs` — `WorkerCommand::RemoteServerProxy` / `RemoteServerDaemon`
 - `app/src/remote_server/mod.rs` — platform dispatch (`run_proxy`, `run_daemon`)
 - `app/src/remote_server/unix/` — Unix-specific daemon and proxy implementation
 - `app/src/remote_server/server_model.rs` — platform-agnostic `ServerModel`

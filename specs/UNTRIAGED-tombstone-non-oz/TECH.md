@@ -11,7 +11,7 @@ Separately, both the tombstone and `ConversationDetailsPanel` unconditionally su
 - `app/src/terminal/view/shared_session/conversation_ended_tombstone_view.rs` — `TombstoneDisplayData`, `from_conversation`, `enrich_from_task` (`#[cfg(not(target_family = "wasm"))]`), `render_metadata_row`, `render_action_buttons`.
 - `app/src/ai/conversation_details_panel.rs` — `ConversationDetailsData::from_task` (~line 310), `ConversationDetailsData::harness`, `ConversationDetailsPanel::continue_locally_conversation_id`. Consistency reference: sets both fields straight from the task.
 - `app/src/ai/ambient_agents/task.rs` — `AmbientAgentTask::run_time()` (`Option<chrono::Duration>`), `credits_used()` (`Option<f32>`), `AgentConfigSnapshot::harness` (`Option<HarnessConfig>`), `HarnessConfig::harness_type` (`Harness`).
-- `crates/warp_cli/src/agent.rs` — `Harness` enum (`Oz`, `Claude`, `Gemini`).
+- `crates/yarp_cli/src/agent.rs` — `Harness` enum (`Oz`, `Claude`, `Gemini`).
 - `format_credits` (`app/src/ai/blocklist/view_util.rs`) and `human_readable_precise_duration` (`app/src/util/time_format.rs`) — already imported by the tombstone.
 
 ## Change

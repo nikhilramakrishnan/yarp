@@ -30,8 +30,8 @@ We need a 4-step guided onboarding flow for existing users that introduces HOA f
 - `app/src/workspace/view.rs:515` — `TAB_BAR_POSITION_ID`: the tab bar already has a `SavePosition`.
 
 ### Feature flags
-- `crates/warp_features/src/lib.rs:9` — `FeatureFlag` enum.
-- `crates/warp_features/src/lib.rs:797` — `DOGFOOD_FLAGS` array.
+- `crates/yarp_features/src/lib.rs:9` — `FeatureFlag` enum.
+- `crates/yarp_features/src/lib.rs:797` — `DOGFOOD_FLAGS` array.
 
 ### Workspace integration
 - `app/src/workspace/view.rs:779-901` — `Workspace` struct: holds all modal view handles, panel state.
@@ -52,7 +52,7 @@ We need a 4-step guided onboarding flow for existing users that introduces HOA f
 
 Add `HOAOnboardingFlow` to the `FeatureFlag` enum and `DOGFOOD_FLAGS`. Read the create feature flag skill for information on how to do this in a complete way.
 
-File: `crates/warp_features/src/lib.rs`
+File: `crates/yarp_features/src/lib.rs`
 
 ### 2. Shared callout bubble component
 

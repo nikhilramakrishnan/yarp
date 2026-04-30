@@ -13,8 +13,8 @@ Two guiding constraints beyond the product spec:
 
 The JSON output path for `oz run list` and `oz run get` is already in place. The relevant code after REMOTE-1374:
 
-- `crates/warp_cli/src/task.rs:101` — `ListTasksArgs` (all existing filter flags).
-- `crates/warp_cli/src/task.rs:281` — `TaskGetArgs`.
+- `crates/yarp_cli/src/task.rs:101` — `ListTasksArgs` (all existing filter flags).
+- `crates/yarp_cli/src/task.rs:281` — `TaskGetArgs`.
 - `app/src/ai/agent_sdk/ambient.rs:566` — `AmbientAgentRunner::list_tasks`, which branches on `OutputFormat` and calls `print_raw_json` for `Json`.
 - `app/src/ai/agent_sdk/ambient.rs:593` — `AmbientAgentRunner::get_task_status`, same pattern for the single-run response.
 - `app/src/ai/agent_sdk/output.rs:80` — `print_raw_json(value: &serde_json::Value) -> anyhow::Result<()>`. The only shared JSON emitter; extending it is the user's stated preference and the lowest-footprint place to plug in a filter.
@@ -42,7 +42,7 @@ jaq-std = "3.0"
 jaq-json = { version = "2.0", features = ["serde"] }
 ```
 
-In both `app/Cargo.toml` and `crates/warp_cli/Cargo.toml`, add:
+In both `app/Cargo.toml` and `crates/yarp_cli/Cargo.toml`, add:
 
 ```toml path=null start=null
 jaq-core.workspace = true
@@ -52,7 +52,7 @@ jaq-json.workspace = true
 
 `warp_cli` compiles the filter at clap parse time; `app` runs it. `warp_cli` technically only uses `jaq-core` + `jaq-std` items in its own code, but depends on `jaq-json` too because the stored `Filter` type is parameterized by `jaq_json::Val` — without `Val` in scope, the `Filter` field would not resolve. The alternative (store `Option<String>` in `warp_cli` and recompile in `app`) doubles the compile work and prevents sharing a single compile source of truth; keep the direct `jaq-json` dep and forgo that split unless the binary-size hit shows up as a problem.
 
-### 2. Reusable `JsonFilter` clap component (`crates/warp_cli/src/json_filter.rs`, new)
+### 2. Reusable `JsonFilter` clap component (`crates/yarp_cli/src/json_filter.rs`, new)
 
 Introduce a small module with a `JsonFilter` struct that can be flattened into any command's `Args`. The stored value is the compiled `Filter` itself — no wrapper struct, no `Arc`, no `source()` accessor. `jaq_core::Filter` is already `Clone`, so cloning `JsonFilter` is cheap and lets it cross async boundaries.
 
@@ -102,7 +102,7 @@ fn parse_jq_filter(src: &str) -> Result<JqFilter, String> {
 }
 ```
 
-Expose it from `crates/warp_cli/src/lib.rs`:
+Expose it from `crates/yarp_cli/src/lib.rs`:
 
 ```rust path=null start=null
 pub mod json_filter;
@@ -110,7 +110,7 @@ pub mod json_filter;
 
 The exact spellings of the type alias and `funs::<Val>()` call may need small adjustments once we compile against `jaq-core` 3.0 locally (the crate-level example in the `jaq-core` docs is the canonical reference); the overall shape is stable.
 
-### 3. Flatten `JsonFilter` into both commands (`crates/warp_cli/src/task.rs`)
+### 3. Flatten `JsonFilter` into both commands (`crates/yarp_cli/src/task.rs`)
 
 Replace the per-command flag with a single flattened field:
 
@@ -202,7 +202,7 @@ Runtime failures propagate as `anyhow::Error` through the existing `spawn_comman
 
 ## Testing and validation
 
-Unit tests on `JsonFilter` and `parse_jq_filter` in `crates/warp_cli/src/json_filter_tests.rs` (new):
+Unit tests on `JsonFilter` and `parse_jq_filter` in `crates/yarp_cli/src/json_filter_tests.rs` (new):
 
 - **Invariants 1, 5, 6 (fail-fast):** `parse_jq_filter(".foo")` returns `Ok`; `parse_jq_filter("@")` and `parse_jq_filter("")` return `Err` whose `Display` contains the filter source. This is the regression guard for fail-fast: if this test passes at the `parse_jq_filter` layer, clap's own invocation guarantees failure happens in `Args::from_env()`.
 - **Invariants 1, 5 (end-to-end clap):** calling `Args::try_parse_from(["oz", "run", "list", "--jq", "@"])` returns `Err` with `clap::error::ErrorKind::ValueValidation`. Repeat for `oz run get ID --jq @`.
@@ -218,7 +218,7 @@ Unit tests on `print_raw_json` in `app/src/ai/agent_sdk/output_tests.rs` (existi
 - **Invariant 4 (empty output):** `empty` produces zero bytes of stdout and returns `Ok(())`.
 - **Invariant 5 (runtime error, partial output):** a filter that emits a valid value and then errors writes the valid value to `out` before returning `Err`.
 
-Clap parsing tests in `crates/warp_cli/src/task_tests.rs`:
+Clap parsing tests in `crates/yarp_cli/src/task_tests.rs`:
 
 - Parsing `oz run list --jq ".foo"` populates `ListTasksArgs.json_filter.filter` with `Some(_)` (we don't assert deep structural equality on the compiled filter; the `parse_jq_filter`-level tests above already cover the compile happy path).
 - Parsing `oz run get ID --jq ".foo"` populates `TaskGetArgs.json_filter.filter` with `Some(_)`.

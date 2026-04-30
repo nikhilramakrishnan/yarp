@@ -21,7 +21,7 @@ When an AI agent runs in an SSH session, the `ApplyFileDiffs` tool is disabled b
 - `app/src/ai/blocklist/controller.rs (86-121)` — `SessionContext`
 - `app/src/ai/agent/api/impl.rs (146-206)` — `get_supported_tools`; gates tools on session type
 - `crates/remote_server/src/manager.rs (134-139)` — `RemoteServerManager::client_for_host`
-- `crates/warp_files/src/lib.rs (95-106)` — `FileBackend::Remote`; already supports remote save/delete
+- `crates/yarp_files/src/lib.rs (95-106)` — `FileBackend::Remote`; already supports remote save/delete
 
 ## Current State
 

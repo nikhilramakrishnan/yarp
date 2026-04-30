@@ -6,13 +6,13 @@ On macOS, `macos_config_dir_name()` returns `.warp` for both Stable and Preview 
 
 ## Relevant Code
 
-- `crates/warp_core/src/paths.rs:42-51` — `macos_config_dir_name()` maps channels to directory names. The `Channel::Preview` arm currently returns `WARP_CONFIG_DIR` (`.warp`).
-- `crates/warp_core/src/paths.rs:57-67` — `data_dir()` uses `macos_config_dir_name()` on macOS.
-- `crates/warp_core/src/paths.rs:71-83` — `config_local_dir()` also uses `macos_config_dir_name()` on macOS. On macOS, `data_dir()` and `config_local_dir()` return the same path.
+- `crates/yarp_core/src/paths.rs:42-51` — `macos_config_dir_name()` maps channels to directory names. The `Channel::Preview` arm currently returns `WARP_CONFIG_DIR` (`.warp`).
+- `crates/yarp_core/src/paths.rs:57-67` — `data_dir()` uses `macos_config_dir_name()` on macOS.
+- `crates/yarp_core/src/paths.rs:71-83` — `config_local_dir()` also uses `macos_config_dir_name()` on macOS. On macOS, `data_dir()` and `config_local_dir()` return the same path.
 - `app/src/warp_data_directory_watcher.rs:28-46` — `ensure_warp_watch_roots_exist()` creates the data and config directories at startup.
 - `app/src/lib.rs:966` — calls `ensure_warp_watch_roots_exist()` during `initialize_app()`.
 - `app/src/persistence/sqlite.rs:350-389` — existing migration precedent: migrates the SQLite database from `state_dir()` to `secure_state_dir()` on first launch.
-- `crates/warp_core/src/channel/mod.rs:8-15` — `Channel` enum definition.
+- `crates/yarp_core/src/channel/mod.rs:8-15` — `Channel` enum definition.
 
 ## Current State
 
@@ -36,7 +36,7 @@ The `WARP_CONFIG_DIR` constant (`.warp`) is also used for per-repository project
 
 ## Proposed Changes
 
-### 1. Update `macos_config_dir_name()` — `crates/warp_core/src/paths.rs`
+### 1. Update `macos_config_dir_name()` — `crates/yarp_core/src/paths.rs`
 
 Change the Preview arm to return `.warp-preview`:
 

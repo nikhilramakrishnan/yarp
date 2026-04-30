@@ -52,9 +52,9 @@ between file tree and global search.
   path-deduplicated list; ancestor dedup happens inside each view (the file
   tree needs the absorbed descendants to drive auto-expand, so it can't
   happen upstream).
-- `crates/warp_util/src/path.rs` + `path_test.rs` — target location for the
+- `crates/yarp_util/src/path.rs` + `path_test.rs` — target location for the
   shared `group_roots_by_common_ancestor` helper.
-- `crates/warp_util/src/standardized_path.rs` — `StandardizedPath` impls
+- `crates/yarp_util/src/standardized_path.rs` — `StandardizedPath` impls
   `AsRef<Path>` and `starts_with(&StandardizedPath)`; usable directly with the
   shared helper.
 
@@ -88,7 +88,7 @@ This is the behavior we want to reuse in the file tree.
 Add a generic ancestor-dedup helper usable by both views.
 
 ```rust path=null start=null
-// crates/warp_util/src/path.rs
+// crates/yarp_util/src/path.rs
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -130,7 +130,7 @@ where
 }
 ```
 
-Place unit tests next to the impl in `crates/warp_util/src/path_test.rs`
+Place unit tests next to the impl in `crates/yarp_util/src/path_test.rs`
 (following the existing `_test.rs` convention in that crate).
 
 ### 2. Thin `StandardizedPath` wrapper in the file tree
@@ -542,7 +542,7 @@ sequenceDiagram
 
 ## Testing and validation
 
-### Unit tests (`crates/warp_util/src/path_test.rs`)
+### Unit tests (`crates/yarp_util/src/path_test.rs`)
 
 - `group_roots_by_common_ancestor`:
   - Empty input → empty grouping.

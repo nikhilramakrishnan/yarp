@@ -10,7 +10,7 @@ The server is adding `POST /harness-support/notify-user` and `POST /harness-supp
 
 ## Relevant Code
 
-- `crates/warp_cli/src/harness_support.rs` — CLI arg definitions (`HarnessSupportCommand` enum)
+- `crates/yarp_cli/src/harness_support.rs` — CLI arg definitions (`HarnessSupportCommand` enum)
 - `app/src/ai/agent_sdk/harness_support.rs` — command dispatch + async runners
 - `app/src/server/server_api/harness_support.rs` — `HarnessSupportClient` trait + `ServerApi` impl
 - `app/src/ai/agent_sdk/telemetry.rs` — `CliTelemetryEvent` enum
@@ -29,7 +29,7 @@ The Claude Code plugin currently has three skills (`oz-report-pr`, `oz-report-ar
 
 ## Proposed Changes
 
-### 1. CLI layer (`crates/warp_cli/src/harness_support.rs`)
+### 1. CLI layer (`crates/yarp_cli/src/harness_support.rs`)
 
 Add two variants to `HarnessSupportCommand`:
 

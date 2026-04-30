@@ -17,10 +17,10 @@ This spec covers the foundation: a shared protocol layer, a minimal request/resp
 - `remote_server/build.rs` — prost codegen for the proto
 
 ### Headless warpui App infrastructure
-- `crates/warpui/src/platform/app.rs:68-80` — `AppBuilder::new_headless(callbacks, assets, test_driver)` constructor
-- `crates/warpui/src/platform/app.rs:107-155` — `AppBuilder::run(init_fn)` wraps init_fn and enters the event loop
-- `crates/warpui/src/platform/headless/app.rs` — `App::run()` creates mpsc channel, marks main thread, enters `event_loop::run()`
-- `crates/warpui/src/platform/headless/event_loop.rs` — blocking `for event in receiver.iter()` loop processing `RunTask`, `RunCallback`, `Terminate`; includes Ctrl-C handler via `ctrlc::set_handler`
+- `crates/yarpui/src/platform/app.rs:68-80` — `AppBuilder::new_headless(callbacks, assets, test_driver)` constructor
+- `crates/yarpui/src/platform/app.rs:107-155` — `AppBuilder::run(init_fn)` wraps init_fn and enters the event loop
+- `crates/yarpui/src/platform/headless/app.rs` — `App::run()` creates mpsc channel, marks main thread, enters `event_loop::run()`
+- `crates/yarpui/src/platform/headless/event_loop.rs` — blocking `for event in receiver.iter()` loop processing `RunTask`, `RunCallback`, `Terminate`; includes Ctrl-C handler via `ctrlc::set_handler`
 
 ### Entity/Model system
 - `ui/src/core/entity.rs:39-54` — `Entity` trait (has `type Event`) and `SingletonEntity` trait (provides `handle()` and `as_ref()`)

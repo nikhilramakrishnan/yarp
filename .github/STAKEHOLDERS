@@ -45,7 +45,7 @@
 /app/src/terminal/input/ @vkodithala
 /app/src/pane_group/ @vkodithala
 /app/src/tab.rs @vkodithala
-/crates/warp_ripgrep/ @vkodithala @moirahuang @szgupta
+/crates/yarp_ripgrep/ @vkodithala @moirahuang @szgupta
 
 # Command palette
 /app/src/command_palette.rs @acarl005
@@ -93,7 +93,7 @@
 /app/src/terminal/warpify/ @zachbai
 /app/src/settings_view/warpify_page.rs @zachbai
 /app/assets/bundled/bootstrap/ @zachbai
-/crates/warp_completer/ @zachbai @szgupta @alokedesai
+/crates/yarp_completer/ @zachbai @szgupta @alokedesai
 
 # Agent mode
 /app/src/ai/agent/ @zachbai
@@ -107,9 +107,9 @@
 /crates/voice_input/ @Advait-M
 
 # UI framework
-/crates/warpui/ @vorporeal
-/crates/warpui_core/ @vorporeal
-/crates/warpui_extras/ @vorporeal
+/crates/yarpui/ @vorporeal
+/crates/yarpui_core/ @vorporeal
+/crates/yarpui_extras/ @vorporeal
 /crates/ui_components/ @vorporeal
 
 # Conversation rewind / CLI agent UI / macOS/Linux platform issues / performance issues
@@ -135,7 +135,7 @@
 /crates/graphql/ @ianhodge
 /crates/http_client/ @ianhodge
 /crates/http_server/ @ianhodge
-/crates/warp_server_client/ @ianhodge
+/crates/yarp_server_client/ @ianhodge
 
 # Session sharing
 /app/src/terminal/shared_session/ @abhishekp106 @szgupta @bnavetta
@@ -170,13 +170,13 @@
 /app/src/ai/ambient_agents/ @bnavetta
 /app/src/terminal/view/ambient_agent/ @bnavetta
 /app/src/workspace/view/launch_modal/oz_launch.rs @bnavetta
-/crates/warp_cli/ @bnavetta @ianhodge
+/crates/yarp_cli/ @bnavetta @ianhodge
 
 # Agent SDK and platform crates
 /app/src/ai/agent_sdk/ @bnavetta @ianhodge
 /crates/isolation_platform/ @bnavetta @ianhodge
 /crates/managed_secrets/ @bnavetta @ianhodge
-/crates/warp_web_event_bus/ @bnavetta @ianhodge
+/crates/yarp_web_event_bus/ @bnavetta @ianhodge
 
 # Shell completions in the Warp CLI
-/crates/warp_cli/src/completions.rs @zachbai @szgupta @alokedesai
+/crates/yarp_cli/src/completions.rs @zachbai @szgupta @alokedesai

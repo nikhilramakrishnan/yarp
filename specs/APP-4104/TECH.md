@@ -9,7 +9,7 @@ APP-4104 covers the macOS memory growth on the breadcrumb-forwarding path betwee
 - `app/src/crash_reporting/mod.rs (476-489)` — installs the `before_breadcrumb` callback and forwards macOS breadcrumbs through `mac::forward_breadcrumb`
 - `app/src/crash_reporting/mac.rs (20-84)` — Rust-to-ObjC Cocoa Sentry bridge, including `forward_breadcrumb`, `set_user_id`, `set_tag`, and `to_nsstring`
 - `app/src/platform/mac/objc/crash_reporting.m (67-81)` — native `recordBreadcrumb` implementation that constructs `SentryBreadcrumb`
-- `crates/warpui/src/platform/mac/mod.rs (29-34)` — `make_nsstring`, the existing helper that returns an autoreleased `NSString`
+- `crates/yarpui/src/platform/mac/mod.rs (29-34)` — `make_nsstring`, the existing helper that returns an autoreleased `NSString`
 - `app/src/app_services/mac.rs (20-29)` — another app-side example of returning an autoreleased `NSString`
 
 ## Current state
