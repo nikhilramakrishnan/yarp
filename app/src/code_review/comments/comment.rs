@@ -6,7 +6,7 @@ use chrono::{DateTime, Local};
 use std::fmt::{Display, Formatter};
 use std::path::PathBuf;
 use yarp_editor::render::model::LineCount;
-use warp_multi_agent_api::{self as api};
+use yarp_multi_agent_api::{self as api};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub enum CommentOrigin {

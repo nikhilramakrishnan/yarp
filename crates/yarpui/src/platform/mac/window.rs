@@ -439,7 +439,7 @@ extern "C" {
         window: id,
         value: id,    /* NSString */
         help: id,     /* NSString */
-        warpRole: id, /* NSString */
+        yarpRole: id, /* NSString */
         setFrame: BOOL,
         frame: NSRect,
     );

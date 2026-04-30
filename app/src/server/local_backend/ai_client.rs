@@ -24,7 +24,7 @@ use ai::index::full_source_code_embedding::{
     ContentHash, EmbeddingConfig, NodeHash, RepoMetadata,
 };
 use yarp_graphql::ai::AgentTaskState;
-use warp_multi_agent_api::ConversationData;
+use yarp_multi_agent_api::ConversationData;
 
 use crate::ai::agent::api::ServerConversationToken;
 use crate::ai::agent::conversation::{AIAgentConversationFormat, ServerAIConversationMetadata};

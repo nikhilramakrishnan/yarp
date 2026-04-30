@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
-use warp_workflows;
+use yarp_workflows;
 
 use crate::{
     cloud_object::model::generic_string_model::GenericStringObjectId, server::ids::SyncId,
@@ -37,7 +37,7 @@ pub enum Workflow {
         author: Option<String>,
         author_url: Option<String>,
         #[serde(default)]
-        shells: Vec<warp_workflows::Shell>,
+        shells: Vec<yarp_workflows::Shell>,
         #[serde(default)]
         environment_variables: Option<SyncId>,
     },
@@ -113,7 +113,7 @@ impl Workflow {
         }
     }
 
-    pub fn shells(&self) -> Option<&Vec<warp_workflows::Shell>> {
+    pub fn shells(&self) -> Option<&Vec<yarp_workflows::Shell>> {
         match self {
             Self::Command { shells, .. } => Some(shells),
             _ => None,
@@ -265,8 +265,8 @@ impl Workflow {
 
 /// Create a yarp-internal Workflow model from a public-facing workflow
 /// https://github.com/warpdotdev/workflows/blob/main/workflow-types/src/lib.rs
-impl From<warp_workflows::Workflow> for Workflow {
-    fn from(workflow: warp_workflows::Workflow) -> Self {
+impl From<yarp_workflows::Workflow> for Workflow {
+    fn from(workflow: yarp_workflows::Workflow) -> Self {
         Workflow::Command {
             name: workflow.name,
             command: workflow.command,
@@ -293,8 +293,8 @@ pub struct Argument {
     pub default_value: Option<String>,
 }
 
-impl From<warp_workflows::Argument> for Argument {
-    fn from(arg: warp_workflows::Argument) -> Self {
+impl From<yarp_workflows::Argument> for Argument {
+    fn from(arg: yarp_workflows::Argument) -> Self {
         Argument {
             name: arg.name,
             arg_type: ArgumentType::Text, // public workflows only have text arguments

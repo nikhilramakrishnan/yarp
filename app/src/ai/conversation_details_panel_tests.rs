@@ -4,7 +4,7 @@ use chrono::{Local, Utc};
 use persistence::model::AgentConversationData;
 use yarp_cli::agent::Harness;
 use yarp_core::features::FeatureFlag;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::{App, EntityId};
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId};

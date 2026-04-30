@@ -5,7 +5,7 @@ use itertools::Itertools;
 use memo_map::MemoMap;
 
 use std::collections::HashMap;
-use warp_command_signatures::{Argument, DynamicCompletionData, IsArgumentOptional, Signature};
+use yarp_command_signatures::{Argument, DynamicCompletionData, IsArgumentOptional, Signature};
 
 pub enum SignatureResult<'a> {
     /// Successfully parsed the signature. We are returning the signature at the token to complete on.
@@ -480,9 +480,9 @@ fn classify_token<'a>(
 
 /// Finds an option by exact name match against the token.
 fn find_option_by_name<'a>(
-    options: &'a [warp_command_signatures::Opt],
+    options: &'a [yarp_command_signatures::Opt],
     token: &str,
-) -> Option<&'a warp_command_signatures::Opt> {
+) -> Option<&'a yarp_command_signatures::Opt> {
     options
         .iter()
         .find(|option| option.exact_string.iter().any(|s| s == token))

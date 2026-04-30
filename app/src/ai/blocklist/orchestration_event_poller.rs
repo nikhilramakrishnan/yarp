@@ -18,7 +18,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use uuid::Uuid;
 use yarp_core::features::FeatureFlag;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::r#async::Timer;
 use yarpui::{Entity, ModelContext, SingletonEntity};
 

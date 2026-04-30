@@ -2,20 +2,20 @@
 
 #import <Metal/Metal.h>
 
-void yarp_view_did_change_backing_properties(WarpHostView *, BOOL);
-void yarp_view_set_frame_size(WarpHostView *, NSSize, BOOL);
-void yarp_update_layer(WarpHostView *);
-BOOL yarp_handle_view_event(WarpHostView *, NSEvent *, BOOL);
-BOOL yarp_handle_first_mouse_event(WarpHostView *, NSEvent *);
-void yarp_handle_insert_text(WarpHostView *, id);
-void yarp_update_ime_state(WarpHostView *, BOOL);
-void yarp_handle_drag_and_drop(WarpHostView *, NSArray *, NSPoint);
-void yarp_handle_file_drag(WarpHostView *, NSPoint);
-void yarp_handle_file_drag_exit(WarpHostView *);
-NSRect yarp_ime_position(WarpHostView *, NSRect *);
-id yarp_get_accessibility_contents(WarpHostView *);
-void yarp_marked_text_updated(WarpHostView *, NSString *, NSRange);
-void yarp_marked_text_cleared(WarpHostView *);
+void yarp_view_did_change_backing_properties(YarpHostView *, BOOL);
+void yarp_view_set_frame_size(YarpHostView *, NSSize, BOOL);
+void yarp_update_layer(YarpHostView *);
+BOOL yarp_handle_view_event(YarpHostView *, NSEvent *, BOOL);
+BOOL yarp_handle_first_mouse_event(YarpHostView *, NSEvent *);
+void yarp_handle_insert_text(YarpHostView *, id);
+void yarp_update_ime_state(YarpHostView *, BOOL);
+void yarp_handle_drag_and_drop(YarpHostView *, NSArray *, NSPoint);
+void yarp_handle_file_drag(YarpHostView *, NSPoint);
+void yarp_handle_file_drag_exit(YarpHostView *);
+NSRect yarp_ime_position(YarpHostView *, NSRect *);
+id yarp_get_accessibility_contents(YarpHostView *);
+void yarp_marked_text_updated(YarpHostView *, NSString *, NSRange);
+void yarp_marked_text_cleared(YarpHostView *);
 
 @implementation NSPasteboard (Yarp)
 
@@ -33,7 +33,7 @@ void yarp_marked_text_cleared(WarpHostView *);
 
 @end
 
-@implementation WarpHostView {
+@implementation YarpHostView {
     // The windowState is managed on the Rust side.
     // Note Rust expects this name even though we are not a window.
     void *windowState;
@@ -265,7 +265,7 @@ void yarp_marked_text_cleared(WarpHostView *);
     return layer;
 }
 
-- (WarpHostView *)initWithFrame:(NSRect)frame
+- (YarpHostView *)initWithFrame:(NSRect)frame
                     metalDevice:(id)device
              enableTitlebarDrag:(BOOL)enableTitlebarDrag
                        testMode:(BOOL)testModeFlag {

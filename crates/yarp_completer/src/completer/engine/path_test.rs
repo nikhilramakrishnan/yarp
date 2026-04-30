@@ -1,4 +1,4 @@
-use warp_command_signatures::IconType;
+use yarp_command_signatures::IconType;
 
 use crate::completer::testing::MockPathCompletionContext;
 

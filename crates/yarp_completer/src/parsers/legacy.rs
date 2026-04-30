@@ -1,7 +1,7 @@
 //! The "legacy" implementation of internal command parsing logic that depends on the legacy:
-//! command signature struct (`warp_command_signatures::Signature`).
+//! command signature struct (`yarp_command_signatures::Signature`).
 use itertools::Itertools;
-use warp_command_signatures::{DynamicCompletionData, IsArgumentOptional, Opt, Signature};
+use yarp_command_signatures::{DynamicCompletionData, IsArgumentOptional, Opt, Signature};
 
 use crate::{
     completer::TopLevelCommandCaseSensitivity,

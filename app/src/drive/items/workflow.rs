@@ -20,18 +20,18 @@ use crate::{
 use super::{YarpDriveItem, YarpDriveItemId};
 
 #[derive(Clone)]
-pub struct YarpDriveWorkflow {
+pub struct WarpDriveWorkflow {
     id: CloudObjectTypeAndId,
     workflow: CloudWorkflow,
 }
 
-impl YarpDriveWorkflow {
+impl WarpDriveWorkflow {
     pub fn new(id: CloudObjectTypeAndId, workflow: CloudWorkflow) -> Self {
         Self { id, workflow }
     }
 }
 
-impl YarpDriveItem for YarpDriveWorkflow {
+impl YarpDriveItem for WarpDriveWorkflow {
     fn display_name(&self) -> Option<String> {
         if self.workflow.model().data.name().is_empty() {
             None
@@ -138,7 +138,7 @@ impl YarpDriveItem for YarpDriveWorkflow {
     }
 }
 
-impl YarpDriveWorkflow {
+impl WarpDriveWorkflow {
     fn render_workflow_name(&self, appearance: &Appearance) -> Box<dyn Element> {
         appearance
             .ui_builder()

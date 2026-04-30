@@ -13,7 +13,7 @@ use std::{
 };
 use yarp_core::channel::ChannelState;
 use yarp_core::{features::FeatureFlag, report_error};
-use warp_multi_agent_api::ConversationData;
+use yarp_multi_agent_api::ConversationData;
 
 use super::auth::AuthClient;
 use super::ServerApi;

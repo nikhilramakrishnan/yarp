@@ -32,7 +32,7 @@
             [filePaths addObject:url.path];
         }
 
-        NSMutableArray<NSURL *> *warpUrls = [NSMutableArray array];
+        NSMutableArray<NSURL *> *yarpUrls = [NSMutableArray array];
         for (NSString *path in filePaths) {
             NSURLComponents *components = [[[NSURLComponents alloc] init] autorelease];
             NSString *scheme = yarp_services_provider_custom_url_scheme();
@@ -42,11 +42,11 @@
             NSMutableArray *queryItems = [NSMutableArray array];
             [queryItems addObject:[NSURLQueryItem queryItemWithName:@"path" value:path]];
             [components setQueryItems:queryItems];
-            [warpUrls addObject:components.URL];
+            [yarpUrls addObject:components.URL];
         };
 
         NSApplication *app = [NSApplication sharedApplication];
-        yarp_app_open_urls(app, warpUrls);
+        yarp_app_open_urls(app, yarpUrls);
     }
 }
 

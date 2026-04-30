@@ -1617,7 +1617,7 @@ impl AISettings {
         self.is_any_ai_enabled(app) && *self.memory_enabled
     }
 
-    pub fn is_yarp_drive_context_enabled(&self, app: &yarpui::AppContext) -> bool {
+    pub fn is_warp_drive_context_enabled(&self, app: &yarpui::AppContext) -> bool {
         self.is_any_ai_enabled(app) && *self.warp_drive_context_enabled
     }
 

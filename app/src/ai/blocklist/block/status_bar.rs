@@ -29,7 +29,7 @@ use crate::{
         suggestions_mode_model::InputSuggestionsModeModel,
     },
 };
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 
 use crate::{
     ai::{

@@ -4,7 +4,7 @@ void yarp_menu_item_needs_update(NSMenuItem *, void *);
 void yarp_menu_item_triggered(NSMenuItem *, void *);
 void yarp_menu_item_deallocated(void *);
 
-@implementation WarpCustomMenuItemHandler
+@implementation YarpCustomMenuItemHandler
 
 - (id)initWithContext:(void *)context {
     self = [super init];

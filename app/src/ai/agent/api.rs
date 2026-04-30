@@ -98,7 +98,7 @@ pub struct RequestParams {
     pub conversation_token: Option<ServerConversationToken>,
     pub forked_from_conversation_token: Option<ServerConversationToken>,
     pub ambient_agent_task_id: Option<AmbientAgentTaskId>,
-    pub tasks: Vec<warp_multi_agent_api::Task>,
+    pub tasks: Vec<yarp_multi_agent_api::Task>,
     pub existing_suggestions: Option<Suggestions>,
     pub metadata: Option<RequestMetadata>,
     pub session_context: SessionContext,
@@ -114,23 +114,23 @@ pub struct RequestParams {
     should_redact_secrets: bool,
 
     /// User-provided API keys for AI providers (BYO API Key).
-    pub api_keys: Option<warp_multi_agent_api::request::settings::ApiKeys>,
+    pub api_keys: Option<yarp_multi_agent_api::request::settings::ApiKeys>,
     pub allow_use_of_yarp_credits_with_byok: bool,
-    pub autonomy_level: warp_multi_agent_api::AutonomyLevel,
-    pub isolation_level: warp_multi_agent_api::IsolationLevel,
+    pub autonomy_level: yarp_multi_agent_api::AutonomyLevel,
+    pub isolation_level: yarp_multi_agent_api::IsolationLevel,
     pub web_search_enabled: bool,
     pub computer_use_enabled: bool,
     pub ask_user_question_enabled: bool,
     pub research_agent_enabled: bool,
     pub orchestration_enabled: bool,
-    pub supported_tools_override: Option<Vec<warp_multi_agent_api::ToolType>>,
+    pub supported_tools_override: Option<Vec<yarp_multi_agent_api::ToolType>>,
     /// The conversation ID of the parent agent that spawned this child agent, if any.
     pub parent_agent_id: Option<String>,
     /// The display name for this agent (e.g. "Agent 1"), assigned by the orchestrator.
     pub agent_name: Option<String>,
 }
 
-pub type Event = Result<warp_multi_agent_api::ResponseEvent, Arc<AIApiError>>;
+pub type Event = Result<yarp_multi_agent_api::ResponseEvent, Arc<AIApiError>>;
 
 #[cfg(not(target_family = "wasm"))]
 pub type ResponseStream = Pin<Box<dyn Stream<Item = Event> + Send + 'static>>;
@@ -144,7 +144,7 @@ pub type ResponseStream = Pin<Box<dyn Stream<Item = Event>>>;
 #[derive(Debug, Clone)]
 pub struct ConversationData {
     pub id: AIConversationId,
-    pub tasks: Vec<warp_multi_agent_api::Task>,
+    pub tasks: Vec<yarp_multi_agent_api::Task>,
     pub server_conversation_token: Option<ServerConversationToken>,
     pub forked_from_conversation_token: Option<ServerConversationToken>,
     pub ambient_agent_task_id: Option<AmbientAgentTaskId>,
@@ -162,7 +162,7 @@ impl RequestParams {
     ) -> Self {
         let ai_settings = AISettings::as_ref(app);
         let is_memory_enabled = ai_settings.is_memory_enabled(app);
-        let warp_drive_context_enabled = ai_settings.is_yarp_drive_context_enabled(app);
+        let warp_drive_context_enabled = ai_settings.is_warp_drive_context_enabled(app);
 
         // Build MCP context - either grouped by server or flat lists based on feature flag
         let mcp_context = if FeatureFlag::MCPGroupedServerContext.is_enabled() {
@@ -242,15 +242,15 @@ impl RequestParams {
 
         let app_execution_mode = AppExecutionMode::as_ref(app);
         let autonomy_level = if app_execution_mode.is_autonomous() {
-            warp_multi_agent_api::AutonomyLevel::Unsupervised
+            yarp_multi_agent_api::AutonomyLevel::Unsupervised
         } else {
-            warp_multi_agent_api::AutonomyLevel::Supervised
+            yarp_multi_agent_api::AutonomyLevel::Supervised
         };
 
         let isolation_level = if app_execution_mode.is_sandboxed() {
-            warp_multi_agent_api::IsolationLevel::Sandbox
+            yarp_multi_agent_api::IsolationLevel::Sandbox
         } else {
-            warp_multi_agent_api::IsolationLevel::None
+            yarp_multi_agent_api::IsolationLevel::None
         };
 
         let web_search_enabled =

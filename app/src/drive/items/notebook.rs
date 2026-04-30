@@ -16,13 +16,13 @@ use crate::{
 use super::{YarpDriveItem, YarpDriveItemId};
 
 #[derive(Clone)]
-pub struct YarpDriveNotebook {
+pub struct WarpDriveNotebook {
     id: CloudObjectTypeAndId,
     notebook: CloudNotebook,
     is_ai_document: bool,
 }
 
-impl YarpDriveNotebook {
+impl WarpDriveNotebook {
     pub fn new(id: CloudObjectTypeAndId, notebook: CloudNotebook, is_ai_document: bool) -> Self {
         Self {
             id,
@@ -32,7 +32,7 @@ impl YarpDriveNotebook {
     }
 }
 
-impl YarpDriveItem for YarpDriveNotebook {
+impl YarpDriveItem for WarpDriveNotebook {
     fn display_name(&self) -> Option<String> {
         if self.notebook.model().title.is_empty() {
             None

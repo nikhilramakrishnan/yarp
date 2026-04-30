@@ -3,11 +3,11 @@
 #import <UserNotifications/UserNotifications.h>
 
 // Our NSApplication subclass.
-@interface WarpApplication : NSApplication
+@interface YarpApplication : NSApplication
 @end
 
-// WarpDelegate is the delegate of the NSApp and also all menus.
-@interface WarpDelegate
+// YarpDelegate is the delegate of the NSApp and also all menus.
+@interface YarpDelegate
     : NSObject <NSApplicationDelegate, NSMenuDelegate, UNUserNotificationCenterDelegate>
 
 @property(strong) NSMenu *dockMenu;

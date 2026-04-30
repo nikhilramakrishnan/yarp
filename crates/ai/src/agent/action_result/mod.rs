@@ -5,7 +5,7 @@ use std::{fmt::Display, ops::Range, time::SystemTime};
 use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use yarp_core::command::ExitCode;
-use warp_multi_agent_api::apply_file_diffs_result::success::UpdatedFileContent;
+use yarp_multi_agent_api::apply_file_diffs_result::success::UpdatedFileContent;
 use yarp_terminal::model::BlockId;
 
 use crate::{
@@ -656,7 +656,7 @@ impl From<UpdatedFileContext> for Vec<UpdatedFileContent> {
     fn from(value: UpdatedFileContext) -> Self {
         // Note: This method only makes sense for FileContexts that have a string content.
         // TODO: How do we gracefully fail binary files here?
-        let file_content: Vec<warp_multi_agent_api::FileContent> = value.file_context.into();
+        let file_content: Vec<yarp_multi_agent_api::FileContent> = value.file_context.into();
 
         file_content
             .into_iter()

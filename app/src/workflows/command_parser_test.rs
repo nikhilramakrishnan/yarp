@@ -33,9 +33,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -54,9 +54,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -70,9 +70,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
-            warp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
         ],
         environment_variables: None,
     };
@@ -101,9 +101,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -126,9 +126,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -152,9 +152,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            yarp_workflows::Shell::Zsh,
+            yarp_workflows::Shell::Bash,
+            yarp_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };

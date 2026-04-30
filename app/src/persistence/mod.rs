@@ -31,7 +31,7 @@ use lsp::supported_servers::LSPServerType;
 use uuid::Uuid;
 use yarp_core::command::ExitCode;
 use yarp_graphql::scalars::time::ServerTimestamp;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::{AppContext, Entity, SingletonEntity};
 
 use crate::ai::blocklist::PersistedAIInput;

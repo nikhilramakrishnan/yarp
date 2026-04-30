@@ -85,7 +85,7 @@ impl ConversationUsageView {
 
         // Collect from category-based fields
         for model in &self.usage_info.models {
-            for (category, &tokens) in &model.warp_token_usage_by_category {
+            for (category, &tokens) in &model.yarp_token_usage_by_category {
                 if tokens > 0 {
                     entries_by_category
                         .entry(category.clone())

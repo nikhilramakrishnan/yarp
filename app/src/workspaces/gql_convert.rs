@@ -11,7 +11,7 @@ use super::{
         SecretRedactionSettings, SessionSharingPolicy, SharedNotebooksPolicy,
         SharedWorkflowsPolicy, TelemetryDataCollectionPolicy, TelemetrySettings, Tier,
         UgcCollectionEnablementSetting, UgcCollectionSettings, UgcDataCollectionPolicy,
-        UsageBasedPricingPolicy, WarpAiPolicy, Workspace, WorkspaceInviteCode, WorkspaceMember,
+        UsageBasedPricingPolicy, YarpAiPolicy, Workspace, WorkspaceInviteCode, WorkspaceMember,
         WorkspaceMemberUsageInfo, WorkspaceSettings, WorkspaceSizePolicy,
     },
 };
@@ -61,13 +61,13 @@ use yarp_graphql::{
         TeamSizePolicy as GqlTeamSizePolicy,
         TelemetryDataCollectionPolicy as GqlTelemetryDataCollectionPolicy, Tier as GqlTier,
         UgcDataCollectionPolicy as GqlUgcDataCollectionPolicy,
-        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy, WarpAiPolicy as GqlWarpAiPolicy,
+        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy, YarpAiPolicy as GqlWarpAiPolicy,
     },
     object::CloudObjectWithDescendants,
     queries::{
         get_conversation_usage as gql_usage, get_workspaces_metadata_for_user::User as GqlUser,
     },
-    subscriptions::get_warp_drive_updates::WarpDriveUpdate,
+    subscriptions::get_warp_drive_updates::YarpDriveUpdate,
     user::{DiscoverableTeamData as GqlDiscoverableTeamData, PublicUserProfile},
     workspace::{
         AdminEnablementSetting as GqlAdminEnablementSetting, AiAutonomyValue as GqlAiAutonomyValue,
@@ -167,8 +167,8 @@ impl From<GqlInviteLinkDomainRestriction> for InviteLinkDomainRestriction {
     }
 }
 
-impl From<GqlWarpAiPolicy> for WarpAiPolicy {
-    fn from(gql_warp_ai_policy: GqlWarpAiPolicy) -> WarpAiPolicy {
+impl From<GqlWarpAiPolicy> for YarpAiPolicy {
+    fn from(gql_warp_ai_policy: GqlWarpAiPolicy) -> YarpAiPolicy {
         Self {
             limit: i64::from(gql_warp_ai_policy.limit),
             is_code_suggestions_toggleable: gql_warp_ai_policy.is_code_suggestions_toggleable,
@@ -444,7 +444,7 @@ impl From<GqlTier> for Tier {
         Self {
             name: gql_tier.name,
             description: gql_tier.description,
-            warp_ai_policy: gql_tier.warp_ai_policy.map(From::from),
+            yarp_ai_policy: gql_tier.yarp_ai_policy.map(From::from),
             workspace_size_policy: gql_tier.team_size_policy.map(From::from),
             shared_notebooks_policy: gql_tier.shared_notebooks_policy.map(From::from),
             shared_workflows_policy: gql_tier.shared_workflows_policy.map(From::from),
@@ -988,17 +988,17 @@ impl From<PublicUserProfile> for UserProfileWithUID {
     }
 }
 
-impl TryFrom<WarpDriveUpdate> for ObjectUpdateMessage {
+impl TryFrom<YarpDriveUpdate> for ObjectUpdateMessage {
     type Error = anyhow::Error;
 
-    fn try_from(value: WarpDriveUpdate) -> Result<Self, Self::Error> {
+    fn try_from(value: YarpDriveUpdate) -> Result<Self, Self::Error> {
         match value {
-            WarpDriveUpdate::ObjectActionOccurred(message) => {
+            YarpDriveUpdate::ObjectActionOccurred(message) => {
                 Ok(ObjectUpdateMessage::ObjectActionOccurred {
                     history: message.history.try_into()?,
                 })
             }
-            WarpDriveUpdate::ObjectContentUpdated(message) => {
+            YarpDriveUpdate::ObjectContentUpdated(message) => {
                 let server_object = message.object.try_into()?;
                 let last_editor = message.last_editor.map(|e| e.into());
                 Ok(ObjectUpdateMessage::ObjectContentChanged {
@@ -1006,15 +1006,15 @@ impl TryFrom<WarpDriveUpdate> for ObjectUpdateMessage {
                     last_editor,
                 })
             }
-            WarpDriveUpdate::ObjectDeleted(message) => Ok(ObjectUpdateMessage::ObjectDeleted {
+            YarpDriveUpdate::ObjectDeleted(message) => Ok(ObjectUpdateMessage::ObjectDeleted {
                 object_uid: ServerId::from_string_lossy(message.object_uid.inner()),
             }),
-            WarpDriveUpdate::ObjectMetadataUpdated(message) => {
+            YarpDriveUpdate::ObjectMetadataUpdated(message) => {
                 Ok(ObjectUpdateMessage::ObjectMetadataChanged {
                     metadata: message.metadata.try_into()?,
                 })
             }
-            WarpDriveUpdate::ObjectPermissionsUpdated(message) => {
+            YarpDriveUpdate::ObjectPermissionsUpdated(message) => {
                 Ok(ObjectUpdateMessage::ObjectPermissionsChangedV2 {
                     object_uid: ServerId::from_string_lossy(message.object_uid.inner()),
                     user_profiles: message
@@ -1026,16 +1026,16 @@ impl TryFrom<WarpDriveUpdate> for ObjectUpdateMessage {
                     permissions: message.permissions.try_into()?,
                 })
             }
-            WarpDriveUpdate::TeamMembershipsChanged(_) => {
+            YarpDriveUpdate::TeamMembershipsChanged(_) => {
                 Ok(ObjectUpdateMessage::TeamMembershipsChanged)
             }
-            WarpDriveUpdate::AmbientTaskUpdated(message) => {
+            YarpDriveUpdate::AmbientTaskUpdated(message) => {
                 Ok(ObjectUpdateMessage::AmbientTaskUpdated {
                     task_id: message.task_id.inner().to_string(),
                     timestamp: message.task_updated_ts.utc(),
                 })
             }
-            WarpDriveUpdate::Unknown => bail!("Unexpected WarpDriveUpdate variant"),
+            YarpDriveUpdate::Unknown => bail!("Unexpected YarpDriveUpdate variant"),
         }
     }
 }

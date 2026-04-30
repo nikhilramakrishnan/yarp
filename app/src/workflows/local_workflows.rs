@@ -5,7 +5,7 @@ use std::{
 };
 
 use yarp_util::path::ShellFamily;
-use warp_workflows::workflows as global_workflows;
+use yarp_workflows::workflows as global_workflows;
 #[cfg(not(target_family = "wasm"))]
 use yarpui::platform::OperatingSystem;
 use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};

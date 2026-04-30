@@ -22,7 +22,7 @@ use yarp::{
     },
     settings::SelectionSettings,
 };
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::{async_assert, integration::TestStep, text::SelectionType, Event, SingletonEntity};
 
 cfg_if::cfg_if! {

@@ -7,8 +7,8 @@ use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use yarp_core::features::FeatureFlag;
-use warp_multi_agent_api::response_event::stream_finished::ConversationUsageMetadata;
-use warp_multi_agent_api::{
+use yarp_multi_agent_api::response_event::stream_finished::ConversationUsageMetadata;
+use yarp_multi_agent_api::{
     client_action::{Action, StartNewConversation},
     response_event::stream_finished::TokenUsage,
 };
@@ -865,7 +865,7 @@ impl BlocklistAIHistoryModel {
         stream_id: &ResponseStreamId,
         conversation_id: AIConversationId,
         terminal_view_id: EntityId,
-        init_event: warp_multi_agent_api::response_event::StreamInit,
+        init_event: yarp_multi_agent_api::response_event::StreamInit,
         ctx: &mut ModelContext<Self>,
     ) {
         if let Some(conversation) = self.conversations_by_id.get_mut(&conversation_id) {
@@ -1036,7 +1036,7 @@ impl BlocklistAIHistoryModel {
         prefix: &str,
         app: &AppContext,
     ) -> Result<AIConversation, anyhow::Error> {
-        let tasks: Vec<warp_multi_agent_api::Task> = source_conversation
+        let tasks: Vec<yarp_multi_agent_api::Task> = source_conversation
             .all_tasks()
             .filter_map(|t| t.source().cloned())
             .collect();
@@ -1171,7 +1171,7 @@ impl BlocklistAIHistoryModel {
         // Build truncated tasks by retaining only messages whose IDs are in
         // `allowed_message_ids`. Tasks whose message list becomes empty and
         // which are non-root tasks are dropped.
-        let truncated_tasks: Vec<warp_multi_agent_api::Task> = conversation
+        let truncated_tasks: Vec<yarp_multi_agent_api::Task> = conversation
             .all_tasks()
             .filter_map(|t| {
                 if let Some(message_ids_to_retain) = message_ids_to_retain_by_task.get(t.id()) {
@@ -1275,7 +1275,7 @@ impl BlocklistAIHistoryModel {
     pub fn apply_client_actions(
         &mut self,
         response_stream_id: &ResponseStreamId,
-        client_actions: Vec<warp_multi_agent_api::ClientAction>,
+        client_actions: Vec<yarp_multi_agent_api::ClientAction>,
         conversation_id: AIConversationId,
         terminal_view_id: EntityId,
         ctx: &mut ModelContext<Self>,
@@ -1987,7 +1987,7 @@ impl BlocklistAIHistoryModel {
     pub fn insert_forked_conversation_from_tasks(
         &mut self,
         conversation_id: AIConversationId,
-        tasks: Vec<warp_multi_agent_api::Task>,
+        tasks: Vec<yarp_multi_agent_api::Task>,
         conversation_data: AgentConversationData,
     ) -> anyhow::Result<AIConversation> {
         let mut conversation =
@@ -2375,9 +2375,9 @@ impl From<&AIAgentOutputStatus> for AIQueryHistoryOutputStatus {
 /// Reassigns new task IDs to each forked task to ensure task IDs remain globally unique and updates
 /// description of the root task, prepending it with the given prefix.
 fn update_forked_task_properties(
-    tasks: Vec<warp_multi_agent_api::Task>,
+    tasks: Vec<yarp_multi_agent_api::Task>,
     prefix: &str,
-) -> Vec<warp_multi_agent_api::Task> {
+) -> Vec<yarp_multi_agent_api::Task> {
     let mut old_to_new_task_ids = HashMap::new();
     fn get_new_task_id(new_ids: &mut HashMap<String, String>, old_task_id: &str) -> String {
         new_ids

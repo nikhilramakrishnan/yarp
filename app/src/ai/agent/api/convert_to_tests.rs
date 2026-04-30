@@ -4,7 +4,7 @@ use crate::ai::agent::{
 };
 use crate::terminal::model::block::BlockId;
 use yarp_core::command::ExitCode;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 
 #[test]
 fn transfer_control_snapshot_result_converts_to_tool_call_result_input() {

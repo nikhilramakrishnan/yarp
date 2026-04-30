@@ -41,9 +41,9 @@ version-compare.workspace = true
 yarp = { workspace = true, features = ["integration_tests"] }
 yarp_cli = { workspace = true, features = ["integration_tests"] }
 yarp_core.workspace = true
-warp-command-signatures.workspace = true
-warp_multi_agent_api.workspace = true
-warp-workflows.workspace = true
+yarp-command-signatures.workspace = true
+yarp_multi_agent_api.workspace = true
+yarp-workflows.workspace = true
 yarpui.workspace = true
 yarpui_extras = { workspace = true, features = [
     "user_preferences-file",

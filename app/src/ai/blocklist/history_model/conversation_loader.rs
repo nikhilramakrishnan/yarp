@@ -490,11 +490,11 @@ impl BlocklistAIHistoryModel {
                 for task in &agent_conv.tasks {
                     for message in &task.messages {
                         match &message.message {
-                            Some(warp_multi_agent_api::message::Message::UserQuery(_)) => {
+                            Some(yarp_multi_agent_api::message::Message::UserQuery(_)) => {
                                 has_user_query = true;
                             }
-                            Some(warp_multi_agent_api::message::Message::SystemQuery(sys)) => {
-                                if let Some(warp_multi_agent_api::message::system_query::Type::AutoCodeDiff(_)) = &sys.r#type {
+                            Some(yarp_multi_agent_api::message::Message::SystemQuery(sys)) => {
+                                if let Some(yarp_multi_agent_api::message::system_query::Type::AutoCodeDiff(_)) = &sys.r#type {
                                     has_autocodediff = true;
                                 }
                             }
@@ -515,15 +515,15 @@ impl BlocklistAIHistoryModel {
                     // (or in the case of a passive code diff, the summary of the diff)
                     task.messages.iter().find_map(|msg| {
                         match &msg.message {
-                            Some(warp_multi_agent_api::message::Message::UserQuery(user_query)) => {
+                            Some(yarp_multi_agent_api::message::Message::UserQuery(user_query)) => {
                                 Some(user_query.query.clone())
                             }
-                            Some(warp_multi_agent_api::message::Message::ToolCall(tool_call))  => {
+                            Some(yarp_multi_agent_api::message::Message::ToolCall(tool_call))  => {
                                 let Some(tool) = &tool_call.tool else {
                                     return None;
                                 };
 
-                                if let warp_multi_agent_api::message::tool_call::Tool::ApplyFileDiffs(diff_suggestion) = tool {
+                                if let yarp_multi_agent_api::message::tool_call::Tool::ApplyFileDiffs(diff_suggestion) = tool {
                                     Some(diff_suggestion.summary.clone())
                                 } else {
                                     None

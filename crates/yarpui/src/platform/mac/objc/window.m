@@ -10,13 +10,13 @@
 #import "host_view.h"
 #import "window_blur.h"
 
-// NSWindow.delegate is a weak reference, so the WarpWindowDelegate we create in
+// NSWindow.delegate is a weak reference, so the YarpWindowDelegate we create in
 // `create_yarp_nswindow` / `create_yarp_nspanel` would otherwise be leaked with a +1
 // retain count. Associating it with the window ties its lifetime to the window: the
 // associated object is released by the runtime when the window itself is deallocated.
 static const void *kWarpWindowDelegateAssocKey = &kWarpWindowDelegateAssocKey;
 
-NSWindowStyleMask warpWindowMask = NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
+NSWindowStyleMask yarpWindowMask = NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
                                    NSWindowStyleMaskResizable | NSWindowStyleMaskTitled;
 
 // The default macOS titlebar height (in points).
@@ -52,7 +52,7 @@ dispatch_once_t fullscreenQueueOnce;
 }
 @end
 
-@protocol WarpWindowProtocol
+@protocol YarpWindowProtocol
 
 @property BOOL testMode;
 
@@ -73,8 +73,8 @@ dispatch_once_t fullscreenQueueOnce;
 
 @end
 
-@class WarpWindow;
-@class WarpPanel;
+@class YarpWindow;
+@class YarpPanel;
 
 // Declaration of functions implemented in Rust.
 void yarp_dealloc_window(id self);
@@ -112,13 +112,13 @@ NSNumber *previouslyActiveAppPID;
 }
 @end
 
-@interface WarpWindow : NSWindow <WarpWindowProtocol>
+@interface YarpWindow : NSWindow <YarpWindowProtocol>
 @end
 
-@interface WarpWindowDelegate : NSObject <NSWindowDelegate>
+@interface YarpWindowDelegate : NSObject <NSWindowDelegate>
 @end
 
-@implementation WarpWindowDelegate {
+@implementation YarpWindowDelegate {
     void *windowState;
 
     BOOL forceTermination;
@@ -132,8 +132,8 @@ NSNumber *previouslyActiveAppPID;
 }
 
 - (void)windowWillStartLiveResize:(NSNotification *)notification {
-    WarpWindow *yarp_window = notification.object;
-    WarpHostView *yarp_view = yarp_window.contentView;
+    YarpWindow *yarp_window = notification.object;
+    YarpHostView *yarp_view = yarp_window.contentView;
 
     // This is a hack to get around `borrowMut` errors within the UI framework
     // caused by the fact that it incorrectly assumes that callbacks cannot
@@ -144,8 +144,8 @@ NSNumber *previouslyActiveAppPID;
 }
 
 - (void)windowDidEndLiveResize:(NSNotification *)notification {
-    WarpWindow *yarp_window = notification.object;
-    WarpHostView *yarp_view = yarp_window.contentView;
+    YarpWindow *yarp_window = notification.object;
+    YarpHostView *yarp_view = yarp_window.contentView;
     [yarp_view setAsyncCallback:YES];
 }
 
@@ -180,7 +180,7 @@ NSNumber *previouslyActiveAppPID;
 }
 
 - (void)windowWillEnterFullScreen:(NSNotification *)notification {
-    NSWindow<WarpWindowProtocol> *window = notification.object;
+    NSWindow<YarpWindowProtocol> *window = notification.object;
     [window applyFullscreenTitlebarHeight];
     // macOS automatically detaches the title bar in fullscreen (see
     // willUseFullScreenPresentationOptions), and shows it along with the mac menu on hover. Since
@@ -189,7 +189,7 @@ NSNumber *previouslyActiveAppPID;
 }
 
 - (void)windowWillExitFullScreen:(NSNotification *)notification {
-    NSWindow<WarpWindowProtocol> *window = notification.object;
+    NSWindow<YarpWindowProtocol> *window = notification.object;
     window.titlebarAppearsTransparent = window.hideTitleBar;
     [window restoreConfiguredTitlebarHeight];
 }
@@ -282,7 +282,7 @@ static NSLayoutConstraint *configure_titlebar_height(NSWindow *window, CGFloat h
 }
 
 // Initializes an NSWindow that conforms to our window protocol.
-void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, bool hideTitleBar) {
+void init_warp_nswindow(NSWindow<YarpWindowProtocol> *window, bool testMode, bool hideTitleBar) {
     window.testMode = testMode;
     window.hideTitleBar = hideTitleBar;
 
@@ -300,7 +300,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
     window.titleVisibility = hideTitleBar ? NSWindowTitleHidden : NSWindowTitleVisible;
 }
 
-@implementation WarpWindow {
+@implementation YarpWindow {
     // The windowState is managed on the Rust side.
     void *windowState;
     // Height constraint for the titlebar view (also indicates if constraints are configured)
@@ -453,7 +453,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 
 - (void)closeWindowAsync:(BOOL)forceTermination {
     dispatch_async(dispatch_get_main_queue(), ^{
-      WarpWindowDelegate *delegate = self.delegate;
+      YarpWindowDelegate *delegate = self.delegate;
       if (forceTermination) {
           [delegate setForceTermination];
       }
@@ -489,18 +489,18 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 }
 
 // Note this returns a retained object ("create" rule).
-+ (WarpWindow *)createWithContentRect:(NSRect)contentRect
++ (YarpWindow *)createWithContentRect:(NSRect)contentRect
                           metalDevice:(id)metalDevice
                        hidingTitleBar:(BOOL)hideTitleBar
            backgroundBlurRadiusPixels:(uint8)backgoundBlurRadiusPixels
                          withTestMode:(BOOL)testMode {
-    NSWindowStyleMask mask = warpWindowMask;
+    NSWindowStyleMask mask = yarpWindowMask;
 
     if (hideTitleBar) {
         mask |= NSWindowStyleMaskFullSizeContentView;
     }
 
-    WarpWindow *window_result = [[WarpWindow alloc] initWithContentRect:contentRect
+    YarpWindow *window_result = [[YarpWindow alloc] initWithContentRect:contentRect
                                                               styleMask:mask
                                                                 backing:NSBackingStoreBuffered
                                                                   defer:NO];
@@ -513,10 +513,10 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 
 // A panel is basically a NSWindow with the exception that it could be displayed
 // above fullscreen apps.
-@interface WarpPanel : NSPanel <WarpWindowProtocol>
+@interface YarpPanel : NSPanel <YarpWindowProtocol>
 @end
 
-@implementation WarpPanel {
+@implementation YarpPanel {
     // The windowState is managed on the Rust side.
     void *windowState;
     // Height constraint for the titlebar view (also indicates if constraints are configured)
@@ -604,7 +604,7 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 
 - (void)closeWindowAsync:(BOOL)forceTermination {
     dispatch_async(dispatch_get_main_queue(), ^{
-      WarpWindowDelegate *delegate = self.delegate;
+      YarpWindowDelegate *delegate = self.delegate;
       [delegate setForceTermination];
       [self close];
     });
@@ -653,18 +653,18 @@ void init_warp_nswindow(NSWindow<WarpWindowProtocol> *window, bool testMode, boo
 }
 
 // Note this returns a retained object ("create" rule).
-+ (WarpPanel *)createWithContentRect:(NSRect)contentRect
++ (YarpPanel *)createWithContentRect:(NSRect)contentRect
                          metalDevice:(id)metalDevice
                       hidingTitleBar:(BOOL)hideTitleBar
           backgroundBlurRadiusPixels:(uint8)backgoundBlurRadiusPixels
                         withTestMode:(BOOL)testMode {
-    NSWindowStyleMask mask = warpWindowMask | NSWindowStyleMaskNonactivatingPanel;
+    NSWindowStyleMask mask = yarpWindowMask | NSWindowStyleMaskNonactivatingPanel;
 
     if (hideTitleBar) {
         mask |= NSWindowStyleMaskFullSizeContentView;
     }
 
-    WarpPanel *window_result = [[WarpPanel alloc] initWithContentRect:contentRect
+    YarpPanel *window_result = [[YarpPanel alloc] initWithContentRect:contentRect
                                                             styleMask:mask
                                                               backing:NSBackingStoreBuffered
                                                                 defer:NO];
@@ -687,7 +687,7 @@ void set_window_background_blur_radius(id window, uint8 blurRadiusPixels) {
     }
 }
 
-// Attaches a WarpWindowDelegate to |window| and ties its lifetime to the window.
+// Attaches a YarpWindowDelegate to |window| and ties its lifetime to the window.
 //
 // NSWindow.delegate is a weak property, so the delegate must be kept alive
 // externally. We do this by associating it with the window via
@@ -695,14 +695,14 @@ void set_window_background_blur_radius(id window, uint8 blurRadiusPixels) {
 // the window is deallocated. The caller's +1 from alloc/init is then balanced
 // by the final [delegate release].
 static void attach_warp_window_delegate(NSWindow *window) {
-    WarpWindowDelegate *delegate = [[WarpWindowDelegate alloc] init];
+    YarpWindowDelegate *delegate = [[YarpWindowDelegate alloc] init];
     [window setDelegate:delegate];
     objc_setAssociatedObject(window, kWarpWindowDelegateAssocKey, delegate,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [delegate release];
 }
 
-// \return a new, retained WarpPanel with the given content rect.
+// \return a new, retained YarpPanel with the given content rect.
 id create_yarp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                        uint8 backgroundBlurRadiusPixels, BOOL testMode) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -713,13 +713,13 @@ id create_yarp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
         });
     }
 
-    WarpPanel *window = [WarpPanel createWithContentRect:contentRect
+    YarpPanel *window = [YarpPanel createWithContentRect:contentRect
                                              metalDevice:metalDevice
                                           hidingTitleBar:hideTitleBar
                               backgroundBlurRadiusPixels:backgroundBlurRadiusPixels
                                             withTestMode:testMode];
 
-    WarpHostView *hostView = [[[WarpHostView alloc] initWithFrame:contentRect
+    YarpHostView *hostView = [[[YarpHostView alloc] initWithFrame:contentRect
                                                       metalDevice:metalDevice
                                                enableTitlebarDrag:NO
                                                          testMode:testMode] autorelease];
@@ -733,7 +733,7 @@ id create_yarp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
     return window;
 }
 
-// \return a new, retained WarpWindow with the given content rect.
+// \return a new, retained YarpWindow with the given content rect.
 id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                         uint8 backgroundBlurRadiusPixels, BOOL testMode) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -744,13 +744,13 @@ id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
         });
     }
 
-    WarpWindow *window = [WarpWindow createWithContentRect:contentRect
+    YarpWindow *window = [YarpWindow createWithContentRect:contentRect
                                                metalDevice:metalDevice
                                             hidingTitleBar:hideTitleBar
                                 backgroundBlurRadiusPixels:backgroundBlurRadiusPixels
                                               withTestMode:testMode];
 
-    WarpHostView *hostView = [[[WarpHostView alloc] initWithFrame:contentRect
+    YarpHostView *hostView = [[[YarpHostView alloc] initWithFrame:contentRect
                                                       metalDevice:metalDevice
                                                enableTitlebarDrag:YES
                                                          testMode:testMode] autorelease];
@@ -765,7 +765,7 @@ id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
 }
 
 BOOL is_warp_window(id window) {
-    return [window isKindOfClass:[WarpWindow class]] || [window isKindOfClass:[WarpPanel class]];
+    return [window isKindOfClass:[YarpWindow class]] || [window isKindOfClass:[YarpPanel class]];
 }
 
 // Returns the front-most window in the app's window list, or null if there are
@@ -793,17 +793,17 @@ NSWindow *get_frontmost_window() {
 // @param window - id of the window for which the a11y content is set
 // @param value - the value of the hovered field
 // @param help - helper text (the difference between this and value is mostly in semantics)
-// @param warpRole - the role of the given element (we're using our own, internally defined roles,
+// @param yarpRole - the role of the given element (we're using our own, internally defined roles,
 //                    check warpui::accessibility)
 // @param setFrame - boolean value that determines whether the passed frame should be set
 // @param frame - rectangle that describes where the actual highlighted element is on the screen
-void set_accessibility_contents(id window, NSString *value, NSString *help, NSString *warpRole,
+void set_accessibility_contents(id window, NSString *value, NSString *help, NSString *yarpRole,
                                 BOOL setFrame, NSRect frame) {
     // Setting the standard parameters used for indicating accessibility features
     [window setAccessibilityLabel:help];
     [window setAccessibilityValue:value];
     // "use" the role variable temporarily until we re-introduce its usage.
-    (void)warpRole;
+    (void)yarpRole;
     [window setAccessibilityValueDescription:value];
     if (setFrame) {
         [window setAccessibilityFrame:frame];
@@ -947,7 +947,7 @@ void activate_app() {
     }
 }
 
-void show_window_and_focus_app(WarpWindow<WarpWindowProtocol> *window, bool bringToFront) {
+void show_window_and_focus_app(YarpWindow<YarpWindowProtocol> *window, bool bringToFront) {
     previouslyActiveAppPID = [PreviousStateHelper storePreviousState];
 
     // Make sure the window is included in the application's window list.  This
@@ -983,7 +983,7 @@ void show_window_and_focus_app(WarpWindow<WarpWindowProtocol> *window, bool brin
     }
 }
 
-void hide_window(WarpWindow<WarpWindowProtocol> *window) {
+void hide_window(YarpWindow<YarpWindowProtocol> *window) {
     NSRunningApplication *runningApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
 
     // Don't activate to previous state if:
@@ -1002,7 +1002,7 @@ void hide_window(WarpWindow<WarpWindowProtocol> *window) {
 }
 
 void set_window_title(id window, NSString *title) {
-    if ([window isKindOfClass:[WarpPanel class]] && [window isVisible]) {
+    if ([window isKindOfClass:[YarpPanel class]] && [window isVisible]) {
         // For the hotkey window (which is an NSPanel), we need to explicitly
         // add the panel to the windows list.  `changeWindowsItem` will add the
         // panel to the list if it isn't already there.
@@ -1013,12 +1013,12 @@ void set_window_title(id window, NSString *title) {
 }
 
 void set_titlebar_height(id window, CGFloat height) {
-    if ([window conformsToProtocol:@protocol(WarpWindowProtocol)]) {
-        [(id<WarpWindowProtocol>)window configureTitlebarHeight:height];
+    if ([window conformsToProtocol:@protocol(YarpWindowProtocol)]) {
+        [(id<YarpWindowProtocol>)window configureTitlebarHeight:height];
     }
 }
 
-void position_and_order_front(WarpWindow<WarpWindowProtocol> *window) {
+void position_and_order_front(YarpWindow<YarpWindowProtocol> *window) {
     // Called from Rust to position ourselves and order front.
     // TODO: use NSUserDefaults to remember window locations.
     // We cascade relative to the front-most window.  This will typically be the
@@ -1039,7 +1039,7 @@ void position_and_order_front(WarpWindow<WarpWindowProtocol> *window) {
     [window makeKeyAndOrderFront:nil];
 }
 
-void position_at_given_location(WarpWindow<WarpWindowProtocol> *window, NSPoint origin) {
+void position_at_given_location(YarpWindow<YarpWindowProtocol> *window, NSPoint origin) {
     // Use an explicit top-left point for drag handoff windows. Unlike the cascade helper above,
     // tab transfer needs deterministic placement at a Rust-provided screen position.
     NSPoint topLeft = NSMakePoint(origin.x, origin.y + [window frame].size.height);
@@ -1047,7 +1047,7 @@ void position_at_given_location(WarpWindow<WarpWindowProtocol> *window, NSPoint 
     [window makeKeyAndOrderFront:nil];
 }
 
-void order_front_without_focus(WarpWindow<WarpWindowProtocol> *window, NSPoint origin) {
+void order_front_without_focus(YarpWindow<YarpWindowProtocol> *window, NSPoint origin) {
     [window setFrameOrigin:origin];
     [window orderFront:nil];
 }

@@ -31,7 +31,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use yarp_core::ui::builder::UiBuilder;
 use yarp_core::ui::theme::color::internal_colors;
-use warp_workflows::workflows as global_workflows;
+use yarp_workflows::workflows as global_workflows;
 use yarpui::accessibility::{AccessibilityContent, YarpA11yRole};
 use yarpui::color::ColorU;
 use yarpui::elements::{

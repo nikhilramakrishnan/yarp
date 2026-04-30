@@ -11,7 +11,7 @@ import psMat
 SCRIPT_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 DEFAULT_SVG_PATH = os.path.join(SCRIPT_DIR, "yarp.svg")
 DEFAULT_CODEPOINT = 0xE500  # Private Use Area
-DEFAULT_GLYPH_NAME = "warpLogo"
+DEFAULT_GLYPH_NAME = "yarpLogo"
 
 
 def usage(exit_code: int) -> None:

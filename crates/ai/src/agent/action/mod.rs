@@ -27,7 +27,7 @@ use crate::{
     document::AIDocumentId,
     skills::SkillReference,
 };
-pub use warp_multi_agent_api::LifecycleEventType;
+pub use yarp_multi_agent_api::LifecycleEventType;
 
 #[derive(Debug, Clone, Eq, PartialEq, EnumDiscriminants)]
 pub enum AIAgentActionType {

@@ -61,32 +61,32 @@ impl PartialOrd for Priority {
     }
 }
 
-impl From<warp_command_signatures::Priority> for Priority {
-    fn from(value: warp_command_signatures::Priority) -> Self {
+impl From<yarp_command_signatures::Priority> for Priority {
+    fn from(value: yarp_command_signatures::Priority) -> Self {
         match value {
-            warp_command_signatures::Priority::Global(importance)
-            | warp_command_signatures::Priority::Local(importance) => match importance {
-                warp_command_signatures::Importance::More(order) => Self::new(order.0 as i32),
-                warp_command_signatures::Importance::Less(order) => {
+            yarp_command_signatures::Priority::Global(importance)
+            | yarp_command_signatures::Priority::Local(importance) => match importance {
+                yarp_command_signatures::Importance::More(order) => Self::new(order.0 as i32),
+                yarp_command_signatures::Importance::Less(order) => {
                     Self::new(-(101 - order.0 as i32))
                 }
             },
-            warp_command_signatures::Priority::Default => Priority::default(),
+            yarp_command_signatures::Priority::Default => Priority::default(),
         }
     }
 }
 
-impl From<Priority> for warp_command_signatures::Priority {
+impl From<Priority> for yarp_command_signatures::Priority {
     fn from(value: Priority) -> Self {
         match value.cmp(&Priority::default()) {
-            Ordering::Less => warp_command_signatures::Priority::Global(
-                warp_command_signatures::Importance::Less(warp_command_signatures::Order(
+            Ordering::Less => yarp_command_signatures::Priority::Global(
+                yarp_command_signatures::Importance::Less(yarp_command_signatures::Order(
                     101 - value.value().unsigned_abs(),
                 )),
             ),
-            Ordering::Equal => warp_command_signatures::Priority::default(),
-            Ordering::Greater => warp_command_signatures::Priority::Global(
-                warp_command_signatures::Importance::More(warp_command_signatures::Order(
+            Ordering::Equal => yarp_command_signatures::Priority::default(),
+            Ordering::Greater => yarp_command_signatures::Priority::Global(
+                yarp_command_signatures::Importance::More(yarp_command_signatures::Order(
                     value.value().unsigned_abs(),
                 )),
             ),

@@ -149,7 +149,7 @@ impl PassiveSuggestionsModel {
         &mut self,
         followup_conversation_id: Option<AIConversationId>,
         trigger: PassiveSuggestionTrigger,
-        supported_tools: Vec<warp_multi_agent_api::ToolType>,
+        supported_tools: Vec<yarp_multi_agent_api::ToolType>,
         ctx: &mut ModelContext<Self>,
     ) {
         // Capture before the call — `Some` means there's a real conversation
@@ -414,7 +414,7 @@ impl PassiveSuggestionsModel {
                 PassiveSuggestionTrigger::AgentResponseCompleted {
                     exchange_id: latest_exchange_id,
                 },
-                vec![warp_multi_agent_api::ToolType::SuggestPrompt],
+                vec![yarp_multi_agent_api::ToolType::SuggestPrompt],
                 ctx,
             );
         }
@@ -425,7 +425,7 @@ impl PassiveSuggestionsModel {
         conversation_id: Option<AIConversationId>,
         block_context: Box<BlockContext>,
         relevant_files: Vec<FileContext>,
-        supported_tools: Vec<warp_multi_agent_api::ToolType>,
+        supported_tools: Vec<yarp_multi_agent_api::ToolType>,
         ctx: &mut ModelContext<Self>,
     ) {
         let trigger =
@@ -467,7 +467,7 @@ impl PassiveSuggestionsModel {
 
         let mut supported_tools = Vec::new();
         if is_prompt_suggestions_enabled {
-            supported_tools.push(warp_multi_agent_api::ToolType::SuggestPrompt);
+            supported_tools.push(yarp_multi_agent_api::ToolType::SuggestPrompt);
         }
 
         let block_context = BlockContext::from_completed_block(block_completed);
@@ -533,7 +533,7 @@ impl PassiveSuggestionsModel {
                         me.pending_file_read_handle =
                             Some(ctx.spawn(read_files(file_locations, current_working_directory, shell), move |me, relevant_files, ctx| {
                                 me.pending_file_read_handle = None;
-                                supported_tools.push(warp_multi_agent_api::ToolType::ApplyFileDiffs);
+                                supported_tools.push(yarp_multi_agent_api::ToolType::ApplyFileDiffs);
                                 me.send_shell_command_completed_request(
                                     conversation_id,
                                     block_context,
@@ -579,7 +579,7 @@ enum ExtractedSuggestion {
         is_trigger_irrelevant: bool,
     },
     CodeDiff {
-        apply_file_diffs: warp_multi_agent_api::message::tool_call::ApplyFileDiffs,
+        apply_file_diffs: yarp_multi_agent_api::message::tool_call::ApplyFileDiffs,
     },
 }
 
@@ -594,7 +594,7 @@ async fn extract_suggestion_from_stream(
 ) -> Option<StreamExtractionResult> {
     use crate::ai::agent::task::helper::MessageExt;
     use futures_util::StreamExt;
-    use warp_multi_agent_api as api;
+    use yarp_multi_agent_api as api;
 
     let Ok(mut stream) = stream_result else {
         return None;
@@ -672,12 +672,12 @@ async fn extract_suggestion_from_stream(
 /// Coalesces a sequence of client actions into final message state by applying
 /// field-mask updates and appends incrementally.
 fn coalesce_messages_from_client_actions(
-    client_actions: &[warp_multi_agent_api::ClientAction],
-) -> Vec<warp_multi_agent_api::Message> {
+    client_actions: &[yarp_multi_agent_api::ClientAction],
+) -> Vec<yarp_multi_agent_api::Message> {
     use field_mask::FieldMaskOperation;
     use std::collections::HashMap;
-    use warp_multi_agent_api as api;
-    use warp_multi_agent_api::client_action::Action;
+    use yarp_multi_agent_api as api;
+    use yarp_multi_agent_api::client_action::Action;
 
     let mut messages_by_id: HashMap<String, api::Message> = HashMap::new();
     let mut message_order: Vec<String> = Vec::new();

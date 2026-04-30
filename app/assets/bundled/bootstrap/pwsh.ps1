@@ -31,7 +31,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
 
     # This script block contains commands and constants that are needed in background threads.
     # If you want to be able to use it in a background thread, stick it in this block
-    $warpCommon = {
+    $yarpCommon = {
         # OSC used to mark the start of in-band command output.
         #
         # Printable characters received this OSC and oscEndGeneratorOutput are parsed and handled as
@@ -128,7 +128,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
     }
 
     # Load the Yarp Common functions in the current session
-    . $warpCommon
+    . $yarpCommon
 
     function Get-EpochTime {
         [decimal]([DateTime]::UtcNow - [DateTime]::new(1970, 1, 1, 0, 0, 0, 0)).Ticks / 1e7
@@ -413,12 +413,12 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         #
         # Note that this is not going to be 100% accurate, as some cmdlets will fail
         # without setting a $LASTEXITCODE, meaning the $LASTEXITCODE will be stale.
-        $warpCommandNotFound = $script:commandNotFound
+        $yarpCommandNotFound = $script:commandNotFound
         $script:commandNotFound = $false
 
         $exitCode = if ($status) {
             0
-        } elseif ($warpCommandNotFound) {
+        } elseif ($yarpCommandNotFound) {
             127
         } elseif ($code -eq 0) {
             1
@@ -627,7 +627,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
             # executes the in-band generator in the current directory
             $ps = [powershell]::Create()
             $ps.RunspacePool = $script:innerRunspacePool
-            $ps.AddScript($warpCommon) | Out-Null
+            $ps.AddScript($yarpCommon) | Out-Null
             $ps.AddScript({
                     param([string]$loc, [string]$commandId, [string]$command)
                     Set-Location $loc
@@ -647,7 +647,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         # and then sends the results back to Yarp via OSC
         $psOuter = [powershell]::Create()
         $psOuter.RunspacePool = $script:outerRunspacePool
-        $psOuter.AddScript($warpCommon) | Out-Null
+        $psOuter.AddScript($yarpCommon) | Out-Null
         $psOuter.AddScript({
                 param([object[]]$jobs)
 

@@ -10,12 +10,12 @@ use crate::{
 #[derive(cynic::QueryFragment, Debug)]
 #[cynic(graphql_type = "RootSubscription")]
 pub struct GetWarpDriveUpdates {
-    pub warp_drive_updates: WarpDriveUpdate,
+    pub yarp_drive_updates: YarpDriveUpdate,
 }
 
 #[derive(cynic::InlineFragments, Debug)]
 #[allow(clippy::large_enum_variant)]
-pub enum WarpDriveUpdate {
+pub enum YarpDriveUpdate {
     ObjectActionOccurred(ObjectActionOccurred),
     ObjectContentUpdated(ObjectContentUpdated),
     ObjectDeleted(ObjectDeleted),

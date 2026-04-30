@@ -1,12 +1,12 @@
 use std::fmt::Display;
 
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 
 /// A citation listed in an AI response.
 #[derive(Debug, Clone, Hash, Eq, PartialEq)]
 pub enum AIAgentCitation {
     YarpDriveObject { uid: String },
-    YarpDocumentation { path: String },
+    WarpDocumentation { path: String },
     WebPage { url: String },
 }
 
@@ -16,7 +16,7 @@ impl Display for AIAgentCitation {
             AIAgentCitation::YarpDriveObject { uid } => {
                 write!(f, "Yarp Drive Object: {uid}")
             }
-            AIAgentCitation::YarpDocumentation { path } => {
+            AIAgentCitation::WarpDocumentation { path } => {
                 write!(f, "Yarp Documentation: {path}")
             }
             AIAgentCitation::WebPage { url } => {
@@ -45,7 +45,7 @@ impl TryFrom<api::Citation> for AIAgentCitation {
             | api::DocumentType::Rule => Ok(AIAgentCitation::YarpDriveObject {
                 uid: citation.document_id,
             }),
-            api::DocumentType::WarpDocumentation => Ok(AIAgentCitation::YarpDocumentation {
+            api::DocumentType::WarpDocumentation => Ok(AIAgentCitation::WarpDocumentation {
                 path: citation.document_id,
             }),
             api::DocumentType::WebPage => Ok(AIAgentCitation::WebPage {

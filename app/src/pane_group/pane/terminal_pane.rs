@@ -6,7 +6,7 @@ use std::{collections::HashMap, sync::mpsc::SyncSender};
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
 use url::Url;
 use yarp_cli::agent::Harness;
-use warp_multi_agent_api as multi_agent_api;
+use yarp_multi_agent_api as multi_agent_api;
 
 use yarpui::{
     AppContext, EntityId, ModelHandle, SingletonEntity, ViewContext, ViewHandle, WindowId,

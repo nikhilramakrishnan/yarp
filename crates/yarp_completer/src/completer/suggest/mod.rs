@@ -17,7 +17,7 @@ use std::hash::{Hash, Hasher};
 use async_recursion::async_recursion;
 use itertools::Itertools;
 use smol_str::SmolStr;
-use warp_command_signatures::IconType;
+use yarp_command_signatures::IconType;
 
 use crate::parsers::simple::parse_for_completions;
 use crate::{completer::describe::OptionCaseSensitivity, parsers::classify_command};
@@ -198,7 +198,7 @@ impl MatchedSuggestion {
 pub enum MatchRequirement {
     /// For an option to be recognized, its whole name must be spelled out.
     EntireName,
-    /// This variant signifies [`warp_command_signatures::ParserDirectives::flags_match_unique_prefix`]
+    /// This variant signifies [`yarp_command_signatures::ParserDirectives::flags_match_unique_prefix`]
     /// being `true`. Only a prefix which is long enough to make the intended option unambiguous is
     /// needed.
     UniquePrefixOnly,

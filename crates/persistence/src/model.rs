@@ -5,7 +5,7 @@ use std::collections::{HashMap, HashSet};
 use chrono::NaiveDateTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Deserializer, Serialize};
-use warp_multi_agent_api::{self as api, response_event::stream_finished};
+use yarp_multi_agent_api::{self as api, response_event::stream_finished};
 
 use super::schema::{
     active_mcp_servers, agent_conversations, agent_tasks, ai_document_panes, ai_memory_panes,
@@ -1074,7 +1074,7 @@ pub struct ModelTokenUsage {
     #[serde(default)]
     pub byok_tokens: u32,
     #[serde(default)]
-    pub warp_token_usage_by_category: HashMap<TokenUsageCategory, u32>,
+    pub yarp_token_usage_by_category: HashMap<TokenUsageCategory, u32>,
     #[serde(default)]
     pub byok_token_usage_by_category: HashMap<TokenUsageCategory, u32>,
 }
@@ -1103,7 +1103,7 @@ impl ModelTokenUsage {
     }
 
     pub fn to_proto_warp_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
-        self.to_proto_usage(self.yarp_tokens, &self.warp_token_usage_by_category)
+        self.to_proto_usage(self.yarp_tokens, &self.yarp_token_usage_by_category)
     }
 
     pub fn to_proto_byok_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
@@ -1116,7 +1116,7 @@ impl ModelTokenUsage {
             model_id: self.model_id.clone(),
             total_tokens: self.yarp_tokens + self.byok_tokens,
             token_usage_by_category: self
-                .warp_token_usage_by_category
+                .yarp_token_usage_by_category
                 .iter()
                 .chain(self.byok_token_usage_by_category.iter())
                 .fold(HashMap::new(), |mut acc, (cat, tokens)| {

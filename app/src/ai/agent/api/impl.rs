@@ -3,7 +3,7 @@ use std::{collections::HashMap, sync::Arc};
 use crate::{ai::agent::redaction, terminal::model::session::SessionType};
 use futures_util::StreamExt;
 use yarp_core::features::FeatureFlag;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 
 use crate::server::server_api::ServerApi;
 

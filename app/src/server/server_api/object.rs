@@ -866,7 +866,7 @@ impl ObjectClient for ServerApi {
                 res.ok_or_else(|| {
                     anyhow!("missing response data for message in get_warp_drive_updates")
                 })
-                .and_then(|data| data.warp_drive_updates.try_into())
+                .and_then(|data| data.yarp_drive_updates.try_into())
             },
             message_sender,
             stream_ready_sender,

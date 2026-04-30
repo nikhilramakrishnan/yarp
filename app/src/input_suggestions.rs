@@ -9,7 +9,7 @@ use pathfinder_geometry::vector::vec2f;
 use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::{cmp, ops::Range, vec};
-use warp_command_signatures::IconType;
+use yarp_command_signatures::IconType;
 use yarp_completer::completer::{
     MatchType, PathSeparators, Suggestion, SuggestionResults, SuggestionType,
 };

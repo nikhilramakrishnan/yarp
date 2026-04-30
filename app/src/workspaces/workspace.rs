@@ -287,7 +287,7 @@ pub enum DelinquencyStatus {
 
 /// Rust representation of feature policies from the GraphQL Schema.
 #[derive(Clone, Debug, Copy, Serialize, Deserialize)]
-pub struct WarpAiPolicy {
+pub struct YarpAiPolicy {
     pub limit: i64,
     pub is_code_suggestions_toggleable: bool,
     pub is_prompt_suggestions_toggleable: bool,
@@ -396,7 +396,7 @@ pub enum HostEnablementSetting {
 pub struct Tier {
     pub name: String,
     pub description: String,
-    pub warp_ai_policy: Option<WarpAiPolicy>,
+    pub yarp_ai_policy: Option<YarpAiPolicy>,
     pub workspace_size_policy: Option<WorkspaceSizePolicy>,
     pub shared_notebooks_policy: Option<SharedNotebooksPolicy>,
     pub shared_workflows_policy: Option<SharedWorkflowsPolicy>,

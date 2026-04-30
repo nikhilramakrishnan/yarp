@@ -1058,7 +1058,7 @@ fn test_find_by_token_after_initialize_output_for_response_stream() {
                 &stream_id,
                 conversation_id,
                 terminal_view_id,
-                warp_multi_agent_api::response_event::StreamInit {
+                yarp_multi_agent_api::response_event::StreamInit {
                     request_id: String::new(),
                     conversation_id: server_token_str.clone(),
                     run_id: String::new(),
@@ -1134,7 +1134,7 @@ fn test_find_by_token_after_insert_forked_conversation_from_tasks() {
             autoexecute_override: None,
             last_event_sequence: None,
         };
-        let tasks = vec![warp_multi_agent_api::Task {
+        let tasks = vec![yarp_multi_agent_api::Task {
             id: "root-task".to_string(),
             messages: vec![],
             dependencies: None,

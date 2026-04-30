@@ -1,6 +1,6 @@
 pub use crate::aws_credentials::{AwsCredentials, AwsCredentialsState};
 use serde::{Deserialize, Serialize};
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::{Entity, ModelContext, SingletonEntity};
 use yarpui_extras::secure_storage::{self, AppContextExt};
 

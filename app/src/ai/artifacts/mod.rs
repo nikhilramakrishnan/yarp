@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use anyhow::anyhow;
 use ui_components::lightbox::{LightboxImage, LightboxImageSource};
 use yarp_core::report_error;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 #[cfg(feature = "local_fs")]
 use yarpui::platform::SaveFilePickerConfiguration;
 use yarpui::SingletonEntity;

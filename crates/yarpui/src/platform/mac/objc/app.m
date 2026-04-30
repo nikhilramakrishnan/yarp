@@ -13,7 +13,7 @@
 
 static void *NSAppThemeChangeContext = &NSAppThemeChangeContext;
 
-NSMutableDictionary<NSNumber *, WarpHotKey *> *_hotKeys;
+NSMutableDictionary<NSNumber *, YarpHotKey *> *_hotKeys;
 UInt32 _nextHotKeyID;
 
 OSStatus HotkeyPressedHandler(EventHandlerCallRef _inCaller __unused, EventRef inEvent,
@@ -28,7 +28,7 @@ OSStatus HotkeyPressedHandler(EventHandlerCallRef _inCaller __unused, EventRef i
         return eventNotHandledErr;
     }
 
-    WarpHotKey *hotkey = _hotKeys[@(hotKeyID.id)];
+    YarpHotKey *hotkey = _hotKeys[@(hotKeyID.id)];
     if (hotkey) {
         yarp_app_send_global_keybinding((NSApplication *)inUserData, hotkey->_modifierKeys,
                                         hotkey->_keyCode);
@@ -62,7 +62,7 @@ void *registerGlobalHotkey(NSUInteger key, NSUInteger modifiers) {
                             &hotKeyRef)) {
         return nil;
     };
-    [_hotKeys setObject:[[[WarpHotKey alloc] initWithEventHotKey:hotKeyRef
+    [_hotKeys setObject:[[[YarpHotKey alloc] initWithEventHotKey:hotKeyRef
                                                          keyCode:key
                                                     modifierKeys:modifiers] autorelease]
                  forKey:@(hotKeyID.id)];
@@ -97,13 +97,13 @@ NSUInteger activeScreenId() {
         unsignedIntegerValue];
 }
 
-@interface WarpMenuItemDelegate : NSObject <NSMenuDelegate> {
+@interface YarpMenuItemDelegate : NSObject <NSMenuDelegate> {
     // Rust expects an ivar with this name.
     void *rustWrapper;
 }
 @end
 
-@implementation WarpDelegate {
+@implementation YarpDelegate {
     // Rust expects an ivar with this name.
     void *rustWrapper;
 
@@ -382,10 +382,10 @@ NSUInteger activeScreenId() {
 - (void)menuNeedsUpdate:(NSMenu *)menu {
     // Trigger yarp_menu_item_needs_update for every item with our class set as its represented
     // object.
-    Class warpHandlerClass = [WarpCustomMenuItemHandler class];
+    Class yarpHandlerClass = [YarpCustomMenuItemHandler class];
     for (NSMenuItem *item in menu.itemArray) {
         id obj = item.representedObject;
-        if ([obj isKindOfClass:warpHandlerClass]) {
+        if ([obj isKindOfClass:yarpHandlerClass]) {
             [obj itemNeedsUpdate:item];
         }
     }
@@ -455,13 +455,13 @@ NSUInteger activeScreenId() {
 
 @end
 
-@implementation WarpApplication {
+@implementation YarpApplication {
     // Rust expects an ivar with this name.
     void *rustWrapper;
 }
 
 - (void)setForceTermination {
-    WarpDelegate *delegate = (WarpDelegate *)self.delegate;
+    YarpDelegate *delegate = (YarpDelegate *)self.delegate;
     [delegate setForceTermination];
 }
 
@@ -479,14 +479,14 @@ NSUInteger activeScreenId() {
 
 @end
 
-WarpApplication *get_yarp_app() {
+YarpApplication *get_yarp_app() {
     // Set up the delegate (once).
     // The delegate is deliberately leaked.
-    WarpApplication *app = [WarpApplication sharedApplication];
+    YarpApplication *app = [YarpApplication sharedApplication];
     static dispatch_once_t once;
     static id sharedDelegate;
     dispatch_once(&once, ^{
-      sharedDelegate = [[WarpDelegate alloc] init];
+      sharedDelegate = [[YarpDelegate alloc] init];
       [app setDelegate:sharedDelegate];
 
       // Hack to work around the fact that yarp is frequently tested as a
@@ -500,7 +500,7 @@ WarpApplication *get_yarp_app() {
 // The result is autoreleased.
 NSMenu *make_delegated_menu(NSString *title) {
     NSMenu *result = [[[NSMenu alloc] initWithTitle:title] autorelease];
-    result.delegate = (WarpDelegate *)[[WarpApplication sharedApplication] delegate];
+    result.delegate = (YarpDelegate *)[[YarpApplication sharedApplication] delegate];
     return result;
 }
 
@@ -522,8 +522,8 @@ NSMenuItem *make_services_menu_item() {
 // The pointer will be provided back to Yarp in the callbacks (see menus.h).
 // The result is autoreleased.
 NSMenuItem *make_warp_custom_menu_item(void *context) {
-    WarpCustomMenuItemHandler *handler =
-        [[[WarpCustomMenuItemHandler alloc] initWithContext:context] autorelease];
+    YarpCustomMenuItemHandler *handler =
+        [[[YarpCustomMenuItemHandler alloc] initWithContext:context] autorelease];
 
     // Sets action to NULL if menu item has submenu, so the menu doesn't close when item is clicked
     NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:@""

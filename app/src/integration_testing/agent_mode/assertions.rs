@@ -15,7 +15,7 @@ use crate::{
     integration_testing::view_getters::terminal_view,
     BlocklistAIHistoryModel,
 };
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::{integration::AssertionCallback, integration_assert, EntityId};
 use yarpui::{integration::AssertionOutcome, SingletonEntity};
 

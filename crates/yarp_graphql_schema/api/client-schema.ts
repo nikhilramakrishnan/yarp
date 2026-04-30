@@ -102,7 +102,7 @@ const clientQueries = [
   'suggestCloudEnvironmentImage'
 ];
 
-const clientSubscriptions = ['warpDriveUpdates'];
+const clientSubscriptions = ['yarpDriveUpdates'];
 
 function filterToClient(schema: GraphQLSchema): GraphQLSchema {
   const filtered = filterSchema({

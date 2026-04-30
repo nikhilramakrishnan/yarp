@@ -75,7 +75,7 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::Duration;
 use yarp_core::assertions::safe_assert;
-use warp_multi_agent_api::{message, Task, ToolType};
+use yarp_multi_agent_api::{message, Task, ToolType};
 use yarpui::r#async::{SpawnedFutureHandle, Timer};
 
 use super::orchestration_events::{OrchestrationEventService, OrchestrationEventServiceEvent};
@@ -2268,7 +2268,7 @@ impl BlocklistAIController {
                             return;
                         };
                         match event {
-                            warp_multi_agent_api::response_event::Type::Init(init_event) => {
+                            yarp_multi_agent_api::response_event::Type::Init(init_event) => {
                                 history_model.update(ctx, |history_model, ctx| {
                                     history_model.initialize_output_for_response_stream(
                                         &stream_id,
@@ -2289,7 +2289,7 @@ impl BlocklistAIController {
                                     }
                                 });
                             }
-                            warp_multi_agent_api::response_event::Type::Finished(
+                            yarp_multi_agent_api::response_event::Type::Finished(
                                 finished_event,
                             ) => {
                                 self.handle_response_stream_finished(
@@ -2300,7 +2300,7 @@ impl BlocklistAIController {
                                     ctx,
                                 );
                             }
-                            warp_multi_agent_api::response_event::Type::ClientActions(actions) => {
+                            yarp_multi_agent_api::response_event::Type::ClientActions(actions) => {
                                 let client_actions = actions.actions;
                                 let apply_result =
                                     history_model.update(ctx, |history_model, ctx| {
@@ -2578,7 +2578,7 @@ impl BlocklistAIController {
     pub(super) fn handle_response_stream_finished(
         &mut self,
         stream_id: &ResponseStreamId,
-        mut finished_event: warp_multi_agent_api::response_event::StreamFinished,
+        mut finished_event: yarp_multi_agent_api::response_event::StreamFinished,
         conversation_id: AIConversationId,
         did_request_contain_user_query: bool,
         ctx: &mut ModelContext<Self>,
@@ -2600,7 +2600,7 @@ impl BlocklistAIController {
 
         let history_model = BlocklistAIHistoryModel::handle(ctx);
         match finished_event.reason {
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::Done(_)) | None => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::Done(_)) | None => {
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_successfully(
                         stream_id,
@@ -2610,7 +2610,7 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::Other(_)) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::Other(_)) => {
                 let error_message = "Response stream finished unexpectedly (with finish reason `Other`).";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
@@ -2626,7 +2626,7 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::ContextWindowExceeded(_)) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::ContextWindowExceeded(_)) => {
                 let error_message = "Input exceeded context window limit.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
@@ -2638,7 +2638,7 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::QuotaLimit(_)) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::QuotaLimit(_)) => {
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
                         RenderableAIError::QuotaLimit,
@@ -2649,7 +2649,7 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::LlmUnavailable(_)) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::LlmUnavailable(_)) => {
                 let error_message = "The LLM is currently unavailable.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
@@ -2665,8 +2665,8 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::InvalidApiKey(details)) => {
-                use warp_multi_agent_api::LlmProvider;
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::InvalidApiKey(details)) => {
+                use yarp_multi_agent_api::LlmProvider;
                 let is_aws_bedrock = details
                     .provider
                     .try_into()
@@ -2702,8 +2702,8 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::InternalError(
-                warp_multi_agent_api::response_event::stream_finished::InternalError{ message})) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::InternalError(
+                yarp_multi_agent_api::response_event::stream_finished::InternalError{ message})) => {
                 let error_message = format!(
                     "Response stream finished unexpectedly with internal error: {message}",
                 );
@@ -2721,7 +2721,7 @@ impl BlocklistAIController {
                     );
                 });
             }
-            Some(warp_multi_agent_api::response_event::stream_finished::Reason::MaxTokenLimit(_)) => {
+            Some(yarp_multi_agent_api::response_event::stream_finished::Reason::MaxTokenLimit(_)) => {
                 let error_message = "Input exceeded context window limit.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
@@ -2782,9 +2782,9 @@ fn input_for_query(
         .and_then(|c| c.get_task(task_id))
         .and_then(|task| {
             if task.is_root_task() {
-                Some(warp_multi_agent_api::AgentType::Primary)
+                Some(yarp_multi_agent_api::AgentType::Primary)
             } else if task.is_cli_subagent() {
-                Some(warp_multi_agent_api::AgentType::Cli)
+                Some(yarp_multi_agent_api::AgentType::Cli)
             } else {
                 None
             }

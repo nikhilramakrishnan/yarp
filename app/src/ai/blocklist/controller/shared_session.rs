@@ -6,8 +6,8 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use session_sharing_protocol::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 use yarp_core::features::FeatureFlag;
-use warp_multi_agent_api::response_event::{stream_finished, ClientActions};
-use warp_multi_agent_api::{client_action::Action, message::Message};
+use yarp_multi_agent_api::response_event::{stream_finished, ClientActions};
+use yarp_multi_agent_api::{client_action::Action, message::Message};
 
 use super::response_stream::ResponseStreamId;
 use super::{BlocklistAIController, RequestInput};
@@ -73,20 +73,20 @@ impl BlocklistAIController {
     /// Apply agent session events to the current conversation state.
     pub fn handle_shared_session_response_event(
         &mut self,
-        resp: warp_multi_agent_api::ResponseEvent,
+        resp: yarp_multi_agent_api::ResponseEvent,
         ctx: &mut ModelContext<Self>,
     ) {
         let Some(kind) = resp.r#type else {
             return;
         };
         match kind {
-            warp_multi_agent_api::response_event::Type::Init(init) => {
+            yarp_multi_agent_api::response_event::Type::Init(init) => {
                 self.on_shared_init(init, ctx)
             }
-            warp_multi_agent_api::response_event::Type::ClientActions(actions) => {
+            yarp_multi_agent_api::response_event::Type::ClientActions(actions) => {
                 self.on_shared_client_actions(actions, ctx)
             }
-            warp_multi_agent_api::response_event::Type::Finished(finished) => {
+            yarp_multi_agent_api::response_event::Type::Finished(finished) => {
                 self.on_shared_finished(finished, ctx);
             }
         }
@@ -94,7 +94,7 @@ impl BlocklistAIController {
 
     fn on_shared_init(
         &mut self,
-        init_event: warp_multi_agent_api::response_event::StreamInit,
+        init_event: yarp_multi_agent_api::response_event::StreamInit,
         ctx: &mut ModelContext<Self>,
     ) {
         let stream_id = ResponseStreamId::for_shared_session(&init_event);
@@ -205,7 +205,7 @@ impl BlocklistAIController {
 
     fn on_shared_client_actions(
         &mut self,
-        actions: warp_multi_agent_api::response_event::ClientActions,
+        actions: yarp_multi_agent_api::response_event::ClientActions,
         ctx: &mut ModelContext<Self>,
     ) {
         let Some(stream_id) = self.shared_session_state.current_response_id.clone() else {
@@ -312,7 +312,7 @@ impl BlocklistAIController {
 
     fn on_shared_finished(
         &mut self,
-        finished: warp_multi_agent_api::response_event::StreamFinished,
+        finished: yarp_multi_agent_api::response_event::StreamFinished,
         ctx: &mut ModelContext<Self>,
     ) {
         let Some(stream_id) = self.shared_session_state.current_response_id.take() else {
@@ -427,9 +427,9 @@ impl BlocklistAIController {
         // We use "Done" reason rather than a specific cancellation reason because
         // the proto doesn't have explicit variants for UserCommandExecuted or ManuallyCancelled.
         // TODO: we should probably add representations for said variants in the proto for this usecase.
-        let finished_event = warp_multi_agent_api::ResponseEvent {
-            r#type: Some(warp_multi_agent_api::response_event::Type::Finished(
-                warp_multi_agent_api::response_event::StreamFinished {
+        let finished_event = yarp_multi_agent_api::ResponseEvent {
+            r#type: Some(yarp_multi_agent_api::response_event::Type::Finished(
+                yarp_multi_agent_api::response_event::StreamFinished {
                     reason: Some(stream_finished::Reason::Done(stream_finished::Done {})),
                     conversation_usage_metadata: usage_metadata,
                     token_usage: vec![],
@@ -499,12 +499,12 @@ impl BlocklistAIController {
     pub fn link_forked_conversation_token(
         &mut self,
         forked_from_token: &str,
-        event: &warp_multi_agent_api::ResponseEvent,
+        event: &yarp_multi_agent_api::ResponseEvent,
         ctx: &mut ModelContext<Self>,
     ) {
         // Extract the new server conversation id from the StreamInit event
         let new_conversation_id = match &event.r#type {
-            Some(warp_multi_agent_api::response_event::Type::Init(init)) => {
+            Some(yarp_multi_agent_api::response_event::Type::Init(init)) => {
                 init.conversation_id.as_str()
             }
             // Only StreamInit events have conversation_id.

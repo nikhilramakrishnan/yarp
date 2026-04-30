@@ -27,7 +27,7 @@ use crate::{
         UpdateCloudObjectResult,
     },
     drive::{
-        items::{notebook::YarpDriveNotebook, YarpDriveItem},
+        items::{notebook::WarpDriveNotebook, YarpDriveItem},
         CloudObjectTypeAndId,
     },
     persistence::ModelEvent,
@@ -204,7 +204,7 @@ impl CloudModelType for CloudNotebookModel {
         _appearance: &Appearance,
         notebook: &CloudNotebook,
     ) -> Option<Box<dyn YarpDriveItem>> {
-        Some(Box::new(YarpDriveNotebook::new(
+        Some(Box::new(WarpDriveNotebook::new(
             self.cloud_object_type_and_id(id),
             notebook.clone(),
             notebook.model().ai_document_id.is_some(),

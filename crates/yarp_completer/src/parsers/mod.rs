@@ -15,7 +15,7 @@ use derive_new::new;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;
-use warp_command_signatures::Argument;
+use yarp_command_signatures::Argument;
 
 use crate::signatures::CommandRegistry;
 use crate::{

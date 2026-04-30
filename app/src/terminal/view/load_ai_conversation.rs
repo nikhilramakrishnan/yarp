@@ -63,7 +63,7 @@ use crate::{
     },
 };
 use yarp_core::channel::ChannelState;
-use warp_multi_agent_api as api;
+use yarp_multi_agent_api as api;
 use yarpui::units::IntoPixels;
 use yarpui::{ModelHandle, SingletonEntity};
 

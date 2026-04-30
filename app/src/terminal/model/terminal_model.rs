@@ -1352,7 +1352,7 @@ impl TerminalModel {
     /// link the new server-assigned token to an existing conversation from historical replay.
     pub fn send_agent_response_for_shared_session(
         &mut self,
-        response: &warp_multi_agent_api::ResponseEvent,
+        response: &yarp_multi_agent_api::ResponseEvent,
         response_initiator: Option<ParticipantId>,
         forked_from_conversation_token: Option<String>,
     ) {

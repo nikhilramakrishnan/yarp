@@ -382,14 +382,14 @@ type AmbientAgentSettings {
   defaultHostSlug: String
   enableWarpAttribution: AdminEnablementSetting!
   instanceShape: InstanceShape
-  warpHostedAgentsEnabled: Boolean!
+  yarpHostedAgentsEnabled: Boolean!
 }
 
 input AmbientAgentSettingsInput {
   defaultHostSlug: String
   enableWarpAttribution: AdminEnablementSetting
   instanceShape: InstanceShapeInput
-  warpHostedAgentsEnabled: Boolean
+  yarpHostedAgentsEnabled: Boolean
 }
 
 type AmbientAgentsPolicy {
@@ -739,14 +739,14 @@ type ConversationUsageMetadata {
   summarized: Boolean!
 
   """
-  Deprecated: Use warpTokenUsage and byokTokenUsage instead.
+  Deprecated: Use yarpTokenUsage and byokTokenUsage instead.
   This field combines both Warp API key and user API key usage.
   """
-  tokenUsage: [ModelTokenUsage!]! @deprecated(reason: "Use warpTokenUsage and byokTokenUsage instead")
+  tokenUsage: [ModelTokenUsage!]! @deprecated(reason: "Use yarpTokenUsage and byokTokenUsage instead")
   toolUsageMetadata: ToolUsageMetadata!
 
   """Token usage using the Warp API key, keyed by model."""
-  warpTokenUsage: [TokenUsage!]!
+  yarpTokenUsage: [TokenUsage!]!
 }
 
 """Worker type for agent tasks."""
@@ -2746,7 +2746,7 @@ type RootQuery {
 
 type RootSubscription {
   """Equivalent to GetCloudObjectUpdates in v1."""
-  warpDriveUpdates: WarpDriveUpdate!
+  yarpDriveUpdates: YarpDriveUpdate!
 }
 
 type RoutingHostConfig {
@@ -3258,8 +3258,8 @@ type Tier {
   telemetryDataCollectionPolicy: TelemetryDataCollectionPolicy
   ugcDataCollectionPolicy: UgcDataCollectionPolicy
   usageBasedPricingPolicy: UsageBasedPricingPolicy
-  warpAiPolicy: WarpAiPolicy
-  warpBasicPolicy: WarpBasicPolicy
+  yarpAiPolicy: YarpAiPolicy
+  yarpBasicPolicy: YarpBasicPolicy
 }
 
 type TierPricing {
@@ -3875,7 +3875,7 @@ type UserSettings {
   isTelemetryEnabled: Boolean!
 }
 
-type WarpAiPolicy {
+type YarpAiPolicy {
   acceptedAutosuggestionsLimit: Int!
   disablePremiumModels: Boolean!
   isCodeSuggestionsToggleable: Boolean!
@@ -3896,11 +3896,11 @@ type WarpAiPolicy {
   voiceTokenLimit: Int!
 }
 
-type WarpBasicPolicy {
+type YarpBasicPolicy {
   enabled: Boolean!
 }
 
-union WarpDriveUpdate = AmbientTaskUpdated | ObjectActionOccurred | ObjectContentUpdated | ObjectDeleted | ObjectMetadataUpdated | ObjectPermissionsUpdated | TeamMembershipsChanged
+union YarpDriveUpdate = AmbientTaskUpdated | ObjectActionOccurred | ObjectContentUpdated | ObjectDeleted | ObjectMetadataUpdated | ObjectPermissionsUpdated | TeamMembershipsChanged
 
 type Workflow {
   data: String!

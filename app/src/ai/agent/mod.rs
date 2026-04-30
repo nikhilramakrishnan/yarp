@@ -42,7 +42,7 @@ use std::ops::{AddAssign, Deref, DerefMut, Range};
 use std::sync::Arc;
 use std::time::Duration;
 use uuid::Uuid;
-use warp_multi_agent_api::{diff_hunk as diff_hunk_api, AgentEvent, AgentType};
+use yarp_multi_agent_api::{diff_hunk as diff_hunk_api, AgentEvent, AgentType};
 
 pub use self::api::{MaybeAIAgentOutputMessage, MessageToAIAgentOutputMessageError};
 use crate::ai_assistant::execution_context::YarpAiExecutionContext;
@@ -2115,15 +2115,15 @@ impl CurrentHead {
     }
 }
 
-impl From<CurrentHead> for warp_multi_agent_api::CurrentRef {
+impl From<CurrentHead> for yarp_multi_agent_api::CurrentRef {
     fn from(value: CurrentHead) -> Self {
         Self {
             r#ref: Some(match value {
                 CurrentHead::BranchName(name) => {
-                    warp_multi_agent_api::current_ref::Ref::BranchName(name)
+                    yarp_multi_agent_api::current_ref::Ref::BranchName(name)
                 }
                 CurrentHead::HeadlessCommitSha(sha) => {
-                    warp_multi_agent_api::current_ref::Ref::HeadlessCommitSha(sha)
+                    yarp_multi_agent_api::current_ref::Ref::HeadlessCommitSha(sha)
                 }
             }),
         }
@@ -2148,16 +2148,16 @@ pub enum DiffBase {
     UncommittedChanges,
 }
 
-impl From<DiffBase> for warp_multi_agent_api::BaseRef {
+impl From<DiffBase> for yarp_multi_agent_api::BaseRef {
     fn from(value: DiffBase) -> Self {
         Self {
             r#ref: Some(match value {
-                DiffBase::BranchName(name) => warp_multi_agent_api::base_ref::Ref::BranchName(name),
+                DiffBase::BranchName(name) => yarp_multi_agent_api::base_ref::Ref::BranchName(name),
                 DiffBase::HeadlessCommitSha(sha) => {
-                    warp_multi_agent_api::base_ref::Ref::HeadlessCommitSha(sha)
+                    yarp_multi_agent_api::base_ref::Ref::HeadlessCommitSha(sha)
                 }
                 DiffBase::UncommittedChanges => {
-                    warp_multi_agent_api::base_ref::Ref::UncommittedChanges(())
+                    yarp_multi_agent_api::base_ref::Ref::UncommittedChanges(())
                 }
             }),
         }
@@ -2188,10 +2188,10 @@ pub struct DiffSetHunk {
 }
 
 impl DiffSetHunk {
-    pub fn convert_to_api(self, file_path: String) -> warp_multi_agent_api::diff_set::DiffHunk {
-        warp_multi_agent_api::diff_set::DiffHunk {
+    pub fn convert_to_api(self, file_path: String) -> yarp_multi_agent_api::diff_set::DiffHunk {
+        yarp_multi_agent_api::diff_set::DiffHunk {
             file_path,
-            line_range: Some(warp_multi_agent_api::FileContentLineRange {
+            line_range: Some(yarp_multi_agent_api::FileContentLineRange {
                 start: self.line_range.start.as_usize() as u32,
                 end: self.line_range.end.as_usize() as u32,
             }),

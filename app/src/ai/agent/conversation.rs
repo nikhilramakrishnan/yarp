@@ -33,8 +33,8 @@ use yarp_core::send_telemetry_from_ctx;
 use yarp_core::ui::appearance::Appearance;
 use yarp_core::ui::theme::color::internal_colors;
 use yarp_core::ui::theme::YarpTheme;
-use warp_multi_agent_api::response_event::stream_finished;
-use warp_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
+use yarp_multi_agent_api::response_event::stream_finished;
+use yarp_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
 use yarpui::color::ColorU;
 use yarpui::{EntityId, ModelContext, SingletonEntity};
 
@@ -844,11 +844,11 @@ impl AIConversation {
     ///
     /// This filters the full task list using DFS linearization to determine
     /// which tasks have open subagent tool calls without corresponding results.
-    pub fn compute_active_tasks(&self) -> Vec<warp_multi_agent_api::Task> {
+    pub fn compute_active_tasks(&self) -> Vec<yarp_multi_agent_api::Task> {
         use std::collections::HashMap;
 
         let root_task_id = self.get_root_task_id().to_string();
-        let all_tasks: HashMap<&str, &warp_multi_agent_api::Task> = self
+        let all_tasks: HashMap<&str, &yarp_multi_agent_api::Task> = self
             .all_tasks()
             .filter_map(|task| {
                 let source = task.source()?;
@@ -1492,7 +1492,7 @@ impl AIConversation {
     pub fn initialize_output_for_response_stream(
         &mut self,
         stream_id: &ResponseStreamId,
-        init_event: warp_multi_agent_api::response_event::StreamInit,
+        init_event: yarp_multi_agent_api::response_event::StreamInit,
         terminal_view_id: EntityId,
         ctx: &mut ModelContext<BlocklistAIHistoryModel>,
     ) -> Result<(), UpdateConversationError> {
@@ -1576,7 +1576,7 @@ impl AIConversation {
                 entry.yarp_tokens += usage.total_tokens;
                 for (category, tokens) in usage.token_usage_by_category {
                     *entry
-                        .warp_token_usage_by_category
+                        .yarp_token_usage_by_category
                         .entry(category)
                         .or_default() += tokens;
                 }
@@ -2001,10 +2001,10 @@ impl AIConversation {
         &mut self,
         response_stream_id: &ResponseStreamId,
         terminal_view_id: EntityId,
-        action: warp_multi_agent_api::client_action::Action,
+        action: yarp_multi_agent_api::client_action::Action,
         ctx: &mut ModelContext<BlocklistAIHistoryModel>,
     ) -> Result<(), UpdateConversationError> {
-        use warp_multi_agent_api::client_action::*;
+        use yarp_multi_agent_api::client_action::*;
         match action {
             Action::BeginTransaction(_) => {
                 self.begin_transaction();
