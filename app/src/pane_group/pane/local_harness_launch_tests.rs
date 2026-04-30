@@ -36,7 +36,7 @@ fn normalize_local_child_harness_accepts_supported_aliases() {
 
 #[test]
 fn normalize_local_child_harness_rejects_unsupported_values() {
-    assert_eq!(normalize_local_child_harness("oz"), None);
+    assert_eq!(normalize_local_child_harness("fuzz"), None);
     assert_eq!(normalize_local_child_harness("codex"), None);
     assert_eq!(normalize_local_child_harness(""), None);
 }

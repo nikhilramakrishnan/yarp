@@ -97,7 +97,7 @@ impl TerminalView {
         event: &AmbientAgentViewModelEvent,
         ctx: &mut ViewContext<Self>,
     ) {
-        // Tear down the non-oz cloud-mode queued-prompt block on terminal / transition
+        // Tear down the non-fuzz cloud-mode queued-prompt block on terminal / transition
         // events that replace it. `Failed`, `NeedsGithubAuth`, and `Cancelled` hand off
         // to the existing error / auth / cancelled UI; `HarnessCommandStarted` hands
         // off to the live harness CLI block. Idempotent and cheap when no block exists.
@@ -140,7 +140,7 @@ impl TerminalView {
                         .as_ref(ctx)
                         .is_third_party_harness()
                     {
-                        // Non-oz runs: render the submitted prompt via the queued-prompt UI.
+                        // Non-fuzz runs: render the submitted prompt via the queued-prompt UI.
                         // The block is removed later by `HarnessCommandStarted` / failure /
                         // cancel / auth handlers.
                         let prompt = self
@@ -291,7 +291,7 @@ impl TerminalView {
                             .set_is_executing_oz_environment_startup_commands(false);
                     }
                 }
-                // Collapse the setup-commands summary, matching the oz first-exchange behavior.
+                // Collapse the setup-commands summary, matching the fuzz first-exchange behavior.
                 self.ambient_agent_view_model.update(ctx, |model, ctx| {
                     model.set_setup_command_visibility(false, ctx);
                 });
@@ -322,7 +322,7 @@ impl TerminalView {
             return;
         }
 
-        // For non-oz harness runs, transition out of the setup phase when the harness CLI
+        // For non-fuzz harness runs, transition out of the setup phase when the harness CLI
         // starts (e.g. `claude --session-id …`). The block is the actual harness session
         // and should NOT be classified as a setup command; the `HarnessCommandStarted`
         // handler flips the block-list flag so the block renders like a normal CLI-agent
@@ -396,7 +396,7 @@ impl TerminalView {
         );
     }
 
-    /// Enters agent view for a live shared-session viewer of a non-oz cloud run, so every
+    /// Enters agent view for a live shared-session viewer of a non-fuzz cloud run, so every
     /// viewer lands in the same agent-view chrome regardless of which entry point opened the
     /// conversation. Called from the `HarnessSelected` handler once the viewer has resolved
     /// the run's harness asynchronously.
@@ -468,7 +468,7 @@ impl TerminalView {
     }
 
     /// Returns `true` when the active block's command is the CLI for the run's configured
-    /// non-oz harness (e.g. `claude …` for [`Harness::Claude`]).
+    /// non-fuzz harness (e.g. `claude …` for [`Harness::Claude`]).
     /// Used to detect the harness-start transition at `AfterBlockStarted` time. Unlike
     /// `detect_cli_agent_from_model`, this does NOT gate on `is_active_and_long_running` —
     /// we want to classify the block as the harness session as soon as it starts, before the

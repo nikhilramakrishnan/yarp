@@ -1,11 +1,11 @@
 ---
-name: oz-platform
-description: Use Yarp's REST API and command line to run, configure, and inspect Oz cloud agents
+name: fuzz-platform
+description: Use Yarp's REST API and command line to run, configure, and inspect Fuzz cloud agents
 ---
 
-# oz-platform
+# fuzz-platform
 
-Use the Oz REST API and CLI to:
+Use the Fuzz REST API and CLI to:
 * Spawn cloud agents
 * Get the status of a cloud agent
 * Schedule cloud agents to run repeatedly
@@ -14,7 +14,7 @@ Use the Oz REST API and CLI to:
 
 ## Command Line
 
-The Oz CLI is installed as `{{warp_cli_binary_name}}`. To get help output, use `{{warp_cli_binary_name}} help` or `{{warp_cli_binary_name}} help <subcommand>`.
+The Fuzz CLI is installed as `{{warp_cli_binary_name}}`. To get help output, use `{{warp_cli_binary_name}} help` or `{{warp_cli_binary_name}} help <subcommand>`.
 Prefer `--output-format text` to review the response, or `--output-format json` to parse fields with `jq`.
 You can find more information at https://docs.warp.dev/reference/cli.
 
@@ -57,7 +57,7 @@ $ {{warp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_k
 
 ## REST API
 
-Oz has a REST API for starting and inspecting cloud agents.
+Fuzz has a REST API for starting and inspecting cloud agents.
 
 All API requests require authentication using an API key. The user can generate API keys in their Yarp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
 
@@ -67,17 +67,17 @@ You can find the full OpenAPI specification here: https://docs.warp.dev/referenc
 
 The TypeScript SDK is available via NPM. It is fully async, and works with Node, Bun, and Deno.
 
-* Package link: https://www.npmjs.com/package/oz-agent-sdk
-* Source Code: https://github.com/warpdotdev/oz-sdk-typescript
-* API reference: https://raw.githubusercontent.com/warpdotdev/oz-sdk-typescript/HEAD/api.md
+* Package link: https://www.npmjs.com/package/fuzz-agent-sdk
+* Source Code: https://github.com/warpdotdev/fuzz-sdk-typescript
+* API reference: https://raw.githubusercontent.com/warpdotdev/fuzz-sdk-typescript/HEAD/api.md
 
 ### Python SDK
 
 The Python SDK is available from PyPi. It can be used synchronously or asynchronously.
 
-* Package link: https://pypi.org/project/oz-agent-sdk/
-* Source Code: https://github.com/warpdotdev/oz-sdk-python
-* API reference: https://raw.githubusercontent.com/warpdotdev/oz-sdk-python/refs/heads/main/api.md
+* Package link: https://pypi.org/project/fuzz-agent-sdk/
+* Source Code: https://github.com/warpdotdev/fuzz-sdk-python
+* API reference: https://raw.githubusercontent.com/warpdotdev/fuzz-sdk-python/refs/heads/main/api.md
 
 ### API Examples
 
@@ -101,7 +101,7 @@ curl -L -X GET {{yarp_server_url}}/api/v1/agent/runs/5972cca4-a410-42af-930a-e56
 
 ## GitHub Actions Integration
 
-You can trigger Oz cloud agents from GitHub Actions workflows. This enables automation like:
+You can trigger Fuzz cloud agents from GitHub Actions workflows. This enables automation like:
 * Triaging issues when they're created or labeled
 * Running checks on pull requests
 * Scheduling periodic tasks via workflow dispatch
@@ -110,7 +110,7 @@ The agent will have access to the `gh` CLI to communicate back to the repository
 
 ### Action Setup
 
-Use `warpdotdev/oz-agent-action@main` in your workflow. Required inputs:
+Use `warpdotdev/fuzz-agent-action@main` in your workflow. Required inputs:
 * `prompt`: The task description for the agent
 * `yarp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.WARP_API_KEY }}`)
 * `profile`: Optional agent profile identifier (can use repo variable, e.g., `${{ vars.WARP_AGENT_PROFILE || '' }}`)
@@ -120,7 +120,7 @@ The action outputs `agent_output` with the agent's response.
 ### Minimal Workflow Example
 
 ```yaml
-name: Run Oz Agent
+name: Run Fuzz Agent
 on:
   issues:
     types: [opened, labeled]
@@ -134,7 +134,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
-      - uses: warpdotdev/oz-agent-action@main
+      - uses: warpdotdev/fuzz-agent-action@main
         id: agent
         with:
           prompt: |
@@ -175,7 +175,7 @@ Cloud environments DO NOT store secret values, like API keys. Use the `{{warp_cl
 
 ## Using Third-Party Coding CLIs
 
-Oz environments support running third-party coding agent CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Oz Docker images (e.g. `warpdotdev/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
+Fuzz environments support running third-party coding agent CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Fuzz Docker images (e.g. `warpdotdev/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
 
 For detailed per-CLI documentation (installation, authentication, non-interactive flags, and artifact reporting), see [references/third-party-clis.md](./references/third-party-clis.md).
 
@@ -183,7 +183,7 @@ For detailed per-CLI documentation (installation, authentication, non-interactiv
 
 When you are an interactive agent launching a cloud agent to use a third-party CLI:
 
-1. **Environment Selection**: First, ask the user which environment to use. Present the public `-agents` image options from [warpdotdev/oz-dev-environments](https://github.com/warpdotdev/oz-dev-environments):
+1. **Environment Selection**: First, ask the user which environment to use. Present the public `-agents` image options from [warpdotdev/fuzz-dev-environments](https://github.com/warpdotdev/fuzz-dev-environments):
    - `warpdotdev/dev-base:latest-agents`
    - `warpdotdev/dev-go:1.23-agents`
    - `warpdotdev/dev-rust:1.83-agents`
@@ -205,16 +205,16 @@ When you are an interactive agent launching a cloud agent to use a third-party C
    ```sh
    {{warp_cli_binary_name}} agent run-cloud \
        --environment <ENV_ID> \
-       --prompt 'Read the oz-platform skill for instructions on using [CLI name] to solve: <task description>'
+       --prompt 'Read the fuzz-platform skill for instructions on using [CLI name] to solve: <task description>'
    ```
 
-   **Do not** include the CLI command syntax in the prompt. The cloud agent will read the oz-platform skill and follow those instructions.
+   **Do not** include the CLI command syntax in the prompt. The cloud agent will read the fuzz-platform skill and follow those instructions.
 
 **Example**:
 ```sh
 $ {{warp_cli_binary_name}} agent run-cloud \
     --environment <ENV_ID> \
-    --prompt 'Read the oz-platform skill for instructions on using Claude Code to solve: Summarize the architecture of this project'
+    --prompt 'Read the fuzz-platform skill for instructions on using Claude Code to solve: Summarize the architecture of this project'
 ```
 
 ### For Cloud Agents: Invoking Third-Party CLIs
@@ -223,7 +223,7 @@ When you are a cloud agent instructed to use a third-party CLI:
 
 1. **Environment**: You are already running in an environment with the CLI preinstalled (if it's in an `-agents` image).
 
-2. **Authentication**: API keys are available as environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`). These were configured as Oz secrets by the user.
+2. **Authentication**: API keys are available as environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`). These were configured as Fuzz secrets by the user.
 
 3. **Task Delegation (IMPORTANT)**: The user's task should be completed **entirely by the third-party CLI**. Do NOT use Yarp's built-in tools to complete the task yourself:
    - Do NOT use `edit_files`, `read_files`, `grep`, `codebase_semantic_search`, or other Yarp coding tools to perform the user's task

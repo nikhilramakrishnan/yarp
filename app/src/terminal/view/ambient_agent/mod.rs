@@ -114,7 +114,7 @@ pub fn is_cloud_agent_pre_first_exchange(
         return false;
     }
 
-    // For non-oz harness runs, there is no Fuzz `AppendedExchange` to key off of, so we also
+    // For non-fuzz harness runs, there is no Fuzz `AppendedExchange` to key off of, so we also
     // exit the pre-first-exchange phase when the harness CLI (e.g. `claude`, `gemini`) has
     // been detected. See `mark_harness_command_started`.
     if ambient_agent_view_model

@@ -113,9 +113,9 @@ pub struct AmbientAgentViewModel {
     harness: Harness,
     /// Whether the optimistic InitialUserQuery block has been inserted for the current run.
     has_inserted_cloud_mode_user_query_block: bool,
-    /// Whether the harness CLI (e.g. `claude`, `gemini`) has started running for a non-oz run.
+    /// Whether the harness CLI (e.g. `claude`, `gemini`) has started running for a non-fuzz run.
     /// Used to transition the cloud-mode setup UI out of the pre-first-exchange phase when
-    /// there is no oz `AppendedExchange` to key off of.
+    /// there is no fuzz `AppendedExchange` to key off of.
     harness_command_started: bool,
 }
 
@@ -259,7 +259,7 @@ impl AmbientAgentViewModel {
         FeatureFlag::AgentHarness.is_enabled() && self.harness != Harness::Fuzz
     }
 
-    /// Whether the harness CLI has started running. Only meaningful for non-oz runs.
+    /// Whether the harness CLI has started running. Only meaningful for non-fuzz runs.
     pub(super) fn harness_command_started(&self) -> bool {
         self.harness_command_started
     }
@@ -269,7 +269,7 @@ impl AmbientAgentViewModel {
     pub(super) fn mark_harness_command_started(&mut self, ctx: &mut ModelContext<Self>) {
         debug_assert!(
             self.harness != Harness::Fuzz,
-            "harness_command_started is only meaningful for non-oz runs"
+            "harness_command_started is only meaningful for non-fuzz runs"
         );
         if self.harness_command_started {
             return;
@@ -425,7 +425,7 @@ impl AmbientAgentViewModel {
         }
 
         // Fetch the task so we can set the correct environment (instead of defaulting to the most
-        // recently-used one) and the correct harness (so non-oz viewers know to use the
+        // recently-used one) and the correct harness (so non-fuzz viewers know to use the
         // queued-prompt / harness-command-started flow).
         ctx.spawn(
             async move { ai_client.get_ambient_agent_task(&task_id).await },
@@ -948,7 +948,7 @@ pub enum AmbientAgentViewModelEvent {
     Cancelled,
     /// The selected execution harness (Fuzz / Claude Code) changed.
     HarnessSelected,
-    /// The harness CLI (for non-oz runs) has started executing in the shared session.
+    /// The harness CLI (for non-fuzz runs) has started executing in the shared session.
     /// Fires once per run and signals the transition out of the pre-first-exchange phase
     /// for claude / gemini / other third-party harnesses.
     HarnessCommandStarted,

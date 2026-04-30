@@ -38,11 +38,11 @@ const CONTENT_MAX_WIDTH: f32 = 720.;
 
 const CREATE_ENV_SLASH_CMD: &str = "/create-environment";
 const CREATE_ENV_CLI_CMD: &str =
-    "oz environment create [OPTIONS] --name <NAME> --docker-image <DOCKER_IMAGE>";
+    "fuzz environment create [OPTIONS] --name <NAME> --docker-image <DOCKER_IMAGE>";
 const CREATE_SLACK_INTEGRATION_CMD: &str =
-    "oz integration create slack --environment {{environment_id}}";
+    "fuzz integration create slack --environment {{environment_id}}";
 const CREATE_LINEAR_INTEGRATION_CMD: &str =
-    "oz integration create linear --environment {{environment_id}}";
+    "fuzz integration create linear --environment {{environment_id}}";
 
 pub struct CloudSetupGuideView {
     create_env_code_handles: CodeSnippetButtonHandles,

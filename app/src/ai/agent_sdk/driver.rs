@@ -357,7 +357,7 @@ pub enum AgentDriverError {
     #[error("Agent profile \"{0}\" not found")]
     ProfileError(String),
     #[error(
-        "Failed to authenticate with server - please log in via 'oz login', provide an API key via '--api-key <key>', or set the YARP_API_KEY environment variable"
+        "Failed to authenticate with server - please log in via 'fuzz login', provide an API key via '--api-key <key>', or set the YARP_API_KEY environment variable"
     )]
     NotLoggedIn,
     #[error("Saved prompt not found for id {0}")]

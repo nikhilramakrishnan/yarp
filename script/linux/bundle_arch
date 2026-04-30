@@ -17,13 +17,13 @@ set -e
 
 # Extract channel suffix from BINARY_NAME
 if [ "$ARTIFACT" = "cli" ]; then
-  CHANNEL_SUFFIX="${BINARY_NAME#oz}"
+  CHANNEL_SUFFIX="${BINARY_NAME#fuzz}"
 else
   CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
 
 # On Linux, we keep the `-stable` suffix for stable to avoid package conflicts.
-# The binary name is still `oz`, and the repo name is still `warpdotdev`.
+# The binary name is still `fuzz`, and the repo name is still `warpdotdev`.
 if [ "$ARTIFACT" = "cli" -a "$RELEASE_CHANNEL" = "stable" ]; then
   CHANNEL_SUFFIX="-stable"
 fi
@@ -31,7 +31,7 @@ fi
 if [ "$ARTIFACT" = "app" ]; then
   PACKAGE_NAME="yarp-terminal$CHANNEL_SUFFIX"
 elif [ "$ARTIFACT" = "cli" ]; then
-  PACKAGE_NAME="oz$CHANNEL_SUFFIX"
+  PACKAGE_NAME="fuzz$CHANNEL_SUFFIX"
 else
   echo "::error ::Unknown ARTIFACT: $ARTIFACT (expected 'app' or 'cli')"
   exit 1

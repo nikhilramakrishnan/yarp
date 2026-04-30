@@ -5,7 +5,7 @@
 #   {download_base_url}  — e.g. https://app.warp.dev/download/cli
 #   {channel}            — stable | preview | dev
 #   {install_dir}        — e.g. ~/.yarp/remote-server
-#   {binary_name}        — e.g. oz | fuzz-dev | fuzz-preview
+#   {binary_name}        — e.g. fuzz | fuzz-dev | fuzz-preview
 set -e
 
 arch=$(uname -m)
@@ -30,10 +30,10 @@ tmpdir=$(mktemp -d "$install_dir/.install.XXXXXX")
 trap 'rm -rf "$tmpdir"' EXIT
 
 curl -fSL "{download_base_url}?package=tar&os=$os_name&arch=$arch_name&channel={channel}" \
-  -o "$tmpdir/oz.tar.gz"
-tar -xzf "$tmpdir/oz.tar.gz" -C "$tmpdir"
+  -o "$tmpdir/fuzz.tar.gz"
+tar -xzf "$tmpdir/fuzz.tar.gz" -C "$tmpdir"
 
-bin=$(find "$tmpdir" -type f -name 'oz*' ! -name '*.tar.gz' | head -n1)
+bin=$(find "$tmpdir" -type f -name 'fuzz*' ! -name '*.tar.gz' | head -n1)
 if [ -z "$bin" ]; then echo "no binary found in tarball" >&2; exit 1; fi
 chmod +x "$bin"
 mv "$bin" "$install_dir/{binary_name}"

@@ -48,7 +48,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             Some("https://docs.warp.dev/reference/api-and-sdk"),
         ),
         CloudModeTip::new(
-            "Set team or personal secrets for agents using the `oz secret` command.",
+            "Set team or personal secrets for agents using the `fuzz secret` command.",
             Some("https://docs.warp.dev/agent-platform/cloud-agents/secrets"),
         ),
         CloudModeTip::new(
@@ -116,7 +116,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             Some("https://docs.warp.dev/agent-platform/capabilities/mcp"),
         ),
         CloudModeTip::new(
-            "Use `oz agent run` to kick off tasks without opening the Yarp terminal.",
+            "Use `fuzz agent run` to kick off tasks without opening the Yarp terminal.",
             Some("https://docs.warp.dev/agent-platform/cloud-agents/platform"),
         ),
         CloudModeTip::new(
@@ -136,7 +136,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             Some("https://docs.warp.dev/agent-platform/cloud-agents/integrations/github-actions"),
         ),
         CloudModeTip::new(
-            "Use `oz environment create` to define reproducible execution contexts.",
+            "Use `fuzz environment create` to define reproducible execution contexts.",
             Some("https://docs.warp.dev/agent-platform/cloud-agents/environments"),
         ),
         CloudModeTip::new(
@@ -164,15 +164,15 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             Some("https://docs.warp.dev/agent-platform/cloud-agents/triggers/scheduled-agents"),
         ),
         CloudModeTip::new(
-            "Use `oz schedule create` to set up cron-triggered agents.",
+            "Use `fuzz schedule create` to set up cron-triggered agents.",
             Some("https://docs.warp.dev/agent-platform/cloud-agents/triggers/scheduled-agents"),
         ),
         CloudModeTip::new(
-            "Pause and resume scheduled agents without deleting them using `oz schedule pause`.",
+            "Pause and resume scheduled agents without deleting them using `fuzz schedule pause`.",
             Some("https://docs.warp.dev/agent-platform/cloud-agents/triggers/scheduled-agents"),
         ),
         CloudModeTip::new(
-            "Use `oz mcp list` to see which MCP servers are available to your agents.",
+            "Use `fuzz mcp list` to see which MCP servers are available to your agents.",
             Some("https://docs.warp.dev/agent-platform/capabilities/mcp"),
         ),
         CloudModeTip::new(

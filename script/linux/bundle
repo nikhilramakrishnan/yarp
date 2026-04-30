@@ -183,11 +183,11 @@ fi
 
 # Artifact-specific binary naming
 if [[ "$ARTIFACT" == "cli" ]]; then
-  # For CLI artifacts, use oz instead of yarp as the binary name.  The OSS
+  # For CLI artifacts, use fuzz instead of yarp as the binary name.  The OSS
   # channel is an exception: its CLI command name is `yarp-oss`, matching
   # `Channel::cli_command_name` in the Rust source.
   if [[ $RELEASE_CHANNEL != "oss" ]]; then
-    BINARY_NAME="${BINARY_NAME/yarp/oz}"
+    BINARY_NAME="${BINARY_NAME/yarp/fuzz}"
   fi
 fi
 

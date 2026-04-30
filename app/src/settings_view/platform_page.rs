@@ -355,7 +355,7 @@ impl SettingsWidget for PlatformPageWidget {
     type View = PlatformPageView;
 
     fn search_terms(&self) -> &str {
-        "oz cloud platform api keys authentication"
+        "fuzz cloud platform api keys authentication"
     }
 
     fn render(

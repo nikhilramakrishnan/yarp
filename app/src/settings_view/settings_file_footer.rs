@@ -32,7 +32,7 @@ const FOOTER_FONT_SIZE: f32 = 12.;
 const OPEN_BUTTON_HEIGHT: f32 = 32.;
 /// Height of action buttons inside the error alert.
 const ALERT_ACTION_BUTTON_HEIGHT: f32 = 24.;
-/// Size of the leading icons (search-sm, code-02, alert-circle, oz).
+/// Size of the leading icons (search-sm, code-02, alert-circle, fuzz).
 const FOOTER_ICON_SIZE: f32 = 16.;
 /// Size of the Fuzz brand mark inside the "Fix with Fuzz" button. Matches the
 /// Figma spec and the workspace banner's secondary-button icon sizing.

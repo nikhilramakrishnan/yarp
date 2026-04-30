@@ -128,7 +128,7 @@ fn cli_agent_with_worktree() {
 
 #[test]
 fn fuzz_no_worktree_same_as_terminal() {
-    let oz = build_tab_config(
+    let fuzz = build_tab_config(
         &SessionType::Fuzz,
         Path::new("/home/user/project"),
         false,
@@ -141,9 +141,9 @@ fn fuzz_no_worktree_same_as_terminal() {
         true,
     );
 
-    assert_eq!(oz.panes[0].directory, terminal.panes[0].directory);
-    assert_eq!(oz.panes[0].commands, terminal.panes[0].commands);
-    assert_eq!(oz.params.len(), terminal.params.len());
+    assert_eq!(fuzz.panes[0].directory, terminal.panes[0].directory);
+    assert_eq!(fuzz.panes[0].commands, terminal.panes[0].commands);
+    assert_eq!(fuzz.params.len(), terminal.params.len());
 }
 
 #[test]

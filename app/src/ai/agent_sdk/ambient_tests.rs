@@ -136,7 +136,7 @@ fn every_field_maps_through() {
         created_after: Some(created_after),
         created_before: Some(created_before),
         updated_after: Some(updated_after),
-        query: Some("oz run".to_string()),
+        query: Some("fuzz run".to_string()),
         sort_by: Some(RunSortByArg::CreatedAt),
         sort_order: Some(RunSortOrderArg::Asc),
         cursor: Some("abcd==".to_string()),
@@ -162,7 +162,7 @@ fn every_field_maps_through() {
     assert_eq!(filter.config_name.as_deref(), Some("nightly"));
     assert_eq!(filter.model_id.as_deref(), Some("claude-4-5"));
     assert_eq!(filter.artifact_type, Some(ArtifactType::PullRequest));
-    assert_eq!(filter.search_query.as_deref(), Some("oz run"));
+    assert_eq!(filter.search_query.as_deref(), Some("fuzz run"));
     assert_eq!(filter.sort_by, Some(RunSortBy::CreatedAt));
     assert_eq!(filter.sort_order, Some(RunSortOrder::Asc));
     assert_eq!(filter.cursor.as_deref(), Some("abcd=="));

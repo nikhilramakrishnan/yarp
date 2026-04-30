@@ -123,7 +123,7 @@ impl HiddenComputerUseArgs {
 pub enum Harness {
     /// Use Yarp's built-in MAA infrastructure (default).
     #[default]
-    #[value(name = "oz")]
+    #[value(name = "fuzz")]
     Fuzz,
     /// Delegate to the `claude` CLI.
     #[value(name = "claude", alias = "claude-code")]
@@ -169,7 +169,7 @@ impl Harness {
 impl fmt::Display for Harness {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let name = match self {
-            Harness::Fuzz => "oz",
+            Harness::Fuzz => "fuzz",
             Harness::Claude => "claude",
             Harness::OpenCode => "opencode",
             Harness::Gemini => "gemini",
@@ -230,7 +230,7 @@ pub struct RunAgentArgs {
     ///
     /// When used with --prompt, the skill provides the base context and the prompt is the task.
     ///
-    /// To automate a skill on a schedule, use `oz schedule create --skill <SPEC>`.
+    /// To automate a skill on a schedule, use `fuzz schedule create --skill <SPEC>`.
     #[arg(long = "skill", value_name = "SPEC")]
     pub skill: Option<SkillSpec>,
 
@@ -301,7 +301,7 @@ pub struct RunAgentArgs {
 
     /// Execution harness for the agent run.
     ///
-    /// "oz" (default) uses Yarp's built-in agent infrastructure.
+    /// "fuzz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,
@@ -363,7 +363,7 @@ pub struct RunCloudArgs {
     ///
     /// When used with --prompt, the skill provides the base context and the prompt is the task.
     ///
-    /// To automate a skill on a schedule, use `oz schedule create --skill <SPEC>`.
+    /// To automate a skill on a schedule, use `fuzz schedule create --skill <SPEC>`.
     #[arg(long = "skill", value_name = "SPEC")]
     pub skill: Option<SkillSpec>,
 
@@ -422,7 +422,7 @@ pub struct RunCloudArgs {
 
     /// Execution harness for the agent run.
     ///
-    /// "oz" (default) uses Yarp's built-in agent infrastructure.
+    /// "fuzz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,

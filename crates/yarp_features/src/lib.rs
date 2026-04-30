@@ -660,7 +660,7 @@ pub enum FeatureFlag {
     /// Enables Fuzz identity federation commands.
     OzIdentityFederation,
 
-    /// Gates populating/reading oz updates from channel versions in the changelog model.
+    /// Gates populating/reading fuzz updates from channel versions in the changelog model.
     OzChangelogUpdates,
 
     /// Enables image upload for ambient agents.
@@ -756,7 +756,7 @@ pub enum FeatureFlag {
     /// from code review + code editor for House Of Agents work
     HoaCodeReview,
 
-    /// Enables the `--harness` flag for `oz agent run`, allowing external agent
+    /// Enables the `--harness` flag for `fuzz agent run`, allowing external agent
     /// CLIs (e.g. `claude`) to execute prompts instead of Yarp's agent harness.
     AgentHarness,
 
@@ -805,7 +805,7 @@ pub enum FeatureFlag {
     /// Replaces the in-block yarpification banner with a yarpify footer.
     YarpifyFooter,
 
-    /// Enables conversation retrieval via the CLI (oz run conversation get, oz run get --conversation).
+    /// Enables conversation retrieval via the CLI (fuzz run conversation get, fuzz run get --conversation).
     ConversationApi,
 
     /// Guided onboarding flow for existing users introducing HOA features

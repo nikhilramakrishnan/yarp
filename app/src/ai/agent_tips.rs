@@ -262,7 +262,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "Use the `oz` command to run an Fuzz agent in headless mode, useful for remote machines.".to_string(),
+            description: "Use the `fuzz` command to run an Fuzz agent in headless mode, useful for remote machines.".to_string(),
             link: Some("https://docs.warp.dev/reference/cli".to_string()),
             binding_name: None,
             action: None,

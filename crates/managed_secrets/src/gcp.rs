@@ -214,7 +214,7 @@ pub(crate) fn gcp_workload_identity_federation_audience(
 /// `$HOME/.config/gcloud/application_default_credentials.json` so that any GCP
 /// SDK picks it up automatically.
 ///
-/// `fuzz_binary_path` should be the absolute path to the current `oz` executable.
+/// `fuzz_binary_path` should be the absolute path to the current `fuzz` executable.
 fn generate_gcp_credential_config(
     task_id: &str,
     config: &GcpFederationConfig,

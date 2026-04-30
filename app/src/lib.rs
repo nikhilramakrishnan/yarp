@@ -313,7 +313,7 @@ use yarpui::{AppContext, SingletonEntity, WindowId};
 #[include = "async/**"] // Should be kept in sync with ASYNC_ASSETS_DIR.
 #[cfg_attr(target_family = "wasm", exclude = "async/**")]
 // Excludes take precedence.
-// Standalone CLI builds (the `oz` tarball) are headless and never render the
+// Standalone CLI builds (the `fuzz` tarball) are headless and never render the
 // onboarding/theme imagery in `async/`, so we exclude those bytes from the
 // embedded asset set to keep the CLI binary small — mirroring the carve-out
 // already applied for the WASM target above.
@@ -636,10 +636,10 @@ pub fn run() -> Result<()> {
         }
     }
 
-    // If running as a standalone CLI binary or invoked as "oz", print help
+    // If running as a standalone CLI binary or invoked as "fuzz", print help
     // instead of launching the GUI app.
     let is_cli_binary = cfg!(feature = "standalone")
-        || yarp_cli::binary_name().is_some_and(|name| name.starts_with("oz"))
+        || yarp_cli::binary_name().is_some_and(|name| name.starts_with("fuzz"))
         || std::env::var_os("YARP_CLI_MODE").is_some();
     if is_cli_binary {
         yarp_cli::Args::clap_command().print_help()?;

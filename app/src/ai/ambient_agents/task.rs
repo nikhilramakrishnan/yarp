@@ -56,7 +56,7 @@ pub struct AgentConfigSnapshot {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub computer_use_enabled: Option<bool>,
     /// Execution harness for the agent run.
-    /// If None, we use Yarp's default ("oz").
+    /// If None, we use Yarp's default ("fuzz").
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub harness: Option<HarnessConfig>,
     /// Authentication secrets for third-party harnesses.
@@ -92,7 +92,7 @@ pub(crate) fn harness_from_name(name: &str) -> Harness {
         "claude" => Harness::Claude,
         "opencode" => Harness::OpenCode,
         "gemini" => Harness::Gemini,
-        "oz" => Harness::Fuzz,
+        "fuzz" => Harness::Fuzz,
         other => {
             log::warn!("Unknown harness config name: {other:?}; treating as Unknown");
             Harness::Unknown

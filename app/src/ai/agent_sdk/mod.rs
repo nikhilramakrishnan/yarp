@@ -1385,7 +1385,7 @@ fn resolve_orchestration_harness_label() -> &'static str {
         return "unknown";
     };
     match Harness::parse_orchestration_harness(&raw) {
-        Some(Harness::Fuzz) => "oz",
+        Some(Harness::Fuzz) => "fuzz",
         Some(Harness::Claude) => "claude",
         Some(Harness::OpenCode) => "opencode",
         Some(Harness::Gemini) => "gemini",

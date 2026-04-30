@@ -82,7 +82,7 @@ pub struct GlobalOptions {
 /// Command-line argument parser for the main Yarp binary. This is used across all channels.
 #[derive(Debug, Default, Parser, Clone)]
 #[command(
-    name = "oz",
+    name = "fuzz",
     display_name = "Fuzz",
     about = r#"The orchestration platform for cloud agents
 

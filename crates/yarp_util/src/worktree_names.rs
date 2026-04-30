@@ -173,7 +173,7 @@ const WORDS: &[&str] = &[
     "mirador",
     "nicho",
     "olla",
-    "oz",
+    "fuzz",
     "petroglyph",
     "pictograph",
     "portal",

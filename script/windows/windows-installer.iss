@@ -230,7 +230,7 @@ begin
     { Determine the channel-specific script name.  These values must match
       `Channel::cli_command_name` in the Rust source. }
 #if ReleaseChannel == "stable"
-    CmdScriptName := 'oz.cmd'
+    CmdScriptName := 'fuzz.cmd'
 #elif ReleaseChannel == "oss"
     CmdScriptName := 'yarp-oss.cmd';
 #else

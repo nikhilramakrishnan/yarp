@@ -18,7 +18,7 @@ use crate::terminal::view::PADDING_LEFT;
 
 use super::AmbientAgentViewModel;
 
-/// Wraps a cloud-mode setup row with spacing appropriate for the run's harness: non-oz
+/// Wraps a cloud-mode setup row with spacing appropriate for the run's harness: non-fuzz
 /// runs use terminal `PADDING_LEFT` so the row lines up with the harness CLI's command
 /// block once it takes over; Fuzz runs use the standard agent-output indent.
 pub(super) fn cloud_mode_setup_row_spacing(

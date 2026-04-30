@@ -139,7 +139,7 @@ pub fn remote_server_dir() -> String {
 
 /// Returns the binary name, keyed by channel.
 ///
-/// Matches the CLI command names: `oz` (stable), `fuzz-preview`, `fuzz-dev`.
+/// Matches the CLI command names: `fuzz` (stable), `fuzz-preview`, `fuzz-dev`.
 pub fn binary_name() -> &'static str {
     ChannelState::channel().cli_command_name()
 }

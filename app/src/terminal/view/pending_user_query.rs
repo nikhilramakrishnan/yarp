@@ -73,7 +73,7 @@ impl TerminalView {
         self.pending_user_query_view_id = Some(view_id);
     }
 
-    /// Inserts a pending user query block for a non-oz Cloud Mode run whose harness CLI
+    /// Inserts a pending user query block for a non-fuzz Cloud Mode run whose harness CLI
     /// has not yet started.
     /// The block shows the user's prompt with a "Queued" badge and no buttons: the
     /// queued state is owned by the run's lifecycle (harness start, failure, cancel,
