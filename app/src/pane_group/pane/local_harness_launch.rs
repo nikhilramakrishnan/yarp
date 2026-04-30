@@ -59,7 +59,7 @@ pub(super) fn build_local_opencode_child_command(prompt: &str) -> String {
 
 fn local_child_task_config(harness: Harness) -> Option<AgentConfigSnapshot> {
     match harness {
-        Harness::Oz | Harness::OpenCode | Harness::Gemini | Harness::Unknown => None,
+        Harness::Fuzz | Harness::OpenCode | Harness::Gemini | Harness::Unknown => None,
         Harness::Claude => Some(AgentConfigSnapshot {
             harness: Some(HarnessConfig::from_harness_type(harness)),
             ..Default::default()
@@ -85,7 +85,7 @@ pub(super) async fn prepare_local_harness_child_launch(
     };
     validate_local_harness_shell(shell_type)?;
     let command = match harness {
-        Harness::Oz => unreachable!("normalize_local_child_harness filters out Oz"),
+        Harness::Fuzz => unreachable!("normalize_local_child_harness filters out Fuzz"),
         Harness::Unknown => unreachable!("normalize_local_child_harness filters out Unknown"),
         Harness::Claude => {
             let working_dir = startup_directory

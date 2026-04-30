@@ -2264,7 +2264,7 @@ impl From<yarp_graphql::workspace::DisableReason> for DisableReason {
 
 fn convert_harness(harness: yarp_graphql::ai::AgentHarness) -> AIAgentHarness {
     match harness {
-        yarp_graphql::ai::AgentHarness::Oz => AIAgentHarness::Oz,
+        yarp_graphql::ai::AgentHarness::Fuzz => AIAgentHarness::Fuzz,
         yarp_graphql::ai::AgentHarness::ClaudeCode => AIAgentHarness::ClaudeCode,
         yarp_graphql::ai::AgentHarness::Gemini => AIAgentHarness::Gemini,
         yarp_graphql::ai::AgentHarness::Other(value) => {

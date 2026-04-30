@@ -114,20 +114,20 @@ const AUTO_RESUME_TIMEOUT: Duration = Duration::from_secs(120);
 /// When this variable is absent, the Claude plugin falls back to its legacy
 /// self-managed listener path so older Yarp builds and standalone plugin
 /// invocations keep working.
-pub(crate) const OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV: &str =
-    "OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY";
+pub(crate) const FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV: &str =
+    "FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY";
 /// Optional root directory for the per-session Claude message-listener state
 /// that Yarp and the Claude hook scripts share.
-pub(crate) const OZ_MESSAGE_LISTENER_STATE_ROOT_ENV: &str = "OZ_MESSAGE_LISTENER_STATE_ROOT";
-// Keep exporting the legacy `OZ_PARENT_*` names to child hooks until the
+pub(crate) const FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV: &str = "FUZZ_MESSAGE_LISTENER_STATE_ROOT";
+// Keep exporting the legacy `FUZZ_PARENT_*` names to child hooks until the
 // external Claude plugin has fully migrated to the canonical
-// `OZ_MESSAGE_LISTENER_*` names.
+// `FUZZ_MESSAGE_LISTENER_*` names.
 const LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV: &str =
-    "OZ_PARENT_LISTENER_MANAGED_EXTERNALLY";
-const LEGACY_OZ_PARENT_STATE_ROOT_ENV: &str = "OZ_PARENT_STATE_ROOT";
+    "FUZZ_PARENT_LISTENER_MANAGED_EXTERNALLY";
+const LEGACY_OZ_PARENT_STATE_ROOT_ENV: &str = "FUZZ_PARENT_STATE_ROOT";
 
 /// IdleTimeoutSender is wrapper around a sender that signals when a run is done after
-/// an idle timeout. Used for both Oz runs and third-party harnesses.
+/// an idle timeout. Used for both Fuzz runs and third-party harnesses.
 ///
 /// We use a generation-based approach to cancel timers instead of storing timer handles:
 ///
@@ -198,11 +198,11 @@ impl<T: Send + 'static> IdleTimeoutSender<T> {
 
 /// How to resume an existing conversation when starting an agent run.
 ///
-/// The Oz harness restores the full conversation transcript into the terminal pane and treats
+/// The Fuzz harness restores the full conversation transcript into the terminal pane and treats
 /// any new prompt as a follow-up; third-party harnesses round-trip a harness-specific payload
 /// (see [`ResumePayload`]) instead.
 pub enum ResumeOptions {
-    Oz(Box<ConversationRestorationInNewPaneType>),
+    Fuzz(Box<ConversationRestorationInNewPaneType>),
     ThirdParty(Box<ResumePayload>),
 }
 
@@ -221,7 +221,7 @@ pub struct AgentDriverOptions {
     /// How long to keep the session alive after the agent run completes, if at all.
     pub idle_on_complete: Option<Duration>,
     /// If set, resume an existing conversation instead of starting fresh. The variant
-    /// determines which harness-specific path is taken (Oz transcript restore vs.
+    /// determines which harness-specific path is taken (Fuzz transcript restore vs.
     /// third-party-harness payload rehydration).
     pub resume: Option<ResumeOptions>,
     /// Cloud providers to configure within the agent's session.
@@ -258,7 +258,7 @@ pub struct AgentDriver {
     /// Harness adapter for the running agent. This is only set if:
     /// - The harness has started successfully.
     /// - We're using a third-party harness.
-    /// In the future, we _may_ use the harness abstraction for the Oz agent as well.
+    /// In the future, we _may_ use the harness abstraction for the Fuzz agent as well.
     harness: Option<Arc<dyn HarnessRunner>>,
 
     // Optional idle timeout after completion. If set, the process will stay alive for follow-ups
@@ -479,10 +479,10 @@ impl AgentDriver {
         } = options;
 
         // Split the unified resume option into the two internal slots that the rest of
-        // the driver consumes: terminal-driven Oz transcript restoration vs. third-party
+        // the driver consumes: terminal-driven Fuzz transcript restoration vs. third-party
         // harness payload rehydration.
         let (conversation_restoration, resume_payload) = match resume {
-            Some(ResumeOptions::Oz(restoration)) => (Some(*restoration), None),
+            Some(ResumeOptions::Fuzz(restoration)) => (Some(*restoration), None),
             Some(ResumeOptions::ThirdParty(payload)) => (None, Some(*payload)),
             None => (None, None),
         };
@@ -1208,8 +1208,8 @@ impl AgentDriver {
         // MCP servers *may* rely on cloud provider credentials.
         Self::setup_cloud_providers(&foreground).await?;
 
-        // For the Oz harness only: set up MCP servers, model overrides, and profile information.
-        if matches!(task.harness, HarnessKind::Oz) {
+        // For the Fuzz harness only: set up MCP servers, model overrides, and profile information.
+        if matches!(task.harness, HarnessKind::Fuzz) {
             // Resolve MCP specs into existing server UUIDs and ephemeral installations.
             let mcp_specs = task.mcp_specs.clone();
             let (existing_uuids, ephemeral_installations) = foreground
@@ -1274,10 +1274,10 @@ impl AgentDriver {
             // Subscribe to file-based MCP discovery BEFORE prepare_environment triggers the
             // pipeline so no CloudEnvMcpScanComplete events are missed.
             //
-            // File-based MCP discovery is Oz-only.
+            // File-based MCP discovery is Fuzz-only.
             // TODO(REMOTE-1345): handle MCP setup for third-party harnesses.
             let file_based_discovery_rx = match &task.harness {
-                HarnessKind::Oz => {
+                HarnessKind::Fuzz => {
                     let github_repos = environment_github_repos.clone();
                     Some(
                         foreground
@@ -1348,9 +1348,9 @@ impl AgentDriver {
                 }
             }
 
-            // Skill loading is Oz-only; third-party harnesses have their own skill systems.
+            // Skill loading is Fuzz-only; third-party harnesses have their own skill systems.
             match &task.harness {
-                HarnessKind::Oz => {
+                HarnessKind::Fuzz => {
                     // Load skills from environment repos synchronously so the initial
                     // message includes them. File trees are ready after prepare_environment.
                     let github_repos = environment_github_repos.clone();
@@ -1386,7 +1386,7 @@ impl AgentDriver {
 
         // Run the harness with a prompt
         match task.harness {
-            HarnessKind::Oz => {
+            HarnessKind::Fuzz => {
                 let conversation_status = foreground
                     .spawn(move |me, ctx| me.execute_run(task.prompt, ctx))
                     .await?

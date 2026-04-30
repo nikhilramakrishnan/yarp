@@ -34,7 +34,7 @@ fn create_conversation_metadata(
     ServerAIConversationMetadata {
         title: "Artifact upload".to_string(),
         working_directory: None,
-        harness: AIAgentHarness::Oz,
+        harness: AIAgentHarness::Fuzz,
         usage: ConversationUsageMetadata {
             was_summarized: false,
             context_window_usage: 0.0,
@@ -238,7 +238,7 @@ fn missing_args_and_missing_env_return_clear_error() {
     assert!(err
         .to_string()
         .contains("no usable --run-id or --conversation-id was provided"));
-    assert!(err.to_string().contains("OZ_RUN_ID"));
+    assert!(err.to_string().contains("FUZZ_RUN_ID"));
 }
 
 #[test]
@@ -247,19 +247,19 @@ fn invalid_env_run_id_returns_clear_error() {
         resolve_upload_association_from_sources(None, None, None, Some("not-a-run-id".to_string()))
             .unwrap_err();
 
-    assert!(err.to_string().contains("Invalid OZ_RUN_ID 'not-a-run-id'"));
+    assert!(err.to_string().contains("Invalid FUZZ_RUN_ID 'not-a-run-id'"));
 }
 
 #[test]
 fn load_env_run_id_reads_variable() {
-    let previous = env::var_os(OZ_RUN_ID_ENV_VAR);
-    env::set_var(OZ_RUN_ID_ENV_VAR, "550e8400-e29b-41d4-a716-446655440000");
+    let previous = env::var_os(FUZZ_RUN_ID_ENV_VAR);
+    env::set_var(FUZZ_RUN_ID_ENV_VAR, "550e8400-e29b-41d4-a716-446655440000");
 
     let loaded = load_env_run_id().unwrap();
 
     match previous {
-        Some(value) => env::set_var(OZ_RUN_ID_ENV_VAR, value),
-        None => env::remove_var(OZ_RUN_ID_ENV_VAR),
+        Some(value) => env::set_var(FUZZ_RUN_ID_ENV_VAR, value),
+        None => env::remove_var(FUZZ_RUN_ID_ENV_VAR),
     }
 
     assert_eq!(

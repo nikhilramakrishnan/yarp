@@ -415,7 +415,7 @@ fn render_agent_avatar(
 ) -> Box<dyn Element> {
     let status = notification_category_to_conversation_status(category);
     let variant = match agent {
-        NotificationSourceAgent::Oz => IconWithStatusVariant::OzAgent {
+        NotificationSourceAgent::Fuzz => IconWithStatusVariant::OzAgent {
             status: Some(status),
             is_ambient: false,
         },

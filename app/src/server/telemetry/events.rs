@@ -514,8 +514,8 @@ pub enum PluginChipTelemetryKind {
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum NotificationAgentVariant {
-    /// Yarp's built-in agent (Oz).
-    Oz,
+    /// Yarp's built-in agent (Fuzz).
+    Fuzz,
     /// A CLI agent (e.g., Claude Code, Gemini CLI, etc.).
     CLIAgent(CLIAgentType),
 }
@@ -523,7 +523,7 @@ pub enum NotificationAgentVariant {
 impl From<NotificationSourceAgent> for NotificationAgentVariant {
     fn from(agent: NotificationSourceAgent) -> Self {
         match agent {
-            NotificationSourceAgent::Oz => Self::Oz,
+            NotificationSourceAgent::Fuzz => Self::Fuzz,
             NotificationSourceAgent::CLI(cli_agent) => Self::CLIAgent(cli_agent.into()),
         }
     }

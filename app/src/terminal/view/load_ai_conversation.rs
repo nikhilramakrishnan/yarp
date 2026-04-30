@@ -211,7 +211,7 @@ impl TerminalView {
         cloud_conversation: &CloudConversationData,
     ) -> RestorationDirState {
         let target_dir = match cloud_conversation {
-            CloudConversationData::Oz(conversation) => {
+            CloudConversationData::Fuzz(conversation) => {
                 conversation.initial_working_directory().or_else(|| {
                     conversation
                         .server_metadata()
@@ -257,7 +257,7 @@ impl TerminalView {
                 me.maybe_show_restore_context_hint(restore_dir_state, ctx);
 
                 match cloud_conversation {
-                    CloudConversationData::Oz(conversation) => {
+                    CloudConversationData::Fuzz(conversation) => {
                         me.restore_conversation_after_view_creation(
                             RestoredAIConversation::new(*conversation),
                             use_live_appearance,

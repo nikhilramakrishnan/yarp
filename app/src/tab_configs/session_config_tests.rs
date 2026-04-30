@@ -18,8 +18,8 @@ fn terminal_command_prefix_is_none() {
 }
 
 #[test]
-fn oz_command_prefix_is_none() {
-    assert_eq!(SessionType::Oz.command_prefix(), None);
+fn fuzz_command_prefix_is_none() {
+    assert_eq!(SessionType::Fuzz.command_prefix(), None);
 }
 
 #[test]
@@ -127,9 +127,9 @@ fn cli_agent_with_worktree() {
 }
 
 #[test]
-fn oz_no_worktree_same_as_terminal() {
+fn fuzz_no_worktree_same_as_terminal() {
     let oz = build_tab_config(
-        &SessionType::Oz,
+        &SessionType::Fuzz,
         Path::new("/home/user/project"),
         false,
         true,
@@ -147,8 +147,8 @@ fn oz_no_worktree_same_as_terminal() {
 }
 
 #[test]
-fn oz_with_worktree_has_worktree_commands_but_no_agent_command() {
-    let config = build_tab_config(&SessionType::Oz, Path::new("/home/user/repo"), true, false);
+fn fuzz_with_worktree_has_worktree_commands_but_no_agent_command() {
+    let config = build_tab_config(&SessionType::Fuzz, Path::new("/home/user/repo"), true, false);
     let expected_worktree_path =
         generated_worktree_path_string("/home/user/repo", "{{worktree_branch_name}}");
 

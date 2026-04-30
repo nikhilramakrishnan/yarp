@@ -109,7 +109,7 @@ pub struct AmbientAgentViewModel {
     conversation_id: Option<AIConversationId>,
 
     /// Selected execution harness for the cloud agent run.
-    /// Defaults to `Harness::Oz`. Used to populate `AgentConfigSnapshot.harness` on spawn.
+    /// Defaults to `Harness::Fuzz`. Used to populate `AgentConfigSnapshot.harness` on spawn.
     harness: Harness,
     /// Whether the optimistic InitialUserQuery block has been inserted for the current run.
     has_inserted_cloud_mode_user_query_block: bool,
@@ -253,10 +253,10 @@ impl AmbientAgentViewModel {
         ctx.emit(AmbientAgentViewModelEvent::HarnessSelected);
     }
 
-    /// True when the run is configured to use a non-Oz execution harness and the
+    /// True when the run is configured to use a non-Fuzz execution harness and the
     /// required feature flags are enabled.
     pub(super) fn is_third_party_harness(&self) -> bool {
-        FeatureFlag::AgentHarness.is_enabled() && self.harness != Harness::Oz
+        FeatureFlag::AgentHarness.is_enabled() && self.harness != Harness::Fuzz
     }
 
     /// Whether the harness CLI has started running. Only meaningful for non-oz runs.
@@ -268,7 +268,7 @@ impl AmbientAgentViewModel {
     /// Idempotent: subsequent calls after the first are no-ops and do not re-emit.
     pub(super) fn mark_harness_command_started(&mut self, ctx: &mut ModelContext<Self>) {
         debug_assert!(
-            self.harness != Harness::Oz,
+            self.harness != Harness::Fuzz,
             "harness_command_started is only meaningful for non-oz runs"
         );
         if self.harness_command_started {
@@ -439,7 +439,7 @@ impl AmbientAgentViewModel {
                     let harness = snapshot
                         .and_then(|s| s.harness.as_ref())
                         .map(|h| h.harness_type)
-                        .unwrap_or(Harness::Oz);
+                        .unwrap_or(Harness::Fuzz);
 
                     me.set_environment_id(environment_id, ctx);
                     me.set_harness(harness, ctx);
@@ -495,7 +495,7 @@ impl AmbientAgentViewModel {
             .filter(|s| !s.is_empty());
 
         let harness_override =
-            (self.harness != Harness::Oz).then(|| HarnessConfig::from_harness_type(self.harness));
+            (self.harness != Harness::Fuzz).then(|| HarnessConfig::from_harness_type(self.harness));
 
         let config = Some(AgentConfigSnapshot {
             environment_id: self.environment_id.as_ref().map(|id| id.to_string()),
@@ -946,7 +946,7 @@ pub enum AmbientAgentViewModelEvent {
     NeedsGithubAuth,
     /// The ambient agent was cancelled.
     Cancelled,
-    /// The selected execution harness (Oz / Claude Code) changed.
+    /// The selected execution harness (Fuzz / Claude Code) changed.
     HarnessSelected,
     /// The harness CLI (for non-oz runs) has started executing in the shared session.
     /// Fires once per run and signals the transition out of the pre-first-exchange phase

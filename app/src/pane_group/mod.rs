@@ -3734,7 +3734,7 @@ impl PaneGroup {
             .map(|session| session.terminal_manager(ctx));
 
         let ambient_agent_task_id = match &cloud_conversation {
-            CloudConversationData::Oz(conversation) => conversation
+            CloudConversationData::Fuzz(conversation) => conversation
                 .server_metadata()
                 .and_then(|metadata| metadata.ambient_agent_task_id),
             CloudConversationData::CLIAgent(cli_conversation) => {
@@ -3762,7 +3762,7 @@ impl PaneGroup {
         }
 
         match cloud_conversation {
-            CloudConversationData::Oz(conversation) => {
+            CloudConversationData::Fuzz(conversation) => {
                 terminal_view.update(ctx, |view, ctx| {
                     view.restore_conversation_after_view_creation(
                         RestoredAIConversation::new(*conversation),
@@ -3779,7 +3779,7 @@ impl PaneGroup {
                 let harness = match cli_conversation.metadata.harness {
                     AIAgentHarness::ClaudeCode => Some(Harness::Claude),
                     AIAgentHarness::Gemini => Some(Harness::Gemini),
-                    AIAgentHarness::Oz => None,
+                    AIAgentHarness::Fuzz => None,
                     AIAgentHarness::Unknown => Some(Harness::Unknown),
                 };
                 terminal_view.update(ctx, |view, ctx| {
@@ -5692,7 +5692,7 @@ impl PaneGroup {
         ctx: &mut ViewContext<Self>,
     ) -> bool {
         let restoration = match cloud_conversation {
-            CloudConversationData::Oz(conversation) => {
+            CloudConversationData::Fuzz(conversation) => {
                 ConversationRestorationInNewPaneType::Historical {
                     conversation: *conversation,
                     should_use_live_appearance: true,

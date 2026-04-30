@@ -73,7 +73,7 @@ pub(crate) use driver::harness::{
 pub use driver::AgentDriver;
 use telemetry::CliTelemetryEvent;
 use yarp_cli::agent::{Harness, Prompt, RunAgentArgs};
-use yarp_cli::OZ_HARNESS_ENV;
+use yarp_cli::FUZZ_HARNESS_ENV;
 
 mod admin;
 mod agent_config;
@@ -253,7 +253,7 @@ fn run_agent(
             if args.skill.is_some() && !FeatureFlag::OzPlatformSkills.is_enabled() {
                 return Err(anyhow::anyhow!("unexpected argument '--skill' found"));
             }
-            if args.harness != Harness::Oz && !FeatureFlag::AgentHarness.is_enabled() {
+            if args.harness != Harness::Fuzz && !FeatureFlag::AgentHarness.is_enabled() {
                 return Err(anyhow::anyhow!("unexpected argument '--harness' found"));
             }
             if args.harness == Harness::OpenCode {
@@ -297,7 +297,7 @@ fn run_agent(
                     "unexpected argument '--conversation' found"
                 ));
             }
-            if args.harness != Harness::Oz && !FeatureFlag::AgentHarness.is_enabled() {
+            if args.harness != Harness::Fuzz && !FeatureFlag::AgentHarness.is_enabled() {
                 return Err(anyhow::anyhow!("unexpected argument '--harness' found"));
             }
             if args.claude_auth_secret.is_some() && args.harness != Harness::Claude {
@@ -343,7 +343,7 @@ fn build_merged_config_and_task(
         None => (None, None),
     };
 
-    let harness_override = (args.harness != Harness::Oz).then_some(HarnessConfig {
+    let harness_override = (args.harness != Harness::Fuzz).then_some(HarnessConfig {
         harness_type: args.harness,
     });
 
@@ -427,7 +427,7 @@ fn build_server_side_task(
         .map(|model_id| common::validate_agent_mode_base_model_id(model_id, ctx))
         .transpose()?;
 
-    let harness_override = (args.harness != Harness::Oz).then_some(HarnessConfig {
+    let harness_override = (args.harness != Harness::Fuzz).then_some(HarnessConfig {
         harness_type: args.harness,
     });
 
@@ -640,7 +640,7 @@ impl AgentDriverRunner {
                         ),
                     });
                 }
-                HarnessKind::Oz | HarnessKind::ThirdParty(_) => {}
+                HarnessKind::Fuzz | HarnessKind::ThirdParty(_) => {}
             }
 
             // Validate that the third-party harness is installed and authed.
@@ -1030,13 +1030,13 @@ impl AgentDriverRunner {
         };
         let (parent_run_id, task_conversation_id, task_harness) = match task_metadata_result {
             Ok(Some(task_metadata)) => {
-                // The task's harness is stored on the snapshot; if absent, it's the default Oz.
+                // The task's harness is stored on the snapshot; if absent, it's the default Fuzz.
                 let task_harness = task_metadata
                     .agent_config_snapshot
                     .as_ref()
                     .and_then(|c| c.harness.as_ref())
                     .map(|h| h.harness_type)
-                    .unwrap_or(Harness::Oz);
+                    .unwrap_or(Harness::Fuzz);
                 (
                     task_metadata.parent_run_id,
                     task_metadata.conversation_id,
@@ -1097,7 +1097,7 @@ impl AgentDriverRunner {
     /// `harness` is the resolved harness from the task config (already validated against the
     /// conversation's metadata up-front by [`common::fetch_and_validate_conversation_harness`]).
     ///
-    /// For the Oz harness, fetches the full conversation and returns a [`driver::ResumeOptions::Oz`].
+    /// For the Fuzz harness, fetches the full conversation and returns a [`driver::ResumeOptions::Fuzz`].
     /// For third-party harnesses, delegates to [`ThirdPartyHarness::fetch_resume_payload`] and
     /// wraps the returned payload (if any) in [`driver::ResumeOptions::ThirdParty`]; each harness
     /// owns its server call and error mapping. Returns `None` if a third-party harness has no
@@ -1108,7 +1108,7 @@ impl AgentDriverRunner {
         harness: &HarnessKind,
     ) -> Result<Option<driver::ResumeOptions>, AgentDriverError> {
         match harness {
-            HarnessKind::Oz => {
+            HarnessKind::Fuzz => {
                 let server_api = foreground
                     .spawn(|_, ctx| {
                         ServerApiProvider::handle(ctx)
@@ -1134,7 +1134,7 @@ impl AgentDriverRunner {
                     )
                 })?;
 
-                Ok(Some(driver::ResumeOptions::Oz(Box::new(
+                Ok(Some(driver::ResumeOptions::Fuzz(Box::new(
                     ConversationRestorationInNewPaneType::Historical {
                         conversation,
                         should_use_live_appearance: false,
@@ -1381,11 +1381,11 @@ fn report_fatal_error(err: anyhow::Error, ctx: &mut AppContext) {
 }
 
 fn resolve_orchestration_harness_label() -> &'static str {
-    let Ok(raw) = std::env::var(OZ_HARNESS_ENV) else {
+    let Ok(raw) = std::env::var(FUZZ_HARNESS_ENV) else {
         return "unknown";
     };
     match Harness::parse_orchestration_harness(&raw) {
-        Some(Harness::Oz) => "oz",
+        Some(Harness::Fuzz) => "oz",
         Some(Harness::Claude) => "claude",
         Some(Harness::OpenCode) => "opencode",
         Some(Harness::Gemini) => "gemini",

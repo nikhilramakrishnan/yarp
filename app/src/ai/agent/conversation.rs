@@ -3513,7 +3513,7 @@ impl TryFrom<String> for AIConversationId {
 /// The harness that produced an agent conversation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AIAgentHarness {
-    Oz,
+    Fuzz,
     ClaudeCode,
     Gemini,
     Unknown,

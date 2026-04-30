@@ -798,7 +798,7 @@ impl TerminalView {
                 if is_ambient_agent {
                     YarpIcon::OzCloud
                 } else {
-                    YarpIcon::Oz
+                    YarpIcon::Fuzz
                 }
                 .to_yarpui_icon(blended_colors::text_sub(theme, theme.background()).into())
                 .finish(),
@@ -980,7 +980,7 @@ impl TerminalView {
         let long_running = self.is_long_running();
 
         let Some(conversation) = self.selected_conversation_for_user_facing_chrome(ctx) else {
-            // Ambient agent tabs can show Oz chrome without a filtered "chrome" conversation;
+            // Ambient agent tabs can show Fuzz chrome without a filtered "chrome" conversation;
             // still surface busy while a long-running shell command is active.
             if long_running && self.is_ambient_agent_session(ctx) {
                 return Some(ConversationStatus::InProgress);

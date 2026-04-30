@@ -148,7 +148,7 @@ impl FirstTimeCloudAgentSetupView {
         // Title - 20px medium weight
         column.add_child(
             Text::new(
-                "Start a new Oz cloud agent",
+                "Start a new Fuzz cloud agent",
                 appearance.ui_font_family(),
                 20.,
             )
@@ -160,7 +160,7 @@ impl FirstTimeCloudAgentSetupView {
         // Description with "Visit docs" link
         let description_fragments = vec![
             FormattedTextFragment::plain_text(
-                "Use Oz cloud agents to run parallel agents, build agents that run autonomously, and check in on your agents from anywhere. ",
+                "Use Fuzz cloud agents to run parallel agents, build agents that run autonomously, and check in on your agents from anywhere. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Visit docs",
@@ -225,10 +225,10 @@ impl FirstTimeCloudAgentSetupView {
 
         // Banner text - dynamic based on credits
         let credits_text = if credits == 1 {
-            "You have 1 free credit to use on Oz cloud agents.".to_string()
+            "You have 1 free credit to use on Fuzz cloud agents.".to_string()
         } else {
             format!(
-                "You have {} free credits to use on Oz cloud agents.",
+                "You have {} free credits to use on Fuzz cloud agents.",
                 credits
             )
         };

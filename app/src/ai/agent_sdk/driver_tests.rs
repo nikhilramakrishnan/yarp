@@ -3,15 +3,15 @@ use std::{ffi::OsString, sync::Arc, time::Duration};
 use futures::channel::oneshot;
 use yarp_cli::agent::Harness;
 use yarp_cli::{
-    OZ_CLI_ENV, OZ_HARNESS_ENV, OZ_PARENT_RUN_ID_ENV, OZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
+    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
     SESSION_SHARING_SERVER_URL_OVERRIDE_ENV, WS_SERVER_URL_OVERRIDE_ENV,
 };
 use yarp_core::channel::ChannelState;
 
 use super::{
     IdleTimeoutSender, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
-    LEGACY_OZ_PARENT_STATE_ROOT_ENV, OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
-    OZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+    LEGACY_OZ_PARENT_STATE_ROOT_ENV, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
+    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
 };
 use crate::ai::agent::{
     task::TaskId, AIAgentActionResult, AIAgentActionResultType, AIAgentInput, AIAgentOutput,
@@ -184,19 +184,19 @@ fn task_env_vars_include_parent_run_id_when_present() {
     let overrides_allowed = ChannelState::channel().allows_server_url_overrides();
 
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_RUN_ID_ENV)),
+        env_vars.get(&OsString::from(FUZZ_RUN_ID_ENV)),
         Some(&OsString::from(task_id.to_string()))
     );
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_PARENT_RUN_ID_ENV)),
+        env_vars.get(&OsString::from(FUZZ_PARENT_RUN_ID_ENV)),
         Some(&OsString::from("parent-run-123"))
     );
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_HARNESS_ENV)),
+        env_vars.get(&OsString::from(FUZZ_HARNESS_ENV)),
         Some(&OsString::from("claude"))
     );
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
+        env_vars.get(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
         Some(&OsString::from("1"))
     );
     assert_eq!(
@@ -206,7 +206,7 @@ fn task_env_vars_include_parent_run_id_when_present() {
         Some(&OsString::from("1"))
     );
     assert!(env_vars
-        .get(&OsString::from(OZ_CLI_ENV))
+        .get(&OsString::from(FUZZ_CLI_ENV))
         .is_some_and(|value| !value.is_empty()));
 
     let server_root_url = ChannelState::server_root_url().into_owned();
@@ -248,19 +248,19 @@ fn task_env_vars_include_parent_run_id_when_present() {
 #[test]
 fn task_env_vars_omit_parent_run_id_when_absent() {
     let task_id: AmbientAgentTaskId = "550e8400-e29b-41d4-a716-446655440001".parse().unwrap();
-    let env_vars = task_env_vars(Some(&task_id), None, Harness::Oz);
+    let env_vars = task_env_vars(Some(&task_id), None, Harness::Fuzz);
     let overrides_allowed = ChannelState::channel().allows_server_url_overrides();
 
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_RUN_ID_ENV)),
+        env_vars.get(&OsString::from(FUZZ_RUN_ID_ENV)),
         Some(&OsString::from(task_id.to_string()))
     );
-    assert!(!env_vars.contains_key(&OsString::from(OZ_PARENT_RUN_ID_ENV)));
+    assert!(!env_vars.contains_key(&OsString::from(FUZZ_PARENT_RUN_ID_ENV)));
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_HARNESS_ENV)),
+        env_vars.get(&OsString::from(FUZZ_HARNESS_ENV)),
         Some(&OsString::from("oz"))
     );
-    assert!(!env_vars.contains_key(&OsString::from(OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)));
+    assert!(!env_vars.contains_key(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)));
     assert!(!env_vars.contains_key(&OsString::from(
         LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV
     )));
@@ -279,7 +279,7 @@ fn task_env_vars_enable_external_parent_listener_for_claude_runs_without_parent_
     let task_id: AmbientAgentTaskId = "550e8400-e29b-41d4-a716-446655440002".parse().unwrap();
     let env_vars = task_env_vars(Some(&task_id), None, Harness::Claude);
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
+        env_vars.get(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
         Some(&OsString::from("1"))
     );
     assert_eq!(
@@ -295,14 +295,14 @@ fn task_env_vars_enable_external_parent_listener_for_claude_runs_without_parent_
 fn task_env_vars_propagate_message_listener_state_root_with_legacy_alias() {
     let task_id: AmbientAgentTaskId = "550e8400-e29b-41d4-a716-446655440003".parse().unwrap();
     std::env::set_var(
-        OZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+        FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
         "/tmp/message-listener-root",
     );
     let env_vars = task_env_vars(Some(&task_id), None, Harness::Claude);
-    std::env::remove_var(OZ_MESSAGE_LISTENER_STATE_ROOT_ENV);
+    std::env::remove_var(FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV);
 
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_MESSAGE_LISTENER_STATE_ROOT_ENV)),
+        env_vars.get(&OsString::from(FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV)),
         Some(&OsString::from("/tmp/message-listener-root"))
     );
     assert_eq!(
@@ -317,7 +317,7 @@ fn task_env_vars_can_use_opencode_harness() {
     let env_vars = task_env_vars(Some(&task_id), Some("parent-run-456"), Harness::OpenCode);
 
     assert_eq!(
-        env_vars.get(&OsString::from(OZ_HARNESS_ENV)),
+        env_vars.get(&OsString::from(FUZZ_HARNESS_ENV)),
         Some(&OsString::from("opencode"))
     );
 }

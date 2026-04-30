@@ -124,7 +124,7 @@ pub enum Harness {
     /// Use Yarp's built-in MAA infrastructure (default).
     #[default]
     #[value(name = "oz")]
-    Oz,
+    Fuzz,
     /// Delegate to the `claude` CLI.
     #[value(name = "claude", alias = "claude-code")]
     Claude,
@@ -151,13 +151,13 @@ impl Harness {
     pub fn parse_local_child_harness(value: &str) -> Option<Self> {
         match Self::parse_orchestration_harness(value) {
             Some(harness @ (Self::Claude | Self::OpenCode)) => Some(harness),
-            Some(Self::Oz) | Some(Self::Gemini) | Some(Self::Unknown) | None => None,
+            Some(Self::Fuzz) | Some(Self::Gemini) | Some(Self::Unknown) | None => None,
         }
     }
 
     pub fn display_name(self) -> &'static str {
         match self {
-            Self::Oz => "Oz",
+            Self::Fuzz => "Fuzz",
             Self::Claude => "Claude Code",
             Self::OpenCode => "OpenCode",
             Self::Gemini => "Gemini CLI",
@@ -169,7 +169,7 @@ impl Harness {
 impl fmt::Display for Harness {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let name = match self {
-            Harness::Oz => "oz",
+            Harness::Fuzz => "oz",
             Harness::Claude => "claude",
             Harness::OpenCode => "opencode",
             Harness::Gemini => "gemini",
@@ -189,9 +189,9 @@ pub enum AgentProfileCommand {
 /// Agent-related subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum AgentCommand {
-    /// Run a new Oz agent.
+    /// Run a new Fuzz agent.
     Run(RunAgentArgs),
-    /// Dispatch an Oz agent that runs remotely.
+    /// Dispatch an Fuzz agent that runs remotely.
     RunCloud(RunCloudArgs),
     /// Manage agent profiles.
     #[command(subcommand)]
@@ -303,7 +303,7 @@ pub struct RunAgentArgs {
     ///
     /// "oz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
-    #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Oz, hide = true)]
+    #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,
 }
 
@@ -424,7 +424,7 @@ pub struct RunCloudArgs {
     ///
     /// "oz" (default) uses Yarp's built-in agent infrastructure.
     /// "claude" delegates to the `claude` CLI.
-    #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Oz, hide = true)]
+    #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,
 
     /// Name of a managed secret for Claude Code harness authentication.

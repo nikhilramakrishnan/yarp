@@ -817,10 +817,10 @@ impl AgentInputFooter {
 
         right = right.with_child(ChildView::new(&self.file_button).finish());
 
-        // The V2 model selector is Oz-specific; hide it for other harnesses
+        // The V2 model selector is Fuzz-specific; hide it for other harnesses
         // until they support model selection.
         let selected_harness = self.ambient_agent_view_model.as_ref(app).selected_harness();
-        if selected_harness == Harness::Oz {
+        if selected_harness == Harness::Fuzz {
             if let Some(model_selector) = self.v2_model_selector.as_ref() {
                 right = right.with_child(ChildView::new(model_selector).finish());
             }

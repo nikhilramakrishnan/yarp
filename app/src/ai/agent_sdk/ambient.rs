@@ -414,7 +414,7 @@ impl AmbientAgentRunner {
                     }
                 };
 
-            let harness_override = (args.harness != Harness::Oz).then_some(HarnessConfig {
+            let harness_override = (args.harness != Harness::Fuzz).then_some(HarnessConfig {
                 harness_type: args.harness,
             });
             let harness_auth_secrets = args.claude_auth_secret.clone().map(|name| {
@@ -489,7 +489,7 @@ impl AmbientAgentRunner {
             };
 
             let should_open = args.open;
-            let oz_root_url = ChannelState::oz_root_url();
+            let fuzz_root_url = ChannelState::fuzz_root_url();
             let ai_client_clone = ai_client.clone();
             let spawn_future = async move {
                 let mut stream = Box::pin(spawn_task(request, ai_client_clone, Some(TASK_STATUS_POLLING_DURATION)));
@@ -501,7 +501,7 @@ impl AmbientAgentRunner {
                         Ok(event) => match event {
                             AmbientAgentEvent::TaskSpawned { task_id, .. } => {
                                 println!("Spawned ambient agent with run ID: {task_id}");
-                                println!("View run: {oz_root_url}/runs/{task_id}");
+                                println!("View run: {fuzz_root_url}/runs/{task_id}");
                                 spawned_task_id = Some(task_id);
                             }
                             AmbientAgentEvent::AtCapacity => {
@@ -766,7 +766,7 @@ impl AmbientAgentRunner {
             println!("\nAgent Runs ({}):", tasks.len());
         }
 
-        let oz_root_url = ChannelState::oz_root_url();
+        let fuzz_root_url = ChannelState::fuzz_root_url();
         for task in tasks {
             let state_emoji = Self::get_state_emoji(&task.state);
 
@@ -777,8 +777,8 @@ impl AmbientAgentRunner {
             let header = format!("{} {} ({:?})", state_emoji, task.task_id, task.state);
             table.add_row(vec![header]);
 
-            // Oz webapp link
-            table.add_row(vec![format!("Oz: {oz_root_url}/runs/{}", task.task_id)]);
+            // Fuzz webapp link
+            table.add_row(vec![format!("Fuzz: {fuzz_root_url}/runs/{}", task.task_id)]);
 
             // Title (wrapped, single cell)
             if !task.title.is_empty() {

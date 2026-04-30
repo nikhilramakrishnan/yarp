@@ -933,7 +933,7 @@ case "'${SHELL##*/}'" in
       unset _hostname _user _msg
     )
       ;;
-  zsh) YARP_TMP_DIR="'$(command -p mktemp -d warptmp.XXXXXX)'"
+  zsh) YARP_TMP_DIR="'$(command -p mktemp -d yarptmp.XXXXXX)'"
     local ZSH_ENV_SCRIPT='$zsh_env_script'
     local YARP_HONOR_PS1='$YARP_HONOR_PS1'
     if [[ "'$?'" == 0 ]]; then
@@ -1008,7 +1008,7 @@ esac
   # In this case, we created a temp dir that starts with our template prefix and set the ZDOTDIR
   # to that dir.
   # Note that when called with a template, mktemp will work in the local directory, not the tmp filesystem.
-  TEMPLATE_PREFIX="warptmp."
+  TEMPLATE_PREFIX="yarptmp."
   if [[ -n $ZDOTDIR ]]; then
       if [[ ${ZDOTDIR:0:${#TEMPLATE_PREFIX}} == $TEMPLATE_PREFIX ]]; then
             command -p rm -r "$ZDOTDIR"

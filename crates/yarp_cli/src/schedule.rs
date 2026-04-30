@@ -42,24 +42,24 @@ impl ScheduleCommand {
 /// Schedule-related subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum ScheduleSubcommand {
-    /// Create a scheduled Oz agent.
+    /// Create a scheduled Fuzz agent.
     Create(CreateScheduleArgs),
-    /// List scheduled Oz agents.
+    /// List scheduled Fuzz agents.
     List,
-    /// Get a scheduled Oz agent's configuration.
+    /// Get a scheduled Fuzz agent's configuration.
     Get(GetScheduleArgs),
-    /// Update a scheduled Oz agent.
+    /// Update a scheduled Fuzz agent.
     Update(UpdateScheduleArgs),
-    /// Pause a scheduled Oz agent.
+    /// Pause a scheduled Fuzz agent.
     ///
     /// A paused agent still exists, but will not run according to its schedule.
     Pause(PauseScheduleArgs),
-    /// Unpause a scheduled Oz agent.
+    /// Unpause a scheduled Fuzz agent.
     ///
     /// The agent will resume executing on its previously-configured schedule.
     #[command(alias = "resume")]
     Unpause(UnpauseScheduleArgs),
-    /// Delete a scheduled Oz agent.
+    /// Delete a scheduled Fuzz agent.
     Delete(DeleteScheduleArgs),
 }
 

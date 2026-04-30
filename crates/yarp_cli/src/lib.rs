@@ -32,10 +32,10 @@ pub mod schedule;
 pub mod secret;
 pub mod share;
 pub mod task;
-pub const OZ_RUN_ID_ENV: &str = "OZ_RUN_ID";
-pub const OZ_PARENT_RUN_ID_ENV: &str = "OZ_PARENT_RUN_ID";
-pub const OZ_CLI_ENV: &str = "OZ_CLI";
-pub const OZ_HARNESS_ENV: &str = "OZ_HARNESS";
+pub const FUZZ_RUN_ID_ENV: &str = "FUZZ_RUN_ID";
+pub const FUZZ_PARENT_RUN_ID_ENV: &str = "FUZZ_PARENT_RUN_ID";
+pub const FUZZ_CLI_ENV: &str = "FUZZ_CLI";
+pub const FUZZ_HARNESS_ENV: &str = "FUZZ_HARNESS";
 pub const SERVER_ROOT_URL_OVERRIDE_ENV: &str = "YARP_SERVER_ROOT_URL";
 pub const WS_SERVER_URL_OVERRIDE_ENV: &str = "YARP_WS_SERVER_URL";
 pub const SESSION_SHARING_SERVER_URL_OVERRIDE_ENV: &str = "YARP_SESSION_SHARING_SERVER_URL";
@@ -83,15 +83,15 @@ pub struct GlobalOptions {
 #[derive(Debug, Default, Parser, Clone)]
 #[command(
     name = "oz",
-    display_name = "Oz",
+    display_name = "Fuzz",
     about = r#"The orchestration platform for cloud agents
 
-The Oz CLI is a tool for running, managing, and orchestrating coding agents at scale.
+The Fuzz CLI is a tool for running, managing, and orchestrating coding agents at scale.
 Use the CLI to:
 * Launch and inspect cloud agents
 * Schedule cloud agents to run in the future
 * Manage the environments that cloud agents run in
-* Upload secrets to Oz's secure storage"#
+* Upload secrets to Fuzz's secure storage"#
 )]
 #[clap(args_conflicts_with_subcommands = true)]
 pub struct Args {
@@ -467,7 +467,7 @@ pub enum WorkerCommand {
 /// but it allows scripting some Yarp functionality.
 #[derive(Debug, Clone, Subcommand)]
 pub enum CliCommand {
-    /// Interact with Oz.
+    /// Interact with Fuzz.
     #[command(subcommand)]
     Agent(crate::agent::AgentCommand),
 
@@ -502,7 +502,7 @@ pub enum CliCommand {
     #[command(subcommand)]
     Integration(crate::integration::IntegrationCommand),
 
-    /// Create and manage scheduled Oz agents. Scheduled agents run a user-defined task periodically, according to a cron schedule.
+    /// Create and manage scheduled Fuzz agents. Scheduled agents run a user-defined task periodically, according to a cron schedule.
     ///
     /// As a shorthand, the `schedule` command behaves identically to `schedule create`.
     Schedule(crate::schedule::ScheduleCommand),
@@ -515,7 +515,7 @@ pub enum CliCommand {
     #[command(subcommand)]
     Federate(crate::federate::FederateCommand),
 
-    /// Support commands for agent harnesses to integrate with Oz.
+    /// Support commands for agent harnesses to integrate with Fuzz.
     #[command(hide = true)]
     HarnessSupport(crate::harness_support::HarnessSupportArgs),
 

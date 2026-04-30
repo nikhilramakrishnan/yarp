@@ -21,7 +21,7 @@ use crate::server::server_api::presigned_upload::upload_file_to_target;
 use crate::server::server_api::ServerApi;
 
 const MIME_SNIFF_BYTES: usize = 8 * 1024;
-const OZ_RUN_ID_ENV_VAR: &str = "OZ_RUN_ID";
+const FUZZ_RUN_ID_ENV_VAR: &str = "FUZZ_RUN_ID";
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub(crate) struct FileArtifactUploadRequest {
@@ -296,21 +296,21 @@ fn parse_run_id(run_id: &str, error_prefix: &str) -> Result<AmbientAgentTaskId> 
 }
 
 fn load_env_run_id() -> Result<Option<String>> {
-    match env::var(OZ_RUN_ID_ENV_VAR) {
+    match env::var(FUZZ_RUN_ID_ENV_VAR) {
         Ok(run_id) => Ok(Some(run_id)),
         Err(env::VarError::NotPresent) => Ok(None),
         Err(env::VarError::NotUnicode(_)) => Err(anyhow!(
-            "{OZ_RUN_ID_ENV_VAR} is set but is not valid Unicode"
+            "{FUZZ_RUN_ID_ENV_VAR} is set but is not valid Unicode"
         )),
     }
 }
 
 fn resolve_env_run_id(env_run_id: Option<String>) -> Result<AmbientAgentTaskId> {
     let Some(run_id) = env_run_id else {
-        bail!("{OZ_RUN_ID_ENV_VAR} is not set");
+        bail!("{FUZZ_RUN_ID_ENV_VAR} is not set");
     };
 
-    parse_run_id(&run_id, "Invalid OZ_RUN_ID")
+    parse_run_id(&run_id, "Invalid FUZZ_RUN_ID")
 }
 
 fn resolve_upload_association_from_sources(
@@ -322,8 +322,8 @@ fn resolve_upload_association_from_sources(
     // Precedence is deliberate:
     // 1. An explicit run ID is authoritative and must not silently fall back.
     // 2. A conversation ID stays attached to the artifact even if we have to borrow the ambient
-    //    task ID from `OZ_RUN_ID` because the conversation lacks cloud-task metadata.
-    // 3. `OZ_RUN_ID` becomes the sole source of truth only when the caller supplied nothing else.
+    //    task ID from `FUZZ_RUN_ID` because the conversation lacks cloud-task metadata.
+    // 3. `FUZZ_RUN_ID` becomes the sole source of truth only when the caller supplied nothing else.
     if let Some(run_id) = explicit_run_id {
         let ambient_task_id = run_id;
         return Ok(ResolvedUploadAssociation {
@@ -348,7 +348,7 @@ fn resolve_upload_association_from_sources(
                 let env_err = match resolve_env_run_id(env_run_id) {
                     Ok(ambient_task_id) => {
                         log::warn!(
-                            "Conversation '{}' task resolution failed ({conversation_err}); falling back to {OZ_RUN_ID_ENV_VAR} for ambient task context",
+                            "Conversation '{}' task resolution failed ({conversation_err}); falling back to {FUZZ_RUN_ID_ENV_VAR} for ambient task context",
                             conversation_id.as_str()
                         );
                         return Ok(ResolvedUploadAssociation {
@@ -361,7 +361,7 @@ fn resolve_upload_association_from_sources(
                 };
 
                 return Err(anyhow!(
-                    "Failed to resolve artifact upload association for conversation '{}': {conversation_err}; also failed to use {OZ_RUN_ID_ENV_VAR}: {env_err}",
+                    "Failed to resolve artifact upload association for conversation '{}': {conversation_err}; also failed to use {FUZZ_RUN_ID_ENV_VAR}: {env_err}",
                     conversation_id.as_str()
                 ));
             }
@@ -370,7 +370,7 @@ fn resolve_upload_association_from_sources(
 
     let ambient_task_id = resolve_env_run_id(env_run_id).map_err(|env_err| {
         anyhow!(
-            "Failed to resolve artifact upload association: no usable --run-id or --conversation-id was provided, and {OZ_RUN_ID_ENV_VAR}: {env_err}"
+            "Failed to resolve artifact upload association: no usable --run-id or --conversation-id was provided, and {FUZZ_RUN_ID_ENV_VAR}: {env_err}"
         )
     })?;
 

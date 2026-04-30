@@ -19,7 +19,7 @@ const PLUGIN_KEY: &str = "yarp@claude-code-yarp";
 const MARKETPLACE_REPO: &str = "warpdotdev/claude-code-warp";
 const MARKETPLACE_NAME: &str = "claude-code-yarp";
 
-const PLATFORM_PLUGIN_KEY: &str = "oz-harness-support@claude-code-yarp";
+const PLATFORM_PLUGIN_KEY: &str = "fuzz-harness-support@claude-code-yarp";
 // Note: we will eventually publish this to the same marketplace repo, but are using the internal one as we build out multi-harness.
 const PLATFORM_MARKETPLACE_REPO: &str = "warpdotdev/claude-code-warp-internal";
 

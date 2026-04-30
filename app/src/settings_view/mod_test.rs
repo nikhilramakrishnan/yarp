@@ -192,18 +192,18 @@ fn subpage_display_names_are_correct() {
     );
     assert_eq!(
         SettingsSection::OzCloudAPIKeys.to_string(),
-        "Oz Cloud API Keys"
+        "Fuzz Cloud API Keys"
     );
 }
 
 #[test]
 fn subpage_from_str_parses_display_names() {
-    // Both the legacy "Oz" name and the new "Yarp Agent" display name must
+    // Both the legacy "Fuzz" name and the new "Yarp Agent" display name must
     // resolve to SettingsSection::YarpAgent so existing deep links, persisted
     // telemetry strings, and external callers continue to work after the
     // user-facing rename (see specs/GH1063/product.md, Behavior #8).
     assert_eq!(
-        SettingsSection::from_str("Oz"),
+        SettingsSection::from_str("Fuzz"),
         Ok(SettingsSection::YarpAgent)
     );
     assert_eq!(
@@ -227,7 +227,7 @@ fn subpage_from_str_parses_display_names() {
         Ok(SettingsSection::EditorAndCodeReview)
     );
     assert_eq!(
-        SettingsSection::from_str("Oz Cloud API Keys"),
+        SettingsSection::from_str("Fuzz Cloud API Keys"),
         Ok(SettingsSection::OzCloudAPIKeys)
     );
 }
@@ -504,7 +504,7 @@ fn auto_select_jumps_away_from_filtered_out_subpage() {
         "Knowledge should not be visible when it has 0 matches"
     );
 
-    // The nav order: Oz, Profiles, ..., Knowledge, ThirdPartyCLI
+    // The nav order: Fuzz, Profiles, ..., Knowledge, ThirdPartyCLI
     let nav_order = SettingsSection::ai_subpages();
     let first = first_visible_section(nav_order, &filter, &[]);
     assert_eq!(
@@ -613,7 +613,7 @@ fn auto_select_with_no_matches_anywhere() {
 
 #[test]
 fn legacy_ai_section_maps_to_oz_default() {
-    // SettingsSection::AI should be treated as backward-compat and map to Oz
+    // SettingsSection::AI should be treated as backward-compat and map to Fuzz
     // via the code in set_and_refresh_current_page_internal.
     // Here we just verify the parent_page_section is still AI (for page lookup).
     assert_eq!(

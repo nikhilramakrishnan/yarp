@@ -46,7 +46,7 @@ impl NotificationFilter {
 #[derive(Debug, Clone, Copy)]
 #[allow(clippy::upper_case_acronyms)]
 pub enum NotificationSourceAgent {
-    Oz,
+    Fuzz,
     CLI(CLIAgent),
 }
 

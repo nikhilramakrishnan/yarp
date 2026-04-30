@@ -110,7 +110,7 @@ impl Input {
             .as_ref()
             .is_some_and(|arg| arg.should_execute_on_selection)
         {
-            // TODO (zachbai): this is a hack for Oz launch. Caller
+            // TODO (zachbai): this is a hack for Fuzz launch. Caller
             // should probably be invoking `execute_slash_command` in this case.
             let argument = if !self.suggestions_mode_model.as_ref(ctx).is_slash_commands() {
                 let trimmed = self.buffer_text(ctx).trim().to_owned();

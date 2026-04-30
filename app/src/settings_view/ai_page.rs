@@ -271,8 +271,8 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::custom(
             SettingActionPairDescriptions::new(
-                "Show Oz changelog in new agent conversation view",
-                "Hide Oz changelog in new agent conversation view",
+                "Show Fuzz changelog in new agent conversation view",
+                "Hide Fuzz changelog in new agent conversation view",
             ),
             builder(SettingsAction::AI(
                 AISettingsPageAction::ToggleShowOzUpdatesInZeroState,
@@ -1476,7 +1476,7 @@ impl AISettingsPageView {
                 }
             }
             Some(AISubpage::YarpAgent) => {
-                // Oz page: global toggle + Active AI + Input + Other
+                // Fuzz page: global toggle + Active AI + Input + Other
                 widgets.push(Box::new(GlobalAIWidget::default()));
                 if ai_settings
                     .intelligent_autosuggestions_enabled_internal
@@ -5349,7 +5349,7 @@ impl SettingsWidget for OtherAIWidget {
         if FeatureFlag::AgentView.is_enabled() {
             let mut agent_view_column = Flex::column()
                 .with_child(render_ai_setting_toggle::<ShouldShowOzUpdatesInZeroState>(
-                    "Show Oz changelog in new conversation view",
+                    "Show Fuzz changelog in new conversation view",
                     AISettingsPageAction::ToggleShowOzUpdatesInZeroState,
                     *ai_settings.should_show_oz_updates_in_zero_state,
                     is_toggleable,
@@ -5833,7 +5833,7 @@ impl SettingsWidget for AgentAttributionWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Oz can add attribution to commit messages and pull requests it creates",
+                "Fuzz can add attribution to commit messages and pull requests it creates",
                 !state.is_disabled,
                 app,
             ))

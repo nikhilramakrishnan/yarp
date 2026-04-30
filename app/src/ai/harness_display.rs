@@ -15,7 +15,7 @@ use crate::ui_components::icons::Icon;
 /// User-visible display name for a [`Harness`].
 pub fn display_name(harness: Harness) -> &'static str {
     match harness {
-        Harness::Oz => "Yarp Agent",
+        Harness::Fuzz => "Yarp Agent",
         Harness::Claude => "Claude Code",
         Harness::OpenCode => "OpenCode",
         Harness::Gemini => "Gemini CLI",
@@ -26,7 +26,7 @@ pub fn display_name(harness: Harness) -> &'static str {
 /// Leading icon for a [`Harness`].
 pub fn icon_for(harness: Harness) -> Icon {
     match harness {
-        Harness::Oz => Icon::Yarp,
+        Harness::Fuzz => Icon::Yarp,
         Harness::Claude => Icon::ClaudeLogo,
         Harness::OpenCode => Icon::OpenCodeLogo,
         Harness::Gemini => Icon::GeminiLogo,
@@ -38,7 +38,7 @@ pub fn icon_for(harness: Harness) -> Icon {
 /// default foreground color".
 pub fn brand_color(harness: Harness) -> Option<ColorU> {
     match harness {
-        Harness::Oz => None,
+        Harness::Fuzz => None,
         Harness::Claude => Some(CLAUDE_ORANGE),
         Harness::OpenCode => None,
         Harness::Gemini => Some(GEMINI_BLUE),
@@ -51,7 +51,7 @@ pub fn brand_color(harness: Harness) -> Option<ColorU> {
 impl From<AIAgentHarness> for Harness {
     fn from(harness: AIAgentHarness) -> Self {
         match harness {
-            AIAgentHarness::Oz => Harness::Oz,
+            AIAgentHarness::Fuzz => Harness::Fuzz,
             AIAgentHarness::ClaudeCode => Harness::Claude,
             AIAgentHarness::Gemini => Harness::Gemini,
             AIAgentHarness::Unknown => Harness::Unknown,

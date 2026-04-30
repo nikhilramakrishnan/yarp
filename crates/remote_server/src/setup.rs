@@ -139,7 +139,7 @@ pub fn remote_server_dir() -> String {
 
 /// Returns the binary name, keyed by channel.
 ///
-/// Matches the CLI command names: `oz` (stable), `oz-preview`, `oz-dev`.
+/// Matches the CLI command names: `oz` (stable), `fuzz-preview`, `fuzz-dev`.
 pub fn binary_name() -> &'static str {
     ChannelState::channel().cli_command_name()
 }
@@ -164,7 +164,7 @@ const INSTALL_SCRIPT_TEMPLATE: &str = include_str!("install_remote_server.sh");
 /// Returns the install script that downloads and installs the CLI binary.
 ///
 /// The script detects the remote architecture via `uname -m`, downloads the
-/// correct Oz CLI tarball from the download URL (with os, arch, package, and
+/// correct Fuzz CLI tarball from the download URL (with os, arch, package, and
 /// channel query params), and extracts it to the install directory.
 ///
 /// All parameters (URL, channel, directory, binary name) are derived

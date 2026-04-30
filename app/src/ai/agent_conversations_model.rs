@@ -595,10 +595,10 @@ impl ConversationOrTask<'_> {
                         .harness
                         .as_ref()
                         .map(|h| h.harness_type)
-                        .or(Some(Harness::Oz))
+                        .or(Some(Harness::Fuzz))
                 })
             }
-            ConversationOrTask::Conversation(_) => Some(Harness::Oz),
+            ConversationOrTask::Conversation(_) => Some(Harness::Fuzz),
         }
     }
 

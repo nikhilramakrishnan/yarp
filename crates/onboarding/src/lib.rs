@@ -29,7 +29,7 @@ pub use callout::{OnboardingCalloutView, OnboardingKeybindings};
 /// skip-login confirmation dialog so the two always stay in sync.
 pub const AI_FEATURES: &[&str] = &[
     "Yarp agents",
-    "Oz cloud agents platform",
+    "Fuzz cloud agents platform",
     "Next command predictions",
     "Prompt suggestions",
     "Codebase context",

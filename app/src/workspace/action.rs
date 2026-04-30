@@ -542,10 +542,10 @@ pub enum WorkspaceAction {
     /// Reset the AWS Bedrock login banner dismissed state (for debugging).
     #[cfg(debug_assertions)]
     DebugResetAwsBedrockLoginBannerDismissed,
-    /// Open the Oz Launch Modal (for debugging)
+    /// Open the Fuzz Launch Modal (for debugging)
     #[cfg(debug_assertions)]
     OpenOzLaunchModal,
-    /// Reset the Oz launch modal dismissed state (for debugging)
+    /// Reset the Fuzz launch modal dismissed state (for debugging)
     #[cfg(debug_assertions)]
     ResetOzLaunchModalState,
     /// Open the OpenWarp Launch Modal (for debugging)

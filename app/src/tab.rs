@@ -1124,7 +1124,7 @@ impl<'a> TabComponent<'a> {
                     }
                 } else {
                     let icon_color = self.appearance.theme().nonactive_ui_text_color();
-                    Some(Icon::Oz.to_yarpui_icon(icon_color).finish())
+                    Some(Icon::Fuzz.to_yarpui_icon(icon_color).finish())
                 }
             }
             Indicator::AmbientAgent => {

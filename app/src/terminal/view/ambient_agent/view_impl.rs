@@ -277,7 +277,7 @@ impl TerminalView {
             }
             AmbientAgentViewModelEvent::HarnessCommandStarted => {
                 // Stop classifying new blocks as environment setup commands, mirroring the
-                // Oz path in the `AppendedExchange` handler. Flipping this flag to `false`
+                // Fuzz path in the `AppendedExchange` handler. Flipping this flag to `false`
                 // also un-hides and un-marks the active block so it renders like a normal
                 // CLI-agent session.
                 {
@@ -484,7 +484,7 @@ impl TerminalView {
             return false;
         };
         match self.ambient_agent_view_model.as_ref(ctx).selected_harness() {
-            Harness::Oz => false,
+            Harness::Fuzz => false,
             Harness::Claude => matches!(cli_agent, CLIAgent::Claude),
             Harness::OpenCode => matches!(cli_agent, CLIAgent::OpenCode),
             Harness::Gemini => matches!(cli_agent, CLIAgent::Gemini),

@@ -22,7 +22,7 @@ use crate::terminal::model::block::{BlockId, SerializedBlock};
 use crate::terminal::CLIAgent;
 use crate::util::path::resolve_executable;
 use yarp_cli::{
-    OZ_CLI_ENV, OZ_HARNESS_ENV, OZ_PARENT_RUN_ID_ENV, OZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
+    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
     SESSION_SHARING_SERVER_URL_OVERRIDE_ENV, WS_SERVER_URL_OVERRIDE_ENV,
 };
 use yarp_core::channel::ChannelState;
@@ -30,8 +30,8 @@ use yarp_core::channel::ChannelState;
 use super::terminal::{CommandHandle, TerminalDriver};
 use super::{
     AgentDriver, AgentDriverError, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
-    LEGACY_OZ_PARENT_STATE_ROOT_ENV, OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
-    OZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+    LEGACY_OZ_PARENT_STATE_ROOT_ENV, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
+    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
 };
 
 mod claude_code;
@@ -131,7 +131,7 @@ pub(crate) trait ThirdPartyHarness: Send + Sync {
 
 /// Harness type for driver dispatch.
 pub(crate) enum HarnessKind {
-    Oz,
+    Fuzz,
     /// Third-party CLI-backed harness (e.g. Claude, Gemini).
     ThirdParty(Box<dyn ThirdPartyHarness>),
     /// Harnesses that exist in the shared CLI enum but are not supported by the
@@ -143,7 +143,7 @@ impl HarnessKind {
     /// Corresponding [`Harness`] enum value.
     pub(crate) fn harness(&self) -> Harness {
         match self {
-            HarnessKind::Oz => Harness::Oz,
+            HarnessKind::Fuzz => Harness::Fuzz,
             HarnessKind::ThirdParty(h) => h.harness(),
             HarnessKind::Unsupported(harness) => *harness,
         }
@@ -163,7 +163,7 @@ impl fmt::Debug for HarnessKind {
 /// it.
 pub(crate) fn harness_kind(harness: Harness) -> Result<HarnessKind, AgentDriverError> {
     match harness {
-        Harness::Oz => Ok(HarnessKind::Oz),
+        Harness::Fuzz => Ok(HarnessKind::Fuzz),
         Harness::Claude => Ok(HarnessKind::ThirdParty(Box::new(ClaudeHarness))),
         Harness::OpenCode => Ok(HarnessKind::Unsupported(Harness::OpenCode)),
         Harness::Gemini => Ok(HarnessKind::ThirdParty(Box::new(GeminiHarness))),
@@ -214,7 +214,7 @@ fn insert_task_env_var_aliases(
 
 fn message_listener_state_root() -> Option<String> {
     [
-        OZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+        FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
         LEGACY_OZ_PARENT_STATE_ROOT_ENV,
     ]
     .into_iter()
@@ -230,36 +230,36 @@ fn task_env_vars_for_harness_name(
 
     if let Some(id) = task_id {
         env_vars.insert(
-            OsString::from(OZ_RUN_ID_ENV),
+            OsString::from(FUZZ_RUN_ID_ENV),
             OsString::from(id.to_string()),
         );
     }
 
     if let Some(parent_run_id) = parent_run_id.filter(|id| !id.is_empty()) {
         env_vars.insert(
-            OsString::from(OZ_PARENT_RUN_ID_ENV),
+            OsString::from(FUZZ_PARENT_RUN_ID_ENV),
             OsString::from(parent_run_id),
         );
     }
 
     env_vars.insert(
-        OsString::from(OZ_CLI_ENV),
+        OsString::from(FUZZ_CLI_ENV),
         OsString::from(
             std::env::current_exe()
                 .unwrap_or_else(|_| ChannelState::channel().cli_command_name().into()),
         ),
     );
-    // `OZ_HARNESS` is only consumed by child orchestration telemetry when the child
+    // `FUZZ_HARNESS` is only consumed by child orchestration telemetry when the child
     // CLI emits `run message *` events.
     env_vars.insert(
-        OsString::from(OZ_HARNESS_ENV),
+        OsString::from(FUZZ_HARNESS_ENV),
         OsString::from(selected_harness.to_string()),
     );
     if selected_harness == Harness::Claude && task_id.is_some() {
         insert_task_env_var_aliases(
             &mut env_vars,
             &[
-                OZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
+                FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
                 LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
             ],
             "1",
@@ -268,7 +268,7 @@ fn task_env_vars_for_harness_name(
             insert_task_env_var_aliases(
                 &mut env_vars,
                 &[
-                    OZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+                    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
                     LEGACY_OZ_PARENT_STATE_ROOT_ENV,
                 ],
                 &state_root,

@@ -19,8 +19,8 @@ use yarpui::{Entity, ModelContext, SingletonEntity, WindowId};
 /// conditions are met (e.g., user becomes onboarded).
 pub struct OneTimeModalModel {
     is_build_plan_migration_modal_open: bool,
-    /// Whether the Oz launch modal is currently being shown.
-    is_oz_launch_modal_open: bool,
+    /// Whether the Fuzz launch modal is currently being shown.
+    is_fuzz_launch_modal_open: bool,
     /// Whether the OpenYarp launch modal is currently being shown.
     is_openyarp_launch_modal_open: bool,
     /// Whether the HOA onboarding flow is currently being shown.
@@ -67,10 +67,10 @@ impl OneTimeModalModel {
             } else {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     if let Err(e) = settings
-                        .did_check_to_trigger_oz_launch_modal
+                        .did_check_to_trigger_fuzz_launch_modal
                         .set_value(true, ctx)
                     {
-                        log::warn!("Failed to mark Oz launch modal as dismissed: {e}");
+                        log::warn!("Failed to mark Fuzz launch modal as dismissed: {e}");
                     }
                 });
                 GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
@@ -86,16 +86,16 @@ impl OneTimeModalModel {
 
         Self {
             is_build_plan_migration_modal_open: false,
-            is_oz_launch_modal_open: false,
+            is_fuzz_launch_modal_open: false,
             is_openyarp_launch_modal_open: false,
             is_hoa_onboarding_open: false,
             target_window_id: None,
         }
     }
 
-    /// Returns whether the Oz launch modal is currently open.
-    pub fn is_oz_launch_modal_open(&self) -> bool {
-        self.is_oz_launch_modal_open && self.target_window_id.is_some()
+    /// Returns whether the Fuzz launch modal is currently open.
+    pub fn is_fuzz_launch_modal_open(&self) -> bool {
+        self.is_fuzz_launch_modal_open && self.target_window_id.is_some()
     }
 
     /// Returns the window ID where the currently open one-time modal should be displayed.
@@ -103,8 +103,8 @@ impl OneTimeModalModel {
         self.target_window_id
     }
 
-    pub fn mark_oz_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_oz_launch_modal_open(false, ctx);
+    pub fn mark_fuzz_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_fuzz_launch_modal_open(false, ctx);
     }
 
     /// Returns whether the OpenYarp launch modal is currently open.
@@ -127,7 +127,7 @@ impl OneTimeModalModel {
 
     /// Returns true if any one-time modal is currently open.
     pub fn is_any_modal_open(&self) -> bool {
-        (self.is_oz_launch_modal_open
+        (self.is_fuzz_launch_modal_open
             || self.is_openyarp_launch_modal_open
             || self.is_build_plan_migration_modal_open
             || self.is_hoa_onboarding_open)
@@ -135,8 +135,8 @@ impl OneTimeModalModel {
     }
 
     #[cfg(debug_assertions)]
-    pub fn force_open_oz_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_oz_launch_modal_open(true, ctx);
+    pub fn force_open_fuzz_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_fuzz_launch_modal_open(true, ctx);
     }
 
     #[cfg(debug_assertions)]
@@ -154,9 +154,9 @@ impl OneTimeModalModel {
         }
     }
 
-    fn set_oz_launch_modal_open(&mut self, is_open: bool, ctx: &mut ModelContext<Self>) -> bool {
-        if self.is_oz_launch_modal_open != is_open {
-            self.is_oz_launch_modal_open = is_open;
+    fn set_fuzz_launch_modal_open(&mut self, is_open: bool, ctx: &mut ModelContext<Self>) -> bool {
+        if self.is_fuzz_launch_modal_open != is_open {
+            self.is_fuzz_launch_modal_open = is_open;
             ctx.emit(OneTimeModalEvent::VisibilityChanged { is_open });
             return true;
         }
@@ -192,13 +192,13 @@ impl OneTimeModalModel {
             }
         });
 
-        // The OpenYarp launch modal takes priority over the Oz launch modal
+        // The OpenYarp launch modal takes priority over the Fuzz launch modal
         // when both are enabled.
         if self.check_and_trigger_openyarp_launch_modal(ctx) {
             return;
         }
 
-        if self.check_and_trigger_oz_launch_modal(ctx) {
+        if self.check_and_trigger_fuzz_launch_modal(ctx) {
             return;
         }
 
@@ -238,31 +238,31 @@ impl OneTimeModalModel {
         self.set_hoa_onboarding_open(true, ctx)
     }
 
-    fn check_and_trigger_oz_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
+    fn check_and_trigger_fuzz_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
         // Only show if the feature flag is enabled.
         if !FeatureFlag::OzLaunchModal.is_enabled() {
             return false;
         }
 
         let ai_settings = AISettings::as_ref(ctx);
-        let oz_modal_shown = *ai_settings.did_check_to_trigger_oz_launch_modal;
+        let fuzz_modal_shown = *ai_settings.did_check_to_trigger_fuzz_launch_modal;
 
-        // If Oz modal has already been shown, don't show anything.
-        if oz_modal_shown {
+        // If Fuzz modal has already been shown, don't show anything.
+        if fuzz_modal_shown {
             return false;
         }
 
         AISettings::handle(ctx).update(ctx, |settings, ctx| {
             if let Err(e) = settings
-                .did_check_to_trigger_oz_launch_modal
+                .did_check_to_trigger_fuzz_launch_modal
                 .set_value(true, ctx)
             {
-                log::warn!("Failed to mark Oz launch modal as dismissed: {e}");
+                log::warn!("Failed to mark Fuzz launch modal as dismissed: {e}");
             }
         });
 
         let should_show_oz_modal = !matches!(ChannelState::channel(), Channel::Integration);
-        self.set_oz_launch_modal_open(should_show_oz_modal, ctx);
+        self.set_fuzz_launch_modal_open(should_show_oz_modal, ctx);
         should_show_oz_modal
     }
 

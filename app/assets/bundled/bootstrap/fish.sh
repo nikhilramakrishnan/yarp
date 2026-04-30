@@ -662,7 +662,7 @@ bash)
       unset _hostname _user _msg
     )
     ;;
-zsh) YARP_TMP_DIR="'$(mktemp -d warptmp.XXXXXX)'"
+zsh) YARP_TMP_DIR="'$(mktemp -d yarptmp.XXXXXX)'"
 local ZSH_ENV_SCRIPT='$zsh_env_script'
 if [[ "'$?'" == 0 ]]; then
   if command -v xxd >/dev/null 2>&1; then

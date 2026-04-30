@@ -1,13 +1,13 @@
 use clap::{Args, Subcommand, ValueEnum};
 
-/// Commands to support third-party agent harnesses running within Oz.
+/// Commands to support third-party agent harnesses running within Fuzz.
 ///
 /// These commands are invoked by external agent harnesses (e.g. Claude Code)
-/// during a cloud agent run to interact with Oz platform APIs.
+/// during a cloud agent run to interact with Fuzz platform APIs.
 #[derive(Debug, Clone, Args)]
 pub struct HarnessSupportArgs {
     /// The run ID to associate with harness-support API calls.
-    #[arg(long = "run-id", env = "OZ_RUN_ID")]
+    #[arg(long = "run-id", env = "FUZZ_RUN_ID")]
     pub run_id: String,
 
     #[command(subcommand)]
@@ -20,7 +20,7 @@ pub enum HarnessSupportCommand {
     #[command(hide = true)]
     Ping,
 
-    /// Report an artifact back to the Oz platform.
+    /// Report an artifact back to the Fuzz platform.
     ReportArtifact(ReportArtifactArgs),
 
     /// Send a progress notification to the task's originating platform (Slack, Linear, etc.).

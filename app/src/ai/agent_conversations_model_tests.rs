@@ -957,7 +957,7 @@ fn test_harness_filter_matches_only_selected_harness() {
 
         let task_claude = task_with_harness(5100, "user-a", Some(Some(Harness::Claude)));
         let task_gemini = task_with_harness(5101, "user-a", Some(Some(Harness::Gemini)));
-        // Snapshot present but no harness set → Some(Oz), matches Yarp Agent.
+        // Snapshot present but no harness set → Some(Fuzz), matches Yarp Agent.
         let task_oz_default = task_with_harness(5102, "user-a", Some(None));
         // No snapshot at all → None, matches only `All`.
         let task_no_snapshot = task_with_harness(5103, "user-a", None);
@@ -1009,19 +1009,19 @@ fn test_harness_filter_matches_only_selected_harness() {
             let gemini_items = items_for(HarnessFilter::Specific(Harness::Gemini));
             assert_eq!(gemini_items, vec![format!("task:{}", task_gemini.task_id)]);
 
-            // Yarp Agent / Oz → default-snapshot task and local conversation.
+            // Yarp Agent / Fuzz → default-snapshot task and local conversation.
             // The stub task with no snapshot resolves to `harness() == None` and
             // is deliberately excluded from any specific-harness filter.
-            let oz_items = items_for(HarnessFilter::Specific(Harness::Oz));
+            let fuzz_items = items_for(HarnessFilter::Specific(Harness::Fuzz));
             assert_eq!(
-                oz_items.len(),
+                fuzz_items.len(),
                 2,
-                "expected 2 Yarp Agent matches, got {oz_items:?}"
+                "expected 2 Yarp Agent matches, got {fuzz_items:?}"
             );
-            assert!(oz_items.contains(&format!("task:{}", task_oz_default.task_id)));
-            assert!(oz_items.contains(&format!("conversation:{conv_id}")));
+            assert!(fuzz_items.contains(&format!("task:{}", task_oz_default.task_id)));
+            assert!(fuzz_items.contains(&format!("conversation:{conv_id}")));
             assert!(
-                !oz_items.contains(&format!("task:{}", task_no_snapshot.task_id)),
+                !fuzz_items.contains(&format!("task:{}", task_no_snapshot.task_id)),
                 "stub task with no snapshot should not match the Yarp Agent filter"
             );
         });

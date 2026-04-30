@@ -6326,24 +6326,24 @@ impl TerminalView {
                 .get_pending_action(app)
                 .map(|action| match &action.action {
                     AIAgentActionType::RequestCommandOutput { command, .. } => {
-                        format!("Oz needs your permission to run `{command}`")
+                        format!("Fuzz needs your permission to run `{command}`")
                     }
                     AIAgentActionType::ReadFiles(..) => {
-                        "Oz needs your permission to read files".to_string()
+                        "Fuzz needs your permission to read files".to_string()
                     }
                     AIAgentActionType::SearchCodebase(..) => {
-                        "Oz needs your permission to search your codebase".to_string()
+                        "Fuzz needs your permission to search your codebase".to_string()
                     }
                     AIAgentActionType::RequestFileEdits { .. } => {
-                        "Oz needs your permission to edit a file".to_string()
+                        "Fuzz needs your permission to edit a file".to_string()
                     }
                     AIAgentActionType::WriteToLongRunningShellCommand { .. } => {
-                        "Oz needs your permission to interact with a running shell command"
+                        "Fuzz needs your permission to interact with a running shell command"
                             .to_string()
                     }
-                    _ => "Oz needs your confirmation to continue".to_string(),
+                    _ => "Fuzz needs your confirmation to continue".to_string(),
                 })
-                .unwrap_or("Oz needs your confirmation to continue".to_string());
+                .unwrap_or("Fuzz needs your confirmation to continue".to_string());
             return Some(AIBlockNotificationSummary {
                 success: false,
                 title,
@@ -11924,7 +11924,7 @@ impl TerminalView {
         let should_show_onboarding = FeatureFlag::AgentOnboarding.is_enabled()
             && !is_onboarded
             && !is_anonymous_or_logged_out;
-        let is_launch_modal_open = OneTimeModalModel::as_ref(ctx).is_oz_launch_modal_open();
+        let is_launch_modal_open = OneTimeModalModel::as_ref(ctx).is_fuzz_launch_modal_open();
 
         let has_plugin_instructions_block = self.rich_content_views.iter().any(|rc| {
             matches!(
@@ -14241,7 +14241,7 @@ impl TerminalView {
             trigger,
             block_summary.title,
             block_summary.description,
-            Some(NotificationAgentVariant::Oz),
+            Some(NotificationAgentVariant::Fuzz),
             ctx,
         );
     }

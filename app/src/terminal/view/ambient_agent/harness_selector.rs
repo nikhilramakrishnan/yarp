@@ -1,5 +1,5 @@
 //! Harness selector: an "options menu" (`ActionButton` + generic `Menu<A>`) shown
-//! in a row above the cloud mode input that lets the user switch between the Oz
+//! in a row above the cloud mode input that lets the user switch between the Fuzz
 //! and Claude Code harnesses.
 
 use std::sync::Arc;
@@ -231,7 +231,7 @@ fn build_menu_items(
 
     vec![
         header,
-        item_for(Harness::Oz),
+        item_for(Harness::Fuzz),
         item_for(Harness::Claude),
         item_for(Harness::Gemini),
     ]

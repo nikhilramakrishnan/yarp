@@ -31,12 +31,12 @@ prefix:      /opt
 ###############################################################################
 
 %description
-The Oz CLI is a tool for running, managing, and orchestrating coding agents at scale.
+The Fuzz CLI is a tool for running, managing, and orchestrating coding agents at scale.
 Use the CLI to:
 * Launch and inspect cloud agents
 * Schedule cloud agents to run in the future
 * Manage the environments that cloud agents run in
-* Upload secrets to Oz's secure storage
+* Upload secrets to Fuzz's secure storage
 
 ###############################################################################
 # Build rule - how does the package get built?

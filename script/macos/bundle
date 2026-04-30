@@ -533,7 +533,7 @@ if [[ "$ARTIFACT" == "app" ]]; then
   elif [[ $RELEASE_CHANNEL = "oss" ]]; then
     CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/yarp"
   else
-    CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/oz-$RELEASE_CHANNEL"
+    CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/fuzz-$RELEASE_CHANNEL"
   fi
 
   echo "Creating Resources/bin directory and CLI wrapper script..."

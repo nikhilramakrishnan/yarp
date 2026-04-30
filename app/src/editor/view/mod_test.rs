@@ -3132,7 +3132,7 @@ fn test_add_next_occurrence() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor =
-                EditorView::new_with_base_text("warpwordwarpwordwarp", Default::default(), ctx);
+                EditorView::new_with_base_text("yarpwordyarpwordwarp", Default::default(), ctx);
             editor
                 .select_ranges(vec![DisplayPoint::new(0, 0)..DisplayPoint::new(0, 4)], ctx)
                 .unwrap();
@@ -3143,7 +3143,7 @@ fn test_add_next_occurrence() {
             assert_eq!(editor.buffer_text(ctx), "wordword");
 
             editor.undo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "warpwordwarpwordwarp");
+            assert_eq!(editor.buffer_text(ctx), "yarpwordyarpwordwarp");
             editor.redo(ctx);
             assert_eq!(editor.buffer_text(ctx), "wordword");
 

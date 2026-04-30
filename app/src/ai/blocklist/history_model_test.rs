@@ -339,7 +339,7 @@ fn create_server_metadata(
         server_conversation_token: ServerConversationToken::new(server_token.to_string()),
         artifacts: Vec::new(),
         working_directory: None,
-        harness: AIAgentHarness::Oz,
+        harness: AIAgentHarness::Fuzz,
     }
 }
 

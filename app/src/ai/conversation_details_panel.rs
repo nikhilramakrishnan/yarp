@@ -283,7 +283,7 @@ impl ConversationDetailsData {
         let harness = conversation
             .server_metadata()
             .map(|m| Harness::from(m.harness))
-            .or(Some(Harness::Oz));
+            .or(Some(Harness::Fuzz));
 
         ConversationDetailsData {
             mode: PanelMode::Conversation {
@@ -343,7 +343,7 @@ impl ConversationDetailsData {
                 .harness
                 .as_ref()
                 .map(|h| h.harness_type)
-                .or(Some(Harness::Oz))
+                .or(Some(Harness::Fuzz))
         });
 
         ConversationDetailsData {
@@ -486,7 +486,7 @@ pub struct ConversationDetailsPanel {
     show_open_button: bool,
     #[cfg(not(target_family = "wasm"))]
     continue_locally_button: ViewHandle<ActionButton>,
-    /// Text button "View in Oz" shown next to "Continue locally".
+    /// Text button "View in Fuzz" shown next to "Continue locally".
     open_in_oz_button: ViewHandle<ActionButton>,
     /// Tracks when each copy button was last clicked (for checkmark feedback).
     copy_feedback_times: HashMap<CopyButtonKind, Instant>,
@@ -519,8 +519,8 @@ impl ConversationDetailsPanel {
                 })
         });
         let open_in_oz_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("View in Oz", SecondaryTheme)
-                .with_tooltip("View this run in the Oz web app")
+            ActionButton::new("View in Fuzz", SecondaryTheme)
+                .with_tooltip("View this run in the Fuzz web app")
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(ConversationDetailsPanelAction::OpenInOz);
@@ -588,9 +588,9 @@ impl ConversationDetailsPanel {
                 if status.is_working() {
                     return None;
                 }
-                // Hide for non-Oz harnesses (e.g. Claude, Gemini): they can't be
+                // Hide for non-Fuzz harnesses (e.g. Claude, Gemini): they can't be
                 // forked into a local Yarp conversation.
-                if matches!(self.data.harness, Some(h) if h != Harness::Oz) {
+                if matches!(self.data.harness, Some(h) if h != Harness::Fuzz) {
                     return None;
                 }
 
@@ -640,15 +640,15 @@ impl ConversationDetailsPanel {
         }
     }
 
-    /// Builds the Oz web UI URL for a task, if a task_id is available.
-    fn oz_run_url(data: &ConversationDetailsData) -> Option<String> {
+    /// Builds the Fuzz web UI URL for a task, if a task_id is available.
+    fn fuzz_run_url(data: &ConversationDetailsData) -> Option<String> {
         if let PanelMode::Task {
             task_id: Some(task_id),
             ..
         } = &data.mode
         {
-            let oz_root_url = ChannelState::oz_root_url();
-            Some(format!("{oz_root_url}/runs/{task_id}"))
+            let fuzz_root_url = ChannelState::fuzz_root_url();
+            Some(format!("{fuzz_root_url}/runs/{task_id}"))
         } else {
             None
         }
@@ -1054,14 +1054,14 @@ impl ConversationDetailsPanel {
         .with_selectable(true)
         .finish();
 
-        let oz_root_url = ChannelState::oz_root_url();
+        let fuzz_root_url = ChannelState::fuzz_root_url();
         let encoded_skill_name = urlencoding::encode(&skill_name);
-        let skill_url = format!("{oz_root_url}/agents/{encoded_skill_name}");
+        let skill_url = format!("{fuzz_root_url}/agents/{encoded_skill_name}");
 
-        let oz_link = appearance
+        let fuzz_link = appearance
             .ui_builder()
             .link(
-                "Open in Oz".to_string(),
+                "Open in Fuzz".to_string(),
                 Some(skill_url),
                 None,
                 self.mouse_states.skill_link.clone(),
@@ -1085,7 +1085,7 @@ impl ConversationDetailsPanel {
             .with_child(Container::new(icon).with_margin_right(4.).finish())
             .with_child(Shrinkable::new(1., skill_name_text).finish())
             .with_child(separator())
-            .with_child(Shrinkable::new(1., oz_link).finish());
+            .with_child(Shrinkable::new(1., fuzz_link).finish());
 
         // Add GitHub source link if we have enough info to construct it.
         if let (Some(org), Some(repo)) = (&skill_spec.org, &skill_spec.repo) {
@@ -1541,7 +1541,7 @@ impl View for ConversationDetailsPanel {
         let has_continue_locally = self.continue_locally_conversation_id(app).is_some();
         #[cfg(target_family = "wasm")]
         let has_continue_locally = false;
-        let has_oz_url = Self::oz_run_url(&self.data).is_some();
+        let has_oz_url = Self::fuzz_run_url(&self.data).is_some();
 
         if has_continue_locally || has_oz_url {
             let mut buttons_wrap = Wrap::row().with_spacing(8.).with_run_spacing(8.);
@@ -1991,7 +1991,7 @@ impl TypedActionView for ConversationDetailsPanel {
                 }
             }
             ConversationDetailsPanelAction::OpenInOz => {
-                if let Some(url) = Self::oz_run_url(&self.data) {
+                if let Some(url) = Self::fuzz_run_url(&self.data) {
                     ctx.open_url(&url);
                 }
             }

@@ -552,13 +552,13 @@ where
 }
 
 /// All possible session types, in display order.
-const ALL_SESSION_TYPES: &[SessionType] = &[SessionType::Oz, SessionType::Terminal];
+const ALL_SESSION_TYPES: &[SessionType] = &[SessionType::Fuzz, SessionType::Terminal];
 
-/// Returns the session types to display, filtering out Oz when AI is disabled.
+/// Returns the session types to display, filtering out Fuzz when AI is disabled.
 pub fn visible_session_types(show_oz: bool) -> Vec<SessionType> {
     ALL_SESSION_TYPES
         .iter()
-        .filter(|st| show_oz || !matches!(st, SessionType::Oz))
+        .filter(|st| show_oz || !matches!(st, SessionType::Fuzz))
         .copied()
         .collect()
 }

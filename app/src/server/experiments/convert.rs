@@ -34,8 +34,8 @@ impl Display for ServerExperiment {
             }
             Self::FreeUserNoAiControl => "FREE_USER_NO_AI_CONTROL",
             Self::FreeUserNoAiExperiment => "FREE_USER_NO_AI_EXPERIMENT",
-            Self::OzMultiHarnessControl => "OZ_MULTI_HARNESS_CONTROL",
-            Self::OzMultiHarnessExperiment => "OZ_MULTI_HARNESS_EXPERIMENT",
+            Self::FuzzMultiHarnessControl => "FUZZ_MULTI_HARNESS_CONTROL",
+            Self::FuzzMultiHarnessExperiment => "FUZZ_MULTI_HARNESS_EXPERIMENT",
             #[cfg(test)]
             Self::TestExperiment => "TEST_EXPERIMENT",
         };
@@ -67,8 +67,8 @@ impl ServerExperiment {
             "PROMPT_SUGGESTIONS_VIA_MAA_EXPERIMENT" => Ok(Self::PromptSuggestionsViaMaaExperiment),
             "FREE_USER_NO_AI_CONTROL" => Ok(Self::FreeUserNoAiControl),
             "FREE_USER_NO_AI_EXPERIMENT" => Ok(Self::FreeUserNoAiExperiment),
-            "OZ_MULTI_HARNESS_CONTROL" => Ok(Self::OzMultiHarnessControl),
-            "OZ_MULTI_HARNESS_EXPERIMENT" => Ok(Self::OzMultiHarnessExperiment),
+            "FUZZ_MULTI_HARNESS_CONTROL" => Ok(Self::FuzzMultiHarnessControl),
+            "FUZZ_MULTI_HARNESS_EXPERIMENT" => Ok(Self::FuzzMultiHarnessExperiment),
             s => Err(anyhow::anyhow!(
                 "String doesn't match any server experiment variant {s}"
             )),
@@ -106,8 +106,8 @@ impl TryFrom<Experiment> for ServerExperiment {
             }
             Experiment::FreeUserNoAiControl => Ok(Self::FreeUserNoAiControl),
             Experiment::FreeUserNoAiExperiment => Ok(Self::FreeUserNoAiExperiment),
-            Experiment::OzMultiHarnessControl => Ok(Self::OzMultiHarnessControl),
-            Experiment::OzMultiHarnessExperiment => Ok(Self::OzMultiHarnessExperiment),
+            Experiment::FuzzMultiHarnessControl => Ok(Self::FuzzMultiHarnessControl),
+            Experiment::FuzzMultiHarnessExperiment => Ok(Self::FuzzMultiHarnessExperiment),
             // Experiments that we no longer support on the client.
             e => Err(anyhow::anyhow!(
                 "Server-side enabled experiment '{e:?}' is no longer supported by the client."

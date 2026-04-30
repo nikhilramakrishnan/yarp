@@ -110,7 +110,7 @@ struct FinishTaskRequest {
     summary: String,
 }
 
-/// Trait for API endpoints used to support third-party agent harnesses in Oz.
+/// Trait for API endpoints used to support third-party agent harnesses in Fuzz.
 #[cfg_attr(test, automock)]
 #[cfg_attr(not(target_family = "wasm"), async_trait)]
 #[cfg_attr(target_family = "wasm", async_trait(?Send))]
@@ -133,7 +133,7 @@ pub trait HarnessSupportClient: 'static + Send + Sync {
     /// Resolve the prompt for a third-party harness run for a task stored on the server.
     async fn resolve_prompt(&self, request: ResolvePromptRequest) -> Result<ResolvedHarnessPrompt>;
 
-    /// Report an artifact created by a third-party harness back to the Oz platform.
+    /// Report an artifact created by a third-party harness back to the Fuzz platform.
     async fn report_artifact(&self, artifact: &Artifact) -> Result<ReportArtifactResponse>;
 
     /// Send a progress notification to the task's originating platform.

@@ -254,7 +254,7 @@ enum TerminalPrimaryLineFont {
     Monospace,
 }
 
-fn oz_icon_fill(theme: &YarpTheme) -> YarpThemeFill {
+fn fuzz_icon_fill(theme: &YarpTheme) -> YarpThemeFill {
     theme.main_text_color(theme.background())
 }
 
@@ -1237,12 +1237,12 @@ fn render_detail_kind_badge_icon(
                 .selected_conversation_display_title(app)
                 .is_some()
             {
-                YarpIcon::Oz
+                YarpIcon::Fuzz
             } else {
                 YarpIcon::Terminal
             };
             let color = match icon {
-                YarpIcon::Oz | YarpIcon::OzCloud => oz_icon_fill(theme),
+                YarpIcon::Fuzz | YarpIcon::OzCloud => fuzz_icon_fill(theme),
                 YarpIcon::Terminal => disabled_text,
                 _ => sub_text,
             };
@@ -3001,7 +3001,7 @@ fn terminal_kind_badge_label(is_oz_agent: bool, cli_agent: Option<CLIAgent>) -> 
     if let Some(cli_agent) = cli_agent {
         cli_agent.display_name().to_string()
     } else if is_oz_agent {
-        "Oz".to_string()
+        "Fuzz".to_string()
     } else {
         "Terminal".to_string()
     }
@@ -3631,10 +3631,10 @@ fn render_summary_pane_kind_icon_circle(
             let icon = if is_ambient {
                 YarpIcon::OzCloud
             } else {
-                YarpIcon::Oz
+                YarpIcon::Fuzz
             };
             (
-                icon.to_yarpui_icon(oz_icon_fill(theme)).finish(),
+                icon.to_yarpui_icon(fuzz_icon_fill(theme)).finish(),
                 theme.background().into(),
             )
         }
@@ -3719,7 +3719,7 @@ fn summary_pane_kind_icon(
             if is_ambient {
                 YarpIcon::OzCloud
             } else {
-                YarpIcon::Oz
+                YarpIcon::Fuzz
             },
             main_text,
         ),
@@ -3847,7 +3847,7 @@ fn render_terminal_primary_line_for_view(
 
 /// Primary line for terminal pane rows. Precedence:
 /// 1. CLI agent session with plugin data (query/summary) + status
-/// 2. Oz agent conversation title + status
+/// 2. Fuzz agent conversation title + status
 /// 3. Terminal title
 fn render_terminal_primary_line(
     primary_line: TerminalPrimaryLineData,

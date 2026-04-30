@@ -657,7 +657,7 @@ pub enum FeatureFlag {
     /// Skills are loaded from `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/`
     /// directories to provide base prompts for agent runs.
     OzPlatformSkills,
-    /// Enables Oz identity federation commands.
+    /// Enables Fuzz identity federation commands.
     OzIdentityFederation,
 
     /// Gates populating/reading oz updates from channel versions in the changelog model.
@@ -672,7 +672,7 @@ pub enum FeatureFlag {
     /// Enables loading and returning bundled skills in the SkillManager.
     BundledSkills,
 
-    /// Enables the Oz launch modal for introducing cloud agent features.
+    /// Enables the Fuzz launch modal for introducing cloud agent features.
     OzLaunchModal,
 
     /// Enables the OpenYarp launch modal announcing Yarp going open-source.
@@ -1014,7 +1014,7 @@ impl FeatureFlag {
                 Some("Enables rendering markdown tables inline in AI block list responses.")
             }
             MarkdownTables => Some("Enables rendering and interaction support for markdown tables in notebooks."),
-            OzIdentityFederation => Some("Enables automatic authentication from Oz to AWS and GCP"),
+            OzIdentityFederation => Some("Enables automatic authentication from Fuzz to AWS and GCP"),
             SettingsFile => Some("Enables configuring Yarp via a user-editable `settings.toml` file, with hot reload and error reporting for invalid values."),
             GitOperationsInCodeReview => Some("Enables commit, push, and create-PR actions directly from the code review panel."),
             _ => None,

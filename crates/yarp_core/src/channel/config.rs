@@ -14,8 +14,8 @@ pub struct ChannelConfig {
 
     /// Configuration for talking to Yarp's servers.
     pub server_config: YarpServerConfig,
-    /// Configuration for Oz/ambient agents.
-    pub oz_config: OzConfig,
+    /// Configuration for Fuzz/ambient agents.
+    pub fuzz_config: OzConfig,
     /// Configuration for telemetry sending, or [`None`] if telemetry should be
     /// disabled for this build.
     pub telemetry_config: Option<TelemetryConfig>,
@@ -56,8 +56,8 @@ impl YarpServerConfig {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct OzConfig {
-    /// Root URL for the Oz (ambient agent management) dashboard.
-    pub oz_root_url: Cow<'static, str>,
+    /// Root URL for the Fuzz (ambient agent management) dashboard.
+    pub fuzz_root_url: Cow<'static, str>,
 
     /// URL to use as the audience when issuing workload identity tokens. If [`None`], falls back
     /// to [`YarpServerConfig::server_root_url`]. This exists so the audience is not overridden
@@ -69,7 +69,7 @@ impl OzConfig {
     pub fn production() -> Self {
         // See YarpServerConfig::production for rationale on localhost.invalid.
         Self {
-            oz_root_url: "https://localhost.invalid".into(),
+            fuzz_root_url: "https://localhost.invalid".into(),
             workload_audience_url: None,
         }
     }

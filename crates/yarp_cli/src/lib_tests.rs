@@ -1514,7 +1514,7 @@ fn agent_run_cloud_defaults_harness_to_oz() {
         panic!("Expected `yarp agent run-cloud` command");
     };
 
-    assert_eq!(run_args.harness, Harness::Oz);
+    assert_eq!(run_args.harness, Harness::Fuzz);
 }
 
 #[test]
@@ -1585,7 +1585,7 @@ fn agent_run_cloud_claude_auth_secret_without_harness_parses() {
         panic!("Expected `yarp agent run-cloud` command");
     };
 
-    assert_eq!(run_args.harness, Harness::Oz);
+    assert_eq!(run_args.harness, Harness::Fuzz);
     assert_eq!(run_args.claude_auth_secret.as_deref(), Some("my-key"));
 }
 

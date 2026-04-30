@@ -234,7 +234,7 @@ begin
 #elif ReleaseChannel == "oss"
     CmdScriptName := 'yarp-oss.cmd';
 #else
-    CmdScriptName := 'oz-{#ReleaseChannel}.cmd';
+    CmdScriptName := 'fuzz-{#ReleaseChannel}.cmd';
 #endif
 
     { Create the helper CMD script }

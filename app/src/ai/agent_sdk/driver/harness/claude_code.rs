@@ -34,7 +34,7 @@ use super::{
 mod parent_bridge;
 
 #[cfg(test)]
-use super::super::OZ_MESSAGE_LISTENER_STATE_ROOT_ENV;
+use super::super::FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV;
 use parent_bridge::MessageBridge;
 #[cfg(test)]
 use parent_bridge::{
@@ -227,7 +227,7 @@ impl ClaudeHarnessRunner {
     ) -> Result<Self, AgentDriverError> {
         // Write the prompt to a temp file so we can feed it via stdin redirect,
         // avoiding shell-quoting issues with complex content (e.g. skill instructions).
-        let temp_file = write_temp_file("oz_prompt_", prompt)?;
+        let temp_file = write_temp_file("fuzz_prompt_", prompt)?;
         let prompt_path = temp_file.path().display().to_string();
 
         let (session_id, preexisting_conversation_id, resuming) = match resume {
@@ -262,7 +262,7 @@ impl ClaudeHarnessRunner {
         };
 
         let temp_system_prompt_file = system_prompt
-            .map(|sp| write_temp_file("oz_system_prompt_", sp))
+            .map(|sp| write_temp_file("fuzz_system_prompt_", sp))
             .transpose()?;
         let system_prompt_path = temp_system_prompt_file
             .as_ref()

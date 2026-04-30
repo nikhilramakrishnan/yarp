@@ -35,7 +35,7 @@ pub(crate) enum IconWithStatusVariant {
     },
     /// A pre-built icon element on an overlay background.
     NeutralElement { icon_element: Box<dyn Element> },
-    /// An Oz agent icon on the theme background.
+    /// An Fuzz agent icon on the theme background.
     OzAgent {
         status: Option<ConversationStatus>,
         is_ambient: bool,
@@ -87,7 +87,7 @@ pub(crate) fn render_icon_with_status(
             let icon = if is_ambient {
                 YarpIcon::OzCloud
             } else {
-                YarpIcon::Oz
+                YarpIcon::Fuzz
             };
             let inner = ConstrainedBox::new(
                 icon.to_yarpui_icon(theme.main_text_color(theme.background()))

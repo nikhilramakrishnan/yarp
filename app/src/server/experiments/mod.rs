@@ -48,8 +48,8 @@ pub enum ServerExperiment {
     PromptSuggestionsViaMaaOutOfBandExperiment,
     FreeUserNoAiControl,
     FreeUserNoAiExperiment,
-    OzMultiHarnessControl,
-    OzMultiHarnessExperiment,
+    FuzzMultiHarnessControl,
+    FuzzMultiHarnessExperiment,
     /// A test-only experiment.
     /// Does not correspond to a real server-side experiment.
     #[cfg(test)]
@@ -143,10 +143,10 @@ impl ServerExperiment {
             Self::FreeUserNoAiExperiment => {
                 FeatureFlag::FreeUserNoAi.set_enabled(true);
             }
-            Self::OzMultiHarnessControl => {
+            Self::FuzzMultiHarnessControl => {
                 FeatureFlag::AgentHarness.set_enabled(false);
             }
-            Self::OzMultiHarnessExperiment => {
+            Self::FuzzMultiHarnessExperiment => {
                 FeatureFlag::AgentHarness.set_enabled(true);
             }
             #[cfg(test)]

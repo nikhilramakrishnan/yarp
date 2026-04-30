@@ -32,7 +32,7 @@ use yarpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewCon
 const DOCS_URL: &str = "https://docs.warp.dev/agent-platform/cloud-agents/overview";
 const ENV_DOCS_URL: &str =
     "https://docs.warp.dev/reference/cli/integration-setup#creating-an-environment";
-const OZ_URL: &str = "https://oz.warp.dev";
+const FUZZ_URL: &str = "https://oz.warp.dev";
 
 const CONTENT_MAX_WIDTH: f32 = 720.;
 
@@ -116,7 +116,7 @@ impl CloudSetupGuideView {
         );
 
         let visit_oz_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Visit Oz", SecondaryTheme)
+            ActionButton::new("Visit Fuzz", SecondaryTheme)
                 .on_click(|ctx| ctx.dispatch_typed_action(CloudSetupGuideAction::VisitOz))
         });
 
@@ -144,7 +144,7 @@ impl CloudSetupGuideView {
         let mut header_container = Flex::column().with_spacing(8.);
 
         let title = Text::new(
-            "Getting started with Oz cloud agents",
+            "Getting started with Fuzz cloud agents",
             appearance.ui_font_family(),
             title_font_size,
         )
@@ -154,7 +154,7 @@ impl CloudSetupGuideView {
         header_container.add_child(title);
 
         let subtitle = Text::new(
-            "Start Oz cloud agents directly in Yarp from an integration (Linear, Slack), with an event (GitHub, built-in schedule), or programmatically with the Oz SDK or CLI.",
+            "Start Fuzz cloud agents directly in Yarp from an integration (Linear, Slack), with an event (GitHub, built-in schedule), or programmatically with the Fuzz SDK or CLI.",
             appearance.ui_font_family(),
             subtitle_font_size,
         )
@@ -177,7 +177,7 @@ impl CloudSetupGuideView {
                 appearance
                     .ui_builder()
                     .link(
-                        "Oz documentation".to_string(),
+                        "Fuzz documentation".to_string(),
                         None,
                         Some(Box::new(|ctx| {
                             ctx.dispatch_typed_action(CloudSetupGuideAction::OpenDocs {
@@ -247,7 +247,7 @@ impl CloudSetupGuideView {
         let font_size = 16.;
 
         Text::new(
-            "Manual setup: Create a Slack or Linear integration with the Oz CLI",
+            "Manual setup: Create a Slack or Linear integration with the Fuzz CLI",
             appearance.ui_font_family(),
             font_size,
         )
@@ -652,7 +652,7 @@ impl TypedActionView for CloudSetupGuideView {
                 ));
             }
             CloudSetupGuideAction::VisitOz => {
-                ctx.open_url(OZ_URL);
+                ctx.open_url(FUZZ_URL);
                 send_telemetry_from_ctx!(
                     AgentManagementTelemetryEvent::SetupGuideStepRun {
                         step: SetupGuideStep::VisitOz

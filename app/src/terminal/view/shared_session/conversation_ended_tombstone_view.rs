@@ -130,13 +130,13 @@ impl TombstoneDisplayData {
         }
         if let Some(config) = &task.agent_config_snapshot {
             self.skill_name = config.name.clone();
-            // Default to Oz when the snapshot exists but has no explicit harness.
+            // Default to Fuzz when the snapshot exists but has no explicit harness.
             self.harness = Some(
                 config
                     .harness
                     .as_ref()
                     .map(|h| h.harness_type)
-                    .unwrap_or(Harness::Oz),
+                    .unwrap_or(Harness::Fuzz),
             );
         }
 
@@ -476,12 +476,12 @@ impl ConversationEndedTombstoneView {
 
         #[cfg(not(target_family = "wasm"))]
         {
-            // Hide for non-Oz harnesses (e.g. Claude, Gemini): they can't be
+            // Hide for non-Fuzz harnesses (e.g. Claude, Gemini): they can't be
             // forked into a local Yarp conversation. Unknown harness (None) is
             // treated as allowed so plain conversations and pre-load tasks still
             // show the button.
             let harness_allows_continue =
-                !matches!(self.display_data.harness, Some(h) if h != Harness::Oz);
+                !matches!(self.display_data.harness, Some(h) if h != Harness::Fuzz);
             if self.continue_locally_button.is_some()
                 && AISettings::as_ref(app).is_any_ai_enabled(app)
                 && harness_allows_continue

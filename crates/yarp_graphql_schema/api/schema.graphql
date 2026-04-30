@@ -37,7 +37,7 @@ directive @provides on FIELD_DEFINITION
 directive @requires on FIELD_DEFINITION
 
 """
-AIConversation represents an AI agent conversation that can be shared via Warp Drive.
+AIConversation represents an AI agent conversation that can be shared via Yarp Drive.
 """
 type AIConversation {
   """
@@ -74,7 +74,7 @@ type AIConversationFormat {
   """
   blockSnapshot: SerializedBlockFormat
 
-  """True if there's a Warp MAA task list available for this format."""
+  """True if there's a Yarp MAA task list available for this format."""
   hasTaskList: Boolean!
 }
 
@@ -216,7 +216,7 @@ enum AdminEnablementSetting {
 enum AgentHarness {
   CLAUDE_CODE
   GEMINI
-  OZ
+  FUZZ
 }
 
 """Controls how many agent identities (service accounts) a team can have."""
@@ -269,7 +269,7 @@ enum AgentTaskState {
   """A worker has claimed this task"""
   CLAIMED
 
-  """The task failed due to an internal Warp/system error"""
+  """The task failed due to an internal Yarp/system error"""
   ERROR
 
   """
@@ -715,7 +715,7 @@ type ConfirmFileArtifactUploadOutput implements Response {
 union ConfirmFileArtifactUploadResult = ConfirmFileArtifactUploadOutput | UserFacingError
 
 """
-A Warp Drive entity that can contain other objects. Today, all objects are either
+A Yarp Drive entity that can contain other objects. Today, all objects are either
 inside a folder or at the root of a drive.
 """
 union Container = FolderContainer | Space
@@ -740,12 +740,12 @@ type ConversationUsageMetadata {
 
   """
   Deprecated: Use yarpTokenUsage and byokTokenUsage instead.
-  This field combines both Warp API key and user API key usage.
+  This field combines both Yarp API key and user API key usage.
   """
   tokenUsage: [ModelTokenUsage!]! @deprecated(reason: "Use yarpTokenUsage and byokTokenUsage instead")
   toolUsageMetadata: ToolUsageMetadata!
 
-  """Token usage using the Warp API key, keyed by model."""
+  """Token usage using the Yarp API key, keyed by model."""
   yarpTokenUsage: [TokenUsage!]!
 }
 
@@ -1188,8 +1188,8 @@ enum Experiment {
   MULTI_ARM_REVERSE_AI_TRIAL_ONE_THOUSAND_REQUESTS
   OVERLIMIT_AGENT_MODE_CONTROL
   OVERLIMIT_AGENT_MODE_GRADUAL_ROLLOUT_EXPERIMENT
-  OZ_MULTI_HARNESS_CONTROL
-  OZ_MULTI_HARNESS_EXPERIMENT
+  FUZZ_MULTI_HARNESS_CONTROL
+  FUZZ_MULTI_HARNESS_EXPERIMENT
   PROMPT_SUGGESTIONS_VIA_MAA_CONTROL
   PROMPT_SUGGESTIONS_VIA_MAA_EXPERIMENT
   PROMPT_SUGGESTIONS_VIA_MAA_OOB

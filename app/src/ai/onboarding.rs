@@ -16,7 +16,7 @@ impl From<&LLMInfo> for OnboardingModelInfo {
         Self {
             id: llm.id.clone(),
             title: llm.display_name.clone(),
-            icon: llm.provider.icon().unwrap_or(Icon::Oz),
+            icon: llm.provider.icon().unwrap_or(Icon::Fuzz),
             requires_upgrade: matches!(llm.disable_reason, Some(DisableReason::RequiresUpgrade)),
             is_default: false,
         }

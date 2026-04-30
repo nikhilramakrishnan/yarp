@@ -2698,15 +2698,15 @@ pub fn enabled_features() -> HashSet<FeatureFlag> {
         FeatureFlag::LSPAsATool,
         #[cfg(feature = "inline_profile_selector")]
         FeatureFlag::InlineProfileSelector,
-        #[cfg(feature = "oz_platform_skills")]
+        #[cfg(feature = "fuzz_platform_skills")]
         FeatureFlag::OzPlatformSkills,
-        #[cfg(feature = "oz_identity_federation")]
+        #[cfg(feature = "fuzz_identity_federation")]
         FeatureFlag::OzIdentityFederation,
-        #[cfg(feature = "oz_changelog_updates")]
+        #[cfg(feature = "fuzz_changelog_updates")]
         FeatureFlag::OzChangelogUpdates,
         #[cfg(feature = "bundled_skills")]
         FeatureFlag::BundledSkills,
-        #[cfg(feature = "oz_launch_modal")]
+        #[cfg(feature = "fuzz_launch_modal")]
         FeatureFlag::OzLaunchModal,
         #[cfg(feature = "open_yarp_launch_modal")]
         FeatureFlag::OpenYarpLaunchModal,
@@ -2748,7 +2748,7 @@ pub fn enabled_features() -> HashSet<FeatureFlag> {
         FeatureFlag::TabConfigs,
         #[cfg(feature = "agent_harness")]
         FeatureFlag::AgentHarness,
-        #[cfg(feature = "oz_handoff")]
+        #[cfg(feature = "fuzz_handoff")]
         FeatureFlag::OzHandoff,
         #[cfg(feature = "hoa_notifications")]
         FeatureFlag::HOANotifications,

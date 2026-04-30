@@ -66,7 +66,7 @@ fn main() -> Result<()> {
             app_id: AppId::new("dev", "yarp", "Yarp"),
             logfile_name: "yarp.log".into(),
             server_config: YarpServerConfig::production(),
-            oz_config: OzConfig::production(),
+            fuzz_config: OzConfig::production(),
             telemetry_config: None,
             crash_reporting_config: None,
             autoupdate_config: None,

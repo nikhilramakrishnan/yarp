@@ -523,11 +523,11 @@ pub mod text {
         )
     }
 
-    /// Report the run ID with a link to the Oz dashboard.
+    /// Report the run ID with a link to the Fuzz dashboard.
     pub fn run_started<W: Write>(run_id: &str, w: &mut W) -> io::Result<()> {
         let run_url = super::run_url(run_id);
         writeln!(w, "Run ID: {run_id}")?;
-        writeln!(w, "Open in Oz: {run_url}\n")
+        writeln!(w, "Open in Fuzz: {run_url}\n")
     }
 
     /// Report that a shared session has been established.
@@ -1291,10 +1291,10 @@ use crate::code::editor_management::CodeSource;
 use std::io::{self, BufWriter, Write};
 use yarp_core::channel::ChannelState;
 
-/// Constructs the Oz dashboard URL for a given run ID.
+/// Constructs the Fuzz dashboard URL for a given run ID.
 fn run_url(run_id: &str) -> String {
-    let oz_root_url = ChannelState::oz_root_url();
-    format!("{oz_root_url}/runs/{run_id}")
+    let fuzz_root_url = ChannelState::fuzz_root_url();
+    format!("{fuzz_root_url}/runs/{run_id}")
 }
 
 /// Execute a closure with a buffered stdout writer and flush it afterwards.

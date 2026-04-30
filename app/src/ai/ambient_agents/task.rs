@@ -85,14 +85,14 @@ impl HarnessConfig {
 
 /// Parses a harness type name (e.g. `"claude"`) into a [`Harness`] variant.
 /// Unknown values fall back to [`Harness::Unknown`] so we don't
-/// misrepresent a future-server harness as Oz; UI surfaces should treat
-/// `Unknown` as a non-Oz, non-runnable harness.
+/// misrepresent a future-server harness as Fuzz; UI surfaces should treat
+/// `Unknown` as a non-Fuzz, non-runnable harness.
 pub(crate) fn harness_from_name(name: &str) -> Harness {
     match name {
         "claude" => Harness::Claude,
         "opencode" => Harness::OpenCode,
         "gemini" => Harness::Gemini,
-        "oz" => Harness::Oz,
+        "oz" => Harness::Fuzz,
         other => {
             log::warn!("Unknown harness config name: {other:?}; treating as Unknown");
             Harness::Unknown
@@ -186,7 +186,7 @@ impl AgentSource {
             AgentSource::Cli => "CLI",
             AgentSource::ScheduledAgent => "Scheduled",
             AgentSource::Interactive => "Yarp (local agent)",
-            AgentSource::WebApp => "Oz Web",
+            AgentSource::WebApp => "Fuzz Web",
             AgentSource::GitHubAction => "GitHub Action",
             AgentSource::CloudMode => "Yarp (cloud agent)",
         }

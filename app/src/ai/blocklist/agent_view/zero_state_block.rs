@@ -54,9 +54,9 @@ use crate::{
 };
 
 const CLOUD_AGENT_DOCS_URL: &str = "https://docs.warp.dev/agent-platform/cloud-agents/overview";
-const OZ_UPDATES_SECTION_HEADER: &str = "What's new in Oz";
+const FUZZ_UPDATES_SECTION_HEADER: &str = "What's new in Fuzz";
 
-// The maximum number of Oz updates from the changelog rendered in-line in the 'What's new in Oz section'.
+// The maximum number of Fuzz updates from the changelog rendered in-line in the 'What's new in Fuzz section'.
 const MAX_OZ_UPDATE_COUNT: usize = 4;
 
 const MAX_RECENT_CONVERSATION_COUNT: usize = 3;
@@ -68,7 +68,7 @@ struct StateHandles {
     switch_model: MouseStateHandle,
     exit: MouseStateHandle,
     init_callout: MouseStateHandle,
-    oz_updates: MouseStateHandle,
+    fuzz_updates: MouseStateHandle,
     changelog_link: MouseStateHandle,
     recent_conversations: [MouseStateHandle; MAX_RECENT_CONVERSATION_COUNT],
     update_hyperlinks: Vec<HighlightedHyperlink>,
@@ -197,15 +197,15 @@ impl AgentViewZeroStateBlock {
         let changelog_model = ChangelogModel::handle(ctx);
         ctx.subscribe_to_model(&changelog_model, |me, changelog_model, event, ctx| {
             if let changelog_model::Event::ChangelogRequestComplete { .. } = event {
-                let oz_update_count = changelog_model
+                let fuzz_update_count = changelog_model
                     .as_ref(ctx)
-                    .oz_updates
+                    .fuzz_updates
                     .len()
                     .min(MAX_OZ_UPDATE_COUNT);
-                if oz_update_count != me.state_handles.update_hyperlinks.len() {
+                if fuzz_update_count != me.state_handles.update_hyperlinks.len() {
                     me.state_handles
                         .update_hyperlinks
-                        .resize(oz_update_count, Default::default());
+                        .resize(fuzz_update_count, Default::default());
                 }
             }
         });
@@ -216,7 +216,7 @@ impl AgentViewZeroStateBlock {
                     AISettingsChangedEvent::ShouldShowOzUpdatesInZeroState { .. }
                 )
                 && FeatureFlag::OzChangelogUpdates.is_enabled()
-                && !ChangelogModel::as_ref(ctx).oz_updates.is_empty();
+                && !ChangelogModel::as_ref(ctx).fuzz_updates.is_empty();
             if should_rerender_for_oz_updates_visibility {
                 ctx.notify();
             }
@@ -226,7 +226,7 @@ impl AgentViewZeroStateBlock {
         state_handles.update_hyperlinks.resize(
             changelog_model
                 .as_ref(ctx)
-                .oz_updates
+                .fuzz_updates
                 .len()
                 .min(MAX_OZ_UPDATE_COUNT),
             Default::default(),
@@ -385,7 +385,7 @@ impl View for AgentViewZeroStateBlock {
 
         let header_props = if self.origin.is_cloud_agent() {
             HeaderProps {
-                title: "New Oz cloud agent conversation".into(),
+                title: "New Fuzz cloud agent conversation".into(),
                 description: AgentViewDescription::CloudModeWithDocsLink,
                 icon: Icon::OzCloud,
             }
@@ -401,9 +401,9 @@ impl View for AgentViewZeroStateBlock {
             }
 
             HeaderProps {
-                title: "New Oz agent conversation".into(),
+                title: "New Fuzz agent conversation".into(),
                 description: AgentViewDescription::PlainText(vec![local_description.into()]),
-                icon: Icon::Oz,
+                icon: Icon::Fuzz,
             }
         };
 
@@ -412,14 +412,14 @@ impl View for AgentViewZeroStateBlock {
             .with_children(render_title_and_description(header_props, app));
 
         if !self.origin.is_cloud_agent() {
-            if let Some(oz_updates_section) = render_oz_updates(
+            if let Some(fuzz_updates_section) = render_oz_updates(
                 OzUpdatesProps {
                     is_expanded: self.is_oz_updates_expanded,
                     state_handles: &self.state_handles,
                 },
                 app,
             ) {
-                content.add_children([Container::new(oz_updates_section)
+                content.add_children([Container::new(fuzz_updates_section)
                     .with_margin_top(8.)
                     .with_margin_bottom(16.)
                     .finish()]);
@@ -987,7 +987,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
     if !should_render_oz_updates_section(
         FeatureFlag::OzChangelogUpdates.is_enabled(),
         should_show_oz_updates,
-        !changelog_model.oz_updates.is_empty(),
+        !changelog_model.fuzz_updates.is_empty(),
     ) {
         return None;
     }
@@ -1033,7 +1033,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
                         .with_child(
                             Container::new(
                                 Text::new(
-                                    OZ_UPDATES_SECTION_HEADER,
+                                    FUZZ_UPDATES_SECTION_HEADER,
                                     appearance.ui_font_family(),
                                     appearance.monospace_font_size() - 2.,
                                 )
@@ -1047,13 +1047,13 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
                         .with_child(
                             Container::new(
                                 Text::new(
-                                    if changelog_model.oz_updates.len() == 1 {
+                                    if changelog_model.fuzz_updates.len() == 1 {
                                         "1 update".to_owned()
                                     } else {
                                         format!(
                                             "{} updates",
                                             changelog_model
-                                                .oz_updates
+                                                .fuzz_updates
                                                 .len()
                                                 .min(MAX_OZ_UPDATE_COUNT)
                                         )
@@ -1146,7 +1146,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
 
     if is_expanded {
         for (i, update) in changelog_model
-            .oz_updates
+            .fuzz_updates
             .iter()
             .enumerate()
             .take(MAX_OZ_UPDATE_COUNT)
@@ -1171,7 +1171,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
             .with_line_height_ratio(1.2)
             .finish();
 
-            if i < changelog_model.oz_updates.len().min(MAX_OZ_UPDATE_COUNT) - 1 {
+            if i < changelog_model.fuzz_updates.len().min(MAX_OZ_UPDATE_COUNT) - 1 {
                 text = Container::new(text).with_margin_bottom(8.).finish();
             }
             body.add_child(text);
@@ -1179,7 +1179,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
     }
 
     Some(
-        Hoverable::new(state_handles.oz_updates.clone(), |_| {
+        Hoverable::new(state_handles.fuzz_updates.clone(), |_| {
             Container::new(body.finish())
                 .with_vertical_padding(8.)
                 .with_horizontal_padding(12.)

@@ -572,7 +572,7 @@ default = [
     "cloud_mode_from_local_session",
     "cloud_mode_image_context",
     "agent_mode_computer_use",
-    "oz_platform_skills",
+    "fuzz_platform_skills",
     "sync_ambient_plans",
     "conversation_artifacts",
     "agent_view",
@@ -581,13 +581,13 @@ default = [
     "inline_slash_commands",
     "inline_history_menu",
     "inline_model_selector",
-    "oz_launch_modal",
+    "fuzz_launch_modal",
     "open_yarp_launch_modal",
     "new_tab_styling",
     "richtext_multiselect",
     "inline_profile_selector",
     "web_fetch_ui",
-    "oz_changelog_updates",
+    "fuzz_changelog_updates",
     "skill_arguments",
     "incremental_auto_reload",
     "active_conversation_requires_interaction",
@@ -716,7 +716,7 @@ mcp_server = []
 mcp_oauth = []
 mcp_debugging_ids = []
 notebook_parameter = []
-oz_changelog_updates = []
+fuzz_changelog_updates = []
 personal_cloud_objects = []
 # Remote-backed tty that connects to a PTY-like interface via a server.
 remote_tty = []
@@ -891,9 +891,9 @@ summarization_via_message_replacement = []
 lsp_as_a_tool = []
 inline_model_selector = ["agent_view"]
 inline_profile_selector = ["agent_view"]
-oz_platform_skills = []
-oz_identity_federation = []
-oz_launch_modal = []
+fuzz_platform_skills = []
+fuzz_identity_federation = []
+fuzz_launch_modal = []
 open_yarp_launch_modal = []
 new_tab_styling = []
 file_based_mcp = []
@@ -913,7 +913,7 @@ vertical_tabs = []
 vertical_tabs_summary_mode = []
 tab_configs = []
 agent_harness = []
-oz_handoff = []
+fuzz_handoff = []
 hoa_notifications = []
 open_code_notifications = []
 transfer_control_tool = []

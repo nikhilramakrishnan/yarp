@@ -64,7 +64,7 @@ fn artifact_upload_requires_auth() {
 #[test]
 #[serial_test::serial]
 fn run_message_send_telemetry_uses_canonical_harness_from_env() {
-    std::env::set_var("OZ_HARNESS", "  CLAUDE  ");
+    std::env::set_var("FUZZ_HARNESS", "  CLAUDE  ");
     let event = command_to_telemetry_event(&CliCommand::Run(TaskCommand::Message(
         MessageCommand::Send(MessageSendArgs {
             to: vec!["run-456".to_string()],
@@ -73,7 +73,7 @@ fn run_message_send_telemetry_uses_canonical_harness_from_env() {
             sender_run_id: "run-123".to_string(),
         }),
     )));
-    std::env::remove_var("OZ_HARNESS");
+    std::env::remove_var("FUZZ_HARNESS");
 
     assert_eq!(event.payload(), Some(json!({ "harness": "claude" })));
 }
@@ -81,7 +81,7 @@ fn run_message_send_telemetry_uses_canonical_harness_from_env() {
 #[test]
 #[serial_test::serial]
 fn run_message_send_telemetry_supports_claude_code_alias() {
-    std::env::set_var("OZ_HARNESS", "CLAUDE_CODE");
+    std::env::set_var("FUZZ_HARNESS", "CLAUDE_CODE");
     let event = command_to_telemetry_event(&CliCommand::Run(TaskCommand::Message(
         MessageCommand::Send(MessageSendArgs {
             to: vec!["run-456".to_string()],
@@ -90,7 +90,7 @@ fn run_message_send_telemetry_supports_claude_code_alias() {
             sender_run_id: "run-123".to_string(),
         }),
     )));
-    std::env::remove_var("OZ_HARNESS");
+    std::env::remove_var("FUZZ_HARNESS");
 
     assert_eq!(event.payload(), Some(json!({ "harness": "claude" })));
 }
@@ -98,7 +98,7 @@ fn run_message_send_telemetry_supports_claude_code_alias() {
 #[test]
 #[serial_test::serial]
 fn run_message_send_telemetry_supports_opencode_harness() {
-    std::env::set_var("OZ_HARNESS", "opencode");
+    std::env::set_var("FUZZ_HARNESS", "opencode");
     let event = command_to_telemetry_event(&CliCommand::Run(TaskCommand::Message(
         MessageCommand::Send(MessageSendArgs {
             to: vec!["run-456".to_string()],
@@ -107,7 +107,7 @@ fn run_message_send_telemetry_supports_opencode_harness() {
             sender_run_id: "run-123".to_string(),
         }),
     )));
-    std::env::remove_var("OZ_HARNESS");
+    std::env::remove_var("FUZZ_HARNESS");
 
     assert_eq!(event.payload(), Some(json!({ "harness": "opencode" })));
 }
@@ -115,7 +115,7 @@ fn run_message_send_telemetry_supports_opencode_harness() {
 #[test]
 #[serial_test::serial]
 fn run_message_send_telemetry_defaults_to_unknown_harness() {
-    std::env::remove_var("OZ_HARNESS");
+    std::env::remove_var("FUZZ_HARNESS");
     let event = command_to_telemetry_event(&CliCommand::Run(TaskCommand::Message(
         MessageCommand::Send(MessageSendArgs {
             to: vec!["run-456".to_string()],
@@ -131,7 +131,7 @@ fn run_message_send_telemetry_defaults_to_unknown_harness() {
 #[test]
 #[serial_test::serial]
 fn run_message_watch_telemetry_defaults_to_unknown_harness() {
-    std::env::remove_var("OZ_HARNESS");
+    std::env::remove_var("FUZZ_HARNESS");
     let event = command_to_telemetry_event(&CliCommand::Run(TaskCommand::Message(
         MessageCommand::Watch(MessageWatchArgs {
             run_id: "run-123".to_string(),

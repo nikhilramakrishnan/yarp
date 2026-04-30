@@ -35,7 +35,7 @@ const UNSUPPORTED_TMUX_VERSION_ERROR: &str =
     "The tmux version available on the remote machine is below 3.0. Please install tmux 3.0 or greater using a different method and try again.";
 const TMUX_FAILED_ERROR: &str =
     "tmux failed to execute on the remote machine. Please re-install tmux and try again.";
-const WARPIFY_TIMEOUT_ERROR: &str = "Yarpifying the session hit a timeout.";
+const YARPIFY_TIMEOUT_ERROR: &str = "Yarpifying the session hit a timeout.";
 const UNSUPPORTED_SHELL_ERROR: &str =
     "Unsupported shell. Please set bash, zsh, or fish as your default shell and try again.";
 const TMUX_INSTALL_FAILED_ERROR: &str =
@@ -63,7 +63,7 @@ impl YarpificationUnavailableReason {
                 UNSUPPORTED_TMUX_VERSION_ERROR
             }
             YarpificationUnavailableReason::TmuxFailed => TMUX_FAILED_ERROR,
-            YarpificationUnavailableReason::Timeout { .. } => WARPIFY_TIMEOUT_ERROR,
+            YarpificationUnavailableReason::Timeout { .. } => YARPIFY_TIMEOUT_ERROR,
             YarpificationUnavailableReason::UnsupportedShell { .. } => UNSUPPORTED_SHELL_ERROR,
             YarpificationUnavailableReason::TmuxInstallFailed { .. } => TMUX_INSTALL_FAILED_ERROR,
         }

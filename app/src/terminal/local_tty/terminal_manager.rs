@@ -1902,7 +1902,7 @@ impl TerminalManager {
                     return;
                 }
 
-                // Execute the agent prompt in the Oz-harness case
+                // Execute the agent prompt in the Fuzz-harness case
                 terminal_view.update(ctx, |view, ctx| {
                     // Clear the sharer's input (as the prompt in the input is now being executed)
                     view.input().update(ctx, |input, ctx| {

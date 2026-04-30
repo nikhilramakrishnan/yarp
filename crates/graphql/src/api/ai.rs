@@ -120,7 +120,7 @@ pub enum AIConversationArtifact {
 
 #[derive(cynic::Enum, Clone, Debug, PartialEq)]
 pub enum AgentHarness {
-    Oz,
+    Fuzz,
     ClaudeCode,
     Gemini,
     #[cynic(fallback)]

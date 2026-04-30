@@ -2,7 +2,7 @@
 //!
 //! Subcommands:
 //! - [`ping`] — fetches the current run by task ID and prints its info.
-//! - [`report_artifact`] — reports an artifact (e.g. a PR) back to the Oz platform.
+//! - [`report_artifact`] — reports an artifact (e.g. a PR) back to the Fuzz platform.
 use anyhow::Result;
 use yarp_cli::agent::OutputFormat;
 use yarp_cli::harness_support::{
@@ -86,7 +86,7 @@ fn ping(
     Ok(())
 }
 
-/// Report an artifact back to the Oz platform.
+/// Report an artifact back to the Fuzz platform.
 fn report_artifact(
     ctx: &mut AppContext,
     runner: ModelHandle<HarnessSupportRunner>,

@@ -101,7 +101,7 @@ impl AppIconSettings {
                 Channel::Dev => "dev",
                 Channel::Preview => "preview",
                 Channel::Local => "local",
-                _ => "warp_2",
+                _ => "yarp_2",
             },
             AppIcon::Classic1 => "classic_1",
             AppIcon::Classic2 => "classic_2",

@@ -276,7 +276,7 @@ impl CodeFooterView {
     fn create_tab_config_skill_button(ctx: &mut ViewContext<Self>) -> ViewHandle<ActionButton> {
         ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("/update-tab-config", NakedTheme)
-                .with_icon(Icon::Oz)
+                .with_icon(Icon::Fuzz)
                 .with_size(ButtonSize::Small)
                 .with_disabled_theme(PaneHeaderTheme)
                 .on_click(|ctx| {
@@ -1730,7 +1730,7 @@ impl View for CodeFooterView {
                     Self::render_status_text(
                         theme,
                         appearance,
-                        "Use Oz to update this config".to_string(),
+                        "Use Fuzz to update this config".to_string(),
                     ),
                 )
                 .finish(),

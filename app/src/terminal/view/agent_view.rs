@@ -125,7 +125,7 @@ impl TerminalView {
                     );
                     return;
                 };
-                // For Oz conversations, restore data and then re-enter agent view (the
+                // For Fuzz conversations, restore data and then re-enter agent view (the
                 // conversation will be in memory after restoration).
                 // For CLI agent conversations, restore the block snapshot only. Because we
                 // don't update the in-memory model in this case, attempting to re-enter agent
@@ -134,7 +134,7 @@ impl TerminalView {
                 #[allow(clippy::type_complexity)]
                 let on_restored: Box<
                     dyn FnOnce(&mut Self, &mut ViewContext<Self>),
-                > = if matches!(&conversation, CloudConversationData::Oz(_)) {
+                > = if matches!(&conversation, CloudConversationData::Fuzz(_)) {
                     Box::new(move |me, ctx| {
                         me.enter_agent_view_for_conversation(
                             initial_prompt,

@@ -26,7 +26,7 @@ const HERO_HEIGHT: f32 = 92.;
 const HERO_IMAGE_PATH: &str = "async/png/onboarding/openyarp_launch_banner.png";
 const REPO_URL: &str = "https://github.com/warpdotdev/warp";
 const CONTRIBUTING_URL: &str = "https://github.com/warpdotdev/warp/blob/master/CONTRIBUTING.md";
-const OZ_URL: &str = "https://oz.warp.dev";
+const FUZZ_URL: &str = "https://oz.warp.dev";
 
 struct InlineLink {
     text: &'static str,
@@ -52,12 +52,12 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
         }),
     },
     FeatureItem {
-        icon: Icon::Oz,
+        icon: Icon::Fuzz,
         title: "Open Automated Development",
-        description: "The Yarp repo is managed by an agent-first workflow powered by Oz, our cloud agent orchestration platform.",
+        description: "The Yarp repo is managed by an agent-first workflow powered by Fuzz, our cloud agent orchestration platform.",
         inline_link: Some(InlineLink {
-            text: "Oz",
-            url: OZ_URL,
+            text: "Fuzz",
+            url: FUZZ_URL,
         }),
     },
     FeatureItem {

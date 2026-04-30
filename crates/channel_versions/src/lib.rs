@@ -176,7 +176,7 @@ pub struct Changelog {
     #[serde(default)]
     pub image_url: Option<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub oz_updates: Vec<String>,
+    pub fuzz_updates: Vec<String>,
 }
 
 // Default value for when the changelog JSON doesn't have the markdown_sections field

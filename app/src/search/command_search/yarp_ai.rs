@@ -74,7 +74,7 @@ impl SearchItem for YarpAISearchItem {
         };
 
         let icon = if FeatureFlag::AgentMode.is_enabled() {
-            UIIcon::Oz
+            UIIcon::Fuzz
                 .to_yarpui_icon(
                     appearance
                         .theme()

@@ -132,7 +132,7 @@ const SIDEBAR_WIDTH_DEFAULT: f32 = 200.;
 /// Wider sidebar used when the settings-file footer is enabled. Sized to
 /// match Figma's settings nav rail (223px alert + 12px horizontal padding
 /// on each side + 1px right border), giving the error-alert footer enough
-/// room to render its "Open file" and "Fix with Oz" buttons side-by-side
+/// room to render its "Open file" and "Fix with Fuzz" buttons side-by-side
 /// with the designed 24px indent and 8px internal padding.
 const SIDEBAR_WIDTH_WITH_FOOTER: f32 = 248.;
 
@@ -246,7 +246,7 @@ impl Display for SettingsSection {
             SettingsSection::CodeIndexing => write!(f, "Indexing and projects"),
             SettingsSection::EditorAndCodeReview => write!(f, "Editor and Code Review"),
             SettingsSection::CloudEnvironments => write!(f, "Environments"),
-            SettingsSection::OzCloudAPIKeys => write!(f, "Oz Cloud API Keys"),
+            SettingsSection::OzCloudAPIKeys => write!(f, "Fuzz Cloud API Keys"),
             SettingsSection::AIProvider => write!(f, "AI Provider"),
             _ => write!(f, "{self:?}"),
         }
@@ -340,8 +340,8 @@ impl FromStr for SettingsSection {
             "Teams" => Ok(Self::Teams),
             "Yarpify" => Ok(Self::Yarpify),
             "YarpDrive" | "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
-            // This page was called "Oz" at one point, keep for backward compatibility.
-            "Oz" | "Yarp Agent" => Ok(Self::YarpAgent),
+            // This page was called "Fuzz" at one point, keep for backward compatibility.
+            "Fuzz" | "Yarp Agent" => Ok(Self::YarpAgent),
             "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
             "MCP servers" | "AgentMCPServers" => Ok(Self::AgentMCPServers),
             "Knowledge" => Ok(Self::Knowledge),
@@ -349,7 +349,7 @@ impl FromStr for SettingsSection {
             "Indexing and projects" | "CodeIndexing" => Ok(Self::CodeIndexing),
             "Editor and Code Review" | "EditorAndCodeReview" => Ok(Self::EditorAndCodeReview),
             "CloudEnvironments" => Ok(Self::CloudEnvironments),
-            "Oz Cloud API Keys" | "OzCloudAPIKeys" => Ok(Self::OzCloudAPIKeys),
+            "Fuzz Cloud API Keys" | "OzCloudAPIKeys" => Ok(Self::OzCloudAPIKeys),
             _ => Err(()),
         }
     }
@@ -2272,7 +2272,7 @@ impl View for SettingsView {
         let appearance = Appearance::as_ref(app);
 
         // For AI subpages, the backing SettingsPage has a different section
-        // (e.g. Oz -> AI, AgentMCPServers -> MCPServers).
+        // (e.g. Fuzz -> AI, AgentMCPServers -> MCPServers).
         let content_page_section = self.current_settings_page.parent_page_section();
         let (page, current_page_handle) = if settings_pages.is_empty() {
             (self.render_search_zero_state(appearance), None)

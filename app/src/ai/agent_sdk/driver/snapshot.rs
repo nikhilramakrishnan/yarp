@@ -50,11 +50,11 @@ const DEFAULT_DECLARATIONS_FILENAME: &str = "snapshot-declarations.jsonl";
 const DECLARATION_VERSION: u32 = 1;
 
 /// Env var override for the declarations file path (useful for tests and operators).
-const DECLARATIONS_PATH_ENV_VAR: &str = "OZ_SNAPSHOT_DECLARATIONS_FILE";
+const DECLARATIONS_PATH_ENV_VAR: &str = "FUZZ_SNAPSHOT_DECLARATIONS_FILE";
 
 /// Env var pointing directly at the declarations-generator script.
-/// Set by `entrypoint.sh` in containerized runs and by `oz-local --docker-dir` in local dev.
-const DECLARATIONS_SCRIPT_PATH_ENV_VAR: &str = "OZ_SNAPSHOT_DECLARATIONS_SCRIPT";
+/// Set by `entrypoint.sh` in containerized runs and by `fuzz-local --docker-dir` in local dev.
+const DECLARATIONS_SCRIPT_PATH_ENV_VAR: &str = "FUZZ_SNAPSHOT_DECLARATIONS_SCRIPT";
 
 /// Upper bound on declarations-script runtime. If the script takes longer we log an error and
 /// move on; the upload step then reads whatever the file already contains (possibly nothing).
@@ -102,7 +102,7 @@ struct DeclarationLine {
 /// Invoke `snapshot-declarations.sh` to (re)generate the declarations file consumed by the
 /// rest of the upload pipeline.
 ///
-/// The script path resolves from `$OZ_SNAPSHOT_DECLARATIONS_SCRIPT`, the scan root defaults to
+/// The script path resolves from `$FUZZ_SNAPSHOT_DECLARATIONS_SCRIPT`, the scan root defaults to
 /// `working_dir` (the agent's workspace), and writes to the per-run declarations file resolved
 /// from `task_id`. The script appends to the file if it already exists, so
 /// repeated invocations within a single run accumulate repos instead of clobbering.
@@ -138,7 +138,7 @@ pub(super) async fn run_declarations_script(
     //
     // Setting `current_dir` ensures `$PWD` in the bash script is the workspace even when the
     // driver process's own CWD has drifted (e.g. the macOS startup path does `cd $HOME`).
-    // Setting `OZ_SNAPSHOT_DECLARATIONS_FILE` keeps the script and the upload pipeline in sync
+    // Setting `FUZZ_SNAPSHOT_DECLARATIONS_FILE` keeps the script and the upload pipeline in sync
     // on which file to read/write.
     let declarations_path = resolve_declarations_path(Some(task_id));
     log::info!(
@@ -183,7 +183,7 @@ pub(super) async fn run_declarations_script(
 
 /// Resolve the declarations file path from the process env and optional task ID.
 ///
-/// Reads `$OZ_SNAPSHOT_DECLARATIONS_FILE` for the operator/test override, then delegates to
+/// Reads `$FUZZ_SNAPSHOT_DECLARATIONS_FILE` for the operator/test override, then delegates to
 /// [`resolve_declarations_path_with_override`] so tests can exercise the pure logic without
 /// racing on the shared env var.
 fn resolve_declarations_path(task_id: Option<&AmbientAgentTaskId>) -> PathBuf {
@@ -193,7 +193,7 @@ fn resolve_declarations_path(task_id: Option<&AmbientAgentTaskId>) -> PathBuf {
 /// Pure resolver: returns the declarations file path given an explicit override.
 ///
 /// Precedence:
-/// 1. `override_path` (from `$OZ_SNAPSHOT_DECLARATIONS_FILE` in production).
+/// 1. `override_path` (from `$FUZZ_SNAPSHOT_DECLARATIONS_FILE` in production).
 /// 2. `{DEFAULT_DECLARATIONS_DIR}/<task-id>/{DEFAULT_DECLARATIONS_FILENAME}` when a task ID
 ///    is provided, so concurrent runs don't clobber each other's declarations.
 /// 3. `{DEFAULT_DECLARATIONS_DIR}/{DEFAULT_DECLARATIONS_FILENAME}` as a final fallback.

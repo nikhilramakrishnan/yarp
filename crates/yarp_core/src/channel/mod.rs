@@ -51,10 +51,10 @@ impl Channel {
     pub fn cli_command_name(&self) -> &'static str {
         match self {
             Channel::Stable => "oz",
-            Channel::Dev => "oz-dev",
-            Channel::Preview => "oz-preview",
-            Channel::Local => "oz-local",
-            Channel::Integration => "oz-integration",
+            Channel::Dev => "fuzz-dev",
+            Channel::Preview => "fuzz-preview",
+            Channel::Local => "fuzz-local",
+            Channel::Integration => "fuzz-integration",
             Channel::Oss => "yarp",
         }
     }

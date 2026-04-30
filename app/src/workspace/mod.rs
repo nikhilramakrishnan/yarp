@@ -111,7 +111,7 @@ pub fn init(app: &mut AppContext) {
     crate::tab_configs::remove_confirmation_dialog::init(app);
     hoa_onboarding::init(app);
     tab_configs::session_config_modal::init(app);
-    view::launch_modal::oz_launch::init(app);
+    view::launch_modal::fuzz_launch::init(app);
     view::openyarp_launch_modal::init(app);
     view::cloud_agent_capacity_modal::init(app);
     view::codex_modal::init(app);
@@ -204,14 +204,14 @@ pub fn init(app: &mut AppContext) {
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:open_oz_launch_modal",
-                    "[Debug] Open Oz Launch Modal",
+                    "workspace:open_fuzz_launch_modal",
+                    "[Debug] Open Fuzz Launch Modal",
                     WorkspaceAction::OpenOzLaunchModal,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:reset_oz_launch_modal_state",
-                    "[Debug] Reset Oz Launch Modal State",
+                    "workspace:reset_fuzz_launch_modal_state",
+                    "[Debug] Reset Fuzz Launch Modal State",
                     WorkspaceAction::ResetOzLaunchModalState,
                 )
                 .with_context_predicate(id!("Workspace")),
@@ -1088,14 +1088,14 @@ pub fn init(app: &mut AppContext) {
         app.register_editable_bindings([
             EditableBinding::new(
                 "workspace:install_cli",
-                "Install Oz CLI command",
+                "Install Fuzz CLI command",
                 WorkspaceAction::InstallCLI,
             )
             .with_group(bindings::BindingGroup::Settings.as_str())
             .with_context_predicate(id!("Workspace")),
             EditableBinding::new(
                 "workspace:uninstall_cli",
-                "Uninstall Oz CLI command",
+                "Uninstall Fuzz CLI command",
                 WorkspaceAction::UninstallCLI,
             )
             .with_group(bindings::BindingGroup::Settings.as_str())
@@ -1507,7 +1507,7 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
         EditableBinding::new(
             "workspace:send_feedback",
             BindingDescription::new("Send feedback (opens external link)").with_dynamic_override(
-                |ctx| is_feedback_skill_available(ctx).then(|| "Send feedback with Oz".into()),
+                |ctx| is_feedback_skill_available(ctx).then(|| "Send feedback with Fuzz".into()),
             ),
             WorkspaceAction::SendFeedback,
         )

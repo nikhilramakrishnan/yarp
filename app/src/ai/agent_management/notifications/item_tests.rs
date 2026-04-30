@@ -12,7 +12,7 @@ fn make_conversation_notification(
         "test".to_owned(),
         "msg".to_owned(),
         NotificationCategory::Complete,
-        NotificationSourceAgent::Oz,
+        NotificationSourceAgent::Fuzz,
         NotificationOrigin::Conversation(conversation_id),
         false,
         terminal_view_id,
