@@ -22,7 +22,7 @@ use yarpui::{
 };
 
 use crate::resource_center::{mark_feature_used_and_write_to_user_defaults, Tip, TipAction};
-use crate::themes::theme::{RespectSystemTheme, ThemeKind, WarpTheme};
+use crate::themes::theme::{RespectSystemTheme, ThemeKind, YarpTheme};
 use crate::util::traffic_lights::traffic_light_data;
 use crate::workspace::PANEL_HEADER_HEIGHT;
 use crate::{
@@ -794,16 +794,16 @@ impl ThemeChooser {
                     .collect::<Vec<_>>()
                     .into_iter()
             });
-            let warp_theme = appearance.theme();
+            let yarp_theme = appearance.theme();
 
             Scrollable::vertical(
                 self.scroll_state.clone(),
                 list.finish_scrollable(),
                 SCROLLBAR_WIDTH,
-                warp_theme
-                    .disabled_text_color(warp_theme.surface_2())
+                yarp_theme
+                    .disabled_text_color(yarp_theme.surface_2())
                     .into(),
-                warp_theme.main_text_color(warp_theme.surface_2()).into(),
+                yarp_theme.main_text_color(yarp_theme.surface_2()).into(),
                 Fill::None,
             )
             .finish()
@@ -878,21 +878,21 @@ impl View for ThemeChooser {
 #[derive(Clone)]
 struct ThemeChooserItem {
     pub kind: ThemeKind,
-    warp_theme: WarpTheme,
+    yarp_theme: YarpTheme,
     mouse_state: MouseStateHandle,
 }
 
 impl ThemeChooserItem {
-    pub fn new(kind: ThemeKind, warp_theme: WarpTheme) -> Self {
+    pub fn new(kind: ThemeKind, yarp_theme: YarpTheme) -> Self {
         Self {
             kind,
-            warp_theme,
+            yarp_theme,
             mouse_state: MouseStateHandle::default(),
         }
     }
 
     fn render_thumbnail(&self, font_family: FamilyId) -> Box<dyn Element> {
-        theme::render_preview(&self.warp_theme, font_family, None)
+        theme::render_preview(&self.yarp_theme, font_family, None)
     }
 
     pub fn render(

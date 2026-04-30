@@ -20,7 +20,7 @@ use crate::{
 use crate::{editor::Event as EditorEvent, send_telemetry_from_ctx};
 use crate::{server::telemetry::TelemetryEvent, user_config::WarpConfig};
 use crate::{
-    themes::theme::{self, Blend, WarpTheme},
+    themes::theme::{self, Blend, YarpTheme},
     user_config::WarpConfigUpdateEvent,
 };
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
@@ -339,7 +339,7 @@ impl SelectionState {
         }
     }
 
-    fn background_color(&self, theme: &WarpTheme) -> theme::Fill {
+    fn background_color(&self, theme: &YarpTheme) -> theme::Fill {
         match self {
             SelectionState::Unselected => theme.surface_2(),
             SelectionState::Selected => theme.surface_2().blend(&theme.accent_overlay()),

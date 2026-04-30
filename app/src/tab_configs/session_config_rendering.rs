@@ -16,7 +16,7 @@ use yarpui::Element;
 use yarpui::EventContext;
 
 use yarp_core::ui::theme::Fill;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 
 use crate::appearance::Appearance;
 use crate::tab_configs::session_config::SessionType;
@@ -32,7 +32,7 @@ const PILL_GAP: f32 = 8.;
 fn session_type_item_color(
     is_selected: bool,
     on_accent_bg: bool,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     bg_fill: Fill,
 ) -> ColorU {
     if on_accent_bg {

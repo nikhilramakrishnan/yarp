@@ -3,7 +3,7 @@ use std::{borrow::Cow, cell::RefCell};
 use yarp_core::ui::{
     appearance::Appearance,
     builder::UiBuilder,
-    theme::{color::internal_colors, WarpTheme},
+    theme::{color::internal_colors, YarpTheme},
 };
 use yarpui::{
     clipboard::ClipboardContent,
@@ -276,7 +276,7 @@ impl TerminationType {
 
 fn inverted_color_ui_builder(appearance: &Appearance) -> UiBuilder {
     let theme = appearance.theme();
-    let theme = WarpTheme::new(
+    let theme = YarpTheme::new(
         theme.foreground(),
         theme.background().into_solid(),
         theme.background(),

@@ -87,7 +87,7 @@ use yarp_core::ui::color::contrast::{
     foreground_color_with_minimum_contrast, MinimumAllowedContrast,
 };
 use yarp_core::ui::color::Rgb;
-use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::theme::{Fill, YarpTheme};
 use yarpui::elements::{Highlight, HighlightedRange, Text};
 use yarpui::fonts::Properties;
 use yarpui::platform::Cursor;
@@ -433,7 +433,7 @@ pub(crate) fn add_highlights_to_rich_text(
     find_context: Option<FindContext<'_>>,
     location_index: usize,
     line_count: usize,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     is_selecting: bool,
     is_action: bool,
     app: &AppContext,

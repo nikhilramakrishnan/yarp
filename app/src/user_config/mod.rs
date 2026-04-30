@@ -14,7 +14,7 @@ use lazy_static::lazy_static;
 #[cfg(feature = "local_fs")]
 use std::path::Path;
 use std::path::PathBuf;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::{Entity, ModelContext, SingletonEntity};
 
 #[cfg(test)]
@@ -145,7 +145,7 @@ impl WarpConfig {
     pub fn add_new_theme_to_config(
         &mut self,
         theme_name: ThemeKind,
-        theme: WarpTheme,
+        theme: YarpTheme,
         ctx: &mut ModelContext<Self>,
     ) {
         self.theme_config.add_new_theme(theme_name, theme);

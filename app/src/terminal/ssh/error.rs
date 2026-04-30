@@ -9,7 +9,7 @@ use markdown_parser::FormattedText;
 use markdown_parser::FormattedTextFragment;
 use markdown_parser::FormattedTextLine;
 use yarp_core::channel::ChannelState;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::elements::HighlightedHyperlink;
 use yarpui::elements::Hoverable;
 use yarpui::elements::Icon;
@@ -170,7 +170,7 @@ impl SshErrorBlock {
     fn render_title_ui(
         &self,
         app: &AppContext,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let header_contents = warpify::render::build_header_row(

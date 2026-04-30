@@ -2,7 +2,7 @@ use async_io::block_on;
 use pathfinder_color::ColorU;
 use plist::{Dictionary, Value};
 use virtual_fs::{Stub, VirtualFS};
-use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::theme::{Fill, YarpTheme};
 use yarpui::{fonts::FontInfo, keymap::Keystroke};
 
 use crate::settings::import::{
@@ -105,10 +105,10 @@ fn test_color_dictionary_to_coloru() {
 }
 
 #[test]
-fn test_into_warp_theme_valid() {
-    let theme: WarpTheme = solarized_dark_theme()
-        .into_warp_theme("", &default_dark_theme())
-        .expect("Should be able to convert into WarpTheme");
+fn test_into_yarp_theme_valid() {
+    let theme: YarpTheme = solarized_dark_theme()
+        .into_yarp_theme("", &default_dark_theme())
+        .expect("Should be able to convert into YarpTheme");
     assert_eq!(
         theme.accent(),
         Fill::Solid(ColorU {
@@ -139,9 +139,9 @@ fn test_into_warp_theme_valid() {
 }
 
 #[test]
-fn test_into_warp_theme_invalid() {
+fn test_into_yarp_theme_invalid() {
     default_dark_theme()
-        .into_warp_theme("", &default_dark_theme())
+        .into_yarp_theme("", &default_dark_theme())
         .expect_err("Should return an error if the theme is not sufficiently configured.");
 }
 
@@ -171,14 +171,14 @@ fn test_import_from_file() {
 
         let config = profile.parse(&[]);
 
-        let ThemeType::Single(ref warp_theme) =
+        let ThemeType::Single(ref yarp_theme) =
             config.theme.value().as_ref().expect("Should import theme!")
         else {
             panic!("Should have read a single theme!")
         };
 
         assert_eq!(
-            warp_theme.accent(),
+            yarp_theme.accent(),
             Fill::Solid(ColorU {
                 r: 255,
                 g: 165,
@@ -187,7 +187,7 @@ fn test_import_from_file() {
             })
         );
         assert_eq!(
-            warp_theme.background(),
+            yarp_theme.background(),
             Fill::Solid(ColorU {
                 r: 0,
                 g: 0,
@@ -196,7 +196,7 @@ fn test_import_from_file() {
             })
         );
         assert_eq!(
-            warp_theme.foreground(),
+            yarp_theme.foreground(),
             Fill::Solid(ColorU {
                 r: 187,
                 g: 187,

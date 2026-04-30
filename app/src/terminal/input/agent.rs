@@ -600,11 +600,11 @@ impl Input {
 
 pub mod styles {
     use pathfinder_color::ColorU;
-    use yarp_core::ui::theme::WarpTheme;
+    use yarp_core::ui::theme::YarpTheme;
 
     use crate::ui_components::blended_colors;
 
-    pub fn default_border_color(theme: &WarpTheme) -> ColorU {
+    pub fn default_border_color(theme: &YarpTheme) -> ColorU {
         blended_colors::neutral_2(theme)
     }
 }

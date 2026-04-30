@@ -299,9 +299,9 @@ impl Input {
 
 pub mod styles {
     use pathfinder_color::ColorU;
-    use yarp_core::ui::theme::WarpTheme;
+    use yarp_core::ui::theme::YarpTheme;
 
-    pub fn default_border_color(theme: &WarpTheme) -> ColorU {
+    pub fn default_border_color(theme: &YarpTheme) -> ColorU {
         theme.outline().into()
     }
 }

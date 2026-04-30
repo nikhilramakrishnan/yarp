@@ -12,7 +12,7 @@ use crate::workspace::WorkspaceAction;
 use channel_versions::overrides::TargetOS;
 use parking_lot::RwLock;
 use yarp_core::semantic_selection::SemanticSelection;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::elements::{
     CrossAxisAlignment, Icon, MainAxisAlignment, MainAxisSize, MouseStateHandle, SelectableArea,
     SelectionHandle, Text,
@@ -145,7 +145,7 @@ impl WarpifySuccessBlock {
 
     pub fn render_spawning_command(
         &self,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let spawning_command = self.spawning_command.clone();
@@ -154,7 +154,7 @@ impl WarpifySuccessBlock {
             .finish()
     }
 
-    pub fn render_title_ui(&self, theme: &WarpTheme, appearance: &Appearance) -> Box<dyn Element> {
+    pub fn render_title_ui(&self, theme: &YarpTheme, appearance: &Appearance) -> Box<dyn Element> {
         let header_contents = render::build_header_row(
             "Session Yarpified",
             Icon::new(UiIcon::Yarp.into(), theme.active_ui_detail()),

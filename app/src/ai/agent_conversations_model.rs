@@ -33,7 +33,7 @@ use yarp_cli::agent::Harness;
 use yarp_core::execution_mode::AppExecutionMode;
 use yarp_core::features::FeatureFlag;
 use yarp_core::report_error;
-use yarp_core::ui::theme::{color::internal_colors, WarpTheme};
+use yarp_core::ui::theme::{color::internal_colors, YarpTheme};
 use yarpui::color::ColorU;
 use yarpui::r#async::Timer;
 use yarpui::windowing::{StateEvent, WindowManager};
@@ -332,7 +332,7 @@ impl AgentRunDisplayStatus {
         )
     }
 
-    pub fn status_icon_and_color(&self, theme: &WarpTheme) -> (Icon, ColorU) {
+    pub fn status_icon_and_color(&self, theme: &YarpTheme) -> (Icon, ColorU) {
         match self {
             AgentRunDisplayStatus::TaskQueued
             | AgentRunDisplayStatus::TaskPending

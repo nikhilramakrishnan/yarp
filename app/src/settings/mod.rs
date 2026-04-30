@@ -118,7 +118,7 @@ impl SettingsFileError {
 use crate::{
     root_view::QuakeModePinPosition,
     terminal::{BlockListSettings, BlockPadding},
-    themes::theme::{ThemeKind, WarpTheme},
+    themes::theme::{ThemeKind, YarpTheme},
     user_config::WarpConfig,
 };
 use lazy_static::lazy_static;
@@ -516,7 +516,7 @@ impl Settings {
             })
     }
 
-    pub fn theme_for_theme_kind(theme_kind: &ThemeKind, ctx: &mut AppContext) -> WarpTheme {
+    pub fn theme_for_theme_kind(theme_kind: &ThemeKind, ctx: &mut AppContext) -> YarpTheme {
         match theme_kind {
             ThemeKind::InMemory(in_memory_theme) => in_memory_theme.theme(),
             _ => WarpConfig::as_ref(ctx).theme_config().theme(theme_kind),

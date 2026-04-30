@@ -19,7 +19,7 @@ use yarpui::{
 };
 
 use crate::{
-    themes::theme::{AnsiColorIdentifier, Fill, WarpTheme},
+    themes::theme::{AnsiColorIdentifier, Fill, YarpTheme},
     ui_components::icons::Icon,
 };
 
@@ -52,7 +52,7 @@ pub const CLAUDE_ORANGE: ColorU = ColorU {
 
 /// Returns the color to be used for various AI signifiers
 /// input with AI mode).
-pub fn ai_brand_color(theme: &WarpTheme) -> ColorU {
+pub fn ai_brand_color(theme: &YarpTheme) -> ColorU {
     AnsiColorIdentifier::Magenta
         .to_ansi_color(&theme.terminal_colors().normal)
         .into()
@@ -60,7 +60,7 @@ pub fn ai_brand_color(theme: &WarpTheme) -> ColorU {
 
 /// Returns the color to be used for error UI throughout Agent Mode (like the "request limit
 /// exceeded" chip).
-pub fn error_color(theme: &WarpTheme) -> ColorU {
+pub fn error_color(theme: &YarpTheme) -> ColorU {
     AnsiColorIdentifier::Red
         .to_ansi_color(&theme.terminal_colors().normal)
         .into()

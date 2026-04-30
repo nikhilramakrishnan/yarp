@@ -94,7 +94,7 @@ Keep a notification-specific mapping helper in `item_rendering.rs`:
 fn render_notification_avatar(
     agent: NotificationSourceAgent,
     category: NotificationCategory,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element>
 ```
 

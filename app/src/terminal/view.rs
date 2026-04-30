@@ -318,7 +318,7 @@ use crate::terminal::{height_in_range_approx, heights_approx_gt, SizeUpdate};
 use crate::terminal::{heights_approx_eq, CellSizeAndWindowPadding};
 use crate::terminal::{AudibleBell, SizeUpdateReason};
 use crate::terminal::{BlockListSettings, BlockListSettingsChangedEvent};
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 use crate::ui_components::icons::{self};
 use crate::util::bindings::{
     custom_tag_to_keystroke, keybinding_name_to_display_string, keybinding_name_to_keystroke,
@@ -2213,7 +2213,7 @@ impl BlocklistAIRenderContext {
     }
 
     /// Returns the AI context stripe color to use for a block, if any.
-    pub fn context_color_for_block(&self, block: &Block, theme: &WarpTheme) -> Option<ColorU> {
+    pub fn context_color_for_block(&self, block: &Block, theme: &YarpTheme) -> Option<ColorU> {
         match self.context_inclusion_state_for_block(block) {
             Some(AIContextInclusionState::Active) => self.context_color(theme),
             _ => None,
@@ -2224,7 +2224,7 @@ impl BlocklistAIRenderContext {
     pub fn context_color_for_rich_content(
         &self,
         rich_content: &RichContentMetadata,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
     ) -> Option<ColorU> {
         match rich_content {
             RichContentMetadata::AIBlock(ai_metadata)
@@ -2243,7 +2243,7 @@ impl BlocklistAIRenderContext {
 
     /// The context color to use for a block, given its conversation phase.
     /// This assumes the block is part of the active conversation.
-    fn context_color(&self, theme: &WarpTheme) -> Option<ColorU> {
+    fn context_color(&self, theme: &YarpTheme) -> Option<ColorU> {
         (self.is_ai_input_enabled && self.should_highlight_context).then(|| ai_brand_color(theme))
     }
 }
@@ -26500,7 +26500,7 @@ fn maybe_wrap_terminal_element_in_scrollable(
     vertical_scroll_handle: ScrollStateHandle,
     horizontal_scroll_handle: ClippedScrollStateHandle,
     required_terminal_width: f32,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     element: impl NewScrollableElement + 'static,
 ) -> Box<dyn Element> {
     let nonactive_thumb_background = theme.disabled_text_color(theme.background()).into();

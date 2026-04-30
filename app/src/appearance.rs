@@ -25,7 +25,7 @@ use crate::{
         active_theme_kind, FontSettings, FontSettingsChangedEvent, MonospaceFontSize, Settings,
         ThemeSettings,
     },
-    themes::theme::{ThemeKind, WarpTheme},
+    themes::theme::{ThemeKind, YarpTheme},
     ASSETS,
 };
 
@@ -40,7 +40,7 @@ pub use yarp_core::ui::appearance::{Appearance, AppearanceEvent};
 pub struct AppearanceManager {
     // The transient theme is a theme that is set by the user but not saved
     // as a setting. It is used when the user is actively choosing a theme.
-    transient_theme: Option<WarpTheme>,
+    transient_theme: Option<YarpTheme>,
 
     #[cfg(target_os = "macos")]
     app_icon_at_startup: AppIcon,
@@ -431,7 +431,7 @@ fn build_appearance(ctx: &mut AppContext) -> Appearance {
 }
 
 #[cfg(target_family = "wasm")]
-fn emit_theme_background_event(theme: &WarpTheme) {
+fn emit_theme_background_event(theme: &YarpTheme) {
     let bg = theme.background().into_solid();
     let color = format!("#{:02x}{:02x}{:02x}", bg.r, bg.g, bg.b);
     crate::platform::wasm::emit_event(crate::platform::wasm::WarpEvent::ThemeBackgroundChanged {

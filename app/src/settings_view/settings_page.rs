@@ -674,15 +674,15 @@ pub fn render_body_item_label_internal<T: Clone + Action>(
         // `additional_info` gets moved into `render_info_icon()`.
         let secondary_text_child =
             if let Some(secondary_text) = additional_info.secondary_text.clone() {
-                let warp_theme = appearance.theme();
+                let yarp_theme = appearance.theme();
                 Some(
                     appearance
                         .ui_builder()
                         .span(secondary_text)
                         .with_style(UiComponentStyles {
                             font_color: Some(
-                                warp_theme
-                                    .sub_text_color(warp_theme.surface_2())
+                                yarp_theme
+                                    .sub_text_color(yarp_theme.surface_2())
                                     .into_solid(),
                             ),
                             margin: Some(Coords {
@@ -850,14 +850,14 @@ pub fn render_dropdown_item_label(
         )
         .finish();
     let label = if let Some(secondary_text) = secondary_text {
-        let warp_theme = appearance.theme();
+        let yarp_theme = appearance.theme();
         let secondary_text_child = appearance
             .ui_builder()
             .span(secondary_text)
             .with_style(UiComponentStyles {
                 font_color: Some(
                     color_override
-                        .unwrap_or(warp_theme.sub_text_color(warp_theme.surface_2()))
+                        .unwrap_or(yarp_theme.sub_text_color(yarp_theme.surface_2()))
                         .into_solid(),
                 ),
                 margin: Some(Coords {

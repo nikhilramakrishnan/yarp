@@ -24,7 +24,7 @@ const APP_BECAME_ACTIVE_DEBOUNCE: Duration = Duration::from_secs(15);
 
 use pathfinder_geometry::vector::vec2f;
 use ui_components::{button, Component as _, Options as _};
-use yarp_core::ui::{appearance::Appearance, theme::WarpTheme};
+use yarp_core::ui::{appearance::Appearance, theme::YarpTheme};
 use yarpui::elements::Rect;
 use yarpui::{
     elements::{
@@ -111,7 +111,7 @@ impl AgentOnboardingView {
     /// Creates a new AgentOnboardingView.
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        theme_picker_themes: [WarpTheme; 4],
+        theme_picker_themes: [YarpTheme; 4],
         skippable: bool,
         models: Vec<OnboardingModelInfo>,
         default_model_id: LLMId,

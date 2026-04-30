@@ -5,7 +5,7 @@ use pathfinder_color::ColorU;
 use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::Vector2F;
 use yarp_core::ui::appearance::Appearance;
-use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::theme::{Fill, YarpTheme};
 use yarpui::elements::{
     Align, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, FormattedTextElement,
     HighlightedHyperlink, Icon, MouseStateHandle, ParentElement, Radius, Rect, Shrinkable, Stack,
@@ -41,7 +41,7 @@ pub const LEFT_STRIPE_WIDTH: f32 = 5.;
 pub fn build_header_row(
     text: &'static str,
     icon: Icon,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     appearance: &Appearance,
 ) -> Container {
     let mut row = Flex::row();
@@ -80,7 +80,7 @@ pub fn apply_spacing_styles(header_row: Container) -> Container {
 pub fn header_row(
     text: &'static str,
     icon: Icon,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     apply_spacing_styles(build_header_row(text, icon, theme, appearance)).finish()
@@ -96,7 +96,7 @@ fn green_check_icon(appearance: &Appearance, size: f32) -> Box<dyn Element> {
 /// UI helper to render the ssh command that caused the warpification prompt.
 pub fn build_command_row(
     command: String,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     appearance: &Appearance,
     show_green_check: bool,
 ) -> Container {
@@ -131,7 +131,7 @@ pub fn build_command_row(
 /// UI helper to render the description row of an SSH rich content block.
 pub fn build_description_row(
     text: FormattedText,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     appearance: &Appearance,
     highlight_index: HighlightedHyperlink,
 ) -> FormattedTextElement {
@@ -150,7 +150,7 @@ pub fn build_description_row(
     )
 }
 
-pub fn description_row(text: &str, theme: &WarpTheme, appearance: &Appearance) -> Box<dyn Element> {
+pub fn description_row(text: &str, theme: &YarpTheme, appearance: &Appearance) -> Box<dyn Element> {
     let text = FormattedText::new(vec![FormattedTextLine::Line(vec![
         FormattedTextFragment::plain_text(text),
     ])]);
@@ -202,7 +202,7 @@ pub fn render_never_warpify_ssh_link(
     Some(Align::new(link).bottom_right().finish())
 }
 
-fn get_subshell_flag_info(subshell_source: &SubshellSource, theme: &WarpTheme) -> (String, Fill) {
+fn get_subshell_flag_info(subshell_source: &SubshellSource, theme: &YarpTheme) -> (String, Fill) {
     match subshell_source {
         SubshellSource::EnvVarCollection(environment_name) => (
             environment_name.to_string(),
@@ -245,7 +245,7 @@ pub fn render_subshell_flag(
     subshell_source: SubshellSource,
     font_family: FamilyId,
     font_size: f32,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let (flag_name, background_color) = get_subshell_flag_info(&subshell_source, theme);
     let container = Container::new(

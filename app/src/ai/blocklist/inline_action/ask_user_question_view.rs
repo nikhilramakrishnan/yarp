@@ -5,7 +5,7 @@ use ai::agent::{
     action_result::{AskUserQuestionAnswerItem, AskUserQuestionResult},
 };
 use itertools::Itertools;
-use yarp_core::ui::theme::{color::internal_colors, WarpTheme};
+use yarp_core::ui::theme::{color::internal_colors, YarpTheme};
 use yarpui::{
     elements::{
         new_scrollable::SingleAxisConfig, Border, ChildView, Clipped, ClippedScrollStateHandle,
@@ -1333,7 +1333,7 @@ impl AskUserQuestionView {
     fn render_question_text(
         question_text: &str,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
     ) -> Box<dyn Element> {
         let text_color = theme.foreground().into();
         Container::new(render_text_with_markdown_support(
@@ -1357,7 +1357,7 @@ impl AskUserQuestionView {
         &self,
         question_text: &str,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
     ) -> Box<dyn Element> {
         let body = Flex::column()
             .with_cross_axis_alignment(CrossAxisAlignment::Stretch)
@@ -1385,7 +1385,7 @@ impl AskUserQuestionView {
     fn render_nav_footer(
         &self,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let counter = format!(

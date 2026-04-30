@@ -7168,15 +7168,15 @@ impl SettingsWidget for WindowSystemWidget {
         if view.force_x11_changed {
             secondary_text.push_str("\n\nRestart Yarp for changes to take effect.");
         }
-        let warp_theme = appearance.theme();
+        let yarp_theme = appearance.theme();
         children.add_child(
             appearance
                 .ui_builder()
                 .wrappable_text(secondary_text, true)
                 .with_style(UiComponentStyles {
                     font_color: Some(
-                        warp_theme
-                            .sub_text_color(warp_theme.background())
+                        yarp_theme
+                            .sub_text_color(yarp_theme.background())
                             .into_solid(),
                     ),
                     ..Default::default()

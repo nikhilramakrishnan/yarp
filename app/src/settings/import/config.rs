@@ -5,7 +5,7 @@ use serde::Serialize;
 use strum_macros::EnumIter;
 use yarp_core::ui::{
     color::hex_color::HexColorError as UiHexColorError,
-    theme::{AnsiColors, WarpTheme},
+    theme::{AnsiColors, YarpTheme},
 };
 
 use async_trait::async_trait;
@@ -29,8 +29,8 @@ use super::iterm_parser::ITermProfile;
 
 #[derive(Debug)]
 pub enum ThemeType {
-    LightAndDark { light: WarpTheme, dark: WarpTheme },
-    Single(WarpTheme),
+    LightAndDark { light: YarpTheme, dark: YarpTheme },
+    Single(YarpTheme),
 }
 
 #[derive(Clone, Debug)]

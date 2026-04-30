@@ -146,7 +146,7 @@ impl FilterChipRenderer for QueryFilter {
 }
 
 mod styles {
-    use crate::themes::theme::{Blend, Fill, WarpTheme};
+    use crate::themes::theme::{Blend, Fill, YarpTheme};
     use yarpui::elements::{Border, MouseState};
 
     /// Size of the border when the query filter is hovered.
@@ -181,7 +181,7 @@ mod styles {
     }
 
     /// Returns the border that should be applied to the query filter.
-    pub fn border(mouse_state: &MouseState, theme: &WarpTheme) -> Border {
+    pub fn border(mouse_state: &MouseState, theme: &YarpTheme) -> Border {
         if mouse_state.is_hovered() {
             Border::all(HOVERED_BORDER_SIZE).with_border_fill(theme.accent())
         } else {
@@ -190,7 +190,7 @@ mod styles {
     }
 
     /// Returns the background [`Fill`] that should be applied to the query filter.
-    pub fn background_fill(mouse_state: &MouseState, theme: &WarpTheme) -> Fill {
+    pub fn background_fill(mouse_state: &MouseState, theme: &YarpTheme) -> Fill {
         if mouse_state.is_hovered() {
             theme
                 .surface_2()

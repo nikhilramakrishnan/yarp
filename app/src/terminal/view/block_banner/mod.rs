@@ -17,7 +17,7 @@ use yarpui::{
     Element,
 };
 
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 
 const CONSTRAINED_BANNER_HEIGHT: f32 = 48.;
 const BANNER_TOP_MARGIN: f32 = 16.;
@@ -53,7 +53,7 @@ impl WithinBlockBanner {
 fn render_block_banner(
     build_child: impl FnOnce(&MouseState) -> Box<dyn Element>,
     hover_state: MouseStateHandle,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     Stack::new()
         .with_child(

@@ -6,7 +6,7 @@ use crate::terminal::model::grid::grid_handler::Link;
 use crate::terminal::model::index::Point;
 use crate::terminal::model::ObfuscateSecrets;
 use crate::terminal::SizeInfo;
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 use pathfinder_color::ColorU;
 use std::collections::HashMap;
 use std::ops::Neg;
@@ -22,7 +22,7 @@ use super::model::image_map::StoredImageMetadata;
 use super::model::SecretHandle;
 
 pub struct GridRenderParams {
-    pub warp_theme: WarpTheme,
+    pub yarp_theme: YarpTheme,
     pub font_family: FamilyId,
     pub font_size: f32,
     pub font_weight: Weight,
@@ -92,7 +92,7 @@ impl BlockGrid {
             end_row,
             &block_grid_params.colors,
             &block_grid_params.override_colors,
-            &block_grid_params.grid_render_params.warp_theme,
+            &block_grid_params.grid_render_params.yarp_theme,
             properties,
             block_grid_params.grid_render_params.font_family,
             block_grid_params.grid_render_params.font_size,

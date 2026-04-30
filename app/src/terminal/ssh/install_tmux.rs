@@ -11,7 +11,7 @@ use crate::terminal::warpify::settings::WarpifySettings;
 use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon as UiIcon;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::elements::{
     FormattedTextElement, HighlightedHyperlink, Hoverable, Icon, MainAxisAlignment, MainAxisSize,
     MouseStateHandle,
@@ -315,7 +315,7 @@ impl SshInstallTmuxBlock {
     fn render_title_ui(
         &self,
         app: &AppContext,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let header_contents = render::build_header_row(

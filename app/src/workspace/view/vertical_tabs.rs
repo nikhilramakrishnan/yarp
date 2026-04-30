@@ -61,7 +61,7 @@ use yarp_core::telemetry::TelemetryEvent as _;
 use yarp_core::ui::color::blend::Blend;
 use yarp_core::ui::color::coloru_with_opacity;
 use yarp_core::ui::theme::color::internal_colors;
-use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, WarpTheme};
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, YarpTheme};
 use yarp_core::ui::Icon as WarpIcon;
 use yarpui::elements::DispatchEventResult;
 use yarpui::elements::{
@@ -254,13 +254,13 @@ enum TerminalPrimaryLineFont {
     Monospace,
 }
 
-fn oz_icon_fill(theme: &WarpTheme) -> WarpThemeFill {
+fn oz_icon_fill(theme: &YarpTheme) -> WarpThemeFill {
     theme.main_text_color(theme.background())
 }
 
 fn render_pane_icon_with_status(
     variant: IconWithStatusVariant,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let sizing = match &variant {
         IconWithStatusVariant::OzAgent { .. } => &VERTICAL_TABS_AGENT_SIZING,
@@ -286,7 +286,7 @@ fn pane_row_background(
     is_selected: bool,
     is_hovered: bool,
     is_being_dragged: bool,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Option<ThemeFill> {
     if let Some(color) = pane_color {
         let opacity = if is_selected || is_hovered {
@@ -309,7 +309,7 @@ fn render_pane_row_element(
     padding: Padding,
     defer_events_to_children: bool,
     content: Box<dyn Element>,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let detail_target = supports_vertical_tabs_detail_sidecar(&props.typed).then(|| {
         detail_target_for_hovered_row(
@@ -1087,7 +1087,7 @@ fn vertical_tabs_tab_bar_location(insert_index: usize, tab_count: usize) -> TabB
     }
 }
 
-fn render_vertical_tab_hover_indicator(theme: &WarpTheme) -> Box<dyn Element> {
+fn render_vertical_tab_hover_indicator(theme: &YarpTheme) -> Box<dyn Element> {
     ConstrainedBox::new(
         Container::new(Empty::new().finish())
             .with_background(ThemeFill::Solid(theme.accent().into()))
@@ -1118,7 +1118,7 @@ fn render_vertical_tab_insertion_target(
     insert_index: usize,
     tab_count: usize,
     is_drag_target: bool,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let content = if is_drag_target {
         render_vertical_tab_hover_indicator(theme)
@@ -1143,7 +1143,7 @@ fn add_vertical_tab_insertion_target_overlay(
     is_drag_target: bool,
     parent_anchor: ParentAnchor,
     child_anchor: ChildAnchor,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) {
     stack.add_positioned_overlay_child(
         render_vertical_tab_insertion_target(insert_index, tab_count, is_drag_target, theme),
@@ -2084,7 +2084,7 @@ fn render_group_action_buttons(
     action_buttons_mouse_state: MouseStateHandle,
     kebab_mouse_state: MouseStateHandle,
     close_mouse_state: MouseStateHandle,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let meta_color = theme.sub_text_color(theme.background());
 
@@ -2341,7 +2341,7 @@ fn has_unread_activity(typed: &TypedPane<'_>, app: &AppContext) -> bool {
 
 const INDICATOR_DOT_SIZE: f32 = 8.;
 
-fn render_title_indicator(theme: &WarpTheme) -> Box<dyn Element> {
+fn render_title_indicator(theme: &YarpTheme) -> Box<dyn Element> {
     ConstrainedBox::new(
         WarpIcon::CircleFilled
             .to_yarpui_icon(theme.accent())
@@ -4171,7 +4171,7 @@ fn compute_tab_group_color_mode(
     tab: &TabData,
     pane_group: &PaneGroup,
     visible_pane_ids: &[PaneId],
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     app: &AppContext,
 ) -> TabGroupColorMode {
     // Manual override applies to the whole group.
@@ -4505,7 +4505,7 @@ pub(super) fn render_settings_popup(
         .finish();
 
     // Divider between toggle and "Pane title as" section
-    let make_divider = |theme: &WarpTheme| {
+    let make_divider = |theme: &YarpTheme| {
         Container::new(
             ConstrainedBox::new(
                 Container::new(Empty::new().finish())
@@ -4706,7 +4706,7 @@ fn render_compact_subtitle_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsCompactSubtitle,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4759,7 +4759,7 @@ fn render_tab_item_mode_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsTabItemMode,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4812,7 +4812,7 @@ fn render_primary_info_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsPrimaryInfo,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4871,7 +4871,7 @@ fn render_show_toggle_option(
     action: WorkspaceAction,
     info_tooltip: Option<ShowToggleInfoTooltip>,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4963,7 +4963,7 @@ fn render_popup_segment(
     is_selected: bool,
     mouse_state: MouseStateHandle,
     mode: VerticalTabsViewMode,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     icon_color: WarpThemeFill,
 ) -> Box<dyn Element> {
     Hoverable::new(mouse_state, move |hover_state| {
@@ -5002,7 +5002,7 @@ fn render_popup_text_segment(
     mouse_state: MouseStateHandle,
     granularity: VerticalTabsDisplayGranularity,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let label = label.to_string();
     let main_text = theme.main_text_color(theme.background());
@@ -5175,20 +5175,20 @@ struct DetailSidecarTextColors {
     disabled: WarpThemeFill,
 }
 
-fn detail_sidecar_background(theme: &WarpTheme) -> ColorU {
+fn detail_sidecar_background(theme: &YarpTheme) -> ColorU {
     theme
         .background()
         .blend(&internal_colors::fg_overlay_2(theme))
         .into_solid()
 }
 
-fn detail_sidecar_border_fill(theme: &WarpTheme) -> ThemeFill {
+fn detail_sidecar_border_fill(theme: &YarpTheme) -> ThemeFill {
     theme
         .background()
         .blend(&internal_colors::fg_overlay_4(theme))
 }
 
-fn detail_sidecar_text_colors(theme: &WarpTheme) -> DetailSidecarTextColors {
+fn detail_sidecar_text_colors(theme: &YarpTheme) -> DetailSidecarTextColors {
     let bg = ThemeFill::Solid(detail_sidecar_background(theme));
     DetailSidecarTextColors {
         main: theme.main_text_color(bg),

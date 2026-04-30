@@ -1,5 +1,5 @@
 use crate::terminal::model::ansi::color_index;
-use crate::themes::theme::{AnsiColors, WarpTheme};
+use crate::themes::theme::{AnsiColors, YarpTheme};
 use std::fmt;
 use std::ops::{Index, IndexMut};
 use yarpui::color::ColorU;
@@ -41,8 +41,8 @@ impl Colors {
     }
 }
 
-impl From<WarpTheme> for Colors {
-    fn from(theme: WarpTheme) -> Self {
+impl From<YarpTheme> for Colors {
+    fn from(theme: YarpTheme) -> Self {
         let colors = theme.terminal_colors();
         Colors::new(
             PrimaryColors::new(

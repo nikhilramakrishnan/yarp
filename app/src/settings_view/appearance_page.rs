@@ -45,7 +45,7 @@ use crate::terminal::settings::{
 };
 use crate::terminal::{BlockListSettings, ShowBlockDividers};
 use crate::terminal::{ShowJumpToBottomOfBlockButton, SizeInfo};
-use crate::themes::theme::{self, RespectSystemTheme, SelectedSystemThemes, ThemeKind, WarpTheme};
+use crate::themes::theme::{self, RespectSystemTheme, SelectedSystemThemes, ThemeKind, YarpTheme};
 use crate::user_config::WarpConfig;
 use crate::util::bindings;
 use crate::window_settings::{
@@ -2613,7 +2613,7 @@ impl ThemeSelectWidget {
         is_selected: bool,
         app: &AppContext,
     ) -> Box<dyn Element> {
-        let theme: WarpTheme = WarpConfig::as_ref(app).theme_config().theme(&theme_kind);
+        let theme: YarpTheme = WarpConfig::as_ref(app).theme_config().theme(&theme_kind);
         let mode_ui_label = match theme_chooser_mode {
             ThemeChooserMode::SystemLight => "Light",
             ThemeChooserMode::SystemDark => "Dark",

@@ -248,7 +248,7 @@ impl InMemoryThemeOptions {
         self.path = path;
     }
 
-    pub fn theme(&self) -> WarpTheme {
+    pub fn theme(&self) -> YarpTheme {
         let bg_color = self.chosen_bg_color();
         let fg_color = pick_foreground_color(bg_color);
         let possible_accent_colors: Vec<ColorU> = self
@@ -267,7 +267,7 @@ impl InMemoryThemeOptions {
             (Details::Lighter, light_mode_colors())
         };
 
-        WarpTheme::new(
+        YarpTheme::new(
             bg_color.into(),
             fg_color,
             accent_color.into(),
@@ -288,13 +288,13 @@ impl InMemoryThemeOptions {
 
 #[derive(Debug, Clone)]
 pub struct WarpThemeConfig {
-    theme_map: HashMap<ThemeKind, WarpTheme>,
+    theme_map: HashMap<ThemeKind, YarpTheme>,
 }
 
 impl WarpThemeConfig {
     pub fn new() -> Self {
         // preload with built-in themes
-        let theme_map: HashMap<ThemeKind, WarpTheme> = HashMap::from_iter([
+        let theme_map: HashMap<ThemeKind, YarpTheme> = HashMap::from_iter([
             (ThemeKind::SentReferralReward, sent_referral_reward()),
             (
                 ThemeKind::ReceivedReferralReward,
@@ -325,7 +325,7 @@ impl WarpThemeConfig {
         WarpThemeConfig { theme_map }
     }
 
-    pub fn add_new_theme(&mut self, theme_name: ThemeKind, theme: WarpTheme) {
+    pub fn add_new_theme(&mut self, theme_name: ThemeKind, theme: YarpTheme) {
         self.theme_map.insert(theme_name, theme);
     }
 
@@ -333,11 +333,11 @@ impl WarpThemeConfig {
         CustomTheme::new(name, path).into()
     }
 
-    pub fn theme_items(&self) -> impl Iterator<Item = (&ThemeKind, &WarpTheme)> {
+    pub fn theme_items(&self) -> impl Iterator<Item = (&ThemeKind, &YarpTheme)> {
         self.theme_map.iter()
     }
 
-    pub fn theme(&self, name: &ThemeKind) -> WarpTheme {
+    pub fn theme(&self, name: &ThemeKind) -> YarpTheme {
         self.theme_map.get(name).cloned().unwrap_or_else(dark_theme)
     }
 }
@@ -411,8 +411,8 @@ pub struct PromptColors {
     pub input_prompt_ssh: ColorU,
 }
 
-impl From<WarpTheme> for PromptColors {
-    fn from(theme: WarpTheme) -> Self {
+impl From<YarpTheme> for PromptColors {
+    fn from(theme: YarpTheme) -> Self {
         PromptColors {
             input_prompt_conversation_management: theme.terminal_colors().normal.white.into(),
             input_prompt_pwd: theme.terminal_colors().normal.magenta.into(),
@@ -435,7 +435,7 @@ impl From<WarpTheme> for PromptColors {
 }
 
 pub fn render_preview(
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     font_family: FamilyId,
     form_factor: Option<f32>,
 ) -> Box<dyn Element> {

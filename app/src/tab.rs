@@ -1437,7 +1437,7 @@ impl<'a> TabComponent<'a> {
             Container::new(tab.finish())
                 .with_background_color(
                     self.ui_builder
-                        .warp_theme()
+                        .yarp_theme()
                         .background()
                         .into_solid_bias_top_color(),
                 )

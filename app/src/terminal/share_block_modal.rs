@@ -16,7 +16,7 @@ use crate::{
         safe_mode_settings::get_secret_obfuscation_mode,
         TerminalModel,
     },
-    themes::theme::WarpTheme,
+    themes::theme::YarpTheme,
     ui_components::icons::Icon,
     util::bindings::CustomAction,
     view_components::ToastFlavor,
@@ -1164,7 +1164,7 @@ fn should_send_title_gen_request(ctx: &ViewContext<ShareBlockModal>) -> bool {
 
 struct SingleBlock {
     terminal_model: Arc<FairMutex<TerminalModel>>,
-    theme: WarpTheme,
+    theme: YarpTheme,
     font_family: FamilyId,
     font_size: f32,
     line_height_ratio: f32,
@@ -1188,7 +1188,7 @@ impl SingleBlock {
     #[allow(clippy::too_many_arguments)]
     fn new(
         terminal_model: Arc<FairMutex<TerminalModel>>,
-        theme: WarpTheme,
+        theme: YarpTheme,
         font_family: FamilyId,
         font_size: f32,
         line_height_ratio: f32,

@@ -11,7 +11,7 @@ use crate::terminal::model::index::Point;
 use crate::terminal::model::selection::SelectionPoint;
 use crate::terminal::model::{ObfuscateSecrets, SecretHandle};
 
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 use crate::util::color::{ContrastingColor, MinimumAllowedContrast};
 
 use core::mem;
@@ -288,7 +288,7 @@ pub fn render_grid<'a>(
     end_row: usize,
     colors: &color::List,
     override_colors: &color::OverrideList,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     default_font_properties: Properties,
     font_family: FamilyId,
     font_size: f32,
@@ -463,7 +463,7 @@ fn render_grid_without_ligatures<'a>(
     visible_rows: impl Iterator<Item = usize>,
     colors: &color::List,
     override_colors: &color::OverrideList,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     default_font_properties: Properties,
     font_family: FamilyId,
     font_size: f32,
@@ -967,7 +967,7 @@ fn render_grid_with_ligatures<'a>(
     visible_rows: impl Iterator<Item = usize>,
     colors: &color::List,
     override_colors: &color::OverrideList,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     default_font_properties: Properties,
     font_family: FamilyId,
     font_size: f32,

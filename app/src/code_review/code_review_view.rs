@@ -172,7 +172,7 @@ use crate::{
     editor::InteractionState,
     pane_group::pane::{view, BackingView, PaneEvent},
     send_telemetry_from_ctx,
-    themes::theme::WarpTheme,
+    themes::theme::YarpTheme,
 };
 
 use vec1::Vec1;
@@ -5528,7 +5528,7 @@ impl CodeReviewView {
 
     fn styled_file_content_container(
         content: Box<dyn Element>,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
     ) -> Box<dyn Element> {
         Container::new(
             Flex::row()

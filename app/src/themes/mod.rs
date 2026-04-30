@@ -7,9 +7,9 @@ pub mod theme_creator_modal;
 pub mod theme_deletion_body;
 pub mod theme_deletion_modal;
 
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 
-pub fn onboarding_theme_picker_themes() -> [WarpTheme; 4] {
+pub fn onboarding_theme_picker_themes() -> [YarpTheme; 4] {
     [
         default_themes::phenomenon(),
         default_themes::dark_theme(),

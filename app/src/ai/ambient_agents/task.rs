@@ -5,7 +5,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use yarp_cli::agent::Harness;
 use yarp_core::report_error;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::color::ColorU;
 
 use crate::ai::artifacts::{deserialize_artifacts, Artifact};
@@ -406,7 +406,7 @@ impl AmbientAgentTaskState {
         }
     }
 
-    pub fn status_icon_and_color(&self, theme: &WarpTheme) -> (Icon, ColorU) {
+    pub fn status_icon_and_color(&self, theme: &YarpTheme) -> (Icon, ColorU) {
         match self {
             AmbientAgentTaskState::Queued
             | AmbientAgentTaskState::Pending

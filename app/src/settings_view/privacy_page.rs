@@ -13,7 +13,7 @@ use regex::Regex;
 use settings::Setting as _;
 use yarp_core::context_flag::ContextFlag;
 use yarp_core::features::FeatureFlag;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::elements::{
     Align, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
     Empty, Expanded, Flex, Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle,
@@ -2040,6 +2040,6 @@ mod styles {
     pub const DESCRIPTION_LINE_MARGIN_BOTTOM: f32 = 6.;
 }
 
-fn description_text_color(theme: &WarpTheme) -> yarp_core::ui::theme::Fill {
+fn description_text_color(theme: &YarpTheme) -> yarp_core::ui::theme::Fill {
     theme.sub_text_color(theme.surface_2())
 }

@@ -1,6 +1,6 @@
 use asset_macro::bundled_asset;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::assets::asset_cache::{AssetCache, AssetState};
 
 use crate::ai::blocklist::inline_action::requested_action::RenderableAction;
@@ -65,7 +65,7 @@ impl Entity for SshWarpifyBlock {
 }
 
 impl SshWarpifyBlock {
-    fn render_title_ui(&self, theme: &WarpTheme, appearance: &Appearance) -> Box<dyn Element> {
+    fn render_title_ui(&self, theme: &YarpTheme, appearance: &Appearance) -> Box<dyn Element> {
         let icon = Icon::new(UiIcon::Yarp.into(), theme.active_ui_detail());
         warpify::render::header_row("Yarpifying SSH Session...", icon, theme, appearance)
     }

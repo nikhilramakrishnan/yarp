@@ -14,7 +14,7 @@ use std::path::PathBuf;
 #[cfg(feature = "local_fs")]
 use std::{fs::copy, io::Write};
 #[cfg(feature = "local_fs")]
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use yarpui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DispatchEventResult,
     EventHandler, Fill, Flex, Icon, MainAxisAlignment, MainAxisSize, MouseStateHandle,
@@ -220,7 +220,7 @@ impl ThemeCreatorBody {
     /// Note: the image option should be (original_theme_image_path, theme_name, image_extension).
     #[cfg(feature = "local_fs")]
     pub fn write_theme<T>(
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         dir: PathBuf,
         theme_yaml_file_name: String,
         image_option: Option<(PathBuf, String, &str)>,

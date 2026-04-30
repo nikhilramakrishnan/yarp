@@ -1074,7 +1074,7 @@ impl GlobalSearchView {
         directory_path: &Path,
         matched_path: &MatchedPath,
         appearance: &Appearance,
-        theme: &yarp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::YarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
@@ -1249,7 +1249,7 @@ impl GlobalSearchView {
         matched: &Match,
         match_index: usize,
         appearance: &Appearance,
-        theme: &yarp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::YarpTheme,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
         let line_number = matched.line_number;
@@ -1853,7 +1853,7 @@ impl GlobalSearchView {
         index: usize,
         dir_entry: &DirectoryEntry,
         appearance: &Appearance,
-        theme: &yarp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::YarpTheme,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
         let mouse_state = dir_entry.mouse_state.clone();

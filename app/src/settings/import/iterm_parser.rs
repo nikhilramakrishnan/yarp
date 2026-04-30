@@ -6,7 +6,7 @@ use itertools::Itertools;
 use palette::Srgba;
 use pathfinder_color::ColorU;
 use plist::{Dictionary, Value};
-use yarp_core::ui::theme::{AnsiColors, TerminalColors, WarpTheme};
+use yarp_core::ui::theme::{AnsiColors, TerminalColors, YarpTheme};
 use yarpui::{
     fonts::FontInfo, keymap::Keystroke, platform::mac::utils::unicode_char_to_key, DisplayIdx,
 };
@@ -83,11 +83,11 @@ impl TryFrom<ITermThemeType> for ThemeType {
         let (default_light, default_dark) = default_iterm_themes();
         match theme_type {
             ITermThemeType::LightAndDark { light, dark } => Ok(ThemeType::LightAndDark {
-                light: light.into_warp_theme(" (Light)", &default_light)?,
-                dark: dark.into_warp_theme(" (Dark)", &default_dark)?,
+                light: light.into_yarp_theme(" (Light)", &default_light)?,
+                dark: dark.into_yarp_theme(" (Dark)", &default_dark)?,
             }),
             ITermThemeType::Single(normal) => Ok(ThemeType::Single(
-                normal.into_warp_theme("", &default_dark)?,
+                normal.into_yarp_theme("", &default_dark)?,
             )),
         }
     }
@@ -122,11 +122,11 @@ impl ITermTheme {
         }
     }
 
-    fn into_warp_theme(
+    fn into_yarp_theme(
         mut self,
         suffix: &'static str,
         default_theme: &ITermTheme,
-    ) -> Result<WarpTheme, ThemeError> {
+    ) -> Result<YarpTheme, ThemeError> {
         if self.foreground == default_theme.foreground
             || self.background == default_theme.background
         {
@@ -149,7 +149,7 @@ impl ITermTheme {
 
         let accent = calculate_accent_color(background, foreground, cursor, bright);
 
-        Ok(WarpTheme::new(
+        Ok(YarpTheme::new(
             background.into(),
             foreground,
             accent.into(),

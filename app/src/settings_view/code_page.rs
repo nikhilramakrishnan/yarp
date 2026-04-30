@@ -2014,7 +2014,7 @@ impl CodePageWidget {
         &self,
         server_model: Option<&yarpui::ModelHandle<LspServerModel>>,
         app: &AppContext,
-        theme: &yarp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::YarpTheme,
     ) -> (ColorU, &'static str) {
         match server_model {
             Some(model) => {

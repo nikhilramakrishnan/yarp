@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use pathfinder_color::ColorU;
 use yarp_core::ui::icons::Icon;
-use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::theme::{Fill, YarpTheme};
 use yarpui::clipboard::ClipboardContent;
 use yarpui::elements::{
     ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DispatchEventResult,
@@ -331,7 +331,7 @@ fn render_timestamp_with_dot(item: &NotificationItem, appearance: &Appearance) -
 fn render_expand_chevron(
     expanded: bool,
     on_click: OnExpandClick,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let icon = if expanded {
         Icon::ChevronDown
@@ -411,7 +411,7 @@ const NOTIFICATION_AVATAR_SIZING: IconWithStatusSizing = IconWithStatusSizing {
 fn render_agent_avatar(
     agent: NotificationSourceAgent,
     category: NotificationCategory,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
 ) -> Box<dyn Element> {
     let status = notification_category_to_conversation_status(category);
     let variant = match agent {

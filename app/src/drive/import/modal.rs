@@ -2,7 +2,7 @@ use crate::{
     appearance::Appearance,
     cloud_object::{model::persistence::CloudModel, CloudObject, Owner},
     server::{ids::SyncId, sync_queue::SyncQueue},
-    themes::theme::WarpTheme,
+    themes::theme::YarpTheme,
     workspaces::user_workspaces::UserWorkspaces,
 };
 use pathfinder_geometry::vector::vec2f;
@@ -184,7 +184,7 @@ impl ImportModal {
     fn render_breadcrumbs(
         &self,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let (breadcrumb_text, highlight_indices) = self.breadcrumb(app);
@@ -222,7 +222,7 @@ impl ImportModal {
     fn render_header(
         &self,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let top_row = Flex::row()
@@ -258,7 +258,7 @@ impl ImportModal {
             .finish()
     }
 
-    fn render_body(&self, theme: &WarpTheme) -> Box<dyn Element> {
+    fn render_body(&self, theme: &YarpTheme) -> Box<dyn Element> {
         Container::new(
             ConstrainedBox::new(
                 ClippedScrollable::vertical(

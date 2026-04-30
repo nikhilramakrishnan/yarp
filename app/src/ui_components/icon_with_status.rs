@@ -2,7 +2,7 @@ use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use yarp_core::ui::icons::Icon as WarpIcon;
 use yarp_core::ui::theme::color::internal_colors;
-use yarp_core::ui::theme::{Fill as WarpThemeFill, WarpTheme};
+use yarp_core::ui::theme::{Fill as WarpThemeFill, YarpTheme};
 use yarpui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, Element, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Stack,
@@ -51,7 +51,7 @@ pub(crate) enum IconWithStatusVariant {
 pub(crate) fn render_icon_with_status(
     variant: IconWithStatusVariant,
     sizing: &IconWithStatusSizing,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     badge_ring_background: WarpThemeFill,
 ) -> Box<dyn Element> {
     let sub_text = theme.sub_text_color(theme.background());
@@ -150,7 +150,7 @@ fn render_with_optional_status_badge(
     circle: Box<dyn Element>,
     status: Option<&ConversationStatus>,
     sizing: &IconWithStatusSizing,
-    theme: &WarpTheme,
+    theme: &YarpTheme,
     badge_ring_background: WarpThemeFill,
 ) -> Box<dyn Element> {
     let Some(status) = status else {

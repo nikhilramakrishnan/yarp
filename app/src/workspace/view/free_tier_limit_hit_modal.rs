@@ -12,7 +12,7 @@ use pathfinder_geometry::vector::vec2f;
 use thousands::Separable;
 use yarp_core::send_telemetry_from_ctx;
 use yarp_core::ui::appearance::Appearance;
-use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::theme::{Fill, YarpTheme};
 use yarp_graphql::billing::{PlanPricing, StripeSubscriptionPlan};
 use yarpui::elements::{
     Align, Border, CacheOption, ChildAnchor, ConstrainedBox, Container, CornerRadius,
@@ -97,7 +97,7 @@ impl FreeTierLimitHitModal {
     fn render_checklist_item_dynamic(
         text: String,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
     ) -> Box<dyn Element> {
         let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
             FormattedTextFragment::plain_text(text),

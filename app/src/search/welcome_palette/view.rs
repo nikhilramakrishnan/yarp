@@ -48,7 +48,7 @@ use crate::send_telemetry_from_ctx;
 use crate::server::{ids::SyncId, telemetry::TelemetryEvent};
 use crate::settings::AISettings;
 use crate::terminal::History;
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 use crate::ui_components::icons::Icon;
 use crate::workflows::{WorkflowSelectionSource, WorkflowSource, WorkflowType};
 use crate::workspace::WorkspaceAction;
@@ -625,7 +625,7 @@ impl WelcomePalette {
         })
     }
 
-    fn render_palette_list(&self, theme: &WarpTheme, app: &AppContext) -> Box<dyn Element> {
+    fn render_palette_list(&self, theme: &YarpTheme, app: &AppContext) -> Box<dyn Element> {
         match self.search_bar_state.as_ref(app).query_result_renderers() {
             None => {
                 self.placeholder_query_renderer
@@ -651,7 +651,7 @@ impl WelcomePalette {
         &self,
         renderers: &[QueryResultRenderer<CommandPaletteItemAction>],
         selected_item: SelectedItem,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let selected_index = match selected_item {

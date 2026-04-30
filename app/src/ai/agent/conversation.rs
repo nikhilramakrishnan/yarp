@@ -32,7 +32,7 @@ use yarp_core::features::FeatureFlag;
 use yarp_core::send_telemetry_from_ctx;
 use yarp_core::ui::appearance::Appearance;
 use yarp_core::ui::theme::color::internal_colors;
-use yarp_core::ui::theme::WarpTheme;
+use yarp_core::ui::theme::YarpTheme;
 use warp_multi_agent_api::response_event::stream_finished;
 use warp_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
 use yarpui::color::ColorU;
@@ -3693,7 +3693,7 @@ impl ConversationStatus {
         }
     }
 
-    pub fn status_icon_and_color(&self, theme: &WarpTheme) -> (Icon, ColorU) {
+    pub fn status_icon_and_color(&self, theme: &YarpTheme) -> (Icon, ColorU) {
         match self {
             ConversationStatus::InProgress => (Icon::ClockLoader, theme.ansi_fg_magenta()),
             ConversationStatus::Success => (Icon::Check, theme.ansi_fg_green()),

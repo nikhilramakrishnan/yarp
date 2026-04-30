@@ -18,7 +18,7 @@ use crate::input_suggestions::{
     DETAILS_PANEL_MARGIN, DETAILS_PANEL_PADDING, HISTORY_DETAILS_PANEL_WIDTH,
     LABEL_PADDING as InputSuggestionsLabelPadding,
 };
-use crate::themes::theme::WarpTheme;
+use crate::themes::theme::YarpTheme;
 use yarpui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DragBarSide,
     DropShadow, Element, Empty, Flex, ParentElement, Radius, Resizable, Shrinkable,
@@ -187,7 +187,7 @@ impl Input {
         &self,
         margin: f32,
         corner_radius: CornerRadius,
-        theme: &WarpTheme,
+        theme: &YarpTheme,
         resize_config: SuggestionsResizeConfig,
         menu_positioning: MenuPositioning,
         content: Box<dyn Element>,

@@ -4,7 +4,7 @@ use num_traits::SaturatingSub;
 use string_offset::CharOffset;
 use yarp_core::ui::{
     appearance::Appearance,
-    theme::{color::internal_colors, WarpTheme},
+    theme::{color::internal_colors, YarpTheme},
 };
 use yarp_editor::{
     content::buffer::InitialBufferState,
@@ -575,7 +575,7 @@ impl LocalCodeEditorView {
     }
 
     /// Render a separator line between hover card sections.
-    fn render_separator(theme: &WarpTheme) -> Box<dyn Element> {
+    fn render_separator(theme: &YarpTheme) -> Box<dyn Element> {
         Container::new(
             ConstrainedBox::new(
                 Rect::new()
