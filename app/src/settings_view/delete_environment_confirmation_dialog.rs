@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     elements::{ChildView, Container, Dismiss, Empty},
     ui_components::components::UiComponent,
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,

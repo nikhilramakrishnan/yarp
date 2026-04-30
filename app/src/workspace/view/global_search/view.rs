@@ -10,8 +10,8 @@ use crate::coding_panel_enablement_state::CodingPanelEnablementState;
 use async_channel::Sender;
 use pathfinder_geometry::vector::vec2f;
 use string_offset::{ByteOffset, CharCounter};
-use warp_editor::editor::NavigationKey;
-use warp_ripgrep::search::{Match as RipgrepMatch, Submatch};
+use yarp_editor::editor::NavigationKey;
+use yarp_ripgrep::search::{Match as RipgrepMatch, Submatch};
 
 use crate::code::icon_from_file_path;
 use crate::debounce::debounce;
@@ -28,12 +28,12 @@ use crate::view_components::action_button::{ActionButton, ButtonSize, NakedTheme
 use crate::workspace::view::global_search::model::GlobalSearch;
 use crate::workspace::view::global_search::SearchConfig;
 use crate::TelemetryEvent;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::{AnsiColorIdentifier, Fill as ThemeFill};
-use warp_core::ui::Icon;
-use warpui::elements::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as ThemeFill};
+use yarp_core::ui::Icon;
+use yarpui::elements::{
     Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, DispatchEventResult, Empty, EventHandler, Fill, Flex, FormattedTextElement,
     Highlight, Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning,
@@ -41,13 +41,13 @@ use warpui::elements::{
     Scrollable, ScrollableElement, ScrollbarWidth, Shrinkable, Stack, Text, UniformList,
     UniformListState,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::text_layout::{TextAlignment, TextStyle};
-use warpui::ui_components::components::{UiComponent as _, UiComponentStyles};
-use warpui::ui_components::text::Span;
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::keymap::FixedBinding;
+use yarpui::platform::Cursor;
+use yarpui::text_layout::{TextAlignment, TextStyle};
+use yarpui::ui_components::components::{UiComponent as _, UiComponentStyles};
+use yarpui::ui_components::text::Span;
+use yarpui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WeakViewHandle,
 };
@@ -598,7 +598,7 @@ impl GlobalSearchView {
     }
 
     pub fn init(app: &mut AppContext) {
-        use warpui::keymap::macros::*;
+        use yarpui::keymap::macros::*;
 
         app.register_fixed_bindings([
             FixedBinding::new(
@@ -984,7 +984,7 @@ impl GlobalSearchView {
         // Ancestor-dedup search roots so we don't search the same file twice
         // when terminal directories are nested (e.g. `~/code` + `~/code/a`).
         // Shared with `FileTreeView` for consistency.
-        self.search_roots = warp_util::path::group_roots_by_common_ancestor(&roots).roots;
+        self.search_roots = yarp_util::path::group_roots_by_common_ancestor(&roots).roots;
         self.root_directories = roots;
     }
 
@@ -1074,7 +1074,7 @@ impl GlobalSearchView {
         directory_path: &Path,
         matched_path: &MatchedPath,
         appearance: &Appearance,
-        theme: &warp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::WarpTheme,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
@@ -1249,7 +1249,7 @@ impl GlobalSearchView {
         matched: &Match,
         match_index: usize,
         appearance: &Appearance,
-        theme: &warp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::WarpTheme,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
         let line_number = matched.line_number;
@@ -1853,7 +1853,7 @@ impl GlobalSearchView {
         index: usize,
         dir_entry: &DirectoryEntry,
         appearance: &Appearance,
-        theme: &warp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::WarpTheme,
     ) -> Box<dyn Element> {
         let is_selected = self.is_row_at_index_selected(index);
         let mouse_state = dir_entry.mouse_state.clone();

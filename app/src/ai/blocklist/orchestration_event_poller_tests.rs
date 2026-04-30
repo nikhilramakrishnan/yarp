@@ -196,7 +196,7 @@ fn finish_restore_fetch_uses_server_cursor_when_sqlite_is_absent() {
     use crate::server::server_api::ai::MockAIClient;
     use crate::server::server_api::ServerApiProvider;
     use std::sync::Arc;
-    use warpui::App;
+    use yarpui::App;
 
     App::test((), |mut app| async move {
         let _v2_guard = FeatureFlag::OrchestrationV2.override_enabled(true);
@@ -208,7 +208,7 @@ fn finish_restore_fetch_uses_server_cursor_when_sqlite_is_absent() {
         // the in-memory cursor to be 42 (max(0, 42)).
         let conversation = AIConversation::new(false);
         let conversation_id = conversation.id();
-        let terminal_view_id = warpui::EntityId::new();
+        let terminal_view_id = yarpui::EntityId::new();
         history_model.update(&mut app, |model, ctx| {
             model.restore_conversations(terminal_view_id, vec![conversation], ctx);
         });
@@ -252,7 +252,7 @@ fn restored_inprogress_parent_defers_delivery_until_success() {
     use crate::server::server_api::ai::MockAIClient;
     use crate::server::server_api::ServerApiProvider;
     use std::sync::Arc;
-    use warpui::App;
+    use yarpui::App;
 
     App::test((), |mut app| async move {
         let _v2_guard = FeatureFlag::OrchestrationV2.override_enabled(true);
@@ -264,7 +264,7 @@ fn restored_inprogress_parent_defers_delivery_until_success() {
         // an `AmbientAgentTaskId` for the (mocked) server fetch.
         conversation.set_run_id("550e8400-e29b-41d4-a716-446655440100".to_string());
         let conversation_id: AIConversationId = conversation.id();
-        let terminal_view_id = warpui::EntityId::new();
+        let terminal_view_id = yarpui::EntityId::new();
         history_model.update(&mut app, |model, ctx| {
             model.restore_conversations(terminal_view_id, vec![conversation], ctx);
             // The default status after restore is `InProgress` for live
@@ -346,7 +346,7 @@ fn handle_poll_result_persists_max_seq_to_history_model() {
     use crate::test_util::settings::initialize_settings_for_tests;
     use crate::{GlobalResourceHandles, GlobalResourceHandlesProvider};
     use std::sync::Arc;
-    use warpui::App;
+    use yarpui::App;
 
     App::test((), |mut app| async move {
         let _v2_guard = FeatureFlag::OrchestrationV2.override_enabled(true);
@@ -365,7 +365,7 @@ fn handle_poll_result_persists_max_seq_to_history_model() {
         let mut conversation = AIConversation::new(false);
         conversation.set_run_id("550e8400-e29b-41d4-a716-446655440200".to_string());
         let conversation_id: AIConversationId = conversation.id();
-        let terminal_view_id = warpui::EntityId::new();
+        let terminal_view_id = yarpui::EntityId::new();
         history_model.update(&mut app, |model, ctx| {
             model.restore_conversations(terminal_view_id, vec![conversation], ctx);
         });
@@ -443,7 +443,7 @@ fn finish_restore_fetch_no_ops_when_conversation_deleted_mid_flight() {
     use crate::server::server_api::ai::MockAIClient;
     use crate::server::server_api::ServerApiProvider;
     use std::sync::Arc;
-    use warpui::App;
+    use yarpui::App;
 
     App::test((), |mut app| async move {
         let _v2_guard = FeatureFlag::OrchestrationV2.override_enabled(true);
@@ -453,7 +453,7 @@ fn finish_restore_fetch_no_ops_when_conversation_deleted_mid_flight() {
         let mut conversation = AIConversation::new(false);
         conversation.set_run_id("550e8400-e29b-41d4-a716-446655440300".to_string());
         let conversation_id = conversation.id();
-        let terminal_view_id = warpui::EntityId::new();
+        let terminal_view_id = yarpui::EntityId::new();
         history_model.update(&mut app, |model, ctx| {
             model.restore_conversations(terminal_view_id, vec![conversation], ctx);
         });
@@ -515,7 +515,7 @@ fn finish_restore_fetch_reconnects_sse_when_children_added_to_open_connection() 
     use crate::server::server_api::ai::MockAIClient;
     use crate::server::server_api::ServerApiProvider;
     use std::sync::Arc;
-    use warpui::App;
+    use yarpui::App;
 
     App::test((), |mut app| async move {
         let _v2_guard = FeatureFlag::OrchestrationV2.override_enabled(true);
@@ -526,7 +526,7 @@ fn finish_restore_fetch_reconnects_sse_when_children_added_to_open_connection() 
         let mut conversation = AIConversation::new(false);
         conversation.set_run_id(own_run_id.to_string());
         let conversation_id = conversation.id();
-        let terminal_view_id = warpui::EntityId::new();
+        let terminal_view_id = yarpui::EntityId::new();
         history_model.update(&mut app, |model, ctx| {
             model.restore_conversations(terminal_view_id, vec![conversation], ctx);
             model.update_conversation_status(

@@ -74,12 +74,12 @@ use session_sharing_protocol::common::ParticipantId;
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::Duration;
-use warp_core::assertions::safe_assert;
+use yarp_core::assertions::safe_assert;
 use warp_multi_agent_api::{message, Task, ToolType};
-use warpui::r#async::{SpawnedFutureHandle, Timer};
+use yarpui::r#async::{SpawnedFutureHandle, Timer};
 
 use super::orchestration_events::{OrchestrationEventService, OrchestrationEventServiceEvent};
-use warpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 #[derive(Debug, Clone)]
 pub struct SessionContext {
@@ -111,7 +111,7 @@ impl SessionContext {
 
     /// Returns the remote host ID if this is a `WarpifiedRemote` session with
     /// a connected `RemoteServerClient`.
-    pub fn host_id(&self) -> Option<&warp_core::HostId> {
+    pub fn host_id(&self) -> Option<&yarp_core::HostId> {
         match &self.session_type {
             Some(SessionType::WarpifiedRemote { host_id }) => host_id.as_ref(),
             Some(SessionType::Local) | None => None,

@@ -1,3 +1,3 @@
-// Re-export from warp_core so existing `remote_server::HostId` imports
+// Re-export from yarp_core so existing `remote_server::HostId` imports
 // continue to work.
-pub use warp_core::HostId;
+pub use yarp_core::HostId;

@@ -17,8 +17,8 @@ use crate::{
         settings::TerminalSettings, view::TerminalAction,
     },
 };
-use warp_core::settings::Setting;
-use warpui::{
+use yarp_core::settings::Setting;
+use yarpui::{
     elements::{
         Border, Clipped, Container, DropTarget, Element, Flex, Hoverable, ParentElement,
         SavePosition, Stack,
@@ -299,7 +299,7 @@ impl Input {
 
 pub mod styles {
     use pathfinder_color::ColorU;
-    use warp_core::ui::theme::WarpTheme;
+    use yarp_core::ui::theme::WarpTheme;
 
     pub fn default_border_color(theme: &WarpTheme) -> ColorU {
         theme.outline().into()

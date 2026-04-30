@@ -5,8 +5,8 @@ use repo_metadata::{repositories::DetectedRepositories, DirectoryWatcher, RepoMe
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use tempfile::TempDir;
-use warp_core::channel::ChannelState;
-use warpui::App;
+use yarp_core::channel::ChannelState;
+use yarpui::App;
 use watcher::HomeDirectoryWatcher;
 
 // ============================================================================
@@ -79,7 +79,7 @@ fn get_skills_for_working_directory_scopes_subdirectory_skills() {
 
         // Register the repo root so get_root_for_path returns Some.
         let canonical_repo =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
+            yarp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo);
@@ -201,7 +201,7 @@ fn get_skills_for_working_directory_name_collision_returns_both() {
 
         // Register the repo root so get_root_for_path returns Some.
         let canonical_repo =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
+            yarp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo);
@@ -296,7 +296,7 @@ fn cloud_environment_skills_always_included() {
         let skill_manager_handle = app.add_singleton_model(SkillManager::new);
 
         let canonical_repo_a =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo_a)
+            yarp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo_a)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo_a);

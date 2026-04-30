@@ -8,8 +8,8 @@ use std::{
         Arc,
     },
 };
-use warp_core::features::FeatureFlag;
-use warpui::{App, EntityId};
+use yarp_core::features::FeatureFlag;
+use yarpui::{App, EntityId};
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId, ConversationStatus};
 use crate::ai::ambient_agents::task::{TaskCreatorInfo, TaskStatusMessage};
@@ -29,7 +29,7 @@ use super::{
     MAX_PERSONAL_TASKS, MAX_TEAM_TASKS,
 };
 use crate::ai::ambient_agents::task::HarnessConfig;
-use warp_cli::agent::Harness;
+use yarp_cli::agent::Harness;
 
 /// Creates a test task with specified creator UID and updated_at time
 fn create_test_task(

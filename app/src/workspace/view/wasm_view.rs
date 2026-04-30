@@ -1,9 +1,9 @@
 //! WASM-only view functions for the Workspace.
 
-use warpui::elements::{ChildView, Element};
-use warpui::{AppContext, SingletonEntity, ViewContext, ViewHandle};
+use yarpui::elements::{ChildView, Element};
+use yarpui::{AppContext, SingletonEntity, ViewContext, ViewHandle};
 
-use warp_core::channel::ChannelState;
+use yarp_core::channel::ChannelState;
 
 use crate::uri::browser_url_handler::parse_current_url;
 

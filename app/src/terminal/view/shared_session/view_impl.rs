@@ -40,19 +40,19 @@ use session_sharing_protocol::common::{
 use session_sharing_protocol::sharer::SessionSourceType;
 use session_sharing_protocol::sharer::{RoleUpdateReason, SessionEndedReason};
 use session_sharing_protocol::viewer::RoleUpdatedReason;
-use warp_core::features::FeatureFlag;
-use warpui::r#async::Timer;
+use yarp_core::features::FeatureFlag;
+use yarpui::r#async::Timer;
 
 use settings::Setting as _;
-use warp_core::semantic_selection::SemanticSelection;
-use warp_core::ui::appearance::Appearance;
-use warpui::clipboard::ClipboardContent;
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::UiComponent;
-use warpui::units::IntoLines;
-use warpui::{Element, SingletonEntity};
-use warpui::{ModelHandle, ViewContext};
+use yarp_core::semantic_selection::SemanticSelection;
+use yarp_core::ui::appearance::Appearance;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::platform::Cursor;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::units::IntoLines;
+use yarpui::{Element, SingletonEntity};
+use yarpui::{ModelHandle, ViewContext};
 
 use crate::menu::Event as MenuEvent;
 
@@ -62,8 +62,8 @@ use crate::terminal::shared_session::participant_avatar_view::ParticipantAvatarV
 use session_sharing_protocol::common::ParticipantList;
 use session_sharing_protocol::common::ParticipantPresenceUpdate;
 
-use warpui::elements::MouseStateHandle;
-use warpui::AppContext;
+use yarpui::elements::MouseStateHandle;
+use yarpui::AppContext;
 
 use super::adapter::{Adapter, Kind, Participant};
 use super::sharer::inactivity_modal::InactivityModalEvent;

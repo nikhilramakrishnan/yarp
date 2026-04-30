@@ -29,18 +29,18 @@ use enclose::enclose;
 use pathfinder_geometry::vector::Vector2F;
 use std::path::PathBuf;
 use vec1::Vec1;
-use warpui::accessibility::AccessibilityContent;
-use warpui::elements::{
+use yarpui::accessibility::AccessibilityContent;
+use yarpui::elements::{
     resizable_state_handle, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container,
     CornerRadius, CrossAxisAlignment, Dismiss, DispatchEventResult, Element, EventHandler, Flex,
     Icon, MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Resizable, ResizableStateHandle, Shrinkable, Stack,
 };
-use warpui::geometry::vector::vec2f;
-use warpui::keymap::{Context, FixedBinding};
-use warpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
-use warpui::ui_components::components::UiComponent;
-use warpui::{
+use yarpui::geometry::vector::vec2f;
+use yarpui::keymap::{Context, FixedBinding};
+use yarpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
+use yarpui::ui_components::components::UiComponent;
+use yarpui::{
     AppContext, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
@@ -55,7 +55,7 @@ const VOLTRON_RIGHT_PADDING: f32 = 15.;
 const EDITOR_PADDING_LEFT: f32 = 14.;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
@@ -491,7 +491,7 @@ impl View for Voltron {
         }
     }
 
-    fn render(&self, app: &AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &AppContext) -> Box<dyn yarpui::Element> {
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
         let current_feature = self

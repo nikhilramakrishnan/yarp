@@ -23,7 +23,7 @@ use ai::index::full_source_code_embedding::{
     store_client::IntermediateNode,
     ContentHash, EmbeddingConfig, NodeHash, RepoMetadata,
 };
-use warp_graphql::ai::AgentTaskState;
+use yarp_graphql::ai::AgentTaskState;
 use warp_multi_agent_api::ConversationData;
 
 use crate::ai::agent::api::ServerConversationToken;
@@ -51,7 +51,7 @@ use crate::server::server_api::ai::{
     SpawnAgentRequest, SpawnAgentResponse, TaskListFilter, TaskStatusUpdate,
 };
 use crate::terminal::model::block::SerializedBlock;
-use warp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
+use yarp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
 
 use super::llm_provider::{LocalLlmProvider, Message, Role};
 use super::LocalBackend;

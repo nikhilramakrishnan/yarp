@@ -1,4 +1,4 @@
-use warpui::App;
+use yarpui::App;
 
 use crate::{
     auth::{auth_manager::AuthManager, AuthStateProvider},

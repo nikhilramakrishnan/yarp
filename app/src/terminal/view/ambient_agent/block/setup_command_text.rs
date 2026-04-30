@@ -1,5 +1,5 @@
-use warp_core::ui::{appearance::Appearance, Icon};
-use warpui::{
+use yarp_core::ui::{appearance::Appearance, Icon};
+use yarpui::{
     elements::ParentElement,
     prelude::{
         ConstrainedBox, Container, CrossAxisAlignment, Cursor, Empty, Flex, Hoverable,

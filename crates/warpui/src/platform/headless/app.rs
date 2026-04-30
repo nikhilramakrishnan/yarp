@@ -50,7 +50,7 @@ impl App {
             .expect("should not fail to construct application");
 
         let mut callbacks =
-            warpui_core::platform::app::AppCallbackDispatcher::new(callbacks, ui_app.clone());
+            yarpui_core::platform::app::AppCallbackDispatcher::new(callbacks, ui_app.clone());
 
         // Run the event loop until the app terminates.
         event_loop::run(ui_app, &mut callbacks, Box::new(init_fn), receiver, sender)

@@ -10,7 +10,7 @@ use yarp::{
     },
     workspace::WorkspaceAction,
 };
-use warpui::{async_assert, async_assert_eq, integration::TestStep, App};
+use yarpui::{async_assert, async_assert_eq, integration::TestStep, App};
 
 use crate::util::write_all_rc_files_for_test;
 

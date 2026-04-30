@@ -3,8 +3,8 @@ use std::fs;
 use crate::repositories::{stub_git_repository, RepoDetectionSource};
 use crate::{repositories::DetectedRepositories, watcher::DirectoryWatcher};
 use virtual_fs::{Stub, VirtualFS};
-use warp_util::standardized_path::StandardizedPath;
-use warpui::App;
+use yarp_util::standardized_path::StandardizedPath;
+use yarpui::App;
 
 #[test]
 fn test_detect_possible_git_repo_non_existent_directory() {

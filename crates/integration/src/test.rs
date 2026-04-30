@@ -75,7 +75,7 @@ use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 use rust_embed::RustEmbed;
 use settings::Setting as _;
 use shell::ShellType;
-use warpui::{
+use yarpui::{
     async_assert, async_assert_eq,
     integration::{AssertionOutcome, StepData, TestStep},
     keymap::{Keystroke, Trigger},
@@ -88,7 +88,7 @@ use yarp::{terminal::find::TerminalFindModel, util::bindings::CustomAction, Agen
 
 use sysinfo::{Pid, ProcessesToUpdate, System};
 use version_compare::Cmp;
-use warpui::units::Lines;
+use yarpui::units::Lines;
 
 use crate::util::{skip_if_powershell_core_2303, ShellRcType};
 
@@ -239,9 +239,9 @@ use yarp::{
     },
     workspace::{Workspace, NEW_SESSION_MENU_BUTTON_POSITION_ID, NEW_TAB_BUTTON_POSITION_ID},
 };
-use warpui::event::KeyState;
-use warpui::keymap::PerPlatformKeystroke;
-use warpui::platform::keyboard::KeyCode;
+use yarpui::event::KeyState;
+use yarpui::keymap::PerPlatformKeystroke;
+use yarpui::platform::keyboard::KeyCode;
 
 const ADD_NEXT_OCCURRENCE_KEYBINDING: &str = "ctrl-g";
 

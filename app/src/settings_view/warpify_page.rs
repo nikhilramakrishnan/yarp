@@ -6,10 +6,10 @@ use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use regex::Regex;
 use settings::{Setting, ToggleableSetting};
 use strum::IntoEnumIterator;
-use warp_core::features::FeatureFlag;
-use warpui::elements::{FormattedTextElement, HighlightedHyperlink};
-use warpui::keymap::ContextPredicate;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarpui::elements::{FormattedTextElement, HighlightedHyperlink};
+use yarpui::keymap::ContextPredicate;
+use yarpui::{
     elements::{Container, Flex, MouseStateHandle, ParentElement},
     presenter::ChildView,
     ui_components::{

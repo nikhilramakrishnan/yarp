@@ -3,17 +3,17 @@
 use anyhow::anyhow;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use warp_cli::agent::Harness;
-use warp_core::report_error;
-use warp_core::ui::theme::WarpTheme;
-use warpui::color::ColorU;
+use yarp_cli::agent::Harness;
+use yarp_core::report_error;
+use yarp_core::ui::theme::WarpTheme;
+use yarpui::color::ColorU;
 
 use crate::ai::artifacts::{deserialize_artifacts, Artifact};
 use crate::server::server_api::ServerApiProvider;
 use crate::ui_components::icons::Icon;
 use crate::view_components::DismissibleToast;
 use crate::workspace::ToastStack;
-use warpui::{SingletonEntity, View, ViewContext};
+use yarpui::{SingletonEntity, View, ViewContext};
 
 use super::AmbientAgentTaskId;
 

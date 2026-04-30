@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use chrono::{DateTime, Duration, Utc};
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 use crate::{
     persistence::model::PersistedObjectAction,

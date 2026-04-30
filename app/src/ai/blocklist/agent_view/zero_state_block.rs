@@ -3,8 +3,8 @@ use markdown_parser::{parse_markdown, FormattedText, FormattedTextFragment, Form
 use parking_lot::FairMutex;
 use settings::Setting;
 use std::{borrow::Cow, cmp::Reverse, path::Path, sync::Arc};
-use warp_core::{features::FeatureFlag, report_if_error, ui::Icon};
-use warpui::{
+use yarp_core::{features::FeatureFlag, report_if_error, ui::Icon};
+use yarpui::{
     elements::{
         Clipped, Container, CornerRadius, CrossAxisAlignment, Flex, FormattedTextElement,
         HighlightedHyperlink, MainAxisSize, MouseStateHandle, ParentElement, Radius, Shrinkable,
@@ -1225,7 +1225,7 @@ pub fn render_ambient_credits_banner(credits: i32, app: &AppContext) -> Box<dyn 
 }
 
 mod styles {
-    use warp_core::ui::appearance::Appearance;
+    use yarp_core::ui::appearance::Appearance;
 
     pub const CONTAINER_VERTICAL_PADDING: f32 = 16.;
     pub const TITLE_MARGIN_BOTTOM: f32 = 8.;

@@ -16,13 +16,13 @@ use markdown_parser::FormattedTextLine;
 use pathfinder_color::ColorU;
 use std::borrow::Cow;
 use std::rc::Rc;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors::neutral_2;
-use warpui::elements::Align;
-use warpui::elements::Clipped;
-use warpui::elements::FormattedTextElement;
-use warpui::fonts::FamilyId;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors::neutral_2;
+use yarpui::elements::Align;
+use yarpui::elements::Clipped;
+use yarpui::elements::FormattedTextElement;
+use yarpui::fonts::FamilyId;
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex,
         Hoverable, MainAxisAlignment, MouseStateHandle, ParentElement, Radius, Shrinkable,

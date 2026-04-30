@@ -1,6 +1,6 @@
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::{color::coloru_with_opacity, theme::Fill};
-use warpui::{
+use yarp_core::ui::{color::coloru_with_opacity, theme::Fill};
+use yarpui::{
     elements::{
         Align, ChildAnchor, ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable,
         MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds,
@@ -24,7 +24,7 @@ use crate::{
 };
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
@@ -86,7 +86,7 @@ impl View for RewindConfirmationDialog {
         "RewindConfirmationDialog"
     }
 
-    fn on_focus(&mut self, _focus_ctx: &warpui::FocusContext, ctx: &mut ViewContext<Self>) {
+    fn on_focus(&mut self, _focus_ctx: &yarpui::FocusContext, ctx: &mut ViewContext<Self>) {
         ctx.focus_self();
     }
 

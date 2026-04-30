@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use parking_lot::FairMutex;
-use warpui::prelude::Empty;
-use warpui::{
+use yarpui::prelude::Empty;
+use yarpui::{
     elements::{
         ChildView, Container, CrossAxisAlignment, Expanded, Flex, MainAxisSize, ParentElement,
     },

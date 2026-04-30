@@ -6,12 +6,12 @@ use chrono::{DateTime, Duration, Local};
 use instant::Instant;
 use parking_lot::RwLock;
 use pathfinder_color::ColorU;
-use warp_cli::agent::Harness;
-use warp_cli::skill::SkillSpec;
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::color::coloru_with_opacity;
-use warpui::{
+use yarp_cli::agent::Harness;
+use yarp_cli::skill::SkillSpec;
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::color::coloru_with_opacity;
+use yarpui::{
     clipboard::ClipboardContent,
     elements::{
         new_scrollable::{NewScrollable, SingleAxisConfig},
@@ -463,7 +463,7 @@ pub enum ConversationDetailsPanelAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::custom(
         CustomAction::Copy,
@@ -823,16 +823,16 @@ impl ConversationDetailsPanel {
             .unwrap_or_else(|| AvatarContent::DisplayName(creator.display_name.clone()));
         let avatar = Avatar::new(
             avatar_content,
-            warpui::ui_components::components::UiComponentStyles {
+            yarpui::ui_components::components::UiComponentStyles {
                 width: Some(20.),
                 height: Some(20.),
-                border_radius: Some(warpui::elements::CornerRadius::with_all(
-                    warpui::elements::Radius::Percentage(50.),
+                border_radius: Some(yarpui::elements::CornerRadius::with_all(
+                    yarpui::elements::Radius::Percentage(50.),
                 )),
                 background: Some(blended_colors::accent(theme).into()),
                 font_color: Some(ColorU::black()),
                 font_family_id: Some(appearance.ui_font_family()),
-                font_weight: Some(warpui::fonts::Weight::Bold),
+                font_weight: Some(yarpui::fonts::Weight::Bold),
                 font_size: Some(small_font_size),
                 ..Default::default()
             },
@@ -1491,7 +1491,7 @@ impl ConversationDetailsPanel {
         let duration = COPY_FEEDBACK_DURATION;
         ctx.spawn(
             async move {
-                warpui::r#async::Timer::after(duration).await;
+                yarpui::r#async::Timer::after(duration).await;
             },
             |me, _, ctx| {
                 ctx.notify();
@@ -1827,7 +1827,7 @@ impl View for ConversationDetailsPanel {
             },
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .finish();
 
@@ -1860,7 +1860,7 @@ impl View for ConversationDetailsPanel {
 
         // On mobile, add background and skip Resizable
         #[cfg(target_family = "wasm")]
-        if warpui::platform::wasm::is_mobile_device() {
+        if yarpui::platform::wasm::is_mobile_device() {
             return Container::new(panel_content)
                 .with_background(theme.surface_1())
                 .finish();

@@ -17,9 +17,9 @@ use crate::view_components::action_button::{
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::Vector2F;
 use std::cell::RefCell;
-use warp_core::ui::{appearance::Appearance, theme::Fill};
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warpui::{
+use yarp_core::ui::{appearance::Appearance, theme::Fill};
+use yarp_editor::render::element::VerticalExpansionBehavior;
+use yarpui::{
     elements::{
         Border, ChildView, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Flex, MainAxisAlignment, MainAxisSize, ParentElement, Radius, Shrinkable, Text,

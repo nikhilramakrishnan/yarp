@@ -3,12 +3,12 @@ use std::pin::pin;
 use std::rc::Rc;
 
 use crate::ai::agent::conversation::ConversationStatus;
-use warp_terminal::model::escape_sequences::{BRACKETED_PASTE_END, BRACKETED_PASTE_START};
-use warpui::{notification::UserNotification, Presenter, WindowInvalidation};
+use yarp_terminal::model::escape_sequences::{BRACKETED_PASTE_END, BRACKETED_PASTE_START};
+use yarpui::{notification::UserNotification, Presenter, WindowInvalidation};
 
 use crate::ai::agent::task::TaskId;
 use crate::ai::blocklist::block::cli_controller::UserTakeOverReason;
-use warpui::App;
+use yarpui::App;
 
 use crate::pane_group::focus_state::PaneGroupFocusState;
 use crate::pane_group::{BackingView, TerminalPaneId};
@@ -404,7 +404,7 @@ fn set_input_mode_agent_does_not_enter_local_agent_from_root_cloud_mode_pane() {
 /// Test clearing of session flag state when terminal is cleared
 #[test]
 fn test_clear_session_flag_state() {
-    use warp_terminal::shell::ShellType;
+    use yarp_terminal::shell::ShellType;
 
     use crate::ai::blocklist::SerializedBlockListItem;
     use crate::terminal::model::block::SerializedBlock;
@@ -855,7 +855,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseDown {
+                yarpui::Event::LeftMouseDown {
                     position: start_position,
                     modifiers: Default::default(),
                     click_count: 1,
@@ -868,7 +868,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseDragged {
+                yarpui::Event::LeftMouseDragged {
                     position: end_position,
                     modifiers: Default::default(),
                 },
@@ -879,7 +879,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseUp {
+                yarpui::Event::LeftMouseUp {
                     position: end_position,
                     modifiers: Default::default(),
                 },
@@ -901,7 +901,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseDown {
+                yarpui::Event::LeftMouseDown {
                     position: start_position,
                     modifiers: ModifiersState {
                         shift: true,
@@ -917,7 +917,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseDragged {
+                yarpui::Event::LeftMouseDragged {
                     position: end_position,
                     modifiers: ModifiersState {
                         shift: true,
@@ -931,7 +931,7 @@ fn test_alt_screen_select_with_sgr_mouse() {
         rerender!(app, presenter, invalidation, size_info);
         app.update(enclose!((presenter) move |ctx| {
             ctx.simulate_window_event(
-                warpui::Event::LeftMouseUp {
+                yarpui::Event::LeftMouseUp {
                     position: end_position,
                     modifiers: ModifiersState {
                         shift: true,

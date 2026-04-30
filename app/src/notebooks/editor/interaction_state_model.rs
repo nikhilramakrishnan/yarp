@@ -1,4 +1,4 @@
-use warpui::{Entity, ModelContext};
+use yarpui::{Entity, ModelContext};
 
 use crate::editor::InteractionState;
 

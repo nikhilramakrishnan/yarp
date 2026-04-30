@@ -2,17 +2,17 @@ use crate::features::FeatureFlag;
 use async_channel::TryRecvError;
 use std::sync::Arc;
 use string_offset::CharOffset;
-use warp_editor::render::{
+use yarp_editor::render::{
     element::RichTextAction,
     model::{HitTestBlockType, Location, RenderEvent},
 };
-use warp_util::user_input::UserInput;
+use yarp_util::user_input::UserInput;
 
-use warpui::event::ModifiersState;
-use warpui::r#async::block_on;
-use warpui::windowing::WindowManager;
-use warpui::{platform::WindowStyle, presenter::ChildView, App, Element, Entity, View, ViewHandle};
-use warpui::{SingletonEntity, TypedActionView, WindowId};
+use yarpui::event::ModifiersState;
+use yarpui::r#async::block_on;
+use yarpui::windowing::WindowManager;
+use yarpui::{platform::WindowStyle, presenter::ChildView, App, Element, Entity, View, ViewHandle};
+use yarpui::{SingletonEntity, TypedActionView, WindowId};
 
 use super::{EditorViewAction, RichTextEditorConfig, RichTextEditorView};
 use crate::appearance::Appearance;
@@ -52,7 +52,7 @@ impl View for TestView {
         "TestView"
     }
 
-    fn render(&self, _app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, _app: &yarpui::AppContext) -> Box<dyn yarpui::Element> {
         ChildView::new(&self.editor).finish()
     }
 }
@@ -136,7 +136,7 @@ async fn reset_editor_with_markdown(
 
 fn rendered_mermaid_block_range(
     editor: &RichTextEditorView,
-    ctx: &warpui::AppContext,
+    ctx: &yarpui::AppContext,
 ) -> Option<std::ops::Range<CharOffset>> {
     let render_state = editor.model.as_ref(ctx).render_state().clone();
     let render_state = render_state.as_ref(ctx);
@@ -147,7 +147,7 @@ fn rendered_mermaid_block_range(
         let block_end = block_start + block.content_length();
         if matches!(
             block,
-            warp_editor::render::model::BlockItem::MermaidDiagram { .. }
+            yarp_editor::render::model::BlockItem::MermaidDiagram { .. }
         ) {
             return Some(block_start..block_end);
         }
@@ -247,7 +247,7 @@ fn test_appearance_changes() {
 
         // Simulate an appearance change.
         Appearance::handle(&app).update(&mut app, |appearance, ctx| {
-            appearance.set_monospace_font_family(warpui::fonts::FamilyId(123), ctx);
+            appearance.set_monospace_font_family(yarpui::fonts::FamilyId(123), ctx);
             ctx.notify()
         });
 
@@ -258,7 +258,7 @@ fn test_appearance_changes() {
             // The render model's style should be updated.
             assert_eq!(
                 model.styles().code_text.font_family,
-                warpui::fonts::FamilyId(123)
+                yarpui::fonts::FamilyId(123)
             );
         });
 

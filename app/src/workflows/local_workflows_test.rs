@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use warpui::App;
+use yarpui::App;
 
 use super::*;
 

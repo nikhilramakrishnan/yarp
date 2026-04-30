@@ -10,9 +10,9 @@ use settings::Setting as _;
 use std::borrow::Cow;
 use std::rc::Rc;
 use std::sync::Arc;
-use warp_core::semantic_selection::SemanticSelection;
-use warp_core::{features::FeatureFlag, ui::Icon};
-use warpui::{
+use yarp_core::semantic_selection::SemanticSelection;
+use yarp_core::{features::FeatureFlag, ui::Icon};
+use yarpui::{
     elements::{
         get_rich_content_position_id, Border, Clipped, Container, CornerRadius, CrossAxisAlignment,
         Flex, FormattedTextElement, MouseStateHandle, ParentElement, Radius, SavePosition,
@@ -118,7 +118,7 @@ pub struct EnvVarCollectionBlock {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(

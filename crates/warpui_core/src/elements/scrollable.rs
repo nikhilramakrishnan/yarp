@@ -103,7 +103,7 @@ pub trait ScrollableElement: Element {
 ///
 /// # Examples
 /// ```
-/// use warpui_core::elements::ScrollbarWidth;
+/// use yarpui_core::elements::ScrollbarWidth;
 ///
 /// // Default width of 8.
 /// let y = ScrollbarWidth::Auto;

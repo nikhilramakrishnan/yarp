@@ -5,8 +5,8 @@ use super::plugin::PluginHandle;
 cfg_if::cfg_if! {
     if #[cfg(feature = "completions_v2")] {
         use rquickjs::{prelude::MutFn, Value};
-        use warp_completer::signatures::CommandSignature;
-        use warp_js::FromWarpJs;
+        use yarp_completer::signatures::CommandSignature;
+        use yarp_js::FromWarpJs;
     }
 }
 

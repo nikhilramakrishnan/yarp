@@ -2,14 +2,14 @@
 
 use std::cell::Cell;
 use std::rc::Rc;
-use warp_cli::agent::Harness;
-use warp_terminal::model::BlockId;
+use yarp_cli::agent::Harness;
+use yarp_terminal::model::BlockId;
 
 use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::AIRequestUsageModel;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warpui::prelude::{Empty, Vector2F};
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarpui::prelude::{Empty, Vector2F};
 
 use crate::ai::ambient_agents::telemetry::{CloudAgentTelemetryEvent, CloudModeEntryPoint};
 use crate::ai::blocklist::{agent_view::AgentViewEntryOrigin, BlocklistAIHistoryModel};
@@ -22,9 +22,9 @@ use crate::terminal::view::TerminalView;
 use crate::terminal::CLIAgent;
 use crate::workspace::view::cloud_agent_capacity_modal::CloudAgentCapacityModalVariant;
 use crate::workspaces::user_workspaces::UserWorkspaces;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::Align;
-use warpui::{AppContext, Element, EntityId, SingletonEntity, ViewContext};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::elements::Align;
+use yarpui::{AppContext, Element, EntityId, SingletonEntity, ViewContext};
 
 use super::loading_screen::{
     render_cloud_mode_cancelled_screen, render_cloud_mode_error_screen,

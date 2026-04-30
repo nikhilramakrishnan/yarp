@@ -6,9 +6,9 @@ use crate::code::editor_management::CodeSource;
 use crate::search::files::icon::icon_from_file_path;
 use crate::search::ItemHighlightState;
 use std::iter;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{ChildView, HighlightedRange, MouseStateHandle};
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{ChildView, HighlightedRange, MouseStateHandle};
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Expanded, Flex,
         MainAxisAlignment, MainAxisSize, ParentElement, Radius, Shrinkable, Text,
@@ -16,7 +16,7 @@ use warpui::{
     ui_components::components::UiComponent,
     AppContext, Element, SingletonEntity,
 };
-use warpui::{EventContext, ViewHandle};
+use yarpui::{EventContext, ViewHandle};
 
 use crate::code::editor::view::CodeEditorView;
 use crate::ui_components::blended_colors;

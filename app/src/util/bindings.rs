@@ -12,9 +12,9 @@ use std::{
     collections::{HashMap, HashSet},
     sync::Arc,
 };
-use warpui::keymap::{BindingId, IsBindingValid};
-use warpui::platform::OperatingSystem;
-use warpui::{
+use yarpui::keymap::{BindingId, IsBindingValid};
+use yarpui::platform::OperatingSystem;
+use yarpui::{
     actions::StandardAction,
     keymap::{
         BindingDescription, BindingLens, CustomTag, DescriptionContext, EditableBindingLens,
@@ -22,7 +22,7 @@ use warpui::{
     },
     Action,
 };
-use warpui::{AppContext, SingletonEntity};
+use yarpui::{AppContext, SingletonEntity};
 
 pub const MAC_MENUS_CONTEXT: DescriptionContext = DescriptionContext::Custom("mac_menus");
 
@@ -797,7 +797,7 @@ fn materialize_description(desc: &BindingDescription, ctx: &AppContext) -> Bindi
 
 /// Possible groups a Binding can be part of. The string representation (produced in
 /// [`BindingGroup::as_str`]) is used as the group identifier within
-/// [`warpui::keymap::FixedBinding`] or [`EditableBinding`].
+/// [`yarpui::keymap::FixedBinding`] or [`EditableBinding`].
 #[derive(Copy, Clone, Debug, Sequence)]
 pub enum BindingGroup {
     Settings,
@@ -857,8 +857,8 @@ impl BindingGroup {
 /// framework and we can't easily produce the shift-modified version of the key ourselves. In this case the recommended
 /// solution is to to create separate [`Keystroke`]s for the Mac and non-Mac cases. For example:
 /// ```
-/// use warpui::keymap::Keystroke;
-/// use warpui::platform::OperatingSystem;
+/// use yarpui::keymap::Keystroke;
+/// use yarpui::platform::OperatingSystem;
 /// let keystroke = if OperatingSystem::get().is_mac() {
 ///    Keystroke::parse("cmd-[")
 /// } else {

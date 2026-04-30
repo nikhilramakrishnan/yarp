@@ -5,8 +5,8 @@ use std::time::Duration;
 use futures::future::BoxFuture;
 use futures::FutureExt;
 use itertools::Itertools;
-use warpui::r#async::FutureExt as AsyncFutureExt;
-use warpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::r#async::FutureExt as AsyncFutureExt;
+use yarpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::agent::{
     conversation::AIConversationId, AIAgentAction, AIAgentActionType, FileGlobResult,
@@ -24,7 +24,7 @@ use crate::{
     },
     TelemetryEvent,
 };
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 const FILE_GLOB_TIMEOUT: Duration = Duration::from_secs(10);
 

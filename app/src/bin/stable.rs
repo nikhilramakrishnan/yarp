@@ -6,7 +6,7 @@
 mod channel_config;
 
 use anyhow::Result;
-use warp_core::channel::{Channel, ChannelState};
+use yarp_core::channel::{Channel, ChannelState};
 
 // Simple wrapper around yarp::run() for stable channel builds.
 fn main() -> Result<()> {

@@ -11,8 +11,8 @@ use crate::{
     menu::{Event as MenuEvent, Menu, MenuItem, MenuVariant},
     ui_components::icons,
 };
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use yarp_editor::editor::NavigationKey;
+use yarpui::{
     elements::{
         Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Dismiss, Element, EventHandler, Flex, MainAxisAlignment, MainAxisSize,

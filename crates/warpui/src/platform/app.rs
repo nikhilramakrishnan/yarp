@@ -1,11 +1,11 @@
-use warpui_core::{
+use yarpui_core::{
     integration::TestDriver,
     keymap::{CustomTag, Keystroke},
     r#async::LocalBoxFuture,
     AppContext, AssetProvider,
 };
 
-pub use warpui_core::platform::app::*;
+pub use yarpui_core::platform::app::*;
 
 use super::AsInnerMut;
 

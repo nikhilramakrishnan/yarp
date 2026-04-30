@@ -14,14 +14,14 @@ schemars.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 settings_value = { workspace = true, features = ["derive"] }
-warp_features.workspace = true
-warpui = { workspace = true, features = ["settings_value"] }
-warpui_extras = { workspace = true, features = ["default"] }
+yarp_features.workspace = true
+yarpui = { workspace = true, features = ["settings_value"] }
+yarpui_extras = { workspace = true, features = ["default"] }
 
 [dev-dependencies]
 serial_test = "0.8.0"
 tempfile.workspace = true
-warpui_extras = { workspace = true, features = ["user_preferences-toml"] }
+yarpui_extras = { workspace = true, features = ["user_preferences-toml"] }
 
 [features]
 integration_tests = []

@@ -19,9 +19,9 @@ use crate::{
     },
 };
 use serde::{Deserialize, Serialize};
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, SingletonEntity};
 
 use super::llms::LLMId;
 

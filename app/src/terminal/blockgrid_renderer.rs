@@ -11,10 +11,10 @@ use pathfinder_color::ColorU;
 use std::collections::HashMap;
 use std::ops::Neg;
 use std::ops::RangeInclusive;
-use warpui::fonts::{FamilyId, Properties, Weight};
-use warpui::geometry::rect::RectF;
-use warpui::geometry::vector::{vec2f, Vector2F};
-use warpui::{AppContext, Element, EntityId, PaintContext};
+use yarpui::fonts::{FamilyId, Properties, Weight};
+use yarpui::geometry::rect::RectF;
+use yarpui::geometry::vector::{vec2f, Vector2F};
+use yarpui::{AppContext, Element, EntityId, PaintContext};
 
 use super::model::ansi::{CursorShape, CursorStyle};
 use super::model::grid::RespectDisplayedOutput;

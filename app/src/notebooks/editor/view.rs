@@ -8,7 +8,7 @@ use std::{
 use markdown_parser::{parse_html, parse_markdown, FormattedText};
 use pathfinder_geometry::vector::vec2f;
 use string_offset::CharOffset;
-use warp_editor::{
+use yarp_editor::{
     content::{
         anchor::Anchor,
         text::{BufferTextStyle, CodeBlockType, TextStyles},
@@ -26,8 +26,8 @@ use warp_editor::{
     selection::{TextDirection, TextUnit},
 };
 
-use warp_util::{path::LineAndColumnArg, user_input::UserInput};
-use warpui::{
+use yarp_util::{path::LineAndColumnArg, user_input::UserInput};
+use yarpui::{
     accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
     assets::asset_cache::{AssetCache, AssetHandle, AssetState},
     clipboard::ClipboardContent,
@@ -52,8 +52,8 @@ use warpui::{
     windowing, AppContext, BlurContext, CursorInfo, Element, Entity, FocusContext, ModelHandle,
     SingletonEntity, TypedActionView, View, ViewContext, ViewHandle, WeakViewHandle,
 };
-use warpui::{actions::StandardAction, elements::Hoverable};
-use warpui::{keymap::PerPlatformKeystroke, windowing::WindowManager};
+use yarpui::{actions::StandardAction, elements::Hoverable};
+use yarpui::{keymap::PerPlatformKeystroke, windowing::WindowManager};
 
 use crate::{
     appearance::Appearance,
@@ -80,7 +80,7 @@ use crate::{
 use crate::util::link_detection::{detect_file_paths, get_word_range_at_offset, DetectedLinkType};
 
 #[cfg(feature = "local_fs")]
-use warpui::text::word_boundaries::WordBoundariesPolicy;
+use yarpui::text::word_boundaries::WordBoundariesPolicy;
 
 use super::{
     block_insertion_menu::{BlockInsertionMenuState, BlockInsertionSource},
@@ -103,7 +103,7 @@ const MAX_EDITOR_TIP_WIDTH: f32 = 300.;
 const GUTTER_WIDTH: f32 = ICON_DIMENSIONS + 4.;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     // Context for text entry/navigation/selection:
     // - The editor is focused
@@ -847,7 +847,7 @@ pub enum EditorViewAction {
     Redo,
     OpenBlockInsertionMenu,
     /// Insert a block of the given type after the hovered location.
-    InsertBlock(warp_editor::content::text::BlockType),
+    InsertBlock(yarp_editor::content::text::BlockType),
     Indent,
     Unindent,
     Tab,
@@ -1977,7 +1977,7 @@ impl RichTextEditorView {
     /// Inserts a new `block_type` block after the hovered block.
     pub(super) fn insert_block(
         &mut self,
-        block_type: warp_editor::content::text::BlockType,
+        block_type: yarp_editor::content::text::BlockType,
         ctx: &mut ViewContext<Self>,
     ) {
         enum InsertionMode {
@@ -2030,7 +2030,7 @@ impl RichTextEditorView {
                         model.insert_block_after(insertion_offset + 1, block_type, ctx);
                     }
                     InsertionMode::DeleteSlashAndRestyleLine(cursor_position) => match block_type {
-                        warp_editor::content::text::BlockType::Item(item) => {
+                        yarp_editor::content::text::BlockType::Item(item) => {
                             // Set one more offset position to the left to avoid additional linebreaks.
                             // Note: We can use `set_last_selection_head` because the menu cannot
                             // be opened when there are multiple selections.
@@ -2038,7 +2038,7 @@ impl RichTextEditorView {
                             model.insert_block_item(item, ctx);
                             model.cursor_at(cursor_position + 1, ctx);
                         }
-                        warp_editor::content::text::BlockType::Text(style) => {
+                        yarp_editor::content::text::BlockType::Text(style) => {
                             // Note: We can use `set_last_selection_head` because the menu cannot
                             // be opened when there are multiple selections.
                             model.set_last_selection_head(cursor_position, ctx);
@@ -2409,7 +2409,7 @@ impl RichTextEditorView {
         appearance: &Appearance,
         ctx: &AppContext,
     ) -> Box<dyn Element> {
-        use warpui::EventContext;
+        use yarpui::EventContext;
         type FilePathTooltipLinks = Vec<TooltipLink<Box<dyn Fn(&mut EventContext)>>>;
 
         let path = selected_file_path.path.clone();
@@ -2647,7 +2647,7 @@ impl View for RichTextEditorView {
         stack.finish()
     }
 
-    fn active_cursor_position(&self, ctx: &ViewContext<Self>) -> Option<warpui::CursorInfo> {
+    fn active_cursor_position(&self, ctx: &ViewContext<Self>) -> Option<yarpui::CursorInfo> {
         let model = self.model.as_ref(ctx);
         let render_state = model.render_state().as_ref(ctx);
         let font_size = model.cursor_font_size(ctx);
@@ -2658,7 +2658,7 @@ impl View for RichTextEditorView {
             })
     }
 
-    fn keymap_context(&self, ctx: &AppContext) -> warpui::keymap::Context {
+    fn keymap_context(&self, ctx: &AppContext) -> yarpui::keymap::Context {
         let mut context = Self::default_keymap_context();
 
         if self.is_editable(ctx) {
@@ -3222,7 +3222,7 @@ impl TypedActionView for RichTextEditorView {
     }
 }
 
-impl warp_editor::editor::EditorView for RichTextEditorView {
+impl yarp_editor::editor::EditorView for RichTextEditorView {
     type RichTextAction = EditorViewAction;
 
     fn runnable_command_at<'a>(

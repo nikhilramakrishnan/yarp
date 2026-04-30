@@ -1,8 +1,8 @@
 use super::styles::{HEADER_BORDER, HEADER_ROW_HEIGHT};
 use settings::Setting as _;
 use std::collections::HashMap;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarpui::{
     units::{IntoPixels, Pixels},
     AppContext, Entity, ModelContext, ModelHandle, SingletonEntity, WindowId,
 };

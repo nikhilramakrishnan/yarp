@@ -1,6 +1,6 @@
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{
         Border, Container, Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement,
         Text,

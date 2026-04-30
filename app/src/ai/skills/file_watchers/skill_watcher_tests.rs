@@ -10,8 +10,8 @@ use repo_metadata::{
     TargetFile,
 };
 use tempfile::TempDir;
-use warp_util::standardized_path::StandardizedPath;
-use warpui::App;
+use yarp_util::standardized_path::StandardizedPath;
+use yarpui::App;
 
 use super::SkillWatcher;
 

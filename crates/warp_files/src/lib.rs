@@ -16,8 +16,8 @@ use std::{
 
 use remote_server::client::RemoteServerClient;
 use remote_server::manager::RemoteServerManager;
-use warp_core::HostId;
-use warp_util::standardized_path::StandardizedPath;
+use yarp_core::HostId;
+use yarp_util::standardized_path::StandardizedPath;
 
 use futures::io::{AsyncBufReadExt, BufReader};
 use futures::StreamExt;
@@ -29,11 +29,11 @@ use repo_metadata::{
     repository::{RepositorySubscriber, SubscriberId},
     CanonicalizedPath, Repository, RepositoryUpdate,
 };
-use warp_util::content_version::ContentVersion;
-use warp_util::file::FileSaveError;
-use warp_util::file::{FileId, FileLoadError};
-use warpui::ModelHandle;
-use warpui::{r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, SingletonEntity};
+use yarp_util::content_version::ContentVersion;
+use yarp_util::file::FileSaveError;
+use yarp_util::file::{FileId, FileLoadError};
+use yarpui::ModelHandle;
+use yarpui::{r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, SingletonEntity};
 use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 
 pub mod text_file_reader;

@@ -16,10 +16,10 @@ use crate::search::mixer::AddAsyncSourceOptions;
 use crate::search::QueryFilter;
 use crate::session_management::SessionSource;
 use crate::settings::AISettings;
-use warp_core::context_flag::ContextFlag;
-use warp_core::features::FeatureFlag;
-use warpui::keymap::BindingId;
-use warpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use yarp_core::context_flag::ContextFlag;
+use yarp_core::features::FeatureFlag;
+use yarpui::keymap::BindingId;
+use yarpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use super::conversations;
 use super::warp_drive;

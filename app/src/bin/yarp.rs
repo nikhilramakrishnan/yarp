@@ -3,7 +3,7 @@
 #![cfg_attr(feature = "release_bundle", windows_subsystem = "windows")]
 
 use anyhow::Result;
-use warp_core::{
+use yarp_core::{
     channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig},
     features::FeatureFlag,
     AppId,
@@ -75,7 +75,7 @@ fn main() -> Result<()> {
     );
     state = state.with_additional_features(OSS_FLAGS);
     if cfg!(debug_assertions) {
-        state = state.with_additional_features(warp_core::features::DEBUG_FLAGS);
+        state = state.with_additional_features(yarp_core::features::DEBUG_FLAGS);
     }
     ChannelState::set(state);
 
@@ -88,7 +88,7 @@ fn main() -> Result<()> {
 /// so users can configure the local LLM without grepping the source for env
 /// var names. Existing files are never overwritten.
 fn write_default_llm_config_if_missing() {
-    let Some(home) = warp_core::paths::warp_home_config_dir() else {
+    let Some(home) = yarp_core::paths::warp_home_config_dir() else {
         return;
     };
     let _ = std::fs::create_dir_all(&home);

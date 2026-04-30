@@ -17,7 +17,7 @@ use crate::ui::color::{
 };
 use getset::Getters;
 use serde::{Deserialize, Serialize};
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 const BLOCK_SELECTION_OPACITY: Opacity = 10;
 
@@ -421,7 +421,7 @@ impl WarpTheme {
 /// Internal color system tokens, defined in "Colors" [Figma project](https://www.figma.com/design/dnvTdLbfFaosFSP00F30S0/Colors).
 /// Should not be used directly outside of reusable components. Use color methods on `WarpTheme` instead.
 pub mod internal_colors {
-    use warpui::color::ColorU;
+    use yarpui::color::ColorU;
 
     use super::{Fill, WarpTheme};
     use crate::ui::color::blend::Blend;

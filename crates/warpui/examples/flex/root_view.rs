@@ -1,6 +1,6 @@
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, Flex, MainAxisAlignment, MainAxisSize, ParentElement,
         Rect, Shrinkable, Stack, Text, Wrap,
@@ -8,7 +8,7 @@ use warpui::{
     AppContext, Element, Entity, TypedActionView, View, ViewContext,
 };
 
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 pub struct RootView {
     font_family: FamilyId,
@@ -16,7 +16,7 @@ pub struct RootView {
 
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
-        let font_family = warpui::fonts::Cache::handle(ctx)
+        let font_family = yarpui::fonts::Cache::handle(ctx)
             .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
         RootView { font_family }
     }

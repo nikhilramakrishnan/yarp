@@ -13,24 +13,24 @@ use crate::util::bindings::{
 use crate::workspace::WorkspaceAction;
 use lazy_static::lazy_static;
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{Border, ChildView, Flex, ParentElement};
-use warpui::elements::{
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{Border, ChildView, Flex, ParentElement};
+use yarpui::elements::{
     ConstrainedBox, Container, CrossAxisAlignment, Radius, DEFAULT_UI_LINE_HEIGHT_RATIO,
 };
-use warpui::keymap::Keystroke;
-use warpui::platform::Cursor;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ui_components::keyboard_shortcut::KeyboardShortcut;
-use warpui::ViewContext;
-use warpui::{
+use yarpui::keymap::Keystroke;
+use yarpui::platform::Cursor;
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::ui_components::keyboard_shortcut::KeyboardShortcut;
+use yarpui::ViewContext;
+use yarpui::{
     elements::{
         ChildAnchor, CornerRadius, Element, Hoverable, MouseStateHandle, OffsetPositioning,
         ParentAnchor, ParentOffsetBounds, Stack,
     },
     AppContext, SingletonEntity,
 };
-use warpui::{Entity, TypedActionView, View, ViewHandle};
+use yarpui::{Entity, TypedActionView, View, ViewHandle};
 
 use super::EditorElement;
 

@@ -14,20 +14,20 @@ use crate::view_components::action_button::{ActionButton, PrimaryTheme};
 use crate::workspace::WorkspaceAction;
 use std::path::Path;
 #[cfg(not(target_family = "wasm"))]
-use warp_cli::agent::Harness;
-use warp_core::paths::home_relative_path;
+use yarp_cli::agent::Harness;
+use yarp_core::paths::home_relative_path;
 
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::ambient_agents::AmbientAgentTask;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::{AnsiColorIdentifier, Fill};
-use warpui::elements::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::icons::Icon;
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill};
+use yarpui::elements::{
     Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex,
     MainAxisSize, Padding, ParentElement, Radius, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::{
     AppContext, Element, Entity, EntityId, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
@@ -263,7 +263,7 @@ impl ConversationEndedTombstoneView {
                         ctx
                     );
                     ctx.clipboard()
-                        .write(warpui::clipboard::ClipboardContent::plain_text(
+                        .write(yarpui::clipboard::ClipboardContent::plain_text(
                             branch.clone(),
                         ));
                 }
@@ -496,7 +496,7 @@ impl ConversationEndedTombstoneView {
         #[cfg(target_family = "wasm")]
         {
             // Don't show on mobile devices - they can't use the desktop app
-            if !warpui::platform::wasm::is_mobile_device() {
+            if !yarpui::platform::wasm::is_mobile_device() {
                 if let Some(ref open_in_warp_button) = self.open_in_warp_button {
                     row.add_child(ChildView::new(open_in_warp_button).finish());
                     has_button = true;

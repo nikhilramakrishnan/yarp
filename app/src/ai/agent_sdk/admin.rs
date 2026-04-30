@@ -2,8 +2,8 @@
 
 use anyhow::{Context, Result};
 use serde::Serialize;
-use warp_cli::agent::OutputFormat;
-use warpui::{platform::TerminationMode, AppContext, SingletonEntity};
+use yarp_cli::agent::OutputFormat;
+use yarpui::{platform::TerminationMode, AppContext, SingletonEntity};
 
 use crate::auth::auth_manager::{AuthManager, AuthManagerEvent};
 use crate::auth::user::PrincipalType;
@@ -116,7 +116,7 @@ struct WhoamiOutput {
 /// Singleton model that provides a `ModelContext` for the `whoami` command's async work.
 struct WhoamiRunner;
 
-impl warpui::Entity for WhoamiRunner {
+impl yarpui::Entity for WhoamiRunner {
     type Event = ();
 }
 

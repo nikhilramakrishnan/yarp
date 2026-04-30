@@ -29,25 +29,25 @@ use crate::workspace::view::conversation_list::item::{
 };
 use crate::workspace::ToastStack;
 use crate::workspace::WorkspaceAction;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::Icon;
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::Icon;
 
 use super::view_model::{ConversationEntry, ConversationListViewModel};
-use warp_editor::editor::NavigationKey;
-use warpui::elements::{
+use yarp_editor::editor::NavigationKey;
+use yarpui::elements::{
     Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Element, Fill, Flex, FormattedTextElement, Hoverable, MainAxisAlignment,
     MainAxisSize, MouseStateHandle, OffsetPositioning, Padding, ParentAnchor, ParentElement,
     ParentOffsetBounds, Radius, SavePosition, ScrollStateHandle, Scrollable, ScrollableElement,
     ScrollbarWidth, Shrinkable, Stack, Text, UniformList, UniformListState,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::keymap::macros::*;
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::text_layout::TextAlignment;
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::keymap::macros::*;
+use yarpui::keymap::FixedBinding;
+use yarpui::platform::Cursor;
+use yarpui::text_layout::TextAlignment;
+use yarpui::{
     AppContext, BlurContext, Entity, EntityId, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle, WindowId,
 };

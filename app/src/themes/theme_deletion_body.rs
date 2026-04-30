@@ -8,15 +8,15 @@ use crate::user_config::util::from_yaml;
 use std::default::Default;
 use std::fs;
 use std::fs::remove_file;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::elements::{
+use yarpui::assets::asset_cache::AssetSource;
+use yarpui::elements::{
     Container, CornerRadius, CrossAxisAlignment, Flex, MainAxisSize, MouseStateHandle,
     ParentElement, Radius, SavePosition, Shrinkable, Text,
 };
-use warpui::fonts::Weight;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{
+use yarpui::fonts::Weight;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::{
     platform::Cursor, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     ViewContext,
 };

@@ -1,5 +1,5 @@
 use crate::ui::theme::Fill;
-use warpui::elements::Icon as WarpUiIcon;
+use yarpui::elements::Icon as WarpUiIcon;
 
 pub enum ExternalProductIcon {
     Heroku,

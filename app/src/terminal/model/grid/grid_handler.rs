@@ -24,15 +24,15 @@ use itertools::Itertools;
 use lazy_static::lazy_static;
 use unicode_width::UnicodeWidthChar;
 use urlocator::{UrlLocation, UrlLocator};
-use warp_core::features::FeatureFlag;
-use warp_core::semantic_selection::{SemanticSelection, SMART_SELECT_MATCH_WINDOW_LIMIT};
-use warp_core::{safe_assert, safe_assert_eq};
-use warp_terminal::model::grid::CellType;
-use warp_terminal::model::grid::FlatStorage;
-pub use warp_terminal::model::TermMode;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use warp_util::path::CleanPathResult;
-use warpui::color::ColorU;
+use yarp_core::features::FeatureFlag;
+use yarp_core::semantic_selection::{SemanticSelection, SMART_SELECT_MATCH_WINDOW_LIMIT};
+use yarp_core::{safe_assert, safe_assert_eq};
+use yarp_terminal::model::grid::CellType;
+use yarp_terminal::model::grid::FlatStorage;
+pub use yarp_terminal::model::TermMode;
+use yarp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use yarp_util::path::CleanPathResult;
+use yarpui::color::ColorU;
 
 use crate::terminal::event_listener::ChannelEventListener;
 use crate::terminal::model::ansi::{self, Color, CursorStyle, Handler, NamedColor};
@@ -2475,7 +2475,7 @@ impl GridHandler {
     /// appropriately.
     #[cfg(test)]
     pub(super) fn input_at_cursor(&mut self, text: &str) {
-        use warp_terminal::model::VisiblePoint;
+        use yarp_terminal::model::VisiblePoint;
 
         let columns = self.columns();
         let mut last_row = self.grid.cursor.point.row;

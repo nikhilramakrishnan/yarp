@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use itertools::Itertools;
-use warpui::App;
+use yarpui::App;
 
 use crate::terminal::{
     block_filter::BlockFilterQuery,

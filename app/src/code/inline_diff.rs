@@ -4,15 +4,15 @@ use std::rc::Rc;
 use crate::ai::blocklist::inline_action::code_diff_view::DiffSessionType;
 use ai::diff_validation::DiffType;
 #[cfg(not(target_family = "wasm"))]
-use warp_files::{FileModel, FileModelEvent};
-use warp_util::file::FileId;
+use yarp_files::{FileModel, FileModelEvent};
+use yarp_util::file::FileId;
 #[cfg(not(target_family = "wasm"))]
-use warp_util::file::FileSaveError;
-use warp_util::standardized_path::StandardizedPath;
-use warpui::elements::ChildView;
+use yarp_util::file::FileSaveError;
+use yarp_util::standardized_path::StandardizedPath;
+use yarpui::elements::ChildView;
 #[cfg(not(target_family = "wasm"))]
-use warpui::SingletonEntity;
-use warpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle};
+use yarpui::SingletonEntity;
+use yarpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle};
 
 use super::diff_viewer::DiffViewer;
 use super::diff_viewer::DisplayMode;

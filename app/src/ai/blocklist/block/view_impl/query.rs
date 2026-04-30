@@ -2,8 +2,8 @@
 //!
 //! Queries are not rendered in blocks corresponding to requested command or requested action responses.
 
-use warp_core::{features::FeatureFlag, ui::theme::color::internal_colors};
-use warpui::{
+use yarp_core::{features::FeatureFlag, ui::theme::color::internal_colors};
+use yarpui::{
     elements::{
         Container, CornerRadius, Flex, MainAxisAlignment, MainAxisSize, ParentElement, Radius,
         Shrinkable, Wrap,
@@ -116,7 +116,7 @@ pub(crate) fn render_query(
     }
 
     Flex::row()
-        .with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Start)
+        .with_cross_axis_alignment(yarpui::elements::CrossAxisAlignment::Start)
         .with_child(avatar)
         .with_child(Shrinkable::new(1., query.finish()).finish())
         .finish()

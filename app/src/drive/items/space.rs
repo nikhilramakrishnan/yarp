@@ -1,4 +1,4 @@
-use warpui::{elements::MouseStateHandle, Element};
+use yarpui::{elements::MouseStateHandle, Element};
 
 use crate::{
     appearance::Appearance,
@@ -63,7 +63,7 @@ impl WarpDriveItem for WarpDriveSpace {
         Box::new(self.clone())
     }
 
-    fn action_summary(&self, _app: &warpui::AppContext) -> Option<String> {
+    fn action_summary(&self, _app: &yarpui::AppContext) -> Option<String> {
         None
     }
 }

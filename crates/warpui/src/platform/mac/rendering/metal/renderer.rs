@@ -1,6 +1,6 @@
 use crate::rendering::atlas::{AllocatedRegion, TextureId};
 use crate::rendering::{get_best_dash_gap, GlyphCache, GlyphRasterBoundsFn, RasterizeGlyphFn};
-use warpui_core::{
+use yarpui_core::{
     fonts::{self, SubpixelAlignment},
     rendering::{self, texture_cache::TextureCache},
 };
@@ -14,22 +14,22 @@ use metal::{
     MTLResourceOptions, RenderPipelineDescriptor,
 };
 use objc::{msg_send, sel, sel_impl};
-use warpui_core::platform::CapturedFrame;
+use yarpui_core::platform::CapturedFrame;
 
 use pathfinder_color::{ColorF, ColorU};
 use pathfinder_geometry::{
     rect::RectF,
     vector::{vec2f, Vector2F},
 };
-use warpui_core::fonts::{canvas, RasterizedGlyph};
-use warpui_core::scene::{CornerRadius, GlyphFade, Icon, Image, Layer, Scene};
+use yarpui_core::fonts::{canvas, RasterizedGlyph};
+use yarpui_core::scene::{CornerRadius, GlyphFade, Icon, Image, Layer, Scene};
 
 use std::collections::HashMap;
 
 use pathfinder_geometry::rect::RectI;
 use std::{fs::File, mem, sync::Once};
 use std::{io::Write, os::raw::c_void};
-use warpui_core::scene::GlyphKey;
+use yarpui_core::scene::GlyphKey;
 
 const METAL_LIB_BYTES: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/shaders.metallib"));
 static WRITE_LIB_TO_FILE: Once = Once::new();

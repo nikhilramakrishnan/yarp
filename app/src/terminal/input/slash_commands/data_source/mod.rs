@@ -3,7 +3,7 @@ mod zero_state;
 
 use ai::skills::SkillProvider;
 pub(crate) use saved_prompts::*;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 pub use zero_state::*;
 
 use std::collections::HashMap;
@@ -11,9 +11,9 @@ use std::path::PathBuf;
 
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use warp_core::ui::appearance::Appearance;
-use warpui::fonts::FamilyId;
-use warpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::fonts::FamilyId;
+use yarpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::blocklist::BlocklistAIHistoryModel;
 use crate::ai::skills::{SkillDescriptor, SkillManager};
@@ -25,7 +25,7 @@ use crate::terminal::cli_agent_sessions::{
     CLIAgentInputState, CLIAgentSessionsModel, CLIAgentSessionsModelEvent,
 };
 use crate::terminal::model::session::SessionType;
-use warp_core::ui::Icon as WarpIcon;
+use yarp_core::ui::Icon as WarpIcon;
 
 use super::AcceptSlashCommandOrSavedPrompt;
 use crate::{
@@ -279,7 +279,7 @@ impl SyncDataSource for SlashCommandDataSource {
     fn run_query(
         &self,
         query: &Query,
-        app: &warpui::AppContext,
+        app: &yarpui::AppContext,
     ) -> Result<Vec<QueryResult<Self::Action>>, DataSourceRunErrorWrapper> {
         if query.text.is_empty() {
             return Ok(vec![]);

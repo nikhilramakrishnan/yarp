@@ -13,9 +13,9 @@ use markdown_parser::parse_markdown;
 use pathfinder_color::ColorU;
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
-use warp_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
+use yarp_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
 
-use warpui::{AppContext, SingletonEntity};
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::ai::agent::{AgentReviewCommentBatch, DiffSetHunk};
 use crate::ai::blocklist::CLAUDE_ORANGE;
@@ -24,8 +24,8 @@ use crate::code_review::comments::AttachedReviewCommentTarget;
 use crate::server::telemetry::CLIAgentType;
 use crate::ui_components::icons::Icon;
 use crate::workspaces::user_workspaces::UserWorkspaces;
-use warp_completer::parsers::simple::top_level_command;
-use warp_util::path::EscapeChar;
+use yarp_completer::parsers::simple::top_level_command;
+use yarp_util::path::EscapeChar;
 
 /// UID for the Uber team.
 /// See https://warp.metabaseapp.com/dashboard/1454?team_id=46347

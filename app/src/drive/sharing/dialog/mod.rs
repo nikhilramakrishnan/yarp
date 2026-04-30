@@ -36,21 +36,21 @@ use inheritance::{InheritanceDetails, InheritanceState};
 use itertools::Itertools;
 use pathfinder_geometry::vector::vec2f;
 use session_sharing_protocol::common::{Guest, PendingGuest, SessionId, TeamAclData};
-use warp_core::ui::appearance::Appearance;
-use warp_editor::editor::NavigationKey;
-use warpui::elements::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_editor::editor::NavigationKey;
+use yarpui::elements::{
     Align, ChildAnchor, ChildView, Fill, Highlight, MainAxisSize, MouseStateHandle,
     OffsetPositioning, ParentAnchor, PositionedElementAnchor, PositionedElementOffsetBounds,
     SavePosition, ScrollStateHandle, Scrollable, ScrollableElement, ScrollbarWidth, Shrinkable,
     Stack, UniformList, UniformListState,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
-use warpui::ui_components::components::Coords;
-use warpui::FocusContext;
-use warpui::WeakViewHandle;
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::platform::Cursor;
+use yarpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
+use yarpui::ui_components::components::Coords;
+use yarpui::FocusContext;
+use yarpui::WeakViewHandle;
+use yarpui::{
     clipboard::ClipboardContent,
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, Empty, Flex,
@@ -198,7 +198,7 @@ pub enum SharingDialogAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

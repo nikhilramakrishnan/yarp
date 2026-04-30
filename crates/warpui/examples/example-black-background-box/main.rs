@@ -2,9 +2,9 @@ use anyhow::{anyhow, Result};
 use std::borrow::Cow;
 pub mod root_view;
 
-extern crate warpui;
+extern crate yarpui;
 use rust_embed::RustEmbed;
-use warpui::{platform, AssetProvider};
+use yarpui::{platform, AssetProvider};
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "examples/assets"]
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
     let app_builder =
         platform::AppBuilder::new(platform::AppCallbacks::default(), Box::new(ASSETS), None);
     let _ = app_builder.run(move |ctx| {
-        ctx.add_window(warpui::AddWindowOptions::default(), |_| {
+        ctx.add_window(yarpui::AddWindowOptions::default(), |_| {
             root_view::RootView {}
         });
     });

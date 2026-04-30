@@ -4,11 +4,11 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::visuals::{intention_terminal_visual, intention_visual};
 use crate::{OnboardingIntention, AI_FEATURES};
 use ui_components::{button, Component as _, Options as _};
-use warp_core::features::FeatureFlag;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
-use warpui::prelude::Align;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::theme::Fill;
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
+use yarpui::prelude::Align;
+use yarpui::{
     elements::{
         Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Flex, FormattedTextElement, Hoverable, MainAxisAlignment, MainAxisSize,

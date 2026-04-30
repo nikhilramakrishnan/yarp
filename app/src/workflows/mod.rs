@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use warp_core::context_flag::ContextFlag;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::context_flag::ContextFlag;
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, SingletonEntity};
 
 pub mod categories;
 use anyhow::Result;

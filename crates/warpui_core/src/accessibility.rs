@@ -4,7 +4,7 @@
 //! life with screen readers.
 //!
 //! ## How does a11y work in Warp?
-//! Because Warp uses its own rust UI framework (warpui), we don’t benefit from the built-in
+//! Because Warp uses its own rust UI framework (yarpui), we don’t benefit from the built-in
 //! VoiceOver integration and objc NSAccessibility APIs. This is both good and bad for our app and
 //! the UI framework.
 //!

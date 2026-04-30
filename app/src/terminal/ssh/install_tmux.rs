@@ -11,18 +11,18 @@ use crate::terminal::warpify::settings::WarpifySettings;
 use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon as UiIcon;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warp_core::ui::theme::WarpTheme;
-use warpui::elements::{
+use yarp_core::ui::theme::WarpTheme;
+use yarpui::elements::{
     FormattedTextElement, HighlightedHyperlink, Hoverable, Icon, MainAxisAlignment, MainAxisSize,
     MouseStateHandle,
 };
-use warpui::keymap::FixedBinding;
-use warpui::ui_components::toggle_menu::ToggleMenuStateHandle;
-use warpui::{
+use yarpui::keymap::FixedBinding;
+use yarpui::ui_components::toggle_menu::ToggleMenuStateHandle;
+use yarpui::{
     elements::{Border, Container, CrossAxisAlignment, Flex, ParentElement},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
-use warpui::{BlurContext, FocusContext};
+use yarpui::{BlurContext, FocusContext};
 
 pub const WHY_INSTALL_TMUX_URL: &str =
     "https://docs.warp.dev/terminal/warpify/ssh#why-do-i-need-tmux-on-the-remote-machine";
@@ -113,7 +113,7 @@ pub struct SystemInstallState {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
@@ -511,7 +511,7 @@ impl TypedActionView for SshInstallTmuxBlock {
 #[allow(unused_variables)]
 pub fn install_tmux_script(system: &SystemDetails, app: &AppContext) -> Option<String> {
     use asset_macro::bundled_asset;
-    use warpui::assets::asset_cache::{AssetCache, AssetState};
+    use yarpui::assets::asset_cache::{AssetCache, AssetState};
 
     let asset_source = match (
         system.operating_system.as_str(),
@@ -549,7 +549,7 @@ pub fn install_root_tmux_script(
     can_run_sudo: bool,
 ) -> Option<String> {
     use asset_macro::bundled_asset;
-    use warpui::assets::asset_cache::{AssetCache, AssetState};
+    use yarpui::assets::asset_cache::{AssetCache, AssetState};
 
     let asset_source = match (
         system.operating_system.as_str(),

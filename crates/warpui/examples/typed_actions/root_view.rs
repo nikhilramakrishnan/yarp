@@ -1,7 +1,7 @@
 use pathfinder_color::ColorU;
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     elements::{Align, ConstrainedBox, ParentElement, Rect, Stack, Text},
     keymap::FixedBinding,
     presenter::ChildView,
@@ -10,7 +10,7 @@ use warpui::{
 
 // We could initiate global action and bindings here.
 pub fn init(ctx: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     // Add bindings to trigger actions in the subview.
     ctx.register_fixed_bindings([
@@ -32,7 +32,7 @@ impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
         // Adding typed action view allows the view to receive keydown events.
         let sub_view = ctx.add_typed_action_view(|ctx| {
-            let menlo = warpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
+            let menlo = yarpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
                 cache.load_system_font("Menlo").expect("Should load Menlo")
             });
             let view = SubView {

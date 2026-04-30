@@ -4,11 +4,11 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::OnboardingIntention;
 use ui_components::{button, Component as _, Options as _};
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
-use warpui::prelude::Align;
-use warpui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::theme::Fill;
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
+use yarpui::prelude::Align;
+use yarpui::{
     elements::{
         Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, DropShadow, Flex, FormattedTextElement, Hoverable, MainAxisAlignment,
@@ -162,7 +162,7 @@ impl FreeUserNoAiSlide {
         &self,
         appearance: &Appearance,
         text: String,
-        text_color: warpui::color::ColorU,
+        text_color: yarpui::color::ColorU,
         border_color: Fill,
     ) -> Box<dyn Element> {
         let label = appearance
@@ -415,15 +415,15 @@ impl FreeUserNoAiSlide {
                     .with_main_axis_alignment(MainAxisAlignment::Center)
                     .with_cross_axis_alignment(CrossAxisAlignment::Center)
                     .with_child(
-                        warpui::elements::Text::new_inline(
+                        yarpui::elements::Text::new_inline(
                             "Subscribe",
                             appearance.ui_font_family(),
                             14.,
                         )
                         .with_color(fg_color)
-                        .with_style(warpui::fonts::Properties {
+                        .with_style(yarpui::fonts::Properties {
                             weight: Weight::Semibold,
-                            style: warpui::fonts::Style::Normal,
+                            style: yarpui::fonts::Style::Normal,
                         })
                         .with_selectable(false)
                         .finish(),

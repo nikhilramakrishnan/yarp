@@ -7,11 +7,11 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::sync::Arc;
 use thousands::Separable;
-use warp_core::ui::theme::Fill;
-use warp_core::{features::FeatureFlag, ui::appearance::Appearance};
-use warp_graphql::billing::AddonCreditsOption;
-use warpui::prelude::ChildView;
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarp_core::{features::FeatureFlag, ui::appearance::Appearance};
+use yarp_graphql::billing::AddonCreditsOption;
+use yarpui::prelude::ChildView;
+use yarpui::{
     elements::{
         Align, Border, ChildAnchor, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Empty, Flex, FormattedTextElement, HighlightedHyperlink, Hoverable, HyperlinkUrl,
@@ -1589,10 +1589,10 @@ impl UsageWidget {
                             fragment.text,
                             None,
                             maybe_action.map(|act| {
-                                Box::new(move |ctx: &mut warpui::EventContext| {
+                                Box::new(move |ctx: &mut yarpui::EventContext| {
                                     ctx.dispatch_typed_action(act.clone());
                                 })
-                                    as Box<dyn Fn(&mut warpui::EventContext)>
+                                    as Box<dyn Fn(&mut yarpui::EventContext)>
                             }),
                             self.exceed_limit_link_mouse_state.clone(),
                         )
@@ -1719,10 +1719,10 @@ impl UsageWidget {
                     .with_hyperlink_font_color(theme.accent().into_solid())
                     .register_default_click_handlers_with_action_support(
                         |hyperlink_lens, event, ctx| match hyperlink_lens {
-                            warpui::elements::HyperlinkLens::Url(url) => {
+                            yarpui::elements::HyperlinkLens::Url(url) => {
                                 ctx.open_url(url);
                             }
-                            warpui::elements::HyperlinkLens::Action(action_ref) => {
+                            yarpui::elements::HyperlinkLens::Action(action_ref) => {
                                 if let Some(action) = action_ref
                                     .as_any()
                                     .downcast_ref::<BillingAndUsagePageAction>()
@@ -2267,7 +2267,7 @@ impl UsageWidget {
         workspace_is_delinquent_due_to_payment_issue: bool,
         appearance: &Appearance,
         prorated_request_limits_info: Option<ProratedRequestLimitsInfo>,
-    ) -> Box<dyn warpui::Element> {
+    ) -> Box<dyn yarpui::Element> {
         let mut row = Flex::row();
 
         let show_alert = workspace_is_delinquent_due_to_payment_issue
@@ -2361,7 +2361,7 @@ impl UsageWidget {
         workspace_is_delinquent_due_to_payment_issue: bool,
         appearance: &Appearance,
         prorated_request_limits_info: Option<ProratedRequestLimitsInfo>,
-    ) -> Box<dyn warpui::Element> {
+    ) -> Box<dyn yarpui::Element> {
         let request_usage_details = Flex::column()
             .with_cross_axis_alignment(CrossAxisAlignment::End)
             .with_child(self.render_request_usage_count(
@@ -3243,10 +3243,10 @@ impl UsageWidget {
         } else {
             upgrade_cta = upgrade_cta.register_default_click_handlers_with_action_support(
                 |hyperlink_lens, event, ctx| match hyperlink_lens {
-                    warpui::elements::HyperlinkLens::Url(url) => {
+                    yarpui::elements::HyperlinkLens::Url(url) => {
                         ctx.open_url(url);
                     }
-                    warpui::elements::HyperlinkLens::Action(action_ref) => {
+                    yarpui::elements::HyperlinkLens::Action(action_ref) => {
                         if let Some(action) = action_ref
                             .as_any()
                             .downcast_ref::<BillingAndUsagePageAction>()

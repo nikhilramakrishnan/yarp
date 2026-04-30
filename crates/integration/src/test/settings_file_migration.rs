@@ -9,7 +9,7 @@ use yarp::{
     integration_testing::terminal::wait_until_bootstrapped_single_pane_for_tab,
     settings::{BlockVisibilitySettings, ScrollSettings},
 };
-use warpui::{async_assert, async_assert_eq, integration::AssertionOutcome, SingletonEntity};
+use yarpui::{async_assert, async_assert_eq, integration::AssertionOutcome, SingletonEntity};
 
 use super::{new_builder, Builder};
 

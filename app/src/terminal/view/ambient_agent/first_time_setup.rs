@@ -17,8 +17,8 @@ use crate::{
     ui_components::blended_colors,
 };
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warp_core::ui::theme::{AnsiColorIdentifier, Fill};
-use warpui::{
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill};
+use yarpui::{
     elements::{
         new_scrollable::SingleAxisConfig, Align, Border, ChildView, ClippedScrollStateHandle,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Expanded, Flex,
@@ -355,7 +355,7 @@ impl View for FirstTimeCloudAgentSetupView {
             },
             appearance.theme().nonactive_ui_detail().into(),
             appearance.theme().active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .finish();
 

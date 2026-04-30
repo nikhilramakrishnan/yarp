@@ -1,9 +1,9 @@
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::color::coloru_with_opacity;
-use warp_core::ui::theme::{Fill, WarpTheme};
-use warpui::color::ColorU;
-use warpui::elements::{ConstrainedBox, Container, CornerRadius, Radius};
-use warpui::Element;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::color::coloru_with_opacity;
+use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarpui::color::ColorU;
+use yarpui::elements::{ConstrainedBox, Container, CornerRadius, Radius};
+use yarpui::Element;
 
 use crate::ai::agent::conversation::ConversationStatus;
 use crate::ai::agent_conversations_model::AgentRunDisplayStatus;

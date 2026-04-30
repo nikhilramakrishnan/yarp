@@ -17,9 +17,9 @@ use lazy_static::lazy_static;
 use objc::runtime::{NO, YES};
 use objc::{msg_send, sel, sel_impl};
 use std::{boxed::Box, cell::RefCell, collections::HashMap, ffi::c_void, rc::Rc};
-use warpui_core::actions::StandardAction;
-use warpui_core::keymap::Keystroke;
-use warpui_core::platform::menu::{
+use yarpui_core::actions::StandardAction;
+use yarpui_core::keymap::Keystroke;
+use yarpui_core::platform::menu::{
     ItemTriggeredCallback, Menu, MenuBar, MenuItem, MenuItemProperties, MenuItemPropertyChanges,
     UpdateMenuItemCallback,
 };

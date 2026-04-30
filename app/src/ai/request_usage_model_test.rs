@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use chrono::Duration;
-use warpui::{App, ModelHandle};
+use yarpui::{App, ModelHandle};
 
 use crate::server::server_api::team::MockTeamClient;
 use crate::server::server_api::workspace::MockWorkspaceClient;
@@ -15,7 +15,7 @@ use crate::workspaces::{
 };
 
 use ai::api_keys::ApiKeyManager;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 use super::*;
 
@@ -40,7 +40,7 @@ fn add_user_workspaces_with_workspace(app: &mut App, workspace: Workspace) {
 fn add_request_usage_model(app: &mut App) -> ModelHandle<AIRequestUsageModel> {
     app.add_singleton_model(|_| ServerApiProvider::new_for_test());
     app.update(|ctx| {
-        warpui_extras::secure_storage::register_noop("test", ctx);
+        yarpui_extras::secure_storage::register_noop("test", ctx);
         ctx.add_singleton_model(ApiKeyManager::new);
     });
     app.add_singleton_model(|ctx| {

@@ -27,7 +27,7 @@ use yarp::terminal::model::index::Point;
 use yarp::terminal::model::terminal_model::{BlockIndex, WithinBlock, WithinModel};
 use yarp::terminal::shell::ShellType;
 use yarp::terminal::GridType;
-use warpui::{async_assert, async_assert_eq};
+use yarpui::{async_assert, async_assert_eq};
 
 use crate::Builder;
 

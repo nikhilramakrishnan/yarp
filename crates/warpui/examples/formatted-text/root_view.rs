@@ -1,9 +1,9 @@
 //! A UI sample demonstrating how the SelectableArea element can be used.
 
 use markdown_parser::{parse_markdown, FormattedTextFragment, FormattedTextLine};
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     elements::{
         ChildView, ConstrainedBox, Flex, FormattedTextElement, HeadingFontSizeMultipliers,
         ParentElement, Rect, SelectableArea, SelectionHandle, Stack, Text,
@@ -11,8 +11,8 @@ use warpui::{
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
-use warpui::color::ColorU;
-use warpui::elements::{Align, HighlightedHyperlink, HyperlinkLens};
+use yarpui::color::ColorU;
+use yarpui::elements::{Align, HighlightedHyperlink, HyperlinkLens};
 
 pub struct RootView {
     sub_view: ViewHandle<FormattedTextView>,
@@ -21,7 +21,7 @@ pub struct RootView {
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
         let sub_view = ctx.add_view(|ctx| {
-            let font_family = warpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
+            let font_family = yarpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
                 cache.load_system_font("Menlo").expect("Should load Menlo")
             });
             let view = FormattedTextView {

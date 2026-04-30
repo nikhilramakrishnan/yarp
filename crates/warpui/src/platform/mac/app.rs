@@ -22,7 +22,7 @@ use crate::platform::{
     app::{AppBackend, AppBuilder},
     AsInnerMut,
 };
-use warpui_core::{
+use yarpui_core::{
     assets::AssetProvider,
     integration::TestDriver,
     keymap::{Keystroke, Trigger},

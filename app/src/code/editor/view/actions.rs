@@ -18,7 +18,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::Debug;
 use std::ops::Range;
 use string_offset::CharOffset;
-use warp_editor::{
+use yarp_editor::{
     content::version::BufferVersion,
     editor::{EmbeddedItemModel, RunnableCommandModel, TextDecoration},
     model::{CoreEditorModel, PlainTextEditorModel},
@@ -28,8 +28,8 @@ use warp_editor::{
     },
     selection::{TextDirection, TextUnit},
 };
-use warp_util::user_input::UserInput;
-use warpui::{
+use yarp_util::user_input::UserInput;
+use yarpui::{
     actions::StandardAction,
     elements::Axis,
     event::ModifiersState,
@@ -48,7 +48,7 @@ lazy_static! {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     let text_entry = id!("CodeEditorView") & !id!("IMEOpen");
     // We use this to disable some keybindings that would conflict with the Agent Mode embedded editor.
@@ -1109,7 +1109,7 @@ impl TypedActionView for CodeEditorView {
     }
 }
 
-impl warp_editor::editor::EditorView for CodeEditorView {
+impl yarp_editor::editor::EditorView for CodeEditorView {
     type RichTextAction = CodeEditorViewAction;
 
     fn runnable_command_at<'a>(

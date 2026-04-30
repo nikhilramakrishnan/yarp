@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use session_sharing_protocol::sharer::SessionSourceType;
-use warp_core::settings::Setting as _;
-use warpui::{App, AppContext, SingletonEntity, ViewContext};
+use yarp_core::settings::Setting as _;
+use yarpui::{App, AppContext, SingletonEntity, ViewContext};
 
 use crate::{
     ai::{

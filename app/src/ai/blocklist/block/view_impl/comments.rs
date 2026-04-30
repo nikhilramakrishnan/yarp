@@ -2,14 +2,14 @@ use crate::ai::agent::comment::ReviewComment;
 use crate::ai::agent::icons::addressed_comment_icon;
 use crate::ai::blocklist::block::CommentElementState;
 use crate::code_review::comments::ReviewCommentBatch;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::Icon;
-use warpui::elements::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::Icon;
+use yarpui::elements::{
     Axis, Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty,
     Expanded, Flex, Hoverable, MouseState, ParentElement, Radius, Text, Wrap, WrapFillEntireRun,
 };
-use warpui::{AppContext, Element, SingletonEntity};
+use yarpui::{AppContext, Element, SingletonEntity};
 
 const COMMENT_CHIP_MAX_HEIGHT: f32 = 200.;
 

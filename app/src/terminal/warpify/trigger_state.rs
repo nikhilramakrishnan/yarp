@@ -1,6 +1,6 @@
 use parking_lot::FairMutex;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     r#async::SpawnedFutureHandle, AppContext, EntityId, SingletonEntity as _, ViewContext,
     ViewHandle,
 };

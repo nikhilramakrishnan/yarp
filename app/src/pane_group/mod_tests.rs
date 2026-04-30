@@ -74,8 +74,8 @@ use ai::{
 };
 use pathfinder_geometry::rect::RectF;
 use shared_session::permissions_manager::SessionPermissionsManager;
-use warpui::windowing::{state::ApplicationStage, WindowManager};
-use warpui::{
+use yarpui::windowing::{state::ApplicationStage, WindowManager};
+use yarpui::{
     platform::{WindowBounds, WindowStyle},
     App, ModelHandle,
 };

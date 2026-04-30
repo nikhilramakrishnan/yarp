@@ -6,14 +6,14 @@ use crate::util::traffic_lights::{TrafficLightData, TrafficLightMouseStates};
 use crate::workspace::TOTAL_TAB_BAR_HEIGHT;
 use pathfinder_color::ColorU;
 use std::sync::Arc;
-use warp_core::ui::theme::{Fill, WarpTheme};
-use warpui::elements::{
+use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarpui::elements::{
     Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable, MainAxisAlignment,
     MainAxisSize, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::FamilyId;
-use warpui::platform::FullscreenState;
-use warpui::{AppContext, Element, SingletonEntity};
+use yarpui::fonts::FamilyId;
+use yarpui::platform::FullscreenState;
+use yarpui::{AppContext, Element, SingletonEntity};
 
 /// Possible window traffic light icons.
 #[derive(Copy, Clone)]

@@ -18,8 +18,8 @@ use futures::future::join_all;
 use futures::Future;
 use futures_lite::StreamExt;
 use itertools::Itertools;
-use warp_core::command::ExitCode;
-use warpui::{App, ModelHandle};
+use yarp_core::command::ExitCode;
+use yarpui::{App, ModelHandle};
 
 use std::path::PathBuf;
 use std::pin::pin;

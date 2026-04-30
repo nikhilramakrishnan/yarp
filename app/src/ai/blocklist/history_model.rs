@@ -6,13 +6,13 @@ use chrono::{DateTime, Local, NaiveDateTime};
 use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 use warp_multi_agent_api::response_event::stream_finished::ConversationUsageMetadata;
 use warp_multi_agent_api::{
     client_action::{Action, StartNewConversation},
     response_event::stream_finished::TokenUsage,
 };
-use warpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use yarpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 #[cfg(feature = "local_fs")]
 use std::sync::{Arc, Mutex};

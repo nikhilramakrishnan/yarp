@@ -16,16 +16,16 @@ pub use agent_view_block::*;
 pub use controller::*;
 pub use ephemeral_message_model::*;
 pub use inline_agent_view_header::*;
-use warpui::fonts::Properties;
+use yarpui::fonts::Properties;
 pub use zero_state_block::*;
 
 use std::sync::LazyLock;
 
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::{appearance::Appearance, color::blend::Blend};
-use warpui::keymap::Keystroke;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::ui::theme::Fill;
+use yarp_core::ui::{appearance::Appearance, color::blend::Blend};
+use yarpui::keymap::Keystroke;
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::view_components::action_button::ActionButtonTheme;
 

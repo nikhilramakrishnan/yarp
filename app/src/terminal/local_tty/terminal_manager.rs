@@ -50,10 +50,10 @@ use session_sharing_protocol::common::{
     LongRunningCommandAgentInteractionState, SelectedConversation, UniversalDeveloperInputContext,
 };
 use settings::Setting as _;
-use warpui::r#async::executor::Background;
-use warpui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
+use yarpui::r#async::executor::Background;
+use yarpui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 
-use warp_core::execution_mode::AppExecutionMode;
+use yarp_core::execution_mode::AppExecutionMode;
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent::conversation::AIConversation;
@@ -76,7 +76,7 @@ use crate::send_telemetry_on_executor;
 use crate::server::telemetry::{TelemetryAgentViewEntryOrigin, TelemetryEvent};
 use crate::settings::DebugSettings;
 use crate::settings::{PrivacySettings, SshSettings};
-use warp_core::send_telemetry_from_ctx;
+use yarp_core::send_telemetry_from_ctx;
 
 use crate::terminal::model::session::Sessions;
 
@@ -2433,7 +2433,7 @@ pub fn get_shell_starter(
     // TODO(alokedesai): Further refactor this function to make it clear that it's expensive.
     shell_starter_or_wsl_name
         .and_then(|starter| {
-            warpui::r#async::block_on(async { starter.to_shell_starter_source().await })
+            yarpui::r#async::block_on(async { starter.to_shell_starter_source().await })
         })
         .map(|starter_source| {
             get_shell_starter_internal(

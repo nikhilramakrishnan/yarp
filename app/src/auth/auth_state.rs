@@ -7,9 +7,9 @@ use anyhow::anyhow;
 use chrono::{DateTime, Duration, Utc};
 use parking_lot::RwLock;
 use uuid::Uuid;
-use warp_core::channel::{Channel, ChannelState};
-use warp_graphql::object_permissions::OwnerType;
-use warpui::{AppContext, Entity, SingletonEntity};
+use yarp_core::channel::{Channel, ChannelState};
+use yarp_graphql::object_permissions::OwnerType;
+use yarpui::{AppContext, Entity, SingletonEntity};
 
 use crate::{
     cloud_object::{GenericStringObjectFormat, JsonObjectType, ObjectType},
@@ -469,8 +469,8 @@ impl AuthState {
     }
 }
 
-// Adapter for the [`warp_managed_secrets`] crate, which needs to access the current user.
-impl warp_managed_secrets::ActorProvider for AuthState {
+// Adapter for the [`yarp_managed_secrets`] crate, which needs to access the current user.
+impl yarp_managed_secrets::ActorProvider for AuthState {
     fn actor_uid(&self) -> Option<String> {
         self.user_id().map(|uid| uid.as_string())
     }

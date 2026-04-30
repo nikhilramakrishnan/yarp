@@ -1,13 +1,13 @@
 use std::{borrow::Cow, mem, ops::Range, sync::Arc};
 
 use string_offset::{ByteOffset, CharOffset};
-use warp_completer::signatures::CommandRegistry;
-use warp_editor::{
+use yarp_completer::signatures::CommandRegistry;
+use yarp_editor::{
     content::{anchor::Anchor, buffer::Buffer, selection_model::BufferSelectionModel},
     editor::EmbeddedItemModel,
 };
-use warp_util::user_input::UserInput;
-use warpui::{
+use yarp_util::user_input::UserInput;
+use yarpui::{
     elements::{
         Align, Border, Container, CrossAxisAlignment, Empty, Flex, MainAxisAlignment,
         MouseStateHandle, ParentElement, Shrinkable,

@@ -1,5 +1,5 @@
 use std::sync::OnceLock;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 // Global execution mode, for logic that runs outside the UI framework.
 static GLOBAL_EXECUTION_MODE: OnceLock<ExecutionMode> = OnceLock::new();

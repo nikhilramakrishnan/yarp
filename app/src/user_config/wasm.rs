@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use warpui::ModelContext;
+use yarpui::ModelContext;
 
 use crate::launch_configs::launch_config::LaunchConfig;
 use crate::themes::theme::WarpThemeConfig;

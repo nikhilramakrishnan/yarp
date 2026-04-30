@@ -15,10 +15,10 @@ use crate::{
     ui_components::{blended_colors, icons::Icon},
 };
 use pathfinder_color::ColorU;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::Fill;
-use warpui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::Fill;
+use yarpui::{
     elements::{Align, ChildView, Container, ParentElement, SavePosition, Stack},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };

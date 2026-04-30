@@ -25,15 +25,15 @@ use enclose::enclose;
 use itertools::Itertools;
 use settings::manager::SettingsManager;
 use settings::Setting as _;
-use warp_core::context_flag::ContextFlag;
-use warp_util::path::user_friendly_path;
-use warpui::actions::StandardAction;
-use warpui::keymap::{Keystroke, Trigger};
-use warpui::platform::menu::{
+use yarp_core::context_flag::ContextFlag;
+use yarp_util::path::user_friendly_path;
+use yarpui::actions::StandardAction;
+use yarpui::keymap::{Keystroke, Trigger};
+use yarpui::platform::menu::{
     CustomMenuItem, Menu, MenuBar, MenuItem, MenuItemProperties, MenuItemPropertyChanges,
 };
-use warpui::windowing::WindowManager;
-use warpui::{AppContext, SingletonEntity};
+use yarpui::windowing::WindowManager;
+use yarpui::{AppContext, SingletonEntity};
 
 type CheckmarkStatusGetter = dyn 'static + Fn(&mut AppContext) -> bool;
 

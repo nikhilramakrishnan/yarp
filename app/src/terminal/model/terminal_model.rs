@@ -62,9 +62,9 @@ use crate::terminal::shell::{ShellName, ShellType};
 
 use crate::terminal::model::secrets::ObfuscateSecrets;
 use session_sharing_protocol::sharer::SessionSourceType;
-use warp_core::report_error;
+use yarp_core::report_error;
 #[cfg(not(target_family = "wasm"))]
-use warpui::util::save_as_file;
+use yarpui::util::save_as_file;
 
 use async_channel::Sender;
 use base64::Engine;
@@ -82,14 +82,14 @@ use std::ops::{Range, RangeInclusive};
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use warp_core::features::FeatureFlag;
-use warp_core::semantic_selection::SemanticSelection;
-pub use warp_terminal::model::BlockIndex;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use warpui::assets::asset_cache::Asset;
-use warpui::image_cache::ImageType;
-use warpui::r#async::executor::Background;
-use warpui::AppContext;
+use yarp_core::features::FeatureFlag;
+use yarp_core::semantic_selection::SemanticSelection;
+pub use yarp_terminal::model::BlockIndex;
+use yarp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use yarpui::assets::asset_cache::Asset;
+use yarpui::image_cache::ImageType;
+use yarpui::r#async::executor::Background;
+use yarpui::AppContext;
 
 /// Max size of the window title stack.
 const TITLE_STACK_MAX_DEPTH: usize = 4096;
@@ -2694,7 +2694,7 @@ impl ansi::Handler for TerminalModel {
         delegate!(self.configure_charset(index, charset));
     }
 
-    fn set_color(&mut self, index: usize, color: warpui::color::ColorU) {
+    fn set_color(&mut self, index: usize, color: yarpui::color::ColorU) {
         self.override_colors[index] = Some(color);
     }
 

@@ -1,10 +1,10 @@
 use crate::platform::mac::rendering::is_integrated_gpu;
 use crate::platform::mac::window::WindowState;
 use cocoa::base::id;
-use warpui_core::rendering::{
+use yarpui_core::rendering::{
     GPUBackend, GPUDeviceInfo, GPUDeviceType, GPUPowerPreference, OnGPUDeviceSelected,
 };
-use warpui_core::{fonts, Scene};
+use yarpui_core::{fonts, Scene};
 
 /// Trait to render the [`Scene`] onto the screen using the provided [`WindowState`].
 pub trait Renderer {

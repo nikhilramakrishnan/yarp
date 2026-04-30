@@ -18,10 +18,10 @@ use yarp::{
     },
     terminal::warpify::settings::AddedSubshellCommands,
 };
-use warpui::integration::{AssertionOutcome, TestStep};
-use warpui::windowing::state::ApplicationStage;
-use warpui::windowing::WindowManager;
-use warpui::{async_assert, UpdateModel};
+use yarpui::integration::{AssertionOutcome, TestStep};
+use yarpui::windowing::state::ApplicationStage;
+use yarpui::windowing::WindowManager;
+use yarpui::{async_assert, UpdateModel};
 
 use crate::util::skip_if_powershell_core_2303;
 

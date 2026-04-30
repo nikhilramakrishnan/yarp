@@ -18,8 +18,8 @@ pub use dcs_hooks::*;
 pub use handler::*;
 use instant::Instant;
 use itertools::Itertools;
-pub use warp_terminal::model::ansi::control_sequence_parameters::*;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+pub use yarp_terminal::model::ansi::control_sequence_parameters::*;
+use yarp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::completions::{
@@ -49,7 +49,7 @@ use std::str::FromStr as _;
 use std::time::Duration;
 use std::{io, str};
 use vte::{Params, Parser as VteParser, Perform as VtePerform};
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 use super::kitty::parse_kitty_chunk;
 use super::terminal_model::TmuxInstallationState;

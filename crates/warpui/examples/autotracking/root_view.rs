@@ -1,7 +1,7 @@
 use pathfinder_color::ColorU;
-use warpui::elements::DispatchEventResult;
-use warpui::fonts::FamilyId;
-use warpui::{
+use yarpui::elements::DispatchEventResult;
+use yarpui::fonts::FamilyId;
+use yarpui::{
     elements::{
         Align, Border, ChildView, Container, CornerRadius, EventHandler, Flex, ParentElement,
         Radius, Rect, Stack, Text,
@@ -106,7 +106,7 @@ enum MainViewAction {
 impl MainView {
     fn new(ctx: &mut ViewContext<Self>) -> Self {
         let model = ctx.add_model(|_| Counter::default());
-        let font_family = warpui::fonts::Cache::handle(ctx)
+        let font_family = yarpui::fonts::Cache::handle(ctx)
             .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
         MainView {
             model,

@@ -1,12 +1,12 @@
 use std::path::Path;
 
-use warpui::elements::{
+use yarpui::elements::{
     Container, CrossAxisAlignment, Flex, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::geometry::vector::Vector2F;
-use warpui::Element;
-use warpui::EventContext;
+use yarpui::fonts::{Properties, Weight};
+use yarpui::geometry::vector::Vector2F;
+use yarpui::Element;
+use yarpui::EventContext;
 
 use crate::appearance::Appearance;
 use crate::tab_configs::session_config::SessionType;

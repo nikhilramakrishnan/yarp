@@ -3,7 +3,7 @@
 
 use itertools::Itertools;
 use pathfinder_geometry::{rect::RectF, vector::Vector2F};
-use warp_editor::{
+use yarp_editor::{
     content::text::{
         BlockType as ContentBlockType, BufferBlockStyle, BufferTextStyle, TextStyles,
         TextStylesWithMetadata,
@@ -11,7 +11,7 @@ use warp_editor::{
     model::RichTextEditorModel,
     render::model::RenderState,
 };
-use warpui::{
+use yarpui::{
     accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
     elements::{
         AnchorPair, Border, ConstrainedBox, Container, CornerRadius, DropShadow, Flex,
@@ -263,7 +263,7 @@ impl View for Omnibar {
         "Omnibar"
     }
 
-    fn render(&self, app: &warpui::AppContext) -> Box<dyn Element> {
+    fn render(&self, app: &yarpui::AppContext) -> Box<dyn Element> {
         let appearance = Appearance::as_ref(app);
         let mut actions = Flex::row().with_main_axis_size(MainAxisSize::Min);
 
@@ -488,9 +488,9 @@ impl Compact {
 impl Element for Compact {
     fn layout(
         &mut self,
-        constraint: warpui::SizeConstraint,
-        ctx: &mut warpui::LayoutContext,
-        app: &warpui::AppContext,
+        constraint: yarpui::SizeConstraint,
+        ctx: &mut yarpui::LayoutContext,
+        app: &yarpui::AppContext,
     ) -> Vector2F {
         self.child.layout(
             SizeConstraint {
@@ -505,8 +505,8 @@ impl Element for Compact {
     fn paint(
         &mut self,
         origin: Vector2F,
-        ctx: &mut warpui::PaintContext,
-        app: &warpui::AppContext,
+        ctx: &mut yarpui::PaintContext,
+        app: &yarpui::AppContext,
     ) {
         self.child.paint(origin, ctx, app)
     }
@@ -521,18 +521,18 @@ impl Element for Compact {
 
     fn dispatch_event(
         &mut self,
-        event: &warpui::event::DispatchedEvent,
-        ctx: &mut warpui::EventContext,
-        app: &warpui::AppContext,
+        event: &yarpui::event::DispatchedEvent,
+        ctx: &mut yarpui::EventContext,
+        app: &yarpui::AppContext,
     ) -> bool {
         self.child.dispatch_event(event, ctx, app)
     }
 
-    fn after_layout(&mut self, ctx: &mut warpui::AfterLayoutContext, app: &AppContext) {
+    fn after_layout(&mut self, ctx: &mut yarpui::AfterLayoutContext, app: &AppContext) {
         self.child.after_layout(ctx, app)
     }
 
-    fn z_index(&self) -> Option<warpui::elements::ZIndex> {
+    fn z_index(&self) -> Option<yarpui::elements::ZIndex> {
         self.child.z_index()
     }
 

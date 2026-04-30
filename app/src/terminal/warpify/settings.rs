@@ -6,9 +6,9 @@ use settings::{
     ChangeEventReason, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
 use strum_macros::EnumIter;
-use warp_util::path::ShellFamily;
-use warpui::{AppContext, ModelContext};
-use warpui::{Entity, SingletonEntity};
+use yarp_util::path::ShellFamily;
+use yarpui::{AppContext, ModelContext};
+use yarpui::{Entity, SingletonEntity};
 
 use crate::terminal::ssh::util::{parse_interactive_ssh_command, SshWarpifyCommand};
 

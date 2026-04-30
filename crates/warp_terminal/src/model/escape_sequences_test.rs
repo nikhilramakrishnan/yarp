@@ -1,5 +1,5 @@
-use warpui::keymap::Keystroke;
-use warpui::platform::OperatingSystem;
+use yarpui::keymap::Keystroke;
+use yarpui::platform::OperatingSystem;
 
 use crate::model::{
     indexing::Point,

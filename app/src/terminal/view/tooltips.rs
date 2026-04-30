@@ -2,7 +2,7 @@
 
 use pathfinder_geometry::vector::vec2f;
 
-use warpui::{
+use yarpui::{
     elements::{
         ChildAnchor, Dismiss, MouseStateHandle, OffsetPositioning, PositionedElementAnchor,
         PositionedElementOffsetBounds, Stack,
@@ -44,7 +44,7 @@ struct GridTooltipLink {
 #[cfg(feature = "local_fs")]
 fn open_in_warp_tooltip(
     path: std::path::PathBuf,
-    line_and_column_num: Option<warp_util::path::LineAndColumnArg>,
+    line_and_column_num: Option<yarp_util::path::LineAndColumnArg>,
     detail_for_default: &mut Option<String>,
     mouse_state: MouseStateHandle,
     app: &AppContext,
@@ -54,7 +54,7 @@ fn open_in_warp_tooltip(
         util::tooltips::should_show_open_in_warp_link,
     };
     use settings::Setting as _;
-    use warpui::SingletonEntity;
+    use yarpui::SingletonEntity;
 
     if !should_show_open_in_warp_link(&path, app) {
         return None;

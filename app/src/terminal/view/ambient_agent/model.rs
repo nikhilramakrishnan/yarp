@@ -2,11 +2,11 @@ use std::time::Duration;
 
 use instant::Instant;
 use session_sharing_protocol::common::SessionId;
-use warp_cli::agent::Harness;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warpui::r#async::{SpawnedFutureHandle, Timer};
-use warpui::{Entity, EntityId, ModelContext, SingletonEntity};
+use yarp_cli::agent::Harness;
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarpui::r#async::{SpawnedFutureHandle, Timer};
+use yarpui::{Entity, EntityId, ModelContext, SingletonEntity};
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent::conversation::AIConversationId;

@@ -30,10 +30,10 @@ use log::debug;
 #[cfg(not(target_family = "wasm"))]
 use std::collections::HashMap;
 use url::Url;
-use warp_core::send_telemetry_from_ctx;
-use warp_editor::editor::NavigationKey;
-use warp_graphql::queries::user_github_info::UserGithubInfoResult;
-use warpui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_editor::editor::NavigationKey;
+use yarp_graphql::queries::user_github_info::UserGithubInfoResult;
+use yarpui::{
     elements::{
         Border, ChildAnchor, ChildView, Clipped, ClippedScrollStateHandle, ClippedScrollable,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, Element, Empty,
@@ -56,7 +56,7 @@ use warpui::{
 const SUBMIT_BUTTON_FOCUSED: &str = "SubmitButtonFocused";
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
@@ -1413,7 +1413,7 @@ impl UpdateEnvironmentForm {
 
                 match result {
                     Ok(result) => match result {
-                        warp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::SuggestCloudEnvironmentImageOutput(output) => {
+                        yarp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::SuggestCloudEnvironmentImageOutput(output) => {
                             let image = output.image;
                             let needs_custom_image = output.needs_custom_image;
                             let reason = output.reason;
@@ -1425,7 +1425,7 @@ impl UpdateEnvironmentForm {
                                 ctx,
                             );
                         }
-                        warp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::SuggestCloudEnvironmentImageAuthRequiredOutput(output) => {
+                        yarp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::SuggestCloudEnvironmentImageAuthRequiredOutput(output) => {
                             me.suggest_image_cache.insert(
                                 key.clone(),
                                 CachedSuggestImageResult::AuthRequired {
@@ -1437,7 +1437,7 @@ impl UpdateEnvironmentForm {
                                 auth_url: output.auth_url,
                             };
                         }
-                        warp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::UserFacingError(_) => {
+                        yarp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::UserFacingError(_) => {
                             let error_message = "Failed to suggest a Docker image".to_string();
                             send_telemetry_from_ctx!(
                                 CloudAgentTelemetryEvent::ImageSuggestionFailed {
@@ -1450,7 +1450,7 @@ impl UpdateEnvironmentForm {
                                 message: error_message,
                             };
                         }
-                        warp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::Unknown => {
+                        yarp_graphql::queries::suggest_cloud_environment_image::SuggestCloudEnvironmentImageResult::Unknown => {
                             let error_message = "Unknown response from suggestCloudEnvironmentImage".to_string();
                             send_telemetry_from_ctx!(
                                 CloudAgentTelemetryEvent::ImageSuggestionFailed {
@@ -3454,8 +3454,8 @@ impl TypedActionView for UpdateEnvironmentForm {
         &mut self,
         _action: &Self::Action,
         _ctx: &mut ViewContext<Self>,
-    ) -> warpui::accessibility::ActionAccessibilityContent {
-        warpui::accessibility::ActionAccessibilityContent::default()
+    ) -> yarpui::accessibility::ActionAccessibilityContent {
+        yarpui::accessibility::ActionAccessibilityContent::default()
     }
 }
 
@@ -3464,7 +3464,7 @@ impl View for UpdateEnvironmentForm {
         "UpdateEnvironmentForm"
     }
 
-    fn keymap_context(&self, app: &AppContext) -> warpui::keymap::Context {
+    fn keymap_context(&self, app: &AppContext) -> yarpui::keymap::Context {
         let mut context = Self::default_keymap_context();
         if self.submit_button.is_focused(app) {
             context.set.insert(SUBMIT_BUTTON_FOCUSED);

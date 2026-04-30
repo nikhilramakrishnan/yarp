@@ -2,18 +2,18 @@ use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::color::blend::Blend;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::elements::{
+use yarp_core::ui::color::blend::Blend;
+use yarp_core::ui::theme::color::internal_colors;
+use yarpui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss,
     DropShadow, Element, Flex, Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle,
     ParentElement, Radius, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::keymap::{FixedBinding, Keystroke};
-use warpui::platform::Cursor;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::keymap::{FixedBinding, Keystroke};
+use yarpui::platform::Cursor;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 // Figma node 6583:23542
 const MODAL_WIDTH: f32 = 441.;
@@ -73,7 +73,7 @@ pub struct EnvironmentSetupModeSelector {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![
         FixedBinding::new(

@@ -18,10 +18,10 @@ use crate::workspaces::team_tester::TeamTesterStatus;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::Workspace;
 use url::Url;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::{Empty, MouseStateHandle};
-use warpui::platform::WindowStyle;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::elements::{Empty, MouseStateHandle};
+use yarpui::platform::WindowStyle;
+use yarpui::{
     AddSingletonModel, App, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     WindowId,
 };

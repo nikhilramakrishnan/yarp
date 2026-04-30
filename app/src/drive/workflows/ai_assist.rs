@@ -1,9 +1,9 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use warp_graphql::mutations::generate_metadata_for_command::{
+use yarp_graphql::mutations::generate_metadata_for_command::{
     GenerateMetadataForCommandFailureType, GenerateMetadataForCommandSuccess,
 };
-use warpui::{SingletonEntity, ViewContext};
+use yarpui::{SingletonEntity, ViewContext};
 
 use crate::{
     ai::AIRequestUsageModel,

@@ -3,10 +3,10 @@ use std::{sync::Arc, time::Duration};
 use instant::Instant;
 
 use parking_lot::FairMutex;
-use warp_core::ui::appearance::Appearance;
-use warpui::keymap::Keystroke;
-use warpui::AppContext;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::keymap::Keystroke;
+use yarpui::AppContext;
+use yarpui::{
     r#async::SpawnedFutureHandle, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity,
 };
 
@@ -413,7 +413,7 @@ impl AgentViewController {
     /// and whether the escape keybinding should be displayed.
     pub fn can_exit_agent_view(
         &self,
-        ctx: &impl warpui::ModelAsRef,
+        ctx: &impl yarpui::ModelAsRef,
     ) -> Result<(), ExitAgentViewError> {
         let model = self.terminal_model.lock();
 
@@ -495,7 +495,7 @@ impl AgentViewController {
         self.pending_confirmation = Some(pending_confirmation);
 
         let abort_handle = ctx.spawn_abortable(
-            async move { warpui::r#async::Timer::after(ENTER_OR_EXIT_CONFIRMATION_WINDOW).await },
+            async move { yarpui::r#async::Timer::after(ENTER_OR_EXIT_CONFIRMATION_WINDOW).await },
             move |me, _, _ctx| {
                 me.pending_confirmation = None;
                 me.pending_confirmation_abort_handle = None;
@@ -1010,7 +1010,7 @@ fn exit_confirmation_message(
     should_stop_and_exit: bool,
     app: &AppContext,
 ) -> Message {
-    use warpui::SingletonEntity;
+    use yarpui::SingletonEntity;
 
     use crate::terminal::input::message_bar::{Message, MessageItem};
 

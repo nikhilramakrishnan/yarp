@@ -9,7 +9,7 @@ mod linux;
 
 #[cfg(target_os = "windows")]
 mod windows;
-use warpui_core::fonts::{Style, Weight};
+use yarpui_core::fonts::{Style, Weight};
 #[cfg(target_os = "windows")]
 use windows::loader;
 

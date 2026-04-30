@@ -48,20 +48,20 @@ use crate::{
     view_components::action_button::{ActionButton, PrimaryTheme},
 };
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::icons;
-use warp_core::ui::icons::ICON_DIMENSIONS;
-use warp_core::ui::theme::Fill as ThemeFill;
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::CrossAxisAlignment;
-use warpui::elements::MainAxisAlignment;
-use warpui::elements::MainAxisSize;
-use warpui::elements::{ChildAnchor, PositionedElementAnchor, PositionedElementOffsetBounds};
-use warpui::keymap::EditableBinding;
-use warpui::keymap::FixedBinding;
-use warpui::text_layout::ClipConfig;
-use warpui::ui_components::button::ButtonTooltipPosition;
-use warpui::ui_components::components::UiComponent;
-use warpui::{
+use yarp_core::ui::icons;
+use yarp_core::ui::icons::ICON_DIMENSIONS;
+use yarp_core::ui::theme::Fill as ThemeFill;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::elements::CrossAxisAlignment;
+use yarpui::elements::MainAxisAlignment;
+use yarpui::elements::MainAxisSize;
+use yarpui::elements::{ChildAnchor, PositionedElementAnchor, PositionedElementOffsetBounds};
+use yarpui::keymap::EditableBinding;
+use yarpui::keymap::FixedBinding;
+use yarpui::text_layout::ClipConfig;
+use yarpui::ui_components::button::ButtonTooltipPosition;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::{
     elements::{
         ChildView, ConstrainedBox, Container, Flex, Hoverable, MouseStateHandle, OffsetPositioning,
         ParentElement, SavePosition, Stack,
@@ -69,7 +69,7 @@ use warpui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
-use warpui::{id, EntityId};
+use yarpui::{id, EntityId};
 
 pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([EditableBinding::new(
@@ -97,7 +97,7 @@ use crate::util::file::external_editor::settings::EditorLayout;
 #[cfg(feature = "local_fs")]
 use crate::util::openable_file_type::FileTarget;
 #[cfg(feature = "local_fs")]
-use warp_util::path::LineAndColumnArg;
+use yarp_util::path::LineAndColumnArg;
 
 // Import keybinding constants from code view to ensure consistency
 use crate::code::view::{SAVE_FILE_BINDING_DESCRIPTION, SAVE_FILE_BINDING_NAME};
@@ -688,8 +688,8 @@ impl AIDocumentView {
                                         tooltip,
                                         OffsetPositioning::offset_from_parent(
                                             vec2f(0., 4.),
-                                            warpui::elements::ParentOffsetBounds::WindowByPosition,
-                                            warpui::elements::ParentAnchor::BottomRight,
+                                            yarpui::elements::ParentOffsetBounds::WindowByPosition,
+                                            yarpui::elements::ParentAnchor::BottomRight,
                                             ChildAnchor::TopRight,
                                         ),
                                     );
@@ -938,7 +938,7 @@ impl AIDocumentView {
     }
 
     /// Bind the underlying editor model to the given window, enabling render/event processing.
-    pub fn bind_window(&self, window_id: warpui::WindowId, ctx: &mut ViewContext<Self>) {
+    pub fn bind_window(&self, window_id: yarpui::WindowId, ctx: &mut ViewContext<Self>) {
         self.editor.update(ctx, |editor_view, ctx| {
             editor_view
                 .model()
@@ -959,7 +959,7 @@ impl AIDocumentView {
     #[cfg(feature = "local_fs")]
     fn export(&self, ctx: &mut ViewContext<Self>) {
         use crate::drive::export::safe_filename;
-        use warpui::platform::SaveFilePickerConfiguration;
+        use yarpui::platform::SaveFilePickerConfiguration;
         let markdown = self.editor.as_ref(ctx).markdown_unescaped(ctx);
 
         // Get the document title from the model
@@ -1015,7 +1015,7 @@ impl View for AIDocumentView {
         "AIDocumentView"
     }
 
-    fn render(&self, _app: &AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, _app: &AppContext) -> Box<dyn yarpui::Element> {
         let editor = Container::new(ChildView::new(&self.editor).finish())
             .with_padding_left(8.)
             .with_padding_right(8.)

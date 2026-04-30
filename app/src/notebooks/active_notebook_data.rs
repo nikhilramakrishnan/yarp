@@ -1,4 +1,4 @@
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::document::ai_document_model::AIDocumentId,

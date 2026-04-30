@@ -1,5 +1,5 @@
 [package]
-name = "warpui_core"
+name = "yarpui_core"
 version = "0.1.0"
 edition = "2021"
 authors.workspace = true
@@ -76,7 +76,7 @@ titlecase = "1.0"
 tokio.workspace = true
 trait-set = "0.3.0"
 vec1.workspace = true
-warp_util.workspace = true
+yarp_util.workspace = true
 
 [dev-dependencies]
 command = { workspace = true, features = ["test-util"] }
@@ -86,7 +86,7 @@ ctor = "0.1.19"
 rust-embed.workspace = true
 simplelog.workspace = true
 # Enable the `test-util` feature for our own package when running tests.
-warpui_core = { path = ".", features = ["test-util"] }
+yarpui_core = { path = ".", features = ["test-util"] }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 async-io.workspace = true

@@ -1,7 +1,7 @@
 use super::{CharOffset, Point};
 use itertools::Either;
 use std::iter::Peekable;
-use warpui::text::{
+use yarpui::text::{
     word_boundaries::WordBoundariesApproach, words::is_subword_boundary_char, TextBuffer,
 };
 

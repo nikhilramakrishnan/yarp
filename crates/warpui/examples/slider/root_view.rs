@@ -1,5 +1,5 @@
 use pathfinder_color::ColorU;
-use warpui::{
+use yarpui::{
     elements::{Align, Container},
     presenter::ChildView,
     ui_components::{

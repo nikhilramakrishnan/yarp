@@ -16,8 +16,8 @@ use crate::{
     appearance::Appearance,
     server::local_backend::llm_provider::{LocalLlmProvider, StoredLlmConfig},
 };
-use warp_core::paths::warp_home_config_dir;
-use warpui::{
+use yarp_core::paths::warp_home_config_dir;
+use yarpui::{
     elements::{Container, CrossAxisAlignment, Element, Flex, ParentElement},
     ui_components::components::UiComponent,
     AppContext, Entity, View, ViewContext, ViewHandle,

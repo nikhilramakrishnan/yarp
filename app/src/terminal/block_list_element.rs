@@ -27,12 +27,12 @@ use enum_iterator::Sequence;
 use itertools::Itertools;
 use parking_lot::FairMutex;
 use vec1::Vec1;
-use warp_core::semantic_selection::SemanticSelection;
-use warp_core::ui::builder::UiBuilder;
-use warp_core::ui::theme::AnsiColorIdentifier;
-use warp_util::user_input::UserInput;
-use warpui::platform::Cursor;
-use warpui::text::SelectionType;
+use yarp_core::semantic_selection::SemanticSelection;
+use yarp_core::ui::builder::UiBuilder;
+use yarp_core::ui::theme::AnsiColorIdentifier;
+use yarp_util::user_input::UserInput;
+use yarpui::platform::Cursor;
+use yarpui::text::SelectionType;
 
 use pathfinder_color::ColorU;
 use session_sharing_protocol::common::{ParticipantId, Selection};
@@ -43,25 +43,25 @@ use std::ops::{Deref, Range, RangeInclusive};
 use std::rc::Rc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex, MutexGuard};
-use warpui::elements::new_scrollable::{NewScrollableElement, ScrollableAxis};
-use warpui::elements::{
+use yarpui::elements::new_scrollable::{NewScrollableElement, ScrollableAxis};
+use yarpui::elements::{
     Axis, Border, ChildAnchor, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
     Hoverable, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,
     ParentOffsetBounds, Point, Radius, ScrollData, ScrollableElement, Stack, Text, ZIndex,
 };
-use warpui::event::{KeyState, ModifiersState};
-use warpui::fonts::{FamilyId, Properties, Weight};
-use warpui::geometry::rect::RectF;
-use warpui::geometry::vector::{vec2f, Vector2F};
-use warpui::platform::keyboard::KeyCode;
-use warpui::ui_components::components::UiComponent;
-use warpui::units::{IntoLines, IntoPixels, Lines, Pixels};
-use warpui::{elements::Icon, ClipBounds};
-use warpui::{
+use yarpui::event::{KeyState, ModifiersState};
+use yarpui::fonts::{FamilyId, Properties, Weight};
+use yarpui::geometry::rect::RectF;
+use yarpui::geometry::vector::{vec2f, Vector2F};
+use yarpui::platform::keyboard::KeyCode;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::units::{IntoLines, IntoPixels, Lines, Pixels};
+use yarpui::{elements::Icon, ClipBounds};
+use yarpui::{
     elements::SavePosition, event::DispatchedEvent, AfterLayoutContext, AppContext, Element, Event,
     EventContext, LayoutContext, PaintContext, SizeConstraint,
 };
-use warpui::{EntityId, ModelHandle, SingletonEntity as _};
+use yarpui::{EntityId, ModelHandle, SingletonEntity as _};
 
 use super::block_list_viewport::{ClampingMode, InputMode, ScrollPosition, ViewportState};
 use super::blockgrid_renderer::GridRenderParams;
@@ -1282,7 +1282,7 @@ impl BlockListElement {
     }
 
     /// We only want to process control characters here and return `false` for everything else.
-    /// That way, we'll receive a `warpui::Event::TypedCharacters` event for printable characters.
+    /// That way, we'll receive a `yarpui::Event::TypedCharacters` event for printable characters.
     /// So `TerminalAction::KeyDown` is for control characters only while
     /// `TerminalAction::TypedCharacters` is for characters that can go into the editor.
     fn key_down(&mut self, chars: &str, ctx: &mut EventContext) -> bool {
@@ -1576,7 +1576,7 @@ impl BlockListElement {
                                 .is_some_and(|block| block.is_active_and_long_running());
 
                             // On mobile, request soft keyboard so users can input
-                            if warpui::platform::is_mobile_device() && on_long_running_block {
+                            if yarpui::platform::is_mobile_device() && on_long_running_block {
                                 ctx.request_soft_keyboard();
                             }
 
@@ -4113,7 +4113,7 @@ impl Element for BlockListElement {
                                 None => 0.,
                             },
                             // Otherwise, we need to measure the prompt grid(s). Grids
-                            // aren't warpui::Elements, and hence their width isn't
+                            // aren't yarpui::Elements, and hence their width isn't
                             // straightforward to measure. We'll use the column index of the
                             // right-most non-empty cell as a proxy for width.
                             None => {

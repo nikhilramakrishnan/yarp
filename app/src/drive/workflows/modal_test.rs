@@ -1,5 +1,5 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::{platform::WindowStyle, App, SingletonEntity, ViewHandle};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{platform::WindowStyle, App, SingletonEntity, ViewHandle};
 
 use std::sync::Arc;
 

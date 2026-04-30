@@ -1,5 +1,5 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::{platform::WindowStyle, App, View};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{platform::WindowStyle, App, View};
 
 use crate::{menu::MenuVariant, ui_components::icons::Icon};
 

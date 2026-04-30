@@ -1,4 +1,4 @@
-use warpui::AppContext;
+use yarpui::AppContext;
 
 use crate::server::cloud_objects::update_manager::{
     InitiatedBy, ObjectOperation, OperationSuccessType,

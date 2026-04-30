@@ -5,10 +5,10 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::visuals::{intention_terminal_visual, intention_visual};
 use crate::OnboardingIntention;
 use ui_components::{button, Component as _, Options as _};
-use warp_core::features::FeatureFlag;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors};
-use warpui::prelude::Align;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors};
+use yarpui::prelude::Align;
+use yarpui::{
     elements::{
         ClippedScrollStateHandle, Container, CrossAxisAlignment, Flex, FormattedTextElement,
         MainAxisSize, MouseStateHandle, ParentElement,

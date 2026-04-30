@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use warpui::{
+use yarpui::{
     async_assert, integration::TestStep, windowing::WindowManager, SingletonEntity, WindowId,
 };
 

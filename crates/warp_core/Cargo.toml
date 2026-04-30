@@ -1,5 +1,5 @@
 [package]
-name = "warp_core"
+name = "yarp_core"
 edition = "2021"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 publish.workspace = true
@@ -10,7 +10,7 @@ crash_reporting = ["dep:sentry", "dep:sentry-log"]
 integration_tests = []
 local_fs = []
 release_bundle = []
-test-util = ["dep:mockito", "warp_features/test-util"]
+test-util = ["dep:mockito", "yarp_features/test-util"]
 
 [dependencies]
 anyhow.workspace = true
@@ -21,7 +21,7 @@ dirs.workspace = true
 directories.workspace = true
 shellexpand.workspace = true
 enum-iterator.workspace = true
-warp_features.workspace = true
+yarp_features.workspace = true
 itertools.workspace = true
 getset.workspace = true
 http.workspace = true
@@ -48,8 +48,8 @@ settings_value = { workspace = true, features = ["derive"] }
 async-broadcast.workspace = true
 futures.workspace = true
 line-ending.workspace = true
-warpui.workspace = true
-warpui_extras = { workspace = true, features = ["default"] }
+yarpui.workspace = true
+yarpui_extras = { workspace = true, features = ["default"] }
 mockito = { workspace = true, optional = true }
 asset_macro.workspace = true
 string-offset.workspace = true

@@ -2,14 +2,14 @@
 
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use warp_core::ui::color::coloru_with_opacity;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::Icon;
-use warpui::elements::{ConstrainedBox, Container, Highlight, Shrinkable, Text};
-use warpui::fonts::{Properties, Weight};
-use warpui::scene::{CornerRadius, Radius};
-use warpui::text_layout::ClipConfig;
-use warpui::{AppContext, Element, SingletonEntity};
+use yarp_core::ui::color::coloru_with_opacity;
+use yarp_core::ui::theme::Fill;
+use yarp_core::ui::Icon;
+use yarpui::elements::{ConstrainedBox, Container, Highlight, Shrinkable, Text};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::scene::{CornerRadius, Radius};
+use yarpui::text_layout::ClipConfig;
+use yarpui::{AppContext, Element, SingletonEntity};
 
 use crate::ai::agent::AIAgentExchangeId;
 use crate::appearance::Appearance;

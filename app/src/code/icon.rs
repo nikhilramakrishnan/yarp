@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     assets::asset_cache::AssetSource,
     elements::{CacheOption, Icon, Image},
     Element,

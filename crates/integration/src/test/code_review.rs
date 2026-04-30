@@ -20,7 +20,7 @@ use yarp::{
     },
     workspace::WorkspaceAction,
 };
-use warpui::{
+use yarpui::{
     async_assert,
     integration::{AssertionCallback, TestStep},
     App, WindowId,

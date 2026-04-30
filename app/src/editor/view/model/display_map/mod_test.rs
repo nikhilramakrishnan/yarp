@@ -3,7 +3,7 @@ use crate::editor::tests::sample_text;
 use super::*;
 use crate::editor::EditOrigin;
 use anyhow::Error;
-use warpui::App;
+use yarpui::App;
 
 #[test]
 fn test_chars_at() -> Result<()> {

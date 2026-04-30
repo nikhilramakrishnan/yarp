@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 use session_sharing_protocol::common::{AgentAttachment, ParticipantId, ServerConversationToken};
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 use warp_multi_agent_api::response_event::{stream_finished, ClientActions};
 use warp_multi_agent_api::{client_action::Action, message::Message};
 
@@ -20,7 +20,7 @@ use crate::ai::blocklist::agent_view::AgentViewEntryOrigin;
 use crate::ai::blocklist::history_model::BlocklistAIHistoryModel;
 use crate::server::server_api::ServerApiProvider;
 use crate::terminal::model::block::BlockId;
-use warpui::{AppContext, ModelContext, SingletonEntity};
+use yarpui::{AppContext, ModelContext, SingletonEntity};
 
 #[derive(Default)]
 pub(super) struct SharedSessionState {

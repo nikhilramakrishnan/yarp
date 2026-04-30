@@ -10,7 +10,7 @@ use crate::terminal::local_tty::shell::{
 use crate::terminal::model::session::command_executor::shell_escape_single_quotes;
 use crate::terminal::shell::ShellType;
 use crate::ASSETS;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 use crate::report_if_error;
 use itertools::Itertools;
@@ -44,8 +44,8 @@ use std::{
     path::{Path, PathBuf},
     ptr,
 };
-use warp_core::channel::ChannelState;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::channel::ChannelState;
+use yarpui::{AppContext, SingletonEntity};
 
 /// Get raw fds for leader/follower ends of a new PTY.
 fn make_pty(size: winsize) -> Result<(RawFd, RawFd)> {
@@ -402,7 +402,7 @@ fn spawn_command_in_pty(
 
     // Detect isolation platform outside pre_exec, since detect() is not async-signal-safe.
     #[cfg(target_os = "linux")]
-    let is_isolated = warp_isolation_platform::detect().is_some();
+    let is_isolated = yarp_isolation_platform::detect().is_some();
 
     unsafe {
         let fdlimit = libc::sysconf(libc::_SC_OPEN_MAX) as i32;

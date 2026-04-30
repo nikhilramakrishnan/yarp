@@ -1,11 +1,11 @@
 mod params;
 pub mod themes;
 
-use warp_core::ui::{
+use yarp_core::ui::{
     appearance::Appearance,
     color::{ContrastingColor as _, contrast::MinimumAllowedContrast},
 };
-use warpui::{
+use yarpui::{
     elements::{MouseState, MouseStateHandle},
     prelude::*,
 };

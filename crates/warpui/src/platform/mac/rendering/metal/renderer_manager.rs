@@ -1,7 +1,7 @@
 use crate::platform::mac::rendering::metal::renderer::Renderer;
 use std::collections::HashMap;
 
-use warpui_core::rendering;
+use yarpui_core::rendering;
 
 pub struct RendererManager {
     /// Maps a device's registry ID to its renderer (collection of state related

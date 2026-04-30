@@ -1,5 +1,5 @@
 [package]
-name = "warp_completer"
+name = "yarp_completer"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
@@ -30,11 +30,11 @@ shellexpand.workspace = true
 smol_str.workspace = true
 string-offset.workspace = true
 thiserror.workspace = true
-warp_cli.workspace = true
-warp_core.workspace = true
-warp_js = { workspace = true, optional = true }
-warpui.workspace = true
-warp_util.workspace = true
+yarp_cli.workspace = true
+yarp_core.workspace = true
+yarp_js = { workspace = true, optional = true }
+yarpui.workspace = true
+yarp_util.workspace = true
 typed-path.workspace = true
 
 [target.'cfg(target_family = "wasm")'.dependencies]
@@ -52,11 +52,11 @@ command = { path = "../command", features = ["test-util"] }
 [dev-dependencies]
 anyhow.workspace = true
 # Enable the `test-util` feature for our own package when running tests.
-warp_completer = { path = ".", features = ["test-util"] }
+yarp_completer = { path = ".", features = ["test-util"] }
 
 [features]
 # Enables the completions-on-js implementation of the completion engine.
 # Note that this feature is only compatible with non-wasm targets.
-v2 = ["dep:warp_js", "dep:rquickjs"]
+v2 = ["dep:yarp_js", "dep:rquickjs"]
 # Enables utilities for testing.
-test-util = ["warp_js?/test-util"]
+test-util = ["yarp_js?/test-util"]

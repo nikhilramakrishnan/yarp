@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use warp_core::channel::{Channel, ChannelState};
+use yarp_core::channel::{Channel, ChannelState};
 
 /// State machine for the remote server install → launch → initialize flow.
 #[derive(Clone, Debug, PartialEq, Eq)]

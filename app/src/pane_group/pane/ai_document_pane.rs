@@ -1,4 +1,4 @@
-use warpui::{AppContext, ModelHandle, SingletonEntity, ViewContext, ViewHandle};
+use yarpui::{AppContext, ModelHandle, SingletonEntity, ViewContext, ViewHandle};
 
 use crate::{
     ai::ai_document_view::{AIDocumentEvent, AIDocumentView},

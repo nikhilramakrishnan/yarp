@@ -1,11 +1,11 @@
 //! This module defines CellGlyphCache, a struct which manages the caching of glyph values for cells
 //! when rendering Grids within Warp.
-use warpui::elements::DEFAULT_LINE_HEIGHT_RATIO;
+use yarpui::elements::DEFAULT_LINE_HEIGHT_RATIO;
 
-use warpui::fonts::{Cache as FontCache, FamilyId, FontId, GlyphId, Properties};
-use warpui::platform::LineStyle;
-use warpui::text_layout::{StyleAndFont, DEFAULT_TOP_BOTTOM_RATIO};
-use warpui::PaintContext;
+use yarpui::fonts::{Cache as FontCache, FamilyId, FontId, GlyphId, Properties};
+use yarpui::platform::LineStyle;
+use yarpui::text_layout::{StyleAndFont, DEFAULT_TOP_BOTTOM_RATIO};
+use yarpui::PaintContext;
 
 use std::collections::HashMap;
 

@@ -1,4 +1,4 @@
-use warpui::keymap::{BindingDescription, PerPlatformKeystroke};
+use yarpui::keymap::{BindingDescription, PerPlatformKeystroke};
 
 use super::StaticCommand;
 

@@ -12,9 +12,9 @@
 use std::path::PathBuf;
 
 use pathfinder_geometry::vector::vec2f;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{
         Align, Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ClippedScrollable,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Flex, Hoverable,
@@ -68,7 +68,7 @@ pub fn init(ctx: &mut AppContext) {
     ctx.register_fixed_bindings(vec![FixedBinding::new(
         "escape",
         GitDialogAction::Cancel,
-        warpui::id!("GitDialog"),
+        yarpui::id!("GitDialog"),
     )]);
 }
 
@@ -370,7 +370,7 @@ fn render_file_changes_box(
                 ScrollbarWidth::Auto,
                 theme.nonactive_ui_detail().into(),
                 theme.active_ui_detail().into(),
-                warpui::elements::Fill::None,
+                yarpui::elements::Fill::None,
             )
             .finish(),
         )

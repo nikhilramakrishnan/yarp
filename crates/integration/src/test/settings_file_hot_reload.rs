@@ -14,7 +14,7 @@ use yarp::{
     },
     settings::FontSettings,
 };
-use warpui::{async_assert_eq, integration::TestStep, SingletonEntity};
+use yarpui::{async_assert_eq, integration::TestStep, SingletonEntity};
 
 use super::{new_builder, Builder};
 

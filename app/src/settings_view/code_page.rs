@@ -48,14 +48,14 @@ use pathfinder_color::ColorU;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use warp_core::{
+use yarp_core::{
     features::FeatureFlag,
     report_if_error,
     settings::ToggleableSetting as _,
     ui::theme::{AnsiColorIdentifier, Fill as ThemeFill},
 };
-use warp_util::path::user_friendly_path;
-use warpui::{
+use yarp_util::path::user_friendly_path;
+use yarpui::{
     elements::{
         ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Empty,
         Expanded, Fill, Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement,
@@ -1342,15 +1342,15 @@ impl CodePageWidget {
                     ..Default::default()
                 })
                 .with_text_and_icon_label(
-                    warpui::ui_components::button::TextAndIcon::new(
-                        warpui::ui_components::button::TextAndIconAlignment::IconFirst,
+                    yarpui::ui_components::button::TextAndIcon::new(
+                        yarpui::ui_components::button::TextAndIconAlignment::IconFirst,
                         "Open project rules",
-                        warpui::elements::Icon::new(
+                        yarpui::elements::Icon::new(
                             "bundled/svg/file-code-02.svg",
                             theme.foreground(),
                         ),
-                        warpui::elements::MainAxisSize::Min,
-                        warpui::elements::MainAxisAlignment::Center,
+                        yarpui::elements::MainAxisSize::Min,
+                        yarpui::elements::MainAxisAlignment::Center,
                         pathfinder_geometry::vector::vec2f(14., 14.),
                     )
                     .with_inner_padding(4.),
@@ -1823,7 +1823,7 @@ impl CodePageWidget {
         &self,
         workspace_path: &Path,
         server_type: LSPServerType,
-        server_model: Option<&warpui::ModelHandle<LspServerModel>>,
+        server_model: Option<&yarpui::ModelHandle<LspServerModel>>,
         is_enabled: bool,
         mouse_states: LspServerRowMouseStates,
         appearance: &Appearance,
@@ -2012,9 +2012,9 @@ impl CodePageWidget {
     /// Gets the status color and text for an LSP server.
     fn get_lsp_status_info(
         &self,
-        server_model: Option<&warpui::ModelHandle<LspServerModel>>,
+        server_model: Option<&yarpui::ModelHandle<LspServerModel>>,
         app: &AppContext,
-        theme: &warp_core::ui::theme::WarpTheme,
+        theme: &yarp_core::ui::theme::WarpTheme,
     ) -> (ColorU, &'static str) {
         match server_model {
             Some(model) => {

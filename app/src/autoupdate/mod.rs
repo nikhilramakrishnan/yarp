@@ -23,16 +23,16 @@ use rand::Rng as _;
 use std::collections::VecDeque;
 use std::sync::Arc;
 use std::time::Duration;
-use warp_core::execution_mode::AppExecutionMode;
-use warpui::platform::TerminationMode;
-use warpui::r#async::Timer;
-use warpui::windowing::state::ApplicationStage;
-use warpui::windowing::{self, WindowManager};
-use warpui::{
+use yarp_core::execution_mode::AppExecutionMode;
+use yarpui::platform::TerminationMode;
+use yarpui::r#async::Timer;
+use yarpui::windowing::state::ApplicationStage;
+use yarpui::windowing::{self, WindowManager};
+use yarpui::{
     accessibility::{AccessibilityContent, WarpA11yRole},
     AppContext,
 };
-use warpui::{Entity, ModelContext, SingletonEntity, ViewContext};
+use yarpui::{Entity, ModelContext, SingletonEntity, ViewContext};
 
 pub use self::changelog::get_current_changelog;
 use self::channel_versions::fetch_channel_versions;

@@ -1,10 +1,10 @@
 use std::borrow::Cow;
 
-use warp_core::ui::{
+use yarp_core::ui::{
     appearance::Appearance,
     theme::{color::internal_colors, Fill},
 };
-use warpui::{
+use yarpui::{
     color::ColorU,
     elements::{CornerRadius, Radius},
     fonts::Weight,

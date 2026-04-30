@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use warp_util::path::EscapeChar;
+use yarp_util::path::EscapeChar;
 
 use crate::parsers::simple::{decompose_command, top_level_command};
 

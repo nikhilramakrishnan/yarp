@@ -8,8 +8,8 @@ use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use tempfile::tempdir;
 use url::Url;
-use warp_util::path::LineAndColumnArg;
-use warpui::{App, ModelHandle, WindowId};
+use yarp_util::path::LineAndColumnArg;
+use yarpui::{App, ModelHandle, WindowId};
 
 use crate::{
     notebooks::{file::is_markdown_file, link::LinkEvent},

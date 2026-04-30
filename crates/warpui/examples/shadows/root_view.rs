@@ -1,13 +1,13 @@
 use pathfinder_geometry::vector::vec2f;
-use warpui::elements::{
+use yarpui::elements::{
     Align, ConstrainedBox, Container, CornerRadius, DropShadow, Radius, Shrinkable,
 };
-use warpui::{
+use yarpui::{
     elements::{Flex, ParentElement, Rect},
     AppContext, Element, Entity, TypedActionView, View,
 };
 
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 pub struct RootView;
 

@@ -1,4 +1,4 @@
-use warpui::{prelude::ChildView, Element, EntityId, View, ViewContext, ViewHandle};
+use yarpui::{prelude::ChildView, Element, EntityId, View, ViewContext, ViewHandle};
 
 use crate::{
     ai::{

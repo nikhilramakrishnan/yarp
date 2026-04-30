@@ -2,8 +2,8 @@ use std::borrow::Cow;
 
 use chrono::{DateTime, Local};
 use session_sharing_protocol::common::SessionId;
-use warp_core::{channel::ChannelState, ui::appearance::Appearance};
-use warpui::{
+use yarp_core::{channel::ChannelState, ui::appearance::Appearance};
+use yarpui::{
     color::ColorU,
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, SingletonEntity, WeakViewHandle,
@@ -24,8 +24,8 @@ use crate::{
 pub mod dialog;
 mod style;
 
-// Re-export types from warp_server_client.
-pub use warp_server_client::drive::sharing::{
+// Re-export types from yarp_server_client.
+pub use yarp_server_client::drive::sharing::{
     LinkSharingSubjectType, SharingAccessLevel, Subject, TeamKind, UserKind,
 };
 

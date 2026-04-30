@@ -2,8 +2,8 @@ use image::ImageEncoder;
 use pathfinder_color::ColorU;
 use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::SingletonEntity as _;
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, DispatchEventResult, EventHandler, Padding,
         ParentElement, Rect, Stack, Text,
@@ -19,7 +19,7 @@ pub enum RootViewAction {
 }
 
 pub struct RootView {
-    window_id: warpui::WindowId,
+    window_id: yarpui::WindowId,
     font_family: FamilyId,
     last_capture_msg: Arc<Mutex<Option<String>>>,
 }

@@ -4,9 +4,9 @@ use std::{
     collections::{HashMap, HashSet},
     sync::{Arc, OnceLock},
 };
-use warp_core::ui::icons::Icon;
-use warp_core::user_preferences::GetUserPreferences;
-use warpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use yarp_core::ui::icons::Icon;
+use yarp_core::user_preferences::GetUserPreferences;
+use yarpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 use crate::{
     auth::{

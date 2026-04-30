@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use chrono::DateTime;
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
-use warpui_core::notification::{
+use yarpui_core::notification::{
     NotificationResponse, NotificationSendError, RequestPermissionsOutcome,
 };
 

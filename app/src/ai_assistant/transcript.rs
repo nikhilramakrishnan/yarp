@@ -2,11 +2,11 @@ use markdown_parser::markdown_parser::RUNNABLE_BLOCK_MARKDOWN_LANG;
 use markdown_parser::CodeBlockText;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::builder::AnimatedButtonOptions;
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::{DispatchEventResult, Stack};
-use warpui::units::Pixels;
-use warpui::{
+use yarp_core::ui::builder::AnimatedButtonOptions;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::elements::{DispatchEventResult, Stack};
+use yarpui::units::Pixels;
+use yarpui::{
     elements::{
         Align, Border, ChildAnchor, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, EventHandler, Fill, Flex,
@@ -21,7 +21,7 @@ use warpui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     WeakViewHandle,
 };
-use warpui::{BlurContext, FocusContext};
+use yarpui::{BlurContext, FocusContext};
 
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{

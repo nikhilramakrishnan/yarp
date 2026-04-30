@@ -4,30 +4,30 @@ use std::rc::Rc;
 use super::color::{blend::Blend, contrast::MinimumAllowedContrast, ContrastingColor};
 use super::theme::color::internal_colors::{self, text_main};
 use super::theme::{Fill, WarpTheme};
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarpui::color::ColorU;
+use yarpui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
     OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, Stack, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::geometry::vector::{vec2f, Vector2F};
-use warpui::platform::Cursor;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::keyboard_shortcut::KeyboardShortcut;
-use warpui::ui_components::link::{LinkStyles, OnClickFn};
-use warpui::ui_components::list::{List, ListStyle};
-use warpui::ui_components::radio_buttons::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::geometry::vector::{vec2f, Vector2F};
+use yarpui::platform::Cursor;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::ui_components::keyboard_shortcut::KeyboardShortcut;
+use yarpui::ui_components::link::{LinkStyles, OnClickFn};
+use yarpui::ui_components::list::{List, ListStyle};
+use yarpui::ui_components::radio_buttons::{
     RadioButtonItem, RadioButtonLayout, RadioButtonStateHandle, RadioButtons,
 };
-use warpui::ui_components::slider::{Slider, SliderStateHandle};
-use warpui::ui_components::switch::{Switch, SwitchStateHandle, TRACK_COLOR};
-use warpui::ui_components::text::WrappableText;
-use warpui::ui_components::toggle_menu::{
+use yarpui::ui_components::slider::{Slider, SliderStateHandle};
+use yarpui::ui_components::switch::{Switch, SwitchStateHandle, TRACK_COLOR};
+use yarpui::ui_components::text::WrappableText;
+use yarpui::ui_components::toggle_menu::{
     ToggleMenu, ToggleMenuCallback, ToggleMenuItem, ToggleMenuStateHandle,
 };
-use warpui::ui_components::tool_tip::{Tooltip, TooltipWithSublabel};
-use warpui::View;
-use warpui::{
+use yarpui::ui_components::tool_tip::{Tooltip, TooltipWithSublabel};
+use yarpui::View;
+use yarpui::{
     elements::{Icon, MouseStateHandle},
     fonts::FamilyId,
     keymap::Keystroke,

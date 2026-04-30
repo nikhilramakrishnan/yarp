@@ -11,8 +11,8 @@ use syntect::{
     parsing::SyntaxSet,
     util::LinesWithEndings,
 };
-use warp_completer::signatures::CommandRegistry;
-use warp_editor::{
+use yarp_completer::signatures::CommandRegistry;
+use yarp_editor::{
     content::{
         anchor::Anchor,
         buffer::{Buffer, BufferEvent, EditOrigin},
@@ -26,9 +26,9 @@ use warp_editor::{
 };
 
 use markdown_parser::markdown_parser::CODE_BLOCK_DEFAULT_MARKDOWN_LANG;
-use warp_util::user_input::UserInput;
-use warpui::{elements::Align, r#async::SpawnedFutureHandle, AppContext};
-use warpui::{
+use yarp_util::user_input::UserInput;
+use yarpui::{elements::Align, r#async::SpawnedFutureHandle, AppContext};
+use yarpui::{
     elements::{
         Border, Container, CrossAxisAlignment, Empty, Flex, MainAxisAlignment, MouseStateHandle,
         ParentElement, Shrinkable, Text,
@@ -603,7 +603,7 @@ impl RunnableCommandModel for NotebookCommand {
                         appearance.ui_font_size(),
                     )
                     .with_style(Properties {
-                        weight: warpui::fonts::Weight::Light,
+                        weight: yarpui::fonts::Weight::Light,
                         ..Default::default()
                     })
                     .with_color(

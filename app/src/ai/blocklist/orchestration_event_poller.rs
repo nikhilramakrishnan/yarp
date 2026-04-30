@@ -17,10 +17,10 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::Duration;
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 use warp_multi_agent_api as api;
-use warpui::r#async::Timer;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::r#async::Timer;
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 /// Adaptive polling backoff: 1s, 2s, 5s, then 10s max. Resets to 1s when
 /// events are found.

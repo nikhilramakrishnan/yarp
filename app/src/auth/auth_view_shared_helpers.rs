@@ -1,13 +1,13 @@
 use pathfinder_color::ColorU;
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::{
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::{
     appearance::Appearance,
     builder::UiBuilder,
     color::{darken, lighten},
     theme::ColorScheme,
 };
-use warpui::{
+use yarpui::{
     assets::asset_cache::AssetSource,
     elements::{
         Border, CacheOption, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Fill,

@@ -12,9 +12,9 @@ use anyhow::Result;
 use async_trait::async_trait;
 use smol_str::SmolStr;
 use typed_path::{TypedPath, TypedPathBuf};
-use warp_core::command::ExitCode;
-use warp_util::path::{EscapeChar, ShellFamily};
-use warpui::platform::OperatingSystem;
+use yarp_core::command::ExitCode;
+use yarp_util::path::{EscapeChar, ShellFamily};
+use yarpui::platform::OperatingSystem;
 
 use crate::{completer::TopLevelCommandCaseSensitivity, signatures::CommandRegistry};
 

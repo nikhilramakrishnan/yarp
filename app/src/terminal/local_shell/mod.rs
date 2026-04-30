@@ -10,7 +10,7 @@ use crate::terminal::available_shells::AvailableShells;
 use crate::terminal::local_tty::shell::ShellStarterSourceOrWslName;
 #[cfg(feature = "local_tty")]
 use command::r#async::Command;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 #[derive(Debug)]
 pub enum LocalShellState {

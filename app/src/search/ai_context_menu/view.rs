@@ -39,30 +39,30 @@ use settings::Setting as _;
 use std::collections::HashSet;
 use std::ops::Range;
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warpui::elements::ConstrainedBox;
-use warpui::elements::CrossAxisAlignment;
-use warpui::elements::Empty;
-use warpui::elements::Fill;
-use warpui::elements::Hoverable;
-use warpui::elements::MouseStateHandle;
-use warpui::elements::ScrollStateHandle;
-use warpui::elements::Scrollable;
-use warpui::elements::ScrollableElement;
-use warpui::elements::ScrollbarWidth;
-use warpui::elements::UniformList;
-use warpui::elements::UniformListState;
-use warpui::elements::{
+use yarp_core::features::FeatureFlag;
+use yarpui::elements::ConstrainedBox;
+use yarpui::elements::CrossAxisAlignment;
+use yarpui::elements::Empty;
+use yarpui::elements::Fill;
+use yarpui::elements::Hoverable;
+use yarpui::elements::MouseStateHandle;
+use yarpui::elements::ScrollStateHandle;
+use yarpui::elements::Scrollable;
+use yarpui::elements::ScrollableElement;
+use yarpui::elements::ScrollbarWidth;
+use yarpui::elements::UniformList;
+use yarpui::elements::UniformListState;
+use yarpui::elements::{
     AnchorPair, Border, ChildView, Container, CornerRadius, Dismiss, Flex, Icon, OffsetPositioning,
     OffsetType, ParentElement, PositionedElementOffsetBounds, PositioningAxis, Radius,
     SavePosition, Shrinkable, Stack, Text, XAxisAnchor, YAxisAnchor,
 };
 
-use warpui::platform::Cursor;
-use warpui::windowing::WindowManager;
-use warpui::SingletonEntity;
-use warpui::View;
-use warpui::{
+use yarpui::platform::Cursor;
+use yarpui::windowing::WindowManager;
+use yarpui::SingletonEntity;
+use yarpui::View;
+use yarpui::{
     AppContext, Element, Entity, ModelHandle, TypedActionView, ViewContext, ViewHandle,
     WeakViewHandle,
 };

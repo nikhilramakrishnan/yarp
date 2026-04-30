@@ -6,7 +6,7 @@ use serde_json::json;
 use serde_with::SerializeDisplay;
 use std::fmt::Display;
 use strum_macros::{EnumDiscriminants, EnumIter};
-use warp_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
+use yarp_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 /// Entry points for opening the code review pane.
 #[derive(Clone, Copy, Debug, SerializeDisplay, Default)]
@@ -320,7 +320,7 @@ impl TelemetryEvent for CodeReviewTelemetryEvent {
     }
 
     fn event_descs() -> impl Iterator<Item = Box<dyn TelemetryEventDesc>> {
-        warp_core::telemetry::enum_events::<Self>()
+        yarp_core::telemetry::enum_events::<Self>()
     }
 }
 
@@ -399,4 +399,4 @@ impl TelemetryEventDesc for CodeReviewTelemetryEventDiscriminants {
     }
 }
 
-warp_core::register_telemetry_event!(CodeReviewTelemetryEvent);
+yarp_core::register_telemetry_event!(CodeReviewTelemetryEvent);

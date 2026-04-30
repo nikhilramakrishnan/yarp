@@ -1,7 +1,7 @@
 use instant::Instant;
 use settings::Setting;
-use warp_core::SessionId;
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
+use yarp_core::SessionId;
+use yarpui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
 
 use crate::terminal::warpify::settings::SshExtensionInstallMode;
 

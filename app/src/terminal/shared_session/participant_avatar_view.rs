@@ -10,8 +10,8 @@ use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use session_sharing_protocol::common::{ParticipantId, ParticipantInfo, Role};
 use session_sharing_protocol::sharer::RoleUpdateReason;
-use warpui::r#async::{SpawnedFutureHandle, Timer};
-use warpui::{
+use yarpui::r#async::{SpawnedFutureHandle, Timer};
+use yarpui::{
     accessibility::AccessibilityContent,
     elements::{
         Border, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius,
@@ -22,7 +22,7 @@ use warpui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
-use warpui::{FocusContext, ViewHandle};
+use yarpui::{FocusContext, ViewHandle};
 
 use super::render_util::non_hoverable_participant_avatar;
 
@@ -218,7 +218,7 @@ impl ParticipantAvatarView {
         .with_uniform_padding(2.)
         .with_background(background)
         .with_corner_radius(CornerRadius::with_all(
-            warpui::elements::Radius::Percentage(50.),
+            yarpui::elements::Radius::Percentage(50.),
         ))
         .finish()
     }

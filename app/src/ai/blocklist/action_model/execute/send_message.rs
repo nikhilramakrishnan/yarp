@@ -1,5 +1,5 @@
 use futures::{future::BoxFuture, FutureExt};
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 use crate::ai::agent::{
     AIAgentAction, AIAgentActionResultType, AIAgentActionType, SendMessageToAgentResult,
@@ -13,8 +13,8 @@ use crate::ai::blocklist::telemetry::{
 };
 use crate::server::server_api::ai::SendAgentMessageRequest;
 use crate::server::server_api::ServerApiProvider;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
 
 use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessActionInput};
 

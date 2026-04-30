@@ -1,4 +1,4 @@
-use warpui::{AppContext, ModelHandle, View, ViewContext, ViewHandle};
+use yarpui::{AppContext, ModelHandle, View, ViewContext, ViewHandle};
 
 use crate::{
     app_state::LeafContents,

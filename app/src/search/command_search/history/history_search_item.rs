@@ -1,8 +1,8 @@
 use crate::ui_components::icons::Icon as UiIcon;
 use ordered_float::OrderedFloat;
 use std::sync::Arc;
-use warp_core::ui::builder;
-use warpui::{
+use yarp_core::ui::builder;
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, Icon,
         MainAxisAlignment, MainAxisSize, ParentElement, Shrinkable, Text,

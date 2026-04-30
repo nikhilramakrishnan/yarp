@@ -18,17 +18,17 @@ use std::collections::HashMap;
 use std::sync::Arc;
 #[cfg(feature = "local_fs")]
 use std::time::Duration;
-use warp_completer::completer::{
+use yarp_completer::completer::{
     self, expand_command_aliases, AliasExpansionResult, CompleterOptions,
     CompletionsFallbackStrategy, MatchStrategy,
 };
-use warp_completer::meta::Spanned;
-use warp_completer::parsers::hir::{Command, Expression, FlagType};
-use warp_completer::parsers::ParsedExpression;
-use warp_core::features::FeatureFlag;
+use yarp_completer::meta::Spanned;
+use yarp_completer::parsers::hir::{Command, Expression, FlagType};
+use yarp_completer::parsers::ParsedExpression;
+use yarp_core::features::FeatureFlag;
 #[cfg(feature = "local_fs")]
-use warpui::r#async::FutureExt;
-use warpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::r#async::FutureExt;
+use yarpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use super::generate_ai_input_suggestions::{
     create_generate_ai_input_suggestions_request, get_context_messages,
@@ -39,7 +39,7 @@ cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {
         use diesel::SqliteConnection;
         use std::path::PathBuf;
-        use warp_completer::parsers::hir::ArgType;
+        use yarp_completer::parsers::hir::ArgType;
     }
 }
 
@@ -54,7 +54,7 @@ const NUM_ADDITIONAL_PREV_COMMAND_CONTEXT_LLM: usize = 2;
 #[cfg(feature = "local_fs")]
 const ARG_GENERATOR_VALIDATION_TIMEOUT: Duration = Duration::from_millis(150);
 
-pub fn is_next_command_enabled(app: &warpui::AppContext) -> bool {
+pub fn is_next_command_enabled(app: &yarpui::AppContext) -> bool {
     AISettings::as_ref(app).is_intelligent_autosuggestions_enabled(app)
         && UserWorkspaces::as_ref(app).is_next_command_enabled()
 }

@@ -1,4 +1,4 @@
-use warpui::{text_layout::TextStyle, App};
+use yarpui::{text_layout::TextStyle, App};
 
 use crate::{
     appearance::Appearance,
@@ -14,7 +14,7 @@ use crate::{
     },
     themes::theme::AnsiColorIdentifier,
 };
-use warp_completer::completer::SuggestionTypeName;
+use yarp_completer::completer::SuggestionTypeName;
 
 #[test]
 fn test_decorations_with_multibyte_chars() {
@@ -45,7 +45,7 @@ fn test_decorations_with_multibyte_chars() {
                 .update(ctx, |sessions, _ctx| {
                     // Wait until external commands have been loaded.
                     let session = sessions.get(session_id).expect("session should exist");
-                    warpui::r#async::block_on(session.load_external_commands());
+                    yarpui::r#async::block_on(session.load_external_commands());
                 });
             session_id
         });

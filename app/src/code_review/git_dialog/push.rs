@@ -7,8 +7,8 @@
 
 use std::collections::HashMap;
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{
         Border, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CornerRadius, CrossAxisAlignment, Element, Flex, Hoverable, MainAxisAlignment,
@@ -356,7 +356,7 @@ fn render_commits_section(state: &PushState, appearance: &Appearance) -> Box<dyn
             ScrollbarWidth::Auto,
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .finish(),
     )

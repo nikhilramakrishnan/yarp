@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::PathBuf;
 
-use warpui::integration::{AssertionOutcome, TestStep};
+use yarpui::integration::{AssertionOutcome, TestStep};
 
 use crate::Builder;
 

@@ -6,7 +6,7 @@
 mod channel_config;
 
 use anyhow::Result;
-use warp_core::{
+use yarp_core::{
     channel::{Channel, ChannelState},
     features,
 };

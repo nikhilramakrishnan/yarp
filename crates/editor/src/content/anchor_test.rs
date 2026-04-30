@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
 use sum_tree::SumTree;
-use warpui::App;
+use yarpui::App;
 
 use super::{AnchorSide, Anchors};
 

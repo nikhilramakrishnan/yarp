@@ -1,12 +1,12 @@
-use warpui::elements::{
+use yarpui::elements::{
     Container, CrossAxisAlignment, Flex, MainAxisAlignment, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ui_components::text::Span;
-use warpui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::platform::Cursor;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::ui_components::text::Span;
+use yarpui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 use crate::appearance::Appearance;
 use crate::ui_components::blended_colors;

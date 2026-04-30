@@ -30,8 +30,8 @@ use itertools::Itertools;
 use ordered_float::OrderedFloat;
 use serde_json::json;
 use std::{any::Any, sync::Arc};
-use warp_core::ui::builder;
-use warpui::{
+use yarp_core::ui::builder;
+use yarpui::{
     elements::{ConstrainedBox, Container, Text},
     AppContext, Element, SingletonEntity,
 };

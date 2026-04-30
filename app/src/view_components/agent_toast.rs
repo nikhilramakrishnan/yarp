@@ -3,10 +3,10 @@ use std::time::Duration;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use uuid::Uuid;
-use warpui::elements::{DropShadow, Expanded};
-use warpui::r#async::Timer;
-use warpui::WindowId;
-use warpui::{
+use yarpui::elements::{DropShadow, Expanded};
+use yarpui::r#async::Timer;
+use yarpui::WindowId;
+use yarpui::{
     elements::{
         ChildAnchor, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         DispatchEventResult, EventHandler, Flex, Hoverable, Icon, MouseStateHandle,
@@ -434,7 +434,7 @@ impl AgentToast {
         keystroke: Keystroke,
     ) -> Box<dyn Element> {
         use crate::ui_components::blended_colors;
-        use warpui::ui_components::keyboard_shortcut::KeyboardShortcut;
+        use yarpui::ui_components::keyboard_shortcut::KeyboardShortcut;
 
         let theme = appearance.theme();
 

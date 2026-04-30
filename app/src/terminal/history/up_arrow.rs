@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, EntityId, SingletonEntity};
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, EntityId, SingletonEntity};
 
 use crate::ai::blocklist::BlocklistAIHistoryModel;
 use crate::ai::blocklist::InputConfig;

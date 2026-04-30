@@ -5,8 +5,8 @@ use std::{env, fmt, path::Path};
 use clap::{CommandFactory, Parser, Subcommand, ValueEnum};
 use url::Url;
 
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
 
 use crate::agent::OutputFormat;
 
@@ -242,7 +242,7 @@ impl Args {
                         // We attach a console to ensure help and error messages are printed
                         // when using the CLI.
                         #[cfg(windows)]
-                        warp_util::windows::attach_to_parent_console();
+                        yarp_util::windows::attach_to_parent_console();
                         err.exit()
                     })
             }

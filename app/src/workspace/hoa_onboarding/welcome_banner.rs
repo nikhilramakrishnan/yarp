@@ -1,19 +1,19 @@
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
-use warpui::assets::asset_cache::AssetSource;
-use warpui::elements::{
+use yarp_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
+use yarpui::assets::asset_cache::AssetSource;
+use yarpui::elements::{
     CacheOption, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Expanded, Flex, Image, MainAxisSize, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Stack, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::Element;
+use yarpui::fonts::{Properties, Weight};
+use yarpui::Element;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
 use crate::view_components::action_button::ActionButton;
 
-use warpui::ViewHandle;
+use yarpui::ViewHandle;
 
 const BANNER_WIDTH: f32 = 420.;
 const HERO_HEIGHT: f32 = 92.;

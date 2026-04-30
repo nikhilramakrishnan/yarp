@@ -246,7 +246,7 @@ impl LogicalPositionExt for winit::dpi::LogicalPosition<f32> {
 }
 
 /// The state that we need to track across frames in order to properly convert
-/// winit events into warpui events.
+/// winit events into yarpui events.
 #[derive(Default)]
 struct State {
     windows: HashMap<winit::window::WindowId, WindowState>,
@@ -1445,7 +1445,7 @@ impl EventLoop {
         self.handle_converted_warpui_event(window_id, drag_drop_event);
     }
 
-    /// Handles a request to close the window with the given warpui and winit
+    /// Handles a request to close the window with the given yarpui and winit
     /// IDs.
     fn close_window_requested(
         &mut self,
@@ -1558,7 +1558,7 @@ impl EventLoop {
         };
     }
 
-    /// Handle events that may be handled by warpui, or maybe not in some cases, e.g. window
+    /// Handle events that may be handled by yarpui, or maybe not in some cases, e.g. window
     /// drag-to-resize or drag-to-move.
     fn handle_converted_warpui_event(
         &mut self,
@@ -1585,7 +1585,7 @@ impl EventLoop {
         }
 
         // Check if we should start a window drag-resize. If so, do that instead of
-        // passing the event into warpui. Skip for touch events as drag_resize_window
+        // passing the event into yarpui. Skip for touch events as drag_resize_window
         // doesn't work properly with touch input on Windows.
         if let crate::event::Event::LeftMouseDown { .. } = event {
             if !winit_window.is_decorated()
@@ -1605,7 +1605,7 @@ impl EventLoop {
             .for_window(winit_window)
             .dispatch_event(event.clone());
 
-        // If the app didn't handle the event, warpui might still want to do something
+        // If the app didn't handle the event, yarpui might still want to do something
         // with it if it's a click within the "titlebar region" at the top.
         if !dispatch_result.handled {
             if let crate::event::Event::LeftMouseDown {
@@ -1924,7 +1924,7 @@ impl EventLoop {
 
     /// Handles input events from the soft keyboard on mobile WASM.
     ///
-    /// Converts `SoftKeyboardInput` events into warpui `Event`s and dispatches
+    /// Converts `SoftKeyboardInput` events into yarpui `Event`s and dispatches
     /// them to the active window, similar to how `handle_ime_event` works.
     #[cfg(target_family = "wasm")]
     fn handle_soft_keyboard_input(&mut self, input: crate::platform::wasm::SoftKeyboardInput) {

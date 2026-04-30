@@ -16,8 +16,8 @@ use crate::transport::RemoteTransport;
 use crate::HostId;
 use repo_metadata::RepoMetadataUpdate;
 use serde::Serialize;
-use warp_core::SessionId;
-use warpui::{Entity, ModelContext, ModelSpawner, SingletonEntity};
+use yarp_core::SessionId;
+use yarpui::{Entity, ModelContext, ModelSpawner, SingletonEntity};
 
 /// Maximum number of reconnection attempts after a spontaneous disconnect.
 #[cfg(not(target_family = "wasm"))]
@@ -570,7 +570,7 @@ impl RemoteServerManager {
         session_id: SessionId,
         transport: &dyn RemoteTransport,
         spawner: &ModelSpawner<Self>,
-        executor: &Arc<warpui::r#async::executor::Background>,
+        executor: &Arc<yarpui::r#async::executor::Background>,
     ) -> Result<HostId, ConnectAndHandshakeError> {
         // Phase 1: Connect (establish streams, create client).
         let Connection {

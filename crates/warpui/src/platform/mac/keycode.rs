@@ -5,8 +5,8 @@ use cocoa::{
     foundation::{NSArray, NSString, NSUInteger},
 };
 use objc::{msg_send, sel, sel_impl};
-use warpui_core::keymap::Keystroke;
-use warpui_core::platform::keyboard::{KeyCode, NativeKeyCode, PhysicalKey};
+use yarpui_core::keymap::Keystroke;
+use yarpui_core::platform::keyboard::{KeyCode, NativeKeyCode, PhysicalKey};
 
 use super::make_nsstring;
 

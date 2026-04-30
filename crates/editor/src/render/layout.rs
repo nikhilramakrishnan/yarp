@@ -6,15 +6,15 @@ use std::ops::Range;
 use std::sync::Arc;
 
 use crate::content::text::{BufferBlockStyle, TextStylesWithMetadata};
-use warpui::fonts::TextLayoutSystem;
+use yarpui::fonts::TextLayoutSystem;
 #[cfg(test)]
-use warpui::fonts::{Style, Weight};
-use warpui::text_layout::{
+use yarpui::fonts::{Style, Weight};
+use yarpui::text_layout::{
     ClipConfig, LayoutCache, Line, StyleAndFont, TextAlignment, TextBorder, TextStyle,
 };
-use warpui::units::{IntoPixels, Pixels};
-use warpui::{AppContext, LayoutContext};
-use warpui::{color::ColorU, text_layout::TextFrame};
+use yarpui::units::{IntoPixels, Pixels};
+use yarpui::{AppContext, LayoutContext};
+use yarpui::{color::ColorU, text_layout::TextFrame};
 
 use super::model::{BlockSpacing, ParagraphStyles, RenderState, RichTextStyles};
 

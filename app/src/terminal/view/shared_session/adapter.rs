@@ -21,9 +21,9 @@ use session_sharing_protocol::common::{ParticipantId, ParticipantList, Role, Ses
 use session_sharing_protocol::sharer::SessionSourceType;
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warpui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
-use warpui::{AppContext, Element};
+use yarp_core::features::FeatureFlag;
+use yarpui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
+use yarpui::{AppContext, Element};
 
 /// The kind of shared session this is.
 pub enum Kind {

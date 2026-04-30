@@ -3,8 +3,8 @@
 //! This module provides the infrastructure for backing views to declaratively
 //! specify their header content without worrying about draggable behavior.
 
-use warp_core::ui::theme::Fill;
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarpui::{
     elements::{DraggableState, MouseStateHandle},
     fonts::Properties,
     text_layout::ClipConfig,

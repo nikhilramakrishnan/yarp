@@ -14,7 +14,7 @@ use yarp::{
     },
     workspace::WorkspaceAction,
 };
-use warpui::{async_assert_eq, App};
+use yarpui::{async_assert_eq, App};
 
 use crate::util::write_all_rc_files_for_test;
 

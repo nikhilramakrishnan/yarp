@@ -3,14 +3,14 @@ use std::{path::PathBuf, sync::Arc};
 use pathfinder_color::ColorU;
 use serde::Serialize;
 use strum_macros::EnumIter;
-use warp_core::ui::{
+use yarp_core::ui::{
     color::hex_color::HexColorError as UiHexColorError,
     theme::{AnsiColors, WarpTheme},
 };
 
 use async_trait::async_trait;
 use thiserror::Error;
-use warpui::{fonts::FontInfo, keymap::Keystroke, DisplayIdx};
+use yarpui::{fonts::FontInfo, keymap::Keystroke, DisplayIdx};
 
 use crate::{
     interval_timer::IntervalTimer,

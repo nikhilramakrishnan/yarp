@@ -8,9 +8,9 @@ use crate::util::bindings::CommandBinding;
 use crate::workspace::PaneViewLocator;
 use std::sync::Arc;
 use strum_macros::IntoStaticStr;
-use warp_util::path::LineAndColumnArg;
-use warpui::keymap::BindingId;
-use warpui::{EntityId, WindowId};
+use yarp_util::path::LineAndColumnArg;
+use yarpui::keymap::BindingId;
+use yarpui::{EntityId, WindowId};
 
 pub type CommandPaletteMixer = SearchMixer<CommandPaletteItemAction>;
 

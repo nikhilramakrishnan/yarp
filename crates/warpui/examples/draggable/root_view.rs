@@ -5,8 +5,8 @@ use pathfinder_geometry::{
     rect::RectF,
     vector::{vec2f, Vector2F},
 };
-use warpui::elements::{AcceptedByDropTarget, DropTarget, DropTargetData};
-use warpui::{
+use yarpui::elements::{AcceptedByDropTarget, DropTarget, DropTargetData};
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, DragAxis, Draggable, DraggableState, ParentElement, Rect,
         Stack,

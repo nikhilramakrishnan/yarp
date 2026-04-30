@@ -9,12 +9,12 @@ use onboarding::{
 use pathfinder_color::ColorU;
 use rust_embed::RustEmbed;
 use std::borrow::Cow;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, Image, TerminalColors};
-use warp_core::ui::{appearance::Appearance, theme::WarpTheme};
-use warpui::assets::asset_cache::AssetSource;
-use warpui::platform;
-use warpui::{
+use yarp_core::ui::icons::Icon;
+use yarp_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, Image, TerminalColors};
+use yarp_core::ui::{appearance::Appearance, theme::WarpTheme};
+use yarpui::assets::asset_cache::AssetSource;
+use yarpui::platform;
+use yarpui::{
     elements::{
         Container, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize, ParentElement,
     },
@@ -41,7 +41,7 @@ impl AssetProvider for Assets {
 
 fn main() -> Result<()> {
     // Initialize logging for the onboarding binary.
-    warp_logging::init(warp_logging::LogConfig {
+    yarp_logging::init(yarp_logging::LogConfig {
         is_cli: false,
         log_destination: None,
     })?;
@@ -266,7 +266,7 @@ impl View for OnboardingMainView {
         }
     }
 
-    fn on_focus(&mut self, focus_ctx: &warpui::FocusContext, ctx: &mut ViewContext<Self>) {
+    fn on_focus(&mut self, focus_ctx: &yarpui::FocusContext, ctx: &mut ViewContext<Self>) {
         if let OnboardingMainState::Onboarding(view) = &self.state {
             if focus_ctx.is_self_focused() {
                 ctx.focus(view);

@@ -12,9 +12,9 @@ use crate::search::result_renderer::ItemHighlightState;
 use crate::ui_components::icons::Icon;
 use itertools::Itertools;
 use ordered_float::OrderedFloat;
-use warpui::elements::{Container, Flex, Highlight, ParentElement, Text};
-use warpui::fonts::{Properties, Weight};
-use warpui::{AppContext, Element, SingletonEntity};
+use yarpui::elements::{Container, Flex, Highlight, ParentElement, Text};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::{AppContext, Element, SingletonEntity};
 
 pub const ENV_VAR_NAME_SEPARATOR: &str = ", ";
 

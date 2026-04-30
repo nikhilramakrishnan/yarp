@@ -1,8 +1,8 @@
 //! Module to attribute AI-generated requested commands
 //! to known documents (e.g. Yarp Drive objects).
 
-use warpui::AppContext;
-use warpui::SingletonEntity;
+use yarpui::AppContext;
+use yarpui::SingletonEntity;
 
 use crate::env_vars::EnvVarCollection;
 use crate::env_vars::EnvVarValue;

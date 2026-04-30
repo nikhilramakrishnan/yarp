@@ -1,7 +1,7 @@
 use pathfinder_color::ColorU;
-use warp_core::ui::Icon;
-use warpui::elements::Align;
-use warpui::Element;
+use yarp_core::ui::Icon;
+use yarpui::elements::Align;
+use yarpui::Element;
 
 use super::onboarding_visual::{IconPct, OnboardingVisual, Pill, RectPct};
 

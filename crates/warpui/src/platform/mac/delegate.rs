@@ -13,16 +13,16 @@ use objc::{class, msg_send, sel, sel_impl};
 use std::ffi::c_void;
 use std::path::Path;
 use std::sync::Arc;
-use warpui_core::clipboard::InMemoryClipboard;
-use warpui_core::keymap::Keystroke;
-use warpui_core::modals::{AlertDialog, ModalId};
-use warpui_core::notification::{NotificationSendError, RequestPermissionsOutcome};
-use warpui_core::platform::{
+use yarpui_core::clipboard::InMemoryClipboard;
+use yarpui_core::keymap::Keystroke;
+use yarpui_core::modals::{AlertDialog, ModalId};
+use yarpui_core::notification::{NotificationSendError, RequestPermissionsOutcome};
+use yarpui_core::platform::{
     Cursor, FilePickerCallback, FilePickerConfiguration, MicrophoneAccessState,
     SendNotificationErrorCallback, TerminationMode,
 };
-use warpui_core::ApplicationBundleInfo;
-use warpui_core::{
+use yarpui_core::ApplicationBundleInfo;
+use yarpui_core::{
     accessibility::AccessibilityContent, notification::UserNotification, platform, WindowId,
 };
 

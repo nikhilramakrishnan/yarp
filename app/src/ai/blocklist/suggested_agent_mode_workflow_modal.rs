@@ -13,8 +13,8 @@ use crate::{
 };
 use pathfinder_geometry::vector::vec2f;
 use std::{collections::HashMap, default::Default, sync::Arc};
-use warp_core::{send_telemetry_from_ctx, ui::appearance::Appearance};
-use warpui::{
+use yarp_core::{send_telemetry_from_ctx, ui::appearance::Appearance};
+use yarpui::{
     elements::{
         ChildAnchor, Empty, OffsetPositioning, PositionedElementAnchor,
         PositionedElementOffsetBounds,
@@ -66,7 +66,7 @@ pub enum SuggestedAgentModeWorkflowModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

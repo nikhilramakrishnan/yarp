@@ -27,8 +27,8 @@ use crate::{
 };
 use futures::channel::oneshot;
 use futures::FutureExt;
-use warp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 /// A ScheduledAmbientAgent represents configuration for ambient agents that run on a cron schedule.
@@ -213,7 +213,7 @@ impl ScheduledAgentManager {
         &self,
         schedule_id: SyncId,
         app: &AppContext,
-    ) -> impl warpui::r#async::Spawnable<Output = anyhow::Result<Option<ScheduledAgentHistory>>>
+    ) -> impl yarpui::r#async::Spawnable<Output = anyhow::Result<Option<ScheduledAgentHistory>>>
     {
         let ai_client = ServerApiProvider::as_ref(app).get_ai_client();
 

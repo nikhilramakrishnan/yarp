@@ -1,5 +1,5 @@
 [package]
-name = "warp_ripgrep"
+name = "yarp_ripgrep"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
@@ -18,7 +18,7 @@ log.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 string-offset.workspace = true
-warp_cli.workspace = true
+yarp_cli.workspace = true
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 async-process.workspace = true

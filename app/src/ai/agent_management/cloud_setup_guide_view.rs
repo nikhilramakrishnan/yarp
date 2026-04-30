@@ -11,23 +11,23 @@ use crate::workflows::WorkflowType;
 use serde::Serialize;
 use std::collections::HashMap;
 use string_offset::CharCounter;
-use warp_completer::signatures::CommandRegistry;
-use warp_completer::{util::parse_current_commands_and_tokens, ParsedTokensSnapshot};
-use warp_core::report_error;
-use warp_core::ui::theme::{AnsiColorIdentifier, AnsiColors};
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::{
+use yarp_completer::signatures::CommandRegistry;
+use yarp_completer::{util::parse_current_commands_and_tokens, ParsedTokensSnapshot};
+use yarp_core::report_error;
+use yarp_core::ui::theme::{AnsiColorIdentifier, AnsiColors};
+use yarpui::clipboard::ClipboardContent;
+use yarpui::elements::{
     new_scrollable::{ClippedAxisConfiguration, DualAxisConfig, NewScrollable},
     Align, Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Element, Empty, Expanded, Flex, Highlight, HighlightedRange,
     MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::prelude::ChildView;
-use warpui::text_layout::TextStyle;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ViewHandle;
-use warpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::prelude::ChildView;
+use yarpui::text_layout::TextStyle;
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::ViewHandle;
+use yarpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 const DOCS_URL: &str = "https://docs.warp.dev/agent-platform/cloud-agents/overview";
 const ENV_DOCS_URL: &str =
@@ -617,7 +617,7 @@ impl View for CloudSetupGuideView {
             },
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .finish();
 

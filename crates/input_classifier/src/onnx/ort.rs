@@ -6,7 +6,7 @@ use ort::{
 };
 use parking_lot::Mutex;
 use tokenizers::Tokenizer;
-use warp_completer::ParsedTokensSnapshot;
+use yarp_completer::ParsedTokensSnapshot;
 
 use super::ClassificationResult;
 

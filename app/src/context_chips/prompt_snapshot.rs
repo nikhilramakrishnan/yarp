@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use warpui::{AppContext, SingletonEntity};
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::context_chips::ContextChipKind;
 

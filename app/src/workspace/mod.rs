@@ -36,7 +36,7 @@ use crate::settings::AISettings;
 use crate::settings_view::{self, flags, SettingsSection};
 use crate::tab::uses_vertical_tabs;
 use crate::tab_configs;
-use warpui::SingletonEntity;
+use yarpui::SingletonEntity;
 
 use crate::channel::ChannelState;
 
@@ -44,12 +44,12 @@ use crate::util::bindings::{self, cmd_or_ctrl_shift, is_binding_pty_compliant, C
 
 use crate::palette::PaletteMode;
 use serde::{Deserialize, Serialize};
-use warp_core::context_flag::ContextFlag;
-use warpui::accessibility::AccessibilityVerbosity;
-use warpui::elements::DropTargetData;
-use warpui::keymap::FixedBinding;
-use warpui::keymap::{BindingDescription, EditableBinding};
-use warpui::AppContext;
+use yarp_core::context_flag::ContextFlag;
+use yarpui::accessibility::AccessibilityVerbosity;
+use yarpui::elements::DropTargetData;
+use yarpui::keymap::FixedBinding;
+use yarpui::keymap::{BindingDescription, EditableBinding};
+use yarpui::AppContext;
 
 pub use action::{
     CommandSearchOptions, InitContent, RestoreConversationLayout, TabContextMenuAnchor,
@@ -66,8 +66,8 @@ pub use view::{
 };
 
 // Helper function to access panel header corner radius from other modules
-pub fn panel_header_corner_radius() -> warpui::elements::CornerRadius {
-    warpui::elements::CornerRadius::with_top(warpui::elements::Radius::Pixels(8.))
+pub fn panel_header_corner_radius() -> yarpui::elements::CornerRadius {
+    yarpui::elements::CornerRadius::with_top(yarpui::elements::Radius::Pixels(8.))
 }
 
 /// Returns `true` when `WorkspaceAction::SendFeedback` will launch the guided
@@ -100,7 +100,7 @@ pub use toast_stack::ToastStack;
 
 pub fn init(app: &mut AppContext) {
     app.add_singleton_model(|_| WorkspaceRegistry::new());
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
     app.register_binding_validator::<Workspace>(is_binding_pty_compliant);
 
     modal::init(app);
@@ -1336,7 +1336,7 @@ pub fn init(app: &mut AppContext) {
 }
 
 fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     // Add the ability to open setting modals to the command palette.
     app.register_editable_bindings([
@@ -1481,7 +1481,7 @@ fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
 }
 
 fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     // Add the ability to open all overflow menu items to the command palette.
     app.register_editable_bindings([

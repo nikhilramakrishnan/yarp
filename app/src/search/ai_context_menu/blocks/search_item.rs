@@ -7,15 +7,15 @@ use crate::terminal::model::block::BlockId;
 use crate::util::truncation::truncate_from_end;
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use warpui::elements::Highlight;
-use warpui::fonts::{Properties, Weight};
-use warpui::{
+use yarpui::elements::Highlight;
+use yarpui::fonts::{Properties, Weight};
+use yarpui::{
     elements::{ConstrainedBox, Container, CrossAxisAlignment, Flex, Icon, ParentElement, Text},
     AppContext, Element, SingletonEntity,
 };
 
 use chrono::{DateTime, Local};
-use warp_core::command::ExitCode;
+use yarp_core::command::ExitCode;
 
 /// Calculate how long ago a timestamp was
 fn time_ago_string(timestamp: Option<&DateTime<Local>>) -> String {

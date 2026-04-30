@@ -8,8 +8,8 @@ use crate::pane_group::{pane::view, BackingView, PaneConfiguration, PaneEvent};
 use crate::server::ids::SyncId;
 use crate::server::sync_queue::SyncQueue;
 use std::path::PathBuf;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{
         Align, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CrossAxisAlignment, Expanded, Flex, MainAxisAlignment, MainAxisSize, ParentElement,
@@ -20,8 +20,8 @@ use warpui::{
 };
 
 use crate::ui_components::icons::Icon;
-use warpui::elements::ChildView;
-use warpui::{SingletonEntity, ViewHandle};
+use yarpui::elements::ChildView;
+use yarpui::{SingletonEntity, ViewHandle};
 
 use super::{AIFact, CloudAIFact, CloudAIFactModel};
 
@@ -277,7 +277,7 @@ impl View for AIFactView {
             ScrollbarWidth::Auto,
             appearance.theme().nonactive_ui_detail().into(),
             appearance.theme().active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .finish()
     }
@@ -307,16 +307,16 @@ impl BackingView for AIFactView {
     fn handle_pane_header_overflow_menu_action(
         &mut self,
         _action: &Self::PaneHeaderOverflowMenuAction,
-        _ctx: &mut warpui::ViewContext<Self>,
+        _ctx: &mut yarpui::ViewContext<Self>,
     ) {
         self.handle_action(_action, _ctx)
     }
 
-    fn close(&mut self, ctx: &mut warpui::ViewContext<Self>) {
+    fn close(&mut self, ctx: &mut yarpui::ViewContext<Self>) {
         ctx.emit(AIFactViewEvent::Pane(PaneEvent::Close));
     }
 
-    fn focus_contents(&mut self, ctx: &mut warpui::ViewContext<Self>) {
+    fn focus_contents(&mut self, ctx: &mut yarpui::ViewContext<Self>) {
         self.focus(ctx);
     }
 

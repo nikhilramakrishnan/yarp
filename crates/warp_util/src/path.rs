@@ -556,7 +556,7 @@ pub fn is_msys2_path(path: &Path) -> bool {
 /// # #[cfg(not(windows))]
 /// # {
 /// use std::path::Path;
-/// use warp_util::path::to_relative_path;
+/// use yarp_util::path::to_relative_path;
 ///
 /// let is_wsl = false;
 /// let abs_path = Path::new("/Users/john/projects/app/src/main.rs");
@@ -639,7 +639,7 @@ pub fn normalize_relative_path_for_glob(path: &Path) -> String {
 /// # Examples
 /// ```
 /// use std::path::Path;
-/// use warp_util::path::common_path;
+/// use yarp_util::path::common_path;
 ///
 /// let paths = [Path::new("/foo/bar/baz"), Path::new("/foo/bar/quux"), Path::new("/foo/bar/quuux")];
 /// assert_eq!(common_path(paths), Some(Path::new("/foo/bar").to_path_buf()));
@@ -767,7 +767,7 @@ pub struct RootGrouping<P> {
 /// # Examples
 /// ```
 /// use std::path::PathBuf;
-/// use warp_util::path::group_roots_by_common_ancestor;
+/// use yarp_util::path::group_roots_by_common_ancestor;
 ///
 /// let grouping = group_roots_by_common_ancestor(&[
 ///     PathBuf::from("/code/a/z"),

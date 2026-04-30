@@ -1,19 +1,19 @@
 use crate::CaptureConfig;
 use image::ImageEncoder;
 use std::sync::{Arc, Mutex};
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarpui::color::ColorU;
+use yarpui::elements::{
     ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container, Empty, Fill, Flex,
     MainAxisSize, ParentElement, RowBackground, ScrollStateHandle, Scrollable, ScrollableElement,
     ScrollbarWidth, SelectableArea, SelectionHandle, Table, TableColumnWidth, TableConfig,
     TableHeader, TableStateHandle, Text,
 };
-use warpui::fonts::FamilyId;
-use warpui::keymap::FixedBinding;
-use warpui::platform::CapturedFrame;
-use warpui::presenter::ChildView;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::keymap::FixedBinding;
+use yarpui::platform::CapturedFrame;
+use yarpui::presenter::ChildView;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle, WindowId,
 };
 
@@ -26,7 +26,7 @@ pub enum SampleAction {
 }
 
 pub fn init(ctx: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     ctx.register_fixed_bindings([
         FixedBinding::new("right", SampleAction::NextDemo, id!("TableSampleView")),
@@ -42,7 +42,7 @@ impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>, capture_config: CaptureConfig) -> Self {
         let config_clone = capture_config.clone();
         let sub_view = ctx.add_typed_action_view(move |ctx| {
-            let font_family = warpui::fonts::Cache::handle(ctx)
+            let font_family = yarpui::fonts::Cache::handle(ctx)
                 .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
             ctx.focus_self();
             TableSampleView::new(font_family, config_clone.clone(), ctx)
@@ -130,7 +130,7 @@ impl TableSampleView {
             let spawner = ctx.spawner();
             ctx.spawn(
                 async move {
-                    use warpui::r#async::Timer;
+                    use yarpui::r#async::Timer;
                     Timer::after(std::time::Duration::from_millis(800)).await;
                     for i in 0..TOTAL_DEMOS {
                         let _ = spawner
@@ -213,7 +213,7 @@ impl TableSampleView {
             if auto_capture && !is_last_demo {
                 ctx.spawn(
                     async {
-                        warpui::r#async::Timer::after(std::time::Duration::from_millis(350)).await;
+                        yarpui::r#async::Timer::after(std::time::Duration::from_millis(350)).await;
                     },
                     |_, _, ctx| {
                         ctx.dispatch_typed_action(&SampleAction::NextDemo);
@@ -1219,7 +1219,7 @@ impl View for TableSampleView {
         Container::new(
             Flex::column()
                 .with_main_axis_size(MainAxisSize::Max)
-                .with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Stretch)
+                .with_cross_axis_alignment(yarpui::elements::CrossAxisAlignment::Stretch)
                 .with_child(
                     Container::new(demo_content)
                         .with_uniform_padding(20.0)
@@ -1246,7 +1246,7 @@ impl TypedActionView for TableSampleView {
                     ctx.spawn(
                         async {
                             // Wait for render to complete
-                            warpui::r#async::Timer::after(std::time::Duration::from_millis(300))
+                            yarpui::r#async::Timer::after(std::time::Duration::from_millis(300))
                                 .await;
                         },
                         |view, _, ctx| {

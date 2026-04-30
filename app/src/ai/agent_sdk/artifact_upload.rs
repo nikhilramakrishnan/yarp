@@ -7,7 +7,7 @@ use std::sync::Arc;
 use anyhow::{anyhow, bail, Context, Result};
 use blocking::unblock;
 use mime_guess::from_path;
-use warp_cli::artifact::UploadArtifactArgs;
+use yarp_cli::artifact::UploadArtifactArgs;
 
 use super::common::parse_ambient_task_id;
 use crate::ai::agent::api::ServerConversationToken;

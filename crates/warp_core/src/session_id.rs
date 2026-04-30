@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// Unique identifier for a terminal session.
 ///
 /// Each bootstrapped subshell (including SSH sessions) gets its own `SessionId`.
-/// This type is defined in `warp_core` so that lower-level crates (e.g. `repo_metadata`)
+/// This type is defined in `yarp_core` so that lower-level crates (e.g. `repo_metadata`)
 /// can reference it without depending on the `app` crate.
 #[derive(Copy, Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct SessionId(u64);

@@ -14,11 +14,11 @@ use crate::{
 
 use anyhow::anyhow;
 use lazy_static::lazy_static;
-use warp_core::{
+use yarp_core::{
     features::FeatureFlag,
     ui::{appearance::DEFAULT_COMMAND_PALETTE_FONT_SIZE, builder::UiBuilder},
 };
-use warpui::{
+use yarpui::{
     accessibility::{AccessibilityContent, WarpA11yRole},
     clipboard::ClipboardContent,
     color::ColorU,
@@ -65,7 +65,7 @@ lazy_static! {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "enter",

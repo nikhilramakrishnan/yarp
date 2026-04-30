@@ -11,14 +11,14 @@ use crate::ui_components::icons::Icon as UiIcon;
 use crate::workspace::WorkspaceAction;
 use channel_versions::overrides::TargetOS;
 use parking_lot::RwLock;
-use warp_core::semantic_selection::SemanticSelection;
-use warp_core::ui::theme::WarpTheme;
-use warpui::elements::{
+use yarp_core::semantic_selection::SemanticSelection;
+use yarp_core::ui::theme::WarpTheme;
+use yarpui::elements::{
     CrossAxisAlignment, Icon, MainAxisAlignment, MainAxisSize, MouseStateHandle, SelectableArea,
     SelectionHandle, Text,
 };
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::{
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::{
     elements::{Border, Container, Flex, ParentElement},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };

@@ -1,7 +1,7 @@
 //! End-to-end editor tests.
 
-use warp_core::features::FeatureFlag;
-use warpui::{App, ModelHandle, ReadModel};
+use yarp_core::features::FeatureFlag;
+use yarpui::{App, ModelHandle, ReadModel};
 
 use crate::content::{
     buffer::{

@@ -53,7 +53,7 @@ use crate::uri::browser_url_handler::update_browser_url;
 use crate::util::openable_file_type::FileTarget;
 use crate::view_components::ToastFlavor;
 use crate::workflows::workflow::Workflow;
-use warp_terminal::shell::{ShellName, ShellType};
+use yarp_terminal::shell::{ShellName, ShellType};
 
 use std::any::Any;
 use std::cell::RefCell;
@@ -78,26 +78,26 @@ use tree::DEFAULT_FLEX_VALUE;
 use typed_path::TypedPath;
 use url::Url;
 use uuid::Uuid;
-use warp_cli::agent::Harness;
-use warp_core::command::ExitCode;
-use warp_core::context_flag::ContextFlag;
-use warp_core::HostId;
-use warp_util::path::convert_wsl_to_windows_host_path;
+use yarp_cli::agent::Harness;
+use yarp_core::command::ExitCode;
+use yarp_core::context_flag::ContextFlag;
+use yarp_core::HostId;
+use yarp_util::path::convert_wsl_to_windows_host_path;
 #[cfg(feature = "local_fs")]
-use warp_util::path::LineAndColumnArg;
-use warpui::elements::{
+use yarp_util::path::LineAndColumnArg;
+use yarpui::elements::{
     Clipped, CrossAxisAlignment, DispatchEventResult, EventHandler, Flex, MainAxisSize, Shrinkable,
     Stack,
 };
-use warpui::keymap::{Context, EditableBinding, FixedBinding};
-use warpui::notification::NotificationSendError;
+use yarpui::keymap::{Context, EditableBinding, FixedBinding};
+use yarpui::notification::NotificationSendError;
 
-use warpui::windowing::WindowManager;
-use warpui::{
+use yarpui::windowing::WindowManager;
+use yarpui::{
     elements::{ChildView, Element, ParentElement},
     AppContext, Entity, EntityId, ModelHandle, TypedActionView, View, ViewHandle, WindowId,
 };
-use warpui::{SingletonEntity, ViewContext};
+use yarpui::{SingletonEntity, ViewContext};
 
 use crate::ai::blocklist::SerializedBlockListItem;
 use crate::ai_assistant::AskAIType;
@@ -297,7 +297,7 @@ enum PaneRemovalReason {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
     app.register_binding_validator::<PaneGroup>(is_binding_pty_compliant);
 
     self::pane::init(app);

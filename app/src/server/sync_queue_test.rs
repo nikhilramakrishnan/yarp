@@ -27,8 +27,8 @@ use chrono::{DateTime, Duration, Utc};
 use firebase::FirebaseError;
 use itertools::Itertools;
 use std::sync::Arc;
-use warp_server_client::cloud_object::ServerPermissions;
-use warpui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity};
+use yarp_server_client::cloud_object::ServerPermissions;
+use yarpui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity};
 
 #[cfg(test)]
 use crate::server::server_api::object::MockObjectClient;

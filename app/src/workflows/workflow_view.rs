@@ -82,9 +82,9 @@ use crate::{
     FeatureFlag, UserWorkspaces,
 };
 
-use warp_core::{context_flag::ContextFlag, settings::Setting, ui::theme::AnsiColorIdentifier};
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use yarp_core::{context_flag::ContextFlag, settings::Setting, ui::theme::AnsiColorIdentifier};
+use yarp_editor::editor::NavigationKey;
+use yarpui::{
     clipboard::ClipboardContent,
     elements::{
         Align, Border, ChildAnchor, ChildView, Clipped, ClippedScrollStateHandle,
@@ -120,7 +120,7 @@ pub mod env_var_selector;
 mod syntax_highlightable;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::id;
+    use yarpui::keymap::macros::id;
     app.register_editable_bindings([EditableBinding::new(
         "workflowview:save",
         "Save workflow",
@@ -3059,7 +3059,7 @@ impl View for WorkflowView {
                 SCROLLBAR_WIDTH,
                 theme.nonactive_ui_detail().into(),
                 theme.active_ui_detail().into(),
-                warpui::elements::Fill::None,
+                yarpui::elements::Fill::None,
             )
             .finish(),
         );

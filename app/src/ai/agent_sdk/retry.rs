@@ -9,8 +9,8 @@ use std::future::Future;
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use warpui::duration_with_jitter;
-use warpui::r#async::Timer;
+use yarpui::duration_with_jitter;
+use yarpui::r#async::Timer;
 
 pub(crate) use crate::server::retry_strategies::is_transient_http_error;
 

@@ -21,7 +21,7 @@ use yarp::{
     },
     terminal::shell::ShellType,
 };
-use warpui::{App, WindowId};
+use yarpui::{App, WindowId};
 
 use yarp::terminal::shell;
 

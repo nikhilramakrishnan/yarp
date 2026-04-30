@@ -17,7 +17,7 @@ use yarp::{
     settings_view::{PrivacyPageAction, SettingsAction},
     terminal::model::{index::Point, terminal_model::WithinModel},
 };
-use warpui::{async_assert, integration::TestStep};
+use yarpui::{async_assert, integration::TestStep};
 
 use crate::util::skip_if_powershell_core_2303;
 

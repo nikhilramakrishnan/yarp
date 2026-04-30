@@ -1,9 +1,9 @@
 use itertools::Itertools;
 use std::{collections::HashMap, rc::Rc};
 use strum::IntoEnumIterator;
-use warp_core::ui::{appearance::Appearance, theme::Fill};
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use yarp_core::ui::{appearance::Appearance, theme::Fill};
+use yarp_editor::editor::NavigationKey;
+use yarpui::{
     elements::{
         Align, Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ClippedScrollable,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, Empty, EventHandler,
@@ -33,9 +33,9 @@ use crate::{
     workflows::workflow::ArgumentType,
 };
 
-use warpui::platform::Cursor;
+use yarpui::platform::Cursor;
 
-use warpui::{
+use yarpui::{
     elements::{ParentAnchor, ParentOffsetBounds},
     fonts::FamilyId,
 };
@@ -865,7 +865,7 @@ impl WorkflowArgSelector {
                         ScrollbarWidth::Auto,
                         theme.disabled_text_color(theme.background()).into(),
                         theme.main_text_color(theme.background()).into(),
-                        warpui::elements::Fill::None,
+                        yarpui::elements::Fill::None,
                     )
                     .finish(),
                 )

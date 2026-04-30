@@ -38,7 +38,7 @@ use crate::server::ids::ServerId;
 use crate::server::server_api::object::{GuestIdentifier, ObjectClient};
 use crate::server::sync_queue::SerializedModel;
 use crate::workflows::WorkflowId;
-use warp_graphql::object_permissions::AccessLevel;
+use yarp_graphql::object_permissions::AccessLevel;
 
 /// Stub object-client. All cloud-only operations (sharing, owner transfers,
 /// trash, etc.) return `Err`. The two methods the boot path depends on -

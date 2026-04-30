@@ -5,16 +5,16 @@ use crate::ui_components::icons::Icon;
 use super::super::header_content::HeaderRenderContext;
 use super::{ActionPayload, PaneHeaderAction};
 
-use warp_core::ui::icons::ICON_DIMENSIONS;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{
+use yarp_core::ui::icons::ICON_DIMENSIONS;
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{
     Align, Clipped, ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable,
     MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, SavePosition, Shrinkable,
     Text,
 };
-use warpui::text_layout::ClipConfig;
-use warpui::ui_components::components::UiComponent;
-use warpui::Element;
+use yarpui::text_layout::ClipConfig;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::Element;
 
 /// Horizontal padding applied inside each edge column of the three-column header.
 pub const HEADER_EDGE_PADDING: f32 = 4.;

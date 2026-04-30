@@ -1,4 +1,4 @@
-//! Memory-behavior repros for APP-4154 batch 1.C (warpui-platform-nsstring).
+//! Memory-behavior repros for APP-4154 batch 1.C (yarpui-platform-nsstring).
 //!
 //! Covers two kinds of fix in `menus.rs`:
 //!
@@ -21,9 +21,9 @@ use cocoa::base::nil;
 use cocoa::foundation::NSAutoreleasePool;
 use objc::runtime::Object;
 use objc::{msg_send, sel, sel_impl};
-use warpui_core::actions::StandardAction;
-use warpui_core::keymap::Keystroke;
-use warpui_core::platform::menu::{MenuItem, MenuItemPropertyChanges};
+use yarpui_core::actions::StandardAction;
+use yarpui_core::keymap::Keystroke;
+use yarpui_core::platform::menu::{MenuItem, MenuItemPropertyChanges};
 
 use super::{apply_changes, make_menu_item};
 

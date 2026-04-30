@@ -1,21 +1,21 @@
 use crate::appearance::Appearance;
 use crate::util::color::lighten;
-use warp_core::ui::builder::UiBuilder;
-use warp_core::ui::color::darken;
-use warpui::keymap::FixedBinding;
+use yarp_core::ui::builder::UiBuilder;
+use yarp_core::ui::color::darken;
+use yarpui::keymap::FixedBinding;
 
 use crate::modal::MODAL_CORNER_RADIUS;
-use warp_core::ui::color::blend::Blend;
-use warpui::accessibility::{AccessibilityContent, WarpA11yRole};
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarp_core::ui::color::blend::Blend;
+use yarpui::accessibility::{AccessibilityContent, WarpA11yRole};
+use yarpui::color::ColorU;
+use yarpui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Fill, Flex, Icon,
     MouseStateHandle, ParentElement, Radius, Shrinkable,
 };
-use warpui::fonts::Weight;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{
+use yarpui::fonts::Weight;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
 };
 
@@ -64,7 +64,7 @@ pub struct AuthOverrideWarningBody {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "enter",

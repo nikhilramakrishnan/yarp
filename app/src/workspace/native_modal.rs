@@ -2,22 +2,22 @@ use crate::appearance::Appearance;
 use crate::terminal::general_settings::{GeneralSettings, GeneralSettingsChangedEvent};
 use crate::ui_components::dialog::{dialog_styles, Dialog};
 use settings::Setting as _;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{Align, Container, Empty, Flex, ParentElement};
-use warpui::keymap::FixedBinding;
-use warpui::modals::{AlertDialogWithCallbacks, AppModalCallback};
-use warpui::ui_components::components::{Coords, UiComponent};
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{Align, Container, Empty, Flex, ParentElement};
+use yarpui::keymap::FixedBinding;
+use yarpui::modals::{AlertDialogWithCallbacks, AppModalCallback};
+use yarpui::ui_components::components::{Coords, UiComponent};
+use yarpui::{
     elements::MouseStateHandle,
     fonts::Weight,
     platform::Cursor,
     ui_components::{button::ButtonVariant, components::UiComponentStyles, text::Span},
     Element, Entity, TypedActionView, View,
 };
-use warpui::{AppContext, ModelHandle, SingletonEntity, ViewContext};
+use yarpui::{AppContext, ModelHandle, SingletonEntity, ViewContext};
 
 pub(super) fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![
         FixedBinding::new("escape", NativeModalAction::Close, id!("NativeModal")),
@@ -120,7 +120,7 @@ impl View for NativeModal {
         "NativeModal"
     }
 
-    fn render(&self, app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &yarpui::AppContext) -> Box<dyn yarpui::Element> {
         let Some(alert_dialog) = self.alert_dialog.as_ref() else {
             log::warn!("No alert dialog was set for the native modal");
             return Empty::new().finish();

@@ -1,5 +1,5 @@
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors};
-use warpui::{
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors};
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CornerRadius, Empty, Flex, MainAxisSize, ParentElement, Radius,
     },

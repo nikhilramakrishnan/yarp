@@ -2,7 +2,7 @@ mod legacy;
 mod maa;
 mod static_prompt_suggestions;
 
-use warpui::ModelHandle;
+use yarpui::ModelHandle;
 
 pub use legacy::{
     PassiveSuggestionsEvent as LegacyPassiveSuggestionsEvent,

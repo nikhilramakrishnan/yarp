@@ -1,4 +1,4 @@
-//! Memory-behavior repro for APP-4154 batch 1.C (warpui-platform-nsstring).
+//! Memory-behavior repro for APP-4154 batch 1.C (yarpui-platform-nsstring).
 //!
 //! Exercises the `NSString::alloc(nil).init_str(...)` → `make_nsstring(...)` conversions
 //! applied to `pasteboard_type_for_image_mime_type` and related clipboard
@@ -17,7 +17,7 @@
 //! outer iterations.
 //!
 //! Run as:
-//!   cargo test --release -p warpui \
+//!   cargo test --release -p yarpui \
 //!       pasteboard_type_for_image_mime_type_memory_behavior -- --nocapture --ignored
 //! and measure peak RSS with `/usr/bin/time -l`.
 use cocoa::base::nil;

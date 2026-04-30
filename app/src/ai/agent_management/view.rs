@@ -6,9 +6,9 @@ use fuzzy_match::match_indices_case_insensitive;
 use lazy_static::lazy_static;
 use pathfinder_color::ColorU;
 use siphasher::sip::SipHasher;
-use warp_core::features::FeatureFlag;
-use warpui::scene::DropShadow;
-use warpui::ui_components::button::ButtonVariant;
+use yarp_core::features::FeatureFlag;
+use yarpui::scene::DropShadow;
+use yarpui::ui_components::button::ButtonVariant;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::agent_conversations_model::{
@@ -65,26 +65,26 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{send_telemetry_from_ctx, AgentModeEntrypoint};
 use pathfinder_geometry::vector::vec2f;
 use settings::Setting;
-use warp_cli::agent::Harness;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::new_scrollable::{
+use yarp_cli::agent::Harness;
+use yarp_core::ui::icons::Icon;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::Fill;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::elements::new_scrollable::{
     NewScrollableElement, ScrollableAppearance, SingleAxisConfig,
 };
-use warpui::elements::{
+use yarpui::elements::{
     Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Element, Empty, Expanded, Flex, Hoverable, List, ListState, MainAxisSize,
     MouseStateHandle, NewScrollable, OffsetPositioning, Padding, ParentAnchor, ParentElement,
     ParentOffsetBounds, Radius, Rect, ScrollStateHandle, ScrollbarWidth, Shrinkable,
     SizeConstraintCondition, SizeConstraintSwitch, Stack, Text, Wrap,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::platform::Cursor;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::ui_components::components::UiComponentStyles;
+use yarpui::{
     keymap::FixedBinding, Action, AppContext, Entity, FocusContext, ModelHandle, SingletonEntity,
     TypedActionView, View, ViewContext, ViewHandle, WeakViewHandle,
 };
@@ -117,7 +117,7 @@ pub fn init(app: &mut AppContext) {
     app.register_fixed_bindings([FixedBinding::new(
         cmd_or_ctrl_shift("f"),
         AgentManagementViewAction::FocusSearch,
-        warpui::keymap::macros::id!(AgentManagementView::ui_name()),
+        yarpui::keymap::macros::id!(AgentManagementView::ui_name()),
     )]);
 }
 
@@ -2135,7 +2135,7 @@ impl AgentManagementView {
             axis_config,
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .with_vertical_scrollbar(ScrollableAppearance::new(ScrollbarWidth::None, false))
         .with_always_handle_events_first(false)

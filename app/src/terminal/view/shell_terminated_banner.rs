@@ -1,11 +1,11 @@
 use std::{borrow::Cow, cell::RefCell};
 
-use warp_core::ui::{
+use yarp_core::ui::{
     appearance::Appearance,
     builder::UiBuilder,
     theme::{color::internal_colors, WarpTheme},
 };
-use warpui::{
+use yarpui::{
     clipboard::ClipboardContent,
     elements::*,
     text_layout::ClipConfig,

@@ -1,7 +1,7 @@
 use std::{path::PathBuf, sync::Arc};
 
-use warp_core::features::FeatureFlag;
-use warp_graphql::scalars::time::ServerTimestamp;
+use yarp_core::features::FeatureFlag;
+use yarp_graphql::scalars::time::ServerTimestamp;
 
 use crate::{
     app_state::{

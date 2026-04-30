@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     elements::{MouseStateHandle, Text},
     Element,
 };

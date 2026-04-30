@@ -28,8 +28,8 @@ use diesel::{QueryDsl, RunQueryDsl, SqliteConnection};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::Icon;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::Icon;
 
 pub mod manager;
 pub mod templatable_manager;
@@ -48,7 +48,7 @@ cfg_if::cfg_if! {
 
 pub(crate) fn home_config_file_path(provider: MCPProvider) -> Option<PathBuf> {
     match provider {
-        MCPProvider::Warp => warp_core::paths::warp_home_mcp_config_file_path(),
+        MCPProvider::Warp => yarp_core::paths::warp_home_mcp_config_file_path(),
         _ => dirs::home_dir().map(|home_dir| home_dir.join(provider.home_config_path())),
     }
 }
@@ -147,7 +147,7 @@ mod tests {
     #[test]
     fn mcp_provider_from_file_path_recognizes_warp_home_path() {
         if let Some(warp_home_mcp_config_file_path) =
-            warp_core::paths::warp_home_mcp_config_file_path()
+            yarp_core::paths::warp_home_mcp_config_file_path()
         {
             assert_eq!(
                 mcp_provider_from_file_path(&warp_home_mcp_config_file_path),
@@ -159,7 +159,7 @@ mod tests {
 
 pub mod gallery;
 pub use gallery::MCPGalleryManager;
-use warpui::{AppContext, SingletonEntity as _};
+use yarpui::{AppContext, SingletonEntity as _};
 pub mod templatable;
 pub use templatable::JsonTemplate;
 pub use templatable::{TemplatableMCPServer, TemplateVariable};

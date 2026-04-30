@@ -1,4 +1,4 @@
-use warpui::{EntityId, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::{EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use super::{CLIAgentEvent, CLIAgentSessionsModel};
 use crate::terminal::cli_agent_sessions::event::parse_event;
@@ -152,7 +152,7 @@ pub struct CLIAgentSessionListener {
     inner: Box<dyn CLIAgentSessionHandler>,
 }
 
-impl warpui::Entity for CLIAgentSessionListener {
+impl yarpui::Entity for CLIAgentSessionListener {
     type Event = ();
 }
 

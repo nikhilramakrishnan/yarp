@@ -13,18 +13,18 @@
 
 use fuzzy_match::FuzzyMatchResult;
 use std::path::Path;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{
     Container, CrossAxisAlignment, Flex, Highlight, MainAxisSize, ParentElement, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::text_layout::ClipConfig;
-use warpui::{AppContext, Element};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::text_layout::ClipConfig;
+use yarpui::{AppContext, Element};
 
 use crate::appearance::Appearance;
 use crate::search::ai_context_menu::safe_truncate;
 use crate::search::ItemHighlightState;
-use warpui::SingletonEntity;
+use yarpui::SingletonEntity;
 
 pub const MAX_COMBINED_LENGTH: usize = 55;
 

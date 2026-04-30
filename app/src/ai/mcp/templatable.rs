@@ -4,8 +4,8 @@ use chrono::DateTime;
 use handlebars::get_arguments;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use warp_core::ui::appearance::Appearance;
-use warpui::{AppContext, SingletonEntity as _};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{AppContext, SingletonEntity as _};
 
 use crate::{
     cloud_object::{

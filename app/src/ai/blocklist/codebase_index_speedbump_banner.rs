@@ -4,10 +4,10 @@ use crate::appearance::Appearance;
 use crate::terminal::view::{InlineBannerId, TerminalAction};
 use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon;
-use warpui::elements::{Align, ConstrainedBox};
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::Coords;
-use warpui::{
+use yarpui::elements::{Align, ConstrainedBox};
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::Coords;
+use yarpui::{
     elements::{
         Container, CrossAxisAlignment, Flex, MainAxisSize, MouseStateHandle, ParentElement,
         Shrinkable,

@@ -11,8 +11,8 @@ use std::sync::Arc;
 use std::{fs, io};
 use std::{io::Write as _, time::Duration};
 use tempfile::TempPath;
-use warp_core::channel::{Channel, ChannelState};
-use warpui::AppContext;
+use yarp_core::channel::{Channel, ChannelState};
+use yarpui::AppContext;
 
 use super::{release_assets_directory_url, DownloadReady};
 use crate::util::windows::install_dir;
@@ -74,7 +74,7 @@ pub(super) async fn download_update_and_cleanup(
 const UPDATE_LOG_FILENAME: &str = "warp_update.log";
 
 fn autoupdate_log_file() -> Result<PathBuf> {
-    warp_logging::log_directory().map(|dir| dir.join(UPDATE_LOG_FILENAME))
+    yarp_logging::log_directory().map(|dir| dir.join(UPDATE_LOG_FILENAME))
 }
 
 /// Checks the autoupdate log file from a previous update attempt.

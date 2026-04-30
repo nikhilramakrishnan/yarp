@@ -42,7 +42,7 @@ impl WindowManager {
     }
 }
 
-impl warpui_core::platform::WindowManager for WindowManager {
+impl yarpui_core::platform::WindowManager for WindowManager {
     fn open_window(
         &mut self,
         window_id: WindowId,
@@ -55,7 +55,7 @@ impl warpui_core::platform::WindowManager for WindowManager {
         Ok(())
     }
 
-    fn platform_window(&self, window_id: WindowId) -> warpui_core::OptionalPlatformWindow {
+    fn platform_window(&self, window_id: WindowId) -> yarpui_core::OptionalPlatformWindow {
         self.windows
             .get(&window_id)
             .map(Rc::clone)

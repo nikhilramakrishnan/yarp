@@ -58,10 +58,10 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::{cmp::Ordering, collections::HashSet};
-use warp_core::ui::theme::color::internal_colors;
-use warpui::FocusContext;
+use yarp_core::ui::theme::color::internal_colors;
+use yarpui::FocusContext;
 
-use warpui::{
+use yarpui::{
     clipboard::ClipboardContent,
     elements::{
         Align, Border, ChildAnchor, ClippedScrollStateHandle, ConstrainedBox, Container,

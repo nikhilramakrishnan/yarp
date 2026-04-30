@@ -22,8 +22,8 @@ use crate::ai::mcp::{templatable_installation::TemplatableMCPServerInstallation,
 use futures_util::stream::AbortHandle;
 use uuid::Uuid;
 #[cfg(not(target_family = "wasm"))]
-use warpui::ModelSpawner;
-use warpui::{Entity, SingletonEntity};
+use yarpui::ModelSpawner;
+use yarpui::{Entity, SingletonEntity};
 
 #[cfg(not(target_family = "wasm"))]
 type ReconnectResultSender =
@@ -319,7 +319,7 @@ impl TemplatableMCPServerManager {
     pub fn get_active_file_based_servers(
         &self,
         cwd: &std::path::Path,
-        app: &warpui::AppContext,
+        app: &yarpui::AppContext,
     ) -> HashMap<Uuid, &TemplatableMCPServerInfo> {
         FileBasedMCPManager::as_ref(app)
             .get_servers_for_working_directory(cwd, app)

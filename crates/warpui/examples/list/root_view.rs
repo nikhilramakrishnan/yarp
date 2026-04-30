@@ -1,6 +1,6 @@
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, Fill, Flex, List, ListState, MainAxisSize,
         ParentElement, Rect, ScrollStateHandle, Scrollable, ScrollableElement, ScrollbarWidth,
@@ -10,7 +10,7 @@ use warpui::{
 };
 
 use std::sync::{Arc, Mutex};
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 pub struct RootView {
     font_family: FamilyId,
@@ -20,7 +20,7 @@ pub struct RootView {
 
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
-        let font_family = warpui::fonts::Cache::handle(ctx)
+        let font_family = yarpui::fonts::Cache::handle(ctx)
             .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
 
         let list_state = ListState::new(move |i, _scroll_offset, _app| {

@@ -1,6 +1,6 @@
 use std::{path::PathBuf, time::Duration};
 
-use warpui::{
+use yarpui::{
     async_assert,
     integration::{AssertionOutcome, TestStep},
     ModelHandle,
@@ -167,7 +167,7 @@ pub fn test_launch_config_single_child_branch() -> Builder {
     use yarp::launch_configs::launch_config::{
         LaunchConfig, PaneMode, PaneTemplateType, SplitDirection, TabTemplate, WindowTemplate,
     };
-    use warpui::actions::StandardAction;
+    use yarpui::actions::StandardAction;
 
     /// Create a launch config that has a branch with a single child
     fn create_launch_config() -> LaunchConfig {

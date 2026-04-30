@@ -189,8 +189,8 @@ mod process_impl {
         let current_exe = std::env::current_exe()?;
         let mut cmd = command::r#async::Command::new(current_exe);
 
-        cmd.arg(warp_cli::ripgrep_search_subcommand())
-            .arg(warp_cli::parent_flag());
+        cmd.arg(yarp_cli::ripgrep_search_subcommand())
+            .arg(yarp_cli::parent_flag());
 
         if ignore_case {
             cmd.arg("--ignore-case");

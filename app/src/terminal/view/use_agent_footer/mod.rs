@@ -12,7 +12,7 @@ use crate::terminal::cli_agent_sessions::{CLIAgentInputEntrypoint, CLIAgentSessi
 use crate::terminal::shared_session::{SharedSessionActionSource, SharedSessionScrollbackType};
 use base64::Engine;
 use session_sharing_protocol::sharer::SessionSourceType;
-use warpui::clipboard::{ClipboardContent, ImageData};
+use yarpui::clipboard::{ClipboardContent, ImageData};
 mod warpify_footer;
 
 pub use crate::terminal::CLIAgent;
@@ -21,14 +21,14 @@ use warpify_footer::{WarpifyFooterView, WarpifyFooterViewEvent};
 use std::sync::{Arc, LazyLock};
 use std::time::Duration;
 
-use warpui::r#async::Timer;
+use yarpui::r#async::Timer;
 
 use crate::code_review::diff_state::GitDeltaPreference;
 use crate::code_review::telemetry_event::CodeReviewPaneEntrypoint;
 use anyhow::anyhow;
 use parking_lot::FairMutex;
 use pathfinder_color::ColorU;
-use warp_core::{
+use yarp_core::{
     features::FeatureFlag,
     report_error, send_telemetry_from_ctx,
     settings::Setting,
@@ -41,7 +41,7 @@ use warp_core::{
     },
 };
 
-use warpui::{
+use yarpui::{
     elements::{
         ChildView, Container, CrossAxisAlignment, Empty, Expanded, Flex, MainAxisSize,
         ParentElement,
@@ -70,7 +70,7 @@ use crate::{
     },
 };
 
-use warp_terminal::model::escape_sequences::{BRACKETED_PASTE_END, BRACKETED_PASTE_START};
+use yarp_terminal::model::escape_sequences::{BRACKETED_PASTE_END, BRACKETED_PASTE_START};
 
 use super::{RichContentInsertionPosition, TerminalAction, TerminalView};
 use crate::terminal::view::block_banner::WarpificationMode;

@@ -26,17 +26,17 @@ use std::{collections::HashMap, fmt::Display};
 use super::task_store::TaskStore;
 use uuid::Uuid;
 use vec1::{Size0Error, Vec1};
-use warp_core::command::ExitCode;
-use warp_core::execution_mode::AppExecutionMode;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::WarpTheme;
+use yarp_core::command::ExitCode;
+use yarp_core::execution_mode::AppExecutionMode;
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::WarpTheme;
 use warp_multi_agent_api::response_event::stream_finished;
 use warp_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
-use warpui::color::ColorU;
-use warpui::{EntityId, ModelContext, SingletonEntity};
+use yarpui::color::ColorU;
+use yarpui::{EntityId, ModelContext, SingletonEntity};
 
 use crate::ai::agent::{AIIdentifiers, CancellationReason};
 use crate::{
@@ -3683,7 +3683,7 @@ impl std::fmt::Display for ConversationStatus {
 }
 
 impl ConversationStatus {
-    pub fn render_icon(&self, appearance: &Appearance) -> warpui::elements::Icon {
+    pub fn render_icon(&self, appearance: &Appearance) -> yarpui::elements::Icon {
         match self {
             ConversationStatus::InProgress => in_progress_icon(appearance),
             ConversationStatus::Success => succeeded_icon(appearance),

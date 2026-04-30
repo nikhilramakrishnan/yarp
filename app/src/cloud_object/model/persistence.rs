@@ -24,14 +24,14 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use std::sync::mpsc::SyncSender;
-use warp_graphql::scalars::time::ServerTimestamp;
+use yarp_graphql::scalars::time::ServerTimestamp;
 
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::cloud_object::CloudObject;
 use chrono::{DateTime, Duration, Utc};
 use rand::Rng;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 use super::generic_string_model::GenericStringObjectId;
 

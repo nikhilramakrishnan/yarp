@@ -62,18 +62,18 @@ use std::{
     sync::Arc,
 };
 use url::Url;
-use warp_core::{channel::Channel, features::FeatureFlag};
-use warp_graphql::{
+use yarp_core::{channel::Channel, features::FeatureFlag};
+use yarp_graphql::{
     queries::get_updated_cloud_objects::UpdatedObjectInput, scalars::time::ServerTimestamp,
 };
-use warpui::{AppContext, SingletonEntity};
+use yarpui::{AppContext, SingletonEntity};
 
 pub mod breadcrumbs;
 pub mod grab_edit_access_modal;
 pub mod model;
 pub mod toast_message;
 
-pub use warp_server_client::cloud_object::*;
+pub use yarp_server_client::cloud_object::*;
 
 /// A CloudObject represents
 /// therefore shareable and editable (i.e. Notebooks and Workflows). In order

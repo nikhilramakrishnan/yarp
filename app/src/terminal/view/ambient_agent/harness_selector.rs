@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use pathfinder_geometry::vector::vec2f;
-use warpui::{
+use yarpui::{
     elements::{
         Border, ChildAnchor, ChildView, OffsetPositioning, ParentAnchor, ParentElement as _,
         ParentOffsetBounds, Stack,
@@ -14,10 +14,10 @@ use warpui::{
     ViewHandle,
 };
 
-use warp_cli::agent::Harness;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
+use yarp_cli::agent::Harness;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::Fill;
 
 use crate::ai::blocklist::agent_view::agent_input_footer::AgentInputButtonTheme;
 use crate::ai::harness_display::{display_name, icon_for};

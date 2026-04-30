@@ -18,18 +18,18 @@ use markdown_parser::FormattedTextFragment;
 use markdown_parser::FormattedTextLine;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::elements::CornerRadius;
-use warpui::elements::CrossAxisAlignment;
-use warpui::elements::FormattedTextElement;
-use warpui::elements::Radius;
-use warpui::keymap::Keystroke;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::TypedActionView;
-use warpui::WeakViewHandle;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarpui::elements::CornerRadius;
+use yarpui::elements::CrossAxisAlignment;
+use yarpui::elements::FormattedTextElement;
+use yarpui::elements::Radius;
+use yarpui::keymap::Keystroke;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::ui_components::components::UiComponentStyles;
+use yarpui::TypedActionView;
+use yarpui::WeakViewHandle;
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, Flex, Hoverable, MainAxisAlignment, MainAxisSize,
         MouseStateHandle, ParentElement, Text, Wrap,
@@ -526,7 +526,7 @@ impl OnboardingAgenticSuggestionsBlock {
                         // Use a more muted background for disabled state
                         theme.surface_1()
                     } else {
-                        warp_core::ui::theme::Fill::Solid(internal_colors::neutral_1(theme))
+                        yarp_core::ui::theme::Fill::Solid(internal_colors::neutral_1(theme))
                     };
 
                     let mut button_content =

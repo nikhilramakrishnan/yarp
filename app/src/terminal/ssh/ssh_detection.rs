@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use warp_core::{features::FeatureFlag, settings::Setting};
-use warp_util::path::ShellFamily;
+use yarp_core::{features::FeatureFlag, settings::Setting};
+use yarp_util::path::ShellFamily;
 
 use crate::terminal::warpify::settings::WarpifySettings;
 

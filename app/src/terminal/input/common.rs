@@ -18,9 +18,9 @@ use crate::{
 };
 use pathfinder_geometry::vector::vec2f;
 use vim::vim::{VimMode, VimState};
-use warp_completer::completer::Description;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use yarp_completer::completer::Description;
+use yarp_core::features::FeatureFlag;
+use yarpui::{
     elements::{
         AnchorPair, Border, ChildAnchor, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, DispatchEventResult, Element, EventHandler, Flex, OffsetPositioning,

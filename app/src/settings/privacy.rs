@@ -3,10 +3,10 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use regex::Regex;
-use warp_core::features::FeatureFlag;
-use warp_core::report_if_error;
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity, UpdateModel};
+use yarp_core::features::FeatureFlag;
+use yarp_core::report_if_error;
+use yarp_core::user_preferences::GetUserPreferences as _;
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity, UpdateModel};
 
 use crate::ai::blocklist::telemetry_banner::should_collect_ai_ugc_telemetry;
 use crate::auth::auth_state::AuthState;

@@ -1,6 +1,6 @@
-use warp_core::ui::theme::{Fill, WarpTheme};
-use warp_core::ui::Icon;
-use warpui::Element;
+use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarp_core::ui::Icon;
+use yarpui::Element;
 
 pub mod conversation_usage_view;
 

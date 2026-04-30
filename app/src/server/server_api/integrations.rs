@@ -9,32 +9,32 @@ use crate::features::FeatureFlag;
 use mockall::automock;
 
 use crate::server::graphql::{get_request_context, get_user_facing_error_message};
-use warp_graphql::mutations::create_simple_integration::{
+use yarp_graphql::mutations::create_simple_integration::{
     CreateSimpleIntegration, CreateSimpleIntegrationOutput, CreateSimpleIntegrationResult,
     CreateSimpleIntegrationVariables, SimpleIntegrationConfig,
 };
-use warp_graphql::queries::get_integrations_using_environment::{
+use yarp_graphql::queries::get_integrations_using_environment::{
     GetIntegrationsUsingEnvironment, GetIntegrationsUsingEnvironmentInput,
     GetIntegrationsUsingEnvironmentOutput, GetIntegrationsUsingEnvironmentResult,
     GetIntegrationsUsingEnvironmentVariables,
 };
-use warp_graphql::queries::get_oauth_connect_tx_status::{
+use yarp_graphql::queries::get_oauth_connect_tx_status::{
     GetOAuthConnectTxStatus, GetOAuthConnectTxStatusInput, GetOAuthConnectTxStatusResult,
     GetOAuthConnectTxStatusVariables, OauthConnectTxStatus,
 };
-use warp_graphql::queries::get_simple_integrations::{
+use yarp_graphql::queries::get_simple_integrations::{
     SimpleIntegrations, SimpleIntegrationsInput, SimpleIntegrationsOutput,
     SimpleIntegrationsResult, SimpleIntegrationsVariables,
 };
-use warp_graphql::queries::suggest_cloud_environment_image::{
+use yarp_graphql::queries::suggest_cloud_environment_image::{
     RepoInput as SuggestCloudEnvironmentImageRepoInput, SuggestCloudEnvironmentImage,
     SuggestCloudEnvironmentImageInput, SuggestCloudEnvironmentImageResult,
     SuggestCloudEnvironmentImageVariables,
 };
-use warp_graphql::queries::user_github_info::{
+use yarp_graphql::queries::user_github_info::{
     GithubAuthRequiredOutput, UserGithubInfo, UserGithubInfoResult, UserGithubInfoVariables,
 };
-use warp_graphql::queries::user_repo_auth_status::{
+use yarp_graphql::queries::user_repo_auth_status::{
     RepoInput as UserRepoAuthStatusRepoInput, UserRepoAuthStatus, UserRepoAuthStatusInput,
     UserRepoAuthStatusOutput, UserRepoAuthStatusResult, UserRepoAuthStatusVariables,
 };

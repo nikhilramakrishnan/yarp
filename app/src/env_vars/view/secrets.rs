@@ -1,8 +1,8 @@
 use pathfinder_geometry::vector::vec2f;
-use warp_core::{features::FeatureFlag, ui::appearance::Appearance};
+use yarp_core::{features::FeatureFlag, ui::appearance::Appearance};
 #[cfg(not(target_family = "wasm"))]
-use warpui::SingletonEntity;
-use warpui::{
+use yarpui::SingletonEntity;
+use yarpui::{
     elements::{
         ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, Empty, Fill, MainAxisAlignment,
         MainAxisSize, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,

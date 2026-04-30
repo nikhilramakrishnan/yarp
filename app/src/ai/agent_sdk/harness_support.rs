@@ -4,14 +4,14 @@
 //! - [`ping`] — fetches the current run by task ID and prints its info.
 //! - [`report_artifact`] — reports an artifact (e.g. a PR) back to the Oz platform.
 use anyhow::Result;
-use warp_cli::agent::OutputFormat;
-use warp_cli::harness_support::{
+use yarp_cli::agent::OutputFormat;
+use yarp_cli::harness_support::{
     FinishTaskArgs, HarnessSupportArgs, HarnessSupportCommand, NotifyUserArgs, ReportArtifactArgs,
     ReportArtifactCommand, TaskStatus,
 };
-use warp_cli::GlobalOptions;
-use warp_core::features::FeatureFlag;
-use warpui::{platform::TerminationMode, AppContext, ModelHandle, SingletonEntity};
+use yarp_cli::GlobalOptions;
+use yarp_core::features::FeatureFlag;
+use yarpui::{platform::TerminationMode, AppContext, ModelHandle, SingletonEntity};
 
 use super::common::set_ambient_task_context_from_run_id;
 use crate::ai::ambient_agents::AmbientAgentTaskId;
@@ -206,7 +206,7 @@ fn finish_task(
 /// Singleton model for running async harness-support operations.
 struct HarnessSupportRunner;
 
-impl warpui::Entity for HarnessSupportRunner {
+impl yarpui::Entity for HarnessSupportRunner {
     type Event = ();
 }
 

@@ -716,7 +716,7 @@ pub struct AppContext {
 
     /// An optional provider that creates an [`AssetSource`] for loading a
     /// fallback font from a URL string. Injected by the application layer so
-    /// that `warpui_core` does not depend on `reqwest`.
+    /// that `yarpui_core` does not depend on `reqwest`.
     #[allow(clippy::type_complexity)]
     fallback_font_source_provider: Option<Box<dyn Fn(&str) -> AssetSource>>,
 }
@@ -838,7 +838,7 @@ impl AppContext {
     }
 
     /// Registers a provider that creates an [`AssetSource`] for a given URL.
-    /// Used to load fallback fonts without pulling `reqwest` into `warpui_core`.
+    /// Used to load fallback fonts without pulling `reqwest` into `yarpui_core`.
     pub fn set_fallback_font_source_provider(
         &mut self,
         provider: impl Fn(&str) -> AssetSource + 'static,
@@ -4236,7 +4236,7 @@ impl AppContext {
             window_bounds: WindowBounds::ExactPosition(RectF::new(origin, size)),
             anchor_new_windows_from_closed_position:
                 NextNewWindowsHasThisWindowsBoundsUponClose::No,
-            window_instance: Some("dev.warp.warpui-debug".to_owned()),
+            window_instance: Some("dev.warp.yarpui-debug".to_owned()),
             title: Some("View Tree Debugger".to_owned()),
             ..Default::default()
         };

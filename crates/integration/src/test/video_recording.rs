@@ -2,8 +2,8 @@ use std::future::Future;
 use std::pin::Pin;
 
 use pathfinder_geometry::vector::vec2f;
-use warpui::event::{Event, ModifiersState};
-use warpui::integration::{TestStep, ARTIFACTS_DIR_ENV_VAR};
+use yarpui::event::{Event, ModifiersState};
+use yarpui::integration::{TestStep, ARTIFACTS_DIR_ENV_VAR};
 
 use crate::Builder;
 use yarp::integration_testing::step::new_step_with_default_assertions;

@@ -5,14 +5,14 @@ use crate::terminal::input::OPEN_COMPLETIONS_KEYBINDING_NAME;
 use crate::terminal::session_settings::WorkingDirectoryConfig;
 
 use lazy_static::lazy_static;
-use warp_core::context_flag::ContextFlag;
-use warpui::platform::GraphicsBackend;
-use warpui::rendering::GPUPowerPreference;
-use warpui::{elements::DispatchEventResult, platform::Cursor};
+use yarp_core::context_flag::ContextFlag;
+use yarpui::platform::GraphicsBackend;
+use yarpui::rendering::GPUPowerPreference;
+use yarpui::{elements::DispatchEventResult, platform::Cursor};
 #[cfg(target_os = "linux")]
 use {
     crate::settings::ForceX11, crate::settings::LinuxAppConfiguration,
-    warpui::platform::linux::windowing_system_is_customizable,
+    yarpui::platform::linux::windowing_system_is_customizable,
 };
 
 use super::keybindings::KeyBindingModifyingState;
@@ -95,20 +95,20 @@ use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use strum::IntoEnumIterator;
-use warp_core::channel::ChannelState;
-use warp_core::semantic_selection::{
+use yarp_core::channel::ChannelState;
+use yarp_core::semantic_selection::{
     SemanticSelection, SemanticSelectionChangedEvent, SmartSelectEnabled,
 };
-use warpui::elements::{
+use yarpui::elements::{
     Align, Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss,
     Element, Empty, EventHandler, Fill, Flex, Hoverable, MainAxisAlignment, MainAxisSize,
     MouseState, MouseStateHandle, ParentElement, Radius, Shrinkable, Text,
 };
-use warpui::keymap::{ContextPredicate, FixedBinding, Keystroke};
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::ui_components::switch::SwitchStateHandle;
-use warpui::{
+use yarpui::keymap::{ContextPredicate, FixedBinding, Keystroke};
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::ui_components::switch::SwitchStateHandle;
+use yarpui::{
     Action, AppContext, DisplayIdx, Entity, EventContext, ModelHandle, SingletonEntity, Tracked,
     TypedActionView, View, ViewContext, ViewHandle, WindowId,
 };
@@ -128,7 +128,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     context: &ContextPredicate,
     builder: fn(SettingsAction) -> T,
 ) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     // Add all of the toggle settings from the Features Page that you want to show up on the Command Palette here.
     let mut toggle_binding_pairs = vec![
@@ -1842,7 +1842,7 @@ impl TypedActionView for FeaturesPageView {
                 self.force_x11_changed = true;
                 // This is a workaround to make sure the user sees the new text that is added to the description after changing the setting.
                 // Without scrolling, the new description text gets cut off.
-                self.page.scroll_by(warpui::units::Pixels::new(40.));
+                self.page.scroll_by(yarpui::units::Pixels::new(40.));
                 ctx.notify();
             }
             ToggleQuitOnLastWindowClosed => {
@@ -4037,7 +4037,7 @@ impl SettingsPageMeta for FeaturesPageView {
     }
 
     fn on_page_selected(&mut self, _: bool, ctx: &mut ViewContext<Self>) {
-        // On MacOS, we rely on [`warpui::platform::AppCallbacks::on_screen_changed`] to update and
+        // On MacOS, we rely on [`yarpui::platform::AppCallbacks::on_screen_changed`] to update and
         // notify on the [`DisplayCount`] model. However, no mechanism exists on Linux to trigger
         // that callback. As a workaround, we check for updates here where quake mode is
         // configured.

@@ -1,6 +1,6 @@
 use std::sync::Arc;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::Empty, platform::WindowStyle, App, AppContext, Element, Entity, TypedActionView,
     View, ViewContext,
 };

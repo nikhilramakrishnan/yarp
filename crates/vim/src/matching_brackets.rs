@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use string_offset::CharOffset;
-use warpui::text::TextBuffer;
+use yarpui::text::TextBuffer;
 
 use crate::vim::{BracketChar, BracketEnd};
 

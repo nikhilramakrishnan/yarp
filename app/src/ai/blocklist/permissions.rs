@@ -15,7 +15,7 @@ use crate::{
     settings::{AISettings, AgentModeCodingPermissionsType, AgentModeCommandExecutionPredicate},
     workspaces::{user_workspaces::UserWorkspaces, workspace::AiAutonomySettings},
 };
-use warp_core::execution_mode::AppExecutionMode;
+use yarp_core::execution_mode::AppExecutionMode;
 
 use crate::ai::mcp::mcp_provider_from_file_path;
 #[cfg(not(target_family = "wasm"))]
@@ -23,11 +23,11 @@ use crate::ai::mcp::TemplatableMCPServerManager;
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use warp_completer::parsers::simple::decompose_command;
-use warp_core::user_preferences::GetUserPreferences;
-use warp_core::{features::FeatureFlag, settings::Setting};
-use warp_util::path::EscapeChar;
-use warpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use yarp_completer::parsers::simple::decompose_command;
+use yarp_core::user_preferences::GetUserPreferences;
+use yarp_core::{features::FeatureFlag, settings::Setting};
+use yarp_util::path::EscapeChar;
+use yarpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 use super::BlocklistAIHistoryModel;
 

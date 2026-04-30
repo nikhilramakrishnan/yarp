@@ -1,9 +1,9 @@
 //! Contains `FromWarpJs` trait implementations for converting JavaScript command signatures to
-//! `warp_completer::signatures::CommandSignature`s, as well as `IntoWarpJs` implementations for
+//! `yarp_completer::signatures::CommandSignature`s, as well as `IntoWarpJs` implementations for
 //! Rust structs that may be passed to JS functions defined on the Command Signature (e.g.
 //! `GeneratorCompletionContext`).
 use rquickjs::{FromJs, Function, Object, Value};
-use warp_js::{
+use yarp_js::{
     util::{get_one_or_more_optional, get_one_or_more_required, get_optional, get_required},
     FromWarpJs, IntoWarpJs, JsFunctionRegistry,
 };

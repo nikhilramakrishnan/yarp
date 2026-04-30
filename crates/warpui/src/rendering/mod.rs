@@ -3,8 +3,8 @@ pub(crate) mod glyph_cache;
 #[cfg(wgpu)]
 pub mod wgpu;
 
-pub use warpui_core::rendering::*;
-use warpui_core::scene::Dash;
+pub use yarpui_core::rendering::*;
+use yarpui_core::scene::Dash;
 
 pub(crate) use glyph_cache::{GlyphCache, GlyphRasterBoundsFn, RasterizeGlyphFn};
 
@@ -21,7 +21,7 @@ pub fn is_low_power_gpu_available() -> bool {
             if #[cfg(target_os = "macos")] {
                 crate::platform::mac::is_low_power_gpu_available()
             } else if #[cfg(wgpu)] {
-                warpui_core::r#async::block_on(wgpu::is_low_power_gpu_available())
+                yarpui_core::r#async::block_on(wgpu::is_low_power_gpu_available())
             } else {
                 false
             }

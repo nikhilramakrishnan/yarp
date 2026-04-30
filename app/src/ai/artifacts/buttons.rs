@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::AnsiColorIdentifier;
-use warpui::elements::{ChildView, Element, Empty, ParentElement, Wrap};
-use warpui::{AppContext, Entity, TypedActionView, View, ViewContext, ViewHandle};
+use yarp_core::ui::icons::Icon;
+use yarp_core::ui::theme::AnsiColorIdentifier;
+use yarpui::elements::{ChildView, Element, Empty, ParentElement, Wrap};
+use yarpui::{AppContext, Entity, TypedActionView, View, ViewContext, ViewHandle};
 
 use crate::notebooks::NotebookId;
 use crate::terminal::input::MenuPositioning;

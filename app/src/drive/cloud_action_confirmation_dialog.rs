@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     elements::{CornerRadius, Dismiss, MouseStateHandle, Radius},
     fonts::Weight,
     platform::Cursor,

@@ -8,9 +8,9 @@ use std::{
 
 #[cfg(feature = "local_fs")]
 use futures::{future::OptionFuture, FutureExt as _};
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
+use yarpui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
 
-use warp_util::standardized_path::StandardizedPath;
+use yarp_util::standardized_path::StandardizedPath;
 
 use crate::{repository::SubscriberId, RepoMetadataError, Repository};
 

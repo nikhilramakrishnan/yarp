@@ -1,15 +1,15 @@
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarpui::color::ColorU;
+use yarpui::elements::{
     Align, Container, CornerRadius, CrossAxisAlignment, Fill, Flex, ParentElement, Radius, Text,
 };
-use warpui::fonts::FamilyId;
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::ui_components::segmented_control::{
+use yarpui::fonts::FamilyId;
+use yarpui::presenter::ChildView;
+use yarpui::ui_components::components::{Coords, UiComponentStyles};
+use yarpui::ui_components::segmented_control::{
     LabelConfig, RenderableOptionConfig, SegmentedControl, SegmentedControlEvent,
 };
-use warpui::SingletonEntity as _;
-use warpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle};
+use yarpui::SingletonEntity as _;
+use yarpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DisplayMode {
@@ -25,7 +25,7 @@ pub struct RootView {
 
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
-        let font_family = warpui::fonts::Cache::handle(ctx)
+        let font_family = yarpui::fonts::Cache::handle(ctx)
             .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
 
         let segmented_control = ctx.add_typed_action_view(move |_ctx| {

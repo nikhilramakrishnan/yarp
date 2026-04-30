@@ -25,22 +25,22 @@ use pathfinder_geometry::{
     rect::RectF,
     vector::{vec2f, Vector2F},
 };
-use warpui_core::event::ModifiersState;
-use warpui_core::platform::{
+use yarpui_core::event::ModifiersState;
+use yarpui_core::platform::{
     file_picker, FilePickerCallback, FilePickerConfiguration, FullscreenState, GraphicsBackend,
     TerminationMode, WindowFocusBehavior,
 };
-use warpui_core::r#async::Timer;
-use warpui_core::rendering::GPUPowerPreference;
-use warpui_core::windowing::WindowCallbacks;
-use warpui_core::{
+use yarpui_core::r#async::Timer;
+use yarpui_core::rendering::GPUPowerPreference;
+use yarpui_core::windowing::WindowCallbacks;
+use yarpui_core::{
     accessibility::AccessibilityContent,
     actions::StandardAction,
     platform::{self, WindowBounds, WindowOptions, WindowStyle},
     r#async::executor,
     Event, OptionalPlatformWindow, Scene, WindowId,
 };
-use warpui_core::{DisplayId, DisplayIdx};
+use yarpui_core::{DisplayId, DisplayIdx};
 
 use instant::Instant;
 use std::collections::HashMap;

@@ -1,4 +1,4 @@
-use warp_cli::agent::Harness;
+use yarp_cli::agent::Harness;
 
 use super::{
     build_local_claude_child_command, build_local_opencode_child_command,

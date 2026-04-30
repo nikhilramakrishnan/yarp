@@ -1,18 +1,18 @@
 use std::path::PathBuf;
 
 use pathfinder_geometry::vector::vec2f;
-use warpui::elements::{
+use yarpui::elements::{
     ChildAnchor, ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex,
     FormattedTextElement, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,
     ParentOffsetBounds, Stack,
 };
-use warpui::fonts::Weight;
-use warpui::keymap::macros::id;
-use warpui::keymap::FixedBinding;
-use warpui::keymap::Keystroke;
-use warpui::platform::file_picker::FilePickerConfiguration;
-use warpui::FocusContext;
-use warpui::{
+use yarpui::fonts::Weight;
+use yarpui::keymap::macros::id;
+use yarpui::keymap::FixedBinding;
+use yarpui::keymap::Keystroke;
+use yarpui::platform::file_picker::FilePickerConfiguration;
+use yarpui::FocusContext;
+use yarpui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
@@ -25,7 +25,7 @@ use crate::view_components::action_button::{
 use super::session_config::{is_git_repo, SessionConfigSelection, SessionType};
 use super::session_config_rendering;
 
-pub fn init(app: &mut warpui::AppContext) {
+pub fn init(app: &mut yarpui::AppContext) {
     app.register_fixed_bindings([FixedBinding::new(
         "enter",
         SessionConfigModalAction::Submit,
@@ -39,7 +39,7 @@ const SECTION_GAP: f32 = 16.;
 pub enum SessionConfigModalAction {
     SelectSessionType(usize),
     OpenDirectoryPicker,
-    DirectorySelected(Result<String, warpui::platform::file_picker::FilePickerError>),
+    DirectorySelected(Result<String, yarpui::platform::file_picker::FilePickerError>),
     ToggleWorktree,
     ToggleAutogenerateWorktreeBranchName,
     Submit,

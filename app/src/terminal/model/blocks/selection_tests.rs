@@ -1,5 +1,5 @@
 use float_cmp::assert_approx_eq;
-use warpui::App;
+use yarpui::App;
 
 use crate::{
     ai::blocklist::agent_view::AgentViewState,

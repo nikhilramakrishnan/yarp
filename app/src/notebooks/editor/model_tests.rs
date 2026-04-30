@@ -37,21 +37,21 @@ use markdown_parser::{
 use pathfinder_geometry::vector::Vector2F;
 use string_offset::CharOffset;
 use vec1::vec1;
-use warp_core::features::FeatureFlag;
-use warp_editor::content::buffer::{AutoScrollBehavior, BufferSelectAction, SelectionOffsets};
-use warp_editor::content::text::{BlockType, BufferBlockStyle, CodeBlockType, TextStyles};
-use warp_editor::model::{CoreEditorModel, RichTextEditorModel};
-use warp_editor::render::model::viewport::SizeInfo;
-use warp_editor::render::model::BlockItem;
-use warp_editor::render::model::RenderEvent;
-use warp_editor::selection::{TextDirection, TextUnit};
-use warpui::elements::ListIndentLevel;
-use warpui::platform::WindowStyle;
-use warpui::presenter::ChildView;
-use warpui::r#async::{block_on, FutureId};
-use warpui::text::word_boundaries::WordBoundariesPolicy;
-use warpui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity, TypedActionView};
-use warpui::{AddSingletonModel, AppContext, Element, View, ViewHandle};
+use yarp_core::features::FeatureFlag;
+use yarp_editor::content::buffer::{AutoScrollBehavior, BufferSelectAction, SelectionOffsets};
+use yarp_editor::content::text::{BlockType, BufferBlockStyle, CodeBlockType, TextStyles};
+use yarp_editor::model::{CoreEditorModel, RichTextEditorModel};
+use yarp_editor::render::model::viewport::SizeInfo;
+use yarp_editor::render::model::BlockItem;
+use yarp_editor::render::model::RenderEvent;
+use yarp_editor::selection::{TextDirection, TextUnit};
+use yarpui::elements::ListIndentLevel;
+use yarpui::platform::WindowStyle;
+use yarpui::presenter::ChildView;
+use yarpui::r#async::{block_on, FutureId};
+use yarpui::text::word_boundaries::WordBoundariesPolicy;
+use yarpui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity, TypedActionView};
+use yarpui::{AddSingletonModel, AppContext, Element, View, ViewHandle};
 
 /// Container for a [`RichTextEditorView`] in unit tests.
 struct TestView {
@@ -67,7 +67,7 @@ impl View for TestView {
         "TestView"
     }
 
-    fn render(&self, _app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, _app: &yarpui::AppContext) -> Box<dyn yarpui::Element> {
         ChildView::new(&self.editor).finish()
     }
 }

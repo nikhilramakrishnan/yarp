@@ -2,9 +2,9 @@ use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::agent::{StartAgentExecutionMode, StartAgentResult};
 use crate::BlocklistAIHistoryModel;
 use ai::agent::action_result::StartAgentVersion;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::MouseStateHandle;
-use warpui::{App, EntityId};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::elements::MouseStateHandle;
+use yarpui::{App, EntityId};
 
 use super::{
     agent_display_name_from_id, child_conversation_card_data_for_result,

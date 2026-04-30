@@ -36,13 +36,13 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
-use warp_core::features::FeatureFlag;
-use warp_core::ui::Icon;
-use warp_util::path::LineAndColumnArg;
-use warpui::elements::{ChildAnchor, Empty, PositionedElementAnchor};
-use warpui::keymap::EditableBinding;
-use warpui::EntityId;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::Icon;
+use yarp_util::path::LineAndColumnArg;
+use yarpui::elements::{ChildAnchor, Empty, PositionedElementAnchor};
+use yarpui::keymap::EditableBinding;
+use yarpui::EntityId;
+use yarpui::{
     elements::{
         resizable_state_handle, Container, DragBarSide, Element, MainAxisSize, MouseStateHandle,
         Resizable, ResizableStateHandle,
@@ -50,7 +50,7 @@ use warpui::{
     AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WeakViewHandle,
 };
-use warpui::{
+use yarpui::{
     elements::{
         ChildView, Clipped, ConstrainedBox, CrossAxisAlignment, Flex, MainAxisAlignment,
         ParentElement, Shrinkable, Text,
@@ -156,7 +156,7 @@ impl CodeReviewState {
                 dropdown.set_font_color(font_color, ctx);
                 dropdown.set_font_size(ui_font_size, ctx);
                 dropdown.set_vertical_margin(0., ctx);
-                dropdown.set_top_bar_height(warp_core::ui::icons::ICON_DIMENSIONS, ctx);
+                dropdown.set_top_bar_height(yarp_core::ui::icons::ICON_DIMENSIONS, ctx);
                 dropdown.set_padding(HEADER_BUTTON_PADDING, ctx);
                 dropdown
             }),
@@ -345,7 +345,7 @@ pub struct RightPanelView {
 
 impl RightPanelView {
     pub fn init(app: &mut AppContext) {
-        use warpui::keymap::macros::*;
+        use yarpui::keymap::macros::*;
 
         app.register_editable_bindings([EditableBinding::new(
             "workspace:toggle_maximize_code_review_panel",
@@ -838,8 +838,8 @@ impl RightPanelView {
     #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
     fn render_maximize_pane_button(&self) -> Box<dyn Element> {
         ConstrainedBox::new(ChildView::new(&self.maximize_button).finish())
-            .with_height(warp_core::ui::icons::ICON_DIMENSIONS)
-            .with_width(warp_core::ui::icons::ICON_DIMENSIONS)
+            .with_height(yarp_core::ui::icons::ICON_DIMENSIONS)
+            .with_width(yarp_core::ui::icons::ICON_DIMENSIONS)
             .finish()
     }
 

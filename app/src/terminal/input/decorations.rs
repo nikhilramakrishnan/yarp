@@ -5,8 +5,8 @@ use std::{collections::HashMap, ops::Range};
 
 use settings::Setting as _;
 use string_offset::{ByteOffset, CharOffset};
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity, ViewContext};
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, SingletonEntity, ViewContext};
 
 use crate::{
     appearance::Appearance,
@@ -18,7 +18,7 @@ use crate::{
 
 use super::Input;
 
-pub use warp_completer::{
+pub use yarp_completer::{
     completer::SuggestionTypeName, util::parse_current_commands_and_tokens, ParsedTokenData,
     ParsedTokensSnapshot,
 };

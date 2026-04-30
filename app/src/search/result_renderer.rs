@@ -1,6 +1,6 @@
 use std::sync::Arc;
-use warpui::elements::{Border, DispatchEventResult, DropShadow, Fill as ElementFill};
-use warpui::{
+use yarpui::elements::{Border, DispatchEventResult, DropShadow, Fill as ElementFill};
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, EventHandler, Flex,
         Hoverable, MainAxisSize, MouseState, MouseStateHandle, ParentElement, Radius, Shrinkable,

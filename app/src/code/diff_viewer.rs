@@ -1,10 +1,10 @@
 use std::ops::Range;
 
 use ai::diff_validation::DiffType;
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warpui::elements::new_scrollable::ScrollableAppearance;
-use warpui::elements::ScrollbarWidth;
-use warpui::{AppContext, View, ViewContext, ViewHandle};
+use yarp_editor::render::element::VerticalExpansionBehavior;
+use yarpui::elements::new_scrollable::ScrollableAppearance;
+use yarpui::elements::ScrollbarWidth;
+use yarpui::{AppContext, View, ViewContext, ViewHandle};
 
 use super::editor::scroll::ScrollWheelBehavior;
 use super::editor::view::CodeEditorView;

@@ -29,7 +29,7 @@ use repo_metadata::{
     repository::{Repository, SubscriberId},
     DirectoryWatcher, RepoMetadataModel, RepositoryUpdate,
 };
-use warpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 #[derive(Debug, PartialEq)]
 pub enum SkillWatcherEvent {
@@ -578,7 +578,7 @@ impl SkillWatcher {
             }
 
             let Ok(std_dir_path) =
-                warp_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                yarp_util::standardized_path::StandardizedPath::from_local_canonicalized(
                     &canonical_dir,
                 )
             else {
@@ -827,7 +827,7 @@ impl SkillWatcher {
         ctx: &mut ModelContext<Self>,
     ) {
         let Ok(std_path) =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(path)
+            yarp_util::standardized_path::StandardizedPath::from_local_canonicalized(path)
         else {
             return;
         };

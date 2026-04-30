@@ -24,7 +24,7 @@ use crate::server::server_api::ai::AIClient;
 use crate::workflows::workflow::Workflow;
 use ai::api_keys::{ApiKeyManager, AwsCredentialsRefreshStrategy};
 use anyhow::Context;
-use warp_cli::{
+use yarp_cli::{
     agent::{AgentCommand, AgentProfileCommand, OutputFormat},
     artifact::ArtifactCommand,
     environment::{EnvironmentCommand, ImageCommand},
@@ -40,13 +40,13 @@ use warp_cli::{
     task::{MessageCommand, TaskCommand},
     CliCommand, GlobalOptions,
 };
-use warp_core::features::FeatureFlag;
-use warp_isolation_platform::IsolationPlatformError;
+use yarp_core::features::FeatureFlag;
+use yarp_isolation_platform::IsolationPlatformError;
 #[cfg(not(target_family = "wasm"))]
-use warp_logging::log_file_path;
-use warp_managed_secrets::ManagedSecretManager;
-use warpui::ModelSpawner;
-use warpui::{platform::TerminationMode, AppContext, SingletonEntity};
+use yarp_logging::log_file_path;
+use yarp_managed_secrets::ManagedSecretManager;
+use yarpui::ModelSpawner;
+use yarpui::{platform::TerminationMode, AppContext, SingletonEntity};
 
 use crate::{
     ai::ambient_agents::{task::HarnessConfig, AmbientAgentTaskId},
@@ -60,7 +60,7 @@ use crate::{
     terminal::view::ConversationRestorationInNewPaneType,
 };
 use driver::AgentDriverError;
-use warp_graphql::object_permissions::OwnerType;
+use yarp_graphql::object_permissions::OwnerType;
 
 use crate::ai::attachment_utils::attachments_download_dir;
 use crate::ai::skills::{
@@ -72,8 +72,8 @@ pub(crate) use driver::harness::{
 };
 pub use driver::AgentDriver;
 use telemetry::CliTelemetryEvent;
-use warp_cli::agent::{Harness, Prompt, RunAgentArgs};
-use warp_cli::OZ_HARNESS_ENV;
+use yarp_cli::agent::{Harness, Prompt, RunAgentArgs};
+use yarp_cli::OZ_HARNESS_ENV;
 
 mod admin;
 mod agent_config;
@@ -510,7 +510,7 @@ fn run_task(
                 ));
             }
             match conv_cmd {
-                warp_cli::task::ConversationCommand::Get(args) => {
+                yarp_cli::task::ConversationCommand::Get(args) => {
                     ambient::get_conversation(ctx, args.conversation_id)
                 }
             }
@@ -531,11 +531,11 @@ fn run_task(
 /// requires spawning an async task, which requires a ModelContext.
 struct AgentDriverRunner;
 
-impl warpui::Entity for AgentDriverRunner {
+impl yarpui::Entity for AgentDriverRunner {
     type Event = ();
 }
 
-impl warpui::SingletonEntity for AgentDriverRunner {}
+impl yarpui::SingletonEntity for AgentDriverRunner {}
 
 impl AgentDriverRunner {
     async fn setup_and_run_driver(
@@ -1301,7 +1301,7 @@ fn launch_command(
         return dispatch_command(ctx, command, global_options);
     }
 
-    let cli_name = warp_cli::binary_name().unwrap_or_else(|| "warp".to_string());
+    let cli_name = yarp_cli::binary_name().unwrap_or_else(|| "warp".to_string());
 
     let auth_state = AuthStateProvider::handle(ctx).as_ref(ctx).get();
     if !auth_state.is_logged_in() {

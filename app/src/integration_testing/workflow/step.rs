@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     async_assert, integration::TestStep, windowing::WindowManager, SingletonEntity, WindowId,
 };
 

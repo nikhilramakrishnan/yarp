@@ -4,8 +4,8 @@
 //! with expandable per-file stats. On confirm, spawns `create_pr` and shows
 //! a toast with a clickable "Open PR" link.
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{
         ClippedScrollStateHandle, Container, Element, Flex, MouseStateHandle, ParentElement, Text,
     },

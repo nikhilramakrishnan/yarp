@@ -1,5 +1,5 @@
 use pathfinder_color::ColorU;
-use warpui::{
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, HighlightedHyperlink,
         MouseStateHandle, ParentElement, Shrinkable,

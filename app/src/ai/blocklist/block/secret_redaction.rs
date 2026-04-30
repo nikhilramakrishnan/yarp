@@ -2,8 +2,8 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 use similar::DiffableStr;
-use warpui::elements::{MouseStateHandle, PartialClickableElement, SecretRange};
-use warpui::platform::Cursor;
+use yarpui::elements::{MouseStateHandle, PartialClickableElement, SecretRange};
+use yarpui::platform::Cursor;
 
 use crate::ai::agent::{AIAgentOutput, AIAgentTextSection, AgentOutputText};
 use crate::terminal::model::secrets::{SecretLevel, REGEX_LEVEL_METADATA, SECRETS_REGEX};

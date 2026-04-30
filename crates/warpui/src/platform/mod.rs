@@ -21,12 +21,12 @@ pub mod current {
         } else if #[cfg(target_os = "windows")] {
             pub use super::windows::*;
         } else {
-            pub use warpui_core::platform::test::*;
+            pub use yarpui_core::platform::test::*;
         }
     }
 }
 
-pub use warpui_core::platform::*;
+pub use yarpui_core::platform::*;
 
 pub use app::AppBuilder;
 

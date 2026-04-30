@@ -1,7 +1,7 @@
 use crate::ai::agent::api::RequestParams;
 use crate::ai::blocklist::SessionContext;
 use crate::ai::llms::LLMId;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 use warp_multi_agent_api as api;
 
 use super::get_supported_tools;

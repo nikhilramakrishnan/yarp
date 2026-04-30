@@ -4,8 +4,8 @@ use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use chrono::Local;
 use lazy_static::lazy_static;
 use regex::Regex;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::{
     ai::{
@@ -31,7 +31,7 @@ use crate::{
         TerminalView,
     },
 };
-use warp_graphql::generic_string_object::GenericStringObjectFormat as GraphQLFormat;
+use yarp_graphql::generic_string_object::GenericStringObjectFormat as GraphQLFormat;
 
 lazy_static! {
     // Regex to match <block:[block_id]> patterns

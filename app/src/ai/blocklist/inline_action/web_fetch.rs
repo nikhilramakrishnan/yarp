@@ -1,6 +1,6 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::{Container, CrossAxisAlignment, Element, Flex, ParentElement, Text};
-use warpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::elements::{Container, CrossAxisAlignment, Element, Flex, ParentElement, Text};
+use yarpui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 use super::search_results_common::{
     render_collapsible_search_results, CollapsibleSearchResultsState,

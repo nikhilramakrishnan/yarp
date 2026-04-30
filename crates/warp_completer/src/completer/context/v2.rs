@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serde::{de::DeserializeOwned, Serialize};
-use warp_js::{JsFunctionId, SerializedJsValue, TypedJsFunctionRef};
+use yarp_js::{JsFunctionId, SerializedJsValue, TypedJsFunctionRef};
 
 #[derive(thiserror::Error, Debug)]
 pub enum JsExecutionError {

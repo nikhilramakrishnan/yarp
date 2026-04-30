@@ -8,8 +8,8 @@
 
 use std::{io::sink, sync::Arc};
 
-use warp_core::command::ExitCode;
-use warpui::r#async::executor::Background;
+use yarp_core::command::ExitCode;
+use yarpui::r#async::executor::Background;
 
 use crate::ai::blocklist::SerializedBlockListItem;
 use crate::terminal::{

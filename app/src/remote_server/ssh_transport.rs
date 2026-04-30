@@ -10,7 +10,7 @@ use std::process::Stdio;
 use std::sync::Arc;
 
 use anyhow::Result;
-use warpui::r#async::executor;
+use yarpui::r#async::executor;
 
 use remote_server::client::RemoteServerClient;
 use remote_server::setup::{self, RemotePlatform, CHECK_TIMEOUT, INSTALL_TIMEOUT};

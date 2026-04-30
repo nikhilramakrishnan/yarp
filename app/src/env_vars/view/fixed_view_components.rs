@@ -1,7 +1,7 @@
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::Vector2F;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Empty, Flex, MainAxisAlignment,
         MainAxisSize, ParentElement, Rect, Shrinkable, Stack,

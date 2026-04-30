@@ -1,5 +1,5 @@
 [package]
-name = "warp_files"
+name = "yarp_files"
 version = "0.1.0"
 edition = "2021"
 authors = ["Yarp team <yarp@hot.fuzz>"]
@@ -12,10 +12,10 @@ async-channel.workspace = true
 async-fs.workspace = true
 futures.workspace = true
 thiserror.workspace = true
-warpui.workspace = true
+yarpui.workspace = true
 remote_server.workspace = true
-warp_core.workspace = true
-warp_util.workspace = true
+yarp_core.workspace = true
+yarp_util.workspace = true
 watcher.workspace = true
 notify-debouncer-full.workspace = true
 repo_metadata.workspace = true

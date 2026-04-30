@@ -1,7 +1,7 @@
 use float_cmp::{approx_eq, assert_approx_eq};
-use warp_core::features::FeatureFlag;
-use warpui::units::IntoLines;
-use warpui::{elements::DEFAULT_UI_LINE_HEIGHT_RATIO, App};
+use yarp_core::features::FeatureFlag;
+use yarpui::units::IntoLines;
+use yarpui::{elements::DEFAULT_UI_LINE_HEIGHT_RATIO, App};
 
 use super::*;
 use crate::ai::agent::AIAgentActionId;

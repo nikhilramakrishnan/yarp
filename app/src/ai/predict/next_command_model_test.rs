@@ -4,9 +4,9 @@ use crate::terminal::model::session::{
     command_executor::testing::TestCommandExecutor, SessionInfo,
 };
 use typed_path::TypedPathBuf;
-use warp_completer::signatures::CommandRegistry;
-use warp_completer::{meta::SpannedItem, parsers::ParsedToken};
-use warpui::App;
+use yarp_completer::signatures::CommandRegistry;
+use yarp_completer::{meta::SpannedItem, parsers::ParsedToken};
+use yarpui::App;
 
 use super::*;
 

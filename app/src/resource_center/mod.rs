@@ -20,7 +20,7 @@ pub mod sections;
 mod view;
 use serde::{Deserialize, Serialize};
 pub use view::{ResourceCenterAction, ResourceCenterEvent, ResourceCenterPage, ResourceCenterView};
-use warpui::{keymap::Keystroke, AppContext, Entity, SingletonEntity};
+use yarpui::{keymap::Keystroke, AppContext, Entity, SingletonEntity};
 
 use self::section_views::feature_section::FeatureSection;
 

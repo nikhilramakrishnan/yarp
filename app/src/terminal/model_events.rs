@@ -13,8 +13,8 @@ use instant::Instant;
 use std::sync::Arc;
 
 use crate::remote_server::manager::RemoteServerManager;
-use warpui::SingletonEntity;
-use warpui::{Entity, ModelContext, ModelHandle};
+use yarpui::SingletonEntity;
+use yarpui::{Entity, ModelContext, ModelHandle};
 
 use super::event::SshLoginStatus;
 use super::model::ansi::{FinishUpdateValue, WarpificationUnavailableReason};

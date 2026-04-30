@@ -1,5 +1,5 @@
-use warp_core::semantic_selection::SemanticSelection;
-use warpui::App;
+use yarp_core::semantic_selection::SemanticSelection;
+use yarpui::App;
 
 use crate::terminal::{
     block_filter::BlockFilterQuery,
@@ -13,7 +13,7 @@ use crate::terminal::{
     shared_session::tests::terminal_model_for_viewer,
     GridType, SizeInfo, SizeUpdate, SizeUpdateReason, TerminalModel,
 };
-use warpui::text::SelectionType;
+use yarpui::text::SelectionType;
 
 /// Creates a [`SelectionType::Simple`], left-to-right text selection
 /// from `start` to `end` in the `model`'s blocklist.

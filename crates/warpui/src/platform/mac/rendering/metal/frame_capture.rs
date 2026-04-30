@@ -1,6 +1,6 @@
 use metal::{MTLPixelFormat, MTLStorageMode};
 use pathfinder_geometry::vector::Vector2F;
-use warpui_core::platform::CapturedFrame;
+use yarpui_core::platform::CapturedFrame;
 
 #[cfg(test)]
 #[path = "frame_capture_tests.rs"]

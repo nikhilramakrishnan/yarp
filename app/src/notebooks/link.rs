@@ -10,8 +10,8 @@ use std::{
 
 use futures_util::future::Either;
 use url::Url;
-use warp_util::path::{CleanPathResult, LineAndColumnArg};
-use warpui::{
+use yarp_util::path::{CleanPathResult, LineAndColumnArg};
+use yarpui::{
     r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity,
     WindowId,
 };

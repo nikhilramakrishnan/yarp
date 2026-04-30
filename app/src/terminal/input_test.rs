@@ -60,7 +60,7 @@ use crate::terminal::model::session::{BootstrapSessionType, SessionInfo};
 use crate::terminal::model::terminal_model::BlockIndex;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use chrono::Local;
-use warpui::text::SelectionType;
+use yarpui::text::SelectionType;
 
 use crate::terminal::shell::ShellType;
 use crate::test_util::settings::initialize_settings_for_tests;
@@ -74,22 +74,22 @@ use crate::{experiments, AgentNotificationsModel};
 use fuzzy_match::FuzzyMatchResult;
 use session_sharing_protocol::common::Role;
 use smol_str::SmolStr;
-use warp_completer::completer::{
+use yarp_completer::completer::{
     EngineFileType, Match, MatchStrategy, MatchedSuggestion, Priority, Suggestion,
     SuggestionResults, SuggestionType,
 };
-use warp_completer::meta::Span;
+use yarp_completer::meta::Span;
 
 use unindent::Unindent;
 
 #[cfg(feature = "voice_input")]
 use voice_input::VoiceInputToggledFrom;
-use warpui::platform::WindowStyle;
-use warpui::{App, ReadModel, UpdateView};
+use yarpui::platform::WindowStyle;
+use yarpui::{App, ReadModel, UpdateView};
 
 use crate::terminal::universal_developer_input::UniversalDeveloperInputButtonBarEvent;
 
-use warp_util::user_input::UserInput;
+use yarp_util::user_input::UserInput;
 use workflows::workflow::{Argument, ArgumentType, Workflow};
 
 use crate::context_chips::prompt::Prompt;

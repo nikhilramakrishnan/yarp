@@ -56,7 +56,7 @@ use crate::{
     workspaces::user_workspaces::UserWorkspaces,
 };
 use toolbar_item::AgentToolbarItemKind;
-use warp_cli::agent::Harness;
+use yarp_cli::agent::Harness;
 
 use std::sync::Arc;
 
@@ -83,7 +83,7 @@ use tokio::fs;
 #[cfg(feature = "voice_input")]
 use voice_input::{StartListeningError, VoiceSessionResult};
 
-use warp_core::{
+use yarp_core::{
     context_flag::ContextFlag,
     report_if_error,
     ui::{
@@ -92,8 +92,8 @@ use warp_core::{
     },
 };
 #[cfg(feature = "voice_input")]
-use warpui::r#async::SpawnedFutureHandle;
-use warpui::{
+use yarpui::r#async::SpawnedFutureHandle;
+use yarpui::{
     elements::{
         Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, DispatchEventResult, Element, EventHandler, Expanded, Flex,
@@ -106,7 +106,7 @@ use warpui::{
 };
 
 #[cfg(not(target_family = "wasm"))]
-use warpui::r#async::Timer;
+use yarpui::r#async::Timer;
 
 pub(crate) use self::environment_selector::{EnvironmentSelector, EnvironmentSelectorEvent};
 #[cfg(not(target_family = "wasm"))]
@@ -874,7 +874,7 @@ impl AgentInputFooter {
     fn select_cli_file(&mut self, ctx: &mut ViewContext<Self>) {
         let window_id = ctx.window_id();
         let view_id = ctx.view_id();
-        let file_picker_config = warpui::platform::FilePickerConfiguration::new();
+        let file_picker_config = yarpui::platform::FilePickerConfiguration::new();
 
         ctx.open_file_picker(
             move |result, ctx| match result {
@@ -1571,8 +1571,8 @@ impl AgentInputFooter {
         // For key-based toggling, validate the key state against current voice state.
         if let voice_input::VoiceInputToggledFrom::Key { state } = source {
             match (&self.cli_voice_input_state, state) {
-                (CLIVoiceInputState::Stopped, warpui::event::KeyState::Released) => return,
-                (CLIVoiceInputState::Listening, warpui::event::KeyState::Pressed) => return,
+                (CLIVoiceInputState::Stopped, yarpui::event::KeyState::Released) => return,
+                (CLIVoiceInputState::Listening, yarpui::event::KeyState::Pressed) => return,
                 _ => {}
             }
         }
@@ -1936,7 +1936,7 @@ impl View for AgentInputFooter {
         "AgentViewFooter"
     }
 
-    fn render(&self, app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &yarpui::AppContext) -> Box<dyn yarpui::Element> {
         if self.should_render_cloud_mode_v2(app) {
             return self.render_cloud_mode_v2_footer(app);
         }
@@ -2155,7 +2155,7 @@ pub enum AgentInputFooterAction {
 impl TypedActionView for AgentInputFooter {
     type Action = AgentInputFooterAction;
 
-    fn handle_action(&mut self, action: &Self::Action, ctx: &mut warpui::ViewContext<Self>) {
+    fn handle_action(&mut self, action: &Self::Action, ctx: &mut yarpui::ViewContext<Self>) {
         match action {
             #[cfg(feature = "voice_input")]
             AgentInputFooterAction::ToggleVoiceInput => {
@@ -2433,10 +2433,10 @@ impl ActionButtonTheme for AgentInputButtonTheme {
         true
     }
 
-    fn font_properties(&self) -> Option<warpui::fonts::Properties> {
+    fn font_properties(&self) -> Option<yarpui::fonts::Properties> {
         if crate::features::FeatureFlag::CloudModeInputV2.is_enabled() {
-            Some(warpui::fonts::Properties {
-                weight: warpui::fonts::Weight::Semibold,
+            Some(yarpui::fonts::Properties {
+                weight: yarpui::fonts::Weight::Semibold,
                 ..Default::default()
             })
         } else {
@@ -2478,7 +2478,7 @@ impl ActionButtonTheme for ActiveMicButtonTheme {
         true
     }
 
-    fn font_properties(&self) -> Option<warpui::fonts::Properties> {
+    fn font_properties(&self) -> Option<yarpui::fonts::Properties> {
         AgentInputButtonTheme.font_properties()
     }
 }

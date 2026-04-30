@@ -13,11 +13,11 @@ use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
 use typed_path::{TypedPath, TypedPathBuf, WindowsPath};
 use version_compare::{Cmp, Version};
-use warp_completer::completer::{CommandExitStatus, CommandOutput};
+use yarp_completer::completer::{CommandExitStatus, CommandOutput};
 #[cfg(windows)]
-use warp_core::paths::base_config_dir;
-use warp_core::platform::SessionPlatform;
-use warp_util::path::{
+use yarp_core::paths::base_config_dir;
+use yarp_core::platform::SessionPlatform;
+use yarp_util::path::{
     convert_msys2_to_windows_native_path, convert_wsl_to_windows_host_path, msys2_exe_to_root,
 };
 
@@ -265,7 +265,7 @@ impl From<ShellType> for command_corrections::Shell {
     }
 }
 
-impl From<ShellType> for warp_util::path::ShellFamily {
+impl From<ShellType> for yarp_util::path::ShellFamily {
     fn from(value: ShellType) -> Self {
         match value {
             ShellType::Zsh | ShellType::Bash | ShellType::Fish => Self::Posix,

@@ -1,11 +1,11 @@
 [package]
-name = "warp_web_event_bus"
+name = "yarp_web_event_bus"
 edition = "2024"
 publish.workspace = true
 license.workspace = true
 
 [lib]
-name = "warp_web_event_bus"
+name = "yarp_web_event_bus"
 path = "src/lib.rs"
 
 [dependencies]

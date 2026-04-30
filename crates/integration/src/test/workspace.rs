@@ -19,7 +19,7 @@ use yarp::{
     settings::PaneSettings,
     workspace::NEW_TAB_BUTTON_POSITION_ID,
 };
-use warpui::{async_assert, integration::TestStep, SingletonEntity};
+use yarpui::{async_assert, integration::TestStep, SingletonEntity};
 
 use crate::{util::skip_if_powershell_core_2303, Builder};
 

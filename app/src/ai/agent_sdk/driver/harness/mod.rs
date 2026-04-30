@@ -9,9 +9,9 @@ use std::sync::Arc;
 use anyhow::{Context, Result};
 use async_trait::async_trait;
 use tempfile::NamedTempFile;
-use warp_cli::agent::Harness;
-use warp_managed_secrets::ManagedSecretValue;
-use warpui::{ModelHandle, ModelSpawner, SingletonEntity};
+use yarp_cli::agent::Harness;
+use yarp_managed_secrets::ManagedSecretValue;
+use yarpui::{ModelHandle, ModelSpawner, SingletonEntity};
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::ambient_agents::AmbientAgentTaskId;
@@ -21,11 +21,11 @@ use crate::terminal::cli_agent_sessions::{CLIAgentSessionStatus, CLIAgentSession
 use crate::terminal::model::block::{BlockId, SerializedBlock};
 use crate::terminal::CLIAgent;
 use crate::util::path::resolve_executable;
-use warp_cli::{
+use yarp_cli::{
     OZ_CLI_ENV, OZ_HARNESS_ENV, OZ_PARENT_RUN_ID_ENV, OZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
     SESSION_SHARING_SERVER_URL_OVERRIDE_ENV, WS_SERVER_URL_OVERRIDE_ENV,
 };
-use warp_core::channel::ChannelState;
+use yarp_core::channel::ChannelState;
 
 use super::terminal::{CommandHandle, TerminalDriver};
 use super::{

@@ -19,10 +19,10 @@ use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use instant::Instant;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::Empty;
-use warpui::platform::WindowStyle;
-use warpui::{App, AppContext, Element, Entity, TypedActionView, View, WindowId};
+use yarp_core::ui::appearance::Appearance;
+use yarpui::elements::Empty;
+use yarpui::platform::WindowStyle;
+use yarpui::{App, AppContext, Element, Entity, TypedActionView, View, WindowId};
 
 fn make_test_environment(
     name: &str,
@@ -45,8 +45,8 @@ fn make_test_environment_with_timestamps(
     docker_image: &str,
     github_repos: Vec<(String, String)>,
     setup_commands: Vec<String>,
-    last_edited_ts: Option<warp_graphql::scalars::time::ServerTimestamp>,
-    last_used_ts: Option<warp_graphql::scalars::time::ServerTimestamp>,
+    last_edited_ts: Option<yarp_graphql::scalars::time::ServerTimestamp>,
+    last_used_ts: Option<yarp_graphql::scalars::time::ServerTimestamp>,
 ) -> EnvironmentDisplayData {
     EnvironmentDisplayData {
         id: SyncId::ClientId(ClientId::new()),
@@ -1329,7 +1329,7 @@ fn test_toolbar_renders_search_editor_view() {
 #[test]
 fn test_render_environment_card_with_last_used_never() {
     use chrono::{Duration, Utc};
-    use warp_graphql::scalars::time::ServerTimestamp;
+    use yarp_graphql::scalars::time::ServerTimestamp;
 
     App::test((), |mut app| async move {
         app.add_singleton_model(|_| Appearance::mock());
@@ -1400,7 +1400,7 @@ fn test_render_environment_card_with_last_used_never() {
 #[test]
 fn test_render_environment_card_with_last_used_timestamp() {
     use chrono::{Duration, Utc};
-    use warp_graphql::scalars::time::ServerTimestamp;
+    use yarp_graphql::scalars::time::ServerTimestamp;
 
     App::test((), |mut app| async move {
         app.add_singleton_model(|_| Appearance::mock());

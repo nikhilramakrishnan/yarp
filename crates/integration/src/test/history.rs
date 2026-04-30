@@ -15,7 +15,7 @@ use yarp::{
     sqlite_testing::set_user_and_hostname_for_commands,
     terminal::{input::Input, model::session::get_local_hostname, shell::ShellType},
 };
-use warpui::{async_assert, ViewHandle};
+use yarpui::{async_assert, ViewHandle};
 
 use crate::util::{get_local_user, write_histfiles_for_test};
 

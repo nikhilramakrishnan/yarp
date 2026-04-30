@@ -13,12 +13,12 @@ use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use url::Url;
 use uuid::Uuid;
-use warp_core::channel::ChannelState;
-use warpui::ModelSpawner;
-use warpui_extras::secure_storage::AppContextExt as _;
+use yarp_core::channel::ChannelState;
+use yarpui::ModelSpawner;
+use yarpui_extras::secure_storage::AppContextExt as _;
 
 use super::{MCPServerState, TemplatableMCPServerManager};
-use {crate::ai::mcp::FileBasedMCPManager, warpui::SingletonEntity};
+use {crate::ai::mcp::FileBasedMCPManager, yarpui::SingletonEntity};
 
 pub(crate) const TEMPLATABLE_MCP_CREDENTIALS_KEY: &str = "TemplatableMcpCredentials";
 pub(crate) const FILE_BASED_MCP_CREDENTIALS_KEY: &str = "FileBasedMcpCredentials";
@@ -476,7 +476,7 @@ impl TemplatableMCPServerManager {
             bail!("No spawned server found for uuid={server_uuid}");
         };
 
-        warpui::r#async::block_on(server_info.oauth_result_tx.send(result)).map_err(|_| {
+        yarpui::r#async::block_on(server_info.oauth_result_tx.send(result)).map_err(|_| {
             anyhow!("Failed to send OAuth result to server {server_uuid} - receiver dropped")
         })?;
 
@@ -486,7 +486,7 @@ impl TemplatableMCPServerManager {
 
     pub fn save_credentials_to_secure_storage(
         &mut self,
-        app: &mut warpui::AppContext,
+        app: &mut yarpui::AppContext,
         installation_uuid: Uuid,
         credentials: PersistedCredentials,
     ) {
@@ -517,7 +517,7 @@ impl TemplatableMCPServerManager {
     pub fn delete_credentials_from_secure_storage(
         &mut self,
         installation_uuid: Uuid,
-        app: &mut warpui::AppContext,
+        app: &mut yarpui::AppContext,
     ) {
         if let Some(template_uuid) = self.get_template_uuid(installation_uuid) {
             self.server_credentials.remove(&template_uuid);
@@ -534,13 +534,13 @@ impl TemplatableMCPServerManager {
 
 /// Loads credentials from secure storage at the provided key.
 pub(crate) fn load_credentials_from_secure_storage<T: DeserializeOwned + Default>(
-    app: &mut warpui::AppContext,
+    app: &mut yarpui::AppContext,
     key: &str,
 ) -> T {
     app.secure_storage()
         .read_value(key)
         .inspect_err(|err| {
-            if !matches!(err, warpui_extras::secure_storage::Error::NotFound) {
+            if !matches!(err, yarpui_extras::secure_storage::Error::NotFound) {
                 log::warn!("Failed to read MCP credentials from secure storage: {err:#}");
             }
         })
@@ -551,7 +551,7 @@ pub(crate) fn load_credentials_from_secure_storage<T: DeserializeOwned + Default
 
 /// Writes credentials to secure storage at the provided key.
 pub(crate) fn write_to_secure_storage<T: Serialize>(
-    app: &mut warpui::AppContext,
+    app: &mut yarpui::AppContext,
     key: &str,
     credentials: &T,
 ) {

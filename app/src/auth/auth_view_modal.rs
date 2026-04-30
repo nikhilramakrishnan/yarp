@@ -7,30 +7,30 @@ use anyhow::{anyhow, Result};
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use url::Url;
-use warp_core::errors::ErrorExt;
-use warp_core::features::FeatureFlag;
-use warpui::elements::ChildAnchor;
-use warpui::elements::Container;
-use warpui::elements::Fill;
-use warpui::elements::HighlightedHyperlink;
-use warpui::elements::MouseStateHandle;
-use warpui::elements::OffsetPositioning;
-use warpui::elements::ParentAnchor;
-use warpui::elements::ParentElement;
-use warpui::elements::ParentOffsetBounds;
-use warpui::elements::Stack;
-use warpui::keymap::FixedBinding;
-use warpui::AppContext;
-use warpui::FocusContext;
-use warpui::SingletonEntity;
-use warpui::TypedActionView;
+use yarp_core::errors::ErrorExt;
+use yarp_core::features::FeatureFlag;
+use yarpui::elements::ChildAnchor;
+use yarpui::elements::Container;
+use yarpui::elements::Fill;
+use yarpui::elements::HighlightedHyperlink;
+use yarpui::elements::MouseStateHandle;
+use yarpui::elements::OffsetPositioning;
+use yarpui::elements::ParentAnchor;
+use yarpui::elements::ParentElement;
+use yarpui::elements::ParentOffsetBounds;
+use yarpui::elements::Stack;
+use yarpui::keymap::FixedBinding;
+use yarpui::AppContext;
+use yarpui::FocusContext;
+use yarpui::SingletonEntity;
+use yarpui::TypedActionView;
 
 use crate::auth::auth_view_body::AuthViewBody;
 use crate::modal::Modal;
 use std::collections::HashMap;
-use warpui::elements::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::{Element, Entity, View, ViewContext, ViewHandle};
+use yarpui::elements::ChildView;
+use yarpui::ui_components::components::{Coords, UiComponentStyles};
+use yarpui::{Element, Entity, View, ViewContext, ViewHandle};
 
 use super::auth_manager::AuthManager;
 use super::auth_manager::AuthManagerEvent;
@@ -39,10 +39,10 @@ use super::auth_view_body::AuthViewBodyEvent;
 use super::credentials::RefreshToken;
 use super::login_failure_notification::{self, LoginFailureReason};
 use super::UserUid;
-use warpui::actions::StandardAction;
+use yarpui::actions::StandardAction;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         // Bindings for paste require the StandardAction and CustomAction binding to work on all platforms.

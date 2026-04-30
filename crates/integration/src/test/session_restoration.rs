@@ -23,7 +23,7 @@ use yarp::{
     },
     workspace::Workspace,
 };
-use warpui::{
+use yarpui::{
     async_assert_eq,
     integration::{AssertionOutcome, TestStep},
     SingletonEntity, ViewHandle,

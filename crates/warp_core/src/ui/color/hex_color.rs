@@ -1,6 +1,6 @@
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use std::{borrow::Cow, fmt};
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 use super::OPAQUE;
 

@@ -2,11 +2,11 @@ use std::collections::HashSet;
 use std::sync::LazyLock;
 
 use pathfinder_color::ColorU;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{ChildView, MainAxisSize};
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{ChildView, MainAxisSize};
+use yarpui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity as _, View, ViewContext,
     ViewHandle,
 };
@@ -488,7 +488,7 @@ impl View for InlineModelSelectorView {
         "InlineModelSelectorView"
     }
 
-    fn render(&self, _app: &warpui::AppContext) -> Box<dyn Element> {
+    fn render(&self, _app: &yarpui::AppContext) -> Box<dyn Element> {
         ChildView::new(&self.menu_view).finish()
     }
 }

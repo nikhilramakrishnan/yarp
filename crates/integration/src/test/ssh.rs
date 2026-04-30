@@ -28,7 +28,7 @@ use yarp::{
         shell::ShellType,
     },
 };
-use warpui::{
+use yarpui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionOutcome, TestStep},
 };

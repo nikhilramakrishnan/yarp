@@ -19,13 +19,13 @@ use crate::input_suggestions::{
     LABEL_PADDING as InputSuggestionsLabelPadding,
 };
 use crate::themes::theme::WarpTheme;
-use warpui::elements::{
+use yarpui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DragBarSide,
     DropShadow, Element, Empty, Flex, ParentElement, Radius, Resizable, Shrinkable,
     SizeConstraintCondition, SizeConstraintSwitch, Text,
 };
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::presenter::ChildView;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 
 enum SuggestionsResizeConfig {
     WidthAndHeight,

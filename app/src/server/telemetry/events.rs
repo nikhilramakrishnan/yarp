@@ -10,14 +10,14 @@ use session_sharing_protocol::common::SessionId as SharedSessionId;
 use session_sharing_protocol::sharer::SessionEndedReason;
 use strum_macros::EnumDiscriminants;
 use strum_macros::EnumIter;
-use warp_completer::completer::MatchType;
-use warp_core::command::ExitCode;
-use warp_core::telemetry::EnablementState;
-use warp_core::telemetry::TelemetryEvent as TelemetryEventTrait;
-use warp_core::telemetry::TelemetryEventDesc;
-use warpui::keymap::Keystroke;
-use warpui::notification::{NotificationSendError, RequestPermissionsOutcome};
-use warpui::rendering::ThinStrokes;
+use yarp_completer::completer::MatchType;
+use yarp_core::command::ExitCode;
+use yarp_core::telemetry::EnablementState;
+use yarp_core::telemetry::TelemetryEvent as TelemetryEventTrait;
+use yarp_core::telemetry::TelemetryEventDesc;
+use yarpui::keymap::Keystroke;
+use yarpui::notification::{NotificationSendError, RequestPermissionsOutcome};
+use yarpui::rendering::ThinStrokes;
 
 use crate::ai::agent::api::ServerConversationToken;
 use crate::ai::agent::conversation::AIConversationId;
@@ -105,7 +105,7 @@ use crate::workspace::tab_settings::TabCloseButtonPosition;
 use crate::workspace::tab_settings::WorkspaceDecorationVisibility;
 use crate::workspace::TabMovement;
 use session_sharing_protocol::sharer::SessionSourceType;
-use warp_core::interval_timer::TimingDataPoint;
+use yarp_core::interval_timer::TimingDataPoint;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct BootstrappingInfo {
@@ -2624,7 +2624,7 @@ pub enum TelemetryEvent {
     AgentManagementViewCopiedSessionLink,
     /// Detected that Warp is running in an isolated sandbox.
     DetectedIsolationPlatform {
-        platform: warp_isolation_platform::IsolationPlatformType,
+        platform: yarp_isolation_platform::IsolationPlatformType,
     },
 
     AgentTipShown {
@@ -2852,7 +2852,7 @@ impl TelemetryEventTrait for TelemetryEvent {
     }
 
     fn event_descs() -> impl Iterator<Item = Box<dyn TelemetryEventDesc>> {
-        warp_core::telemetry::enum_events::<Self>()
+        yarp_core::telemetry::enum_events::<Self>()
     }
 }
 
@@ -5008,7 +5008,7 @@ impl TelemetryEvent {
         // We initialize the feature flags so that we can determine which telemetry events to print.
         crate::init_feature_flags();
 
-        let events: serde_json::Map<String, Value> = warp_core::telemetry::all_events()
+        let events: serde_json::Map<String, Value> = yarp_core::telemetry::all_events()
             .filter_map(|event| {
                 if !event.enablement_state().is_enabled() {
                     return None;
@@ -6677,7 +6677,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ObjectLinkCopied => "The web link to an object has been copied.",
             Self::FileTreeToggled => "Opened the file tree/project explorer",
             Self::GlobalSearchOpened => "Opened the global search view",
-            Self::GlobalSearchQueryStarted => "Started a global search (warp_ripgrep) search",
+            Self::GlobalSearchQueryStarted => "Started a global search (yarp_ripgrep) search",
             Self::FileTreeItemAttachedAsContext => {
                 "Attached a file or directory as context from the file tree"
             }
@@ -6994,7 +6994,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
     }
 }
 
-warp_core::register_telemetry_event!(TelemetryEvent);
+yarp_core::register_telemetry_event!(TelemetryEvent);
 
 #[cfg(test)]
 #[path = "events_test.rs"]

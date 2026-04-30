@@ -1,9 +1,9 @@
 use cocoa::foundation::NSUInteger;
 use std::{ffi::CStr, os::raw::c_char};
 
-use warpui_core::event::{KeyEventDetails, ModifiersState};
-use warpui_core::platform::keyboard::{KeyCode, PhysicalKey};
-use warpui_core::{keymap::Keystroke, Event};
+use yarpui_core::event::{KeyEventDetails, ModifiersState};
+use yarpui_core::platform::keyboard::{KeyCode, PhysicalKey};
+use yarpui_core::{keymap::Keystroke, Event};
 
 use cocoa::{
     appkit::{NSEvent, NSEventModifierFlags, NSEventType},

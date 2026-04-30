@@ -2,7 +2,7 @@ use std::{fmt, marker::PhantomData};
 
 use serde_json::Value;
 use strum::IntoEnumIterator;
-use warpui::{AppContext, Entity, SingletonEntity};
+use yarpui::{AppContext, Entity, SingletonEntity};
 
 // Re-export for macro use.
 #[doc(hidden)]
@@ -149,15 +149,15 @@ pub fn all_events() -> impl Iterator<Item = Box<dyn TelemetryEventDesc>> {
 macro_rules! send_telemetry_from_ctx {
     ($event:expr, $ctx:expr) => {
         #[allow(unused_imports)]
-        use warp_core::telemetry::TelemetryEvent as _;
+        use yarp_core::telemetry::TelemetryEvent as _;
         let event = $event;
         if event.enablement_state().is_enabled() {
             let auth_state =
-                <$crate::telemetry::TelemetryContextModel as warpui::SingletonEntity>::handle($ctx)
+                <$crate::telemetry::TelemetryContextModel as yarpui::SingletonEntity>::handle($ctx)
                     .as_ref($ctx);
             let user_id = auth_state.user_id($ctx);
             let anonymous_id = auth_state.anonymous_id($ctx);
-            warpui::record_telemetry_from_ctx!(
+            yarpui::record_telemetry_from_ctx!(
                 user_id,
                 anonymous_id,
                 event.name().into(),
@@ -180,13 +180,13 @@ macro_rules! send_telemetry_from_app_ctx {
         let event = $event;
         if event.enablement_state().is_enabled() {
             let auth_state =
-                <$crate::telemetry::TelemetryContextModel as warpui::SingletonEntity>::handle(
+                <$crate::telemetry::TelemetryContextModel as yarpui::SingletonEntity>::handle(
                     $app_ctx,
                 )
                 .as_ref($app_ctx);
             let user_id = auth_state.user_id($app_ctx.as_ref());
             let anonymous_id = auth_state.anonymous_id($app_ctx.as_ref());
-            warpui::record_telemetry_on_executor!(
+            yarpui::record_telemetry_on_executor!(
                 user_id,
                 anonymous_id,
                 event.name().into(),

@@ -1,4 +1,4 @@
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 use super::{blend::Blend, coloru_with_opacity, Rgb};
 

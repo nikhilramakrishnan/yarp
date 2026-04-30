@@ -24,7 +24,7 @@ use yarp::{
     terminal::shell::{self, ShellType},
     workspace::Workspace,
 };
-use warpui::{
+use yarpui::{
     async_assert, async_assert_eq, clipboard::ClipboardContent, integration::TestStep, ViewHandle,
 };
 

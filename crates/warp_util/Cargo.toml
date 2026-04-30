@@ -1,5 +1,5 @@
 [package]
-name = "warp_util"
+name = "yarp_util"
 authors = ["Yarp team <yarp@hot.fuzz>"]
 version = "0.1.0"
 edition = "2021"
@@ -33,4 +33,4 @@ windows.workspace = true
 gloo.workspace = true
 
 [dev-dependencies]
-warpui.workspace = true
+yarpui.workspace = true

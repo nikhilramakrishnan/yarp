@@ -27,8 +27,8 @@ use lsp_server_selector::{create_lsp_server_selector, LSPServerInfo};
 pub use model::{InitProjectModel, InitProjectModelEvent, InitStepKind};
 use model::{InitStepData, InitStepStatus};
 use std::path::{Path, PathBuf};
-use warp_core::ui::theme::Fill;
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarpui::{
     elements::{
         Border, ChildView, Container, CrossAxisAlignment, Empty, Flex, MouseStateHandle,
         ParentElement, Text,

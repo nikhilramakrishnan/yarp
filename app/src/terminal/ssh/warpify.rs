@@ -1,7 +1,7 @@
 use asset_macro::bundled_asset;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warp_core::ui::theme::WarpTheme;
-use warpui::assets::asset_cache::{AssetCache, AssetState};
+use yarp_core::ui::theme::WarpTheme;
+use yarpui::assets::asset_cache::{AssetCache, AssetState};
 
 use crate::ai::blocklist::inline_action::requested_action::RenderableAction;
 use crate::appearance::Appearance;
@@ -9,10 +9,10 @@ use crate::terminal::shell::ShellType;
 use crate::terminal::warpify;
 use crate::terminal::warpify::render::SSH_DOCS_URL;
 use crate::ui_components::icons::Icon as UiIcon;
-use warpui::elements::{HighlightedHyperlink, Hoverable, Icon, MouseStateHandle};
-use warpui::keymap::FixedBinding;
-use warpui::AppContext;
-use warpui::{
+use yarpui::elements::{HighlightedHyperlink, Hoverable, Icon, MouseStateHandle};
+use yarpui::keymap::FixedBinding;
+use yarpui::AppContext;
+use yarpui::{
     elements::{Border, Container, CrossAxisAlignment, Flex, ParentElement},
     Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
@@ -36,7 +36,7 @@ pub struct SshWarpifyBlock {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "ctrl-c",

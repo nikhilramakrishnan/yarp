@@ -49,8 +49,8 @@ use cynic::{MutationBuilder, QueryBuilder, SubscriptionBuilder};
 #[cfg(test)]
 use mockall::{automock, predicate::*};
 use std::collections::HashMap;
-use warp_core::report_error;
-use warp_graphql::{
+use yarp_core::report_error;
+use yarp_graphql::{
     error::UserFacingErrorInterface,
     generic_string_object::GenericStringObjectInput,
     mutations::{
@@ -986,7 +986,7 @@ impl ObjectClient for ServerApi {
                         };
 
                         match gso.format {
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonEnvVarCollection => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonEnvVarCollection => {
                                 parse_server_gso::<EnvVarCollection, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
@@ -996,7 +996,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonPreference => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonPreference => {
                                 parse_server_gso::<Preference, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::Preference),
@@ -1006,7 +1006,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonWorkflowEnum => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonWorkflowEnum => {
                                 parse_server_gso::<WorkflowEnum, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::WorkflowEnum),
@@ -1016,7 +1016,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIFact => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIFact => {
                                 parse_server_gso::<AIFact, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::AIFact),
@@ -1026,7 +1026,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonMCPServer => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonMCPServer => {
                                 parse_server_gso::<MCPServer, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::MCPServer),
@@ -1036,7 +1036,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIExecutionProfile => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIExecutionProfile => {
                                 parse_server_gso::<AIExecutionProfile, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::AIExecutionProfile),
@@ -1046,7 +1046,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonTemplatableMCPServer => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonTemplatableMCPServer => {
                                 parse_server_gso::<TemplatableMCPServer, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::TemplatableMCPServer),
@@ -1056,7 +1056,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonCloudEnvironment => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonCloudEnvironment => {
                                 parse_server_gso::<AmbientAgentEnvironment, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::CloudEnvironment),
@@ -1066,7 +1066,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonScheduledAmbientAgent => {
+                            yarp_graphql::generic_string_object::GenericStringObjectFormat::JsonScheduledAmbientAgent => {
                                 parse_server_gso::<ScheduledAmbientAgent, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::ScheduledAmbientAgent),
@@ -1296,7 +1296,7 @@ impl ObjectClient for ServerApi {
         let response = self.send_graphql_request(operation, None).await?;
 
         let result = match response.untrash_object {
-            warp_graphql::mutations::untrash_object::UntrashObjectResult::UntrashObjectOutput(
+            yarp_graphql::mutations::untrash_object::UntrashObjectResult::UntrashObjectOutput(
                 output,
             ) => {
                 if output.success {

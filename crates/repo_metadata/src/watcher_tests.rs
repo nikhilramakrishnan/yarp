@@ -12,9 +12,9 @@ use crate::{CanonicalizedPath, RepoMetadataError, Repository, RepositoryUpdate};
 use futures::channel::mpsc;
 use futures::StreamExt as _;
 use virtual_fs::{Stub, VirtualFS};
-use warp_util::standardized_path::StandardizedPath;
-use warpui::r#async::Timer;
-use warpui::{App, ModelContext, ModelHandle};
+use yarp_util::standardized_path::StandardizedPath;
+use yarpui::r#async::Timer;
+use yarpui::{App, ModelContext, ModelHandle};
 
 #[test]
 fn test_add_repository_success() {

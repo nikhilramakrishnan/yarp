@@ -12,8 +12,8 @@ use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
-use warpui::r#async::Timer;
-use warpui::{Action, AppContext, Entity, ModelContext};
+use yarpui::r#async::Timer;
+use yarpui::{Action, AppContext, Entity, ModelContext};
 
 /// Maximum time to wait for matching data sources to return results before showing
 /// partial results.

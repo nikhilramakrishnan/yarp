@@ -2,9 +2,9 @@ use std::{cmp::max, fmt::Debug, mem, ops::RangeInclusive};
 
 use sum_tree::SeekBias;
 use vec1::{vec1, Vec1};
-use warp_core::semantic_selection::SemanticSelection;
-use warp_terminal::model::grid::CellType;
-use warpui::{
+use yarp_core::semantic_selection::SemanticSelection;
+use yarp_terminal::model::grid::CellType;
+use yarpui::{
     text::{IsRect, SelectionType},
     units::{IntoLines as _, Lines},
     AppContext, EntityId, ViewAsRef as _,

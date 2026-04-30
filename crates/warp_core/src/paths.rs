@@ -299,7 +299,7 @@ pub fn app_group_container_path() -> Option<PathBuf> {
 
 /// Returns the path to resources included in the Warp distribution.
 ///
-/// Unlike [`warpui::AssetProvider`] assets, which are generally embedded in the binary, these are
+/// Unlike [`yarpui::AssetProvider`] assets, which are generally embedded in the binary, these are
 /// stored on the filesystem alongside the rest of Warp.
 ///
 /// ## macOS

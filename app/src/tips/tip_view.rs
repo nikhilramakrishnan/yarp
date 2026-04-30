@@ -1,12 +1,12 @@
 use pathfinder_geometry::vector::vec2f;
-use warpui::elements::{
+use yarpui::elements::{
     Align, ChildAnchor, ClippedScrollStateHandle, ClippedScrollable, DispatchEventResult,
     EventHandler, Hoverable, Icon, MouseStateHandle, OffsetPositioning, PositionedElementAnchor,
     PositionedElementOffsetBounds, Radius, ScrollbarWidth, Stack,
 };
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::{
+use yarpui::platform::Cursor;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::{
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Flex,
         ParentElement, Shrinkable,
@@ -16,8 +16,8 @@ use warpui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Entity, TypedActionView, View,
 };
-use warpui::{keymap::FixedBinding, ViewContext};
-use warpui::{Action, BlurContext, EntityId, ModelHandle, SingletonEntity, WindowId};
+use yarpui::{keymap::FixedBinding, ViewContext};
+use yarpui::{Action, BlurContext, EntityId, ModelHandle, SingletonEntity, WindowId};
 
 use crate::appearance::Appearance;
 use crate::resource_center::{Tip, TipAction, TipsCompleted};
@@ -95,7 +95,7 @@ pub enum TipsAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![FixedBinding::new(
         "escape",

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use futures::channel::oneshot;
 use futures::StreamExt;
-use warpui::r#async::executor::Background;
+use yarpui::r#async::executor::Background;
 
 use super::*;
 

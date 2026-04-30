@@ -1,15 +1,15 @@
 //! Rendering functions for orchestration-related output items (messaging & agent management).
 
 use pathfinder_color::ColorU;
-use warpui::elements::{
+use yarpui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex, Hoverable,
     MouseStateHandle, ParentElement, Radius, Text,
 };
-use warpui::platform::Cursor;
-use warpui::{AppContext, Element, SingletonEntity};
+use yarpui::platform::Cursor;
+use yarpui::{AppContext, Element, SingletonEntity};
 
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warpui::elements::FormattedTextElement;
+use yarpui::elements::FormattedTextElement;
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId, ConversationStatus};
 use crate::ai::agent::{

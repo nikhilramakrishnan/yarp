@@ -24,8 +24,8 @@ use crate::{
     workflows::{workflow_view::WorkflowView, CategoriesView},
     workspace::Workspace,
 };
-use warpui::Entity;
-use warpui::{async_assert, integration::AssertionCallback, App, View, ViewHandle, WindowId};
+use yarpui::Entity;
+use yarpui::{async_assert, integration::AssertionCallback, App, View, ViewHandle, WindowId};
 
 /// This identifier is useful when you'd like to weakly identify a terminal view
 /// without actually grabbing a handle to it. Often useful when writing reusable assertions.

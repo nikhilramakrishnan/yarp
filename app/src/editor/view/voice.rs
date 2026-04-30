@@ -13,17 +13,17 @@ use crate::workspace::ToastStack;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use settings::Setting as _;
 use voice_input::{StartListeningError, VoiceInput, VoiceSessionResult};
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::AnsiColorIdentifier;
-use warpui::elements;
-use warpui::elements::{Container, CornerRadius, Icon, Radius};
-use warpui::platform::Cursor;
-use warpui::r#async::SpawnedFutureHandle;
-use warpui::ui_components::button::ButtonTooltipPosition;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::ViewHandle;
-use warpui::{AppContext, Element, SingletonEntity, ViewContext};
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::AnsiColorIdentifier;
+use yarpui::elements;
+use yarpui::elements::{Container, CornerRadius, Icon, Radius};
+use yarpui::platform::Cursor;
+use yarpui::r#async::SpawnedFutureHandle;
+use yarpui::ui_components::button::ButtonTooltipPosition;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::ViewHandle;
+use yarpui::{AppContext, Element, SingletonEntity, ViewContext};
 
 use super::VoiceTranscriber;
 
@@ -82,7 +82,7 @@ impl EditorView {
                 crate::view_components::NewFeaturePopupEvent::Dismissed
             ) {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
-                    warp_core::report_if_error!(settings
+                    yarp_core::report_if_error!(settings
                         .dismissed_voice_input_new_feature_popup
                         .set_value(true, ctx));
                 });
@@ -238,7 +238,7 @@ impl EditorView {
                     // For example, the user could press Fn in a different app, then switch focus
                     // to Yarp and let it go - we should NOT activate voice input in this case.
                     VoiceInputState::Stopped => {
-                        if matches!(state, warpui::event::KeyState::Released) {
+                        if matches!(state, yarpui::event::KeyState::Released) {
                             return false;
                         }
                     }
@@ -247,7 +247,7 @@ impl EditorView {
                     // key events). Thus, the user cannot enter a state where we're listening for voice input
                     // but the key is not held already.
                     VoiceInputState::Listening => {
-                        if matches!(state, warpui::event::KeyState::Pressed) {
+                        if matches!(state, yarpui::event::KeyState::Pressed) {
                             return false;
                         }
                     }
@@ -526,8 +526,8 @@ impl EditorView {
         let microphone_access_state = app.microphone_access_state();
         let mic_access_denied = matches!(
             microphone_access_state,
-            warpui::platform::MicrophoneAccessState::Restricted
-                | warpui::platform::MicrophoneAccessState::Denied
+            yarpui::platform::MicrophoneAccessState::Restricted
+                | yarpui::platform::MicrophoneAccessState::Denied
         );
 
         let modifier_key = AISettings::handle(app).as_ref(app).voice_input_toggle_key;
@@ -606,7 +606,7 @@ impl EditorView {
             button = button.disabled();
         }
 
-        warpui::elements::SavePosition::new(
+        yarpui::elements::SavePosition::new(
             button
                 .build()
                 .on_click(move |ctx, _, _| {

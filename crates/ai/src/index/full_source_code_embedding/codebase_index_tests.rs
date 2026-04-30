@@ -22,8 +22,8 @@ use std::collections::HashMap;
 use std::ops::Range;
 use std::path::PathBuf;
 use std::sync::Arc;
-use warp_util::standardized_path::StandardizedPath;
-use warpui::{App, SingletonEntity};
+use yarp_util::standardized_path::StandardizedPath;
+use yarpui::{App, SingletonEntity};
 
 use super::{
     CodebaseIndex, CodebaseIndexTimeStampMetadata, TreeSourceSyncState,

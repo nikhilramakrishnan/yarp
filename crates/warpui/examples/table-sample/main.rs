@@ -3,9 +3,9 @@ use pathfinder_geometry::vector::vec2f;
 use std::borrow::Cow;
 pub mod root_view;
 
-extern crate warpui;
+extern crate yarpui;
 use rust_embed::RustEmbed;
-use warpui::{platform, platform::WindowBounds, AssetProvider};
+use yarpui::{platform, platform::WindowBounds, AssetProvider};
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "examples/assets"]
@@ -69,12 +69,12 @@ fn main() -> Result<()> {
         platform::AppBuilder::new(platform::AppCallbacks::default(), Box::new(ASSETS), None);
     let _ = app_builder.run(move |ctx| {
         root_view::init(ctx);
-        let window_options = warpui::AddWindowOptions {
+        let window_options = yarpui::AddWindowOptions {
             window_bounds: WindowBounds::ExactSize(vec2f(1000.0, 800.0)),
             window_style: if capture_config.capture_screenshots {
-                warpui::platform::WindowStyle::NotStealFocus
+                yarpui::platform::WindowStyle::NotStealFocus
             } else {
-                warpui::platform::WindowStyle::Normal
+                yarpui::platform::WindowStyle::Normal
             },
             ..Default::default()
         };

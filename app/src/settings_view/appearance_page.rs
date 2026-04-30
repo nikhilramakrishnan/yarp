@@ -74,25 +74,25 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::rc::Rc;
-use warp_core::ui::theme::color::internal_colors;
-use warp_util::path::user_friendly_path;
-use warpui::elements::{
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_util::path::user_friendly_path;
+use yarpui::elements::{
     Clipped, Empty, FormattedTextElement, MainAxisAlignment, MainAxisSize, Text, Wrap,
 };
-use warpui::fonts::{FamilyId, FontInfo, Weight};
-use warpui::keymap::{ContextPredicate, FixedBinding};
-use warpui::platform::{Cursor, FilePickerConfiguration, GraphicsBackend};
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::ui_components::radio_buttons::{
+use yarpui::fonts::{FamilyId, FontInfo, Weight};
+use yarpui::keymap::{ContextPredicate, FixedBinding};
+use yarpui::platform::{Cursor, FilePickerConfiguration, GraphicsBackend};
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::ui_components::radio_buttons::{
     RadioButtonItem, RadioButtonLayout, RadioButtonStateHandle,
 };
-use warpui::ui_components::slider::SliderStateHandle;
-use warpui::ui_components::switch::SwitchStateHandle;
-use warpui::units::IntoPixels;
+use yarpui::ui_components::slider::SliderStateHandle;
+use yarpui::ui_components::switch::SwitchStateHandle;
+use yarpui::units::IntoPixels;
 
-use warpui::id;
-use warpui::{
+use yarpui::id;
+use yarpui::{
     elements::{
         Align, Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Dismiss, Element, Fill, Flex, Hoverable, MouseStateHandle, ParentElement, Radius,
@@ -100,8 +100,8 @@ use warpui::{
     },
     rendering::ThinStrokes,
 };
-use warpui::{platform::SystemTheme, Action};
-use warpui::{
+use yarpui::{platform::SystemTheme, Action};
+use yarpui::{
     AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, UpdateModel, View,
     ViewContext, ViewHandle, WindowId,
 };
@@ -975,7 +975,7 @@ impl AppearanceSettingsPageView {
             // `all_system_fonts` API doesn't exist.
             #[cfg(not(target_family = "wasm"))]
             {
-                let all_system_fonts = warpui::fonts::Cache::handle(ctx)
+                let all_system_fonts = yarpui::fonts::Cache::handle(ctx)
                     .update(ctx, |font_cache, ctx| font_cache.all_system_fonts(ctx));
                 ctx.spawn(all_system_fonts, Self::set_system_fonts);
             }

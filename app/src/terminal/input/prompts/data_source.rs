@@ -1,10 +1,10 @@
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use warp_core::ui::icons::Icon;
-use warpui::elements::{ConstrainedBox, Container, Highlight, Text};
-use warpui::fonts::{Properties, Weight};
-use warpui::text_layout::ClipConfig;
-use warpui::{AppContext, Element, Entity, ModelContext, ModelHandle, SingletonEntity as _};
+use yarp_core::ui::icons::Icon;
+use yarpui::elements::{ConstrainedBox, Container, Highlight, Text};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::text_layout::ClipConfig;
+use yarpui::{AppContext, Element, Entity, ModelContext, ModelHandle, SingletonEntity as _};
 
 use crate::appearance::Appearance;
 use crate::cloud_object::model::persistence::CloudModel;
@@ -209,7 +209,7 @@ impl SearchItem for PromptSearchItem {
         &self,
         highlight_state: ItemHighlightState,
         appearance: &Appearance,
-    ) -> Option<warp_core::ui::theme::Fill> {
+    ) -> Option<yarp_core::ui::theme::Fill> {
         inline_styles::item_background(highlight_state, appearance)
     }
 

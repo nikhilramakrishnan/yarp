@@ -9,10 +9,10 @@ use std::future::Future;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
-use warpui::r#async::executor::Background;
+use yarpui::r#async::executor::Background;
 
 use anyhow::Result;
-use warpui::{r#async::Timer, Entity, RetryOption, SingletonEntity};
+use yarpui::{r#async::Timer, Entity, RetryOption, SingletonEntity};
 
 const DEFAULT_BUFFER_SIZE: usize = 1024;
 const DEFAULT_SYNC_RETRY_STRATEGY: RetryOption = RetryOption::exponential(

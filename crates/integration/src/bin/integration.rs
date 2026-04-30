@@ -4,9 +4,9 @@ use anyhow::Result;
 use clap::Parser;
 use integration::test::*;
 use integration::Builder;
-use warp_cli::WorkerCommand;
-use warp_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig};
-use warp_core::AppId;
+use yarp_cli::WorkerCommand;
+use yarp_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig};
+use yarp_core::AppId;
 
 /// The Warp integration test runner.
 #[derive(Debug, Default, Parser, Clone)]

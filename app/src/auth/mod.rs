@@ -33,10 +33,10 @@ pub use auth_state::AuthStateProvider;
 use itertools::Itertools;
 pub use login_failure_notification::LoginFailureReason;
 pub use user_uid::UserUid;
-use warpui::modals::{AlertDialogWithCallbacks, ModalButton};
+use yarpui::modals::{AlertDialogWithCallbacks, ModalButton};
 
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::user_preferences::GetUserPreferences as _;
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::cloud_object::model::persistence::CloudModel;
 use crate::focus_running_window_and_show_native_modal;

@@ -1,7 +1,7 @@
 pub mod settings;
 mod stack;
 
-use warpui::{keymap::EditableBinding, AppContext};
+use yarpui::{keymap::EditableBinding, AppContext};
 
 use crate::{util::bindings::CustomAction, workspace::WorkspaceAction};
 

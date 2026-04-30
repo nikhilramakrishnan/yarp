@@ -5,8 +5,8 @@ use crate::{
 };
 use chrono::{DateTime, Local};
 use ordered_float::OrderedFloat;
-use warp_core::ui::builder::MIN_FONT_SIZE;
-use warpui::{
+use yarp_core::ui::builder::MIN_FONT_SIZE;
+use yarpui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, Icon,
         MainAxisAlignment, MainAxisSize, ParentElement, Shrinkable, Text,

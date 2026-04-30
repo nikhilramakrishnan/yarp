@@ -6,13 +6,13 @@ use onboarding::components::onboarding_callout::{
 use rust_embed::RustEmbed;
 use std::borrow::Cow;
 use ui_components::Component as _;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, TerminalColors, WarpTheme};
-use warpui::color::ColorU;
-use warpui::elements::{Rect, Stack};
-use warpui::fonts::{Cache, FamilyId, Weight};
-use warpui::platform;
-use warpui::{prelude::*, AddWindowOptions, AssetProvider, ModelContext};
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, TerminalColors, WarpTheme};
+use yarpui::color::ColorU;
+use yarpui::elements::{Rect, Stack};
+use yarpui::fonts::{Cache, FamilyId, Weight};
+use yarpui::platform;
+use yarpui::{prelude::*, AddWindowOptions, AssetProvider, ModelContext};
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "../../app/assets"]

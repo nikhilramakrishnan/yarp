@@ -1,5 +1,5 @@
 [package]
-name = "warp_features"
+name = "yarp_features"
 version = "0.0.0"
 edition = "2021"
 authors.workspace = true

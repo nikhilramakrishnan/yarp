@@ -5,8 +5,8 @@ use repo_metadata::repositories::DetectedRepositories;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarp_core::features::FeatureFlag;
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::mcp::{

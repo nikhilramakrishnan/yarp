@@ -13,8 +13,8 @@ use crate::{
     terminal::input::MenuPositioningProvider,
 };
 use std::path::PathBuf;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarpui::{
     elements::{
         ChildView, Clipped, Container, CrossAxisAlignment, Element, Flex, MainAxisAlignment,
         MainAxisSize, ParentElement, Wrap,

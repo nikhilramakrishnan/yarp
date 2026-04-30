@@ -6,7 +6,7 @@ use std::cmp::min;
 use std::ops::{Index, IndexMut, Range};
 
 use serde::{Deserialize, Serialize};
-pub use warp_terminal::model::grid::Dimensions;
+pub use yarp_terminal::model::grid::Dimensions;
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::ansi::{CharsetIndex, StandardCharset};

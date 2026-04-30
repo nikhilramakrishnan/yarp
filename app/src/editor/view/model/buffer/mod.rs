@@ -42,10 +42,10 @@ use sum_tree::{self, Cursor, FilterCursor, SeekBias, SumTree};
 use time::{Global, Lamport};
 use undo::{LocalUndoStack, UndoHistory};
 use vec1::{vec1, Vec1};
-use warpui::color::ColorU;
-use warpui::text::{point::Point, words::is_default_word_boundary, BufferIndex, TextBuffer};
-use warpui::text_layout::TextStyle;
-use warpui::{Entity, ModelContext};
+use yarpui::color::ColorU;
+use yarpui::text::{point::Point, words::is_default_word_boundary, BufferIndex, TextBuffer};
+use yarpui::text_layout::TextStyle;
+use yarpui::{Entity, ModelContext};
 
 #[cfg(test)]
 use rand::prelude::*;
@@ -365,8 +365,8 @@ impl TextStyleOperation {
     ///
     /// # Example
     /// ```
-    /// use warpui::color::ColorU;
-    /// use warpui::text_layout::TextStyle;
+    /// use yarpui::color::ColorU;
+    /// use yarpui::text_layout::TextStyle;
     /// use warp::editor::TextStyleOperation;
     /// TextStyleOperation::apply_text_style_operation(
     ///     TextStyle::default(),
@@ -1646,7 +1646,7 @@ impl Buffer {
     ///
     /// # Example
     /// ```ignore
-    /// use warpui::{color::ColorU, App, ModelHandle};
+    /// use yarpui::{color::ColorU, App, ModelHandle};
     /// use warp::Assets;
     /// use warp::editor::model::buffer::{Buffer, TextStyleOperation, EditOrigin};
     /// use string_offset::CharOffset;

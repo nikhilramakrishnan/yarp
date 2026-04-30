@@ -1,6 +1,6 @@
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{
     color::ColorU,
     elements::{
         resizable_state_handle, Container, CrossAxisAlignment, DragBarSide, Flex,
@@ -18,7 +18,7 @@ pub struct RootView {
 
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
-        let font_family = warpui::fonts::Cache::handle(ctx)
+        let font_family = yarpui::fonts::Cache::handle(ctx)
             .update(ctx, |cache, _| cache.load_system_font("Arial").unwrap());
 
         // Initialize resizable state handles
@@ -80,7 +80,7 @@ impl View for RootView {
                 ),
             )
             .with_dragbar_side(DragBarSide::Bottom)
-            .with_dragbar_color(warpui::elements::Fill::Solid(ColorU::new(0, 255, 255, 200)))
+            .with_dragbar_color(yarpui::elements::Fill::Solid(ColorU::new(0, 255, 255, 200)))
             .on_resize(move |ctx, _| {
                 ctx.notify();
             })
@@ -114,7 +114,7 @@ impl View for RootView {
                 ),
             )
             .with_dragbar_side(DragBarSide::Right)
-            .with_dragbar_color(warpui::elements::Fill::Solid(ColorU::new(255, 255, 0, 200)))
+            .with_dragbar_color(yarpui::elements::Fill::Solid(ColorU::new(255, 255, 0, 200)))
             .on_resize(move |ctx, _| {
                 ctx.notify();
             })

@@ -8,23 +8,23 @@ use crate::ui_components::icons::Icon as UiIcon;
 use markdown_parser::FormattedText;
 use markdown_parser::FormattedTextFragment;
 use markdown_parser::FormattedTextLine;
-use warp_core::channel::ChannelState;
-use warp_core::ui::theme::WarpTheme;
-use warpui::elements::HighlightedHyperlink;
-use warpui::elements::Hoverable;
-use warpui::elements::Icon;
-use warpui::elements::MainAxisAlignment;
-use warpui::elements::MainAxisSize;
-use warpui::elements::MouseStateHandle;
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::AppContext;
-use warpui::BlurContext;
-use warpui::FocusContext;
-use warpui::{
+use yarp_core::channel::ChannelState;
+use yarp_core::ui::theme::WarpTheme;
+use yarpui::elements::HighlightedHyperlink;
+use yarpui::elements::Hoverable;
+use yarpui::elements::Icon;
+use yarpui::elements::MainAxisAlignment;
+use yarpui::elements::MainAxisSize;
+use yarpui::elements::MouseStateHandle;
+use yarpui::keymap::FixedBinding;
+use yarpui::platform::Cursor;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::ui_components::components::UiComponentStyles;
+use yarpui::AppContext;
+use yarpui::BlurContext;
+use yarpui::FocusContext;
+use yarpui::{
     elements::{Border, Container, CrossAxisAlignment, Flex, ParentElement},
     Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
@@ -118,7 +118,7 @@ pub struct SshErrorBlock {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(

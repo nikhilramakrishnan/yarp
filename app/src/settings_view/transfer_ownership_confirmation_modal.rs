@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     elements::{Align, Container, CrossAxisAlignment, Flex, MouseStateHandle, ParentElement, Text},
     ui_components::{
         button::ButtonVariant,

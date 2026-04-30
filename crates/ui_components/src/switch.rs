@@ -1,7 +1,7 @@
 use std::sync::LazyLock;
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::{MouseStateHandle, Rect},
     prelude::{stack::*, *},
 };

@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use warp_js::{JsFunctionId, SerializedJsValue};
+use yarp_js::{JsFunctionId, SerializedJsValue};
 
 use crate::{
     completer::context::{JsExecutionContext, JsExecutionError},

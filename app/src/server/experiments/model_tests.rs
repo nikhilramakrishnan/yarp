@@ -1,6 +1,6 @@
 use super::{ServerExperiment, ServerExperiments};
 use crate::{GlobalResourceHandles, GlobalResourceHandlesProvider};
-use warpui::{App, Entity, SingletonEntity};
+use yarpui::{App, Entity, SingletonEntity};
 
 /// A model for testing purposes only.
 ///

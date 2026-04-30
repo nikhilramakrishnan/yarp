@@ -10,16 +10,16 @@ use std::sync::Arc;
 
 use parking_lot::FairMutex;
 use style::{DENIED_MODAL_WIDTH, MODAL_HEIGHT, MODAL_WIDTH};
-use warp_core::ui::appearance::Appearance;
-use warpui::keymap::FixedBinding;
-use warpui::EntityId;
+use yarp_core::ui::appearance::Appearance;
+use yarpui::keymap::FixedBinding;
+use yarpui::EntityId;
 
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::AppContext;
-use warpui::SingletonEntity;
-use warpui::ViewHandle;
-use warpui::{Element, Entity, TypedActionView, View, ViewContext};
+use yarpui::presenter::ChildView;
+use yarpui::ui_components::components::UiComponentStyles;
+use yarpui::AppContext;
+use yarpui::SingletonEntity;
+use yarpui::ViewHandle;
+use yarpui::{Element, Entity, TypedActionView, View, ViewContext};
 
 mod body;
 mod denied_body;
@@ -60,7 +60,7 @@ pub enum ShareSessionModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

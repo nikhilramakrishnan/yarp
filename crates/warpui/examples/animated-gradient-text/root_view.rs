@@ -1,11 +1,11 @@
-use warpui::color::ColorU;
-use warpui::elements::shimmering_text::{
+use yarpui::color::ColorU;
+use yarpui::elements::shimmering_text::{
     ShimmerConfig, ShimmeringTextElement, ShimmeringTextStateHandle,
 };
-use warpui::elements::{Align, ConstrainedBox, ParentElement, Rect, Stack};
-use warpui::fonts::FamilyId;
-use warpui::SingletonEntity as _;
-use warpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext};
+use yarpui::elements::{Align, ConstrainedBox, ParentElement, Rect, Stack};
+use yarpui::fonts::FamilyId;
+use yarpui::SingletonEntity as _;
+use yarpui::{AppContext, Element, Entity, TypedActionView, View, ViewContext};
 
 pub struct RootView {
     text: String,
@@ -21,7 +21,7 @@ pub struct RootView {
 
 impl RootView {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
-        let font_family = warpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
+        let font_family = yarpui::fonts::Cache::handle(ctx).update(ctx, |cache, _| {
             cache
                 .load_system_font("Times")
                 .or_else(|_| cache.load_system_font("Arial"))

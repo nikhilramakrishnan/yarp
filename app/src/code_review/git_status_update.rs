@@ -1,9 +1,9 @@
-use warpui::{Entity, SingletonEntity};
+use yarpui::{Entity, SingletonEntity};
 
 #[cfg(feature = "local_fs")]
 use std::path::{Path, PathBuf};
 #[cfg(feature = "local_fs")]
-use warpui::ModelContext;
+use yarpui::ModelContext;
 
 #[cfg(feature = "local_fs")]
 use {
@@ -16,7 +16,7 @@ use {
         Repository, RepositoryUpdate,
     },
     std::{collections::HashMap, time::Duration},
-    warpui::{r#async::SpawnedFutureHandle, ModelHandle, WeakModelHandle},
+    yarpui::{r#async::SpawnedFutureHandle, ModelHandle, WeakModelHandle},
 };
 
 #[cfg(feature = "local_fs")]

@@ -19,7 +19,7 @@ use crate::server::ids::{ObjectUid, SyncId};
 use crate::settings::AISettings;
 use crate::workflows::CloudWorkflow;
 use std::collections::HashMap;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 /// Datasource that searches against all Yarp Drive objects
 pub struct DataSource {
@@ -29,7 +29,7 @@ pub struct DataSource {
 impl DataSource {
     #[cfg(not(target_family = "wasm"))]
     pub fn new(ctx: &mut ModelContext<Self>) -> Self {
-        if warp_core::features::FeatureFlag::UseTantivySearch.is_enabled() {
+        if yarp_core::features::FeatureFlag::UseTantivySearch.is_enabled() {
             Self::new_full_text(ctx)
         } else {
             Self::new_fuzzy(ctx)
@@ -564,8 +564,8 @@ mod full_text_searcher {
     use crate::workflows::CloudWorkflow;
     use fuzzy_match::FuzzyMatchResult;
     use itertools::Itertools;
-    use warpui::r#async::executor::Background;
-    use warpui::{AppContext, SingletonEntity};
+    use yarpui::r#async::executor::Background;
+    use yarpui::{AppContext, SingletonEntity};
 
     /// Memory budget for the search index of warp drive.
     /// Warp could potentially have a lot of objects, so we increase it from the default of 50MB to 100MB

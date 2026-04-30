@@ -1,8 +1,8 @@
 use std::ops::BitOrAssign;
 
-use warp_terminal::model::char_or_str::CharOrStr;
-use warp_util::path::LineAndColumnArg;
-use warpui::text::words::is_default_word_boundary;
+use yarp_terminal::model::char_or_str::CharOrStr;
+use yarp_util::path::LineAndColumnArg;
+use yarpui::text::words::is_default_word_boundary;
 
 use crate::terminal::model::secrets::{ObfuscateSecrets, SecretLevel};
 use crate::terminal::model::{blockgrid::BlockGrid, secrets::IsObfuscated};

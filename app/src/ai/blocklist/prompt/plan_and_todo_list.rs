@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
-use warpui::{
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
+use yarpui::{
     elements::{
         Border, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Empty, Fill, Flex, Hoverable, MouseStateHandle, OffsetPositioning,
@@ -12,12 +12,12 @@ use warpui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity as _, TypedActionView,
     View, ViewContext, ViewHandle,
 };
-use warpui::{
+use yarpui::{
     elements::{ParentElement, ParentOffsetBounds},
     ui_components::components::UiComponent,
 };
 
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 use crate::{
     ai::{
@@ -34,7 +34,7 @@ use crate::{
     ui_components::blended_colors,
     AIAgentTodoList, BlocklistAIHistoryModel,
 };
-use warpui::fonts::{Properties, Weight};
+use yarpui::fonts::{Properties, Weight};
 
 const TODO_BUTTON_SAVE_POSITION_ID: &str = "plan_and_todo_list::todo_button";
 
@@ -436,8 +436,8 @@ impl PlanAndTodoListView {
                     OffsetPositioning::offset_from_save_position_element(
                         TODO_BUTTON_SAVE_POSITION_ID,
                         vec2f(0., 4.),
-                        warpui::elements::PositionedElementOffsetBounds::WindowByPosition,
-                        warpui::elements::PositionedElementAnchor::BottomLeft,
+                        yarpui::elements::PositionedElementOffsetBounds::WindowByPosition,
+                        yarpui::elements::PositionedElementAnchor::BottomLeft,
                         ChildAnchor::TopLeft,
                     )
                 }
@@ -445,8 +445,8 @@ impl PlanAndTodoListView {
                     OffsetPositioning::offset_from_save_position_element(
                         TODO_BUTTON_SAVE_POSITION_ID,
                         vec2f(0., -4.),
-                        warpui::elements::PositionedElementOffsetBounds::WindowByPosition,
-                        warpui::elements::PositionedElementAnchor::TopLeft,
+                        yarpui::elements::PositionedElementOffsetBounds::WindowByPosition,
+                        yarpui::elements::PositionedElementAnchor::TopLeft,
                         ChildAnchor::BottomLeft,
                     )
                 }
@@ -470,7 +470,7 @@ impl View for PlanAndTodoListView {
         "PlanAndTodoListView"
     }
 
-    fn render(&self, app: &AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &AppContext) -> Box<dyn yarpui::Element> {
         let appearance = Appearance::as_ref(app);
 
         // Calculate icon size

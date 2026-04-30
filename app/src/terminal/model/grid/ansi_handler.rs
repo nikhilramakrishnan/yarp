@@ -14,12 +14,12 @@ use bounded_vec_deque::BoundedVecDeque;
 use pathfinder_geometry::vector::Vector2F;
 use rand::Rng;
 use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warp_terminal::model::ansi::CharsetIndex;
-use warp_terminal::model::grid::cell;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use warpui::image_cache::{resize_dimensions, FitType};
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
+use yarp_terminal::model::ansi::CharsetIndex;
+use yarp_terminal::model::grid::cell;
+use yarp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use yarpui::image_cache::{resize_dimensions, FitType};
 
 use crate::server::telemetry::ImageProtocol;
 use crate::terminal::event::Event;
@@ -1133,7 +1133,7 @@ impl ansi::Handler for GridHandler {
         self.grid.cursor.charsets[index] = charset;
     }
 
-    fn set_color(&mut self, _: usize, _: warpui::color::ColorU) {
+    fn set_color(&mut self, _: usize, _: yarpui::color::ColorU) {
         log::error!("Handler method GridHandler::set_color should never be called. This should be handled by TerminalModel.");
     }
 

@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use warpui::{AppContext, SingletonEntity};
+use yarpui::{AppContext, SingletonEntity};
 
 use crate::cloud_object::{CloudObject, Space};
 use crate::notebooks::CloudNotebook;

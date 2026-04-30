@@ -13,7 +13,7 @@ use yarp::{
         terminal::wait_until_bootstrapped_single_pane_for_tab, view_getters::workspace_view,
     },
 };
-use warpui::{async_assert, integration::TestStep};
+use yarpui::{async_assert, integration::TestStep};
 
 use super::{new_builder, Builder};
 

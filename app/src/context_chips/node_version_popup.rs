@@ -1,11 +1,11 @@
 use pathfinder_color::ColorU;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{
     ChildView, ClippedScrollStateHandle, ClippedScrollable, Dismiss, ParentElement, ScrollbarWidth,
 };
-use warpui::fonts::FamilyId;
-use warpui::{
+use yarpui::fonts::FamilyId;
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DropShadow, Flex,
         MainAxisAlignment, MainAxisSize, Radius, Text,
@@ -61,7 +61,7 @@ struct Styles {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
@@ -372,7 +372,7 @@ impl View for NodeVersionPopupView {
             ScrollbarWidth::Auto,
             appearance.theme().nonactive_ui_detail().into(),
             appearance.theme().active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            yarpui::elements::Fill::None,
         )
         .with_overlayed_scrollbar()
         .finish();

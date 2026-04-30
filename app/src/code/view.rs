@@ -28,20 +28,20 @@ use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::vec2f;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use warp_core::channel::{Channel, ChannelState};
-use warp_core::features::FeatureFlag;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::icons::ICON_DIMENSIONS;
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warp_util::path::LineAndColumnArg;
-use warpui::elements::Rect;
-use warpui::fonts::Style;
-use warpui::text::point::Point;
-use warpui::text_layout::ClipConfig;
+use yarp_core::channel::{Channel, ChannelState};
+use yarp_core::features::FeatureFlag;
+use yarp_core::ui::appearance::Appearance;
+use yarp_core::ui::icons::ICON_DIMENSIONS;
+use yarp_editor::render::element::VerticalExpansionBehavior;
+use yarp_util::path::LineAndColumnArg;
+use yarpui::elements::Rect;
+use yarpui::fonts::Style;
+use yarpui::text::point::Point;
+use yarpui::text_layout::ClipConfig;
 
 #[cfg(feature = "local_fs")]
-use warpui::clipboard::ClipboardContent;
-use warpui::{
+use yarpui::clipboard::ClipboardContent;
+use yarpui::{
     elements::{
         AcceptedByDropTarget, Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, Draggable, DraggableState, DropTarget, Empty,
@@ -378,8 +378,8 @@ impl CodeView {
                             ctx,
                         )
                         .with_horizontal_scrollbar_appearance(
-                            warpui::elements::new_scrollable::ScrollableAppearance::new(
-                                warpui::elements::ScrollbarWidth::Auto,
+                            yarpui::elements::new_scrollable::ScrollableAppearance::new(
+                                yarpui::elements::ScrollbarWidth::Auto,
                                 true,
                             ),
                         )
@@ -419,8 +419,8 @@ impl CodeView {
                 ctx,
             )
             .with_horizontal_scrollbar_appearance(
-                warpui::elements::new_scrollable::ScrollableAppearance::new(
-                    warpui::elements::ScrollbarWidth::Auto,
+                yarpui::elements::new_scrollable::ScrollableAppearance::new(
+                    yarpui::elements::ScrollbarWidth::Auto,
                     true,
                 ),
             )

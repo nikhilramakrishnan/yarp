@@ -1,5 +1,5 @@
 use futures::{future::BoxFuture, FutureExt};
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 use crate::ai::{
     agent::{

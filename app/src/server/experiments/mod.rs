@@ -14,11 +14,11 @@
 use crate::features::FeatureFlag;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::CustomerType;
-use warpui::AppContext;
+use yarpui::AppContext;
 #[cfg(not(test))]
-use warpui::SingletonEntity as _;
+use yarpui::SingletonEntity as _;
 #[cfg(test)]
-use warpui::SingletonEntity;
+use yarpui::SingletonEntity;
 
 mod convert;
 mod model;

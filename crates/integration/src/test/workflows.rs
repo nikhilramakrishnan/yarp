@@ -21,7 +21,7 @@ use yarp::{
     },
     workflows::CategoriesView,
 };
-use warpui::{async_assert_eq, integration::TestStep, ViewHandle};
+use yarpui::{async_assert_eq, integration::TestStep, ViewHandle};
 
 use crate::Builder;
 

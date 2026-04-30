@@ -17,8 +17,8 @@
 //! Dismissing the block (on click of either option, or when the session is
 //! deregistered) is the parent's responsibility.
 use settings::Setting;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::{
+use yarp_core::ui::theme::color::internal_colors;
+use yarpui::{
     elements::{
         Border, ChildView, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
         MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius, Text,

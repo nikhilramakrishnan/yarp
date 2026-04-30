@@ -55,8 +55,8 @@ use crate::view_components::compactible_action_button::CompactibleActionButton;
 use crate::AIAgentTodoList;
 use crate::FileEdit;
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::Fill;
 
 use cli_controller::CLISubagentController;
 use cli_controller::CLISubagentEvent;
@@ -64,11 +64,11 @@ use find::FindState;
 use model::AIBlockOutputStatus;
 use parking_lot::FairMutex;
 use settings::Setting as _;
-use warp_core::features::FeatureFlag;
-use warpui::elements::get_rich_content_position_id;
-use warpui::elements::ClippedScrollStateHandle;
-use warpui::elements::TableStateHandle;
-use warpui::ui_components::radio_buttons::RadioButtonStateHandle;
+use yarp_core::features::FeatureFlag;
+use yarpui::elements::get_rich_content_position_id;
+use yarpui::elements::ClippedScrollStateHandle;
+use yarpui::elements::TableStateHandle;
+use yarpui::ui_components::radio_buttons::RadioButtonStateHandle;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::agent::AIAgentActionResultType;
@@ -121,26 +121,26 @@ use std::ops::Range;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
 use std::{cell::OnceCell, sync::Arc};
-use warp_util::path::ShellFamily;
-use warpui::elements::MainAxisAlignment;
-use warpui::elements::MainAxisSize;
-use warpui::elements::SecretRange;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::button::TextAndIcon;
-use warpui::ui_components::button::TextAndIconAlignment;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
+use yarp_util::path::ShellFamily;
+use yarpui::elements::MainAxisAlignment;
+use yarpui::elements::MainAxisSize;
+use yarpui::elements::SecretRange;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::button::TextAndIcon;
+use yarpui::ui_components::button::TextAndIconAlignment;
+use yarpui::ui_components::components::UiComponent;
+use yarpui::ui_components::components::UiComponentStyles;
 
 use crate::util::link_detection::*;
 use chrono::Duration;
 use itertools::Itertools;
 use secret_redaction::*;
 #[cfg(feature = "local_fs")]
-use warp_editor::content::edit::resolve_asset_source_relative_to_directory;
-use warp_editor::{
+use yarp_editor::content::edit::resolve_asset_source_relative_to_directory;
+use yarp_editor::{
     content::buffer::InitialBufferState, render::element::VerticalExpansionBehavior,
 };
-use warpui::{
+use yarpui::{
     assets::asset_cache::AssetCache,
     clipboard::ClipboardContent,
     elements::{MouseStateHandle, SelectionBound, SelectionHandle},
@@ -247,7 +247,7 @@ pub const RICH_CONTENT_SECRET_FIRST_CHAR_POSITION_ID: &str =
     "ai_block:rich_content_secret_first_char_position";
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
@@ -794,7 +794,7 @@ pub struct AIBlock {
     active_session: ModelHandle<ActiveSession>,
     ambient_agent_view_model: ModelHandle<AmbientAgentViewModel>,
     terminal_view_id: EntityId,
-    window_id: warpui::WindowId,
+    window_id: yarpui::WindowId,
 
     /// The current working directory at the time the AI block was created. Note that this
     /// is different from `directory_context`, which represents the directory-related contexts
@@ -5489,7 +5489,7 @@ pub enum AIBlockEvent {
     #[cfg(feature = "local_fs")]
     OpenDetectedFilePath {
         absolute_path: PathBuf,
-        line_and_column_num: Option<warp_util::path::LineAndColumnArg>,
+        line_and_column_num: Option<yarp_util::path::LineAndColumnArg>,
         target_override: Option<FileTarget>,
     },
     ShowLinkTooltip(RichContentLinkTooltipInfo),
@@ -5660,7 +5660,7 @@ pub enum AIBlockAction {
         is_positive: bool,
     },
     /// Clear the selections of all other views **except** for the source view that dispatched the event.
-    /// The `source_view_id` will be `None` if the event is dispatched by the [`warpui::elements::SelectableArea`]
+    /// The `source_view_id` will be `None` if the event is dispatched by the [`yarpui::elements::SelectableArea`]
     /// instead of a nested view (i.e. code block, requested command, etc.), which means all nested views
     /// should have their selections cleared.
     ClearOtherSelections {
@@ -6350,7 +6350,7 @@ impl TypedActionView for AIBlock {
                     });
                     images.push(ui_components::lightbox::LightboxImage {
                         source: ui_components::lightbox::LightboxImageSource::Resolved {
-                            asset_source: warpui::assets::asset_cache::AssetSource::Raw {
+                            asset_source: yarpui::assets::asset_cache::AssetSource::Raw {
                                 id: asset_id,
                             },
                         },

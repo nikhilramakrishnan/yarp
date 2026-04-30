@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudObjectEventEntrypoint, Owner},

@@ -6,11 +6,11 @@ pub use data_source::*;
 pub use view::*;
 
 use ai::skills::SkillReference;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warpui::clipboard::ClipboardContent;
-use warpui::{SingletonEntity, ViewContext};
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::appearance::Appearance;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::{SingletonEntity, ViewContext};
 
 use crate::ai::blocklist::agent_view::{
     AgentViewEntryOrigin, DismissalStrategy, EphemeralMessage, ENTER_OR_EXIT_CONFIRMATION_WINDOW,
@@ -451,7 +451,7 @@ impl Input {
                 match argument {
                     Some(args) if !args.is_empty() => {
                         use shellexpand::tilde;
-                        use warp_util::path::CleanPathResult;
+                        use yarp_util::path::CleanPathResult;
 
                         let Some(session_id) = self.active_block_session_id() else {
                             return false;

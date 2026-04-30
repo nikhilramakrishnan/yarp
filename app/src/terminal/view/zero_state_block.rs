@@ -1,6 +1,6 @@
 use settings::Setting;
-use warp_core::{report_if_error, ui::Icon};
-use warpui::{
+use yarp_core::{report_if_error, ui::Icon};
+use yarpui::{
     elements::{
         ChildAnchor, Container, CrossAxisAlignment, Flex, MainAxisSize, OffsetPositioning,
         ParentAnchor, ParentElement, ParentOffsetBounds, Shrinkable, Stack, Text,

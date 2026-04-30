@@ -1,6 +1,6 @@
 use ordered_float::OrderedFloat;
-use warp_core::ui::theme::Fill;
-use warpui::{Action, AppContext, Element};
+use yarp_core::ui::theme::Fill;
+use yarpui::{Action, AppContext, Element};
 
 use crate::appearance::Appearance;
 

@@ -1,5 +1,5 @@
-use warp_core::features::FeatureFlag;
-use warpui::{SingletonEntity, ViewContext};
+use yarp_core::features::FeatureFlag;
+use yarpui::{SingletonEntity, ViewContext};
 
 use crate::{
     ai::{

@@ -8,9 +8,9 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::{AdminEnablementSetting, UgcCollectionEnablementSetting};
 use asset_macro::bundled_or_fetched_asset;
 use markdown_parser::{FormattedTextFragment, FormattedTextLine};
-use warp_core::send_telemetry_from_ctx;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::{AppContext, SingletonEntity};
+use yarp_core::send_telemetry_from_ctx;
+use yarpui::assets::asset_cache::AssetSource;
+use yarpui::{AppContext, SingletonEntity};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum OzLaunchSlide {
@@ -188,7 +188,7 @@ impl Slide for OzLaunchSlide {
         ) && !matches!(ugc_setting, UgcCollectionEnablementSetting::Enable)
     }
 
-    fn on_close(&self, ctx: &mut warpui::ViewContext<super::LaunchModal<Self>>) {
+    fn on_close(&self, ctx: &mut yarpui::ViewContext<super::LaunchModal<Self>>) {
         ctx.dispatch_typed_action(&WorkspaceAction::StartAgentOnboardingTutorial(
             OnboardingTutorial::NoProject {
                 intention: OnboardingIntention::AgentDrivenDevelopment,
@@ -197,6 +197,6 @@ impl Slide for OzLaunchSlide {
     }
 }
 
-pub fn init(app: &mut warpui::AppContext) {
+pub fn init(app: &mut yarpui::AppContext) {
     super::init::<OzLaunchSlide>(app);
 }

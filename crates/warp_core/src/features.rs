@@ -1,6 +1,6 @@
-pub use warp_features::*;
+pub use yarp_features::*;
 
-use warpui::platform::menu::{CustomMenuItem, MenuItem, MenuItemPropertyChanges};
+use yarpui::platform::menu::{CustomMenuItem, MenuItem, MenuItemPropertyChanges};
 fn feature_flag_menu_item(flag: FeatureFlag) -> MenuItem {
     MenuItem::Custom(CustomMenuItem::new(
         &format!("{flag:?}"),

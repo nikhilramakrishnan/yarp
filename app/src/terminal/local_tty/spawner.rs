@@ -1,5 +1,5 @@
 use anyhow::Result;
-use warpui::{AppContext, Entity, SingletonEntity};
+use yarpui::{AppContext, Entity, SingletonEntity};
 
 use crate::{
     send_telemetry_from_app_ctx,

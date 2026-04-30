@@ -16,7 +16,7 @@ pub use soft_keyboard::{SoftKeyboardInput, SoftKeyboardManager, SoftKeyboardStat
 pub use crate::windowing::winit::app::App;
 
 // Re-export the functions from the core crate.
-pub use warpui_core::platform::wasm::*;
+pub use yarpui_core::platform::wasm::*;
 
 use super::KEYS_TO_IGNORE;
 

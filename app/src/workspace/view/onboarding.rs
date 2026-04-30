@@ -10,7 +10,7 @@ use onboarding::{ProjectOnboardingSettings, SelectedSettings};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
-use warpui::{SingletonEntity as _, ViewContext};
+use yarpui::{SingletonEntity as _, ViewContext};
 
 /// Configuration for starting the agent onboarding tutorial.
 #[derive(Debug, Clone)]

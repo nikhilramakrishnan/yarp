@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use string_offset::ByteOffset;
-use warpui::platform::OperatingSystem;
+use yarpui::platform::OperatingSystem;
 
 use crate::{
     completer::suggest::MatchRequirement,

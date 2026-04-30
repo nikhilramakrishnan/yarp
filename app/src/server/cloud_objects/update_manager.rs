@@ -79,13 +79,13 @@ use std::collections::{HashMap, HashSet};
 use std::future::Future;
 use std::sync::{mpsc::SyncSender, Arc};
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warp_graphql::mcp_gallery_template::MCPGalleryTemplate;
-use warp_graphql::object_permissions::AccessLevel;
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::r#async::{FutureId, Timer};
-use warpui::{duration_with_jitter, AppContext};
-use warpui::{Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
+use yarp_core::features::FeatureFlag;
+use yarp_graphql::mcp_gallery_template::MCPGalleryTemplate;
+use yarp_graphql::object_permissions::AccessLevel;
+use yarp_graphql::scalars::time::ServerTimestamp;
+use yarpui::r#async::{FutureId, Timer};
+use yarpui::{duration_with_jitter, AppContext};
+use yarpui::{Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
 
 use super::listener::ObjectUpdateMessage;
 
@@ -2703,8 +2703,8 @@ impl UpdateManager {
         ctx: &mut ModelContext<Self>,
     ) where
         P: 'static + FnMut(Arc<dyn ObjectClient>) -> S,
-        S: warpui::r#async::Spawnable + Future<Output = anyhow::Result<R>>,
-        <S as Future>::Output: warpui::r#async::SpawnableOutput,
+        S: yarpui::r#async::Spawnable + Future<Output = anyhow::Result<R>>,
+        <S as Future>::Output: yarpui::r#async::SpawnableOutput,
         F: 'static + FnMut(R, &mut AppContext) -> Option<ServerPermissions>,
     {
         let object_client = self.object_client.clone();
@@ -2765,8 +2765,8 @@ impl UpdateManager {
         mut on_success: impl FnMut(&mut Self, M, &mut ModelContext<Self>) + 'static,
     ) where
         P: 'static + FnMut(Arc<dyn ObjectClient>) -> S,
-        S: warpui::r#async::Spawnable + Future<Output = anyhow::Result<M>>,
-        <S as Future>::Output: warpui::r#async::SpawnableOutput,
+        S: yarpui::r#async::Spawnable + Future<Output = anyhow::Result<M>>,
+        <S as Future>::Output: yarpui::r#async::SpawnableOutput,
     {
         let cloud_model = CloudModel::handle(ctx);
         let uid = server_id.uid();

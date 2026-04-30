@@ -1,5 +1,5 @@
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{App, SingletonEntity};
+use yarp_core::user_preferences::GetUserPreferences as _;
+use yarpui::{App, SingletonEntity};
 
 use super::{has_completed_local_onboarding, RootView, HAS_COMPLETED_ONBOARDING_KEY};
 use crate::auth::auth_manager::AuthManager;

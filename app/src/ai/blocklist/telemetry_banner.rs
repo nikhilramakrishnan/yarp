@@ -5,7 +5,7 @@ use crate::{
     workspaces::{user_workspaces::UserWorkspaces, workspace::UgcCollectionEnablementSetting},
     Appearance, FeatureFlag, WorkspaceAction,
 };
-use warpui::{
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize,
         MouseStateHandle, ParentElement, Shrinkable, Text,

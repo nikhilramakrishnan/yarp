@@ -23,7 +23,7 @@ use yarp::{
     settings::SelectionSettings,
 };
 use warp_multi_agent_api as api;
-use warpui::{async_assert, integration::TestStep, text::SelectionType, Event, SingletonEntity};
+use yarpui::{async_assert, integration::TestStep, text::SelectionType, Event, SingletonEntity};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {

@@ -1,12 +1,12 @@
-//! This module contains the code path for the [`warp_cli::Command::DumpDebugInfo`] subcommand.
+//! This module contains the code path for the [`yarp_cli::Command::DumpDebugInfo`] subcommand.
 //!
 //! This is intended to never be used by a vast majority of users. This is only intended for users
 //! who are unable to run Warp and want to provide us, the dev team, with useful debugging
 //! information.
 #[cfg(not(windows))]
 use command::blocking::Command;
-use warp_core::channel::ChannelState;
-use warpui::windowing;
+use yarp_core::channel::ChannelState;
+use yarpui::windowing;
 
 pub(crate) fn run() -> anyhow::Result<()> {
     println!("Yarp version: {:?}", ChannelState::app_version());
@@ -31,7 +31,7 @@ pub(crate) fn run() -> anyhow::Result<()> {
     #[cfg(not(target_os = "macos"))]
     {
         if let Ok(event_loop) = winit::event_loop::EventLoop::new() {
-            warpui::rendering::wgpu::init_wgpu_instance(Box::new(
+            yarpui::rendering::wgpu::init_wgpu_instance(Box::new(
                 event_loop.owned_display_handle(),
             ));
 
@@ -62,7 +62,7 @@ pub(crate) fn run() -> anyhow::Result<()> {
             init_private_user_preferences, PreferLowPowerGPU, PreferredGraphicsBackend,
         };
         use settings::Setting as _;
-        use warpui::rendering::GPUPowerPreference;
+        use yarpui::rendering::GPUPowerPreference;
 
         let user_preferences = init_private_user_preferences();
 
@@ -83,7 +83,7 @@ pub(crate) fn run() -> anyhow::Result<()> {
         println!("##################################################");
         println!("# wgpu Adapters");
         println!("##################################################");
-        warpui::r#async::block_on(warpui::rendering::wgpu::print_wgpu_adapters(
+        yarpui::r#async::block_on(yarpui::rendering::wgpu::print_wgpu_adapters(
             gpu_power_preference,
             backend_preference,
             windowing_system,

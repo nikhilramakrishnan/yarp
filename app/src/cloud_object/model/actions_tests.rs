@@ -1,4 +1,4 @@
-use warpui::App;
+use yarpui::App;
 
 use super::{ObjectAction, ObjectActionSubtype, ObjectActionType, ObjectActions};
 

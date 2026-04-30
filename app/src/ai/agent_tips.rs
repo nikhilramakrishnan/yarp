@@ -18,9 +18,9 @@ use markdown_parser::FormattedTextFragment;
 use std::path::Path;
 use std::sync::LazyLock;
 use std::time::Duration;
-use warpui::keymap::Keystroke;
-use warpui::r#async::SpawnedFutureHandle;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarpui::keymap::Keystroke;
+use yarpui::r#async::SpawnedFutureHandle;
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 /// Trait for tip implementations that can be displayed to users.
 /// Tips provide helpful information with optional links and keybindings.
@@ -526,7 +526,7 @@ impl AITipModel<AgentTip> {
         // Start 60-second cooldown
         let handle = ctx.spawn(
             async {
-                warpui::r#async::Timer::after(Duration::from_secs(60)).await;
+                yarpui::r#async::Timer::after(Duration::from_secs(60)).await;
             },
             |me, _, _| {
                 me.cooldown_handle = None;
@@ -558,7 +558,7 @@ impl AITipModel<crate::terminal::view::ambient_agent::CloudModeTip> {
         // Start 60-second cooldown
         let handle = ctx.spawn(
             async {
-                warpui::r#async::Timer::after(Duration::from_secs(60)).await;
+                yarpui::r#async::Timer::after(Duration::from_secs(60)).await;
             },
             |me, _, _| {
                 me.cooldown_handle = None;
@@ -579,7 +579,7 @@ impl AITipModel<crate::terminal::view::ambient_agent::CloudModeTip> {
         // Start a new 60-second cooldown
         let handle = ctx.spawn(
             async {
-                warpui::r#async::Timer::after(Duration::from_secs(60)).await;
+                yarpui::r#async::Timer::after(Duration::from_secs(60)).await;
             },
             |me, _, _| {
                 me.cooldown_handle = None;

@@ -4,24 +4,24 @@ use std::time::Duration;
 use chrono::Local;
 
 use pathfinder_geometry::vector::{vec2f, Vector2F};
-use warp_editor::editor::NavigationKey;
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::{
+use yarp_editor::editor::NavigationKey;
+use yarpui::clipboard::ClipboardContent;
+use yarpui::elements::{
     resizable_state_handle, Align, Border, ChildAnchor, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, DispatchEventResult, DragBarSide, Empty, EventHandler, Fill, Flex,
     HyperlinkUrl, Icon, MainAxisAlignment, MainAxisSize, OffsetPositioning, ParentAnchor,
     PositionedElementAnchor, PositionedElementOffsetBounds, Radius, SavePosition, Shrinkable,
     Stack, Text,
 };
-use warpui::fonts::Properties;
-use warpui::keymap::{EditableBinding, FixedBinding};
-use warpui::platform::Cursor;
-use warpui::presenter::ChildView;
-use warpui::r#async::Timer;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{elements::Element, AppContext, Entity, TypedActionView, View, ViewContext};
-use warpui::{FocusContext, ModelHandle, SingletonEntity, ViewHandle};
+use yarpui::fonts::Properties;
+use yarpui::keymap::{EditableBinding, FixedBinding};
+use yarpui::platform::Cursor;
+use yarpui::presenter::ChildView;
+use yarpui::r#async::Timer;
+use yarpui::ui_components::button::ButtonVariant;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::{elements::Element, AppContext, Entity, TypedActionView, View, ViewContext};
+use yarpui::{FocusContext, ModelHandle, SingletonEntity, ViewHandle};
 
 use crate::appearance::Appearance;
 use crate::editor::{
@@ -41,10 +41,10 @@ use crate::ui_components::buttons::icon_button;
 use crate::workspace::{ActiveSession, TAB_BAR_HEIGHT};
 
 use crate::util::bindings::{cmd_or_ctrl_shift, CustomAction};
-use warpui::elements::MouseStateHandle;
-use warpui::elements::ParentElement;
-use warpui::elements::Resizable;
-use warpui::elements::ResizableStateHandle;
+use yarpui::elements::MouseStateHandle;
+use yarpui::elements::ParentElement;
+use yarpui::elements::Resizable;
+use yarpui::elements::ResizableStateHandle;
 
 use super::execution_context::WarpAiExecutionContext;
 use super::requests::{Event as RequestsEvent, RequestStatus, Requests};
@@ -146,7 +146,7 @@ pub enum AIAssistantAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::custom(
         CustomAction::CloseCurrentSession,
@@ -725,7 +725,7 @@ impl AIAssistantPanelView {
                         .with_style(UiComponentStyles {
                             font_family_id: Some(appearance.ui_font_family()),
                             font_size: Some(TITLE_FONT_SIZE),
-                            font_weight: Some(warpui::fonts::Weight::Semibold),
+                            font_weight: Some(yarpui::fonts::Weight::Semibold),
                             font_color: Some(appearance.theme().active_ui_text_color().into()),
                             ..Default::default()
                         })
@@ -851,7 +851,7 @@ impl AIAssistantPanelView {
                         BODY_FONT_SIZE,
                     )
                     .with_style(Properties {
-                        weight: warpui::fonts::Weight::Bold,
+                        weight: yarpui::fonts::Weight::Bold,
                         ..Default::default()
                     })
                     .with_color(appearance.theme().ui_error_color())
@@ -1143,7 +1143,7 @@ impl View for AIAssistantPanelView {
             .finish(),
             OffsetPositioning::offset_from_parent(
                 vec2f(0., HEADER_HEIGHT),
-                warpui::elements::ParentOffsetBounds::Unbounded,
+                yarpui::elements::ParentOffsetBounds::Unbounded,
                 ParentAnchor::TopLeft,
                 ChildAnchor::BottomLeft,
             ),

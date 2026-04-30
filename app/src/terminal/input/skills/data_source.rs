@@ -3,16 +3,16 @@ use std::path::PathBuf;
 use ai::skills::{SkillProvider, SkillReference, SkillScope};
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use ordered_float::OrderedFloat;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{
+use yarp_core::ui::icons::Icon;
+use yarp_core::ui::theme::Fill;
+use yarpui::elements::{
     ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, ParentElement, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::keymap::Keystroke;
-use warpui::scene::{CornerRadius, Radius};
-use warpui::text_layout::ClipConfig;
-use warpui::{
+use yarpui::fonts::{Properties, Weight};
+use yarpui::keymap::Keystroke;
+use yarpui::scene::{CornerRadius, Radius};
+use yarpui::text_layout::ClipConfig;
+use yarpui::{
     AppContext, Element, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity as _,
 };
 

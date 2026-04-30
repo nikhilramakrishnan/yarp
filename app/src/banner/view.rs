@@ -3,8 +3,8 @@ use std::{marker::PhantomData, rc::Rc};
 use markdown_parser::{
     FormattedText, FormattedTextFragment, FormattedTextInline, FormattedTextLine,
 };
-use warpui::elements::HyperlinkLens;
-use warpui::{
+use yarpui::elements::HyperlinkLens;
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, FormattedTextElement,
         HighlightedHyperlink, HyperlinkUrl, MainAxisAlignment, MainAxisSize, MouseStateHandle,

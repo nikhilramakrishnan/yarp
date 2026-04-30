@@ -9,7 +9,7 @@ mod token;
 use crate::parsers::LiteCommand;
 use lexer::Lexer;
 use parser::Parser;
-use warp_util::path::EscapeChar;
+use yarp_util::path::EscapeChar;
 
 use string_offset::ByteOffset;
 

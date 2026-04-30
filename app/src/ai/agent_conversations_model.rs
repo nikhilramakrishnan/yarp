@@ -29,15 +29,15 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use session_sharing_protocol::common::SessionId;
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
-use warp_cli::agent::Harness;
-use warp_core::execution_mode::AppExecutionMode;
-use warp_core::features::FeatureFlag;
-use warp_core::report_error;
-use warp_core::ui::theme::{color::internal_colors, WarpTheme};
-use warpui::color::ColorU;
-use warpui::r#async::Timer;
-use warpui::windowing::{StateEvent, WindowManager};
-use warpui::{
+use yarp_cli::agent::Harness;
+use yarp_core::execution_mode::AppExecutionMode;
+use yarp_core::features::FeatureFlag;
+use yarp_core::report_error;
+use yarp_core::ui::theme::{color::internal_colors, WarpTheme};
+use yarpui::color::ColorU;
+use yarpui::r#async::Timer;
+use yarpui::windowing::{StateEvent, WindowManager};
+use yarpui::{
     duration_with_jitter, AppContext, Entity, EntityId, ModelContext, RequestState,
     SingletonEntity, WindowId,
 };

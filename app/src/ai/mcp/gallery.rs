@@ -7,7 +7,7 @@ use crate::server::cloud_objects::update_manager::{UpdateManager, UpdateManagerE
 use crate::server::datetime_ext::DateTimeExt;
 use chrono::DateTime;
 use uuid::Uuid;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use yarpui::{Entity, ModelContext, SingletonEntity};
 
 #[derive(Clone, Debug)]
 pub struct GalleryMCPServer {
@@ -130,7 +130,7 @@ impl MCPGalleryManager {
     /// Update gallery items from the server response
     pub fn update_gallery_items(
         &mut self,
-        templates: Vec<warp_graphql::mcp_gallery_template::MCPGalleryTemplate>,
+        templates: Vec<yarp_graphql::mcp_gallery_template::MCPGalleryTemplate>,
         ctx: &mut ModelContext<Self>,
     ) {
         let mut gallery_items = HashMap::new();

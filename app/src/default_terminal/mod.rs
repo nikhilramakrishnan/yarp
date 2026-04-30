@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     windowing::{StateEvent, WindowManager},
     Entity, ModelContext, SingletonEntity,
 };

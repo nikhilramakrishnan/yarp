@@ -12,7 +12,7 @@ use vim::vim::{
     InsertPosition, LineMotion, ModeTransition, MotionType, TextObjectType, VimHandler, VimMode,
     VimMotion, VimOperand, VimOperator, VimTextObject, WordMotion,
 };
-use warp_editor::{
+use yarp_editor::{
     content::buffer::{
         AutoScrollBehavior, BufferEditAction, EditOrigin, SelectionOffsets,
         ToBufferCharOffset as _, VimInsertPoint,
@@ -20,7 +20,7 @@ use warp_editor::{
     model::{CoreEditorModel, PlainTextEditorModel},
     selection::{TextDirection, TextUnit},
 };
-use warpui::{text::point::Point, SingletonEntity, ViewContext};
+use yarpui::{text::point::Point, SingletonEntity, ViewContext};
 
 impl VimHandler for CodeEditorView {
     fn insert_char(&mut self, c: char, ctx: &mut ViewContext<Self>) {
@@ -154,7 +154,7 @@ impl VimHandler for CodeEditorView {
     ) {
         // Selection logic is almost the same for all operators, so capture that in a closure first.
         let selection_change =
-            |model: &mut CodeEditorModel, ctx: &mut warpui::ModelContext<CodeEditorModel>| {
+            |model: &mut CodeEditorModel, ctx: &mut yarpui::ModelContext<CodeEditorModel>| {
                 match operand {
                     VimOperand::Motion {
                         motion,

@@ -9,11 +9,11 @@ use anyhow::Result;
 use chrono::Local;
 use log::LevelFilter;
 use std::sync::OnceLock;
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 use zip::{CompressionMethod, ZipWriter, write::SimpleFileOptions};
 
 use crate::{LogConfig, LogDestination};
-use warp_core::channel::ChannelState;
+use yarp_core::channel::ChannelState;
 
 const MAX_FILES_IN_GUI_ROTATION: usize = 5;
 const MAX_FILES_IN_CLI_ROTATION: usize = 10;
@@ -318,7 +318,7 @@ fn temp_log_file_path(log_directory: impl AsRef<Path>) -> PathBuf {
 
 #[cfg(feature = "crash_reporting")]
 fn sentry_log_filter(md: &log::Metadata) -> sentry_log::LogFilter {
-    if warp_core::errors::should_ignore_log_for_sentry(md) {
+    if yarp_core::errors::should_ignore_log_for_sentry(md) {
         return sentry_log::LogFilter::Ignore;
     }
 
@@ -332,7 +332,7 @@ fn sentry_log_filter(md: &log::Metadata) -> sentry_log::LogFilter {
         }
 
         // Filter out the "redraw_frame" logging from breadcrumbs.
-        "warpui::core::redraw_frame" => sentry_log::LogFilter::Ignore,
+        "yarpui::core::redraw_frame" => sentry_log::LogFilter::Ignore,
 
         // Filter out logs from the crash-reporting implementation, in case it logs
         // anything in the process of forwarding logs to Sentry.
@@ -481,9 +481,9 @@ fn init_log_directory() -> Result<std::path::PathBuf> {
                 })?
                 .join("Library/Logs/"))
         } else if #[cfg(target_os = "linux")] {
-            Ok(warp_core::paths::state_dir())
+            Ok(yarp_core::paths::state_dir())
         } else if #[cfg(windows)] {
-            Ok(warp_core::paths::state_dir().join(warp_core::paths::WARP_LOGS_DIR))
+            Ok(yarp_core::paths::state_dir().join(yarp_core::paths::WARP_LOGS_DIR))
         } else {
             Err(anyhow::anyhow!("Have not configured file-based logging for the current platform!"))
         }

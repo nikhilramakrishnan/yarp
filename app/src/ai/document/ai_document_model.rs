@@ -11,7 +11,7 @@ use anyhow;
 use chrono::{DateTime, Local, Utc};
 use itertools::Itertools;
 use uuid::Uuid;
-use warpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity, WindowId};
+use yarpui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity, WindowId};
 
 use crate::ai::ai_document_view::DEFAULT_PLANNING_DOCUMENT_TITLE;
 use crate::auth::auth_state::AuthStateProvider;
@@ -49,8 +49,8 @@ use crate::{
     workspaces::user_workspaces::UserWorkspaces,
 };
 use ai::diff_validation::DiffDelta;
-use warp_editor::{model::RichTextEditorModel, render::model::RichTextStyles};
-use warpui::color::ColorU;
+use yarp_editor::{model::RichTextEditorModel, render::model::RichTextStyles};
+use yarpui::color::ColorU;
 
 /// The frequency at which we check for modifications and save the AI document to the server.
 /// Uses the same 2-second period as notebooks for consistency.
@@ -697,7 +697,7 @@ impl AIDocumentModel {
     pub fn get_document_content(
         &self,
         id: &AIDocumentId,
-        ctx: &warpui::AppContext,
+        ctx: &yarpui::AppContext,
     ) -> Option<String> {
         let doc = self.documents.get(id)?;
         Some(doc.editor.as_ref(ctx).markdown_unescaped(ctx))
@@ -1212,7 +1212,7 @@ impl AIDocumentModel {
 }
 
 impl AIDocumentEarlierVersion {
-    pub fn get_content(&self, ctx: &warpui::AppContext) -> String {
+    pub fn get_content(&self, ctx: &yarpui::AppContext) -> String {
         self.editor.as_ref(ctx).markdown_unescaped(ctx)
     }
 }

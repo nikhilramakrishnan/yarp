@@ -1,8 +1,8 @@
-use warp_core::features::FeatureFlag;
-use warpui::{elements::ScrollOffset, units::Pixels, ViewContext, ViewHandle};
+use yarp_core::features::FeatureFlag;
+use yarpui::{elements::ScrollOffset, units::Pixels, ViewContext, ViewHandle};
 
 #[cfg(not(target_family = "wasm"))]
-use warpui::{AppContext, WeakViewHandle};
+use yarpui::{AppContext, WeakViewHandle};
 
 #[cfg(not(target_family = "wasm"))]
 use super::FILE_HEADER_HEIGHT;

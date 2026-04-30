@@ -1,5 +1,5 @@
 use futures::{future::BoxFuture, FutureExt};
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     ai::{
@@ -20,13 +20,13 @@ use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessA
 
 pub struct CreateDocumentsExecutor {
     active_session: ModelHandle<ActiveSession>,
-    terminal_view_id: warpui::EntityId,
+    terminal_view_id: yarpui::EntityId,
 }
 
 impl CreateDocumentsExecutor {
     pub fn new(
         active_session: ModelHandle<ActiveSession>,
-        terminal_view_id: warpui::EntityId,
+        terminal_view_id: yarpui::EntityId,
     ) -> Self {
         Self {
             active_session,

@@ -13,26 +13,26 @@ use crate::settings::InputSettings;
 use crate::terminal::view::passive_suggestions::PromptSuggestionResolution;
 use crate::util::bindings::keybinding_name_to_keystroke;
 use pathfinder_geometry::vector::vec2f;
-use warpui::elements::{
+use yarpui::elements::{
     ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty,
     Fill, Flex, HighlightedHyperlink, Hoverable, Icon, MainAxisAlignment, MainAxisSize,
     OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, Shrinkable, Stack,
     Text,
 };
-use warpui::keymap::Keystroke;
-use warpui::platform::Cursor;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{elements::MouseStateHandle, Element};
-use warpui::{
+use yarpui::keymap::Keystroke;
+use yarpui::platform::Cursor;
+use yarpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use yarpui::{elements::MouseStateHandle, Element};
+use yarpui::{
     AppContext, Entity, EventContext, ModelHandle, TypedActionView, ViewContext, ViewHandle,
 };
-use warpui::{SingletonEntity, View};
+use yarpui::{SingletonEntity, View};
 
 use crate::terminal::view::{ContextMenuAction, InputType, PromptSuggestion};
 use crate::ui_components::blended_colors;
 use crate::{appearance::Appearance, terminal::view::TerminalAction};
-use warp_core::channel::ChannelState;
-use warp_core::ui::theme::color::internal_colors::{neutral_2, neutral_3};
+use yarp_core::channel::ChannelState;
+use yarp_core::ui::theme::color::internal_colors::{neutral_2, neutral_3};
 
 use crate::ui_components::icons::Icon as WarpUIIcon;
 
@@ -412,7 +412,7 @@ impl View for PromptSuggestionsView {
                     0,
                     keybinding_name_to_keystroke(ACCEPT_PROMPT_SUGGESTION_KEYBINDING, app),
                     banner_state.accept_button_mouse_state.clone(),
-                    Rc::new(move |ctx: &mut warpui::EventContext<'_>| {
+                    Rc::new(move |ctx: &mut yarpui::EventContext<'_>| {
                         ctx.dispatch_typed_action(TerminalAction::ResolvePromptSuggestion(
                             PromptSuggestionResolution::Accept {
                                 interaction_source: InteractionSource::Button,

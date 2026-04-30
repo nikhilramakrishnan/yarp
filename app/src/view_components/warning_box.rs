@@ -1,13 +1,13 @@
 //! A reusable warning callout component with optional action button.
 
-use warp_core::ui::color::blend::Blend;
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarp_core::ui::color::blend::Blend;
+use yarpui::color::ColorU;
+use yarpui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Expanded, Flex,
     Hoverable, MainAxisSize, MouseStateHandle, ParentElement, Radius, Text,
 };
-use warpui::platform::Cursor;
-use warpui::EventContext;
+use yarpui::platform::Cursor;
+use yarpui::EventContext;
 
 use crate::appearance::Appearance;
 use crate::themes::theme::Fill as ThemeFill;

@@ -10,8 +10,8 @@ use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
 use settings::EditorChoice;
-use warp_util::path::LineAndColumnArg;
-use warpui::{AppContext, SingletonEntity};
+use yarp_util::path::LineAndColumnArg;
+use yarpui::{AppContext, SingletonEntity};
 
 pub use self::settings::{EditorLayout, EditorSettings};
 

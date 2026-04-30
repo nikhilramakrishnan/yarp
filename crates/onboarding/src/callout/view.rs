@@ -1,6 +1,6 @@
 use ui_components::Component;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use yarp_core::ui::appearance::Appearance;
+use yarpui::{
     elements::Empty,
     keymap::{macros::*, FixedBinding, Keystroke},
     AppContext, Element, Entity, EventContext, ModelHandle, SingletonEntity, TypedActionView, View,

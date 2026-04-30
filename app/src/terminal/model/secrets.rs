@@ -10,8 +10,8 @@ use rangemap::{RangeInclusiveMap, StepLite};
 use std::collections::HashMap;
 use std::ops::{Not, RangeInclusive};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use warpui::elements::SecretRange;
-use warpui::EntityId;
+use yarpui::elements::SecretRange;
+use yarpui::EntityId;
 
 use super::grid::grid_handler::GridHandler;
 use super::grid::{Dimensions as _, RespectDisplayedOutput};

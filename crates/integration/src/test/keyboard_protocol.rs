@@ -9,10 +9,10 @@ use yarp::integration_testing::{
     },
     view_getters::single_terminal_view_for_tab,
 };
-use warpui::event::{KeyEventDetails, KeyState};
-use warpui::keymap::Keystroke;
-use warpui::platform::keyboard::KeyCode;
-use warpui::{async_assert, integration::TestStep, Event};
+use yarpui::event::{KeyEventDetails, KeyState};
+use yarpui::keymap::Keystroke;
+use yarpui::platform::keyboard::KeyCode;
+use yarpui::{async_assert, integration::TestStep, Event};
 
 use crate::Builder;
 
@@ -50,7 +50,7 @@ fn wait_for_protocol_enabled() -> TestStep {
 fn assert_output_contains(
     expected: &'static str,
     description: &'static str,
-) -> impl FnMut(&mut warpui::App, warpui::WindowId) -> warpui::integration::AssertionOutcome {
+) -> impl FnMut(&mut yarpui::App, yarpui::WindowId) -> yarpui::integration::AssertionOutcome {
     move |app, window_id| {
         let terminal_view = single_terminal_view_for_tab(app, window_id, 0);
         terminal_view.read(app, |view, _ctx| {

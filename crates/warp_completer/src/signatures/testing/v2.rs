@@ -3,7 +3,7 @@
 //! Each signature in this file should be semantically equivalent with a command signature returned
 //! by a function of the same name in `super::legacy`; this is to ensure that the same test
 //! coverage can run with the "v2" Cargo feature both enabled and disabled.
-use warp_js::TypedJsFunctionRef;
+use yarp_js::TypedJsFunctionRef;
 
 use crate::signatures::{
     Argument, ArgumentValue, Arity, Command, CommandSignature, GeneratorFn, GeneratorResults,

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use warpui::{
+use yarpui::{
     elements::{MouseStateHandle, Text},
     Element,
 };

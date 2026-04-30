@@ -17,7 +17,7 @@ use lazy_static::lazy_static;
 use pathfinder_geometry::vector::Vector2F;
 use thiserror::Error;
 use version_compare::Version;
-use warpui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
+use yarpui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
 use wgpu::{
     Adapter, Backend, CompositeAlphaMode, CurrentSurfaceTexture, Device, DeviceType, PresentMode,
     Queue, Surface, SurfaceConfiguration,
@@ -406,7 +406,7 @@ fn is_vulkan_nvidia_adapter(adapter_info: &wgpu::AdapterInfo) -> bool {
     adapter_info.backend == wgpu::Backend::Vulkan && is_nvidia_adapter(adapter_info)
 }
 
-/// Returns whether or not the provided adapter is an unsupported Nvidia driver version for warpui
+/// Returns whether or not the provided adapter is an unsupported Nvidia driver version for yarpui
 /// to render properly.
 fn is_older_nvidia_adapter(adapter_info: &wgpu::AdapterInfo) -> bool {
     if !is_vulkan_nvidia_adapter(adapter_info) {
@@ -466,7 +466,7 @@ fn is_gl_to_metal_adapter_on_windows_in_parallels(adapter_info: &wgpu::AdapterIn
 }
 
 /// Returns whether or not the provided adapter is an unsupported Intel UHD Mesa driver version for
-/// warpui to render properly. Currently, we limit this to "Intel UHD Graphics 620", but we do have
+/// yarpui to render properly. Currently, we limit this to "Intel UHD Graphics 620", but we do have
 /// some suspicion that more Intel UHD devices are affected, e.g. PLAT-599 has a "Intel(R) UHD
 /// Graphics (TGL GT1)" user seeing the exact same issue.
 fn is_older_vulkan_intel_uhd_adapter(adapter_info: &wgpu::AdapterInfo) -> bool {
@@ -536,7 +536,7 @@ pub fn adapter_has_rendering_offset_bug(adapter_info: &wgpu::AdapterInfo) -> boo
 }
 
 /// Checks whether the provided adapter info describes a lavapipe
-/// (Vulkan llvmpipe) adapter that may not work properly with warpui.
+/// (Vulkan llvmpipe) adapter that may not work properly with yarpui.
 fn is_older_lavapipe_adapter(adapter_info: &wgpu::AdapterInfo) -> bool {
     // Only consider Vulkan adapters using the llvmpipe driver.
     if adapter_info.backend != wgpu::Backend::Vulkan || adapter_info.driver != "llvmpipe" {

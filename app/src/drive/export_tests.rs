@@ -8,8 +8,8 @@ use std::{
 use futures::channel::oneshot;
 use parking_lot::Mutex;
 use tempfile::TempDir;
-use warp_util::path::ShellFamily;
-use warpui::{AddSingletonModel, App, SingletonEntity, WindowId};
+use yarp_util::path::ShellFamily;
+use yarpui::{AddSingletonModel, App, SingletonEntity, WindowId};
 
 use crate::{
     cloud_object::{

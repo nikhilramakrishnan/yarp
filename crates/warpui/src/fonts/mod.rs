@@ -6,7 +6,7 @@ pub mod font_kit;
 #[path = "text_layout_test.rs"]
 mod text_layout_tests;
 
-pub use warpui_core::fonts::*;
+pub use yarpui_core::fonts::*;
 
 #[cfg(test)]
 pub(crate) use text_layout_tests::{collect_glyph_indices, init_fonts};

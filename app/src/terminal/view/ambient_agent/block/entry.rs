@@ -1,9 +1,9 @@
 use settings::Setting;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::{appearance::Appearance, Icon};
-use warpui::prelude::Empty;
-use warpui::AppContext;
-use warpui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::{appearance::Appearance, Icon};
+use yarpui::prelude::Empty;
+use yarpui::AppContext;
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable, MainAxisSize,
         MouseStateHandle, ParentElement, Shrinkable, Text,
@@ -132,7 +132,7 @@ impl AmbientAgentEntryBlock {
         &self,
         appearance: &Appearance,
         app: &AppContext,
-    ) -> Box<dyn warpui::Element> {
+    ) -> Box<dyn yarpui::Element> {
         let theme = appearance.theme();
 
         let view_model = self.ambient_agent_view_model(app);
@@ -191,7 +191,7 @@ impl View for AmbientAgentEntryBlock {
                 )
                 .with_color(theme.main_text_color(theme.background()).into_solid())
                 .with_style(Properties {
-                    weight: warpui::fonts::Weight::Bold,
+                    weight: yarpui::fonts::Weight::Bold,
                     ..Default::default()
                 })
                 .soft_wrap(false)

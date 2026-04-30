@@ -11,11 +11,11 @@ use crate::{
     features::FeatureFlag,
     terminal::{cli_agent_sessions::CLIAgentSessionsModel, view::TerminalAction},
 };
-use warp_core::ui::{
+use yarp_core::ui::{
     color::{contrast::MinimumAllowedContrast, ContrastingColor},
     theme::color::internal_colors,
 };
-use warpui::{
+use yarpui::{
     elements::{
         Border, Clipped, ConstrainedBox, Container, DispatchEventResult, DropTarget, Element,
         EventHandler, Flex, Hoverable, ParentElement, SavePosition, Stack,

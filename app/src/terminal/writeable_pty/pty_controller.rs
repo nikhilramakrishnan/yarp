@@ -3,8 +3,8 @@ use std::{borrow::Cow, collections::VecDeque, sync::Arc};
 use async_channel::{Receiver, Sender};
 use parking_lot::FairMutex;
 use thiserror::Error;
-use warpui::r#async::block_on;
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use yarpui::r#async::block_on;
+use yarpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::agent::AIAgentPtyWriteMode;
 use crate::terminal::input::CommandExecutionSource;
@@ -482,7 +482,7 @@ impl<T: EventLoopSender> PtyController<T> {
         shell_type: ShellType,
         ctx: &mut ModelContext<Self>,
     ) {
-        use warp_util::path::ShellFamily;
+        use yarp_util::path::ShellFamily;
 
         // TODO(CORE-2099): Figure out a more robust solution here. Fish users
         // can redefine these functions via fish functions. Ideally this won't

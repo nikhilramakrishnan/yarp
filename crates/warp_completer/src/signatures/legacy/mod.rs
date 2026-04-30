@@ -1,6 +1,6 @@
 use std::sync::{Arc, OnceLock};
 
-use warp_core::channel::Channel;
+use yarp_core::channel::Channel;
 
 pub mod registry;
 
@@ -50,7 +50,7 @@ impl CommandRegistry {
 
     /// Register signatures for Warp CLI commands.
     ///
-    /// Ideally this would be done outside of the `warp_completer` crate, but it's not currently
+    /// Ideally this would be done outside of the `yarp_completer` crate, but it's not currently
     /// possible to configure the shared [`Self::global_instance`].
     fn register_warp_signatures(registry: &Self) {
         // We use the current instance's signature for each channel. This is not entirely accurate - for example:
@@ -61,7 +61,7 @@ impl CommandRegistry {
 
         for channel in channels {
             let bin_name = channel.cli_command_name();
-            let mut clap_cmd = warp_cli::Args::clap_command();
+            let mut clap_cmd = yarp_cli::Args::clap_command();
             let signature =
                 crate::signatures::clap::signature_from_clap_command(&mut clap_cmd, bin_name);
             registry.register_signature(signature);

@@ -30,9 +30,9 @@ use num_traits::FromPrimitive;
 use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 use persistence::model::AMBIENT_AGENT_PANE_KIND;
 use uuid::Uuid;
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::platform::FullscreenState;
-use warpui::{AppContext, SingletonEntity};
+use yarp_graphql::scalars::time::ServerTimestamp;
+use yarpui::platform::FullscreenState;
+use yarpui::{AppContext, SingletonEntity};
 
 use super::agent::{delete_agent_conversations, upsert_agent_conversation};
 use super::block_list::{
@@ -139,7 +139,7 @@ diesel::define_sql_function! {
 const CHANNEL_SIZE: usize = 1024;
 const COMMANDS_COUNT_LIMIT: i64 = 10000;
 
-use warp_server_client::persistence::{upsert_cloud_object, CloudObjectId};
+use yarp_server_client::persistence::{upsert_cloud_object, CloudObjectId};
 
 const WARP_SQLITE_FILE_NAME: &str = "warp.sqlite";
 
@@ -349,7 +349,7 @@ pub(super) fn init_db() -> Result<SqliteConnection> {
     }
 
     // Migrate old SQLite files into the secure application container.
-    let old_db_path = warp_core::paths::state_dir().join(WARP_SQLITE_FILE_NAME);
+    let old_db_path = yarp_core::paths::state_dir().join(WARP_SQLITE_FILE_NAME);
     if old_db_path != db_path && old_db_path.exists() && !db_path.exists() {
         match std::fs::rename(&old_db_path, &db_path) {
             Ok(_) => {
@@ -414,8 +414,8 @@ fn setup_database(database_path: &Path) -> Result<SqliteConnection> {
 /// Integration tests that initialize the database with known data should use
 /// this function to determine where to create the database file.
 pub fn database_file_path() -> PathBuf {
-    warp_core::paths::secure_state_dir()
-        .unwrap_or_else(warp_core::paths::state_dir)
+    yarp_core::paths::secure_state_dir()
+        .unwrap_or_else(yarp_core::paths::state_dir)
         .join(WARP_SQLITE_FILE_NAME)
 }
 

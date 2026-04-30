@@ -6,10 +6,10 @@ use crate::visuals::theme_picker_visual;
 use crate::OnboardingIntention;
 use pathfinder_color::ColorU;
 use ui_components::{button, Component as _, Options as _};
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, theme::WarpTheme};
-use warpui::{
+use yarp_core::features::FeatureFlag;
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors, theme::WarpTheme};
+use yarpui::{
     elements::{
         Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Empty, Flex, FormattedTextElement, Hoverable, MainAxisAlignment,

@@ -55,8 +55,8 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use url::Url;
-use warp_core::HostId;
-use warpui::{
+use yarp_core::HostId;
+use yarpui::{
     elements::{DispatchEventResult, EventHandler, MouseInBehavior},
     presenter::ChildView,
     Action, AppContext, Element, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity,
@@ -381,7 +381,7 @@ impl PaneId {
     pub(super) fn deferred_placeholder_pane_id() -> Self {
         Self(IPaneId {
             pane_type: IPaneType::DeferredPlaceholder,
-            pane_view_id: warpui::EntityId::new(),
+            pane_view_id: yarpui::EntityId::new(),
         })
     }
 
@@ -390,7 +390,7 @@ impl PaneId {
     pub fn dummy_pane_id() -> Self {
         Self(IPaneId {
             pane_type: IPaneType::Dummy,
-            pane_view_id: warpui::EntityId::new(),
+            pane_view_id: yarpui::EntityId::new(),
         })
     }
 
@@ -495,9 +495,9 @@ impl PaneId {
             IPaneType::Welcome => {
                 ChildView::<PaneView<WelcomeView>>::with_id(self.0.pane_view_id).finish()
             }
-            IPaneType::DeferredPlaceholder => warpui::elements::Empty::new().finish(),
+            IPaneType::DeferredPlaceholder => yarpui::elements::Empty::new().finish(),
             #[cfg(test)]
-            IPaneType::Dummy => warpui::elements::Empty::new().finish(),
+            IPaneType::Dummy => yarpui::elements::Empty::new().finish(),
         };
         if *PaneSettings::as_ref(app).focus_panes_on_hover {
             element = EventHandler::new(element)

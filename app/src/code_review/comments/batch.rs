@@ -3,9 +3,9 @@ use super::{
 };
 use crate::{code::editor::EditorReviewComment, code_review::diff_state::DiffMode};
 use std::{collections::HashMap, path::Path};
-use warp_core::features::FeatureFlag;
-use warp_editor::render::model::LineCount;
-use warpui::{Entity, ModelContext};
+use yarp_core::features::FeatureFlag;
+use yarp_editor::render::model::LineCount;
+use yarpui::{Entity, ModelContext};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ReviewCommentBatchEvent {

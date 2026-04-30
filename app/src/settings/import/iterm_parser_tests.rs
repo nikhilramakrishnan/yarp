@@ -2,8 +2,8 @@ use async_io::block_on;
 use pathfinder_color::ColorU;
 use plist::{Dictionary, Value};
 use virtual_fs::{Stub, VirtualFS};
-use warp_core::ui::theme::{Fill, WarpTheme};
-use warpui::{fonts::FontInfo, keymap::Keystroke};
+use yarp_core::ui::theme::{Fill, WarpTheme};
+use yarpui::{fonts::FontInfo, keymap::Keystroke};
 
 use crate::settings::import::{
     config::{GlobalHotkey, HotkeyError, ImportedFont, ParseableConfig, ThemeType},

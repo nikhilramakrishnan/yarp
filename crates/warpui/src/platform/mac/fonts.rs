@@ -30,13 +30,13 @@ use std::sync::{
     atomic::{AtomicUsize, Ordering},
     Arc,
 };
-use warpui_core::fonts::{
+use yarpui_core::fonts::{
     canvas::RasterFormat, FamilyId, FontId, FontInfo, GlyphId, Metrics, Properties,
     RasterizedGlyph, SubpixelAlignment,
 };
-use warpui_core::platform::{self, FontDB as _, LineStyle, TextLayoutSystem};
-use warpui_core::rendering;
-use warpui_core::text_layout::{ClipConfig, StyleAndFont, TextAlignment, TextFrame};
+use yarpui_core::platform::{self, FontDB as _, LineStyle, TextLayoutSystem};
+use yarpui_core::rendering;
+use yarpui_core::text_layout::{ClipConfig, StyleAndFont, TextAlignment, TextFrame};
 
 struct FontFamily {
     name: String,

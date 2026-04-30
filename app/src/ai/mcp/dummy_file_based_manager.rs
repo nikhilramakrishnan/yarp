@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use uuid::Uuid;
 
 use super::MCPProvider;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 pub struct FileBasedMCPManager {}
 

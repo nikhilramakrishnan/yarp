@@ -1,4 +1,4 @@
-use warpui::color::ColorU;
+use yarpui::color::ColorU;
 
 use crate::ui::color::blend::Blend;
 

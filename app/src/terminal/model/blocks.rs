@@ -35,13 +35,13 @@ use std::ops::{AddAssign, Range, RangeInclusive};
 use std::sync::Arc;
 use std::time::Duration;
 use sum_tree::{Dimension, Item, SeekBias, SumTree};
-use warp_core::features::FeatureFlag;
-use warpui::color::ColorU;
-use warpui::r#async::executor::Background;
-use warpui::record_trace_event;
+use yarp_core::features::FeatureFlag;
+use yarpui::color::ColorU;
+use yarpui::r#async::executor::Background;
+use yarpui::record_trace_event;
 
 use std::collections::{HashMap, HashSet};
-use warpui::{
+use yarpui::{
     units::{IntoLines, IntoPixels, Lines},
     AppContext, EntityId, ViewHandle,
 };
@@ -65,7 +65,7 @@ use crate::terminal::model::blockgrid::BlockGrid;
 use crate::terminal::model::grid::Dimensions;
 use crate::terminal::model::secrets::ObfuscateSecrets;
 use crate::terminal::model::terminal_model::{BlockIndex, WithinBlock};
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use yarp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use selection::BlockListSelection;
 pub use selection::SelectionRange;

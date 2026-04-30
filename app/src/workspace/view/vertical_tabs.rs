@@ -56,15 +56,15 @@ use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use settings::Setting as _;
 use std::path::{Path, PathBuf};
-use warp_core::context_flag::ContextFlag;
-use warp_core::telemetry::TelemetryEvent as _;
-use warp_core::ui::color::blend::Blend;
-use warp_core::ui::color::coloru_with_opacity;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, WarpTheme};
-use warp_core::ui::Icon as WarpIcon;
-use warpui::elements::DispatchEventResult;
-use warpui::elements::{
+use yarp_core::context_flag::ContextFlag;
+use yarp_core::telemetry::TelemetryEvent as _;
+use yarp_core::ui::color::blend::Blend;
+use yarp_core::ui::color::coloru_with_opacity;
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, WarpTheme};
+use yarp_core::ui::Icon as WarpIcon;
+use yarpui::elements::DispatchEventResult;
+use yarpui::elements::{
     resizable_state_handle, Border, ChildAnchor, Clipped, ClippedScrollStateHandle,
     ClippedScrollable, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DragAxis,
     DragBarSide, Draggable, DropShadow, DropTarget, Element, Empty, EventHandler, Expanded,
@@ -73,13 +73,13 @@ use warpui::elements::{
     PositionedElementOffsetBounds, Radius, Resizable, ResizableStateHandle, SavePosition,
     ScrollTarget, ScrollToPositionMode, ScrollbarWidth, Shrinkable, Stack, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::prelude::{Align, MainAxisAlignment};
-use warpui::text_layout::ClipConfig;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ui_components::text_input::TextInput;
-use warpui::{AppContext, EntityId, SingletonEntity, ViewHandle, WindowId};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::platform::Cursor;
+use yarpui::prelude::{Align, MainAxisAlignment};
+use yarpui::text_layout::ClipConfig;
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::ui_components::text_input::TextInput;
+use yarpui::{AppContext, EntityId, SingletonEntity, ViewHandle, WindowId};
 
 const PANEL_WIDTH: f32 = 248.;
 const MIN_PANEL_WIDTH: f32 = 200.;
@@ -2594,7 +2594,7 @@ fn pane_display_title_and_subtitle(
             .unwrap_or_default();
         let home_dir = dirs::home_dir();
         let home_str = home_dir.as_ref().and_then(|path| path.to_str());
-        let parent = warp_util::path::user_friendly_path(&parent_raw, home_str).to_string();
+        let parent = yarp_util::path::user_friendly_path(&parent_raw, home_str).to_string();
         (filename, parent)
     } else {
         (

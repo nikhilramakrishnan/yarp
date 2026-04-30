@@ -5,11 +5,11 @@ use std::{cmp::Ordering, sync::Arc};
 use itertools::Itertools;
 use pathfinder_geometry::vector::vec2f;
 use string_offset::CharOffset;
-use warp_core::ui::theme::Fill;
-use warp_editor::editor::NavigationKey;
-use warpui::elements::Clipped;
-use warpui::FocusContext;
-use warpui::{
+use yarp_core::ui::theme::Fill;
+use yarp_editor::editor::NavigationKey;
+use yarpui::elements::Clipped;
+use yarpui::FocusContext;
+use yarpui::{
     clipboard::ClipboardContent,
     elements::{
         Align, Border, ChildAnchor, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox,

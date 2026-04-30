@@ -5,9 +5,9 @@ use super::OnboardingSlide;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use ui_components::{button, Component as _, Options as _};
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
-use warpui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
+use yarpui::{
     elements::{
         shimmering_text::{ShimmerConfig, ShimmeringTextElement, ShimmeringTextStateHandle},
         Align, ChildAnchor, ConstrainedBox, Container, CrossAxisAlignment, Flex,

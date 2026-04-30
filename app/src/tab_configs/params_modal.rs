@@ -1,9 +1,9 @@
 use std::{collections::HashMap, path::PathBuf};
 
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::Icon;
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use yarp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::Icon;
+use yarp_editor::editor::NavigationKey;
+use yarpui::{
     elements::{
         Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CornerRadius, CrossAxisAlignment, Fill, Flex, Hoverable, MainAxisAlignment, MainAxisSize,

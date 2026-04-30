@@ -76,7 +76,7 @@ pub use model::{OnboardingAuthState, SelectedSettings, UICustomizationSettings};
 pub use slides::ProjectOnboardingSettings;
 pub use telemetry::OnboardingEvent;
 
-pub fn init(app: &mut warpui::AppContext) {
+pub fn init(app: &mut yarpui::AppContext) {
     agent_onboarding_view::init(app);
     callout::init(app);
 }

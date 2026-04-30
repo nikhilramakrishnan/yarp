@@ -14,7 +14,7 @@ pub(super) mod util;
 
 // Re-export types that were moved to the ai crate.
 pub use ai::agent::{action::*, action_result::*, AIAgentCitation, FileLocations};
-use warp_core::features::FeatureFlag;
+use yarp_core::features::FeatureFlag;
 
 #[cfg(test)]
 mod suggestion_test;
@@ -33,7 +33,7 @@ use comment::ReviewComment;
 use task::TaskId;
 pub use telemetry::AIIdentifiers;
 
-use warp_editor::render::model::LineCount;
+use yarp_editor::render::model::LineCount;
 
 use parking_lot::RwLock;
 use std::collections::{HashMap, HashSet};

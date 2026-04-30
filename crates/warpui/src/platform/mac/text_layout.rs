@@ -37,9 +37,9 @@ use std::ops::Range;
 use std::rc::Rc;
 use std::slice;
 use vec1::Vec1;
-use warpui_core::fonts::GlyphId;
-use warpui_core::platform::LineStyle;
-use warpui_core::text_layout::{
+use yarpui_core::fonts::GlyphId;
+use yarpui_core::platform::LineStyle;
+use yarpui_core::text_layout::{
     CaretPosition, ClipConfig, Glyph, Line, Run, StyleAndFont, TextAlignment, TextBorder,
     TextFrame, TextStyle,
 };

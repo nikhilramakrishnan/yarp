@@ -14,7 +14,7 @@ use std::any::Any;
 
 use std::sync::Arc;
 
-use warpui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WeakViewHandle, WindowId};
+use yarpui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WeakViewHandle, WindowId};
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent::conversation::ConversationStatus;

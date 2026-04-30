@@ -1,5 +1,5 @@
 use instant::Instant;
-use warpui::{
+use yarpui::{
     assets::asset_cache::AssetSource,
     elements::{
         CacheOption, ConstrainedBox, CrossAxisAlignment, Flex, Image, ParentElement, Shrinkable,

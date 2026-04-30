@@ -1,5 +1,5 @@
-use warp_core::context_flag::ContextFlag;
-use warpui::{
+use yarp_core::context_flag::ContextFlag;
+use yarpui::{
     elements::{Container, Flex, MouseStateHandle, ParentElement},
     fonts::Weight,
     ui_components::components::{UiComponent, UiComponentStyles},
@@ -71,7 +71,7 @@ impl WarpDriveItem for WarpDriveWorkflow {
 
     fn preview(&self, appearance: &Appearance) -> Option<Box<dyn Element>> {
         let mut modal =
-            Flex::column().with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Stretch);
+            Flex::column().with_cross_axis_alignment(yarpui::elements::CrossAxisAlignment::Stretch);
 
         let mut text = Flex::column()
             .with_child(Container::new(self.render_workflow_name(appearance)).finish());

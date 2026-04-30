@@ -27,7 +27,7 @@ use comfy_table::Cell;
 use futures::{future, StreamExt};
 use serde::Serialize;
 
-use warp_cli::{
+use yarp_cli::{
     agent::{Harness, OutputFormat, Prompt, RunCloudArgs},
     json_filter::JsonOutput,
     task::{
@@ -37,10 +37,10 @@ use warp_cli::{
     },
     GlobalOptions,
 };
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warpui::r#async::Timer;
-use warpui::{
+use yarp_core::channel::ChannelState;
+use yarp_core::features::FeatureFlag;
+use yarpui::r#async::Timer;
+use yarpui::{
     platform::TerminationMode, r#async::Spawnable, AppContext, ModelContext, SingletonEntity,
 };
 
@@ -1240,7 +1240,7 @@ impl AmbientAgentRunner {
     }
 }
 
-impl warpui::Entity for AmbientAgentRunner {
+impl yarpui::Entity for AmbientAgentRunner {
     type Event = ();
 }
 

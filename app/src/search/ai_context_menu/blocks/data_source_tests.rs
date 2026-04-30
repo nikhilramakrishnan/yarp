@@ -12,8 +12,8 @@ use crate::test_util::terminal::{
 use crate::workspace::ActiveSession;
 
 use fuzzy_match::FuzzyMatchResult;
-use warp_core::command::ExitCode;
-use warpui::{App, SingletonEntity};
+use yarp_core::command::ExitCode;
+use yarpui::{App, SingletonEntity};
 
 /// Helper to create a `BlockSearchItem` with the given parameters.
 fn make_block_search_item(

@@ -5,8 +5,8 @@ use std::sync::Arc;
 use chrono::{OutOfRangeError, Utc};
 use futures::stream::AbortHandle;
 
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use yarp_core::user_preferences::GetUserPreferences as _;
+use yarpui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::{RequestLimitInfo, RequestUsageInfo},

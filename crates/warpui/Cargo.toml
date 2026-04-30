@@ -1,5 +1,5 @@
 [package]
-name = "warpui"
+name = "yarpui"
 version = "0.0.0"
 edition = "2021"
 authors.workspace = true
@@ -14,16 +14,16 @@ license = "MIT"
 enable-metal-frame-capture = []
 # Enables the font-kit rasterizer on Windows.
 fontkit-rasterizer = []
-traces = ["warpui_core/traces"]
+traces = ["yarpui_core/traces"]
 # Feature enabled only when app is compiled for integration tests.
-integration_tests = ["warpui_core/integration_tests"]
+integration_tests = ["yarpui_core/integration_tests"]
 # If enabled, writes named telemetry events to the info log.  Should never be
 # enabled in release builds without a PII audit of telemetry data.
-log_named_telemetry_events = ["warpui_core/log_named_telemetry_events"]
-schema_gen = ["warpui_core/schema_gen"]
-settings_value = ["warpui_core/settings_value"]
+log_named_telemetry_events = ["yarpui_core/log_named_telemetry_events"]
+schema_gen = ["yarpui_core/schema_gen"]
+settings_value = ["yarpui_core/settings_value"]
 # Enables utilities for testing.
-test-util = ["warpui_core/test-util"]
+test-util = ["yarpui_core/test-util"]
 experimental-wgpu-renderer = ["dep:wgpu", "dep:bytemuck", "dep:version-compare"]
 
 [dependencies]
@@ -50,7 +50,7 @@ takecell = "0.1.1"
 thiserror.workspace = true
 vec1.workspace = true
 version-compare = { workspace = true, optional = true }
-warpui_core.workspace = true
+yarpui_core.workspace = true
 wgpu = { workspace = true, optional = true }
 
 [dev-dependencies]
@@ -59,8 +59,8 @@ env_logger.workspace = true
 futures-timer = "3.0.2"
 image = { workspace = true, default-features = false, features = ["png"] }
 rust-embed.workspace = true
-warpui = { workspace = true, features = ["test-util"] }
-warpui_core = { workspace = true, features = ["test-util"] }
+yarpui = { workspace = true, features = ["test-util"] }
+yarpui_core = { workspace = true, features = ["test-util"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 block.workspace = true

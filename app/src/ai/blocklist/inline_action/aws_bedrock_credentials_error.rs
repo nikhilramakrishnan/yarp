@@ -1,12 +1,12 @@
 use settings::Setting as _;
-use warp_core::ui::Icon;
-use warpui::elements::{
+use yarp_core::ui::Icon;
+use yarpui::elements::{
     ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex, MainAxisAlignment,
     MainAxisSize, MouseStateHandle, ParentElement, Shrinkable, SizeConstraintCondition,
     SizeConstraintSwitch, Text,
 };
-use warpui::ui_components::components::UiComponent;
-use warpui::{
+use yarpui::ui_components::components::UiComponent;
+use yarpui::{
     AppContext, Element, Entity, EventContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };

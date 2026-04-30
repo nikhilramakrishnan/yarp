@@ -1,4 +1,4 @@
-use warpui::{
+use yarpui::{
     elements::{
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
         MouseStateHandle, ParentElement, Radius, Text,

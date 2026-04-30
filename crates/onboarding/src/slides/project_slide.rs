@@ -3,13 +3,13 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::visuals::project_visual;
 use ui_components::{button, keyboard_shortcut, Component as _, Options as _};
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::{
+use yarp_core::send_telemetry_from_ctx;
+use yarp_core::ui::{
     appearance::Appearance, color::coloru_with_opacity, theme::color::internal_colors, Icon,
 };
-use warpui::prelude::{MainAxisAlignment, MainAxisSize, Vector2F};
-use warpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
-use warpui::{
+use yarpui::prelude::{MainAxisAlignment, MainAxisSize, Vector2F};
+use yarpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
+use yarpui::{
     elements::{
         Align, ClippedScrollStateHandle, ConstrainedBox, Container, CrossAxisAlignment, Flex,
         MouseStateHandle, ParentElement, Shrinkable,
@@ -291,7 +291,7 @@ impl ProjectSlide {
         );
 
         let theme_picker_last =
-            warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+            yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
 
         let (label, keystroke, action) = match settings {
             ProjectOnboardingSettings::Project { .. } => (
@@ -483,7 +483,7 @@ impl ProjectSlide {
         }
 
         self.onboarding_state.update(ctx, |model, ctx| {
-            if warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);
@@ -494,7 +494,7 @@ impl ProjectSlide {
     fn skip(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
             model.set_project_selected_local_folder(None, ctx);
-            if warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if yarp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);

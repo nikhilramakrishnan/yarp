@@ -1,6 +1,6 @@
 use itertools::Itertools;
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use yarp_editor::editor::NavigationKey;
+use yarpui::{
     elements::{
         ConstrainedBox, Container, DispatchEventResult, Element, Fill, Flex, ParentElement,
         ScrollStateHandle, Scrollable, ScrollableElement, ScrollbarWidth, Shrinkable, Text,
@@ -29,17 +29,17 @@ use std::ops::Deref;
 #[cfg(feature = "local_fs")]
 use std::path::PathBuf;
 use std::sync::Arc;
-use warp_core::ui::builder::UiBuilder;
-use warp_core::ui::theme::color::internal_colors;
+use yarp_core::ui::builder::UiBuilder;
+use yarp_core::ui::theme::color::internal_colors;
 use warp_workflows::workflows as global_workflows;
-use warpui::accessibility::{AccessibilityContent, WarpA11yRole};
-use warpui::color::ColorU;
-use warpui::elements::{
+use yarpui::accessibility::{AccessibilityContent, WarpA11yRole};
+use yarpui::color::ColorU;
+use yarpui::elements::{
     Align, CrossAxisAlignment, EventHandler, Highlight, Hoverable, MainAxisSize, MouseStateHandle,
 };
-use warpui::keymap::FixedBinding;
-use warpui::text_layout::TextStyle;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
+use yarpui::keymap::FixedBinding;
+use yarpui::text_layout::TextStyle;
+use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
 
 use super::{workflow::Workflow, WorkflowSource};
 
@@ -54,7 +54,7 @@ const WORKFLOW_LIST_PADDING_MIDDLE: f32 = 5.;
 pub const WORKFLOW_SUBTEXT_FONT_SIZE: f32 = 14.0;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use yarpui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![
         FixedBinding::new("up", WorkflowsViewAction::Up, id!("WorkflowsView")),

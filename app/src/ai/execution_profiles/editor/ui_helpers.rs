@@ -8,18 +8,18 @@ use crate::Appearance;
 use crate::TemplatableMCPServerManager;
 use pathfinder_geometry::vector::vec2f;
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
-use warpui::elements::Hoverable;
-use warpui::elements::MouseStateHandle;
-use warpui::elements::{
+use yarp_core::features::FeatureFlag;
+use yarpui::elements::Hoverable;
+use yarpui::elements::MouseStateHandle;
+use yarpui::elements::{
     ChildAnchor, ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex, MainAxisAlignment,
     MainAxisSize, OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Shrinkable,
     Stack, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::ui_components::components::UiComponent;
-use warpui::AppContext;
-use warpui::{Element, SingletonEntity, ViewHandle};
+use yarpui::fonts::{Properties, Weight};
+use yarpui::ui_components::components::UiComponent;
+use yarpui::AppContext;
+use yarpui::{Element, SingletonEntity, ViewHandle};
 
 use super::ExecutionProfileEditorView;
 use super::ExecutionProfileEditorViewAction;
@@ -247,7 +247,7 @@ pub fn render_permissions_section(
     appearance: &Appearance,
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
     let mut column = Flex::column().with_children([
@@ -505,7 +505,7 @@ fn render_directory_allowlist_section(
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
     appearance: &Appearance,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
     let is_editable = ai_settings.is_directory_allowlist_editable(app);
@@ -530,7 +530,7 @@ fn render_command_allowlist_section(
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
     appearance: &Appearance,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
     let is_editable = ai_settings.is_command_allowlist_editable(app);
@@ -556,7 +556,7 @@ fn render_command_denylist_section(
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
     appearance: &Appearance,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
     let is_editable = ai_settings.is_command_denylist_editable(app);
@@ -588,7 +588,7 @@ fn display_mcp_name(uuid: &Uuid, app: &AppContext) -> String {
 fn render_mcp_allowlist_section(
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
@@ -614,7 +614,7 @@ fn render_mcp_allowlist_section(
 fn render_mcp_denylist_section(
     view: &ExecutionProfileEditorView,
     profile_data: &AIExecutionProfile,
-    app: &warpui::AppContext,
+    app: &yarpui::AppContext,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let ai_settings = AISettings::as_ref(app);
