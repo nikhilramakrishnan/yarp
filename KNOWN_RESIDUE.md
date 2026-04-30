@@ -5,8 +5,13 @@ the Step 1–5 Warp → Yarp rebrand. Every category below is intentional.
 Before flipping anything here, read the reasoning and confirm it still
 applies.
 
-Step 5 (the compound-identifier sweep) brought unfiltered `warp` hits from
-~5,500 down to ~1,250 — the rest is the categories below.
+Step 5 + Step 6 (aggressive cleanup including warpify family flip) brought
+unfiltered `warp` hits from ~5,500 down to ~1,800 — and ~470 of those after
+applying the justified-residue filter list. The remaining is overwhelmingly
+upstream-coupled: third-party crate names (`warp-workflows`,
+`warp-command-signatures`, `warp_multi_agent_api`), GraphQL wire schema
+fields, ObjC bridge, license attribution, ML tokenizer dictionary, and
+upstream `warpdotdev/*` git references.
 
 ## 1. Upstream URLs (KEEP)
 
@@ -22,7 +27,18 @@ External upstream identifiers naming projects this fork doesn't own.
   channel config, telemetry, README links, and packaging templates.
 - `warpdotdev.github.io` — upstream docs/GitHub Pages.
 
-## 2. Term-of-art "warpify" (KEEP)
+## 2. (formerly "warpify" term-of-art — FLIPPED in Step 6)
+
+Earlier passes treated the `warpify` verb-family (`warpify a subshell`,
+`Warpification`, `WarpifiedRemote` etc.) as a deliberate term-of-art and
+preserved them. Step 6 reversed that decision and renamed the entire family
+to `yarpify` / `Yarpification` / `YarpifiedRemote` etc., on the principle
+that the literal string `warp` should not appear inside our own identifiers
+even when it's morphologically embedded in a verb. ~225 sites flipped, plus
+13 paired filename moves under `app/assets/bundled/ssh/` and
+`app/src/terminal/{ssh,view,settings_view}`.
+
+## 2b. Term-of-art (DEPRECATED entry kept for context)
 
 "Warpify a subshell" is a deliberate verb — not a brand reference. The
 entire `[Ww]arpif[iy]` family is preserved:
