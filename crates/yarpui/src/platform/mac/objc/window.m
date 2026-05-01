@@ -14,7 +14,7 @@
 // `create_yarp_nswindow` / `create_yarp_nspanel` would otherwise be leaked with a +1
 // retain count. Associating it with the window ties its lifetime to the window: the
 // associated object is released by the runtime when the window itself is deallocated.
-static const void *kWarpWindowDelegateAssocKey = &kWarpWindowDelegateAssocKey;
+static const void *kYarpWindowDelegateAssocKey = &kYarpWindowDelegateAssocKey;
 
 NSWindowStyleMask yarpWindowMask = NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
                                    NSWindowStyleMaskResizable | NSWindowStyleMaskTitled;
@@ -282,7 +282,7 @@ static NSLayoutConstraint *configure_titlebar_height(NSWindow *window, CGFloat h
 }
 
 // Initializes an NSWindow that conforms to our window protocol.
-void init_warp_nswindow(NSWindow<YarpWindowProtocol> *window, bool testMode, bool hideTitleBar) {
+void init_yarp_nswindow(NSWindow<YarpWindowProtocol> *window, bool testMode, bool hideTitleBar) {
     window.testMode = testMode;
     window.hideTitleBar = hideTitleBar;
 
@@ -504,7 +504,7 @@ void init_warp_nswindow(NSWindow<YarpWindowProtocol> *window, bool testMode, boo
                                                               styleMask:mask
                                                                 backing:NSBackingStoreBuffered
                                                                   defer:NO];
-    init_warp_nswindow(window_result, testMode, hideTitleBar);
+    init_yarp_nswindow(window_result, testMode, hideTitleBar);
 
     return window_result;
 }
@@ -668,7 +668,7 @@ void init_warp_nswindow(NSWindow<YarpWindowProtocol> *window, bool testMode, boo
                                                             styleMask:mask
                                                               backing:NSBackingStoreBuffered
                                                                 defer:NO];
-    init_warp_nswindow(window_result, testMode, hideTitleBar);
+    init_yarp_nswindow(window_result, testMode, hideTitleBar);
 
     return window_result;
 }
@@ -694,10 +694,10 @@ void set_window_background_blur_radius(id window, uint8 blurRadiusPixels) {
 // objc_setAssociatedObject, which retains the delegate and releases it when
 // the window is deallocated. The caller's +1 from alloc/init is then balanced
 // by the final [delegate release].
-static void attach_warp_window_delegate(NSWindow *window) {
+static void attach_yarp_window_delegate(NSWindow *window) {
     YarpWindowDelegate *delegate = [[YarpWindowDelegate alloc] init];
     [window setDelegate:delegate];
-    objc_setAssociatedObject(window, kWarpWindowDelegateAssocKey, delegate,
+    objc_setAssociatedObject(window, kYarpWindowDelegateAssocKey, delegate,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [delegate release];
 }
@@ -724,7 +724,7 @@ id create_yarp_nspanel(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                                                enableTitlebarDrag:NO
                                                          testMode:testMode] autorelease];
 
-    attach_warp_window_delegate(window);
+    attach_yarp_window_delegate(window);
 
     window.contentView = hostView;
     [window makeFirstResponder:hostView];
@@ -755,7 +755,7 @@ id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
                                                enableTitlebarDrag:YES
                                                          testMode:testMode] autorelease];
 
-    attach_warp_window_delegate(window);
+    attach_yarp_window_delegate(window);
 
     window.contentView = hostView;
     [window makeFirstResponder:hostView];
@@ -764,7 +764,7 @@ id create_yarp_nswindow(NSRect contentRect, id metalDevice, BOOL hideTitleBar,
     return window;
 }
 
-BOOL is_warp_window(id window) {
+BOOL is_yarp_window(id window) {
     return [window isKindOfClass:[YarpWindow class]] || [window isKindOfClass:[YarpPanel class]];
 }
 

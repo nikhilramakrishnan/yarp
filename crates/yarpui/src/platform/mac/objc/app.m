@@ -521,7 +521,7 @@ NSMenuItem *make_services_menu_item() {
 // \return a new menu item that wraps the given context pointer.
 // The pointer will be provided back to Yarp in the callbacks (see menus.h).
 // The result is autoreleased.
-NSMenuItem *make_warp_custom_menu_item(void *context) {
+NSMenuItem *make_yarp_custom_menu_item(void *context) {
     YarpCustomMenuItemHandler *handler =
         [[[YarpCustomMenuItemHandler alloc] initWithContext:context] autorelease];
 

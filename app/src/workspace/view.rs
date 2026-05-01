@@ -2664,8 +2664,8 @@ impl Workspace {
             me.handle_fuzz_launch_modal_event(event, ctx);
         });
 
-        let openwarp_launch_view = ctx.add_typed_action_view(OpenYarpLaunchModal::new);
-        ctx.subscribe_to_view(&openwarp_launch_view, |me, _, event, ctx| {
+        let openyarp_launch_view = ctx.add_typed_action_view(OpenYarpLaunchModal::new);
+        ctx.subscribe_to_view(&openyarp_launch_view, |me, _, event, ctx| {
             me.handle_openyarp_launch_modal_event(event, ctx);
         });
 
@@ -3134,7 +3134,7 @@ impl Workspace {
                 view: fuzz_launch_view,
                 tab_pane_group_id: None,
             },
-            openyarp_launch_modal: openwarp_launch_view,
+            openyarp_launch_modal: openyarp_launch_view,
             enable_auto_reload_modal,
             agent_management_view,
             notification_mailbox_view,
@@ -3812,9 +3812,9 @@ impl Workspace {
         shell: Option<AvailableShell>,
         ctx: &mut ViewContext<Self>,
     ) {
-        let show_warp_home = !ContextFlag::CreateNewSession.is_enabled();
+        let show_yarp_home = !ContextFlag::CreateNewSession.is_enabled();
         let mut placeholder_pane = None;
-        let open_yarp_drive = if !show_warp_home {
+        let open_yarp_drive = if !show_yarp_home {
             if self.should_trigger_get_started_onboarding(ctx) {
                 self.trigger_get_started_onboarding(ctx);
             } else if FeatureFlag::WelcomeTab.is_enabled() {
@@ -3855,7 +3855,7 @@ impl Workspace {
 
                     // After opening Yarp Drive, if we rendered the Yarp Home placeholder panel, replace it with one of
                     // the user's own objects.
-                    if show_warp_home {
+                    if show_yarp_home {
                         let cloud_model = CloudModel::as_ref(ctx);
                         let candidate_objects = cloud_model
                             .cloud_objects()
@@ -16943,7 +16943,7 @@ impl Workspace {
                 .with_main_axis_size(MainAxisSize::Max);
             let bg_color = blended_colors::neutral_1(appearance.theme());
 
-            // Left: Warp logo - clickable to link to warp.dev
+            // Left: Yarp logo
             let yarp_logo = Hoverable::new(self.mouse_states.yarp_logo.clone(), |_state| {
                 ConstrainedBox::new(
                     yarp_core::ui::Icon::Yarp
@@ -16954,9 +16954,7 @@ impl Workspace {
                 .with_width(24.)
                 .finish()
             })
-            .on_click(|ctx, _, _| {
-                ctx.dispatch_typed_action(WorkspaceAction::OpenLink("https://warp.dev".to_owned()));
-            })
+            .on_click(|_ctx, _, _| {})
             .with_cursor(Cursor::PointingHand)
             .finish();
             tab_bar.add_child(yarp_logo);
@@ -17329,7 +17327,7 @@ impl Workspace {
             target.add_child(
                 Container::new(
                     SavePosition::new(
-                        self.render_legacy_warp_ai_entrypoint_button(appearance),
+                        self.render_legacy_yarp_ai_entrypoint_button(appearance),
                         AI_ASSISTANT_BUTTON_ID,
                     )
                     .finish(),
@@ -17936,7 +17934,7 @@ impl Workspace {
         Align::new(hoverable.finish()).finish()
     }
 
-    fn render_legacy_warp_ai_entrypoint_button(&self, appearance: &Appearance) -> Box<dyn Element> {
+    fn render_legacy_yarp_ai_entrypoint_button(&self, appearance: &Appearance) -> Box<dyn Element> {
         let (icon, action, label) = (
             icons::Icon::AiAssistant,
             WorkspaceAction::ClickedAIAssistantIcon,
@@ -19597,8 +19595,7 @@ impl Workspace {
             == UserAppInstallStatus::Detected;
 
         if !is_app_installed {
-            // App not installed - redirect to download page
-            ctx.open_url("https://warp.dev/download");
+            // App not installed - no-op (no Yarp download page to redirect to)
             // In webapp code we cannot distinguish between
             // the localhost:9277/install_detection endpoint not running (not installed) vs
             // the browser blocking Local Network Access which results in CORS error;
@@ -21309,7 +21306,7 @@ impl TypedActionView for Workspace {
             }
             #[cfg(debug_assertions)]
             InstallOpenCodeYarpPlugin => {
-                let message = set_opencode_warp_plugin("github:warpdotdev/opencode-warp-internal");
+                let message = set_opencode_yarp_plugin("github:warpdotdev/opencode-warp-internal");
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(DismissibleToast::default(message), ctx);
                 });
@@ -21320,7 +21317,7 @@ impl TypedActionView for Workspace {
                     Some(home) => {
                         let plugin_path = home.join("opencode-yarp/src/index.ts");
                         let entry = format!("file://{}", plugin_path.display());
-                        set_opencode_warp_plugin(&entry)
+                        set_opencode_yarp_plugin(&entry)
                     }
                     None => "Failed to determine home directory".to_string(),
                 };
@@ -22981,7 +22978,7 @@ fn compute_default_panel_widths(
 /// Removes any existing opencode-yarp plugin entries (both local file:// and github:) and adds
 /// the given `new_entry`. Creates the config file with a default structure if it doesn't exist.
 #[cfg(debug_assertions)]
-fn set_opencode_warp_plugin(new_entry: &str) -> String {
+fn set_opencode_yarp_plugin(new_entry: &str) -> String {
     let Some(home) = dirs::home_dir() else {
         return "Failed to determine home directory".to_string();
     };

@@ -158,10 +158,10 @@ pub enum EditorModalAction {
     Save,
     Chip(ChipConfiguratorAction),
     UsePS1,
-    UseWarpPrompt,
-    ResetWarpPrompt,
+    UseYarpPrompt,
+    ResetYarpPrompt,
     ToggleSameLinePrompt,
-    SetWarpPromptSeparator { separator: YarpPromptSeparator },
+    SetYarpPromptSeparator { separator: YarpPromptSeparator },
 }
 
 impl EditorModal {
@@ -187,25 +187,25 @@ impl EditorModal {
             let items = vec![
                 DropdownItem::new(
                     YarpPromptSeparator::None.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
+                    EditorModalAction::SetYarpPromptSeparator {
                         separator: YarpPromptSeparator::None,
                     },
                 ),
                 DropdownItem::new(
                     YarpPromptSeparator::PercentSign.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
+                    EditorModalAction::SetYarpPromptSeparator {
                         separator: YarpPromptSeparator::PercentSign,
                     },
                 ),
                 DropdownItem::new(
                     YarpPromptSeparator::DollarSign.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
+                    EditorModalAction::SetYarpPromptSeparator {
                         separator: YarpPromptSeparator::DollarSign,
                     },
                 ),
                 DropdownItem::new(
                     YarpPromptSeparator::ChevronSymbol.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
+                    EditorModalAction::SetYarpPromptSeparator {
                         separator: YarpPromptSeparator::ChevronSymbol,
                     },
                 ),
@@ -414,14 +414,14 @@ impl TypedActionView for EditorModal {
                 self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::UseWarpPrompt => {
+            Self::Action::UseYarpPrompt => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::yarp_prompt_from_settings(ctx);
                 // Enable the Yarp separator dropdown, if SLP is on.
                 self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::ResetWarpPrompt => {
+            Self::Action::ResetYarpPrompt => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::YarpDefault;
 
@@ -445,7 +445,7 @@ impl TypedActionView for EditorModal {
                 self.update_yarp_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::SetWarpPromptSeparator { separator } => {
+            Self::Action::SetYarpPromptSeparator { separator } => {
                 self.is_dirty = true;
                 self.yarp_prompt_separator = *separator;
                 ctx.notify();
@@ -496,7 +496,7 @@ impl EditorModal {
 
     fn render_unused_chips(&self, appearance: &Appearance) -> Box<dyn Element> {
         self.chip_configurator.render_unused_chips_bank(
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseYarpPrompt,
             EditorModalAction::Chip,
             appearance,
         )
@@ -504,7 +504,7 @@ impl EditorModal {
 
     fn render_used_chips(&self, appearance: &Appearance) -> Box<dyn Element> {
         self.chip_configurator.render_used_drop_zone(
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseYarpPrompt,
             EditorModalAction::Chip,
             appearance,
         )
@@ -584,7 +584,7 @@ impl EditorModal {
                     .finish()
             },
         )
-        .on_click(|ctx, _, _| ctx.dispatch_typed_action(EditorModalAction::ResetWarpPrompt))
+        .on_click(|ctx, _, _| ctx.dispatch_typed_action(EditorModalAction::ResetYarpPrompt))
         .with_cursor(Cursor::PointingHand);
 
         if matches!(self.prompt_type, PromptType::YarpDefault) && !self.is_dirty {
@@ -698,7 +698,7 @@ impl EditorModal {
             self.mouse_state_handles
                 .yarp_prompt_mouse_state_handle
                 .clone(),
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseYarpPrompt,
         )
     }
 

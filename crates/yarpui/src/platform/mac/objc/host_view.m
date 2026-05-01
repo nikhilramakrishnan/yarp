@@ -65,7 +65,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     return !titlebarDragEnabled;
 }
 
-- (BOOL)readyForWarp {
+- (BOOL)readyForYarp {
     return windowState != NULL;
 }
 
@@ -118,7 +118,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 }
 
 - (void)viewDidChangeBackingProperties {
-    if (self.readyForWarp) yarp_view_did_change_backing_properties(self, asyncCallback);
+    if (self.readyForYarp) yarp_view_did_change_backing_properties(self, asyncCallback);
     [super viewDidChangeBackingProperties];
 }
 
@@ -130,14 +130,14 @@ void yarp_marked_text_cleared(YarpHostView *);
     if (size.height >= self.window.minSize.height && size.width >= self.window.minSize.width) {
         [super setFrameSize:size];
         // It's an important optimization to only invoke this if the size changed.
-        if (self.readyForWarp && changed) {
+        if (self.readyForYarp && changed) {
             yarp_view_set_frame_size(self, size, asyncCallback);
         }
     }
 }
 
 - (void)displayLayer:(CALayer *)layer {
-    if (!testMode && self.readyForWarp) {
+    if (!testMode && self.readyForYarp) {
         yarp_update_layer(self);
     }
 }
@@ -161,7 +161,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     interpretingKeyEvents = NO;
 
     BOOL handled = NO;
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         handled = yarp_handle_view_event(self, event, wasComposing || [self hasMarkedText]);
     }
 
@@ -191,7 +191,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 - (BOOL)acceptsFirstMouse:(NSEvent *)event {
     // We want to receive mouseDown events even if the window is not key
     // and we explicity fire the event here so that Yarp can handle it.
-    if (self.readyForWarp) yarp_handle_first_mouse_event(self, event);
+    if (self.readyForYarp) yarp_handle_first_mouse_event(self, event);
 
     // We return NO though so that the event is not fired twice (returning YES
     // would result in the event being passed to the mouseDown handler).
@@ -199,7 +199,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 }
 
 - (void)mouseDown:(NSEvent *)event {
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         BOOL eventHandled = yarp_handle_view_event(self, event, NO);
         if (self->titlebarDragEnabled && !eventHandled && [self mouseInTitleBar:event]) {
             // If Yarp doesn't do anything with the event, indicated by returning `false`, and
@@ -213,7 +213,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     // Our content view is full-size so we don't get the default behavior
     // on titlebar clicks. Implement it manually.
     BOOL yarp_handled = NO;
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         yarp_handled = yarp_handle_view_event(self, event, NO);
     }
     if (!yarp_handled) {
@@ -222,27 +222,27 @@ void yarp_marked_text_cleared(YarpHostView *);
 }
 
 - (void)otherMouseDown:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)rightMouseDown:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)mouseDragged:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)scrollWheel:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)mouseMoved:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)flagsChanged:(NSEvent *)event {
-    if (self.readyForWarp) yarp_handle_view_event(self, event, NO);
+    if (self.readyForYarp) yarp_handle_view_event(self, event, NO);
 }
 
 - (void)dealloc {
@@ -307,7 +307,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     NSPoint localPoint = [self convertPoint:dragPoint fromView:nil];
 
     NSPasteboard *pasteboard = [sender draggingPasteboard];
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         NSArray *types = [pasteboard types];
         if ([types containsObject:NSPasteboardTypeFileURL]) {
             yarp_handle_file_drag(self, localPoint);
@@ -318,7 +318,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 }
 
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         yarp_handle_file_drag_exit(self);
     }
 }
@@ -330,7 +330,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     NSPoint dragPoint = [sender draggingLocation];
     NSPoint localPoint = [self convertPoint:dragPoint fromView:nil];
 
-    if (self.readyForWarp && (dragOperation & NSDragOperationCopy)) {
+    if (self.readyForYarp && (dragOperation & NSDragOperationCopy)) {
         NSArray *types = [pasteboard types];
         if ([types containsObject:NSPasteboardTypeFileURL]) {
             yarp_handle_drag_and_drop(self, [pasteboard getFilePaths], localPoint);
@@ -403,7 +403,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 - (NSRect)firstRectForCharacterRange:(NSRange)range
                          actualRange:(nullable NSRangePointer)actualRange {
     NSWindow *window = self.window;
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         NSRect contentRect = [window contentRectForFrameRect:[window frame]];
         NSRect rect = yarp_ime_position(self, &contentRect);
         return rect;
@@ -419,7 +419,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 // Referenced glfw for this implementation.
 // https://github.com/glfw/glfw/blob/7ef34eb06de54dd9186d3d21a401b2ef819b59e7/src/cocoa_window.m#L814
 - (void)insertText:(id)string replacementRange:(NSRange)replacementRange {
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         NSMutableString *characters = [[NSMutableString alloc] init];
 
         if ([string isKindOfClass:[NSAttributedString class]]) {
@@ -471,7 +471,7 @@ void yarp_marked_text_cleared(YarpHostView *);
     else
         markedText = [[NSMutableAttributedString alloc] initWithString:string];
 
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         yarp_marked_text_updated(self, markedText.string, selectedRange);
         if ([markedText length] > 0) {
             yarp_update_ime_state(self, YES);
@@ -483,7 +483,7 @@ void yarp_marked_text_cleared(YarpHostView *);
 
 - (void)unmarkText {
     [[markedText mutableString] setString:@""];
-    if (self.readyForWarp) {
+    if (self.readyForYarp) {
         yarp_update_ime_state(self, NO);
         yarp_marked_text_cleared(self);
     }
