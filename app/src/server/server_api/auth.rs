@@ -1,6 +1,6 @@
 use std::{result::Result as StdResult, sync::Arc};
 
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{anyhow, Context as _, Result};
 use async_trait::async_trait;
 use cynic::{MutationBuilder, QueryBuilder};
 use firebase::{FetchAccessTokenResponse, FirebaseError};
@@ -52,16 +52,13 @@ use crate::server::server_api::EXPERIMENT_ID_HEADER;
 use crate::settings::PrivacySettingsSnapshot;
 use crate::{
     auth::{
-        credentials::{AuthToken, Credentials, FirebaseToken, LoginToken, RefreshToken},
+        credentials::{AuthToken, Credentials, FirebaseToken, LoginToken},
         user::FirebaseAuthTokens,
         user::User,
     },
     channel::ChannelState,
     convert_to_server_experiment,
-    server::{
-        datetime_ext::DateTimeExt as _, experiments::ServerExperiment,
-        graphql::get_request_context, server_api::ServerApiEvent,
-    },
+    server::{experiments::ServerExperiment, graphql::get_request_context},
 };
 
 use super::ServerApi;

@@ -908,7 +908,6 @@ fn make_new_help_menu() -> Menu {
         "Help",
         vec![
             feedback_menu_item(),
-            link_menu_item("Yarp Documentation...", links::USER_DOCS_URL.into()),
             link_menu_item("GitHub Issues...", links::GITHUB_ISSUES_URL.into()),
             link_menu_item("Yarp Slack Community...", links::SLACK_URL.into()),
         ],

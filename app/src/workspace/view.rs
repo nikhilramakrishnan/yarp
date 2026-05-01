@@ -5883,10 +5883,6 @@ impl Workspace {
         ctx.open_url(links::SLACK_URL);
     }
 
-    fn view_user_docs(&mut self, ctx: &mut ViewContext<Self>) {
-        ctx.open_url(links::USER_DOCS_URL);
-    }
-
     fn view_latest_changelog(&mut self, ctx: &mut ViewContext<Self>) {
         self.update_toast_stack.update(ctx, |stack, ctx| {
             stack.clear_toasts(ctx);
@@ -8276,9 +8272,6 @@ impl Workspace {
                 .with_on_select_action(WorkspaceAction::ToggleKeybindingsPage)
                 .into_item(),
             MenuItem::Separator,
-            MenuItemFields::new("Documentation")
-                .with_on_select_action(WorkspaceAction::ViewUserDocs)
-                .into_item(),
             MenuItemFields::new("Feedback")
                 .with_on_select_action(WorkspaceAction::SendFeedback)
                 .into_item(),
@@ -20001,7 +19994,6 @@ impl TypedActionView for Workspace {
                 self.show_settings_with_section(Some(SettingsSection::Referrals), ctx);
             }
             JoinSlack => self.join_slack(ctx),
-            ViewUserDocs => self.view_user_docs(ctx),
             ViewLatestChangelog => self.view_latest_changelog(ctx),
             ViewPrivacyPolicy => self.view_privacy_policy(ctx),
             SendFeedback => self.send_feedback(ctx),

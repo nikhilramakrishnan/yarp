@@ -20,8 +20,6 @@ const MARKETPLACE_REPO: &str = "hotfuzz/claude-code-yarp";
 const MARKETPLACE_NAME: &str = "claude-code-yarp";
 
 const PLATFORM_PLUGIN_KEY: &str = "fuzz-harness-support@claude-code-yarp";
-// Note: we will eventually publish this to the same marketplace repo, but are using the internal one as we build out multi-harness.
-const PLATFORM_MARKETPLACE_REPO: &str = "hotfuzz/claude-code-yarp";
 
 // Keep in sync with the plugin version in hotfuzz/claude-code-yarp.
 // (See the Versioning section of that repo's README.)
@@ -151,7 +149,7 @@ impl CliAgentPluginManager for ClaudeCodePluginManager {
     async fn install_platform_plugin(&self) -> Result<(), PluginInstallError> {
         let mut log = String::new();
         self.run_logged(
-            &["plugin", "marketplace", "add", PLATFORM_MARKETPLACE_REPO],
+            &["plugin", "marketplace", "add", MARKETPLACE_REPO],
             &mut log,
         )
         .await?;

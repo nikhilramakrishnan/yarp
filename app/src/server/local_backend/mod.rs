@@ -54,7 +54,7 @@ impl LocalBackend {
     pub fn new() -> Self {
         let paths = LocalPaths::resolve();
         paths.ensure_root_exists();
-        let file_store = FileStore::new(paths.root.clone());
+        let file_store = FileStore::new();
         Self {
             inner: Arc::new(LocalBackendInner { paths, file_store }),
         }

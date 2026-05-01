@@ -192,7 +192,6 @@ pub enum WorkspaceAction {
     ShowUpgrade,
     ShowReferralSettingsPage,
     JoinSlack,
-    ViewUserDocs,
     ViewLatestChangelog,
     ViewPrivacyPolicy,
     SendFeedback,
@@ -776,7 +775,6 @@ impl WorkspaceAction {
             | ShowUpgrade
             | ShowReferralSettingsPage
             | JoinSlack
-            | ViewUserDocs
             | ViewLatestChangelog
             | ViewPrivacyPolicy
             | SendFeedback

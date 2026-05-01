@@ -71,17 +71,6 @@ impl StoredLlmConfig {
             Err(_) => Self::default(),
         }
     }
-
-    pub fn save(&self) -> Result<()> {
-        let paths = crate::server::local_backend::paths::LocalPaths::resolve();
-        paths.ensure_root_exists();
-        let path = paths.llm_provider_file();
-        let json = serde_json::to_string_pretty(self).context("serialize llm config")?;
-        let tmp = path.with_extension("json.tmp");
-        std::fs::write(&tmp, json).context("write llm config tmp")?;
-        std::fs::rename(&tmp, &path).context("rename llm config tmp")?;
-        Ok(())
-    }
 }
 
 impl LocalLlmProvider {
@@ -156,24 +145,6 @@ impl LocalLlmProvider {
                 );
                 LocalLlmProvider::Disabled
             }
-        }
-    }
-
-    pub fn label(&self) -> &'static str {
-        match self {
-            LocalLlmProvider::Anthropic { .. } => "anthropic",
-            LocalLlmProvider::OpenAi { .. } => "openai",
-            LocalLlmProvider::Ollama { .. } => "ollama",
-            LocalLlmProvider::Disabled => "disabled",
-        }
-    }
-
-    pub fn model(&self) -> &str {
-        match self {
-            LocalLlmProvider::Anthropic { model, .. }
-            | LocalLlmProvider::OpenAi { model, .. }
-            | LocalLlmProvider::Ollama { model, .. } => model.as_str(),
-            LocalLlmProvider::Disabled => "disabled",
         }
     }
 

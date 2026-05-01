@@ -1,6 +1,5 @@
 use crate::channel::ChannelState;
 
-pub const USER_DOCS_URL: &str = "https://github.com/hotfuzz/yarp/";
 #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
 pub const GITHUB_ISSUES_URL: &str = "https://github.com/hotfuzz/yarp/issues";
 pub const SLACK_URL: &str = "http://go.yarp.dev/join-preview";

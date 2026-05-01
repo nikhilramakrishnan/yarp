@@ -23,22 +23,16 @@ pub struct FileStore {
 }
 
 struct FileStoreInner {
-    root: PathBuf,
     locks: Mutex<HashMap<PathBuf, Arc<Mutex<()>>>>,
 }
 
 impl FileStore {
-    pub fn new(root: PathBuf) -> Self {
+    pub fn new() -> Self {
         Self {
             inner: Arc::new(FileStoreInner {
-                root,
                 locks: Mutex::new(HashMap::new()),
             }),
         }
-    }
-
-    pub fn root(&self) -> &Path {
-        &self.inner.root
     }
 
     /// Returns a per-path mutex. Holding it while reading + writing prevents
@@ -88,55 +82,6 @@ impl FileStore {
         fs::rename(&tmp, path)
             .with_context(|| format!("rename {} -> {}", tmp.display(), path.display()))?;
         Ok(())
-    }
-
-    /// Reads a JSON value, applies `mutator`, and writes it back atomically.
-    /// If the file does not exist, `mutator` is given `T::default()`.
-    pub fn update_json<T, F>(&self, path: &Path, mutator: F) -> Result<()>
-    where
-        T: DeserializeOwned + Serialize + Default,
-        F: FnOnce(&mut T),
-    {
-        let lock = self.lock_for(path);
-        let _guard = lock.lock();
-        let mut value: T = match fs::read(path) {
-            Ok(bytes) => serde_json::from_slice(&bytes)
-                .with_context(|| format!("parsing JSON at {}", path.display()))?,
-            Err(err) if err.kind() == std::io::ErrorKind::NotFound => T::default(),
-            Err(err) => {
-                return Err(err).with_context(|| format!("reading {}", path.display()));
-            }
-        };
-        mutator(&mut value);
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)
-                .with_context(|| format!("creating dir {}", parent.display()))?;
-        }
-        let bytes =
-            serde_json::to_vec_pretty(&value).context("serializing JSON for FileStore::update")?;
-        let tmp = self.tempfile_for(path);
-        {
-            let mut file = fs::File::create(&tmp)
-                .with_context(|| format!("creating tempfile {}", tmp.display()))?;
-            file.write_all(&bytes)
-                .with_context(|| format!("writing tempfile {}", tmp.display()))?;
-            file.sync_all()
-                .with_context(|| format!("fsync tempfile {}", tmp.display()))?;
-        }
-        fs::rename(&tmp, path)
-            .with_context(|| format!("rename {} -> {}", tmp.display(), path.display()))?;
-        Ok(())
-    }
-
-    /// Deletes `path` if it exists. Returns Ok(false) if it didn't.
-    pub fn delete(&self, path: &Path) -> Result<bool> {
-        let lock = self.lock_for(path);
-        let _guard = lock.lock();
-        match fs::remove_file(path) {
-            Ok(()) => Ok(true),
-            Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
-            Err(err) => Err(err).with_context(|| format!("deleting {}", path.display())),
-        }
     }
 
     fn tempfile_for(&self, path: &Path) -> PathBuf {

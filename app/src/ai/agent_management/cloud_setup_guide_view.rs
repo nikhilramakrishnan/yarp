@@ -7,7 +7,6 @@ use crate::completer::SessionAgnosticContext;
 use crate::send_telemetry_from_ctx;
 use crate::workflows::workflow::{Argument, ArgumentType, Workflow};
 use crate::workflows::WorkflowType;
-use serde::Serialize;
 use std::collections::HashMap;
 use string_offset::CharCounter;
 use yarp_completer::signatures::CommandRegistry;
@@ -19,7 +18,7 @@ use yarpui::elements::{
     new_scrollable::{ClippedAxisConfiguration, DualAxisConfig, NewScrollable},
     Align, Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Element, Empty, Expanded, Flex, Highlight, HighlightedRange,
-    MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius, Text,
+    MainAxisAlignment, MainAxisSize, ParentElement, Radius, Text,
 };
 use yarpui::fonts::{Properties, Weight};
 use yarpui::text_layout::TextStyle;
@@ -40,8 +39,6 @@ pub struct CloudSetupGuideView {
     create_env_cli_code_handles: CodeSnippetButtonHandles,
     create_slack_integration_code_handles: CodeSnippetButtonHandles,
     create_linear_integration_code_handles: CodeSnippetButtonHandles,
-    env_docs_link_mouse_state: MouseStateHandle,
-    integration_docs_link_mouse_state: MouseStateHandle,
     parsed_tokens: HashMap<&'static str, ParsedTokensSnapshot>,
     vertical_scroll_state: ClippedScrollStateHandle,
     horizontal_scroll_state: ClippedScrollStateHandle,
@@ -57,13 +54,6 @@ pub enum CloudSetupGuideAction {
         workflow: Box<WorkflowType>,
         step: SetupGuideStep,
     },
-}
-
-/// Which URL the user clicked in the setup guide (also used in telemetry)
-#[derive(Clone, Copy, Debug, Serialize)]
-pub enum SetupGuideDocs {
-    Environment,
-    Integration,
 }
 
 pub enum CloudSetupGuideEvent {
@@ -104,8 +94,6 @@ impl CloudSetupGuideView {
             create_env_cli_code_handles: CodeSnippetButtonHandles::default(),
             create_slack_integration_code_handles: CodeSnippetButtonHandles::default(),
             create_linear_integration_code_handles: CodeSnippetButtonHandles::default(),
-            env_docs_link_mouse_state: MouseStateHandle::default(),
-            integration_docs_link_mouse_state: MouseStateHandle::default(),
             parsed_tokens: HashMap::new(),
             vertical_scroll_state: ClippedScrollStateHandle::default(),
             horizontal_scroll_state: ClippedScrollStateHandle::default(),
@@ -222,13 +210,9 @@ impl CloudSetupGuideView {
         .finish()
     }
 
-    /// Render a description that includes a link at the end
-    /// (e.g. "Use yarp's environment setup command to have an agent help you through it. LINK[Visit docs]")
+    /// Render a description text line.
     fn render_description_with_link(
         prefix: &'static str,
-        _link_text: &'static str,
-        _link_mouse_state: MouseStateHandle,
-        _telemetry_url: SetupGuideDocs,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let step_desc_font_size = 14.;
@@ -364,9 +348,6 @@ impl CloudSetupGuideView {
 
         let sub_description = Container::new(Self::render_description_with_link(
             "Use Yarp's environment setup command to have an agent help you through it. ",
-            "Visit docs",
-            self.env_docs_link_mouse_state.clone(),
-            SetupGuideDocs::Environment,
             appearance,
         ))
         .with_padding_left(46.)
@@ -437,9 +418,6 @@ impl CloudSetupGuideView {
 
         let sub_description = Container::new(Self::render_description_with_link(
             "Integrate Slack or Linear to assign Yarp's Agent tasks with @Yarp. ",
-            "Visit docs",
-            self.integration_docs_link_mouse_state.clone(),
-            SetupGuideDocs::Integration,
             appearance,
         ))
         .with_padding_left(46.)

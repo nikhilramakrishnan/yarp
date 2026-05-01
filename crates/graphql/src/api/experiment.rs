@@ -51,8 +51,6 @@ pub enum Experiment {
     SplitCreditCostExperiment,
     WindowsLaunchControl,
     WindowsLaunchExperiment,
-    TmuxSshYarpificationControl,
-    TmuxSshYarpificationExperiment,
     UsageBasedPricingControl,
     UsageBasedPricingExperiment,
     CodebaseContextExperiment,

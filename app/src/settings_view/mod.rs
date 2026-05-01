@@ -339,7 +339,7 @@ impl FromStr for SettingsSection {
             "Shared blocks" => Ok(Self::SharedBlocks),
             "Teams" => Ok(Self::Teams),
             "Yarpify" => Ok(Self::Yarpify),
-            "YarpDrive" | "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
+            "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
             // This page was called "Fuzz" at one point, keep for backward compatibility.
             "Fuzz" | "Yarp Agent" => Ok(Self::YarpAgent),
             "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),

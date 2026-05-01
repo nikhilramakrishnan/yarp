@@ -1499,12 +1499,6 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
         )
         .with_context_predicate(id!("Workspace")),
         EditableBinding::new(
-            "workspace:link_to_user_docs",
-            "View user docs (opens external link)",
-            WorkspaceAction::ViewUserDocs,
-        )
-        .with_context_predicate(id!("Workspace")),
-        EditableBinding::new(
             "workspace:send_feedback",
             BindingDescription::new("Send feedback (opens external link)").with_dynamic_override(
                 |ctx| is_feedback_skill_available(ctx).then(|| "Send feedback with Fuzz".into()),

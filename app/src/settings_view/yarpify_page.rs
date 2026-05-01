@@ -530,16 +530,10 @@ struct TitleWidget {
 
 impl TitleWidget {
     fn render_top_of_page(&self, appearance: &Appearance, _app: &AppContext) -> Box<dyn Element> {
-        let yarpify_description = vec![
-            FormattedTextFragment::plain_text(
-                "Configure whether Yarp attempts to “Yarpify” (add support for blocks, \
-                    input modes, etc) certain shells. ",
-            ),
-            FormattedTextFragment::hyperlink(
-                "Learn more",
-                "https://github.com/hotfuzz/yarp/terminal/yarpify/subshells",
-            ),
-        ];
+        let yarpify_description = vec![FormattedTextFragment::plain_text(
+            "Configure whether Yarp attempts to “Yarpify” (add support for blocks, \
+                input modes, etc) certain shells.",
+        )];
 
         let yarpify_description = FormattedTextElement::new(
             FormattedText::new([FormattedTextLine::Line(yarpify_description)]),

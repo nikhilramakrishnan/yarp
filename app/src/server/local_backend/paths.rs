@@ -34,20 +34,8 @@ impl LocalPaths {
         }
     }
 
-    pub fn install_id_file(&self) -> PathBuf {
-        self.root.join("install_id")
-    }
-
     pub fn agent_tasks_file(&self) -> PathBuf {
         self.root.join("agent_tasks.json")
-    }
-
-    pub fn conversations_dir(&self) -> PathBuf {
-        self.root.join("conversations")
-    }
-
-    pub fn conversation_file(&self, token: &str) -> PathBuf {
-        self.conversations_dir().join(format!("{token}.json"))
     }
 
     pub fn harness_dir(&self) -> PathBuf {
@@ -56,42 +44,6 @@ impl LocalPaths {
 
     pub fn harness_run_dir(&self, run_id: &str) -> PathBuf {
         self.harness_dir().join(run_id)
-    }
-
-    pub fn harness_transcript(&self, run_id: &str) -> PathBuf {
-        self.harness_run_dir(run_id).join("transcript.json")
-    }
-
-    pub fn harness_block_snapshot(&self, run_id: &str) -> PathBuf {
-        self.harness_run_dir(run_id).join("block_snapshot.json")
-    }
-
-    pub fn harness_metadata(&self, run_id: &str) -> PathBuf {
-        self.harness_run_dir(run_id).join("metadata.json")
-    }
-
-    pub fn objects_dir(&self) -> PathBuf {
-        self.root.join("objects")
-    }
-
-    pub fn workflows_dir(&self) -> PathBuf {
-        self.objects_dir().join("workflows")
-    }
-
-    pub fn notebooks_dir(&self) -> PathBuf {
-        self.objects_dir().join("notebooks")
-    }
-
-    pub fn generic_objects_dir(&self) -> PathBuf {
-        self.objects_dir().join("generic")
-    }
-
-    pub fn folders_dir(&self) -> PathBuf {
-        self.objects_dir().join("folders")
-    }
-
-    pub fn trash_dir(&self) -> PathBuf {
-        self.objects_dir().join("trash")
     }
 
     pub fn settings_file(&self) -> PathBuf {
