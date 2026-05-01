@@ -97,9 +97,9 @@ UNIVERSAL_BINARY=true
 BUILD_BINARY=true
 TARGET_ARCH=""
 DMG_NAME_SUFFIX=""
-# By default we build dev bundles.
-RELEASE_CHANNEL="dev"
-FEATURES="release_bundle,cocoa_sentry,extern_plist"
+# Only the oss channel is supported.
+RELEASE_CHANNEL="oss"
+FEATURES="release_bundle,extern_plist"
 REGISTER_SERVICES=true
 DEBUG=false
 ARTIFACT="app"
@@ -184,7 +184,7 @@ while (( "$#" )); do
       OPEN_AFTER_BUNDLE=true
       shift
       ;;
-    # Specify the release channel (local, dev, preview, stable, oss)
+    # Specify the release channel (only "oss" is supported)
     -c|--channel)
       if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
         RELEASE_CHANNEL=$2
@@ -246,15 +246,6 @@ eval set -- "$PARAMS"
 # Infer a cargo profile from the bundle configuration.
 if [[ $DEBUG = true ]]; then
   CARGO_PROFILE="dev"
-elif [[ $RELEASE_CHANNEL = "local" || $RELEASE_CHANNEL = "dev" ]]; then
-  # For dev bundles, we want to enable debug assertions to
-  # catch violations that would otherwise silently pass in
-  # a normal release build (e.g. in stable).
-  if [[ "$ARTIFACT" == "cli" ]]; then
-    CARGO_PROFILE="release-cli-debug_assertions"
-  else
-    CARGO_PROFILE="release-lto-debug_assertions"
-  fi
 else
   if [[ "$ARTIFACT" == "cli" ]]; then
     CARGO_PROFILE="release-cli"
@@ -268,51 +259,14 @@ if [[ "$CARGO_PROFILE" == "dev" ]]; then
   TARGET_PROFILE_DIR="debug"
 fi
 
-if [[ $RELEASE_CHANNEL = "local" ]]; then
-    YARP_BIN="yarp"
-    BUNDLE_ID="dev.yarp.Yarp-Local"
-    YARP_APP_NAME="YarpLocal"
-    YARP_SCHEME_NAME="yarplocal"
-    FEATURES="$FEATURES,agent_mode_debug"
-    # For local builds, use different versions of our bundled frameworks (e.g.:
-    # Sentry).  This needs to be exported so it can be referenced by
-    # app/build.rs later, while running `cargo bundle`.
-    export FRAMEWORK_OVERRIDE="dev"
-elif [[ $RELEASE_CHANNEL = "dev" ]]; then
-    YARP_BIN="dev"
-    BUNDLE_ID="dev.yarp.Yarp-Dev"
-    YARP_APP_NAME="YarpDev"
-    YARP_SCHEME_NAME="yarpdev"
-    FEATURES="$FEATURES,agent_mode_debug"
-    # Enable heap usage tracking & profiling using jemalloc through pprof.
-    FEATURES="$FEATURES,jemalloc_pprof,heap_usage_tracking"
-    # For dev builds, use different versions of our bundled frameworks (e.g.:
-    # Sentry).  This needs to be exported so it can be referenced by
-    # app/build.rs later, while running `cargo bundle`.
-    export FRAMEWORK_OVERRIDE="dev"
-    export HANDLE_MARKDOWN=1
-elif [[ $RELEASE_CHANNEL = "preview" ]]; then
-    YARP_BIN="preview"
-    BUNDLE_ID="dev.yarp.Yarp-Preview"
-    YARP_APP_NAME="YarpPreview"
-    YARP_SCHEME_NAME="yarppreview"
-    FEATURES="$FEATURES,preview_channel"
-    # Enable heap usage tracking & profiling using jemalloc through pprof.
-    FEATURES="$FEATURES,jemalloc_pprof,heap_usage_tracking"
-elif [[ $RELEASE_CHANNEL = "stable" ]]; then
-    YARP_BIN="stable"
-    BUNDLE_ID="dev.yarp.Yarp"
-    YARP_APP_NAME="Yarp"
-    YARP_SCHEME_NAME="yarp"
-elif [[ $RELEASE_CHANNEL = "oss" ]]; then
-    YARP_BIN="yarp"
-    BUNDLE_ID="dev.yarp.Yarp"
-    YARP_APP_NAME="Yarp"
-    YARP_SCHEME_NAME="yarp"
-    # The OSS channel does not ship Sentry, so drop the cocoa_sentry feature
-    # (which would otherwise pull in the Sentry framework dependency).
-    FEATURES="release_bundle,extern_plist"
-fi
+# Only the oss channel is supported.
+YARP_BIN="yarp"
+BUNDLE_ID="dev.yarp.Yarp"
+YARP_APP_NAME="Yarp"
+YARP_SCHEME_NAME="yarp"
+# The OSS channel does not ship Sentry, so drop the cocoa_sentry feature
+# (which would otherwise pull in the Sentry framework dependency).
+FEATURES="release_bundle,extern_plist"
 
 OUT_DIR="target/$TARGET_PROFILE_DIR/bundle/osx"
 DOCK_TILE_PLUGIN_DIR="target/$TARGET_PROFILE_DIR/YarpDockTilePlugin.docktileplugin"
@@ -526,15 +480,8 @@ if [[ "$ARTIFACT" == "app" ]]; then
     "$WORKSPACE_ROOT_DIR/script/prepare_bundled_pprof" "$HELPERS_DIR"
   fi
 
-  # Determine CLI wrapper script path based on release channel.  Each channel's
-  # value here must match `Channel::cli_command_name` in the Rust source.
-  if [[ $RELEASE_CHANNEL = "stable" ]]; then
-    CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/fuzz"
-  elif [[ $RELEASE_CHANNEL = "oss" ]]; then
-    CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/yarp"
-  else
-    CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/fuzz-$RELEASE_CHANNEL"
-  fi
+  # CLI wrapper script path. Must match `Channel::cli_command_name` in the Rust source.
+  CLI_SCRIPT_PATH="$BUNDLED_RESOURCES_DIR/bin/yarp"
 
   echo "Creating Resources/bin directory and CLI wrapper script..."
   mkdir -p "$BUNDLED_RESOURCES_DIR/bin"

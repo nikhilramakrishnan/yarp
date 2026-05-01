@@ -57,8 +57,6 @@ mod platform;
 #[cfg(feature = "plugin_host")]
 mod plugin;
 mod prefix;
-#[cfg(target_os = "macos")]
-mod preview_config_migration;
 mod pricing;
 mod profiling;
 mod projects;
@@ -987,12 +985,6 @@ fn initialize_app(
             yarpui_extras::secure_storage::register(&data_domain, ctx);
         }
     }
-
-    // One-time migration: give Preview its own config directory by
-    // symlinking contents from the shared ~/.yarp location. Must run
-    // before ensure_yarp_watch_roots_exist() creates the new directory.
-    #[cfg(target_os = "macos")]
-    preview_config_migration::migrate_preview_config_dir_if_needed();
 
     ensure_yarp_watch_roots_exist();
     ctx.add_singleton_model(YarpManagedPathsWatcher::new);
