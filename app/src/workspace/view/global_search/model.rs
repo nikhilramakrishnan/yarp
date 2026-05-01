@@ -85,7 +85,7 @@ impl GlobalSearch {
 
         let handle = ctx.spawn(
             async move {
-                Self::run_warp_ripgrep_cli(
+                Self::run_yarp_ripgrep_cli(
                     search_id,
                     effective_pattern,
                     roots,
@@ -115,7 +115,7 @@ impl GlobalSearch {
         self.search_handle = Some(handle);
     }
 
-    async fn run_warp_ripgrep_cli(
+    async fn run_yarp_ripgrep_cli(
         search_id: u32,
         pattern: String,
         roots: Vec<PathBuf>,

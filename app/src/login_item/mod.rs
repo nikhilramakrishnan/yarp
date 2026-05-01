@@ -27,7 +27,7 @@ use yarpui::AppContext;
 /// Skipped entirely when the `YARP_INTEGRATION` env var is set, so integration
 /// tests never touch the user's real login items / registry. Also skipped for
 /// non-release-bundle builds (e.g. `cargo run`), so developer machines don't
-/// auto-launch `target/debug/{yarp,openwarp,...}` at sign-in.
+/// auto-launch `target/debug/{yarp,openyarp,...}` at sign-in.
 #[cfg(any(target_os = "macos", target_os = "windows"))]
 pub fn maybe_register_app_as_login_item(ctx: &mut AppContext) {
     if std::env::var("YARP_INTEGRATION").is_ok() {

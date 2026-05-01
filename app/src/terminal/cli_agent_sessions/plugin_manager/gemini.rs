@@ -14,10 +14,10 @@ use super::{
 use crate::terminal::model::session::LocalCommandExecutor;
 use crate::terminal::shell::ShellType;
 
-const EXTENSION_REPO: &str = "https://github.com/hotfuzz/gemini-cli-warp";
+const EXTENSION_REPO: &str = "https://github.com/hotfuzz/gemini-cli-yarp";
 const EXTENSION_NAME: &str = "gemini-yarp";
 
-// Keep in sync with the plugin version in hotfuzz/gemini-warp.
+// Keep in sync with the plugin version in hotfuzz/gemini-yarp.
 const MINIMUM_PLUGIN_VERSION: &str = "1.0.0";
 
 pub(super) struct GeminiPluginManager {
@@ -129,7 +129,7 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plu
     steps: &[PluginInstructionStep {
         description: "Install the Yarp extension",
         command:
-            "gemini extensions install https://github.com/hotfuzz/gemini-cli-warp --consent",
+            "gemini extensions install https://github.com/hotfuzz/gemini-cli-yarp --consent",
         executable: true,
         link: None,
     }],

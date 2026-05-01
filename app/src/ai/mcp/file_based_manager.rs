@@ -263,7 +263,7 @@ impl FileBasedMCPManager {
 
     /// Returns `true` if the server identified by `hash` is referenced from the global
     /// Yarp config (`~/.yarp/.mcp.json`). Global Yarp servers always auto-spawn.
-    fn is_global_warp_server(&self, hash: u64) -> bool {
+    fn is_global_yarp_server(&self, hash: u64) -> bool {
         let yarp_root = yarp_data_dir();
         self.file_based_servers_by_root
             .get(&yarp_root)
@@ -291,7 +291,7 @@ impl FileBasedMCPManager {
             let Some(hash) = installation.hash() else {
                 continue;
             };
-            if self.is_global_warp_server(hash) || (self.is_global_server(hash) && mcp_enabled) {
+            if self.is_global_yarp_server(hash) || (self.is_global_server(hash) && mcp_enabled) {
                 to_spawn.push(installation);
             }
 
@@ -341,7 +341,7 @@ impl FileBasedMCPManager {
             .file_based_servers
             .iter()
             .filter(|(hash, _)| {
-                self.is_global_server(**hash) && !self.is_global_warp_server(**hash)
+                self.is_global_server(**hash) && !self.is_global_yarp_server(**hash)
             })
             .map(|(_, server)| server.clone())
             .collect();

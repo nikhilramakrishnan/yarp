@@ -3,7 +3,7 @@
 //! Before starting, please read the usage guide on Notion. The guide explains
 //! some important constraints that are required for proper use of the framework
 //! that we are not able to assert through automated testing.
-//! https://www.notion.so/warpdev/Experiment-Framework-Guide-88954c36a0c3469ea57b427b58249d5f?pvs=4
+//! https://www.notion.so/yarpdev/Experiment-Framework-Guide-88954c36a0c3469ea57b427b58249d5f?pvs=4
 
 mod block_onboarding_layer;
 mod login_layer;

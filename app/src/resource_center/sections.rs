@@ -74,7 +74,7 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
             ContentItem {
                 title: "How Yarp uses Yarp",
                 description: "Learn how Yarp's engineering team uses their favorite features",
-                url: "https://github.com/hotfuzz/yarp/blog/how-warp-uses-warp",
+                url: "https://github.com/hotfuzz/yarp/blog/how-yarp-uses-yarp",
                 button_label: "Read article",
             },
         ],

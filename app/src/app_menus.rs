@@ -217,7 +217,7 @@ fn make_new_app_menu(ctx: &AppContext) -> Menu {
             let default_terminal = DefaultTerminal::handle(ctx).as_ref(ctx);
             MenuItemPropertyChanges {
                 disabled: Some(
-                    !DefaultTerminal::can_warp_become_default()
+                    !DefaultTerminal::can_yarp_become_default()
                         || default_terminal.is_yarp_default(),
                 ),
                 ..Default::default()

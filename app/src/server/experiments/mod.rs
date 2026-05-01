@@ -8,7 +8,7 @@
 //! Then, you can use the global [`ServerExperiments`] model
 //! to update and query the latest experiment state.
 //!
-//! See [here](https://www.notion.so/warpdev/Server-side-experiments-dynamic-feature-enablement-c0fb9aed695d4178a19b8830e3269094)
+//! See [here](https://www.notion.so/yarpdev/Server-side-experiments-dynamic-feature-enablement-c0fb9aed695d4178a19b8830e3269094)
 //! for a full guide on the server-side experiment framework.
 
 use crate::features::FeatureFlag;
@@ -34,8 +34,6 @@ pub enum ServerExperiment {
     EnvVarsEarlyAccessExperiment,
     AgentModeAnalyticsExperiment,
     WindowsLaunchExperiment,
-    TmuxSshWarpificationControl,
-    TmuxSshWarpificationExperiment,
     CodebaseContextExperiment,
     CodebaseContextControl,
     SuggestedCodeDiffsControl,
@@ -91,14 +89,6 @@ impl ServerExperiment {
             Self::WindowsLaunchExperiment => {
                 // TODO(alokedesai): Clean this up now that we no longer gate access to the Windows
                 // build on an allowlist.
-            }
-            Self::TmuxSshWarpificationControl => FeatureFlag::SSHTmuxWrapper.set_enabled(false),
-            Self::TmuxSshWarpificationExperiment => {
-                // Only enable the TMUX-based experience if not on windows. ConPTY doesn't support
-                // DCS, which we need in order to use tmux control mode.
-                if cfg!(not(windows)) {
-                    FeatureFlag::SSHTmuxWrapper.set_enabled(true)
-                }
             }
             Self::CodebaseContextExperiment => {
                 FeatureFlag::FullSourceCodeEmbedding.set_enabled(true);

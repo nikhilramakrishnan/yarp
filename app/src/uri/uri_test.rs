@@ -146,7 +146,7 @@ fn test_remove_extension() {
 }
 
 #[test]
-fn test_warp_web_link_notebook() {
+fn test_yarp_web_link_notebook() {
     assert_eq!(
         get_item_data_from_yarp_link(
             &Url::parse(&format!(
@@ -167,7 +167,7 @@ server_id: ServerId::from_string_lossy("LkDlnAe34vfYD2JXsAkssc"),
 }
 
 #[test]
-fn test_warp_web_link_session() {
+fn test_yarp_web_link_session() {
     assert_eq!(
         get_item_data_from_yarp_link(
             &Url::parse(&format!(
@@ -182,7 +182,7 @@ fn test_warp_web_link_session() {
 }
 
 #[test]
-fn test_warp_web_link_workflow() {
+fn test_yarp_web_link_workflow() {
     assert_eq!(
         get_item_data_from_yarp_link(
             &Url::parse(&format!(
@@ -200,7 +200,7 @@ server_id: ServerId::from_string_lossy("ZCJSkai2gpwTqpBFs5HOfZ"),
 }
 
 #[test]
-fn test_warp_web_link_failure() {
+fn test_yarp_web_link_failure() {
     assert_eq!(
         get_item_data_from_yarp_link(&Url::parse("https://google.com").unwrap()),
         None

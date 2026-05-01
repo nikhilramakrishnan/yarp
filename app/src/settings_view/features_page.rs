@@ -547,7 +547,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
         id!("Workspace"),
     )]);
 
-    if DefaultTerminal::can_warp_become_default() {
+    if DefaultTerminal::can_yarp_become_default() {
         app.register_fixed_bindings([FixedBinding::empty(
             "Make Yarp the default terminal",
             builder(SettingsAction::FeaturesPageToggle(
@@ -2507,7 +2507,7 @@ impl FeaturesPageView {
             general_widgets.push(Box::new(AutoOpenCodeReviewPaneWidget::default()));
         }
 
-        if DefaultTerminal::can_warp_become_default() {
+        if DefaultTerminal::can_yarp_become_default() {
             general_widgets.push(Box::new(DefaultTerminalWidget::default()));
         }
 

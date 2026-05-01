@@ -4,7 +4,7 @@ ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
 ENV PATH=/usr/local/cargo/bin:/usr/local/go/bin:$PATH
 
-# This set of packages is adapted from ./script/bootstrap in warp-internal and warp-server.
+# This set of packages is adapted from ./script/bootstrap in yarp and yarp-server.
 # It doesn't include *everything* (ex. no wgslfmt or gcloud), but is enough to build and test Yarp.
 # Note: currently, only x86_64 builds are supported.
 

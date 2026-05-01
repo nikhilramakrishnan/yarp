@@ -526,7 +526,7 @@ fn test_smart_select_with_drag() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml andy@yarp.dev",
+                "word ~/.yarp/themes/foo-bar.yaml andy@yarp.dev",
                 Default::default(),
                 ctx,
             );
@@ -3132,7 +3132,7 @@ fn test_add_next_occurrence() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor =
-                EditorView::new_with_base_text("yarpwordyarpwordwarp", Default::default(), ctx);
+                EditorView::new_with_base_text("yarpwordyarpwordyarp", Default::default(), ctx);
             editor
                 .select_ranges(vec![DisplayPoint::new(0, 0)..DisplayPoint::new(0, 4)], ctx)
                 .unwrap();
@@ -3143,7 +3143,7 @@ fn test_add_next_occurrence() {
             assert_eq!(editor.buffer_text(ctx), "wordword");
 
             editor.undo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "yarpwordyarpwordwarp");
+            assert_eq!(editor.buffer_text(ctx), "yarpwordyarpwordyarp");
             editor.redo(ctx);
             assert_eq!(editor.buffer_text(ctx), "wordword");
 

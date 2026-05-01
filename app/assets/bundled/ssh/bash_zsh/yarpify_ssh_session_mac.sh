@@ -46,4 +46,4 @@ _check_tmux() {
     return 1
 }
 
-_check_tmux && $TMUX -Lwarp -CC && exit
+_check_tmux && $TMUX -Lyarp -CC && exit

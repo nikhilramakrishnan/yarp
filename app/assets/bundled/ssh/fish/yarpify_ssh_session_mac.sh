@@ -48,4 +48,4 @@ function _check_tmux
     return 1
 end
 
-_check_tmux; and $TMUX -Lwarp -CC; and exit
+_check_tmux; and $TMUX -Lyarp -CC; and exit

@@ -4083,7 +4083,7 @@ impl SettingsWidget for TeamsWidget {
 pub fn test_valid_domains() {
     assert!(!TeamsPageView::is_valid_domain("@yarp.dev"));
     assert!(!TeamsPageView::is_valid_domain("yarp,"));
-    assert!(!TeamsPageView::is_valid_domain("warpdev"));
+    assert!(!TeamsPageView::is_valid_domain("yarpdev"));
     assert!(!TeamsPageView::is_valid_domain(".dev"));
     assert!(!TeamsPageView::is_valid_domain("yarp..dev"));
     assert!(!TeamsPageView::is_valid_domain(" "));

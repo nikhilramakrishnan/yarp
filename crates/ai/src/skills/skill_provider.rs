@@ -225,7 +225,7 @@ mod tests {
     }
 
     #[test]
-    fn yarp_home_skill_path_is_home_warp_skill() {
+    fn yarp_home_skill_path_is_home_yarp_skill() {
         let Some(yarp_home_skills_dir) = yarp_core::paths::yarp_home_skills_dir() else {
             eprintln!("Skipping test: home directory not available");
             return;

@@ -216,7 +216,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://github.com/hotfuzz/Warp/issues/new/choose".to_string(),
+                                "https://github.com/hotfuzz/yarp/issues/new/choose".to_string(),
                             ));
                         })
                         .finish(),
@@ -254,7 +254,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://github.com/hotfuzz/Warp/issues/new/choose".to_string(),
+                                "https://github.com/hotfuzz/yarp/issues/new/choose".to_string(),
                             ));
                         })
                         .finish(),

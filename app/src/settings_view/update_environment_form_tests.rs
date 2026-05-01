@@ -71,7 +71,7 @@ fn test_build_auth_url_with_next_overrides_existing() {
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::SettingsEnvironments,
-        "warpdev",
+        "yarpdev",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let mut next_values = parsed
@@ -82,7 +82,7 @@ fn test_build_auth_url_with_next_overrides_existing() {
     assert_eq!(next_values.len(), 1);
     assert_eq!(
         next_values.pop(),
-        Some("warpdev://settings/environments".to_string())
+        Some("yarpdev://settings/environments".to_string())
     );
     assert!(parsed
         .query_pairs()

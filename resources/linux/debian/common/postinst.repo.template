@@ -6,7 +6,7 @@ eval $("$APT_CONFIG" shell APT_TRUSTED_KEYRING_DIR 'Dir::Etc::trustedparts/d')
 eval $("$APT_CONFIG" shell APT_SOURCE_LIST_DIR 'Dir::Etc::sourceparts/d')
 
 # Install/update our package signing key.
-# This is the content of https://releases.yarp.dev/linux/keys/warp.asc, but
+# This is the content of https://releases.yarp.dev/linux/keys/yarp.asc, but
 # dearmored and base64-encoded.
 SIGNING_KEY_PATH="${APT_TRUSTED_KEYRING_DIR}@@REPO_NAME@@.gpg"
 base64 -d - > "$SIGNING_KEY_PATH" <<SIGNINGKEY

@@ -411,7 +411,7 @@ impl UserWorkspaces {
             .is_some_and(|team| team.billing_metadata.customer_type == CustomerType::Enterprise)
             || self
                 .current_team()
-                .is_some_and(|team| team.billing_metadata.is_warp_plan())
+                .is_some_and(|team| team.billing_metadata.is_yarp_plan())
             || ChannelState::channel().is_dogfood()
     }
 

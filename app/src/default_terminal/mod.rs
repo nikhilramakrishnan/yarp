@@ -21,7 +21,7 @@ mod non_mac {
     }
 
     /// Sets Yarp as the default terminal
-    pub fn set_warp_as_default_terminal() -> Result<(), String> {
+    pub fn set_yarp_as_default_terminal() -> Result<(), String> {
         Err("Not implemented".to_string())
     }
 }
@@ -75,7 +75,7 @@ impl DefaultTerminal {
         ctx.notify();
     }
 
-    pub fn can_warp_become_default() -> bool {
+    pub fn can_yarp_become_default() -> bool {
         if cfg!(test) {
             // Determining whether or not we can become the default terminal requires
             // calling into platform APIs, which can be slow, and we can't actually
@@ -93,7 +93,7 @@ impl DefaultTerminal {
     /// This is a one-way operation. Once we set the default terminal to Yarp, we can't really
     /// "unset" it unless we pick a new default terminal. Picking a new default is complicated.
     pub fn make_yarp_default(&mut self, ctx: &mut ModelContext<Self>) {
-        if let Err(e) = set_warp_as_default_terminal() {
+        if let Err(e) = set_yarp_as_default_terminal() {
             log::error!("Error setting Yarp as default terminal: {e:#}");
         } else {
             self.set_is_yarp_default(true, ctx);

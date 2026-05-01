@@ -724,7 +724,7 @@ fn test_find_url_wide_characters() {
 #[test]
 fn test_find_url_omits_trailing_periods() {
     // Test that it omits a single trailing period.
-    let blockgrid = mock_blockgrid("Visit https://github.com/hotfuzz/Warp/issues.");
+    let blockgrid = mock_blockgrid("Visit https://github.com/hotfuzz/yarp/issues.");
     assert_eq!(
         blockgrid
             .grid_handler
@@ -742,7 +742,7 @@ fn test_find_url_omits_trailing_periods() {
     );
 
     // Test that it omits multiple trailing periods.
-    let blockgrid = mock_blockgrid("Visit https://github.com/hotfuzz/Warp/issues...");
+    let blockgrid = mock_blockgrid("Visit https://github.com/hotfuzz/yarp/issues...");
     assert_eq!(
         blockgrid
             .grid_handler
@@ -760,7 +760,7 @@ fn test_find_url_omits_trailing_periods() {
     );
 
     // Test that it handles a period in the middle of the URL path somewhere.
-    let blockgrid = mock_blockgrid("Visit https://github.com/yarp.dev/Warp/issues.");
+    let blockgrid = mock_blockgrid("Visit https://github.com/hotfuzz/yarp/issues.");
     assert_eq!(
         blockgrid
             .grid_handler

@@ -17,8 +17,8 @@ fn single_repo_name_returns_none_for_zero_or_many_repos() {
     assert_eq!(single_repo_name(&no_repos), None);
 
     let two_repos = vec![
-        GithubRepo::new("hotfuzz".to_string(), "warp-internal".to_string()),
-        GithubRepo::new("hotfuzz".to_string(), "warp-server".to_string()),
+        GithubRepo::new("hotfuzz".to_string(), "yarp".to_string()),
+        GithubRepo::new("hotfuzz".to_string(), "yarp-server".to_string()),
     ];
     assert_eq!(single_repo_name(&two_repos), None);
 }

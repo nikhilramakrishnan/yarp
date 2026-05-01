@@ -715,7 +715,7 @@ impl ConvertAPIToolCallToAIAgentAction for api::message::ToolCall {
                         }
                     }
                     Some(Metadata::WarpDocumentationSearch(_)) => {
-                        SubagentType::WarpDocumentationSearch
+                        SubagentType::YarpDocumentationSearch
                     }
                     None => SubagentType::Unknown,
                 };

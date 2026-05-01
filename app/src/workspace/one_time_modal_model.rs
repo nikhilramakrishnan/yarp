@@ -273,11 +273,11 @@ impl OneTimeModalModel {
         }
 
         let general_settings = GeneralSettings::as_ref(ctx);
-        let openwarp_modal_shown = *general_settings
+        let openyarp_modal_shown = *general_settings
             .did_check_to_trigger_openyarp_launch_modal
             .value();
 
-        if openwarp_modal_shown {
+        if openyarp_modal_shown {
             return false;
         }
 
@@ -290,9 +290,9 @@ impl OneTimeModalModel {
             }
         });
 
-        let should_show_openwarp_modal = !matches!(ChannelState::channel(), Channel::Integration);
-        self.set_openyarp_launch_modal_open(should_show_openwarp_modal, ctx);
-        should_show_openwarp_modal
+        let should_show_openyarp_modal = !matches!(ChannelState::channel(), Channel::Integration);
+        self.set_openyarp_launch_modal_open(should_show_openyarp_modal, ctx);
+        should_show_openyarp_modal
     }
 
     pub fn is_build_plan_migration_modal_open(&self) -> bool {

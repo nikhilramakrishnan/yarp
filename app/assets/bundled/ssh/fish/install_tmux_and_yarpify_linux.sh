@@ -26,4 +26,4 @@ INSTALL_PATH="$HOME/.yarp/tmux/local"
 echo "TERM=tmux-256color LD_LIBRARY_PATH=\"$INSTALL_PATH/lib\" TERMINFO=\"$INSTALL_PATH/share/terminfo/\" \"$INSTALL_PATH/bin/tmux\" \"\$@\";" > ~/.yarp/tmux/execute_tmux.sh
 chmod +x ~/.yarp/tmux/execute_tmux.sh;'
 
-bash -c "$INSTALL_TMUX" && ~/.yarp/tmux/execute_tmux.sh -Lwarp -CC && exit
+bash -c "$INSTALL_TMUX" && ~/.yarp/tmux/execute_tmux.sh -Lyarp -CC && exit

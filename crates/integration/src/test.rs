@@ -321,7 +321,7 @@ pub fn test_add_workflows_to_yarp_config() -> Builder {
         )
 }
 
-pub fn test_launch_warp_with_theme_in_yarp_config() -> Builder {
+pub fn test_launch_yarp_with_theme_in_yarp_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
             utils.set_env("YARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
@@ -3404,7 +3404,7 @@ pub fn test_auto_title() -> Builder {
 }
 
 /// Validate that disabling Yarp's auto title feature will not mess with oh-my-zsh settings.
-pub fn test_warp_auto_title_disabled() -> Builder {
+pub fn test_yarp_auto_title_disabled() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash and zsh
@@ -3446,7 +3446,7 @@ YARP_DISABLE_AUTO_TITLE="true"
 
 /// Checks that the tab title set by the user takes precedence over the Yarp's default title and
 /// doesn't require any additional setting from the user's POV. This is bash-specific test.
-pub fn test_warp_honors_user_title_bash() -> Builder {
+pub fn test_yarp_honors_user_title_bash() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash
@@ -3478,7 +3478,7 @@ PROMPT_COMMAND='echo -en "\033]0;TEST_TAB_TITLE\a"'
 
 /// Checks that the tab title set by the user takes precedence over the Yarp's default title and
 /// doesn't require any additional setting from the user's POV. This is zsh-specific test.
-pub fn test_warp_honors_user_title_zsh() -> Builder {
+pub fn test_yarp_honors_user_title_zsh() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash

@@ -247,7 +247,7 @@ mod package_manager {
                 FormattedTextFragment::plain_text(" to install the update and re-launch Yarp.  "),
                 FormattedTextFragment::hyperlink(
                     "Please report any issues",
-                    "https://github.com/hotfuzz/Warp/issues/new/choose",
+                    "https://github.com/hotfuzz/yarp/issues/new/choose",
                 ),
             ]));
 

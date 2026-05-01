@@ -1,1 +1,1 @@
-brew install tmux && tmux -Lwarp -CC && exit
+brew install tmux && tmux -Lyarp -CC && exit

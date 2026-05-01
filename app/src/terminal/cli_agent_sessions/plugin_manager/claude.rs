@@ -16,14 +16,14 @@ use crate::terminal::model::session::LocalCommandExecutor;
 use crate::terminal::shell::ShellType;
 
 const PLUGIN_KEY: &str = "yarp@claude-code-yarp";
-const MARKETPLACE_REPO: &str = "hotfuzz/claude-code-warp";
+const MARKETPLACE_REPO: &str = "hotfuzz/claude-code-yarp";
 const MARKETPLACE_NAME: &str = "claude-code-yarp";
 
 const PLATFORM_PLUGIN_KEY: &str = "fuzz-harness-support@claude-code-yarp";
 // Note: we will eventually publish this to the same marketplace repo, but are using the internal one as we build out multi-harness.
-const PLATFORM_MARKETPLACE_REPO: &str = "hotfuzz/claude-code-warp-internal";
+const PLATFORM_MARKETPLACE_REPO: &str = "hotfuzz/claude-code-yarp";
 
-// Keep in sync with the plugin version in hotfuzz/claude-code-warp.
+// Keep in sync with the plugin version in hotfuzz/claude-code-yarp.
 // (See the Versioning section of that repo's README.)
 const MINIMUM_PLUGIN_VERSION: &str = "2.0.0";
 
@@ -168,7 +168,7 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| {
         steps: &[
             PluginInstructionStep {
                 description: "Add the Yarp plugin marketplace repository",
-                command: "claude plugin marketplace add hotfuzz/claude-code-warp",
+                command: "claude plugin marketplace add hotfuzz/claude-code-yarp",
                 executable: true,
                 link: None,
             },
@@ -199,7 +199,7 @@ static UPDATE_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plug
         },
         PluginInstructionStep {
             description: "Re-add the marketplace",
-            command: "claude plugin marketplace add hotfuzz/claude-code-warp",
+            command: "claude plugin marketplace add hotfuzz/claude-code-yarp",
             executable: true,
             link: None,
         },

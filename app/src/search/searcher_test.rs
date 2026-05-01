@@ -40,7 +40,7 @@ fn test_tokenizer_simple() {
 }
 
 #[test]
-fn test_tokenizer_warp_special_chars() {
+fn test_tokenizer_yarp_special_chars() {
     // Test string includes yarp-related terms with hyphen, underscore, forward slash, backslash, and colon
     let test_string = "yarp-cli/launch_command:run C:\\\\Program_Files\\\\Yarp\\\\core-engine.dll check_status:/dev/yarp_drive-0";
     let tokens = token_stream_helper(test_string);

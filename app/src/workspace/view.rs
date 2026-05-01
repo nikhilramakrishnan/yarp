@@ -10465,7 +10465,7 @@ impl Workspace {
 
     pub fn open_autoupdate_failure_link(&mut self, ctx: &mut ViewContext<Self>) {
         ctx.open_url(
-            "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/updating-warp",
+            "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/updating-yarp",
         );
     }
 
@@ -21306,7 +21306,7 @@ impl TypedActionView for Workspace {
             }
             #[cfg(debug_assertions)]
             InstallOpenCodeYarpPlugin => {
-                let message = set_opencode_yarp_plugin("github:hotfuzz/opencode-warp-internal");
+                let message = set_opencode_yarp_plugin("github:hotfuzz/opencode-yarp");
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(DismissibleToast::default(message), ctx);
                 });

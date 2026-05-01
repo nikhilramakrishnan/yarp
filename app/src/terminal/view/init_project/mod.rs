@@ -1218,7 +1218,7 @@ impl TypedActionView for InitStepBlock {
             InitProjectBlockAction::GenerateRules => {
                 send_telemetry_from_ctx!(
                     TelemetryEvent::AgentModeSetupProjectScopedRulesAction {
-                        action: AgentModeSetupProjectScopedRulesActionType::GenerateWarpMd,
+                        action: AgentModeSetupProjectScopedRulesActionType::GenerateYarpMd,
                     },
                     ctx
                 );
@@ -1230,7 +1230,7 @@ impl TypedActionView for InitStepBlock {
             InitProjectBlockAction::RegenerateRules => {
                 send_telemetry_from_ctx!(
                     TelemetryEvent::AgentModeSetupProjectScopedRulesAction {
-                        action: AgentModeSetupProjectScopedRulesActionType::RegenerateWarpMd,
+                        action: AgentModeSetupProjectScopedRulesActionType::RegenerateYarpMd,
                     },
                     ctx
                 );

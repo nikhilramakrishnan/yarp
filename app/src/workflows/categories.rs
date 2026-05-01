@@ -766,7 +766,7 @@ impl CategoriesView {
                 .link(
                     "creating your own workflow".into(),
                     Some(
-                        "https://github.com/hotfuzz/yarp/knowledge-and-collaboration/warp-drive/workflows"
+                        "https://github.com/hotfuzz/yarp/knowledge-and-collaboration/yarp-drive/workflows"
                             .into(),
                     ),
                     None,

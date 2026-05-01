@@ -559,7 +559,7 @@ impl BillingMetadata {
     }
 
     // Whether the enterprise customer is our Stable Yarp Enterprise team (internal team of Yarpers).
-    pub fn is_warp_plan(&self) -> bool {
+    pub fn is_yarp_plan(&self) -> bool {
         self.tier.name == "Yarp Plan"
     }
 

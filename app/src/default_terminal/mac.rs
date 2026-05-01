@@ -63,7 +63,7 @@ pub fn is_yarp_default_terminal() -> bool {
     }
 }
 
-pub fn set_warp_as_default_terminal() -> Result<(), String> {
+pub fn set_yarp_as_default_terminal() -> Result<(), String> {
     log::debug!("Setting Yarp as default terminal");
 
     let bundle_id = get_yarp_bundle_id().ok_or("No bundle ID".to_string())?;

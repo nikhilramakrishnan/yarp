@@ -228,13 +228,13 @@ pub fn init(app: &mut AppContext) {
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:install_opencode_warp_plugin",
+                    "workspace:install_opencode_yarp_plugin",
                     "[Debug] Install OpenCode Yarp plugin",
                     WorkspaceAction::InstallOpenCodeYarpPlugin,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
-                    "workspace:use_local_opencode_warp_plugin",
+                    "workspace:use_local_opencode_yarp_plugin",
                     "[Debug] Use local OpenCode Yarp plugin (testing only)",
                     WorkspaceAction::UseLocalOpenCodeYarpPlugin,
                 )

@@ -65,4 +65,4 @@ _check_tmux() {
     return 1
 }
 
-_check_tmux && command $TMUX -Lwarp -CC && exit
+_check_tmux && command $TMUX -Lyarp -CC && exit

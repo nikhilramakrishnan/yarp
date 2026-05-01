@@ -258,7 +258,7 @@ fn test_update_file_based_servers_removes_unreferenced_servers() {
 /// A globally-scoped Yarp installation always auto-spawns, regardless of the
 /// `file_based_mcp_enabled` toggle.
 #[test]
-fn test_global_warp_server_always_spawns() {
+fn test_global_yarp_server_always_spawns() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let yarp_root = yarp_data_dir();
     let parsed = parse_mcp_json(r#"{"global-yarp": {"command": "npx", "args": ["yarp"]}}"#);
@@ -296,7 +296,7 @@ fn test_global_warp_server_always_spawns() {
 
 /// A globally-scoped non-Yarp installation only auto-spawns when the toggle is on.
 #[test]
-fn test_global_non_warp_server_respects_toggle() {
+fn test_global_non_yarp_server_respects_toggle() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let Some(home_dir) = dirs::home_dir() else {
         // Skip on platforms where a home dir isn't available (shouldn't happen on
