@@ -2558,7 +2558,7 @@ impl UpdateEnvironmentForm {
             content.add_child(
                 Container::new(
                     Text::new(
-                        "No repositories found",
+                        "No repos in evidence.",
                         appearance.ui_font_family(),
                         appearance.ui_font_size(),
                     )

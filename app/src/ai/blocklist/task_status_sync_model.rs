@@ -268,7 +268,7 @@ pub(crate) fn classify_renderable_error(
         RenderableAIError::ServerOverloaded => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
-                "Yarp is temporarily overloaded. Please try again shortly.",
+                "There has been an inneraction. Please try again shortly.",
                 PlatformErrorCode::ResourceUnavailable,
             )),
         ),

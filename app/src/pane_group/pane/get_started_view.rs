@@ -229,7 +229,7 @@ impl GetStartedView {
                 .finish(),
                 appearance
                     .ui_builder()
-                    .paragraph("Welcome to Yarp")
+                    .paragraph("Welcome to Sandford")
                     .with_style(UiComponentStyles {
                         font_size: Some(20.),
                         ..Default::default()

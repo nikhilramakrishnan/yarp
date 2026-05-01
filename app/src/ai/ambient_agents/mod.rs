@@ -20,7 +20,7 @@ pub use task::{
 pub const OUT_OF_CREDITS_TASK_FAILURE_MESSAGE: &str =
     "Out of credits. Upgrade your Yarp plan to continue running cloud agents.";
 pub const SERVER_OVERLOADED_TASK_FAILURE_MESSAGE: &str =
-    "Yarp is temporarily overloaded. Please try again shortly.";
+    "There has been an inneraction. Please try again shortly.";
 
 #[derive(Debug, thiserror::Error)]
 #[error("Invalid task ID: {0}")]

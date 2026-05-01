@@ -677,7 +677,7 @@ impl Display for RenderableAIError {
         match self {
             Self::QuotaLimit => write!(f, "Quota limit reached."),
             Self::ServerOverloaded => {
-                write!(f, "Yarp is currently overloaded. Please try again later.")
+                write!(f, "There has been an inneraction. Please try again later.")
             }
             Self::InternalYarpError => write!(f, "Internal Yarp error."),
             Self::ContextWindowExceeded(message) => {

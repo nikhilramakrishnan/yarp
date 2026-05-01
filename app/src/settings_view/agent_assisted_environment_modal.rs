@@ -337,7 +337,7 @@ impl AgentAssistedEnvironmentModal {
         if self.selected_repo_paths.is_empty() {
             col.add_child(
                 Text::new(
-                    "No repos selected yet",
+                    "Nothing in evidence yet.",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() * 0.95,
                 )

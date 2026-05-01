@@ -127,7 +127,7 @@ fn test_modal_show_renders_expected_copy_with_empty_repos_message() {
                 selected_text
             );
             assert!(
-                selected_text.contains("No repos selected yet"),
+                selected_text.contains("Nothing in evidence yet."),
                 "Expected selected empty-state message in rendered content: {}",
                 selected_text
             );

@@ -241,7 +241,7 @@ impl SearchCodebaseView {
                 font_size: Some(appearance.monospace_font_size()),
                 ..Default::default()
             };
-            self.render_formatted_text("No results found".to_string(), no_results_style, appearance)
+            self.render_formatted_text("No leads.".to_string(), no_results_style, appearance)
         } else {
             render_read_files_text(
                 render_read_file_args,

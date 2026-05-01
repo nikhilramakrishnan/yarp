@@ -8,7 +8,7 @@ use yarpui::ViewContext;
 use super::view::Workspace;
 use crate::pane_group::{AnyPaneContent, FilePane};
 
-const YARP_HOME_TITLE: &str = "Welcome to Yarp on Web";
+const YARP_HOME_TITLE: &str = "Welcome to Sandford";
 const YARP_HOME_CONTENT: &str = r#"
 Welcome to Yarp on Web - your browser-based home for Yarp! 
 Use Yarp on Web to:

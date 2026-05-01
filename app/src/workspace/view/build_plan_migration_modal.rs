@@ -515,7 +515,7 @@ impl BuildPlanMigrationModal {
         let title_text = if is_business {
             "Welcome to the New Business Plan"
         } else {
-            "Welcome to Yarp Build"
+            "Welcome to Sandford Build"
         };
 
         let title = Self::create_text(

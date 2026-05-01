@@ -1280,7 +1280,7 @@ impl AIContextMenu {
         // Get filtered categories based on the current query
         let filtered_categories = self.get_filtered_categories(app);
 
-        // If no categories match the filter, show "No results found"
+        // If no categories match the filter, show "No leads."
         // Ideally we don't enter this state because we transition to AllCategories mode
         // when no categories match.
         if filtered_categories.is_empty() {
@@ -1389,7 +1389,7 @@ impl AIContextMenu {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "No results found",
+                "No leads.",
                 appearance.ui_font_family(),
                 appearance.monospace_font_size(),
             )

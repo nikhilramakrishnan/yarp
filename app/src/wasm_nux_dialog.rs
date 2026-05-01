@@ -173,7 +173,7 @@ impl View for WasmNUXDialog {
                         .with_child(
                             appearance
                                 .ui_builder()
-                                .span("Yarp is the intelligent terminal with AI and your dev team's knowledge built-in.")
+                                .span("Yarp is the intelligent terminal. For the greater good.")
                                 .with_style(UiComponentStyles {
                                     font_weight: Some(Weight::Thin),
                                     font_color: Some(

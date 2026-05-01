@@ -102,7 +102,7 @@ pub enum MCPServersListPageViewAction {
 }
 
 const EMPTY_STATE_TEXT: &str = "Once you add a MCP server, it will be shown here.";
-const NO_SEARCH_RESULTS_TEXT: &str = "No search results found";
+const NO_SEARCH_RESULTS_TEXT: &str = "No leads.";
 
 pub struct MCPServersListPageView {
     server_cards: HashMap<ServerCardItemId, ViewHandle<ServerCardView>>,
