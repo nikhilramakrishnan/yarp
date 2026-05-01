@@ -734,7 +734,7 @@ where
                     object_type.to_string()
                 };
 
-                let mut link = format!(
+                let link = format!(
                     "{}/drive/{}/{}-{}",
                     ChannelState::server_root_url(),
                     object_type_for_link,

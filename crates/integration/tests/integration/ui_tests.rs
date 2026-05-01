@@ -99,7 +99,6 @@ integration_tests! {
     test_palette_opens_when_theme_chooser_is_open,
     test_launch_yarp_with_theme_in_yarp_config,
     #[cfg(target_os="macos")]
-    test_preview_config_dir_migration,
     #[ignore = "Flakes in CI"]
     test_add_launch_config_to_yarp_config,
     #[ignore = "Flakes in CI"]

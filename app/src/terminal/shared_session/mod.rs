@@ -305,7 +305,7 @@ pub fn join_link(session_id: &SessionId) -> String {
     // because the staging web URL won't resolve to a local build.
     let use_web_url = !ChannelState::uses_staging_server() || cfg!(feature = "release_bundle");
 
-    let mut link = if use_web_url {
+    let link = if use_web_url {
         format!("{}/session/{}", ChannelState::server_root_url(), session_id,)
     } else {
         join_native_intent(session_id)

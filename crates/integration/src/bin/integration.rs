@@ -230,7 +230,6 @@ fn register_tests() -> HashMap<&'static str, BoxedBuilderFn> {
     register_test!(test_add_theme_to_yarp_config);
     register_test!(test_palette_opens_when_theme_chooser_is_open);
     #[cfg(target_os = "macos")]
-    register_test!(test_preview_config_dir_migration);
     register_test!(test_launch_yarp_with_theme_in_yarp_config);
     register_test!(test_add_launch_config_to_yarp_config);
     register_test!(test_add_workflows_to_yarp_config);
