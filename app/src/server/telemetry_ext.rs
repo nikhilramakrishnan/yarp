@@ -112,11 +112,7 @@ fn form_rudder_track_message(
 
 fn release_mode(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "stable_release",
-        Channel::Preview => "preview_release",
-        Channel::Local => "local",
         Channel::Integration => "integration_test",
-        Channel::Dev => "dev_release",
         // We don't ever expect to send telemetry for the OSS build, but
         // until we have some time to clean things up here, we'll set a valid
         // value that we never intend to receive.

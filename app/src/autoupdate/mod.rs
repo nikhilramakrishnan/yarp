@@ -751,25 +751,18 @@ async fn fetch_version(
 ) -> Result<VersionInfo> {
     let versions = fetch_channel_versions(update_id, server_api.clone(), false, is_daily).await?;
 
-    let channel_version = match channel {
-        Channel::Stable => versions.stable,
-        Channel::Preview => versions.preview,
-        Channel::Dev => versions.dev,
-        Channel::Integration | Channel::Local | Channel::Oss => {
-            // These channels don't ship release artifacts, so there's no
-            // version to fetch. This branch is normally unreachable because
-            // `AutoupdateState::register` gates the poll loop on the
-            // `Autoupdate` feature flag, but builds (e.g. local wasm bundles)
-            // can end up with `Autoupdate` enabled while running on one of
-            // these channels. Return an error rather than panicking so the
-            // poll loop just logs and bails.
+    let _ = versions;
+    match channel {
+        Channel::Integration | Channel::Oss => {
+            // Neither shipping channel ships release artifacts. This branch is
+            // normally unreachable because `AutoupdateState::register` gates
+            // the poll loop on the `Autoupdate` feature flag, but if it ever
+            // runs we return an error so the poll loop just logs and bails.
             anyhow::bail!(
-                "Local, integration, and open-source channel binaries don't support autoupdate"
+                "integration and open-source channel binaries don't support autoupdate"
             );
         }
-    };
-    let version_info = channel_version.version_info();
-    Ok(version_info)
+    }
 }
 
 // This method is unimplemented on wasm, so we allow unused variables.
@@ -1118,19 +1111,8 @@ pub fn is_incoming_version_past_current(version: Option<&str>) -> bool {
 /// Returns the base URL that contains release assets for the given version
 /// of this app bundle.
 fn release_assets_directory_url(channel: Channel, version: &str) -> String {
-    let releases_base_url = ChannelState::releases_base_url();
-    match channel {
-        Channel::Stable => {
-            format!("{releases_base_url}/stable/{version}")
-        }
-        Channel::Preview => {
-            format!("{releases_base_url}/preview/{version}")
-        }
-        Channel::Dev => format!("{releases_base_url}/dev/{version}"),
-        Channel::Local | Channel::Integration | Channel::Oss => {
-            unreachable!("local/integration/oss autoupdate not supported");
-        }
-    }
+    let _ = (channel, version, ChannelState::releases_base_url());
+    unreachable!("integration/oss autoupdate not supported");
 }
 
 #[cfg(test)]

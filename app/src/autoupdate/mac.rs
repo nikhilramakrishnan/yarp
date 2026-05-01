@@ -732,22 +732,14 @@ fn dmg_name(channel: Channel) -> String {
 
 fn app_name_prefix(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "Yarp",
-        Channel::Preview => "YarpPreview",
-        Channel::Local => "yarp",
         Channel::Integration => "integration",
-        Channel::Dev => "YarpDev",
         Channel::Oss => "yarp",
     }
 }
 
 fn executable_name(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "stable",
-        Channel::Preview => "preview",
-        Channel::Local => "yarp",
         Channel::Integration => "integration",
-        Channel::Dev => "dev",
         Channel::Oss => "yarp",
     }
 }

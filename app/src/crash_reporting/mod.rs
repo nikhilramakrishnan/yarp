@@ -273,11 +273,7 @@ fn get_environment() -> Cow<'static, str> {
     };
 
     let base_environment_name = match channel {
-        Channel::Stable => "stable_release",
-        Channel::Preview => "preview_release",
-        Channel::Local => "local",
         Channel::Integration => "integration_test",
-        Channel::Dev => "dev_release",
         Channel::Oss => "oss_release",
     };
 
@@ -468,13 +464,9 @@ fn set_optional_user_information(
         let anonymous_id = get_or_create_anonymous_id(ctx);
         format!("anon.{anonymous_id}")
     });
-    // Only send along emails if we're on YarpDev.
-    // We try to keep PII out of Sentry as much as possible.
-    let email = if ChannelState::channel() == Channel::Dev {
-        email
-    } else {
-        None
-    };
+    // Keep PII out of Sentry. The Oss channel never includes emails.
+    let _ = email;
+    let email: Option<String> = None;
 
     // Set user for Rust sentry.
     sentry::configure_scope(|scope| {

@@ -62,7 +62,7 @@ use std::{
     sync::Arc,
 };
 use url::Url;
-use yarp_core::{channel::Channel, features::FeatureFlag};
+use yarp_core::features::FeatureFlag;
 use yarp_graphql::{
     queries::get_updated_cloud_objects::UpdatedObjectInput, scalars::time::ServerTimestamp,
 };
@@ -741,11 +741,6 @@ where
                     link_safe_name,
                     id.uid()
                 );
-
-                // If this is a preview build, ensure the link routes to a preview build.
-                if matches!(ChannelState::channel(), Channel::Preview) {
-                    link.push_str("?preview=true");
-                }
 
                 Some(link)
             }

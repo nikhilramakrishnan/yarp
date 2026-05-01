@@ -124,15 +124,9 @@ pub fn parse_uname_output(output: &str) -> Result<RemotePlatform> {
 /// - yarp:    `~/.yarp/remote-server`
 pub fn remote_server_dir() -> String {
     let yarp_dir = match ChannelState::channel() {
-        Channel::Stable => ".yarp",
-        Channel::Preview => ".yarp-preview",
-        Channel::Dev | Channel::Integration => ".yarp-dev",
-        Channel::Local => ".yarp-local",
-        Channel::Oss => {
-            // TODO(alokedesai): need to figure out how remote server works with yarp
-            // For now, return what Dev returns.
-            ".yarp-dev"
-        }
+        // TODO(alokedesai): need to figure out how remote server works with yarp.
+        // For now, both Oss and Integration return the dev directory.
+        Channel::Oss | Channel::Integration => ".yarp-dev",
     };
     format!("~/{yarp_dir}/remote-server")
 }
@@ -189,18 +183,11 @@ fn download_url() -> String {
 
 /// Maps the client's [`Channel`] to the server's download channel parameter.
 ///
-/// The server recognises `"stable"`, `"preview"`, and `"dev"`.  Local and
-/// Integration builds map to `"dev"` so they fetch dogfood artifacts.
+/// The server recognises `"dev"`. Both Oss and Integration map to `"dev"`.
 fn download_channel() -> &'static str {
     match ChannelState::channel() {
-        Channel::Stable => "stable",
-        Channel::Preview => "preview",
-        Channel::Dev | Channel::Local | Channel::Integration => "dev",
-        Channel::Oss => {
-            // TODO(alokedesai): need to figure out how remote server works with yarp
-            // For now, return what Dev returns.
-            "dev"
-        }
+        // TODO(alokedesai): need to figure out how remote server works with yarp.
+        Channel::Oss | Channel::Integration => "dev",
     }
 }
 

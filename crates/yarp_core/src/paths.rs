@@ -36,15 +36,8 @@ pub const YARP_LOGS_DIR: &str = "logs";
 
 fn base_yarp_config_dir_name() -> String {
     match ChannelState::channel() {
-        // Preview shares the same directory as Stable for backward
-        // compatibility — existing users already have config in `.yarp`.
-        Channel::Stable | Channel::Preview => YARP_CONFIG_DIR.to_owned(),
-        // Yarp is a fork of yarp; we use `.yarp` so a user can run both
-        // Yarp and Yarp side by side without sharing state.
         Channel::Oss => ".yarp".to_owned(),
-        Channel::Dev => format!("{YARP_CONFIG_DIR}-dev"),
         Channel::Integration => format!("{YARP_CONFIG_DIR}-integration"),
-        Channel::Local => format!("{YARP_CONFIG_DIR}-local"),
     }
 }
 /// Returns the home-relative Yarp config directory name for the current channel and data profile.
@@ -80,20 +73,15 @@ pub fn yarp_home_mcp_config_file_path() -> Option<PathBuf> {
 
 /// Returns the macOS config directory name for the current channel.
 ///
-/// Stable uses `.yarp`, while other channels include a channel suffix
-/// (e.g., `.yarp-dev`, `.yarp-local`).
+/// `Oss` uses `.yarp`, integration tests use `.yarp-integration`.
 ///
 /// These suffixes are persisted on disk as directory names and must not be
 /// changed once established, or existing user data will be orphaned.
 #[cfg(target_os = "macos")]
 fn macos_config_dir_name() -> String {
     match ChannelState::channel() {
-        Channel::Stable => YARP_CONFIG_DIR.to_owned(),
-        Channel::Preview => format!("{YARP_CONFIG_DIR}-preview"),
         Channel::Oss => ".yarp".to_owned(),
-        Channel::Dev => format!("{YARP_CONFIG_DIR}-dev"),
         Channel::Integration => format!("{YARP_CONFIG_DIR}-integration"),
-        Channel::Local => format!("{YARP_CONFIG_DIR}-local"),
     }
 }
 

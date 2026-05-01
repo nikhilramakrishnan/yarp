@@ -1,9 +1,6 @@
 use enum_iterator::Sequence;
 use serde::{Deserialize, Serialize};
-use yarp_core::{
-    channel::{Channel, ChannelState},
-    settings::{macros::define_settings_group, SupportedPlatforms, SyncToCloud},
-};
+use yarp_core::settings::{macros::define_settings_group, SupportedPlatforms, SyncToCloud};
 
 /// The app icon to use (mac-only).
 ///
@@ -97,12 +94,7 @@ impl AppIconSettings {
     pub fn get_base_icon_file_name(icon: AppIcon) -> &'static str {
         match icon {
             AppIcon::Aurora => "aurora",
-            AppIcon::Default => match ChannelState::channel() {
-                Channel::Dev => "dev",
-                Channel::Preview => "preview",
-                Channel::Local => "local",
-                _ => "yarp_2",
-            },
+            AppIcon::Default => "yarp_2",
             AppIcon::Classic1 => "classic_1",
             AppIcon::Classic2 => "classic_2",
             AppIcon::Classic3 => "classic_3",

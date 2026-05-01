@@ -2834,10 +2834,7 @@ impl SettingsWidget for CustomAppIconWidget {
 
             let app_icon_at_startup = AppearanceManager::as_ref(_app).app_icon_at_startup();
             let current_icon = *AppIconSettings::as_ref(_app).app_icon;
-            if current_icon == AppIcon::Default
-                && ChannelState::channel() != Channel::Local
-                && app_icon_at_startup != AppIcon::Default
-            {
+            if current_icon == AppIcon::Default && app_icon_at_startup != AppIcon::Default {
                 let theme = appearance.theme();
                 return Flex::column()
                     .with_child(dropdown)

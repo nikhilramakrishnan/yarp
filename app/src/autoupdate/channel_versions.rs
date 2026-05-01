@@ -4,8 +4,7 @@ use anyhow::{Context as _, Result};
 use channel_versions::ChannelVersions;
 
 use crate::{
-    channel::{Channel, ChannelState},
-    report_error,
+    channel::ChannelState,
     server::server_api::{ServerApi, FETCH_CHANNEL_VERSIONS_TIMEOUT},
 };
 
@@ -33,16 +32,11 @@ pub async fn fetch_channel_versions(
     match channel_versions {
         channel_versions @ Ok(_) => channel_versions,
         Err(err) => {
-            match ChannelState::channel() {
-                // Only log an error on Dev and Preview -- if this is failing, its likely to be
-                // failing for all users, and Stable has too many users (this error would flood
-                // our Sentry logs).
-                Channel::Dev | Channel::Preview => report_error!(err),
-                _ => log::warn!(
-                    "Failed to retrieve channel versions from Yarp server, falling \
+            let _ = err;
+            log::warn!(
+                "Failed to retrieve channel versions from Yarp server, falling \
                 back to GCP JSON storage."
-                ),
-            }
+            );
             fetch_channel_versions_from_json_storage(server_api.http_client(), nonce).await
         }
     }

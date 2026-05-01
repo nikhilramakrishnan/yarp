@@ -653,11 +653,7 @@ fn is_pacman_signing_key_installed() -> bool {
 
 fn package_name(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "yarp-terminal",
-        Channel::Preview => "yarp-terminal-preview",
-        Channel::Dev => "yarp-terminal-dev",
         Channel::Integration => "yarp-terminal-integration",
-        Channel::Local => "yarp-terminal-local",
         Channel::Oss => "yarp",
     }
 }

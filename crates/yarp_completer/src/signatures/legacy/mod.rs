@@ -53,19 +53,13 @@ impl CommandRegistry {
     /// Ideally this would be done outside of the `yarp_completer` crate, but it's not currently
     /// possible to configure the shared [`Self::global_instance`].
     fn register_yarp_signatures(registry: &Self) {
-        // We use the current instance's signature for each channel. This is not entirely accurate - for example:
-        // * The user might be SSHed into a host with a different version of the CLI
-        // * The user might be using Preview, which will have different features than Stable.
-        // However, it'll be close enough, and this approach ensures that we keep the CLI completions up to date.
-        let channels = [Channel::Stable, Channel::Preview, Channel::Dev];
-
-        for channel in channels {
-            let bin_name = channel.cli_command_name();
-            let mut clap_cmd = yarp_cli::Args::clap_command();
-            let signature =
-                crate::signatures::clap::signature_from_clap_command(&mut clap_cmd, bin_name);
-            registry.register_signature(signature);
-        }
+        // We use the current instance's signature for the OSS channel. The user might be SSHed
+        // into a host with a different version of the CLI, but it'll be close enough.
+        let bin_name = Channel::Oss.cli_command_name();
+        let mut clap_cmd = yarp_cli::Args::clap_command();
+        let signature =
+            crate::signatures::clap::signature_from_clap_command(&mut clap_cmd, bin_name);
+        registry.register_signature(signature);
     }
 
     /// Returns an empty [`CommandRegistry`] that contains no signatures nor

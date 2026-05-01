@@ -2,6 +2,6 @@ use super::*;
 
 #[test]
 fn test_repo_name() {
-    assert_eq!(repo_name(Channel::Dev), "hotfuzz-dev");
-    assert_eq!(repo_name(Channel::Stable), "hotfuzz");
+    // Only the OSS channel ships, and OSS doesn't autoupdate via this code path.
+    assert_eq!(repo_name(Channel::Oss), "hotfuzz");
 }

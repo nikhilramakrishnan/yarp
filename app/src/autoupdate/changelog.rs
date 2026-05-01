@@ -37,21 +37,10 @@ pub async fn get_current_changelog(server_api: Arc<ServerApi>) -> Result<Option<
     let versions: ChannelVersions =
         fetch_channel_versions(rand.as_str(), server_api, true, false).await?;
 
-    let res = versions.changelogs.and_then(|changelogs| {
-        match channel {
-            Channel::Stable => Some(changelogs.stable),
-            Channel::Preview => Some(changelogs.preview),
-            Channel::Dev | Channel::Local => Some(changelogs.dev),
-            // Integration tests and the open-source build don't support autoupdate.
-            Channel::Integration | Channel::Oss => None,
-        }
-        .and_then(|versions| {
-            ChannelState::app_version()
-                .and_then(|running_version| versions.get(running_version))
-                .cloned()
-        })
-    });
-    Ok(res)
+    // Integration tests and the open-source build don't support autoupdate, so
+    // there's never a changelog to surface here.
+    let _ = (versions, channel, ChannelState::app_version());
+    Ok(None)
 }
 
 /// Fetches the changelog for the running release bundle, using the given http
@@ -81,6 +70,6 @@ fn changelog_url(channel: Channel, version: &str) -> String {
 /// Returns whether the app should fetch changelog.json for the current
 /// build (true), or use the changelog information embedded in
 /// channel_versions.json (false).
-pub fn should_fetch_changelog_json(channel: Channel) -> bool {
-    channel == Channel::Dev
+pub fn should_fetch_changelog_json(_channel: Channel) -> bool {
+    false
 }

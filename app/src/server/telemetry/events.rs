@@ -40,7 +40,6 @@ use crate::ai::predict::generate_ai_input_suggestions::GenerateAIInputSuggestion
 use crate::ai::predict::generate_ai_input_suggestions::GenerateAIInputSuggestionsResponseV2;
 use crate::ai::predict::next_command_model::HistoryBasedAutosuggestionState;
 use crate::auth::auth_manager::LoginGatedFeature;
-use crate::channel::Channel;
 use crate::cloud_object::{
     model::generic_string_model::GenericStringObjectId, GenericStringObjectFormat, ObjectType,
     Space,
@@ -5363,9 +5362,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::ToggleGlobalAI => EnablementState::Always,
             Self::ToggleActiveAI => EnablementState::Always,
             Self::AgenticOnboardingBlockSelected => EnablementState::Always,
-            Self::MemoryUsageStats => EnablementState::ChannelSpecific {
-                channels: vec![Channel::Local, Channel::Dev],
-            },
+            Self::MemoryUsageStats => EnablementState::ChannelSpecific { channels: vec![] },
             Self::MemoryUsageHigh => EnablementState::Always,
             Self::AgentModeUserAttemptedQueryAtRequestLimit
             | Self::AgentModeClickedEntrypoint
@@ -5377,9 +5374,7 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::EnvVarCollectionInvoked | Self::EnvVarWorkflowParameterization => {
                 EnablementState::Always
             }
-            Self::BlockCompletedOnDogfoodOnly => EnablementState::ChannelSpecific {
-                channels: vec![Channel::Local, Channel::Dev],
-            },
+            Self::BlockCompletedOnDogfoodOnly => EnablementState::ChannelSpecific { channels: vec![] },
             Self::CompletedSettingsImport
             | Self::SettingsImportConfigFocused
             | Self::SettingsImportConfigParsed

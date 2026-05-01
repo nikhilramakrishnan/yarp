@@ -8,7 +8,7 @@ use super::{
 use crate::auth::AuthStateProvider;
 use crate::{
     appearance::Appearance,
-    channel::{Channel, ChannelState},
+    channel::ChannelState,
     menu::{Event as MenuEvent, Event, Menu, MenuItem, MenuItemFields},
     server::{block::Block, server_api::block::BlockClient},
     view_components::ToastFlavor,
@@ -87,7 +87,7 @@ impl UserOwnedBlock {
     fn block_url(&self) -> String {
         // New block IDs are 22 characters long and are accessible at /block/{id}, whereas as old
         // (hashId) block IDs are 6 characters long and are accessible at /{id}.
-        let mut url = if self.id.len() == 22 {
+        if self.id.len() == 22 {
             format!(
                 "{}/block/{}",
                 ChannelState::server_root_url(),
@@ -95,13 +95,7 @@ impl UserOwnedBlock {
             )
         } else {
             format!("{}/{}", ChannelState::server_root_url(), self.id.as_str())
-        };
-
-        // If this is a preview build, ensure the link routes to a preview build.
-        if matches!(ChannelState::channel(), Channel::Preview) {
-            url.push_str("?preview=true");
         }
-        url
     }
 
     fn render_overflow_icon(&self, appearance: &Appearance, index: usize) -> Box<dyn Element> {

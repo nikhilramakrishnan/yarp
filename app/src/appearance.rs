@@ -12,7 +12,6 @@ mod macos_app_icon {
         base::{id, nil},
     };
     pub use objc::{class, msg_send, sel, sel_impl};
-    pub use yarp_core::channel::{Channel, ChannelState};
     pub use yarpui::platform::mac::{make_nsstring, AutoreleasePoolGuard};
 
     pub use crate::settings::app_icon::{AppIcon, AppIconSettings, AppIconSettingsChangedEvent};
@@ -208,10 +207,7 @@ impl AppearanceManager {
             // revert to the icon we started up with. We therefore need to use an in-memory
             // override to display the default icon. This has the drawback of _not_ inheriting the
             // preferred icon style, but that icon style _will_ apply on next app restart.
-            if icon == AppIcon::Default
-                && ChannelState::channel() != Channel::Local
-                && self.app_icon_at_startup == AppIcon::Default
-            {
+            if icon == AppIcon::Default && self.app_icon_at_startup == AppIcon::Default {
                 log::debug!("User has default icon selected, resetting to bundle default");
                 // Reset to nil to use the bundle's default icon
                 let _: () = msg_send![app, setApplicationIconImage:nil];

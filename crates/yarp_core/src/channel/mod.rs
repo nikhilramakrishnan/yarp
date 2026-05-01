@@ -8,16 +8,6 @@ pub use state::*;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Channel {
-    /// The official/first-party stable release.
-    Stable,
-    /// The official/first-party feature preview release.
-    Preview,
-
-    /// The internal-only nightly build.
-    Dev,
-    /// The internal-only HEAD build.
-    Local,
-
     /// The open-source build of Yarp.
     Oss,
 
@@ -28,32 +18,21 @@ pub enum Channel {
 impl Channel {
     /// Whether or not this channel is for internal use only
     pub fn is_dogfood(&self) -> bool {
-        match self {
-            Channel::Dev | Channel::Local => true,
-            Channel::Stable | Channel::Preview | Channel::Integration | Channel::Oss => false,
-        }
+        false
     }
 
     /// Whether this channel honors the `--server-root-url` / `--ws-server-url` /
     /// `--session-sharing-server-url` flags (and their `YARP_*` env-var equivalents).
     ///
-    /// Release channels (`Stable`, `Preview`, `Oss`) ignore these overrides so shipped
-    /// builds can't be redirected away from their baked-in server URLs. Internal-only channels
-    /// (`Dev`, `Local`, `Integration`) continue to honor them for local development and testing.
+    /// `Oss` ignores these overrides so shipped builds can't be redirected away from
+    /// their baked-in server URLs. `Integration` continues to honor them for testing.
     pub fn allows_server_url_overrides(&self) -> bool {
-        match self {
-            Channel::Dev | Channel::Local | Channel::Integration => true,
-            Channel::Stable | Channel::Preview | Channel::Oss => false,
-        }
+        matches!(self, Channel::Integration)
     }
 
     /// Returns the CLI command name corresponding to this channel.
     pub fn cli_command_name(&self) -> &'static str {
         match self {
-            Channel::Stable => "fuzz",
-            Channel::Dev => "fuzz-dev",
-            Channel::Preview => "fuzz-preview",
-            Channel::Local => "fuzz-local",
             Channel::Integration => "fuzz-integration",
             Channel::Oss => "yarp",
         }
@@ -63,11 +42,7 @@ impl Channel {
 impl fmt::Display for Channel {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(match self {
-            Channel::Stable => "stable",
-            Channel::Preview => "preview",
-            Channel::Dev => "dev",
             Channel::Integration => "integration",
-            Channel::Local => "local",
             Channel::Oss => "yarp",
         })
     }

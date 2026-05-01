@@ -6,7 +6,7 @@ use session_sharing_protocol::sharer::SessionSourceType;
 use yarpui::{id, keymap::ContextPredicate, AppContext};
 
 use crate::{
-    channel::{Channel, ChannelState},
+    channel::ChannelState,
     editor::{InteractionState, ReplicaId},
     features::FeatureFlag,
 };
@@ -310,11 +310,6 @@ pub fn join_link(session_id: &SessionId) -> String {
     } else {
         join_native_intent(session_id)
     };
-
-    // If this is a preview build, route the sharing link to the preview server.
-    if matches!(ChannelState::channel(), Channel::Preview) {
-        link.push_str("?preview=true");
-    }
 
     link
 }
