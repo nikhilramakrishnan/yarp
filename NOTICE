@@ -1,0 +1,17 @@
+Yarp
+====
+
+Yarp is an unofficial, personal fork of Warp Terminal
+(https://github.com/warpdotdev/warp).
+
+Original work copyright (C) 2020-2026 Denver Technologies, Inc.
+Distributed under the terms of the MIT License (see LICENSE-MIT)
+inherited from upstream Warp's dual MIT / AGPL-3.0-only licensing.
+
+This project is not affiliated with, endorsed by, or sponsored by
+Warp / Denver Technologies, Inc. "Warp" is a trademark of
+Denver Technologies, Inc.; "Yarp" and the Hot Fuzz themed branding
+are unaffiliated derivative naming.
+
+Bundled third-party crate license texts are reproduced in the app's
+"About" page (rendered from about.hbs at build time via cargo-about).
