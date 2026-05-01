@@ -516,7 +516,7 @@ pub enum Event {
     OpenAgentToolbarEditor,
     OpenCLIAgentToolbarEditor,
     /// tell the workspace to open a file within Yarp.
-    OpenFileInWarp {
+    OpenFileInYarp {
         /// The file path to open.
         path: PathBuf,
         /// The session that the path was opened from.
@@ -526,13 +526,13 @@ pub enum Event {
         open_yarp_drive_args: OpenYarpDriveObjectArgs,
     },
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
         layout: crate::util::file::external_editor::settings::EditorLayout,
         line_col: Option<LineAndColumnArg>,
     },
     #[cfg(feature = "local_fs")]
-    PreviewCodeInWarp {
+    PreviewCodeInYarp {
         source: CodeSource,
     },
     OpenCodeDiff {

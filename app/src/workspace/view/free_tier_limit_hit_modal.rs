@@ -228,11 +228,7 @@ impl FreeTierLimitHitModal {
                         .with_child(
                             Container::new({
                                 let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
-                                    FormattedTextFragment::plain_text("Access to "),
-                                    FormattedTextFragment::hyperlink(
-                                        "Reload Credits".to_string(),
-                                        "https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits".to_string(),
-                                    ),
+                                    FormattedTextFragment::plain_text("Access to Reload Credits"),
                                 ])]);
                                 Flex::row()
                                     .with_cross_axis_alignment(CrossAxisAlignment::Center)
@@ -272,9 +268,8 @@ impl FreeTierLimitHitModal {
                         .with_child(
                             Container::new({
                                 let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
-                                    FormattedTextFragment::hyperlink(
+                                    FormattedTextFragment::plain_text(
                                         "Extended cloud agents access".to_string(),
-                                        "https://www.warp.dev/oz".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()

@@ -99,7 +99,7 @@ impl Slide for OzLaunchSlide {
                 "Fuzz agents can be defined using the standard Skills format. You can use the built in scheduler to setup agents to run autonomously at set intervals, or use the Fuzz SDK or API to programmatically start and manage Fuzz agents."
             }
             OzLaunchSlide::AgentManagement => {
-                "View all of your agents across local and cloud sessions in the Yarp app or at [oz.warp.dev](https://oz.warp.dev). Join live agent sessions, continue tasks locally, and steer agents with one click."
+                "View all of your agents across local and cloud sessions in the Yarp app. Join live agent sessions, continue tasks locally, and steer agents with one click."
             }
             OzLaunchSlide::LaunchCredits => {
                 "Upgrade to Build this month and receive 1,000 extra credits to try using Fuzz. Credits are only eligible for Fuzz runs in Yarp-hosted cloud environments."

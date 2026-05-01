@@ -419,7 +419,7 @@ fn register_tests() -> HashMap<&'static str, BoxedBuilderFn> {
     register_test!(test_undo_close_stack_timeout_cleanup);
 
     // File tree tests
-    register_test!(test_file_tree_opens_files_in_warp);
+    register_test!(test_file_tree_opens_files_in_yarp);
     register_test!(test_file_tree_open_in_new_pane);
     register_test!(test_file_tree_open_in_new_tab);
     register_test!(test_file_tree_keyboard_navigation);

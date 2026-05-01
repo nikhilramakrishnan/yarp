@@ -22,7 +22,7 @@ use crate::{
         model::session::Session,
         view::inline_banner::{OpenInYarpBannerAction, OpenInYarpBannerState},
     },
-    util::openable_file_type::{is_file_openable_in_warp, OpenableFileType},
+    util::openable_file_type::{is_file_openable_in_yarp, OpenableFileType},
 };
 use settings::Setting as _;
 use yarp_completer::{
@@ -41,10 +41,6 @@ use super::{Event, InlineBannerItem, InlineBannerType, TerminalView};
 #[path = "open_in_yarp_tests.rs"]
 mod tests;
 
-const LEARN_MORE_MARKDOWN_URL: &str =
-    "https://docs.warp.dev/terminal/more-features/markdown-viewer";
-const LEARN_MORE_CODE_URL: &str = "https://docs.warp.dev/code/overview#built-in-code-editor";
-
 /// A path to a file that can be opened in Yarp, along with its type.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct OpenablePath {
@@ -53,7 +49,7 @@ pub struct OpenablePath {
 }
 
 impl TerminalView {
-    pub(super) fn maybe_suggest_open_in_warp(
+    pub(super) fn maybe_suggest_open_in_yarp(
         &mut self,
         block_completed: &UserBlockCompleted,
         ctx: &mut ViewContext<TerminalView>,
@@ -77,7 +73,7 @@ impl TerminalView {
             let escape_char = session.shell_family().escape_char();
             ctx.spawn(
                 async move {
-                    check_openable_in_warp(
+                    check_openable_in_yarp(
                         command,
                         working_directory,
                         command_case_sensitivity,
@@ -91,7 +87,7 @@ impl TerminalView {
                             openable_path.file_type,
                             OpenableFileType::Markdown | OpenableFileType::Code
                         ) {
-                            view.suggest_open_in_warp(openable_path, session, ctx);
+                            view.suggest_open_in_yarp(openable_path, session, ctx);
                         }
                     }
                 },
@@ -130,7 +126,7 @@ impl TerminalView {
 
     /// Insert a suggestion banner for opening the file `openable_path`, originating from
     /// `session`, in a Yarp pane.
-    fn suggest_open_in_warp(
+    fn suggest_open_in_yarp(
         &mut self,
         openable_path: OpenablePath,
         session: Arc<Session>,
@@ -156,7 +152,7 @@ impl TerminalView {
             .block_list_mut()
             .append_inline_banner(InlineBannerItem::new(
                 banner_id,
-                InlineBannerType::OpenInWarp,
+                InlineBannerType::OpenInYarp,
             ));
         ctx.notify();
     }
@@ -171,14 +167,14 @@ impl TerminalView {
                 if let Some(banner_state) = self.inline_banners_state.open_in_yarp_banner.take() {
                     match banner_state.target.file_type {
                         OpenableFileType::Markdown => {
-                            ctx.emit(Event::OpenFileInWarp {
+                            ctx.emit(Event::OpenFileInYarp {
                                 path: banner_state.target.path,
                                 session: banner_state.session,
                             });
                         }
                         OpenableFileType::Code | OpenableFileType::Text => {
                             #[cfg(feature = "local_fs")]
-                            ctx.emit(Event::OpenCodeInWarp {
+                            ctx.emit(Event::OpenCodeInYarp {
                                 source: CodeSource::Link {
                                     path: banner_state.target.path,
                                     range_start: None,
@@ -192,15 +188,6 @@ impl TerminalView {
                     }
                     self.close_open_in_yarp_banner(banner_state.id);
                     ctx.notify();
-                }
-            }
-            OpenInYarpBannerAction::LearnMore => {
-                if let Some(banner_state) = &self.inline_banners_state.open_in_yarp_banner {
-                    let url = match banner_state.target.file_type {
-                        OpenableFileType::Markdown => LEARN_MORE_MARKDOWN_URL,
-                        OpenableFileType::Code | OpenableFileType::Text => LEARN_MORE_CODE_URL,
-                    };
-                    ctx.open_url(url);
                 }
             }
             OpenInYarpBannerAction::Close => {
@@ -250,13 +237,6 @@ impl TerminalView {
                     YarpA11yRole::UserAction,
                 ))
             }
-            OpenInYarpBannerAction::LearnMore => {
-                ActionAccessibilityContent::Custom(AccessibilityContent::new(
-                    "Learn more",
-                    "Learn more about opening Markdown files in Yarp",
-                    YarpA11yRole::UserAction,
-                ))
-            }
         }
     }
 }
@@ -267,7 +247,7 @@ lazy_static! {
 }
 
 /// Examines `command` for a file openable in Yarp, returning the resolved path and type if found.
-async fn check_openable_in_warp(
+async fn check_openable_in_yarp(
     command: String,
     working_directory: Option<String>,
     command_case_sensitivity: TopLevelCommandCaseSensitivity,
@@ -311,7 +291,7 @@ async fn check_openable_in_warp(
 
                 let relative_path = Path::new(arg.value().as_str());
 
-                let Some(file_type) = is_file_openable_in_warp(relative_path) else {
+                let Some(file_type) = is_file_openable_in_yarp(relative_path) else {
                     continue;
                 };
 

@@ -123,7 +123,7 @@ pub enum AIDocumentEvent {
     CloseRequested,
     ViewInYarpDrive(YarpDriveItemId),
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
         layout: EditorLayout,
         line_col: Option<LineAndColumnArg>,
@@ -895,21 +895,21 @@ impl AIDocumentView {
             EditorViewEvent::OpenFile {
                 path,
                 line_and_column_num,
-                force_open_in_warp,
+                force_open_in_yarp,
             } => {
                 use crate::util::file::external_editor::EditorSettings;
                 use crate::util::openable_file_type::{
                     is_supported_image_file, resolve_file_target,
                 };
 
-                if *force_open_in_warp {
+                if *force_open_in_yarp {
                     let layout = *EditorSettings::as_ref(ctx).open_file_layout;
                     let source = CodeSource::Link {
                         path: path.clone(),
                         range_start: *line_and_column_num,
                         range_end: None,
                     };
-                    ctx.emit(AIDocumentEvent::OpenCodeInWarp {
+                    ctx.emit(AIDocumentEvent::OpenCodeInYarp {
                         source,
                         layout,
                         line_col: *line_and_column_num,

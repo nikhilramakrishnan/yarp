@@ -2925,7 +2925,7 @@ impl AIBlock {
                 CodeDiffViewEvent::OpenSkill { reference, path } => {
                     #[cfg(feature = "local_fs")]
                     {
-                        ctx.emit(AIBlockEvent::OpenCodeInWarp {
+                        ctx.emit(AIBlockEvent::OpenCodeInYarp {
                             source: CodeSource::Skill {
                                 reference: reference.clone(),
                                 path: path.clone(),
@@ -2943,7 +2943,7 @@ impl AIBlock {
                 CodeDiffViewEvent::OpenMCPConfig { path, .. } => {
                     #[cfg(feature = "local_fs")]
                     {
-                        ctx.emit(AIBlockEvent::OpenCodeInWarp {
+                        ctx.emit(AIBlockEvent::OpenCodeInYarp {
                             source: CodeSource::Link {
                                 path: path.clone(),
                                 range_start: None,
@@ -5537,7 +5537,7 @@ pub enum AIBlockEvent {
     CopiedEmptyText,
     OpenSettings,
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
         layout: crate::util::file::external_editor::settings::EditorLayout,
     },
@@ -5683,7 +5683,7 @@ pub enum AIBlockAction {
     StoreRightClickedCommand {
         command: String,
     },
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
     },
     ToggleTodoListExpanded(MessageId),
@@ -6183,7 +6183,7 @@ impl TypedActionView for AIBlock {
                 // Clear the stored command after copying
                 self.last_right_clicked_command = None;
             }
-            AIBlockAction::OpenCodeInWarp {
+            AIBlockAction::OpenCodeInYarp {
                 #[cfg_attr(not(feature = "local_fs"), allow(unused))]
                 source,
             } => {
@@ -6217,7 +6217,7 @@ impl TypedActionView for AIBlock {
 
                 #[cfg(feature = "local_fs")]
                 {
-                    ctx.emit(AIBlockEvent::OpenCodeInWarp {
+                    ctx.emit(AIBlockEvent::OpenCodeInYarp {
                         source: source.clone(),
                         layout: *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                             .open_file_layout

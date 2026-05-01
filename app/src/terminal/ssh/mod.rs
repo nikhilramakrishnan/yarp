@@ -7,4 +7,4 @@ pub mod ssh_detection;
 pub mod util;
 pub mod yarpify;
 
-pub const SSH_WARPIFY_TIMEOUT_DURATION: Duration = Duration::from_secs(8);
+pub const SSH_YARPIFY_TIMEOUT_DURATION: Duration = Duration::from_secs(8);

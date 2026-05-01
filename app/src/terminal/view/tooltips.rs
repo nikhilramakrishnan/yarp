@@ -67,7 +67,7 @@ fn open_in_yarp_tooltip(
     };
     Some(GridTooltipLink {
         text: "Open in Yarp".to_string(),
-        action: TerminalAction::OpenCodeInWarp {
+        action: TerminalAction::OpenCodeInYarp {
             path,
             layout: *EditorSettings::as_ref(app).open_file_layout.value(),
             line_col: line_and_column_num,
@@ -191,14 +191,14 @@ impl TerminalView {
 
         #[cfg_attr(not(feature = "local_fs"), allow(unused_mut))]
         if let Some(link) = &self.open_grid_link_tool_tip {
-            let mut open_in_warp = None;
+            let mut open_in_yarp = None;
             let modifier = directly_open_link_keybinding_string();
             let mut detail = Some(format!("[{modifier} Click]"));
             #[cfg(feature = "local_fs")]
             {
                 if let GridHighlightedLink::File(file_link) = link {
                     if let Some(path) = file_link.get_inner().absolute_path() {
-                        open_in_warp = open_in_yarp_tooltip(
+                        open_in_yarp = open_in_yarp_tooltip(
                             path,
                             file_link.get_inner().line_and_column_num,
                             &mut detail,
@@ -216,13 +216,13 @@ impl TerminalView {
                 detail,
             });
 
-            links.extend(open_in_warp);
+            links.extend(open_in_yarp);
         }
 
         #[cfg_attr(not(feature = "local_fs"), allow(unused_mut))]
         if let Some(tooltip_info) = &self.open_rich_content_link_tool_tip {
             element_id = tooltip_info.position_id.to_owned();
-            let mut open_in_warp = None;
+            let mut open_in_yarp = None;
             let modifier_string = directly_open_link_keybinding_string();
             let mut detail = Some(format!("[{modifier_string} Click]"));
 
@@ -234,7 +234,7 @@ impl TerminalView {
                     ..
                 } = &tooltip_info.link
                 {
-                    open_in_warp = open_in_yarp_tooltip(
+                    open_in_yarp = open_in_yarp_tooltip(
                         absolute_path.clone(),
                         *line_and_column_num,
                         &mut detail,
@@ -251,7 +251,7 @@ impl TerminalView {
                 detail,
             });
 
-            links.extend(open_in_warp);
+            links.extend(open_in_yarp);
         }
 
         let secret_redaction = get_secret_obfuscation_mode(app);

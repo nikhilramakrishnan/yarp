@@ -98,12 +98,12 @@ impl PaneContent for AIDocumentPane {
                     ctx.emit(crate::pane_group::Event::ViewInYarpDrive(*id));
                 }
                 #[cfg(feature = "local_fs")]
-                AIDocumentEvent::OpenCodeInWarp {
+                AIDocumentEvent::OpenCodeInYarp {
                     source,
                     layout,
                     line_col,
                 } => {
-                    ctx.emit(crate::pane_group::Event::OpenCodeInWarp {
+                    ctx.emit(crate::pane_group::Event::OpenCodeInYarp {
                         source: source.clone(),
                         layout: *layout,
                         line_col: *line_col,

@@ -225,7 +225,7 @@ impl ConversationEndedTombstoneView {
                 ActionButton::new("Open in Yarp", PrimaryTheme)
                     .with_tooltip("Open this conversation in the Yarp desktop app")
                     .on_click(move |ctx| {
-                        ctx.dispatch_typed_action(ConversationEndedTombstoneAction::OpenInWarp(
+                        ctx.dispatch_typed_action(ConversationEndedTombstoneAction::OpenInYarp(
                             conv_id,
                         ));
                     })
@@ -516,7 +516,7 @@ pub enum ConversationEndedTombstoneAction {
     #[cfg(not(target_family = "wasm"))]
     ContinueLocally(AIConversationId),
     #[cfg(target_family = "wasm")]
-    OpenInWarp(AIConversationId),
+    OpenInYarp(AIConversationId),
 }
 
 impl View for ConversationEndedTombstoneView {
@@ -607,8 +607,8 @@ impl TypedActionView for ConversationEndedTombstoneView {
                 });
             }
             #[cfg(target_family = "wasm")]
-            ConversationEndedTombstoneAction::OpenInWarp(conversation_id) => {
-                send_telemetry_from_ctx!(AgentManagementTelemetryEvent::TombstoneOpenInWarp, ctx);
+            ConversationEndedTombstoneAction::OpenInYarp(conversation_id) => {
+                send_telemetry_from_ctx!(AgentManagementTelemetryEvent::TombstoneOpenInYarp, ctx);
                 let conversation = BlocklistAIHistoryModel::handle(ctx)
                     .as_ref(ctx)
                     .conversation(conversation_id);

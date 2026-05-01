@@ -499,7 +499,7 @@ impl Input {
                             Ok(metadata) if metadata.is_file() => {
                                 use crate::util::file::external_editor;
 
-                                ctx.dispatch_typed_action(&TerminalAction::OpenCodeInWarp {
+                                ctx.dispatch_typed_action(&TerminalAction::OpenCodeInYarp {
                                     path: file_path,
                                     layout: external_editor::settings::EditorLayout::SplitPane,
                                     line_col: parsed_path.line_and_column_num,

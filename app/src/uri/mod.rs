@@ -13,7 +13,7 @@ use crate::linear::{LinearAction, LinearIssueWork};
 use crate::root_view::{open_new_window_get_handles, OpenLaunchConfigArg};
 use crate::server::ids::ServerId;
 use crate::server::telemetry::{LaunchConfigUiLocation, TelemetryEvent};
-use crate::util::openable_file_type::{is_file_openable_in_warp, is_markdown_file};
+use crate::util::openable_file_type::{is_file_openable_in_yarp, is_markdown_file};
 use crate::workspace::{Workspace, WorkspaceAction, WorkspaceRegistry};
 use crate::{cloud_object::ObjectType, workspace::ToastStack};
 use crate::{drive::OpenYarpDriveObjectArgs, view_components::DismissibleToast};
@@ -1027,19 +1027,19 @@ fn open_file(window_id: Option<WindowId>, path: PathBuf, ctx: &mut AppContext) {
         } else {
             ctx.dispatch_global_action("root_view:open_new_with_file_notebook", &path);
         }
-    } else if path.is_file() && is_file_openable_in_warp(&path).is_some() {
+    } else if path.is_file() && is_file_openable_in_yarp(&path).is_some() {
         #[cfg(feature = "local_fs")]
         {
             use crate::code::editor_management::CodeSource;
             use crate::root_view::{open_new_with_workspace_source, NewWorkspaceSource};
             use crate::util::{
                 file::external_editor::EditorSettings,
-                openable_file_type::resolve_file_target_to_open_in_warp,
+                openable_file_type::resolve_file_target_to_open_in_yarp,
             };
 
             // Open text/code files in Yarp's code editor, respecting the user's layout preference.
             let editor_settings = EditorSettings::as_ref(ctx);
-            let target = resolve_file_target_to_open_in_warp(&path, editor_settings, None);
+            let target = resolve_file_target_to_open_in_yarp(&path, editor_settings, None);
 
             let window_id = if let Some((wid, _)) = primary_window_and_view {
                 wid

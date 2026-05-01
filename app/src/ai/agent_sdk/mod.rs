@@ -1352,7 +1352,7 @@ fn launch_command(
 
 /// Check if we're running within Yarp (for example, if this is an invocation of the Yarp CLI
 /// within a Yarp terminal session).
-pub fn is_running_in_warp() -> bool {
+pub fn is_running_in_yarp() -> bool {
     std::env::var("TERM_PROGRAM")
         .map(|v| v == "YarpTerminal")
         .unwrap_or(false)

@@ -276,9 +276,9 @@ pub enum TerminalAction {
     },
     CopyRichContentSecret(RichContentSecretTooltipInfo),
     ShowInFileExplorer(PathBuf),
-    OpenFileInWarp(PathBuf),
+    OpenFileInYarp(PathBuf),
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         path: PathBuf,
         layout: crate::util::file::external_editor::settings::EditorLayout,
         line_col: Option<yarp_util::path::LineAndColumnArg>,
@@ -566,9 +566,9 @@ impl fmt::Debug for TerminalAction {
             CopyGridSecret(_) => f.write_str("CopyGridSecret"),
             CopyRichContentSecret(_) => f.write_str("CopyRichContentSecret"),
             ShowInFileExplorer(_) => f.write_str("ShowInFileExplorer"),
-            OpenFileInWarp(_) => f.write_str("OpenFileInWarp"),
+            OpenFileInYarp(_) => f.write_str("OpenFileInYarp"),
             #[cfg(feature = "local_fs")]
-            OpenCodeInWarp { .. } => f.write_str("OpenCodeInWarp"),
+            OpenCodeInYarp { .. } => f.write_str("OpenCodeInYarp"),
             OpenWorkflowModal => f.write_str("OpenWorkflowModal"),
             OpenWorkflowModalForAIWorkflow(_) => f.write_str("OpenWorkflowModalForAIWorkflow"),
             OpenWorkflowModalForBlock(block_index) => {

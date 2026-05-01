@@ -113,7 +113,7 @@ pub enum AgentManagementTelemetryEvent {
     DetailsPanelContinueLocally,
     /// User clicked "Open in Yarp" in the tombstone (wasm)
     #[cfg(target_family = "wasm")]
-    TombstoneOpenInWarp,
+    TombstoneOpenInYarp,
     /// User cancelled a cloud run
     CloudRunCancelled { task_id: String },
     /// User forked a conversation
@@ -193,7 +193,7 @@ impl TelemetryEvent for AgentManagementTelemetryEvent {
             #[cfg(not(target_family = "wasm"))]
             AgentManagementTelemetryEvent::DetailsPanelContinueLocally => None,
             #[cfg(target_family = "wasm")]
-            AgentManagementTelemetryEvent::TombstoneOpenInWarp => None,
+            AgentManagementTelemetryEvent::TombstoneOpenInYarp => None,
             AgentManagementTelemetryEvent::CloudRunCancelled { task_id } => {
                 Some(json!({ "task_id": task_id }))
             }
@@ -245,7 +245,7 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
             #[cfg(not(target_family = "wasm"))]
             Self::DetailsPanelContinueLocally => "AgentManagement.DetailsPanelContinueLocally",
             #[cfg(target_family = "wasm")]
-            Self::TombstoneOpenInWarp => "AgentManagement.TombstoneOpenInWarp",
+            Self::TombstoneOpenInYarp => "AgentManagement.TombstoneOpenInYarp",
             Self::CloudRunCancelled => "AgentManagement.CloudRunCancelled",
             Self::ConversationForked => "AgentManagement.ConversationForked",
         }
@@ -279,7 +279,7 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
                 "User clicked Continue locally in the details panel"
             }
             #[cfg(target_family = "wasm")]
-            Self::TombstoneOpenInWarp => "User clicked Open in Yarp in the tombstone",
+            Self::TombstoneOpenInYarp => "User clicked Open in Yarp in the tombstone",
             Self::CloudRunCancelled => "User cancelled a cloud run",
             Self::ConversationForked => "User forked a conversation",
         }

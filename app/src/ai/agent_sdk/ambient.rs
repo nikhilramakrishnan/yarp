@@ -555,7 +555,7 @@ impl AmbientAgentRunner {
                     if should_open {
                         if let Some(session_join_info) = session_join_info {
                             let url =
-                                match (super::is_running_in_warp(), session_join_info.session_id) {
+                                match (super::is_running_in_yarp(), session_join_info.session_id) {
                                     (true, Some(session_id)) => {
                                         shared_session::join_native_intent(&session_id)
                                     }

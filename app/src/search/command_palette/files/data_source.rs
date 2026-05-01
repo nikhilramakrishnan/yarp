@@ -24,7 +24,7 @@ const MAX_RESULTS: usize = 100;
 enum FileRanking {
     None,
     ChangedInGit,
-    OpenedInWarp { timestamp: Instant },
+    OpenedInYarp { timestamp: Instant },
 }
 
 pub struct FileDataSource {
@@ -145,7 +145,7 @@ impl FileDataSource {
             if let Some(last_opened_timestamp) =
                 opened_files.and_then(|opened_files| opened_files.get(&PathBuf::from(&item.path)))
             {
-                file_ranking = FileRanking::OpenedInWarp {
+                file_ranking = FileRanking::OpenedInYarp {
                     timestamp: *last_opened_timestamp,
                 };
             }

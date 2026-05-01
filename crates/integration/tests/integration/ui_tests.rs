@@ -305,7 +305,7 @@ integration_tests! {
     test_rule_pane_opening,
     test_undo_close_stack_timeout_cleanup,
 
-    test_file_tree_opens_files_in_warp,
+    test_file_tree_opens_files_in_yarp,
     test_file_tree_open_in_new_pane,
     test_file_tree_open_in_new_tab,
     test_file_tree_keyboard_navigation,

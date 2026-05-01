@@ -783,21 +783,21 @@ fn handle_terminal_view_event(
             Event::OpenCLIAgentToolbarEditor => {
                 ctx.emit(pane_group::Event::OpenCLIAgentToolbarEditor);
             }
-            Event::OpenFileInWarp { path, session } => {
-                ctx.emit(pane_group::Event::OpenFileInWarp {
+            Event::OpenFileInYarp { path, session } => {
+                ctx.emit(pane_group::Event::OpenFileInYarp {
                     path: path.clone(),
                     session: session.clone(),
                 });
             }
             #[cfg(feature = "local_fs")]
-            Event::PreviewCodeInWarp { source } => {
-                ctx.emit(pane_group::Event::PreviewCodeInWarp {
+            Event::PreviewCodeInYarp { source } => {
+                ctx.emit(pane_group::Event::PreviewCodeInYarp {
                     source: source.clone(),
                 });
             }
             #[cfg(feature = "local_fs")]
-            Event::OpenCodeInWarp { source, layout } => {
-                ctx.emit(pane_group::Event::OpenCodeInWarp {
+            Event::OpenCodeInYarp { source, layout } => {
+                ctx.emit(pane_group::Event::OpenCodeInYarp {
                     source: source.clone(),
                     layout: *layout,
                     line_col: if let CodeSource::Link { range_start, .. } = source {

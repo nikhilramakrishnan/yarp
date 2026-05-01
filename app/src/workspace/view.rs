@@ -13089,7 +13089,7 @@ impl Workspace {
                 );
             }
             #[cfg_attr(not(feature = "local_fs"), allow(unused_variables))]
-            pane_group::Event::OpenFileInWarp { path, session } => {
+            pane_group::Event::OpenFileInYarp { path, session } => {
                 #[cfg(feature = "local_fs")]
                 {
                     let layout = *EditorSettings::as_ref(ctx).open_file_layout.value();
@@ -13155,7 +13155,7 @@ impl Workspace {
                 }
             }
             #[cfg(feature = "local_fs")]
-            pane_group::Event::OpenCodeInWarp {
+            pane_group::Event::OpenCodeInYarp {
                 source,
                 layout,
                 line_col,
@@ -13163,7 +13163,7 @@ impl Workspace {
                 self.open_code(source.clone(), *layout, *line_col, false, &[], ctx);
             }
             #[cfg(feature = "local_fs")]
-            pane_group::Event::PreviewCodeInWarp { source } => {
+            pane_group::Event::PreviewCodeInYarp { source } => {
                 self.open_code(
                     source.clone(),
                     EditorLayout::SplitPane, // preview always uses split pane

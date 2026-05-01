@@ -26,7 +26,7 @@ use onboarding::callout::{FinalState, OnboardingCalloutViewEvent, OnboardingQuer
 use onboarding::{OnboardingCalloutView, OnboardingKeybindings};
 pub(crate) mod docker_sandbox;
 mod link_detection;
-mod open_in_warp;
+mod open_in_yarp;
 mod pane_impl;
 mod passive_suggestions;
 mod pending_user_query;
@@ -551,7 +551,7 @@ use super::ssh::yarpify::{
     begin_yarpify_ssh_session_command, yarpify_ssh_session_command, SshYarpifyBlock,
     SshYarpifyBlockEvent,
 };
-use super::ssh::SSH_WARPIFY_TIMEOUT_DURATION;
+use super::ssh::SSH_YARPIFY_TIMEOUT_DURATION;
 use super::yarpify::success_block::{YarpifySuccessBlock, YarpifySuccessBlockEvent};
 use super::yarpify::trigger_state::{SshBlockState, YarpifyState};
 use super::yarpify::YarpificationSource;
@@ -1020,7 +1020,7 @@ pub enum InlineBannerType {
     SharedSessionStart,
     SharedSessionEnd,
     ShellProcessTerminated,
-    OpenInWarp,
+    OpenInYarp,
     VimMode,
     CodebaseIndexSpeedbump,
     AgentModeSetup,
@@ -1049,7 +1049,7 @@ impl InlineBannerType {
             | Self::SharedSessionStart
             | Self::SharedSessionEnd
             | Self::ShellProcessTerminated
-            | Self::OpenInWarp
+            | Self::OpenInYarp
             | Self::VimMode => false,
         }
     }
@@ -1726,18 +1726,18 @@ pub enum Event {
         is_for_in_band_command: bool,
     },
     /// Tell the pane group to open a file within Yarp.
-    OpenFileInWarp {
+    OpenFileInYarp {
         path: PathBuf,
         /// The session that the file belongs to.
         session: Arc<Session>,
     },
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
         layout: EditorLayout,
     },
     #[cfg(feature = "local_fs")]
-    PreviewCodeInWarp {
+    PreviewCodeInYarp {
         source: CodeSource,
     },
     OpenCodeDiff {
@@ -10604,7 +10604,7 @@ impl TerminalView {
                             self.maybe_suggest_alias_expansion(block_completed, ctx);
                         }
 
-                        self.maybe_suggest_open_in_warp(block_completed, ctx);
+                        self.maybe_suggest_open_in_yarp(block_completed, ctx);
                     }
 
                     // Check if the user tried to run an AWS login command but AWS CLI wasn't installed.
@@ -14948,7 +14948,7 @@ impl TerminalView {
                             if is_markdown_file(&path) {
                                 items.push(
                                     MenuItemFields::new("Open in Yarp")
-                                        .with_on_select_action(TerminalAction::OpenFileInWarp(path))
+                                        .with_on_select_action(TerminalAction::OpenFileInYarp(path))
                                         .into_item(),
                                 );
                                 // Because the default for cmd-click is to open in Yarp, we also
@@ -17047,23 +17047,23 @@ impl TerminalView {
     }
 
     /// Tell the pane group to open a file within Yarp.
-    fn open_file_in_warp(&mut self, path: PathBuf, ctx: &mut ViewContext<Self>) {
+    fn open_file_in_yarp(&mut self, path: PathBuf, ctx: &mut ViewContext<Self>) {
         if let Some(session) = self
             .active_block_session_id()
             .and_then(|session_id| self.sessions.as_ref(ctx).get(session_id))
         {
-            ctx.emit(Event::OpenFileInWarp { path, session })
+            ctx.emit(Event::OpenFileInYarp { path, session })
         }
     }
 
     #[cfg(feature = "local_fs")]
-    fn open_code_in_warp(
+    fn open_code_in_yarp(
         &mut self,
         source: CodeSource,
         layout: EditorLayout,
         ctx: &mut ViewContext<Self>,
     ) {
-        ctx.emit(Event::OpenCodeInWarp { source, layout })
+        ctx.emit(Event::OpenCodeInYarp { source, layout })
     }
 
     fn open_code_diff(&self, view: ViewHandle<CodeDiffView>, ctx: &mut ViewContext<Self>) {
@@ -18863,8 +18863,8 @@ impl TerminalView {
                 ctx.emit(Event::OpenSettings(SettingsSection::YarpAgent));
             }
             #[cfg(feature = "local_fs")]
-            AIBlockEvent::OpenCodeInWarp { source, layout } => {
-                ctx.emit(Event::OpenCodeInWarp {
+            AIBlockEvent::OpenCodeInYarp { source, layout } => {
+                ctx.emit(Event::OpenCodeInYarp {
                     source: source.clone(),
                     layout: *layout,
                 });
@@ -19980,8 +19980,8 @@ impl TerminalView {
                 ctx.emit(Event::OpenSettings(*section));
             }
             #[cfg(feature = "local_fs")]
-            InputEvent::OpenCodeInWarp { source, layout } => {
-                ctx.emit(Event::OpenCodeInWarp {
+            InputEvent::OpenCodeInYarp { source, layout } => {
+                ctx.emit(Event::OpenCodeInYarp {
                     source: source.clone(),
                     layout: *layout,
                 });
@@ -23770,7 +23770,7 @@ impl TerminalView {
 
     fn yarpify_ssh_session(&mut self, ctx: &mut ViewContext<Self>) {
         self.yarpify_state.set_shell_detection_in_progress();
-        self.begin_ssh_yarpify_timeout(SSH_WARPIFY_TIMEOUT_DURATION, ctx);
+        self.begin_ssh_yarpify_timeout(SSH_YARPIFY_TIMEOUT_DURATION, ctx);
         self.clear_line_editor_and_write_to_pty(
             convert_script_to_one_line(&begin_yarpify_ssh_session_command(ctx)).into_bytes(),
             ctx,
@@ -24236,7 +24236,7 @@ impl TypedActionView for TerminalView {
             | CopyGridSecret(_)
             | CopyRichContentSecret(_)
             | ShowInFileExplorer(_)
-            | OpenFileInWarp(_)
+            | OpenFileInYarp(_)
             | CtrlD
             | CtrlC
             | ClearSelectionsWhenShellMode
@@ -24267,7 +24267,7 @@ impl TypedActionView for TerminalView {
             | ClearMarkedText
             | StartLspServer => ActionAccessibilityContent::from_debug(),
             #[cfg(feature = "local_fs")]
-            OpenCodeInWarp { .. } => ActionAccessibilityContent::from_debug(),
+            OpenCodeInYarp { .. } => ActionAccessibilityContent::from_debug(),
             OpenInYarpBanner(action) => self.open_in_yarp_banner_accessibility_content(*action),
             OpenAIBlockAttachedBlocksMenu { .. } => Custom(AccessibilityContent::new_without_help(
                 "Open list of blocks attached as context to this AI query.".to_owned(),
@@ -24685,16 +24685,16 @@ impl TypedActionView for TerminalView {
 
                 ctx.open_file_path_in_explorer(path);
             }
-            OpenFileInWarp(path) => {
-                self.open_file_in_warp(path.clone(), ctx);
+            OpenFileInYarp(path) => {
+                self.open_file_in_yarp(path.clone(), ctx);
             }
             #[cfg(feature = "local_fs")]
-            OpenCodeInWarp {
+            OpenCodeInYarp {
                 path,
                 layout,
                 line_col,
             } => {
-                self.open_code_in_warp(
+                self.open_code_in_yarp(
                     CodeSource::Link {
                         path: path.clone(),
                         range_start: *line_col,
@@ -25224,7 +25224,7 @@ impl TypedActionView for TerminalView {
                     let mut yarp_md_path = PathBuf::from(&current_dir);
                     yarp_md_path.push(YARP_MD_PATH);
                     #[cfg(feature = "local_fs")]
-                    ctx.emit(Event::OpenCodeInWarp {
+                    ctx.emit(Event::OpenCodeInYarp {
                         source: CodeSource::ProjectRules { path: yarp_md_path },
                         layout: *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                             .open_file_layout
@@ -25258,7 +25258,7 @@ impl TypedActionView for TerminalView {
 
                     match skill_reference {
                         SkillReference::Path(path) => {
-                            ctx.emit(Event::OpenCodeInWarp {
+                            ctx.emit(Event::OpenCodeInYarp {
                                 source: CodeSource::Skill {
                                     reference: skill_reference.clone(),
                                     path: path.clone(),

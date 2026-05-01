@@ -994,7 +994,7 @@ pub enum Event {
     },
     OpenSettings(SettingsSection),
     #[cfg(feature = "local_fs")]
-    OpenCodeInWarp {
+    OpenCodeInYarp {
         source: CodeSource,
         layout: external_editor::settings::EditorLayout,
     },
@@ -5001,7 +5001,7 @@ impl Input {
                 range_end: None,
             };
             // Emit an event to create a new code pane
-            ctx.emit(Event::OpenCodeInWarp {
+            ctx.emit(Event::OpenCodeInYarp {
                 source: code_source,
                 layout: *external_editor::EditorSettings::as_ref(ctx)
                     .open_file_layout
