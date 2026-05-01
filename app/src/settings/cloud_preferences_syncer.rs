@@ -295,32 +295,10 @@ impl CloudPreferencesSyncer {
         }
     }
 
-    /// Handles SyncQueue success events by updating the stored
-    /// settings file hash when a cloud preference is successfully
-    /// created or updated on the server.
-    fn handle_sync_queue_event(&mut self, event: &SyncQueueEvent, ctx: &mut ModelContext<Self>) {
-        let server_id = match event {
-            SyncQueueEvent::ObjectCreationSuccessful {
-                server_creation_info,
-                ..
-            } => Some(server_creation_info.server_id_and_type.id),
-            SyncQueueEvent::ObjectUpdateSuccessful { server_id, .. } => Some(*server_id),
-            _ => None,
-        };
-        if let Some(server_id) = server_id {
-            // Check whether this object is a cloud preference.
-            // GenericStringObject is a superset that also includes
-            // env var collections, workflow enums, MCP servers, etc.
-            // Only preference changes should update the stored hash.
-            let sync_id = SyncId::ServerId(server_id);
-            let is_preference = CloudModel::as_ref(ctx)
-                .get_all_cloud_preferences_by_storage_key()
-                .values()
-                .any(|pref| pref.id == sync_id);
-            if is_preference {
-                self.update_stored_settings_hash(ctx);
-            }
-        }
+    /// Handles SyncQueue events. yarp's SyncQueueEvent is uninhabited (no
+    /// variants), so this never runs.
+    fn handle_sync_queue_event(&mut self, event: &SyncQueueEvent, _ctx: &mut ModelContext<Self>) {
+        match *event {}
     }
 
     /// Reads the current settings file hash from disk and persists it
@@ -964,6 +942,3 @@ impl Entity for CloudPreferencesSyncer {
 /// Mark CloudPreferencesSyncer as global application state.
 impl SingletonEntity for CloudPreferencesSyncer {}
 
-#[cfg(test)]
-#[path = "cloud_preferences_syncer_tests.rs"]
-mod tests;

@@ -1538,13 +1538,7 @@ fn initialize_app(
         unsynced_actions.into_iter(),
     ));
 
-    ctx.add_singleton_model(|ctx| {
-        SyncQueue::new(
-            all_queue_items,
-            server_api_provider.as_ref(ctx).get_cloud_objects_client(),
-            ctx,
-        )
-    });
+    ctx.add_singleton_model(|ctx| SyncQueue::new(all_queue_items, ctx));
 
     {
         let conversations = &multi_agent_conversations;

@@ -71,8 +71,7 @@ pub fn create_update_manager_struct(
 ) -> UpdateManagerStruct {
     let (sender, receiver) = sync_channel(CHANNEL_SIZE);
 
-    // the sync queue can't be mocked; needs to use the same server_api as the update_manager
-    app.add_singleton_model(|ctx| SyncQueue::new(Default::default(), server_api.clone(), ctx));
+    app.add_singleton_model(|ctx| SyncQueue::new(Default::default(), ctx));
     let update_manager =
         app.add_singleton_model(|ctx| UpdateManager::new(Some(sender.clone()), server_api, ctx));
 
