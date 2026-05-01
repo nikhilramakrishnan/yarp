@@ -174,7 +174,7 @@ Manual validation against staging:
 - Confirm `--cursor` paginates correctly for each `--sort-by` value.
 - Confirm human-readable error messages and non-zero exit codes when the server rejects the request (invalid cursor, too-old `created_after`, unknown environment ID, etc.).
 
-Presubmit: run `./script/presubmit` (fmt, clippy `-D warnings`, test suite). The touched crates are `warp_cli` and `warp` (app); the test suite should run quickly for these.
+Presubmit: run `./script/presubmit` (fmt, clippy `-D warnings`, test suite). The touched crates are `yarp_cli` and `yarp` (app); the test suite should run quickly for these.
 
 ## 6. Rollout
 

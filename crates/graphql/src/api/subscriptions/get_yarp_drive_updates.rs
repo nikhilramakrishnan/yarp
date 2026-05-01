@@ -9,7 +9,7 @@ use crate::{
 
 #[derive(cynic::QueryFragment, Debug)]
 #[cynic(graphql_type = "RootSubscription")]
-pub struct GetWarpDriveUpdates {
+pub struct GetYarpDriveUpdates {
     pub yarp_drive_updates: YarpDriveUpdate,
 }
 

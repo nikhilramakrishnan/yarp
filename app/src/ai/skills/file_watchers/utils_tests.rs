@@ -345,7 +345,7 @@ fn is_home_provider_path_true_for_known_providers() {
 }
 
 #[test]
-fn extract_skill_parent_directory_returns_home_dir_for_warp_home_skill() {
+fn extract_skill_parent_directory_returns_home_dir_for_yarp_home_skill() {
     let Some(home_dir) = dirs::home_dir() else {
         eprintln!("Skipping test: home directory not available");
         return;
@@ -563,7 +563,7 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             ignored: false,
             loaded: true,
         });
-        let root_warp_skills = Entry::Directory(DirectoryEntry {
+        let root_yarp_skills = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join(".agents/skills"),
             )
@@ -572,12 +572,12 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             ignored: false,
             loaded: true,
         });
-        let root_warp = Entry::Directory(DirectoryEntry {
+        let root_yarp = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join(".agents"),
             )
             .unwrap(),
-            children: vec![root_warp_skills],
+            children: vec![root_yarp_skills],
             ignored: false,
             loaded: true,
         });
@@ -595,7 +595,7 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             ignored: false,
             loaded: true,
         });
-        let frontend_warp_skills = Entry::Directory(DirectoryEntry {
+        let frontend_yarp_skills = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join("packages/frontend/.agents/skills"),
             )
@@ -604,12 +604,12 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             ignored: false,
             loaded: true,
         });
-        let frontend_warp = Entry::Directory(DirectoryEntry {
+        let frontend_yarp = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(
                 &repo.join("packages/frontend/.agents"),
             )
             .unwrap(),
-            children: vec![frontend_warp_skills],
+            children: vec![frontend_yarp_skills],
             ignored: false,
             loaded: true,
         });
@@ -618,7 +618,7 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
                 &repo.join("packages/frontend"),
             )
             .unwrap(),
-            children: vec![frontend_warp],
+            children: vec![frontend_yarp],
             ignored: false,
             loaded: true,
         });
@@ -634,7 +634,7 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
 
         let root = Entry::Directory(DirectoryEntry {
             path: yarp_util::standardized_path::StandardizedPath::try_from_local(&repo).unwrap(),
-            children: vec![root_warp, packages],
+            children: vec![root_yarp, packages],
             ignored: false,
             loaded: true,
         });

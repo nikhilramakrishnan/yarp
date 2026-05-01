@@ -692,7 +692,7 @@ pub fn render_citation(
                 item.display_name().unwrap_or(String::from("Untitled")),
             )
         }
-        AIAgentCitation::WarpDocumentation { .. } => {
+        AIAgentCitation::YarpDocumentation { .. } => {
             let icon = Icon::Yarp.to_yarpui_icon(theme.foreground()).finish();
             let name = String::from("Yarp Docs");
             (Some(icon), name)

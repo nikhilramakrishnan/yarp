@@ -6,7 +6,7 @@ use wasm_bindgen::JsCast;
 
 /// Events emitted from Yarp on Web to the host JavaScript app.
 ///
-/// These must stay in sync with the [`YarpEvent` TypeScript type](https://github.com/warpdotdev/warp-server/blob/develop/client/src/yarp-client/index.ts).
+/// These must stay in sync with the [`YarpEvent` TypeScript type](https://github.com/hotfuzz/yarp-server/blob/develop/client/src/yarp-client/index.ts).
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "kind", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum YarpEvent {

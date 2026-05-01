@@ -4,7 +4,7 @@ Product spec: `specs/zachlloyd/inline-markdown-images-in-blocklist/PRODUCT.md`
 ## Problem
 The AI block list does not currently support the product behavior described in `PRODUCT.md`: rendering supported Markdown images and Mermaid diagrams inline inside AI responses with the approved inline-row, grouped-image, and Mermaid-card treatments.
 
-Warp already has the underlying primitives needed to build this behavior:
+Yarp already has the underlying primitives needed to build this behavior:
 
 - local image asset loading
 - responsive image sizing
@@ -19,7 +19,7 @@ The implementation should add support for the required file-backed image and Mer
 - no broad markdown-renderer refactor
 - no new dependency edge from the block list into a rendering stack it does not already use
 
-This should be a surgical extension of the existing section-based block-list renderer, with explicit copy behavior for rendered visuals, a visible file-link label below successfully rendered file-backed images, raw-Markdown fallback when rendering is unavailable, and reuse of Warp’s existing fullscreen lightbox treatment when the user clicks a rendered visual.
+This should be a surgical extension of the existing section-based block-list renderer, with explicit copy behavior for rendered visuals, a visible file-link label below successfully rendered file-backed images, raw-Markdown fallback when rendering is unavailable, and reuse of Yarp’s existing fullscreen lightbox treatment when the user clicks a rendered visual.
 
 ## Relevant Code
 - `specs/zachlloyd/inline-markdown-images-in-blocklist/PRODUCT.md` — approved product behavior
@@ -83,16 +83,16 @@ Our current `markdown_parser` does not fully implement that inline image semanti
 Plain-text markdown sections are rendered with `render_rich_text_output_text_section` in `app/src/ai/blocklist/block/view_impl/common.rs (986-1084)`, which delegates to `FormattedTextElement`. In `crates/yarpui_core/src/elements/formatted_text_element.rs (1580-1591, 1661-1671)`, `FormattedTextLine::Image(_)`, `FormattedTextLine::Embedded(_)`, and `FormattedTextLine::HorizontalRule` are all treated as line-break-like layout items rather than renderable content. That is the immediate reason that block-list Markdown images never show up.
 
 ### Asset and Mermaid support already exists elsewhere
-Warp already has the low-level capabilities this feature needs:
+Yarp already has the low-level capabilities this feature needs:
 
 - shared image format support in `crates/yarpui_core/src/image_cache.rs`
 - asset-source resolution, including WASM-safe behavior, in `crates/editor/src/content/edit.rs (56-91)`
 - Mermaid SVG generation and sizing in `crates/editor/src/content/mermaid_diagram.rs (20-67)`
 - Mermaid code-block identification in `crates/editor/src/content/text.rs (526-579)`
 
-The app crate already depends on `warp_editor`, and the block list already embeds editor-backed code blocks. Reusing editor Mermaid/image helpers therefore does not introduce a new crate dependency edge.
+The app crate already depends on `yarp_editor`, and the block list already embeds editor-backed code blocks. Reusing editor Mermaid/image helpers therefore does not introduce a new crate dependency edge.
 
-Warp also already has a reusable fullscreen lightbox path at the workspace layer. `WorkspaceAction::OpenLightbox` / `UpdateLightboxImage` drive `LightboxView`, which already supports Escape dismissal, left/right keyboard navigation, and previous/next buttons. The block-list visual renderer should reuse that path rather than inventing a new fullscreen viewer.
+Yarp also already has a reusable fullscreen lightbox path at the workspace layer. `WorkspaceAction::OpenLightbox` / `UpdateLightboxImage` drive `LightboxView`, which already supports Escape dismissal, left/right keyboard navigation, and previous/next buttons. The block-list visual renderer should reuse that path rather than inventing a new fullscreen viewer.
 
 ### Working-directory metadata already exists
 The product requirement for resolving relative paths against the working directory captured when the AI block rendered is already compatible with existing data flow:
@@ -210,7 +210,7 @@ For Mermaid:
 
 For actual rendering:
 - use a block-list-local renderer in the existing section flow
-- use WarpUI image elements and existing block-list spacing/styling conventions
+- use YarpUI image elements and existing block-list spacing/styling conventions
 - preserve the existing right-click-to-copy Markdown behavior on every rendered visual
 - for inline image runs, render medium-height image tiles with per-image labels below
 - for grouped block images, render stacked thumbnail-plus-path rows using the full source path text
@@ -384,5 +384,5 @@ Mitigation:
 ## Follow-ups
 - full CommonMark-style inline image support if we decide to expand `markdown_parser` beyond its current standalone-image behavior
 - unified mixed-content selection across block-list renderer types
-- consolidating `MarkdownImages` and `BlocklistMarkdownImages` if Warp later ships a broader app-wide markdown-image rollout
+- consolidating `MarkdownImages` and `BlocklistMarkdownImages` if Yarp later ships a broader app-wide markdown-image rollout
 - richer image interactions such as open/save/zoom, if product wants them later

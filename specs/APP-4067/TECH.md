@@ -37,7 +37,7 @@ The plugin manager infrastructure is fully generalized across Claude (auto-insta
 Add `GeminiNotifications` to the `FeatureFlag` enum after `CodexNotifications`:
 
 ```rust
-/// Enables the install/update chip for the Gemini CLI Warp extension.
+/// Enables the install/update chip for the Gemini CLI Yarp extension.
 /// Requires HOANotifications to also be enabled.
 GeminiNotifications,
 ```
@@ -49,8 +49,8 @@ Add to `DOGFOOD_FLAGS`.
 New file. Follows the Claude Code pattern closely.
 
 **Constants:**
-- `EXTENSION_REPO: &str = "https://github.com/warpdotdev/gemini-cli-warp"` — install source.
-- `EXTENSION_NAME: &str = "gemini-warp"` — the installed directory name under `~/.gemini/extensions/`. Used for `gemini extensions update gemini-warp`.
+- `EXTENSION_REPO: &str = "https://github.com/yarpdotdev/gemini-cli-yarp"` — install source.
+- `EXTENSION_NAME: &str = "gemini-yarp"` — the installed directory name under `~/.gemini/extensions/`. Used for `gemini extensions update gemini-yarp`.
 - `MINIMUM_PLUGIN_VERSION: &str = "1.0.0"` — matches current plugin version.
 
 **Struct:**
@@ -67,9 +67,9 @@ Same `new(shell_path, shell_type, path_env_var)` constructor pattern as `ClaudeC
 
 `gemini_extensions_dir()` — returns `~/.gemini/extensions` (no env var override like Claude's `CLAUDE_HOME`, Gemini CLI doesn't support one).
 
-`is_installed()` — checks if `~/.gemini/extensions/gemini-warp/gemini-extension.json` exists and parses as valid JSON. `fs::read_to_string` follows symlinks, so `gemini extensions link` is handled.
+`is_installed()` — checks if `~/.gemini/extensions/gemini-yarp/gemini-extension.json` exists and parses as valid JSON. `fs::read_to_string` follows symlinks, so `gemini extensions link` is handled.
 
-`installed_version()` — reads `~/.gemini/extensions/gemini-warp/gemini-extension.json`, parses the `version` field. The JSON structure is flat: `{"name": "warp", "version": "1.0.0", ...}`.
+`installed_version()` — reads `~/.gemini/extensions/gemini-yarp/gemini-extension.json`, parses the `version` field. The JSON structure is flat: `{"name": "yarp", "version": "1.0.0", ...}`.
 
 `needs_update()` — calls `installed_version()`, compares against `MINIMUM_PLUGIN_VERSION` using `compare_versions`. Returns `true` if version is lower, or if installed but no version field.
 
@@ -77,22 +77,22 @@ Same `new(shell_path, shell_type, path_env_var)` constructor pattern as `ClaudeC
 
 `install()`:
 ```
-gemini extensions install https://github.com/warpdotdev/gemini-cli-warp --consent
+gemini extensions install https://github.com/yarpdotdev/gemini-cli-yarp --consent
 ```
 `--consent` skips the interactive security confirmation prompt.
 
 `update()`:
 ```
-gemini extensions update gemini-warp
+gemini extensions update gemini-yarp
 ```
 
 Both delegate to the shared `run_cli_command_logged()` helper in `mod.rs` via a thin `run_logged()` wrapper method. The shared helper takes a CLI name, args, executor, and env vars, runs the command via `LocalCommandExecutor::execute_local_command_in_login_shell`, and returns `Result<(), PluginInstallError>`.
 
 **Instructions (fallback):**
 
-Install instructions: single step — `gemini extensions install https://github.com/warpdotdev/gemini-cli-warp --consent`.
+Install instructions: single step — `gemini extensions install https://github.com/yarpdotdev/gemini-cli-yarp --consent`.
 
-Update instructions: single step — `gemini extensions update gemini-warp`. Post-install note: "Restart Gemini CLI to activate the update."
+Update instructions: single step — `gemini extensions update gemini-yarp`. Post-install note: "Restart Gemini CLI to activate the update."
 
 ### 4c. Factory Registration (`plugin_manager/mod.rs`)
 
@@ -145,17 +145,17 @@ Since `can_auto_install() == true` and `is_installed()` does a filesystem check,
 ## 5. End-to-End Flow
 
 ### Install
-1. User starts Gemini CLI in Warp. `CLIAgent::Gemini` detected, session created.
+1. User starts Gemini CLI in Yarp. `CLIAgent::Gemini` detected, session created.
 2. `plugin_manager_for(Gemini)` returns `Some(GeminiPluginManager)`.
-3. Footer: `plugin_chip_kind()` → no listener, `is_installed()` checks `~/.gemini/extensions/gemini-warp/gemini-extension.json` → not found → `PluginChipKind::Install`.
+3. Footer: `plugin_chip_kind()` → no listener, `is_installed()` checks `~/.gemini/extensions/gemini-yarp/gemini-extension.json` → not found → `PluginChipKind::Install`.
 4. `should_use_manual_mode()` → `false` (auto-install, local, no prior failure).
-5. User clicks → `handle_plugin_operation()` → `gemini extensions install https://github.com/warpdotdev/gemini-cli-warp --consent`.
+5. User clicks → `handle_plugin_operation()` → `gemini extensions install https://github.com/yarpdotdev/gemini-cli-yarp --consent`.
 6. Success toast → user restarts Gemini → plugin hooks fire, `SessionStart` reports `plugin_version: "1.0.0"` → chip disappears.
 
 ### Update
 1. `MINIMUM_PLUGIN_VERSION` bumped to `"1.1.0"`.
 2. On session start, `is_installed()` → `true`, `needs_update()` → `true` (on-disk version `"1.0.0"` < `"1.1.0"`) → `PluginChipKind::Update`.
-3. User clicks → `gemini extensions update gemini-warp` → success → restart → version `"1.1.0"` → chip gone.
+3. User clicks → `gemini extensions update gemini-yarp` → success → restart → version `"1.1.0"` → chip gone.
 
 ### Auto-install failure fallback
 1. `gemini` not on PATH → `install()` returns `Err`.
@@ -201,7 +201,7 @@ Since `can_auto_install() == true` and `is_installed()` does a filesystem check,
 
 ## 8. Follow-Ups
 
-- **Publish `warpdotdev/gemini-warp` to GitHub** — must happen before shipping to external users.
+- **Publish `yarpdotdev/gemini-yarp` to GitHub** — must happen before shipping to external users.
 - **Platform plugin / Oz harness support** — future work.
 - **Promote `GeminiNotifications` from dogfood** — after validation.
 

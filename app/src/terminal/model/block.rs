@@ -85,7 +85,7 @@ pub const LONG_RUNNING_BOTTOM_PADDING_LINES: f32 = 0.2;
 /// commands that didn't start execution (i.e. `preexec` was never called), as the exit code is
 /// only for the last point of execution.
 /// Note: we should keep this in sync with the command-corrections list:
-/// https://github.com/warpdotdev/command-corrections/blob/main/src/lib.rs#L109
+/// https://github.com/hotfuzz/command-corrections/blob/main/src/lib.rs#L109
 pub(super) fn has_block_failed(exit_code: ExitCode, block_state: BlockState) -> bool {
     block_state == BlockState::DoneWithExecution && !exit_code.was_successful()
 }

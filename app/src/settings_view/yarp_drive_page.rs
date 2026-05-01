@@ -222,7 +222,7 @@ impl SettingsWidget for YarpDriveToggleWidget {
             Some(AdditionalInfo {
                 mouse_state: self.info_icon_mouse_state.clone(),
                 on_click_action: Some(YarpDriveSettingsPageAction::OpenUrl(
-                    "https://docs.warp.dev/knowledge-and-collaboration/warp-drive".to_string(),
+                    "https://github.com/hotfuzz/yarp/knowledge-and-collaboration/warp-drive".to_string(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,

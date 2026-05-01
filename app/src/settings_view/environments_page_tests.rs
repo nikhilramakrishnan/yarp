@@ -1178,15 +1178,15 @@ fn test_environments_page_edit_variant() {
 
 #[test]
 fn test_github_repo_new() {
-    let repo = GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string());
-    assert_eq!(repo.owner, "warpdotdev");
+    let repo = GithubRepo::new("hotfuzz".to_string(), "yarp".to_string());
+    assert_eq!(repo.owner, "hotfuzz");
     assert_eq!(repo.repo, "yarp-internal");
 }
 
 #[test]
 fn test_github_repo_display() {
-    let repo = GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string());
-    assert_eq!(repo.to_string(), "warpdotdev/warp-internal");
+    let repo = GithubRepo::new("hotfuzz".to_string(), "yarp".to_string());
+    assert_eq!(repo.to_string(), "hotfuzz/yarp");
 }
 
 #[test]
@@ -1208,7 +1208,7 @@ fn test_environment_matches_search_query_empty_query_matches_all() {
     let environment = make_test_environment(
         "Searchable Environment",
         "ubuntu:latest",
-        vec![("warpdotdev".to_string(), "warp-internal".to_string())],
+        vec![("hotfuzz".to_string(), "yarp".to_string())],
         vec![],
     );
 
@@ -1221,7 +1221,7 @@ fn test_environment_matches_search_query_name_description_image_repos() {
     let mut environment = make_test_environment(
         "Yarp Env",
         "node:20-alpine",
-        vec![("warpdotdev".to_string(), "warp-internal".to_string())],
+        vec![("hotfuzz".to_string(), "yarp".to_string())],
         vec![],
     );
     environment.description = Some("Front end focused agents".to_string());
@@ -1230,8 +1230,8 @@ fn test_environment_matches_search_query_name_description_image_repos() {
     assert!(environment.matches_search_query("Front end"));
     assert!(environment.matches_search_query("node:20"));
     assert!(environment.matches_search_query("yarp-internal"));
-    assert!(environment.matches_search_query("warpdotdev"));
-    assert!(environment.matches_search_query("warpdotdev/warp"));
+    assert!(environment.matches_search_query("hotfuzz"));
+    assert!(environment.matches_search_query("hotfuzz/yarp"));
 
     assert!(!environment.matches_search_query("definitely-not-present"));
 }

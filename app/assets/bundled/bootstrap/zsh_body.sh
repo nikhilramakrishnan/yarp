@@ -245,7 +245,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
   }
 
   # Returns exit code 1 if the given argument starts with 'yarp_run_generator_command'.
-  _is_warp_generator_command() {
+  _is_yarp_generator_command() {
     [[ "$1" != *"yarp_run_generator_command"* ]]
   }
 
@@ -258,7 +258,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
 
       # If this preexec is called for user command, kill ongoing generator command jobs and clean
       # up the bookkeeping temp files used to bookkeep.
-      if _is_warp_generator_command "$1" && [[ -f $_YARP_GENERATOR_PIDS_STARTED_TMP_FILE ]] && [[ -f $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE ]]
+      if _is_yarp_generator_command "$1" && [[ -f $_YARP_GENERATOR_PIDS_STARTED_TMP_FILE ]] && [[ -f $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE ]]
         then
         # Read PIDs from the started generators tmp file that are not present in
         # the completed generators tmp file into a zsh array.
@@ -341,7 +341,7 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
           echo "" > $_YARP_GENERATOR_PIDS_COMPLETED_TMP_FILE
         fi
 
-      # Reset the custom kill-buffer binding as the user's zshrc (which is sourced after zshrc_warp)
+      # Reset the custom kill-buffer binding as the user's zshrc (which is sourced after zshrc_yarp)
       # could have added a bindkey. This won't have any user-impact because these shortcuts are only run
       # in the context of the zsh line editor, which isn't displayed in Yarp.
       bindkey -r '^P'
@@ -637,10 +637,10 @@ if [[ -z $YARP_BOOTSTRAPPED ]]; then
     yarp_send_json_message "{ \"hook\": \"FinishUpdate\", \"value\": { \"update_id\": \"$update_id\"} }"
   }
 
-  # Check if the warp apt source file has been renamed to `warpdotdev.list.distUpgrade` due to an ubuntu version update.
-  # If this occurred, we want to rename the source file back to `warpdotdev.list` to ensure updates can proceed.
-  # We purposefully skip this if either the `warpdotdev.list` file already exists (indicating that the user has already
-  # done this themselves) _or_ if a `warpdotdev.sources` file exists (which is the new Deb822 format for source files).
+  # Check if the yarp apt source file has been renamed to `yarp.list.distUpgrade` due to an ubuntu version update.
+  # If this occurred, we want to rename the source file back to `yarp.list` to ensure updates can proceed.
+  # We purposefully skip this if either the `yarp.list` file already exists (indicating that the user has already
+  # done this themselves) _or_ if a `yarp.sources` file exists (which is the new Deb822 format for source files).
   # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
   # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
   # contains a `signed-by` key.
@@ -1075,14 +1075,14 @@ esac
   #
   # See https://zsh.sourceforge.io/Doc/Release/Functions.html for more context
   # on the zshaddhistory hook.
-  _warp_zshaddhistory() {
-    _is_warp_generator_command "$1"
+  _yarp_zshaddhistory() {
+    _is_yarp_generator_command "$1"
   }
 
   # Register this zshaddhistory hook after the user's RC files have been sourced,
   # to ensure that it gets added (the user's RC files could entirely reset the
   # hook function array).
-  zshaddhistory_functions+=(_warp_zshaddhistory)
+  zshaddhistory_functions+=(_yarp_zshaddhistory)
 
   # Append additional PATH entries if provided via YARP_PATH_APPEND. This is after the user's RC
   # files are sourced in case they reset PATH (/etc/profile on Debian does this, for example).

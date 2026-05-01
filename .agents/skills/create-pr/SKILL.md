@@ -1,19 +1,19 @@
 ---
 name: create-pr
-description: Create a pull request in the warp repository for the current branch. Use when the user mentions opening a PR, creating a pull request, submitting changes for review, or preparing code for merge.
+description: Create a pull request in the yarp repository for the current branch. Use when the user mentions opening a PR, creating a pull request, submitting changes for review, or preparing code for merge.
 ---
 
 # create-pr
 
 ## Overview
 
-This guide covers best practices for creating pull requests in the warp repository, including merging master, running presubmit checks, linking Linear tasks, ensuring appropriate test coverage, and structuring your PR for effective review.
+This guide covers best practices for creating pull requests in the yarp repository, including merging master, running presubmit checks, linking Linear tasks, ensuring appropriate test coverage, and structuring your PR for effective review.
 
 ## Related Skills
 
 - `fix-errors` - Fix presubmit failures (formatting, linting, tests) before opening PR
 - `rust-unit-tests` - Write unit tests for your changes, if applicable (see "Testing Requirements" below)
-- `warp-integration-test` - Add or update integration coverage for user-visible flows, regressions, and P0 use cases
+- `yarp-integration-test` - Add or update integration coverage for user-visible flows, regressions, and P0 use cases
 - `add-feature-flag` - Gate changes behind feature flags
 
 ## Pre-PR Checklist
@@ -80,7 +80,7 @@ When possible, PRs should be associated with a Linear task. Use the Linear MCP t
 Remote branches should be prefixed with your name (e.g., `zheng/feature`, `alice/fix-bug`).
 
 **How to link PRs to Linear:**
-Include the issue ID in the PR title (e.g., `[WARP-1234] Add new feature`). Do this **before** creating the PR for automatic linking.
+Include the issue ID in the PR title (e.g., `[YARP-1234] Add new feature`). Do this **before** creating the PR for automatic linking.
 
 ### 5. Open the PR
 
@@ -128,7 +128,7 @@ Add changelog entries when appropriate using the format at the bottom of the PR 
 When committing changes or creating a PR, include attribution at the end of every commit message or PR description:
 
 ```
-Co-Authored-By: Warp <agent@warp.dev>
+Co-Authored-By: Yarp <agent@yarp.dev>
 ```
 
 ## Testing Requirements
@@ -167,8 +167,8 @@ This provides high-level coverage over rendering "safety" (though not "correctne
 ```rust
 #[test]
 fn test_component_can_layout() {
-    use warpui::App;
-    use warp::test_util::{terminal::initialize_app_for_terminal_view, add_window_with_terminal};
+    use yarpui::App;
+    use yarp::test_util::{terminal::initialize_app_for_terminal_view, add_window_with_terminal};
     
     App::test((), |mut app| async move {
         initialize_app_for_terminal_view(&mut app);
@@ -191,7 +191,7 @@ Prefer a direct choice such as:
 - `Yes, add an integration test before creating the PR`
 - `No, continue without an integration test`
 
-If the user chooses to add one, use the `warp-integration-test` skill.
+If the user chooses to add one, use the `yarp-integration-test` skill.
 
 ### P0 use cases require integration tests
 
@@ -204,7 +204,7 @@ Integration tests should:
 - Validate end-to-end functionality
 - Be placed in the `integration/` directory
 
-Use the `warp-integration-test` skill for implementation details, test registration steps, and validation workflow.
+Use the `yarp-integration-test` skill for implementation details, test registration steps, and validation workflow.
 
 ## PR Description Guidelines
 

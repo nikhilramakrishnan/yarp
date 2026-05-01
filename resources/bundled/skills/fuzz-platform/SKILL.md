@@ -14,15 +14,15 @@ Use the Fuzz REST API and CLI to:
 
 ## Command Line
 
-The Fuzz CLI is installed as `{{warp_cli_binary_name}}`. To get help output, use `{{warp_cli_binary_name}} help` or `{{warp_cli_binary_name}} help <subcommand>`.
+The Fuzz CLI is installed as `{{yarp_cli_binary_name}}`. To get help output, use `{{yarp_cli_binary_name}} help` or `{{yarp_cli_binary_name}} help <subcommand>`.
 Prefer `--output-format text` to review the response, or `--output-format json` to parse fields with `jq`.
-You can find more information at https://docs.warp.dev/reference/cli.
+You can find more information at the local Yarp CLI help.
 
 The most important commands are:
-* `{{warp_cli_binary_name}} agent run-cloud`: Spawn a new cloud agent. You can configure the prompt, model, environment, and other settings.
-* `{{warp_cli_binary_name}} run list` and `{{warp_cli_binary_name}} run get <run-id>`: List all cloud agent runs, and get details about a particular run.
-* `{{warp_cli_binary_name}} environment list` and `{{warp_cli_binary_name}} environment get`: List available environments, and get more information about a particular environment.
-* `{{warp_cli_binary_name}} schedule list` and `{{warp_cli_binary_name}} schedule get`: List scheduled tasks with most recent runs, and get more information about a particular scheduled run.
+* `{{yarp_cli_binary_name}} agent run-cloud`: Spawn a new cloud agent. You can configure the prompt, model, environment, and other settings.
+* `{{yarp_cli_binary_name}} run list` and `{{yarp_cli_binary_name}} run get <run-id>`: List all cloud agent runs, and get details about a particular run.
+* `{{yarp_cli_binary_name}} environment list` and `{{yarp_cli_binary_name}} environment get`: List available environments, and get more information about a particular environment.
+* `{{yarp_cli_binary_name}} schedule list` and `{{yarp_cli_binary_name}} schedule get`: List scheduled tasks with most recent runs, and get more information about a particular scheduled run.
 
 Most subcommands support the `--output-format json` flag to produce JSON output, which you can pipe into `jq` or other commands.
 
@@ -31,20 +31,20 @@ Most subcommands support the `--output-format json` flag to produce JSON output,
 Start a cloud agent, and then monitor its status:
 
 ```sh
-$ {{warp_cli_binary_name}} agent run-cloud --prompt "Update the login error to be more specific" --environment UA17BXYZ
+$ {{yarp_cli_binary_name}} agent run-cloud --prompt "Update the login error to be more specific" --environment UA17BXYZ
 # ...
 Spawned agent with run ID: 5972cca4-a410-42af-930a-e56bc23e07ac
 ```
 
 ```sh
-$ {{warp_cli_binary_name}} run get 5972cca4-a410-42af-930a-e56bc23e07ac
+$ {{yarp_cli_binary_name}} run get 5972cca4-a410-42af-930a-e56bc23e07ac
 # ...
 ```
 
 Schedule an agent to summarize feedback every day at 8am UTC:
 
 ```sh
-$ {{warp_cli_binary_name}} schedule create --cron "0 8 * * *" \
+$ {{yarp_cli_binary_name}} schedule create --cron "0 8 * * *" \
     --prompt "Collect all feedback from new GitHub issues and provide a summary report" \
     --environment UA17BXYZ
 ```
@@ -52,7 +52,7 @@ $ {{warp_cli_binary_name}} schedule create --cron "0 8 * * *" \
 Create a secret for cloud agents to use:
 
 ```sh
-$ {{warp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_key.txt --description "API key to access Jira"
+$ {{yarp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_key.txt --description "API key to access Jira"
 ```
 
 ## REST API
@@ -61,23 +61,23 @@ Fuzz has a REST API for starting and inspecting cloud agents.
 
 All API requests require authentication using an API key. The user can generate API keys in their Yarp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
 
-You can find the full OpenAPI specification here: https://docs.warp.dev/reference/api-and-sdk
+You can find the full OpenAPI specification here: the local API documentation
 
 ### TypeScript / JavaScript SDK
 
 The TypeScript SDK is available via NPM. It is fully async, and works with Node, Bun, and Deno.
 
 * Package link: https://www.npmjs.com/package/fuzz-agent-sdk
-* Source Code: https://github.com/warpdotdev/fuzz-sdk-typescript
-* API reference: https://raw.githubusercontent.com/warpdotdev/fuzz-sdk-typescript/HEAD/api.md
+* Source Code: https://github.com/hotfuzz/fuzz-sdk-typescript
+* API reference: https://github.com/hotfuzz/fuzz-sdk-typescript
 
 ### Python SDK
 
 The Python SDK is available from PyPi. It can be used synchronously or asynchronously.
 
 * Package link: https://pypi.org/project/fuzz-agent-sdk/
-* Source Code: https://github.com/warpdotdev/fuzz-sdk-python
-* API reference: https://raw.githubusercontent.com/warpdotdev/fuzz-sdk-python/refs/heads/main/api.md
+* Source Code: https://github.com/hotfuzz/fuzz-sdk-python
+* API reference: https://github.com/hotfuzz/fuzz-sdk-python
 
 ### API Examples
 
@@ -110,10 +110,10 @@ The agent will have access to the `gh` CLI to communicate back to the repository
 
 ### Action Setup
 
-Use `warpdotdev/fuzz-agent-action@main` in your workflow. Required inputs:
+Use `hotfuzz/fuzz-agent-action@main` in your workflow. Required inputs:
 * `prompt`: The task description for the agent
-* `yarp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.WARP_API_KEY }}`)
-* `profile`: Optional agent profile identifier (can use repo variable, e.g., `${{ vars.WARP_AGENT_PROFILE || '' }}`)
+* `yarp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.YARP_API_KEY }}`)
+* `profile`: Optional agent profile identifier (can use repo variable, e.g., `${{ vars.YARP_AGENT_PROFILE || '' }}`)
 
 The action outputs `agent_output` with the agent's response.
 
@@ -134,7 +134,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
-      - uses: warpdotdev/fuzz-agent-action@main
+      - uses: hotfuzz/fuzz-agent-action@main
         id: agent
         with:
           prompt: |
@@ -143,8 +143,8 @@ jobs:
             ${{ github.event.issue.body }}
 
             Respond to the issue with a comment containing your summary using the `gh` CLI.
-          yarp_api_key: ${{ secrets.WARP_API_KEY }}
-          profile: ${{ vars.WARP_AGENT_PROFILE || '' }}
+          yarp_api_key: ${{ secrets.YARP_API_KEY }}
+          profile: ${{ vars.YARP_AGENT_PROFILE || '' }}
       - name: Use Agent Output
         run: echo "${{ steps.agent.outputs.agent_output }}"
 ```
@@ -171,11 +171,11 @@ You should almost always run cloud agents in an environment. Otherwise, they may
 
 Cloud agents run in a sandbox, so they _can_ install additional programs into their environment. They also have Git credentials to create PRs and push branches.
 
-Cloud environments DO NOT store secret values, like API keys. Use the `{{warp_cli_binary_name}} secret` commands instead.
+Cloud environments DO NOT store secret values, like API keys. Use the `{{yarp_cli_binary_name}} secret` commands instead.
 
 ## Using Third-Party Coding CLIs
 
-Fuzz environments support running third-party coding agent CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Fuzz Docker images (e.g. `warpdotdev/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
+Fuzz environments support running third-party coding agent CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Fuzz Docker images (e.g. `hotfuzz/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
 
 For detailed per-CLI documentation (installation, authentication, non-interactive flags, and artifact reporting), see [references/third-party-clis.md](./references/third-party-clis.md).
 
@@ -183,27 +183,27 @@ For detailed per-CLI documentation (installation, authentication, non-interactiv
 
 When you are an interactive agent launching a cloud agent to use a third-party CLI:
 
-1. **Environment Selection**: First, ask the user which environment to use. Present the public `-agents` image options from [warpdotdev/fuzz-dev-environments](https://github.com/warpdotdev/fuzz-dev-environments):
-   - `warpdotdev/dev-base:latest-agents`
-   - `warpdotdev/dev-go:1.23-agents`
-   - `warpdotdev/dev-rust:1.83-agents`
-   - `warpdotdev/dev-rust:1.85-agents`
-   - `warpdotdev/dev-java:21-agents`
-   - `warpdotdev/dev-dotnet:8.0-agents`
-   - `warpdotdev/dev-ruby:3.3-agents`
-   - `warpdotdev/dev-web:latest-agents`
-   - `warpdotdev/dev-full:latest-agents`
+1. **Environment Selection**: First, ask the user which environment to use. Present the public `-agents` image options from [hotfuzz/fuzz-dev-environments](https://github.com/hotfuzz/fuzz-dev-environments):
+   - `hotfuzz/dev-base:latest-agents`
+   - `hotfuzz/dev-go:1.23-agents`
+   - `hotfuzz/dev-rust:1.83-agents`
+   - `hotfuzz/dev-rust:1.85-agents`
+   - `hotfuzz/dev-java:21-agents`
+   - `hotfuzz/dev-dotnet:8.0-agents`
+   - `hotfuzz/dev-ruby:3.3-agents`
+   - `hotfuzz/dev-web:latest-agents`
+   - `hotfuzz/dev-full:latest-agents`
 
    Also ask if they want to use an existing environment instead. To list their environments:
    ```sh
-   {{warp_cli_binary_name}} environment list --output-format text
+   {{yarp_cli_binary_name}} environment list --output-format text
    ```
 
-   If they choose a public image without an existing environment, create one with `{{warp_cli_binary_name}} environment create ...`
+   If they choose a public image without an existing environment, create one with `{{yarp_cli_binary_name}} environment create ...`
 
 2. **Prompt Construction**: Construct a simple prompt that delegates CLI invocation to the cloud agent:
    ```sh
-   {{warp_cli_binary_name}} agent run-cloud \
+   {{yarp_cli_binary_name}} agent run-cloud \
        --environment <ENV_ID> \
        --prompt 'Read the fuzz-platform skill for instructions on using [CLI name] to solve: <task description>'
    ```
@@ -212,7 +212,7 @@ When you are an interactive agent launching a cloud agent to use a third-party C
 
 **Example**:
 ```sh
-$ {{warp_cli_binary_name}} agent run-cloud \
+$ {{yarp_cli_binary_name}} agent run-cloud \
     --environment <ENV_ID> \
     --prompt 'Read the fuzz-platform skill for instructions on using Claude Code to solve: Summarize the architecture of this project'
 ```

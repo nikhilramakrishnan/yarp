@@ -1509,7 +1509,7 @@ fn test_tab_completion_with_spaces() {
 
         let history_file_commands = vec![
             "cd Documents/zed".to_string(),
-            "curl https://app.warp.dev".to_string(),
+            "curl https://app.yarp.dev".to_string(),
             "cargo check\ncargo run".to_string(),
         ];
         let terminal =
@@ -1743,7 +1743,7 @@ fn test_tab_completion() {
 
         let history_file_commands = vec![
             "cd Documents/zed".to_string(),
-            "curl https://app.warp.dev".to_string(),
+            "curl https://app.yarp.dev".to_string(),
             "cargo check\ncargo run".to_string(),
         ];
         let terminal =
@@ -1998,7 +1998,7 @@ fn test_tab_completion_with_selection() {
 
         let history_file_commands = vec![
             "cd Documents/zed".to_string(),
-            "curl https://app.warp.dev".to_string(),
+            "curl https://app.yarp.dev".to_string(),
             "cargo check\ncargo run".to_string(),
         ];
         let terminal =
@@ -3548,7 +3548,7 @@ fn test_cursor_movement() {
 
         let history_file_commands = vec![
             "cd Documents/zed".to_string(),
-            "curl https://app.warp.dev".to_string(),
+            "curl https://app.yarp.dev".to_string(),
             "cargo check\ncargo run".to_string(),
         ];
         let terminal =
@@ -4295,7 +4295,7 @@ fn test_last_word_insertions() {
 
         // last word insertion looks for preceding whitespace character
         let history_file_commands = vec![
-            "https://app.warp.dev".to_string(),
+            "https://app.yarp.dev".to_string(),
             "cargo check\ncargo run --features".to_string(),
         ];
         let terminal =
@@ -4332,7 +4332,7 @@ fn test_last_word_insertions() {
             input.insert_last_word_previous_command(ctx);
         });
         input.read(&app, |input, ctx| {
-            assert_eq!(input.buffer_text(ctx), "git https://app.warp.dev");
+            assert_eq!(input.buffer_text(ctx), "git https://app.yarp.dev");
         });
 
         // Insert is temporary, undo goes back to initial state before first insertion

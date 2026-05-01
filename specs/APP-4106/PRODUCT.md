@@ -1,6 +1,6 @@
 # APP-4106: Group by shared root in file tree
 
-Linear: https://linear.app/warpdotdev/issue/APP-4106/group-by-shared-root-in-file-tree
+Linear: https://linear.app/yarpdotdev/issue/APP-4106/group-by-shared-root-in-file-tree
 
 ## Summary
 
@@ -43,7 +43,7 @@ the file tree does not. That inconsistency is part of the bug.
 
 - Computing a synthetic greatest common ancestor for unrelated sibling paths
   (e.g., `~/code/a` + `~/code/b` must NOT collapse to `~/code`).
-- Changing how Warp detects git repositories or resolves terminal cwds to
+- Changing how Yarp detects git repositories or resolves terminal cwds to
   repo roots upstream in `WorkingDirectoriesModel`.
 - Changing the remote-repo root insertion policy
   (`insert_or_update_remote_root`) — remote pushes continue to use their
@@ -86,7 +86,7 @@ that stay as two roots:
 - `~/code/a` + `~/other`
 - `/a` + `/ab`
 
-Warp does not synthesize a new common root (like `~/code` or `/`) that is not
+Yarp does not synthesize a new common root (like `~/code` or `/`) that is not
 already an active path.
 
 ### Invariant 3: auto-expand the chain to each absorbed descendant

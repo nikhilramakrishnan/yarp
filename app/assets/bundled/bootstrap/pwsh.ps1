@@ -781,7 +781,7 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
         }
 
         # Compute prompt and cache it as the last rendered prompt
-        $basePrompt = & $global:_warpOriginalPrompt
+        $basePrompt = & $global:_yarpOriginalPrompt
         $script:lastRenderedPrompt = $basePrompt
 
         return $basePrompt
@@ -888,8 +888,8 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
     # 1. B/c our other bootstrap scripts (bash, zsh, fish) do not.
 
     # If we ever want to call the underlying clear command, we could do so by:
-    # 1. Capturing it with '$_warp_original_clear = (Get-Command Clear-Host).Definition'
-    # 2. Invoking it with 'Invoke-Expression $_warp_original_clear'
+    # 1. Capturing it with '$_yarp_original_clear = (Get-Command Clear-Host).Definition'
+    # 2. Invoking it with 'Invoke-Expression $_yarp_original_clear'
 
     # TODO(PLAT-781): On windows, these two functions should both clear the visible screen
     # AND the scrollback
@@ -1001,13 +1001,13 @@ $null = New-Module -Name Yarp-Module -ScriptBlock {
 
     # Capture the current prompt (potentially modified by a profile),
     # and then reset the prompt to our current noop prompt.
-    $global:_warpOriginalPrompt = $function:global:prompt
+    $global:_yarpOriginalPrompt = $function:global:prompt
 
     Yarp-Finish-Bootstrap -rcStartTime $rcStartTime -rcEndTime $rcEndTime
     Remove-Variable -Name enterHandler, ctrlcHandler, rcStartTime, rcEndTime -Scope global -ErrorAction Ignore
 
     # Restore the process's original execution policy now that the user's RC files have been loaded.
-    if ($global:_warp_PSProcessExecPolicy -ne $null) {
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy $global:_warp_PSProcessExecPolicy
+    if ($global:_yarp_PSProcessExecPolicy -ne $null) {
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy $global:_yarp_PSProcessExecPolicy
     }
 }

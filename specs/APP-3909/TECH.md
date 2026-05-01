@@ -66,7 +66,7 @@ The immediate bug is small. The structural risk is that there are four cache-pop
 
 ## Proposed changes
 
-Add first-class support for dynamic description overrides in `warpui_core::keymap`. Make `CommandBinding::from_lens(lens, ctx)` the only way to materialize a `CommandBinding` from a lens, so the compiler forces every cache-population site to pass `&AppContext` and resolve dynamic description overrides at construction time. Define the three tab-layout overrides next to the binding registrations, and teach the menu-bar updater to resolve dynamically too.
+Add first-class support for dynamic description overrides in `yarpui_core::keymap`. Make `CommandBinding::from_lens(lens, ctx)` the only way to materialize a `CommandBinding` from a lens, so the compiler forces every cache-population site to pass `&AppContext` and resolve dynamic description overrides at construction time. Define the three tab-layout overrides next to the binding registrations, and teach the menu-bar updater to resolve dynamically too.
 
 ### 1. Framework: optional dynamic override on `BindingDescription`
 
@@ -175,7 +175,7 @@ Add an integration-ish test alongside `CommandBinding::from_lens` in `app/src/ut
 ```mermaid
 flowchart TD
     R[EditableBinding registration in workspace/mod.rs<br/>static + with_dynamic_override override]
-    KM[warpui_core Matcher / Keymap]
+    KM[yarpui_core Matcher / Keymap]
     R --> KM
 
     subgraph Cache-population surfaces have AppContext
@@ -233,7 +233,7 @@ Cons: leaves the command palette and keybindings pages inconsistent. Only a marg
 
 ### Conclusion
 
-Approach C (the one specified above) is the only option that makes the cache-population invariant compile-time-enforced while keeping per-binding logic co-located with the registration. The framework change is bounded (≈ 40 lines in `warpui_core` plus a four-site app migration) and the resulting API is reusable for any future dynamic binding label.
+Approach C (the one specified above) is the only option that makes the cache-population invariant compile-time-enforced while keeping per-binding logic co-located with the registration. The framework change is bounded (≈ 40 lines in `yarpui_core` plus a four-site app migration) and the resulting API is reusable for any future dynamic binding label.
 
 ## Risks and mitigations
 
@@ -288,9 +288,9 @@ Mitigation: `resolve` title-cases any dynamic override before returning it, matc
 ### Targeted test run
 
 ```bash
-cargo nextest run -p warp_app
-cargo nextest run -p warpui_core
-cargo test --doc -p warpui_core
+cargo nextest run -p yarp_app
+cargo nextest run -p yarpui_core
+cargo test --doc -p yarpui_core
 ```
 
 ### Manual validation

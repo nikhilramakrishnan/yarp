@@ -2,7 +2,7 @@
 # Installs the Yarp remote server binary on a remote host.
 #
 # Placeholders (substituted at runtime by setup.rs):
-#   {download_base_url}  — e.g. https://app.warp.dev/download/cli
+#   {download_base_url}  — e.g. https://app.yarp.dev/download/cli
 #   {channel}            — stable | preview | dev
 #   {install_dir}        — e.g. ~/.yarp/remote-server
 #   {binary_name}        — e.g. fuzz | fuzz-dev | fuzz-preview

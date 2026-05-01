@@ -1,8 +1,8 @@
 # APP-4098 — CJK fallback font memory growth on Windows
-Linear: https://linear.app/warpdotdev/issue/APP-4098/cjk-fallback-font
+Linear: https://linear.app/yarpdotdev/issue/APP-4098/cjk-fallback-font
 
 ## Problem
-On Windows, rendering many **unique** CJK codepoints into a block (e.g. a long stream of Chinese output) causes Warp's memory to grow without bound and never be released. When the user's primary font already contains the CJK glyphs, the bug does not reproduce. The growth is caused by the per-character font-fallback path duplicating a large fallback font file (typically Microsoft YaHei, a 10–25 MB TTC) into `fontdb` once per unique codepoint.
+On Windows, rendering many **unique** CJK codepoints into a block (e.g. a long stream of Chinese output) causes Yarp's memory to grow without bound and never be released. When the user's primary font already contains the CJK glyphs, the bug does not reproduce. The growth is caused by the per-character font-fallback path duplicating a large fallback font file (typically Microsoft YaHei, a 10–25 MB TTC) into `fontdb` once per unique codepoint.
 
 This spec covers the technical fix landed on branch `kc/memory2`.
 
@@ -44,10 +44,10 @@ For each `FallbackFont` returned by `Font::get_fallbacks`:
 3. Pass the handle to `self.insert_font(...)`. For path handles, the existing `loaded_fonts: DashMap<FontKey, FontId>` dedup fires on `FontKey { path, index }` and returns the previously loaded `FontId` without touching fontdb. For the rare memory fallback, behavior is unchanged.
 No new caches or structs are added to `TextLayoutSystem`. The earlier design's Windows-gated `loaded_fallback_fonts_by_ps_name: DashMap<String, FontId>` is no longer needed — the existing path-based dedup does the job.
 ### Cargo.toml
-Add `dwrote` as a direct Windows dependency pinned to the same git rev the workspace already uses transitively via font-kit (`warpdotdev/dwrote-rs @ a71ce6c0`). This keeps the compiled version graph flat.
+Add `dwrote` as a direct Windows dependency pinned to the same git rev the workspace already uses transitively via font-kit (`yarpdotdev/dwrote-rs @ a71ce6c0`). This keeps the compiled version graph flat.
 ```toml path=null start=null
 [target.'cfg(target_os = "windows")'.dependencies]
-dwrote = { git = "https://github.com/warpdotdev/dwrote-rs", rev = "a71ce6c0136f7d0954a9a8b181b5b2d8ace5eb9c", default-features = false }
+dwrote = { git = "https://github.com/yarpdotdev/dwrote-rs", rev = "a71ce6c0136f7d0954a9a8b181b5b2d8ace5eb9c", default-features = false }
 ```
 ### Why this design
 - **Fixes the root cause.** The leak is that `.handle()` returns Memory on Windows. We no longer call `.handle()` on the hot path, so the problem is excised at the source rather than papered over with a cache.
@@ -55,12 +55,12 @@ dwrote = { git = "https://github.com/warpdotdev/dwrote-rs", rev = "a71ce6c0136f7
 - **TTC-correct.** We pass the real `dwrite_font_face.get_index()` instead of hard-coded `0`, so if DirectWrite picks face 3 out of a TTC we actually load face 3. This also fixes the silent correctness bug called out by the FIXME in font-kit's default `Loader::handle`.
 - **mmap-friendly.** fontdb sees `Source::File(path)`, and `cosmic_text::FontSystem::get_font` calls `db.make_shared_face_data(id)` to mmap the file on demand. Multiple faces from the same TTC share one mapping, pages are lazy-loaded from disk, and no anonymous heap allocation is needed to hold the font data.
 - **Matches existing pattern.** `DirectWriteSource::create_handle_from_dwrite_font` already does this for enumerated fonts. We're just applying the same pattern on the fallback path.
-- **Doesn't require a font-kit fork change.** We can ship the fix in `warp-internal` today. A follow-up to override `Loader::handle()` inside the font-kit fork is still desirable (so other consumers benefit too), but is not a blocker.
+- **Doesn't require a font-kit fork change.** We can ship the fix in `yarp-internal` today. A follow-up to override `Loader::handle()` inside the font-kit fork is still desirable (so other consumers benefit too), but is not a blocker.
 ## End-to-end flow
 ```mermaid
 sequenceDiagram
     participant Grid as CellGlyphCache
-    participant Cache as warpui_core::fonts::Cache
+    participant Cache as yarpui_core::fonts::Cache
     participant FontDB as winit::fonts::FontDB
     participant TLS as TextLayoutSystem
     participant FK as font_kit (DirectWrite)
@@ -94,19 +94,19 @@ sequenceDiagram
 Every call after the first for the same fallback face hits `loaded_fonts` and returns the existing `FontId` immediately. fontdb never holds more than one entry per `(path, index)` pair.
 ## Risks and mitigations
 - **`font_file_path()` returns `Err`.** Happens only for fonts not backed by a local file (custom collection loaders, in-memory streams). DirectWrite system fallbacks always have a path, so this case is not exercised for real CJK fallbacks. We gracefully fall back to the legacy Memory-handle path, so behavior for edge cases is strictly no worse than before.
-- **Extra COM calls per character.** Each unique-codepoint first lookup now makes two additional COM calls (`GetFiles` and the local-loader cast in `font_file_path()`). Both are cheap and only happen once per unique codepoint thanks to the existing `glyphs_by_char` cache in `warpui_core::fonts::Cache`.
-- **Pinned dwrote version.** We now carry `dwrote` as a direct dep pinned to a specific git rev. If font-kit's transitive pin drifts, we could end up with two compiled versions. Mitigation: the fork pins are both under `warpdotdev/`, and CI's `cargo tree -p dwrote` output will show a dup immediately. Bump both at once.
-- **font-kit fork drift.** None. We do not modify `warpdotdev/font-kit`. If/when we later override `Loader::handle()` in the fork, the in-tree helper simply becomes redundant and can be removed without behavior change.
+- **Extra COM calls per character.** Each unique-codepoint first lookup now makes two additional COM calls (`GetFiles` and the local-loader cast in `font_file_path()`). Both are cheap and only happen once per unique codepoint thanks to the existing `glyphs_by_char` cache in `yarpui_core::fonts::Cache`.
+- **Pinned dwrote version.** We now carry `dwrote` as a direct dep pinned to a specific git rev. If font-kit's transitive pin drifts, we could end up with two compiled versions. Mitigation: the fork pins are both under `yarpdotdev/`, and CI's `cargo tree -p dwrote` output will show a dup immediately. Bump both at once.
+- **font-kit fork drift.** None. We do not modify `yarpdotdev/font-kit`. If/when we later override `Loader::handle()` in the fork, the in-tree helper simply becomes redundant and can be removed without behavior change.
 - **Concurrency.** Unchanged. All dedup flows through `loaded_fonts`, which is a `DashMap` — same as today.
 ## Testing and validation
 - **Manual repro**:
   1. On Windows, select a primary font with no CJK glyphs (e.g. Cascadia Code NF).
   2. `cat` or `Get-Content` a large text file containing many unique Chinese characters.
-  3. Observe Warp's working-set memory in Task Manager. Before: grows with unique-codepoint count and does not return after the block scrolls off. After: plateaus after the first fallback family loads, then stays flat.
-- **Static checks** (already run on the implementation): `cargo check -p warpui --target x86_64-pc-windows-msvc`, `cargo clippy -p warpui --target x86_64-pc-windows-msvc --no-deps`, `cargo fmt -p warpui -- --check`.
+  3. Observe Yarp's working-set memory in Task Manager. Before: grows with unique-codepoint count and does not return after the block scrolls off. After: plateaus after the first fallback family loads, then stays flat.
+- **Static checks** (already run on the implementation): `cargo check -p yarpui --target x86_64-pc-windows-msvc`, `cargo clippy -p yarpui --target x86_64-pc-windows-msvc --no-deps`, `cargo fmt -p yarpui -- --check`.
 - **Automated regression** (not landed): a reliable unit/integration test would need to exercise the real DirectWrite system-font set, which is environment-dependent (CI images may not even ship CJK fonts). Deferred in favor of the manual repro; see Follow-ups.
 ## Follow-ups
-- Patch `warpdotdev/font-kit` to override `Loader::handle()` on the DirectWrite loader so it returns `Handle::Path { path, font_index }` when `dwrite_font_face.files()[0].font_file_path()` succeeds (mirroring `DirectWriteSource::create_handle_from_dwrite_font` in `src/sources/directwrite.rs`). Also fix the hard-coded `font_index = 0` in the default `handle()` impl. Once that lands, `fallback_font_path_handle` in our code can be deleted and we can simply call `font.handle()` everywhere.
+- Patch `yarpdotdev/font-kit` to override `Loader::handle()` on the DirectWrite loader so it returns `Handle::Path { path, font_index }` when `dwrite_font_face.files()[0].font_file_path()` succeeds (mirroring `DirectWriteSource::create_handle_from_dwrite_font` in `src/sources/directwrite.rs`). Also fix the hard-coded `font_index = 0` in the default `handle()` impl. Once that lands, `fallback_font_path_handle` in our code can be deleted and we can simply call `font.handle()` everywhere.
 - Remove the throwaway `font_handle.load()?` in `load_font_from_handle` when `ValidateFontSupportsEn::No` is passed (the call exists only for the `is_monospace` side-effect, which the caller already has via `font.is_monospace()`).
 - Consider layering a `(FontId, char) → Vec<FontId>` cache analogous to the non-Windows `fallback_fonts` DashMap so we can skip re-entering font-kit/DirectWrite even for cold characters. Not required for the memory fix; pure perf optimization on top of the existing `glyphs_by_char` cache.
 - Add an integration-style test that stands up a `TextLayoutSystem` with a stub fontdb pre-seeded with a known CJK face and asserts that `fallback_fonts` returns the same `FontId` across many distinct characters. Requires some test-only injection hooks into `TextLayoutSystem`; not worth the churn as part of this fix but a sensible follow-up.

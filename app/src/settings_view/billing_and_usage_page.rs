@@ -3087,7 +3087,7 @@ impl UsageWidget {
             .filter(|s| !s.trim().is_empty())
             .unwrap_or_else(|| current_user_email.clone());
 
-        // TODO: move sorting once per initial load or sort option change https://github.com/warpdotdev/warp-internal/pull/18288/files#r2392139761
+        // TODO: move sorting once per initial load or sort option change https://github.com/hotfuzz/yarp/pull/18288/files#r2392139761
         sort_user_items_in_place(
             &mut user_information,
             &current_user_display_name,
@@ -3191,13 +3191,13 @@ impl UsageWidget {
                 vec![
                     FormattedTextFragment::hyperlink(
                         "Upgrade to Enterprise",
-                        "mailto:sales@warp.dev",
+                        "mailto:sales@yarp.dev",
                     ),
                     FormattedTextFragment::plain_text(" for custom limits and dedicated support."),
                 ]
             } else if !team.billing_metadata.is_usage_based_pricing_toggleable() {
                 vec![
-                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@warp.dev"),
+                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@yarp.dev"),
                     FormattedTextFragment::plain_text(" for more AI usage."),
                 ]
             } else {

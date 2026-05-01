@@ -36,7 +36,7 @@ RUN set -eux; \
   curl --proto '=https' --tlsv1.2 -fsSLO https://go.dev/dl/go1.26.1.linux-$ARCH.tar.gz; \
   tar -C /usr/local -xzf go1.26.1.linux-$ARCH.tar.gz; \
   go version; \
-  go env -w "GOPRIVATE=github.com/warpdotdev/*"; \
+  go env -w "GOPRIVATE=github.com/hotfuzz/*"; \
   CGO_ENABLED=0 go install -tags='no_clickhouse no_libsql no_mssql no_mysql no_sqlite3 no_vertica no_ydb' github.com/pressly/goose/v3/cmd/goose@v3.24.1; \
   echo "Installed goose"; \
   go install github.com/vektra/mockery/v2@v2.53.5; \

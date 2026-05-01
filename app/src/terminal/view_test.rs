@@ -2945,14 +2945,14 @@ fn test_link_at_range_trims_zero_width_spaces() {
         let terminal = add_window_with_terminal(&mut app, None);
 
         // NOTE: this has two zero-width spaces, one after the '(', and one before the ')'
-        let input_url = "(\u{200b}https://warp.dev\u{200b})";
+        let input_url = "(\u{200b}https://github.com/hotfuzz/yarp\u{200b})";
         // NOTE: the final character in this string is a zero-width space
-        let non_escaped_url = "https://warp.dev\u{200b}";
-        let escaped_url = "https://warp.dev";
+        let non_escaped_url = "https://github.com/hotfuzz/yarp\u{200b}";
+        let escaped_url = "https://github.com/hotfuzz/yarp";
 
         terminal.update(&mut app, |view, _ctx| {
             view.model.lock().simulate_block(
-                r"printf '(%bhttps://warp.dev%b)\n' '\U200b' '\U200b'",
+                r"printf '(%bhttps://github.com/hotfuzz/yarp%b)\n' '\U200b' '\U200b'",
                 input_url,
             );
         });

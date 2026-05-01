@@ -91,7 +91,7 @@ pub struct Folder {
     pub id: i32,
     pub name: String,
     pub is_open: bool,
-    pub is_warp_pack: bool,
+    pub is_yarp_pack: bool,
 }
 
 #[derive(Insertable)]
@@ -99,7 +99,7 @@ pub struct Folder {
 pub struct NewFolder {
     pub name: String,
     pub is_open: bool,
-    pub is_warp_pack: bool,
+    pub is_yarp_pack: bool,
 }
 
 #[derive(Identifiable, Insertable, Queryable)]
@@ -1102,7 +1102,7 @@ impl ModelTokenUsage {
         ))
     }
 
-    pub fn to_proto_warp_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
+    pub fn to_proto_yarp_usage(&self) -> Option<(String, stream_finished::ModelTokenUsage)> {
         self.to_proto_usage(self.yarp_tokens, &self.yarp_token_usage_by_category)
     }
 

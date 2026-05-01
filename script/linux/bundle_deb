@@ -21,10 +21,10 @@ if [ "$ARTIFACT" = "cli" ]; then
 else
   CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
-REPO_NAME="warpdotdev$CHANNEL_SUFFIX"
+REPO_NAME="hotfuzz$CHANNEL_SUFFIX"
 
 # On Linux, we keep the `-stable` suffix for stable to avoid package conflicts.
-# The binary name is still `fuzz`, and the repo name is still `warpdotdev`.
+# The binary name is still `fuzz`, and the repo name is still `hotfuzz`.
 if [ "$ARTIFACT" = "cli" -a "$RELEASE_CHANNEL" = "stable" ]; then
   CHANNEL_SUFFIX="-stable"
 fi
@@ -46,8 +46,8 @@ TEMPLATE_DIR="$WORKSPACE_ROOT_DIR/resources/linux/debian/$ARTIFACT"
 # Add a simple test to make sure we're generating the appropriate repository
 # name for the stable channel.
 if [ "$RELEASE_CHANNEL" = "stable" ]; then
-  if [ "$REPO_NAME" != "warpdotdev" ]; then
-    echo "::error ::Unexpected repo name for $RELEASE_CHANNEL channel: $REPO_NAME (expected \"warpdotdev\")"
+  if [ "$REPO_NAME" != "hotfuzz" ]; then
+    echo "::error ::Unexpected repo name for $RELEASE_CHANNEL channel: $REPO_NAME (expected \"hotfuzz\")"
     exit 1
   fi
 fi

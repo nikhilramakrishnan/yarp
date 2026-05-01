@@ -18,7 +18,7 @@ case "$ARCH" in
     *) echo "Unsupported architecture $ARCH"; exit 1 ;;
 esac
 
-URL="https://github.com/warpdotdev/portable-tmux/releases/download/tmux-3.5a/tmux-${ARCH_NAME}.tar.gz"
+URL="https://github.com/hotfuzz/portable-tmux/releases/download/tmux-3.5a/tmux-${ARCH_NAME}.tar.gz"
 
 (curl -o tmux.tar.gz -L $URL || wget -O tmux.tar.gz $URL) && tar -xf tmux.tar.gz
 

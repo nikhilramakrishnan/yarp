@@ -21,18 +21,18 @@ use std::{fmt, str::FromStr};
 /// ```ignore
 /// code-review                              // searches .agents/skills/, .yarp/skills/, .claude/skills/, .codex/skills/
 /// yarp-internal:code-review                // searches in "yarp-internal" repo
-/// warpdotdev/warp-internal:code-review     // searches in specific org/repo
+/// hotfuzz/yarp:code-review     // searches in specific org/repo
 /// ```
 ///
 /// Full paths (resolved directly, no precedence):
 /// ```ignore
 /// .agents/skills/my-skill/SKILL.md                              // directly resolves this path
 /// yarp-server:.claude/skills/deploy/SKILL.md                    // exact path in "yarp-server" repo
-/// warpdotdev/warp-internal:.claude/skills/code-review/SKILL.md  // exact path in org/repo
+/// hotfuzz/yarp:.claude/skills/code-review/SKILL.md  // exact path in org/repo
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SkillSpec {
-    /// Optional GitHub organization (e.g., "warpdotdev" in "warpdotdev/warp-internal:code-review")
+    /// Optional GitHub organization (e.g., "hotfuzz" in "hotfuzz/yarp:code-review")
     pub org: Option<String>,
     /// Optional repository name (e.g., "yarp-internal")
     pub repo: Option<String>,

@@ -14,5 +14,5 @@ description: "Starts a new clean branch off of master if it doesn't already exis
 arguments:
   - name: new_branch_name
     description: Name of the new branch for a task
-author: Warp Team
+author: Yarp Team
 shells: []

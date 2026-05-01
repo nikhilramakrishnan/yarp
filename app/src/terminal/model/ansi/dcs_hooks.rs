@@ -60,7 +60,7 @@ pub(super) enum DProtoHook {
     InitSubshell {
         value: InitSubshellValue,
     },
-    SourcedRcFileForWarp {
+    SourcedRcFileForYarp {
         value: SourcedRcFileForYarpValue,
     },
     InitSsh {
@@ -97,7 +97,7 @@ impl DProtoHook {
             DProtoHook::InputBuffer { .. } => "InputBuffer",
             DProtoHook::Clear { .. } => "Clear",
             DProtoHook::InitSubshell { .. } => "InitSubshell",
-            DProtoHook::SourcedRcFileForWarp { .. } => "SourcedRcFileForWarp",
+            DProtoHook::SourcedRcFileForYarp { .. } => "SourcedRcFileForYarp",
             DProtoHook::InitSsh { .. } => "InitSsh",
             DProtoHook::FinishUpdate { .. } => "FinishUpdate",
             DProtoHook::RemoteYarpificationIsUnavailable { .. } => {
@@ -143,7 +143,7 @@ impl DProtoHook {
             "InitSubshell" => Some(DProtoHook::InitSubshell {
                 value: Default::default(),
             }),
-            "SourcedRcFileForWarp" => Some(DProtoHook::SourcedRcFileForWarp {
+            "SourcedRcFileForYarp" => Some(DProtoHook::SourcedRcFileForYarp {
                 value: Default::default(),
             }),
             "InitSsh" => Some(DProtoHook::InitSsh {

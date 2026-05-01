@@ -27,7 +27,7 @@ on:
         required: true
       OZ_MGMT_GHA_PRIVATE_KEY:
         required: true
-      OSS_WARP_API_KEY:
+      OSS_YARP_API_KEY:
         required: true
   pull_request_target:
     types:
@@ -79,7 +79,7 @@ jobs:
           matches_direct_trigger = (
               (action == "opened" and not pr.get("draft", False))
               or action == "ready_for_review"
-              or (action == "review_requested" and requested_reviewer == "oz-agent")
+              or (action == "review_requested" and requested_reviewer == "fuzz-agent")
               or (action == "labeled" and label_name == "oz-review")
           )
           if input_pr_number:
@@ -117,7 +117,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/review-pull-request.yml@main
+    uses: hotfuzz/oz-for-oss/.github/workflows/review-pull-request.yml@main
     with:
       pr_number: ${{ needs.resolve.outputs.pr_number }}
       trigger_source: ${{ needs.resolve.outputs.trigger_source }}
@@ -126,4 +126,4 @@ jobs:
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}
-      OSS_WARP_API_KEY: ${{ secrets.OSS_WARP_API_KEY }}
+      OSS_YARP_API_KEY: ${{ secrets.OSS_YARP_API_KEY }}

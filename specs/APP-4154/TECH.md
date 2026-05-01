@@ -15,7 +15,7 @@ This spec covers the follow-up audit APP-4104 explicitly flagged: walk every NSS
 - `crates/yarpui/src/platform/mac/objc/`: `alert.m`, `app.m`, `fullscreen_queue.m`, `host_view.m`, `hotkey.m`, `keycode.m`, `menus.m`, `notifications/notifications.m`, `reachability.m`, `window.m`, `window_blur.m`
 
 **Out of scope:**
-- `app/DockTilePlugin/WarpDockTilePlugin.m` (ARC, per `app/DockTilePlugin/Makefile:5`).
+- `app/DockTilePlugin/YarpDockTilePlugin.m` (ARC, per `app/DockTilePlugin/Makefile:5`).
 - The cross-platform `sentry` Rust crate and `app/src/crash_reporting/sentry_minidump.rs` (no ObjC).
 - Switching non-ARC files to ARC wholesale.
 - Non-macOS targets.
@@ -66,15 +66,15 @@ The trailing columns start as TODOs. When you pick up a batch:
 2. Fill in the disposition, thread-origin, hot/cold, and strategy columns with your finding.
 3. Apply the fix per the chosen strategy.
 4. Tick the row.
-5. Validate your slice: `cargo fmt` + `cargo check -p warp --bin warp --features gui,cocoa_sentry`.
+5. Validate your slice: `cargo fmt` + `cargo check -p yarp --bin yarp --features gui,cocoa_sentry`.
 6. Open a PR against `lucie/app-4154-prep` (stacked). Keep the diff under ~200 lines; split by file if needed.
 
 The checklist files are edited in-place by each batch PR (each PR only touches its own rows, avoiding conflicts). The orchestrator runs `./script/presubmit` once all batches have merged, and re-runs the greps at the top of each checklist to prove completeness.
 
 ## Validation
 
-- `cargo fmt` and `cargo check -p warp --bin warp --features gui,cocoa_sentry` on macOS, matching PR #560.
-- Xcode Instruments Leaks template: rerun the breadcrumb-hammer repro from #560 plus a short session exercising touched UI paths (window open/close, menu open, clipboard, appearance change, file picker). No new `Warp`-owned frames should appear.
+- `cargo fmt` and `cargo check -p yarp --bin yarp --features gui,cocoa_sentry` on macOS, matching PR #560.
+- Xcode Instruments Leaks template: rerun the breadcrumb-hammer repro from #560 plus a short session exercising touched UI paths (window open/close, menu open, clipboard, appearance change, file picker). No new `Yarp`-owned frames should appear.
 - Manually fire a Sentry event and confirm tags, user id, and breadcrumbs still round-trip.
 - `./script/presubmit` before the final merge.
 

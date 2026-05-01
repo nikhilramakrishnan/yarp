@@ -21,7 +21,7 @@ set -g DCS_START \u1b\u50\u24
 
 # Appended to $DCS_START to signal that the following message is JSON-encoded.
 # The Rust app also receives non-JSON-encoded DCS's sent from
-# _warp_run_generator_command_internal, which instead end in 'e' (0x65).
+# _yarp_run_generator_command_internal, which instead end in 'e' (0x65).
 set -g DCS_JSON_MARKER 'd'
 
 set -g DCS_END \u9c
@@ -78,11 +78,11 @@ set -g _yarp_generator_pids ''
 # the job is completed.
 #
 # Usage:
-#   _warp_run_generator_command_internal <command_id> '<command>'
+#   _yarp_run_generator_command_internal <command_id> '<command>'
 #
 # The first argument is the command's ID, which is included in the DCS string sent
 # to the rust app. The second argument is the command string itself.
-function  _warp_run_generator_command_internal
+function  _yarp_run_generator_command_internal
     set -l command_id $argv[1]
     set -l command (string join -- ' ' (string escape $argv[2]))
     # Fish cannot run shell functions in the background, so in order to run
@@ -153,7 +153,7 @@ function yarp_run_generator_command
     # Setting this environment variable allows yarp_precmd to detect if a generator
     # command or a user command has just completed.
     set -g _YARP_GENERATOR_COMMAND 1
-    _warp_run_generator_command_internal $argv
+    _yarp_run_generator_command_internal $argv
 end
 
 # Run before a command is executed.
@@ -544,10 +544,10 @@ function yarp_finish_update
 end
 
 
-# Check if the warp apt source file has been renamed to `warpdotdev.list.distUpgrade` due to an ubuntu version update.
-# If this occurred, we want to rename the source file back to `warpdotdev.list` to ensure updates can proceed.
-# We purposefully skip this if either the `warpdotdev.list` file already exists (indicating that the user has already
-# done this themselves) _or_ if a `warpdotdev.sources` file exists (which is the new Deb822 format for source files).
+# Check if the yarp apt source file has been renamed to `yarp.list.distUpgrade` due to an ubuntu version update.
+# If this occurred, we want to rename the source file back to `yarp.list` to ensure updates can proceed.
+# We purposefully skip this if either the `yarp.list` file already exists (indicating that the user has already
+# done this themselves) _or_ if a `yarp.sources` file exists (which is the new Deb822 format for source files).
 # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
 # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
 # contains a `signed-by` key.

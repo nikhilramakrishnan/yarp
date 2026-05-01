@@ -124,7 +124,7 @@ impl WindowManager {
     /// same thing as a physical monitor, but a grouping of monitors into a single coordinate
     /// space. All our app's windows must be on the same screen, and hence will have the same scale
     /// factor. For more in-depth explanation:
-    /// https://github.com/warpdotdev/warp-internal/pull/8431#discussion_r1460629912
+    /// https://github.com/hotfuzz/yarp/pull/8431#discussion_r1460629912
     #[cfg(target_os = "linux")]
     fn get_x11_backing_scale_factor(&self) -> f32 {
         use crate::platform::WindowContext;
@@ -593,12 +593,12 @@ fn window_level_for_style(style: WindowStyle) -> WindowLevel {
 }
 
 /// If the selected adapter has a known rendering offset bug, enable native window decorations
-/// to work around it. See: https://github.com/warpdotdev/Warp/issues/6120
+/// to work around it. See: https://github.com/hotfuzz/Warp/issues/6120
 fn enable_decorations_if_needed(window: &winit::window::Window, adapter_info: &AdapterInfo) {
     if adapter_has_rendering_offset_bug(adapter_info) {
         log::warn!(
             "Enabling native window decorations to work around a rendering offset bug in the \
-            selected GPU adapter ({}). See: https://github.com/warpdotdev/Warp/issues/6120",
+            selected GPU adapter ({}). See: https://github.com/hotfuzz/Warp/issues/6120",
             adapter_info.name,
         );
         window.set_decorations(true);
@@ -1257,7 +1257,7 @@ fn create_window(
     #[cfg(windows)]
     {
         // WARNING: Do not use [`WindowAttributes::with_no_redirection_bitmap`] as that caused:
-        // https://github.com/warpdotdev/Warp/issues/8935
+        // https://github.com/hotfuzz/Warp/issues/8935
 
         use winit::platform::windows::{IconExtWindows, WindowAttributesExtWindows};
 

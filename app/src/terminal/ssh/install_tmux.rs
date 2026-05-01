@@ -25,7 +25,7 @@ use yarpui::{
 use yarpui::{BlurContext, FocusContext};
 
 pub const WHY_INSTALL_TMUX_URL: &str =
-    "https://docs.warp.dev/terminal/yarpify/ssh#why-do-i-need-tmux-on-the-remote-machine";
+    "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh#why-do-i-need-tmux-on-the-remote-machine";
 
 #[derive(Debug, Clone)]
 pub struct TmuxInstallMethod {

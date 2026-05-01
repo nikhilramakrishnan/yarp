@@ -4,8 +4,8 @@ Section: devel
 Depends: zlib1g
 Priority: optional
 Architecture: @@ARCH@@
-Maintainer: Warp Linux Maintainers <linux-maintainers@warp.dev>
-Homepage: https://warp.dev/
+Maintainer: Warp Linux Maintainers <linux-maintainers@yarp.dev>
+Homepage: https://yarp.dev/
 Replaces: yarp-cli@@CHANNEL_SUFFIX@@ (<< @@VERSION@@), fuzz (= 0.2026.02.09.06.06.stable.00), fuzz (= 0.2026.02.09.06.06.stable.02), fuzz (= 0.2026.02.10.11.37.stable.00), fuzz (= 0.2026.02.10.11.37.stable.01), fuzz (= 0.2026.02.11.08.23.stable.00)
 Conflicts: yarp-cli@@CHANNEL_SUFFIX@@ (<< @@VERSION@@), fuzz (= 0.2026.02.09.06.06.stable.00), fuzz (= 0.2026.02.09.06.06.stable.02), fuzz (= 0.2026.02.10.11.37.stable.00), fuzz (= 0.2026.02.10.11.37.stable.01), fuzz (= 0.2026.02.11.08.23.stable.00)
 Description: The orchestration platform for cloud agents

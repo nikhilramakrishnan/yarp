@@ -1,6 +1,6 @@
 # Tech Spec: Support ~ expansion in /open-file slash command
 
-**Issue:** [warpdotdev/warp-external#408](https://github.com/warpdotdev/warp-external/issues/408)
+**Issue:** [yarpdotdev/yarp-external#408](https://github.com/yarpdotdev/yarp-external/issues/408)
 
 ## Problem
 
@@ -64,7 +64,7 @@ No other files need to change.
 ## Testing and validation
 
 1. **New unit test:** Add a `#[cfg(feature = "local_fs")]` test similar to `test_open_slash_command_clears_buffer_on_success` that creates a temp file at a known location, simulates `/open-file ~/relative-to-home` using the temp file's home-relative path, and verifies the buffer clears (indicating success).
-2. **Manual test:** Run Warp, type `/open-file ~/.bashrc`, confirm it opens.
+2. **Manual test:** Run Yarp, type `/open-file ~/.bashrc`, confirm it opens.
 3. **Regression:** Existing tests (`test_open_slash_command_clears_buffer_on_success`, `test_open_slash_command_requires_path`, etc.) continue to pass.
 
 ## Follow-ups

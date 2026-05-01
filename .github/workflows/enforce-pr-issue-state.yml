@@ -16,7 +16,7 @@ on:
         required: true
       OZ_MGMT_GHA_PRIVATE_KEY:
         required: true
-      OSS_WARP_API_KEY:
+      OSS_YARP_API_KEY:
         required: true
     outputs:
       allow_review:
@@ -29,11 +29,11 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/enforce-pr-issue-state.yml@main
+    uses: hotfuzz/oz-for-oss/.github/workflows/enforce-pr-issue-state.yml@main
     with:
       pr_number: ${{ inputs.pr_number }}
       requester: ${{ inputs.requester }}
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}
-      OSS_WARP_API_KEY: ${{ secrets.OSS_WARP_API_KEY }}
+      OSS_YARP_API_KEY: ${{ secrets.OSS_YARP_API_KEY }}

@@ -204,7 +204,7 @@ Handle `HoaOnboardingFlowEvent`:
 
 ## End-to-End Flow
 
-1. Existing user launches Warp with `HOAOnboardingFlow` enabled.
+1. Existing user launches Yarp with `HOAOnboardingFlow` enabled.
 2. `OneTimeModalModel` receives auth + cloud sync completion → calls `check_and_trigger_hoa_onboarding`.
 3. Checks pass (flag enabled, not completed, is existing user) → emits `OneTimeModalEvent`.
 4. `Workspace` receives event → enables vertical tabs setting → opens vertical tabs panel → creates `HoaOnboardingFlow` in `WelcomeBanner` step → renders scrim + banner.

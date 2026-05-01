@@ -13,7 +13,7 @@ Ignore these (not call sites):
 - `crates/yarpui/src/platform/mac/mod.rs:34` — definition of `make_nsstring` itself. Excluded because the body is a one-liner that always returns an autoreleased NSString; the leak potential is at its callers, not the definition.
 - `use ... make_nsstring` import lines.
 Audited even though it's a definition, not a call:
-- `crates/yarpui_extras/src/user_preferences/user_defaults.rs:88-89` — local `util::make_nsstring` helper definition. Unlike the warpui helper, this one returns a retained `StrongPtr`-wrapped NSString; the definition itself is the correctness point, so it's listed in batch 1.D.
+- `crates/yarpui_extras/src/user_preferences/user_defaults.rs:88-89` — local `util::make_nsstring` helper definition. Unlike the yarpui helper, this one returns a retained `StrongPtr`-wrapped NSString; the definition itself is the correctness point, so it's listed in batch 1.D.
 
 ## Row format
 
@@ -39,7 +39,7 @@ Files: `app/src/crash_reporting/mac.rs`. Reference pattern (`forward_breadcrumb`
 
 Files: `app/src/app_services/mac.rs`, `app/src/appearance.rs`, `app/src/util/file/external_editor/mac.rs`. `app/src/settings_view/appearance_page.rs` and `app/src/lib.rs` were dropped from this batch's scope: the rg invocations at the top of this file show no matches there, and a zero-hit re-grep is sufficient to prove completeness — no rows needed.
 
-- [x] app/src/app_services/mac.rs:27 — `warp_services_provider_custom_url_scheme` — autoreleased — appkit-event (called from `services.m` inside an `@autoreleasepool` on the NSServices dispatch path) — cold — autorelease-helper — replaced the raw `NSString::alloc(nil).init_str(...).autorelease()` with `make_nsstring(...)`; the ambient ObjC pool owns the returned string.
+- [x] app/src/app_services/mac.rs:27 — `yarp_services_provider_custom_url_scheme` — autoreleased — appkit-event (called from `services.m` inside an `@autoreleasepool` on the NSServices dispatch path) — cold — autorelease-helper — replaced the raw `NSString::alloc(nil).init_str(...).autorelease()` with `make_nsstring(...)`; the ambient ObjC pool owns the returned string.
 - [x] app/src/appearance.rs:222 — `AppearanceManager::set_app_icon` (plugin_name) — autoreleased — mixed (startup from `lib.rs:1204`, settings/autoupdate completion callbacks) — cold — local-pool — wrapped the `unsafe { … }` body in `NSAutoreleasePool::new(nil)` held by an `AutoreleasePoolGuard` RAII wrapper whose `Drop` impl sends `drain`, so the pool is released on every exit path (early `return`, normal fall-through, or an unexpected panic from an intermediate `msg_send!`).
 - [x] app/src/appearance.rs:233 — `AppearanceManager::set_app_icon` (image_name) — autoreleased — mixed (see above) — cold — local-pool — covered by the same `AutoreleasePoolGuard` as plugin_name.
 - [x] app/src/appearance.rs:234 — `AppearanceManager::set_app_icon` (extension) — autoreleased — mixed (see above) — cold — local-pool — covered by the same `AutoreleasePoolGuard` as plugin_name.
@@ -47,7 +47,7 @@ Files: `app/src/app_services/mac.rs`, `app/src/appearance.rs`, `app/src/util/fil
 
 Before ticking, agent 1.B must re-run the rg invocations at the top of this checklist across the whole workspace and confirm no new hits have landed since this scaffolding was written. Add any new rows that appear.
 
-## Batch 1.C — `warpui-platform-nsstring`
+## Batch 1.C — `yarpui-platform-nsstring`
 
 Files: `crates/yarpui/src/platform/mac/{app.rs, clipboard.rs, delegate.rs, menus.rs, window.rs, keycode.rs}`. If the batch diff exceeds ~200 lines, split by file.
 
@@ -90,9 +90,9 @@ Files: `crates/yarpui/src/platform/mac/{app.rs, clipboard.rs, delegate.rs, menus
 - [x] crates/yarpui/src/platform/mac/window.rs:804 — `Window::set_accessibility_contents` (help) — autoreleased — appkit-event — hot — local-pool — covered by pool wrapping `Window::set_accessibility_contents` body
 - [x] crates/yarpui/src/platform/mac/window.rs:805 — `Window::set_accessibility_contents` (role) — autoreleased — appkit-event — hot — local-pool — covered by pool wrapping `Window::set_accessibility_contents` body
 - [x] crates/yarpui/src/platform/mac/window.rs:893 — `Window::set_window_title` — autoreleased — appkit-event — cold — ambient — no-op
-- [x] crates/yarpui/src/platform/mac/window.rs:1230 — `warp_get_accessibility_contents` (C-unwind) — autoreleased — appkit-event (AppKit accessibility callback) — hot — ambient — no-op; local-pool not applicable because the autoreleased NSString is the return value and must outlive this scope
+- [x] crates/yarpui/src/platform/mac/window.rs:1230 — `yarp_get_accessibility_contents` (C-unwind) — autoreleased — appkit-event (AppKit accessibility callback) — hot — ambient — no-op; local-pool not applicable because the autoreleased NSString is the return value and must outlive this scope
 
-## Batch 1.D — `warpui-extras-nsstring`
+## Batch 1.D — `yarpui-extras-nsstring`
 
 Files: `crates/yarpui_extras/src/user_preferences/user_defaults.rs`.
 

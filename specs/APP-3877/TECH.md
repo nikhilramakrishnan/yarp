@@ -59,5 +59,5 @@ fn evict_size(&self, cache_key: u64, rendered_key: RenderedImageCacheKey) {
 All new behavior is verified by unit tests above. No rendering hardware is required — `TextureCache<T>` is generic and tests use `T = ()`. Run with:
 
 ```
-cargo nextest run -p warpui_core
+cargo nextest run -p yarpui_core
 ```

@@ -22,7 +22,7 @@ concurrency:
 jobs:
   triage_issues:
     # A needs-info reply by the original reporter triggers re-triage
-    # even if it mentions @oz-agent, because the respond-to-triaged
+    # even if it mentions @fuzz-agent, because the respond-to-triaged
     # workflow handles explicit mentions on triaged issues separately.
     if: |
       (
@@ -37,24 +37,24 @@ jobs:
         !endsWith(github.event.comment.user.login, '[bot]') &&
         (
           (
-            contains(github.event.comment.body, '@oz-agent') &&
+            contains(github.event.comment.body, '@fuzz-agent') &&
             !contains(github.event.issue.labels.*.name, 'triaged')
           ) ||
           (
             contains(github.event.issue.labels.*.name, 'needs-info') &&
             github.event.comment.user.login == github.event.issue.user.login &&
-            !contains(github.event.comment.body, '@oz-agent')
+            !contains(github.event.comment.body, '@fuzz-agent')
           )
         )
       )
     permissions:
       contents: read
       issues: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/triage-new-issues.yml@main
+    uses: hotfuzz/oz-for-oss/.github/workflows/triage-new-issues.yml@main
     with:
       issue_number: ${{ github.event.issue.number || github.event.inputs.issue_number || '' }}
       lookback_minutes: ${{ github.event.inputs.lookback_minutes || '60' }}
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}
-      OSS_WARP_API_KEY: ${{ secrets.OSS_WARP_API_KEY }}
+      OSS_YARP_API_KEY: ${{ secrets.OSS_YARP_API_KEY }}

@@ -49,7 +49,7 @@ pub enum WasmNUXDialogEvent {
 pub struct WasmNUXDialog {
     close_mouse_state: MouseStateHandle,
     confirm_mouse_state: MouseStateHandle,
-    download_warp_mouse_state: MouseStateHandle,
+    download_yarp_mouse_state: MouseStateHandle,
     learn_more_mouse_state: MouseStateHandle,
     requested_download: bool,
 }
@@ -63,7 +63,7 @@ impl WasmNUXDialog {
         Self {
             close_mouse_state: Default::default(),
             confirm_mouse_state: Default::default(),
-            download_warp_mouse_state: Default::default(),
+            download_yarp_mouse_state: Default::default(),
             learn_more_mouse_state: Default::default(),
             requested_download: false,
         }
@@ -213,7 +213,7 @@ impl View for WasmNUXDialog {
                 .with_bottom_row_child(Self::render_dialog_button(
                     "Download",
                     WasmNUXDialogAction::OpenDownloadDesktopAppLink,
-                    &self.download_warp_mouse_state,
+                    &self.download_yarp_mouse_state,
                     appearance,
                 ))
         } else {
@@ -278,12 +278,12 @@ impl TypedActionView for WasmNUXDialog {
                 }
             }
             WasmNUXDialogAction::OpenDownloadDesktopAppLink => {
-                ctx.open_url("https://app.warp.dev/get_warp");
+                ctx.open_url("https://app.yarp.dev/get_yarp");
                 self.requested_download = true;
                 ctx.notify();
             }
             WasmNUXDialogAction::LearnMore => {
-                ctx.open_url("https://www.warp.dev");
+                ctx.open_url("https://github.com/hotfuzz/yarp");
             }
         }
     }

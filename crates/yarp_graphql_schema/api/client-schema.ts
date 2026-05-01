@@ -82,7 +82,7 @@ const clientQueries = [
   'codebaseContextConfig',
   'getRelevantFragments',
   'rerankFragments',
-  'listWarpDevImages',
+  'listYarpDevImages',
   'pricingInfo',
   'managedSecrets',
   'syncMerkleTree',

@@ -26,7 +26,7 @@
 #
 # Three passwords are read from GCP Secret Manager (or from env if --read-passwords-from-env is set) if you are codesigning.
 # 1) YARP_NOTARIZATION_PASSWORD:  This is an "app-specific password" that
-#    is tied to the zach@warp.dev account.  See https://support.apple.com/en-us/HT204397
+#    is tied to the zach@yarp.dev account.  See https://support.apple.com/en-us/HT204397
 # 2) YARP_DEVELOPER_ID_CERT_PASSWORD: This is a password tied to the private key
 #    of our cert - it is needed to use the cert to sign our binary.
 # 3) YARP_CODESIGN_KEYCHAIN_PASSWORD: This is an arbitrary password only used

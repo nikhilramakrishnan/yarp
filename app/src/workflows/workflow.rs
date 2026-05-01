@@ -264,7 +264,7 @@ impl Workflow {
 }
 
 /// Create a yarp-internal Workflow model from a public-facing workflow
-/// https://github.com/warpdotdev/workflows/blob/main/workflow-types/src/lib.rs
+/// https://github.com/hotfuzz/workflows/blob/main/workflow-types/src/lib.rs
 impl From<yarp_workflows::Workflow> for Workflow {
     fn from(workflow: yarp_workflows::Workflow) -> Self {
         Workflow::Command {

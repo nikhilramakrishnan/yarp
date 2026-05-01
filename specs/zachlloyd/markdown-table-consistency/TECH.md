@@ -2,10 +2,10 @@
 Product spec: `specs/zachlloyd/markdown-table-consistency/PRODUCT.md`
 
 ## Problem
-PR #23908 updated AI block list Markdown tables to the new blockless visual treatment, but the rest of Warp’s Markdown table renderers still use the older boxed table styling. On the current branch, Markdown table appearance is owned by two separate rendering paths:
+PR #23908 updated AI block list Markdown tables to the new blockless visual treatment, but the rest of Yarp’s Markdown table renderers still use the older boxed table styling. On the current branch, Markdown table appearance is owned by two separate rendering paths:
 
 - editor-backed Markdown surfaces use `RichTextStyles.table_style`
-- AI block list tables build a separate WarpUI `TableConfig` inline
+- AI block list tables build a separate YarpUI `TableConfig` inline
 
 That split creates two technical problems:
 
@@ -63,7 +63,7 @@ In addition, `code_text_styles()` starts from `rich_text_styles()` before overri
 This means a change to the shared editor-backed style source will propagate to multiple surfaces automatically.
 
 ### AI block list tables
-The AI block list no longer uses the old style. `render_table_section()` in `app/src/ai/blocklist/block/view_impl/common.rs` builds a WarpUI `Table` with an inline `TableConfig` that already matches the desired structural treatment:
+The AI block list no longer uses the old style. `render_table_section()` in `app/src/ai/blocklist/block/view_impl/common.rs` builds a YarpUI `Table` with an inline `TableConfig` that already matches the desired structural treatment:
 
 - `outer_border: false`
 - `column_dividers: false`
@@ -79,7 +79,7 @@ That renderer is already the visual baseline from PR #23908, but it is defined i
 Today there is no shared “Markdown table appearance” abstraction. The editor-backed path and block list path both describe the same visual decisions in different structures:
 
 - `TableStyle` for the editor renderer
-- `TableConfig` plus per-cell text styling for WarpUI `Table`
+- `TableConfig` plus per-cell text styling for YarpUI `Table`
 
 As a result:
 
@@ -169,7 +169,7 @@ The shared appearance helper should therefore be mapped differently by each rend
 What must remain shared is the blockless table chrome and the text hierarchy relationship, not every literal font token.
 
 ### 7. Treat the shared helper as the default for future Markdown table renderers
-Document in the code by naming and placement that this helper is the default source for Markdown table appearance in Warp.
+Document in the code by naming and placement that this helper is the default source for Markdown table appearance in Yarp.
 
 The goal is that a new Markdown-rendering surface should not invent its own `TableConfig` or `TableStyle` values for tables unless it has a clear product reason to diverge.
 
@@ -178,7 +178,7 @@ The goal is that a new Markdown-rendering surface should not invent its own `Tab
 2. If it is editor-backed, it obtains `RichTextStyles` from `rich_text_styles()` or `code_text_styles()`.
 3. `rich_text_styles()` builds `table_style` from the shared Markdown table appearance helper.
 4. The editor renderer lays out and paints table content using the updated `TableStyle`, which now supports the blockless chrome.
-5. If it is the AI block list path, `render_table_section()` builds its WarpUI `Table` using the same shared appearance helper, while keeping block-list-specific typography and selection settings.
+5. If it is the AI block list path, `render_table_section()` builds its YarpUI `Table` using the same shared appearance helper, while keeping block-list-specific typography and selection settings.
 6. The user sees the same structural Markdown table treatment across surfaces, with existing interaction behavior preserved.
 
 ## Risks and mitigations

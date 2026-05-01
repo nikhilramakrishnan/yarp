@@ -2,7 +2,7 @@
 
 ## 1. Problem
 
-CLI agents (Codex, Claude CLI, etc.) running in Warp blocks produce trailing blank lines. Output grid height is based on `max_cursor_point` (furthest row cursor visited), but agents frequently emit newlines/clear screen, leaving empty rows below content. Wastes space, especially in shared sessions.
+CLI agents (Codex, Claude CLI, etc.) running in Yarp blocks produce trailing blank lines. Output grid height is based on `max_cursor_point` (furthest row cursor visited), but agents frequently emit newlines/clear screen, leaving empty rows below content. Wastes space, especially in shared sessions.
 
 ## 2. Approach
 

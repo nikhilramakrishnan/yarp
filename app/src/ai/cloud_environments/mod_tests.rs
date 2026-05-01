@@ -4,7 +4,7 @@ use super::*;
 fn deserialize_legacy_environment_without_providers() {
     let json = serde_json::json!({
         "name": "my-env",
-        "github_repos": [{"owner": "warpdotdev", "repo": "warp"}],
+        "github_repos": [{"owner": "hotfuzz", "repo": "warp"}],
         "docker_image": "ubuntu:latest",
         "setup_commands": ["echo hello"]
     });

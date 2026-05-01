@@ -516,7 +516,7 @@ fn test_render_repos_field_with_selected_repos() {
             view_handle.update(ctx, |form, _| {
                 set_github_auth_call_state(form, GithubAuthCallState::Authed);
                 form.form_state.selected_repos = vec![
-                    GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string()),
+                    GithubRepo::new("hotfuzz".to_string(), "yarp".to_string()),
                     GithubRepo::new("facebook".to_string(), "react".to_string()),
                 ];
                 form.remove_repo_mouse_states =
@@ -532,8 +532,8 @@ fn test_render_repos_field_with_selected_repos() {
                 "Expected 'Repo(s)' label in rendered content: {text_content}"
             );
             assert!(
-                text_content.contains("warpdotdev/warp-internal"),
-                "Expected 'warpdotdev/warp-internal' in rendered content: {text_content}"
+                text_content.contains("hotfuzz/yarp"),
+                "Expected 'hotfuzz/yarp' in rendered content: {text_content}"
             );
             assert!(
                 text_content.contains("facebook/react"),
@@ -588,7 +588,7 @@ fn test_selected_repos_as_remote_repo_args_formats_owner_repo_strings() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![
-                    GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string()),
+                    GithubRepo::new("hotfuzz".to_string(), "yarp".to_string()),
                     GithubRepo::new("facebook".to_string(), "react".to_string()),
                 ];
             });
@@ -599,7 +599,7 @@ fn test_selected_repos_as_remote_repo_args_formats_owner_repo_strings() {
             assert_eq!(
                 args,
                 vec![
-                    "warpdotdev/warp-internal".to_string(),
+                    "hotfuzz/yarp".to_string(),
                     "facebook/react".to_string(),
                 ]
             );
@@ -618,7 +618,7 @@ fn test_can_suggest_image_for_edit_requires_repos_modified() {
             name: "Env".to_string(),
             description: "".to_string(),
             selected_repos: vec![GithubRepo::new(
-                "warpdotdev".to_string(),
+                "hotfuzz".to_string(),
                 "yarp-internal".to_string(),
             )],
             docker_image: "ubuntu:latest".to_string(),
@@ -669,7 +669,7 @@ fn test_can_suggest_image_for_create_does_not_require_repos_modified() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
+                    "hotfuzz".to_string(),
                     "yarp-internal".to_string(),
                 )];
                 form.edit_repos_modified = false;
@@ -763,7 +763,7 @@ fn test_render_docker_image_field_shows_generating_state() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
+                    "hotfuzz".to_string(),
                     "yarp-internal".to_string(),
                 )];
                 let key = form
@@ -798,7 +798,7 @@ fn test_render_docker_image_field_shows_custom_image_warning() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
+                    "hotfuzz".to_string(),
                     "yarp-internal".to_string(),
                 )];
                 let key = form
@@ -845,7 +845,7 @@ fn test_render_docker_image_field_shows_github_auth_required_message() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
+                    "hotfuzz".to_string(),
                     "yarp-internal".to_string(),
                 )];
                 let key = form

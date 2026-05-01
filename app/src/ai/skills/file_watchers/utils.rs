@@ -93,7 +93,7 @@ static SKILL_FILE_PATTERN: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 pub fn extract_skill_parent_directory(path: &Path) -> Result<PathBuf, Error> {
-    let is_warp_home_skill = path
+    let is_yarp_home_skill = path
         .file_name()
         .and_then(|name| name.to_str())
         .is_some_and(|name| name == "SKILL.md")
@@ -101,7 +101,7 @@ pub fn extract_skill_parent_directory(path: &Path) -> Result<PathBuf, Error> {
             .parent()
             .and_then(Path::parent)
             .is_some_and(|parent| yarp_managed_skill_dirs().iter().any(|dir| parent == dir));
-    if is_warp_home_skill {
+    if is_yarp_home_skill {
         return dirs::home_dir()
             .ok_or_else(|| anyhow::anyhow!("Home directory not available for {}", path.display()));
     }

@@ -50,7 +50,7 @@ jaq-std.workspace = true
 jaq-json.workspace = true
 ```
 
-`warp_cli` compiles the filter at clap parse time; `app` runs it. `warp_cli` technically only uses `jaq-core` + `jaq-std` items in its own code, but depends on `jaq-json` too because the stored `Filter` type is parameterized by `jaq_json::Val` — without `Val` in scope, the `Filter` field would not resolve. The alternative (store `Option<String>` in `warp_cli` and recompile in `app`) doubles the compile work and prevents sharing a single compile source of truth; keep the direct `jaq-json` dep and forgo that split unless the binary-size hit shows up as a problem.
+`yarp_cli` compiles the filter at clap parse time; `app` runs it. `yarp_cli` technically only uses `jaq-core` + `jaq-std` items in its own code, but depends on `jaq-json` too because the stored `Filter` type is parameterized by `jaq_json::Val` — without `Val` in scope, the `Filter` field would not resolve. The alternative (store `Option<String>` in `yarp_cli` and recompile in `app`) doubles the compile work and prevents sharing a single compile source of truth; keep the direct `jaq-json` dep and forgo that split unless the binary-size hit shows up as a problem.
 
 ### 2. Reusable `JsonFilter` clap component (`crates/yarp_cli/src/json_filter.rs`, new)
 
@@ -141,7 +141,7 @@ Because `JsonFilter` is a single-field `Args` struct with `long = "jq"`, both co
 Extend `print_raw_json` to accept an optional pre-compiled filter. When `None`, behavior is identical to today. When `Some(filter)`, run the filter against the input value and print each output on its own line.
 
 ```rust path=null start=null
-use warp_cli::json_filter::JqFilter;
+use yarp_cli::json_filter::JqFilter;
 
 pub fn print_raw_json(
     value: &serde_json::Value,
@@ -174,7 +174,7 @@ The `run_jq_filter` helper lives next to `print_raw_json` in the same file. Beca
    - Otherwise (`Array` or `Object`), write via `serde_json::to_writer_pretty(&mut out, &value)?` followed by `\n`. This keeps the existing pretty-printed, `serde_json`-driven formatting for structured output so that `--jq .` on either command's response stays byte-identical to `--output-format json` without `--jq`.
 3. On runtime errors, flushes already-emitted output, writes the error to stderr via `eprintln!` (so the CLI's standard log-hint suffix isn't appended to user-authored filter errors), and returns a non-zero `anyhow::Error`.
 
-Note that `run_jq_filter` never recompiles the filter — compilation only happens inside `warp_cli::json_filter::parse_jq_filter` at clap parse time. This is what makes the CLI fail fast on bad filters: an invalid `--jq` exits during `Args::from_env()` and never reaches the spawn path, auth refresh, or HTTP client.
+Note that `run_jq_filter` never recompiles the filter — compilation only happens inside `yarp_cli::json_filter::parse_jq_filter` at clap parse time. This is what makes the CLI fail fast on bad filters: an invalid `--jq` exits during `Args::from_env()` and never reaches the spawn path, auth refresh, or HTTP client.
 
 ### 5. Call-site wiring (`app/src/ai/agent_sdk/ambient.rs`)
 
@@ -236,11 +236,11 @@ Manual validation against staging covering invariants 2, 3, 4, 5, 6, 7, and 8:
 - `oz run list --jq empty` (empty output, invariant 4).
 - `oz run list --help` and `oz run get --help` to confirm flag documentation per invariant 8.
 
-Presubmit: `./script/presubmit` (fmt, clippy `-D warnings`, test suite). The touched crates are `warp_cli` (minor) and `warp` (app).
+Presubmit: `./script/presubmit` (fmt, clippy `-D warnings`, test suite). The touched crates are `yarp_cli` (minor) and `yarp` (app).
 
 ## Risks and mitigations
 
-- **Dependency weight:** `jaq-core`, `jaq-std`, and `jaq-json` together pull in `num-bigint`, `indexmap`, `hifijson`, and a few smaller transitives. The binary-size delta is expected to be modest and similar to other CLI features. `warp_cli` gains all three deps since it compiles filters; `app` already transitively carries serde_json and adds the same set. We deliberately skip `jaq-all` and `jaq-fmts` — the only thing `jaq-all` adds on top of these three is multi-format conveniences we don't use.
+- **Dependency weight:** `jaq-core`, `jaq-std`, and `jaq-json` together pull in `num-bigint`, `indexmap`, `hifijson`, and a few smaller transitives. The binary-size delta is expected to be modest and similar to other CLI features. `yarp_cli` gains all three deps since it compiles filters; `app` already transitively carries serde_json and adds the same set. We deliberately skip `jaq-all` and `jaq-fmts` — the only thing `jaq-all` adds on top of these three is multi-format conveniences we don't use.
 - **Filter dialect drift:** `jaq` aims to be jq-compatible but is not byte-identical to BSD `jq` in every edge case. Mitigation: the product spec explicitly names `jaq` as the dialect, and the help text says so.
 - **Scalar-unwrapping divergence from pure `jq`:** our top-level scalar unwrapping differs from `jq` (which always emits JSON-encoded values) but matches `gh --jq`. Users coming from `jq` may be surprised that top-level strings are unquoted. Mitigation: document this in the help text, and point to `| tojson` as the opt-out.
 - **Partial output on runtime error:** we intentionally flush already-produced outputs before surfacing the error (invariant 5). This matches jq's behavior but means a failing filter can still leave valid JSON on stdout. Downstream scripts that parse stdout should continue to check the CLI exit code, which is unchanged. Documented in the help text is not necessary; the product spec captures it.

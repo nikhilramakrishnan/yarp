@@ -41,9 +41,9 @@ fn test_find_applicable_rules_single_matching_rule() {
 fn test_find_applicable_rules_includes_all_ancestor_rules() {
     let mut rules = ProjectRules::default();
 
-    rules.upsert_rule(Path::new("/a/YARP.md"), "root_warp".to_string());
-    rules.upsert_rule(Path::new("/a/b/YARP.md"), "nested_warp".to_string());
-    rules.upsert_rule(Path::new("/a/b/c/YARP.md"), "deep_warp".to_string());
+    rules.upsert_rule(Path::new("/a/YARP.md"), "root_yarp".to_string());
+    rules.upsert_rule(Path::new("/a/b/YARP.md"), "nested_yarp".to_string());
+    rules.upsert_rule(Path::new("/a/b/c/YARP.md"), "deep_yarp".to_string());
 
     let path = PathBuf::from("/a/b/c/d/file.rs");
 
@@ -129,9 +129,9 @@ fn test_find_applicable_rules_complex_scenario() {
     // - /a/b/AGENTS.md
     let mut rules = ProjectRules::default();
 
-    rules.upsert_rule(Path::new("/a/YARP.md"), "a_warp".to_string());
+    rules.upsert_rule(Path::new("/a/YARP.md"), "a_yarp".to_string());
     rules.upsert_rule(Path::new("/a/AGENTS.md"), "a_agents".to_string());
-    rules.upsert_rule(Path::new("/a/b/YARP.md"), "ab_warp".to_string());
+    rules.upsert_rule(Path::new("/a/b/YARP.md"), "ab_yarp".to_string());
     rules.upsert_rule(Path::new("/a/b/AGENTS.md"), "ab_agents".to_string());
     rules.upsert_rule(Path::new("/x/YARP.md"), "irrelevant".to_string()); // Should be ignored
 
@@ -142,9 +142,9 @@ fn test_find_applicable_rules_complex_scenario() {
 
     // Expect only YARP.md files to be included as they have higher priority.
     assert_eq!(result[0].path, PathBuf::from("/a/YARP.md"));
-    assert_eq!(result[0].content, "a_warp");
+    assert_eq!(result[0].content, "a_yarp");
     assert_eq!(result[1].path, PathBuf::from("/a/b/YARP.md"));
-    assert_eq!(result[1].content, "ab_warp");
+    assert_eq!(result[1].content, "ab_yarp");
 }
 
 #[test]
@@ -166,10 +166,10 @@ fn test_find_applicable_rules_handles_unknown_file_patterns() {
 fn test_find_applicable_rules_with_relative_paths() {
     let mut rules = ProjectRules::default();
 
-    rules.upsert_rule(Path::new("src/YARP.md"), "src_warp".to_string());
+    rules.upsert_rule(Path::new("src/YARP.md"), "src_yarp".to_string());
     rules.upsert_rule(
         Path::new("src/components/YARP.md"),
-        "components_warp".to_string(),
+        "components_yarp".to_string(),
     );
 
     let path = PathBuf::from("src/components/Button.tsx");

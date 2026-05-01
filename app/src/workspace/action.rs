@@ -548,7 +548,7 @@ pub enum WorkspaceAction {
     /// Reset the Fuzz launch modal dismissed state (for debugging)
     #[cfg(debug_assertions)]
     ResetOzLaunchModalState,
-    /// Open the OpenWarp Launch Modal (for debugging)
+    /// Open the OpenYarp Launch Modal (for debugging)
     #[cfg(debug_assertions)]
     OpenOpenYarpLaunchModal,
     /// Reset the OpenYarp launch modal dismissed state (for debugging)

@@ -3,7 +3,7 @@
 //! Yarp does not have a cloud object store. The Yarp Drive UI surfaces are
 //! still wired up (workflows / notebooks / generic string objects), but every
 //! mutation flows through this stub which returns a friendly error rather
-//! than reaching `app.warp.dev`.
+//! than reaching `app.yarp.dev`.
 //!
 //! Reads return empty so the UI shows an empty state instead of hanging on
 //! an unreachable endpoint. A future iteration may persist objects to
@@ -42,7 +42,7 @@ use yarp_graphql::object_permissions::AccessLevel;
 
 /// Stub object-client. All cloud-only operations (sharing, owner transfers,
 /// trash, etc.) return `Err`. The two methods the boot path depends on -
-/// `get_warp_drive_updates` and `fetch_changed_objects` - return empty so
+/// `get_yarp_drive_updates` and `fetch_changed_objects` - return empty so
 /// the UI never blocks on a network round-trip.
 pub struct OssObjectClient;
 
@@ -151,7 +151,7 @@ impl ObjectClient for OssObjectClient {
         err()
     }
 
-    async fn get_warp_drive_updates(
+    async fn get_yarp_drive_updates(
         &self,
         _message_sender: Sender<ObjectUpdateMessage>,
         stream_ready_sender: Sender<()>,

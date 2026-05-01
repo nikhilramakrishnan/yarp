@@ -31,7 +31,7 @@ use super::{
 pub enum FeatureSection {
     WhatsNew,
     GettingStarted,
-    MaximizeWarp,
+    MaximizeYarp,
     AdvancedSetup,
 }
 
@@ -40,7 +40,7 @@ impl FeatureSection {
         match self {
             FeatureSection::WhatsNew => "What's New?",
             FeatureSection::GettingStarted => "Getting Started",
-            FeatureSection::MaximizeWarp => "Maximize Yarp",
+            FeatureSection::MaximizeYarp => "Maximize Yarp",
             FeatureSection::AdvancedSetup => "Advanced Setup",
         }
     }

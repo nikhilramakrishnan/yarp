@@ -25,12 +25,12 @@ fn test_firebase_token_urls() -> Result<()> {
     );
 
     assert_eq!(
-        custom_token.proxy_url("https://staging.warp.dev", "api_key"),
-        "https://staging.warp.dev/proxy/customToken?key=api_key"
+        custom_token.proxy_url("https://staging.yarp.dev", "api_key"),
+        "https://staging.yarp.dev/proxy/customToken?key=api_key"
     );
     assert_eq!(
-        refresh_token.proxy_url("https://staging.warp.dev", "api_key"),
-        "https://staging.warp.dev/proxy/token?key=api_key"
+        refresh_token.proxy_url("https://staging.yarp.dev", "api_key"),
+        "https://staging.yarp.dev/proxy/token?key=api_key"
     );
     Ok(())
 }

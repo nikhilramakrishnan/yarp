@@ -1,6 +1,6 @@
 //! Local-first backend for Yarp (the yarp fork).
 //!
-//! Yarp does not talk to `app.warp.dev`. Every server-side capability that the
+//! Yarp does not talk to `app.yarp.dev`. Every server-side capability that the
 //! rest of the app reaches for via [`ServerApi`] (cloud objects, agent harness
 //! coordination, conversation history, AI inference, etc.) is satisfied here,
 //! on disk and through user-supplied LLM providers.

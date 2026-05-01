@@ -2,7 +2,7 @@
 
 ## Problem
 
-The CLI agent rich input (used for composing prompts to Claude Code, Gemini CLI, etc.) did not support image attachments. The existing image paste infrastructure in Warp's agent mode needed to be extended to (1) render chips in the CLI agent input layout, (2) allow the paste flow to work when CLI agent input is open, and (3) deliver images to the CLI agent on submission by simulating clipboard-based Ctrl+V paste.
+The CLI agent rich input (used for composing prompts to Claude Code, Gemini CLI, etc.) did not support image attachments. The existing image paste infrastructure in Yarp's agent mode needed to be extended to (1) render chips in the CLI agent input layout, (2) allow the paste flow to work when CLI agent input is open, and (3) deliver images to the CLI agent on submission by simulating clipboard-based Ctrl+V paste.
 
 ## Relevant code
 

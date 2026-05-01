@@ -192,7 +192,7 @@ fn set_context_flags_from_url(url: Url) {
         Ok(WebIntent::ConversationView(_)) => ContextFlag::set_conversation_only(),
         Ok(WebIntent::DriveObject(_)) => ContextFlag::set_yarp_drive_link_only(),
         Ok(WebIntent::SettingsView(_)) => ContextFlag::set_settings_link_only(),
-        Ok(WebIntent::Home(_)) => ContextFlag::set_warp_home_link_only(),
+        Ok(WebIntent::Home(_)) => ContextFlag::set_yarp_home_link_only(),
         Ok(WebIntent::Action(_)) => {} // No special context flag for actions
         _ => {}
     }

@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 
-DEFAULT_REPO = "warpdotdev/warp"
+DEFAULT_REPO = "hotfuzz/yarp"
 DEFAULT_HOSTNAME = "github.com"
 FEEDBACK_LABEL = "in-app-feedback"
 
@@ -27,7 +27,7 @@ MAX_PREFILL_URL_LENGTH = 8000
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "File a GitHub issue in warpdotdev/warp. The caller must choose "
+            "File a GitHub issue in hotfuzz/yarp. The caller must choose "
             "the filing method via --use: `gh` to create the issue directly with the "
             "gh CLI, or `browser` to open the prefilled new-issue page in the browser "
             "(used when attachments require manual upload via GitHub's web UI)."

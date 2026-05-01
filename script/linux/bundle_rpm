@@ -21,10 +21,10 @@ if [ "$ARTIFACT" = "cli" ]; then
 else
   CHANNEL_SUFFIX="${BINARY_NAME#yarp}"
 fi
-REPO_NAME="warpdotdev$CHANNEL_SUFFIX"
+REPO_NAME="hotfuzz$CHANNEL_SUFFIX"
 
 # On Linux, we keep the `-stable` suffix for stable to avoid package conflicts.
-# The binary name is still `fuzz`, and the repo name is still `warpdotdev`.
+# The binary name is still `fuzz`, and the repo name is still `hotfuzz`.
 if [ "$ARTIFACT" = "cli" -a "$RELEASE_CHANNEL" = "stable" ]; then
   CHANNEL_SUFFIX="-stable"
 fi
@@ -93,7 +93,7 @@ cp "$RPMBUILD_DIR/RPMS/$ARCH/$RPM_NAME" "$OUT_DIR"
 if [ "${GITHUB_ACTIONS}" == "true" ]; then
   # Import our signing key's public key into rpm so the signature can be
   # verified.
-  sudo rpm --import https://releases.warp.dev/linux/keys/warp.asc
+  sudo rpm --import https://releases.yarp.dev/linux/keys/warp.asc
 
   # We use batch mode with tty-based pin entry to ensure that the build doesn't
   # hang waiting on user input if, for some reason, we failed to preset the
@@ -103,7 +103,7 @@ if [ "${GITHUB_ACTIONS}" == "true" ]; then
   # the build.
   rpmsign \
     --verbose \
-    --addsign --key-id "linux-maintainers@warp.dev" \
+    --addsign --key-id "linux-maintainers@yarp.dev" \
     --define "_gpg_sign_cmd_extra_args --batch --yes --pinentry-mode loopback" --define "_gpg_digest_algo sha256" \
     "$OUT_DIR/$RPM_NAME" \
     || true

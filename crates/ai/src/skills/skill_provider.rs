@@ -217,7 +217,7 @@ mod tests {
     };
 
     #[test]
-    fn yarp_home_skills_path_uses_warp_home_path() {
+    fn yarp_home_skills_path_uses_yarp_home_path() {
         assert_eq!(
             home_skills_path(SkillProvider::Yarp),
             yarp_core::paths::yarp_home_skills_dir()

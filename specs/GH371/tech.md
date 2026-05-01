@@ -1,6 +1,6 @@
 # TECH.md — Restore Open Files and Markdown Editors
 
-**GitHub Issue:** [warpdotdev/warp-external#371](https://github.com/warpdotdev/warp-external/issues/371)
+**GitHub Issue:** [yarpdotdev/yarp-external#371](https://github.com/yarpdotdev/yarp-external/issues/371)
 **Product Spec:** `specs/GH371/product.md`
 
 ## Problem

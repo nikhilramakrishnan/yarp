@@ -68,7 +68,7 @@ impl OnboardingPromptBlock {
             "Yarp works with many custom prompts like oh-my-zsh, Starship, Powerlevel10K. ";
         const LINK_TEXT: &str = "Learn more";
         const LINK_DESTINATION: &str =
-            "https://docs.warp.dev/terminal/appearance/prompt#custom-prompt-compatibility-table";
+            "https://github.com/hotfuzz/yarp/terminal/appearance/prompt#custom-prompt-compatibility-table";
 
         Flex::column()
             .with_children([
@@ -241,7 +241,7 @@ impl OnboardingPromptBlock {
         const NO_PS1_TEXT: &str = "No existing prompt.";
         const CORRECTION_TEXT: &str = "Look incorrect? ";
         const LINK_TEXT: &str = "Let us know.";
-        const LINK_DESTINATION: &str = "https://github.com/warpdotdev/Warp/issues/new?assignees=&labels=Bug&projects=&template=01_bug_report.yml";
+        const LINK_DESTINATION: &str = "https://github.com/hotfuzz/Warp/issues/new?assignees=&labels=Bug&projects=&template=01_bug_report.yml";
 
         const HEADER_MARGIN_LEFT: f32 = 4.;
         const PS1_PADDING_VERTICAL: f32 = 12.;

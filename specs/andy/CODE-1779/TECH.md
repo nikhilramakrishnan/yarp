@@ -6,14 +6,14 @@ See `PRODUCT.md` for user-visible behavior.
 
 There are two drop paths relevant to this ticket:
 
-1. **Drop onto the terminal grid** (e.g. during a long-running command). Handled by `TerminalView::drag_and_drop_files` in `app/src/terminal/view.rs (23007-23085)`. This path already applies `warp_util::path::convert_windows_path_to_wsl` when `session.is_wsl()` before shell-escaping and writing to the PTY. For MSYS2 long-running it deliberately keeps Windows-native paths and skips shell escaping (so native Windows binaries receive the form they expect). **Not changing this path.**
+1. **Drop onto the terminal grid** (e.g. during a long-running command). Handled by `TerminalView::drag_and_drop_files` in `app/src/terminal/view.rs (23007-23085)`. This path already applies `yarp_util::path::convert_windows_path_to_wsl` when `session.is_wsl()` before shell-escaping and writing to the PTY. For MSYS2 long-running it deliberately keeps Windows-native paths and skips shell escaping (so native Windows binaries receive the form they expect). **Not changing this path.**
 
-2. **Drop onto the input editor** (typical case when there's no long-running command). The editor element's `drag_and_drop_file` in `app/src/editor/view/element.rs (663-681)` dispatches `EditorAction::DragAndDropFiles`, which routes to `EditorView::drag_and_drop_files` in `app/src/editor/view/mod.rs (7893-7914)`. That function emits `Event::DroppedImageFiles` for image paths (terminal input handles attachment) and, for everything else, calls `warpui::clipboard_utils::escaped_paths_str` followed by `self.user_insert`. **No path conversion happens — this is the bug for both WSL and MSYS2.**
+2. **Drop onto the input editor** (typical case when there's no long-running command). The editor element's `drag_and_drop_file` in `app/src/editor/view/element.rs (663-681)` dispatches `EditorAction::DragAndDropFiles`, which routes to `EditorView::drag_and_drop_files` in `app/src/editor/view/mod.rs (7893-7914)`. That function emits `Event::DroppedImageFiles` for image paths (terminal input handles attachment) and, for everything else, calls `yarpui::clipboard_utils::escaped_paths_str` followed by `self.user_insert`. **No path conversion happens — this is the bug for both WSL and MSYS2.**
 
 Why the fix doesn't belong inside `EditorView`: `EditorView` is a general-purpose text editor used across dozens of surfaces (notebooks, settings, code editors, modals, etc. — see the many `EditorView::new(...)` / `single_line(...)` call sites). It already carries `shell_family` for escaping, which is a shell concern but not tied to any particular parent; WSL / MSYS2 path conversion is a terminal-session concern and must not leak into the editor.
 
 Existing helpers:
-- `warp_util::path::convert_windows_path_to_wsl` in `crates/yarp_util/src/path.rs (673-691)`, with tests at `crates/yarp_util/src/path_test.rs (629-649)`.
+- `yarp_util::path::convert_windows_path_to_wsl` in `crates/yarp_util/src/path.rs (673-691)`, with tests at `crates/yarp_util/src/path_test.rs (629-649)`.
 - **No equivalent exists yet for MSYS2.** We'll add `convert_windows_path_to_msys2` alongside it (same shape, `/<drive>/…` instead of `/mnt/<drive>/…`).
 - `Session::is_wsl()` at `app/src/terminal/model/session.rs:972` and `Session::is_msys2()` at `app/src/terminal/model/session.rs:980` both already exist and return `false` on non-Windows platforms.
 - `TerminalInput::active_session` is available in `app/src/terminal/input.rs:11011`.
@@ -22,7 +22,7 @@ Shell-family setup on the editor already happens in `TerminalInput::set_active_b
 
 ## Proposed changes
 
-### 1. Add `convert_windows_path_to_msys2` to `warp_util::path`
+### 1. Add `convert_windows_path_to_msys2` to `yarp_util::path`
 
 In `crates/yarp_util/src/path.rs`, alongside `convert_windows_path_to_wsl`, add:
 
@@ -60,8 +60,8 @@ Design note: we deliberately picked a closure over an event/delegation flag. The
 In `app/src/terminal/input.rs`:
 
 - In `set_active_block_metadata` (line ~13034), alongside the existing `editor.set_shell_family(...)` call, select a transformer based on the session and install or clear it:
-  - `session.is_wsl()` → `Rc::new(|p: &str| warp_util::path::convert_windows_path_to_wsl(p))`.
-  - `session.is_msys2()` → `Rc::new(|p: &str| warp_util::path::convert_windows_path_to_msys2(p))`.
+  - `session.is_wsl()` → `Rc::new(|p: &str| yarp_util::path::convert_windows_path_to_wsl(p))`.
+  - `session.is_msys2()` → `Rc::new(|p: &str| yarp_util::path::convert_windows_path_to_msys2(p))`.
   - Otherwise → `None`.
   Both session predicates return `false` off-Windows, so no `cfg!(windows)` gating is needed at the call site. Check `is_wsl()` before `is_msys2()` for clarity (they are mutually exclusive in practice, but the order documents priority).
 - In the existing `EditorEvent::DroppedImageFiles` handler (line ~9493), when the image-attach fallback inserts paths as text, apply the same WSL / MSYS2 conversion to `image_filepaths` (branching on `session.is_wsl()` / `session.is_msys2()` just as step above does) before calling `escaped_paths_str`. This preserves PRODUCT.md invariant (7) for both WSL and MSYS2.
@@ -83,8 +83,8 @@ Covers the invariants in `PRODUCT.md`.
 
 - **Unit test — transformer wiring (invariants 1, 2, 5, 9).** In `app/src/editor/view/mod_test.rs`, add a test that:
   - Creates an `EditorView` with `shell_family: Some(Posix)` and runs two scenarios:
-    1. `drag_drop_path_transformer: Some(Rc::new(|p| warp_util::path::convert_windows_path_to_wsl(p)))` — WSL behavior.
-    2. `drag_drop_path_transformer: Some(Rc::new(|p| warp_util::path::convert_windows_path_to_msys2(p)))` — MSYS2 behavior.
+    1. `drag_drop_path_transformer: Some(Rc::new(|p| yarp_util::path::convert_windows_path_to_wsl(p)))` — WSL behavior.
+    2. `drag_drop_path_transformer: Some(Rc::new(|p| yarp_util::path::convert_windows_path_to_msys2(p)))` — MSYS2 behavior.
   - Each scenario dispatches `EditorAction::DragAndDropFiles` with representative inputs (`C:\foo`, `D:\bar baz.txt`, a UNC path, and a path with no drive letter) and asserts the buffer contents match PRODUCT.md invariant (2) with shell escaping applied on top.
   - A third scenario clears the transformer and asserts the original Windows paths are inserted verbatim (PRODUCT.md invariant 5).
 

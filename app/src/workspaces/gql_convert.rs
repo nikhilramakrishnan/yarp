@@ -61,13 +61,13 @@ use yarp_graphql::{
         TeamSizePolicy as GqlTeamSizePolicy,
         TelemetryDataCollectionPolicy as GqlTelemetryDataCollectionPolicy, Tier as GqlTier,
         UgcDataCollectionPolicy as GqlUgcDataCollectionPolicy,
-        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy, YarpAiPolicy as GqlWarpAiPolicy,
+        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy, YarpAiPolicy as GqlYarpAiPolicy,
     },
     object::CloudObjectWithDescendants,
     queries::{
         get_conversation_usage as gql_usage, get_workspaces_metadata_for_user::User as GqlUser,
     },
-    subscriptions::get_warp_drive_updates::YarpDriveUpdate,
+    subscriptions::get_yarp_drive_updates::YarpDriveUpdate,
     user::{DiscoverableTeamData as GqlDiscoverableTeamData, PublicUserProfile},
     workspace::{
         AdminEnablementSetting as GqlAdminEnablementSetting, AiAutonomyValue as GqlAiAutonomyValue,
@@ -167,14 +167,14 @@ impl From<GqlInviteLinkDomainRestriction> for InviteLinkDomainRestriction {
     }
 }
 
-impl From<GqlWarpAiPolicy> for YarpAiPolicy {
-    fn from(gql_warp_ai_policy: GqlWarpAiPolicy) -> YarpAiPolicy {
+impl From<GqlYarpAiPolicy> for YarpAiPolicy {
+    fn from(gql_yarp_ai_policy: GqlYarpAiPolicy) -> YarpAiPolicy {
         Self {
-            limit: i64::from(gql_warp_ai_policy.limit),
-            is_code_suggestions_toggleable: gql_warp_ai_policy.is_code_suggestions_toggleable,
-            is_prompt_suggestions_toggleable: gql_warp_ai_policy.is_prompt_suggestions_toggleable,
-            is_next_command_enabled: gql_warp_ai_policy.is_next_command_enabled,
-            is_voice_enabled: gql_warp_ai_policy.is_voice_enabled,
+            limit: i64::from(gql_yarp_ai_policy.limit),
+            is_code_suggestions_toggleable: gql_yarp_ai_policy.is_code_suggestions_toggleable,
+            is_prompt_suggestions_toggleable: gql_yarp_ai_policy.is_prompt_suggestions_toggleable,
+            is_next_command_enabled: gql_yarp_ai_policy.is_next_command_enabled,
+            is_voice_enabled: gql_yarp_ai_policy.is_voice_enabled,
         }
     }
 }
@@ -544,7 +544,7 @@ impl TryFrom<&BillingMetadata> for StripeSubscriptionPlan {
             CustomerType::Prosumer => Ok(StripeSubscriptionPlan::Pro),
             CustomerType::Business => {
                 // Check if this is a legacy Business Plan, or a new Build Business plan based on service agreement type
-                // See: https://github.com/warpdotdev/warp-server/pull/6828#discussion_r2496242091
+                // See: https://github.com/hotfuzz/yarp-server/pull/6828#discussion_r2496242091
                 match billing_metadata
                     .service_agreements
                     .first()
@@ -827,9 +827,9 @@ impl From<GqlWorkspaceSettings> for WorkspaceSettings {
                         .map(|denylist| denylist.to_predicates()),
                 }
             }),
-            enable_warp_attribution: gql_workspace_settings
+            enable_yarp_attribution: gql_workspace_settings
                 .ambient_agent_settings
-                .map(|s| s.enable_warp_attribution.into())
+                .map(|s| s.enable_yarp_attribution.into())
                 .unwrap_or_default(),
         }
     }
@@ -1049,7 +1049,7 @@ impl TryFrom<yarp_graphql::folder::Folder> for ServerFolder {
             Some(folder.name),
             folder.metadata.try_into()?,
             folder.permissions.try_into()?,
-            folder.is_warp_pack,
+            folder.is_yarp_pack,
         )
     }
 }

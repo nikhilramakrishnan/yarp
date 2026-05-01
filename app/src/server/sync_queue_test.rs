@@ -758,7 +758,7 @@ fn test_create_and_update_notebook() {
     });
 }
 
-// regression test for https://linear.app/warpdotdev/issue/CLD-571
+// regression test for https://linear.app/hotfuzz/issue/CLD-571
 #[test]
 fn test_initial_queue_items_processed_properly() {
     App::test((), |mut app| async move {

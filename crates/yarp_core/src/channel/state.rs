@@ -113,7 +113,7 @@ impl ChannelState {
         let Ok(url) = Url::parse(Self::server_root_url().as_ref()) else {
             return false;
         };
-        url.host_str() == Some("staging.warp.dev")
+        url.host_str() == Some("staging.yarp.dev")
     }
 
     /// Returns the canonical identifier for the application.
@@ -182,7 +182,7 @@ impl ChannelState {
     }
 
     /// Returns whether this build has a telemetry config and can therefore ship
-    /// telemetry events. Builds like OpenWarp intentionally ship with
+    /// telemetry events. Builds like OpenYarp intentionally ship with
     /// `telemetry_config: None`, in which case UI that controls telemetry
     /// should be hidden since the toggle has no effect.
     pub fn is_telemetry_available() -> bool {
@@ -190,7 +190,7 @@ impl ChannelState {
     }
 
     /// Returns whether this build has a crash reporting config and can therefore
-    /// ship crash reports. Builds like OpenWarp intentionally ship with
+    /// ship crash reports. Builds like OpenYarp intentionally ship with
     /// `crash_reporting_config: None`, in which case UI that controls crash
     /// reporting should be hidden since the toggle has no effect.
     pub fn is_crash_reporting_available() -> bool {

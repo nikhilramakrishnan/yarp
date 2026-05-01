@@ -9,14 +9,14 @@ jobs:
   # Mention, bot, event-type, and trust gates all live in the reusable
   # workflow (``respond-to-triaged-issue-comment.yml``). This adapter
   # exists only to subscribe to the GitHub event that can carry an
-  # ``@oz-agent`` mention on a triaged issue and delegate it through
+  # ``@fuzz-agent`` mention on a triaged issue and delegate it through
   # ``workflow_call``.
   respond_inline:
     permissions:
       contents: read
       issues: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/respond-to-triaged-issue-comment.yml@main
+    uses: hotfuzz/oz-for-oss/.github/workflows/respond-to-triaged-issue-comment.yml@main
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}
-      OSS_WARP_API_KEY: ${{ secrets.OSS_WARP_API_KEY }}
+      OSS_YARP_API_KEY: ${{ secrets.OSS_YARP_API_KEY }}

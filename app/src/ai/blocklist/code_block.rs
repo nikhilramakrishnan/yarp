@@ -102,7 +102,7 @@ pub struct CodeBlockOptions {
     pub file_path: Option<String>,
 }
 
-pub fn render_code_block_with_warp_text(
+pub fn render_code_block_with_yarp_text(
     options: CodeBlockOptions,
     view: &ViewHandle<CodeEditorView>,
     app: &AppContext,

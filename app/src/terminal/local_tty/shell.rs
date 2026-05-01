@@ -628,7 +628,7 @@ fn arguments_for_session_spawning_command(
                     // `-f no-mark-prompt` disables OSC 133 (the non-standard FinalTerm escape codes).
                     // Fish's implementation of this breaks Yarp by emitting `OSC 133 A` but not
                     // `OSC 133 B` afterwards, which we have assumed. This is a temporary workaround.
-                    // See this issue: https://github.com/warpdotdev/Warp/issues/7588
+                    // See this issue: https://github.com/hotfuzz/Warp/issues/7588
                     r#"exec '{}' -f no-mark-prompt --login --init-command '{}'"#,
                     resolved_shell_path,
                     init_shell_script_for_shell(ShellType::Fish, &crate::ASSETS)
@@ -763,7 +763,7 @@ fn decode_wsl_path_result(result: io::Result<process::Output>) -> Option<UnixPat
 /// 2. A UTF-16 encoded CRLF.
 /// 3. A UTF-16 error message.
 /// See this ticket for an example and why this is necessary:
-/// https://linear.app/warpdotdev/issue/CORE-3539
+/// https://linear.app/hotfuzz/issue/CORE-3539
 fn take_until_utf16_crlf(bytes: Vec<u8>) -> Vec<u8> {
     const UTF16_CRLF: &[u8] = b"\r\0\n\0";
     match bytes

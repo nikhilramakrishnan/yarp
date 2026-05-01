@@ -39,11 +39,11 @@ pub struct IssueTokenArgs {
     /// Supported components are:
     /// - principal (`user:my-user-id`)
     /// - scoped_principal (`principal:my-team-id/user:my-user-id`)
-    /// - email (`email:user@warp.dev`)
+    /// - email (`email:user@yarp.dev`)
     /// - teams (`teams:my-team-id`)
     /// - environment (`environment:my-environment-id`)
     /// - agent_name (`agent_name:my-agent`)
-    /// - skill_spec (`skill_spec:warpdotdev/repo_path_to_skill`)
+    /// - skill_spec (`skill_spec:hotfuzz/repo_path_to_skill`)
     /// - run_id (`run_id:abc123`)
     /// - host (`host:my-worker-id`)
     #[arg(long = "subject-template", num_args = 1..)]

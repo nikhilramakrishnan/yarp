@@ -1071,13 +1071,13 @@ define_settings_group!(AISettings, settings: [
         description: "Whether the agent uses your saved rules during requests.",
     }
     // Whether yarp drive context should be included in AI requests
-    warp_drive_context_enabled: YarpDriveContextEnabled {
+    yarp_drive_context_enabled: YarpDriveContextEnabled {
         type: bool,
         default: true,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.knowledge.warp_drive_context_enabled",
+        toml_path: "agents.knowledge.yarp_drive_context_enabled",
         description: "Whether Yarp Drive context is included in AI requests.",
     }
 
@@ -1449,7 +1449,7 @@ define_settings_group!(AISettings, settings: [
 
     // Whether Fuzz should add attribution (co-author line) to commit messages and PRs.
     // This is the user-level preference; it may be overridden by the team-level
-    // `enable_warp_attribution` AdminEnablementSetting (see
+    // `enable_yarp_attribution` AdminEnablementSetting (see
     // `UserWorkspaces::get_agent_attribution_setting`).
     agent_attribution_enabled: AgentAttributionEnabled {
         type: bool,
@@ -1617,8 +1617,8 @@ impl AISettings {
         self.is_any_ai_enabled(app) && *self.memory_enabled
     }
 
-    pub fn is_warp_drive_context_enabled(&self, app: &yarpui::AppContext) -> bool {
-        self.is_any_ai_enabled(app) && *self.warp_drive_context_enabled
+    pub fn is_yarp_drive_context_enabled(&self, app: &yarpui::AppContext) -> bool {
+        self.is_any_ai_enabled(app) && *self.yarp_drive_context_enabled
     }
 
     pub fn is_file_based_mcp_enabled(&self, app: &yarpui::AppContext) -> bool {

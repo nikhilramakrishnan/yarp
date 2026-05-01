@@ -259,7 +259,7 @@ fn mock_cloud_folder(id: SyncId, name: String, folder_id: Option<SyncId>) -> Clo
         CloudFolderModel {
             name,
             is_open: true,
-            is_warp_pack: false,
+            is_yarp_pack: false,
         },
         CloudObjectMetadata {
             pending_changes_statuses: CloudObjectStatuses {
@@ -1202,7 +1202,7 @@ fn test_object_editor_timeout() {
                 .expect("notebook should exist");
 
             // Set the editor to be somebody else.
-            notebook.metadata.current_editor_uid = Some("ian@warp.dev".to_string());
+            notebook.metadata.current_editor_uid = Some("ian@yarp.dev".to_string());
         });
 
         let current_editor = CloudViewModel::handle(&app).read(&app, |view_model, ctx| {

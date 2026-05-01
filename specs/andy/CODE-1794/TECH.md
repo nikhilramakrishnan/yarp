@@ -1,6 +1,6 @@
 # TECH — Distinguish left vs right Alt on Windows and Linux
 
-Linear: [CODE-1794](https://linear.app/warpdotdev/issue/CODE-1794/windowslinux-right-alt-isnt-recognized-breaking-right-alt-as-meta)
+Linear: [CODE-1794](https://linear.app/yarpdotdev/issue/CODE-1794/windowslinux-right-alt-isnt-recognized-breaking-right-alt-as-meta)
 
 See `PRODUCT.md` for user-visible behavior.
 
@@ -29,7 +29,7 @@ Relevant files:
 - `app/src/lib.rs:458-480` — `apply_extra_meta_keys`, the consumer of `details.left_alt` / `right_alt`.
 - `app/src/settings/mod.rs:181-199` — `ExtraMetaKeys` struct with `left_alt` / `right_alt` bools.
 - `crates/yarpui/src/windowing/winit/event_loop/mod.rs` — `WindowState` and event dispatch for the winit platform.
-- `crates/yarpui/src/windowing/winit/event_loop/key_events.rs` — winit → warpui keyboard event conversion.
+- `crates/yarpui/src/windowing/winit/event_loop/key_events.rs` — winit → yarpui keyboard event conversion.
 - `crates/yarpui_core/src/event.rs` — `KeyEventDetails` definition.
 
 ## Proposed changes
@@ -80,7 +80,7 @@ Invariant references are to the numbered behaviors in `PRODUCT.md`.
   - With `ExtraMetaKeys { left_alt: true, right_alt: false }`: `LeftAlt+b` sends ESC-b to the PTY; `Ctrl+RightAlt+R` fires the Resume conversation keybinding (invariant 2, 6).
   - With `ExtraMetaKeys { left_alt: false, right_alt: true }`: `RightAlt+b` sends ESC-b; `Ctrl+LeftAlt+R` fires the Resume conversation keybinding (invariant 3, 6).
   - Toggling one setting on the Keys page without touching the other and re-testing (invariant 1, 8).
-  - Alt+Tab out of Warp with Alt held, release outside the window, refocus: next character key reports plain Alt (invariant 9).
+  - Alt+Tab out of Yarp with Alt held, release outside the window, refocus: next character key reports plain Alt (invariant 9).
 - Manual verification on Linux (X11 and Wayland) for invariants 2, 3, 5, 9. Confirms the per-side tracking works regardless of the per-side `Modifiers` state reliability caveat.
 - Manual verification on macOS that the Option-as-meta path is unchanged (invariant 7) — the change is gated to the winit path and should be a no-op on macOS, but a smoke test is cheap.
 

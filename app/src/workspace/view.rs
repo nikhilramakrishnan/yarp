@@ -6268,7 +6268,7 @@ impl Workspace {
                 },
             ),
             NewSessionMenuItem::OpenLaunchConfigDocs => {
-                ctx.open_url("https://docs.warp.dev/terminal/sessions/launch-configurations")
+                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/sessions/launch-configurations")
             }
             #[cfg(feature = "local_fs")]
             NewSessionMenuItem::CreateNewTabConfig => {
@@ -7560,7 +7560,7 @@ impl Workspace {
                         let toast = DismissibleToast::success(message.to_string())
                             .with_link(
                                 ToastLink::new("Learn more".to_string()).with_href(
-                                    "https://docs.warp.dev/reference/cli".to_string(),
+                                    "https://github.com/hotfuzz/yarp/reference/cli".to_string(),
                                 ),
                             );
                         toast_stack.add_ephemeral_toast(toast, ctx);
@@ -10465,7 +10465,7 @@ impl Workspace {
 
     pub fn open_autoupdate_failure_link(&mut self, ctx: &mut ViewContext<Self>) {
         ctx.open_url(
-            "https://docs.warp.dev/support-and-community/troubleshooting-and-support/updating-warp",
+            "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/updating-warp",
         );
     }
 
@@ -20820,7 +20820,7 @@ impl TypedActionView for Workspace {
             #[cfg(all(enable_crash_recovery, target_os = "linux"))]
             DismissWaylandCrashRecoveryBannerAndOpenLink => {
                 self.dismiss_workspace_banner(ctx, &WorkspaceBanner::WaylandCrashRecovery);
-                ctx.open_url("https://docs.warp.dev/terminal/more-features/linux#native-wayland");
+                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/more-features/linux#native-wayland");
             }
             FixInAgentMode { query } => {
                 self.active_tab_pane_group().update(ctx, |pane_group, ctx| {
@@ -21306,7 +21306,7 @@ impl TypedActionView for Workspace {
             }
             #[cfg(debug_assertions)]
             InstallOpenCodeYarpPlugin => {
-                let message = set_opencode_yarp_plugin("github:warpdotdev/opencode-warp-internal");
+                let message = set_opencode_yarp_plugin("github:hotfuzz/opencode-warp-internal");
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(DismissibleToast::default(message), ctx);
                 });

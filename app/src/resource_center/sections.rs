@@ -50,11 +50,11 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
     };
     sections.push(Section::Feature(get_started));
 
-    let maximize_warp = FeatureSectionData {
-        section_name: FeatureSection::MaximizeWarp,
+    let maximize_yarp = FeatureSectionData {
+        section_name: FeatureSection::MaximizeYarp,
         items: maximize_yarp_items(ctx),
     };
-    sections.push(Section::Feature(maximize_warp));
+    sections.push(Section::Feature(maximize_yarp));
 
     let advanced_setup = ContentSectionData {
         section_name: FeatureSection::AdvancedSetup,
@@ -62,19 +62,19 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
             ContentItem {
                 title: "Use your custom prompt",
                 description: "Set up Yarp to honor your PS1 setting",
-                url: "https://docs.warp.dev/terminal/appearance/prompt",
+                url: "https://github.com/hotfuzz/yarp/terminal/appearance/prompt",
                 button_label: "View documentation",
             },
             ContentItem {
                 title: "Integrate Yarp with your IDE",
                 description: "Configure Yarp to launch from your most used development tools",
-                url: "https://docs.warp.dev/terminal/integrations-and-plugins",
+                url: "https://github.com/hotfuzz/yarp/terminal/integrations-and-plugins",
                 button_label: "View documentation",
             },
             ContentItem {
                 title: "How Yarp uses Yarp",
                 description: "Learn how Yarp's engineering team uses their favorite features",
-                url: "https://www.warp.dev/blog/how-warp-uses-warp",
+                url: "https://github.com/hotfuzz/yarp/blog/how-warp-uses-warp",
                 button_label: "Read article",
             },
         ],

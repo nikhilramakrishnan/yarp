@@ -11,7 +11,7 @@ rg -n 'msg_send!\[class!\([A-Za-z_]+\), alloc\]' -g '*.rs'
 
 Ignore (not leaks):
 - `[super dealloc]` matches (`crates/yarpui/src/platform/mac/objc/menus.m:25`).
-- `app/DockTilePlugin/WarpDockTilePlugin.m` — compiled with `-fobjc-arc`.
+- `app/DockTilePlugin/YarpDockTilePlugin.m` — compiled with `-fobjc-arc`.
 - Definitions of trait-style alloc helpers (e.g. `unsafe fn alloc(...) -> id { msg_send![class!(NSAlert), alloc] }` in `crates/yarpui/src/platform/mac/app.rs:46` when it's a helper; audit the callers instead).
 
 ## Row format
@@ -39,49 +39,49 @@ NB: the `@autoreleasepool { ... }` around this function body drains autoreleased
 - [x] app/src/platform/mac/objc/services.m:35 — `forFilesFromPasteboard:performAction:` — retained (+1 from alloc/init) and leaked prior to fix — appkit-main — cold — autorelease-helper — replaced with `[NSMutableArray array]`
 - [x] app/src/platform/mac/objc/services.m:37 — `forFilesFromPasteboard:performAction:` — retained (+1 from alloc/init; no empty-init convenience ctor) and leaked prior to fix — appkit-main — cold — autorelease-helper — wrapped with `autorelease`
 - [x] app/src/platform/mac/objc/services.m:42 — `forFilesFromPasteboard:performAction:` — retained (+1 from alloc/init) and leaked prior to fix — appkit-main — cold — autorelease-helper — replaced with `[NSMutableArray array]`
-- [x] app/src/platform/mac/objc/services.m:58 — `warp_register_services_provider` — retained (bare `[WarpServicesProvider alloc]` without `init`) and leaked prior to fix; `setServicesProvider:` adds its own retain per Apple docs — appkit-main pre-event-loop (called from Rust `app_services::mac::init`) — cold (one-shot) — explicit-release — added `init`, paired with `[provider release]` after `setServicesProvider:`
+- [x] app/src/platform/mac/objc/services.m:58 — `yarp_register_services_provider` — retained (bare `[YarpServicesProvider alloc]` without `init`) and leaked prior to fix; `setServicesProvider:` adds its own retain per Apple docs — appkit-main pre-event-loop (called from Rust `app_services::mac::init`) — cold (one-shot) — explicit-release — added `init`, paired with `[provider release]` after `setServicesProvider:`
 
-## Batch 2.C — `warpui-windowing-objc`
+## Batch 2.C — `yarpui-windowing-objc`
 
 Files: `crates/yarpui/src/platform/mac/objc/{app.m, host_view.m, window.m, window_blur.m, fullscreen_queue.m, keycode.m}`. `window_blur.m` confirmed to have no `alloc]`/`new]`/`copy]`/`mutableCopy]` matches (CoreFoundation `CFBundleCreate`/`CFStringCreateWithCString` are already balanced by `CFRelease`). N/A.
 
 - [x] crates/yarpui/src/platform/mac/objc/app.m:65 — `registerGlobalHotkey` — leaked (`setObject:forKey:` retains, but alloc+init +1 was never balanced) — appkit-main — cold — autorelease-helper — added `autorelease` so `_hotKeys` holds the only reference
-- [x] crates/yarpui/src/platform/mac/objc/app.m:194 — `-[WarpDelegate init]` — stored (module-level `_hotKeys` held for app lifetime; WarpDelegate is itself deliberately leaked singleton per `get_warp_app`) — appkit-main — cold — ambient — no-op, intentional singleton
-- [x] crates/yarpui/src/platform/mac/objc/app.m:488 — `get_warp_app` — stored (comment on line 483 states the delegate is deliberately leaked; guarded by `dispatch_once`) — appkit-main — cold — ambient — no-op, intentional singleton
+- [x] crates/yarpui/src/platform/mac/objc/app.m:194 — `-[YarpDelegate init]` — stored (module-level `_hotKeys` held for app lifetime; YarpDelegate is itself deliberately leaked singleton per `get_yarp_app`) — appkit-main — cold — ambient — no-op, intentional singleton
+- [x] crates/yarpui/src/platform/mac/objc/app.m:488 — `get_yarp_app` — stored (comment on line 483 states the delegate is deliberately leaked; guarded by `dispatch_once`) — appkit-main — cold — ambient — no-op, intentional singleton
 - [x] crates/yarpui/src/platform/mac/objc/app.m:501 — `make_delegated_menu` — autoreleased — appkit-main — cold — autorelease-helper — no-op
 - [x] crates/yarpui/src/platform/mac/objc/app.m:509 — `make_services_menu_item` — leaked (`NSApp.servicesMenu` setter retains; alloc+init +1 was never balanced) — appkit-main — cold — autorelease-helper — added `autorelease`
 - [x] crates/yarpui/src/platform/mac/objc/app.m:512 — `make_services_menu_item` — leaked (returned from factory; caller stores `submenu` which retains) — appkit-main — cold — autorelease-helper — added `autorelease` so the factory matches the rest of the menu-factory conventions in this file
-- [x] crates/yarpui/src/platform/mac/objc/app.m:524 — `make_warp_custom_menu_item` — autoreleased — appkit-main — cold — autorelease-helper — no-op
-- [x] crates/yarpui/src/platform/mac/objc/app.m:527 — `make_warp_custom_menu_item` — autoreleased — appkit-main — cold — autorelease-helper — no-op
-- [x] crates/yarpui/src/platform/mac/objc/host_view.m:281 — `-[WarpHostView initWithFrame:...]` — stored (`markedText` ivar, released in `dealloc`) — appkit-main — cold — explicit-release — no-op
-- [x] crates/yarpui/src/platform/mac/objc/host_view.m:282 — `-[WarpHostView initWithFrame:...]` — leaked (`textToInsert` ivar was not released in `dealloc`) — appkit-main — cold — explicit-release — added `[textToInsert release]` to `-dealloc`
+- [x] crates/yarpui/src/platform/mac/objc/app.m:524 — `make_yarp_custom_menu_item` — autoreleased — appkit-main — cold — autorelease-helper — no-op
+- [x] crates/yarpui/src/platform/mac/objc/app.m:527 — `make_yarp_custom_menu_item` — autoreleased — appkit-main — cold — autorelease-helper — no-op
+- [x] crates/yarpui/src/platform/mac/objc/host_view.m:281 — `-[YarpHostView initWithFrame:...]` — stored (`markedText` ivar, released in `dealloc`) — appkit-main — cold — explicit-release — no-op
+- [x] crates/yarpui/src/platform/mac/objc/host_view.m:282 — `-[YarpHostView initWithFrame:...]` — leaked (`textToInsert` ivar was not released in `dealloc`) — appkit-main — cold — explicit-release — added `[textToInsert release]` to `-dealloc`
 - [x] crates/yarpui/src/platform/mac/objc/host_view.m:423 — `-insertText:replacementRange:` — released (explicit `[characters release]` at line 445) — appkit-event — hot — explicit-release — no-op
 - [x] crates/yarpui/src/platform/mac/objc/host_view.m:470 — `-setMarkedText:...` — stored (`markedText` ivar; previous value released at line 468, final release in `dealloc`) — appkit-event — hot — explicit-release — no-op
 - [x] crates/yarpui/src/platform/mac/objc/host_view.m:472 — `-setMarkedText:...` — stored (same pattern as :470) — appkit-event — hot — explicit-release — no-op
 - [x] crates/yarpui/src/platform/mac/objc/window.m:37 — `-enqueueFullscreenTransition` — stored (module-level `fullscreenManager` via `dispatch_once`, intentional singleton) — appkit-main — cold — ambient — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:499 — `+[WarpWindow createWithContentRect:...]` — retained and returned per the `create` naming convention (caller owns); Rust `Window::open` stores the resulting `id` as `native_window` and AppKit releases it via `releasedWhenClosed = YES` — appkit-main — cold — ambient — no-op, documented ownership transfer
-- [x] crates/yarpui/src/platform/mac/objc/window.m:663 — `+[WarpPanel createWithContentRect:...]` — same as :499 (ownership transferred to Rust caller) — appkit-main — cold — ambient — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:689 — `create_warp_nspanel` — released (manually balanced by `[pool release]` at line 714/719 post-edit) — appkit-main — cold — local-pool — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:693 — `create_warp_nspanel` — stored (module-level `windowOrderForTests` via `dispatch_once`, intentional singleton for integration tests) — appkit-main — cold — ambient — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:703 — `create_warp_nspanel` — autoreleased — appkit-main — cold — autorelease-helper — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:708 — `create_warp_nspanel` — leaked (`NSWindow.delegate` is weak; the +1 retain count was never balanced so the delegate outlived every window open) — appkit-main — cold — stored — tied delegate lifetime to window via `objc_setAssociatedObject` + released caller's +1
-- [x] crates/yarpui/src/platform/mac/objc/window.m:721 — `create_warp_nswindow` — released (manually balanced by `[pool release]` at line 746/753 post-edit) — appkit-main — cold — local-pool — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:725 — `create_warp_nswindow` — stored (same as :693) — appkit-main — cold — ambient — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:735 — `create_warp_nswindow` — autoreleased — appkit-main — cold — autorelease-helper — no-op
-- [x] crates/yarpui/src/platform/mac/objc/window.m:740 — `create_warp_nswindow` — leaked (same root cause as :708) — appkit-main — cold — stored — fixed alongside :708 with `objc_setAssociatedObject`
+- [x] crates/yarpui/src/platform/mac/objc/window.m:499 — `+[YarpWindow createWithContentRect:...]` — retained and returned per the `create` naming convention (caller owns); Rust `Window::open` stores the resulting `id` as `native_window` and AppKit releases it via `releasedWhenClosed = YES` — appkit-main — cold — ambient — no-op, documented ownership transfer
+- [x] crates/yarpui/src/platform/mac/objc/window.m:663 — `+[YarpPanel createWithContentRect:...]` — same as :499 (ownership transferred to Rust caller) — appkit-main — cold — ambient — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:689 — `create_yarp_nspanel` — released (manually balanced by `[pool release]` at line 714/719 post-edit) — appkit-main — cold — local-pool — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:693 — `create_yarp_nspanel` — stored (module-level `windowOrderForTests` via `dispatch_once`, intentional singleton for integration tests) — appkit-main — cold — ambient — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:703 — `create_yarp_nspanel` — autoreleased — appkit-main — cold — autorelease-helper — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:708 — `create_yarp_nspanel` — leaked (`NSWindow.delegate` is weak; the +1 retain count was never balanced so the delegate outlived every window open) — appkit-main — cold — stored — tied delegate lifetime to window via `objc_setAssociatedObject` + released caller's +1
+- [x] crates/yarpui/src/platform/mac/objc/window.m:721 — `create_yarp_nswindow` — released (manually balanced by `[pool release]` at line 746/753 post-edit) — appkit-main — cold — local-pool — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:725 — `create_yarp_nswindow` — stored (same as :693) — appkit-main — cold — ambient — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:735 — `create_yarp_nswindow` — autoreleased — appkit-main — cold — autorelease-helper — no-op
+- [x] crates/yarpui/src/platform/mac/objc/window.m:740 — `create_yarp_nswindow` — leaked (same root cause as :708) — appkit-main — cold — stored — fixed alongside :708 with `objc_setAssociatedObject`
 - [x] crates/yarpui/src/platform/mac/objc/fullscreen_queue.m:17 — `-[FullscreenWindowManager init]` — stored (ivar on `fullscreenManager` singleton which is itself intentionally leaked for app lifetime) — appkit-main — cold — ambient — no-op
 - [x] crates/yarpui/src/platform/mac/objc/keycode.m:163 — `charToKeyCodes` — stored (module-level `keycodeDict` cache, intentional singleton built lazily on first call) — rust-thread? — cold — ambient — no-op, singleton cache
 - [x] crates/yarpui/src/platform/mac/objc/keycode.m:193 — `charToKeyCodes` — leaked (`setObject:forKey:` retains; alloc+init +1 was never balanced) — rust-thread? — cold — autorelease-helper — added `autorelease`
 - [x] crates/yarpui/src/platform/mac/objc/keycode.m:201 — `charToKeyCodes` — leaked (same pattern as :193) — rust-thread? — cold — autorelease-helper — added `autorelease`
 
-## Batch 2.D — `warpui-chrome-objc`
+## Batch 2.D — `yarpui-chrome-objc`
 
 Files: `crates/yarpui/src/platform/mac/objc/{alert.m, menus.m, notifications/notifications.m, reachability.m, hotkey.m}`. `alert.m`, `menus.m` (beyond `[super dealloc]`), and `hotkey.m` currently have no `alloc]` matches; agent confirms.
 
 Confirmed via `rg -n 'alloc\]|\bnew\]|\bcopy\]|\bmutableCopy\]'` on each file in the working tree: `alert.m`, `hotkey.m` → no matches (N/A). `menus.m` → only `[super dealloc]` at line 25 (N/A).
 
 - [x] crates/yarpui/src/platform/mac/objc/notifications/notifications.m:55 — `sendNotificationWithErrorHandler` completion block — leaked (alloc/init `UNMutableNotificationContent` never released) — gcd-block (UNUserNotificationCenter completion handler) — cold (per user-triggered notification) — autorelease-helper — added inline `autorelease` on the alloc/init expression
-- [x] crates/yarpui/src/platform/mac/objc/reachability.m:93 — `+reachabilityWithHostname:` — autoreleased — appkit-main (via `warp_app_will_finish_launching` → `setReachabilityListener`) — cold (once per app lifetime) — autorelease-helper — added `autorelease` so the factory matches Cocoa naming conventions; caller in `app.m:394` now `retain`s and `-[WarpDelegate dealloc]` calls `stopNotifier` (to break the `reachabilityObject = self` retain cycle set up by `-startNotifier`) followed by `release`.
+- [x] crates/yarpui/src/platform/mac/objc/reachability.m:93 — `+reachabilityWithHostname:` — autoreleased — appkit-main (via `yarp_app_will_finish_launching` → `setReachabilityListener`) — cold (once per app lifetime) — autorelease-helper — added `autorelease` so the factory matches Cocoa naming conventions; caller in `app.m:394` now `retain`s and `-[YarpDelegate dealloc]` calls `stopNotifier` (to break the `reachabilityObject = self` retain cycle set up by `-startNotifier`) followed by `release`.
 - [x] crates/yarpui/src/platform/mac/objc/reachability.m:105 — `+reachabilityWithAddress:` — autoreleased — n/a (dead path today; only reached via `reachabilityForInternetConnection` / `reachabilityForLocalWiFi` / `reachabilityWithURL`, none of which are called in the current tree) — cold — autorelease-helper — added `autorelease` alongside :93 for consistency; no caller updates required because the path is unused today.
 
 ## Batch 2.E — `rust-msg-send-alloc`

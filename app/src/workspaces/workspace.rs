@@ -777,5 +777,5 @@ pub struct WorkspaceSettings {
     /// The team-level agent attribution setting. When `Enable` or `Disable`, the
     /// user toggle is locked. When `RespectUserSetting` (or absent), the user can choose.
     #[serde(default)]
-    pub enable_warp_attribution: AdminEnablementSetting,
+    pub enable_yarp_attribution: AdminEnablementSetting,
 }

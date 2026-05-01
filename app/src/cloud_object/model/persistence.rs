@@ -898,7 +898,7 @@ impl CloudModel {
 
             folder.set_model(CloudFolderModel {
                 is_open,
-                is_warp_pack: folder.model.is_warp_pack,
+                is_yarp_pack: folder.model.is_yarp_pack,
                 name: folder.model.name.clone(),
             });
 

@@ -26,7 +26,7 @@ use yarpui::{
 use crate::settings::PrivacySettings;
 use crate::themes::theme::ThemeKind;
 
-const PRIVACY_URL: &str = "https://warp.dev/privacy";
+const PRIVACY_URL: &str = "https://github.com/hotfuzz/yarp/privacy";
 
 pub const AUTH_MODAL_GAP: f32 = 16.;
 const MODAL_CORNER_RADIUS: Radius = Radius::Pixels(8.);
@@ -563,7 +563,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let mut col = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
-    // Builds without a telemetry/crash reporting config (e.g. OpenWarp) cannot
+    // Builds without a telemetry/crash reporting config (e.g. OpenYarp) cannot
     // ship the corresponding events, so the toggles would be no-ops. Hide each
     // one independently based on whether its backing config is present.
     if ChannelState::is_telemetry_available() && !FeatureFlag::GlobalAIAnalyticsBanner.is_enabled()

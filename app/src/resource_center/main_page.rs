@@ -139,7 +139,7 @@ impl ResourceCenterMainView {
                         },
                         // Expand Maximize Yarp section once user has completed welcome tips,
                         // and keep open after users have completed/skipped all tips
-                        FeatureSection::MaximizeWarp => match ChannelState::app_version() {
+                        FeatureSection::MaximizeYarp => match ChannelState::app_version() {
                             Some(version) => {
                                 match Settings::has_changelog_been_shown(version, ctx) {
                                     true => is_tips_completed || is_onboarded,

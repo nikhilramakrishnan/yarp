@@ -355,7 +355,7 @@ name: test-skill
 description: Test skill with variables
 ---
 
-Run `{{warp_cli_binary_name}}` to connect to {{warp_server_url}}.
+Run `{{yarp_cli_binary_name}}` to connect to {{yarp_server_url}}.
 "#,
     )
     .unwrap();
@@ -388,7 +388,7 @@ name: test-skill
 description: Test skill with mixed variables
 ---
 
-Use {{other_var}} and {{warp_cli_binary_name}} together.
+Use {{other_var}} and {{yarp_cli_binary_name}} together.
 "#,
     )
     .unwrap();
@@ -440,7 +440,7 @@ fn test_build_bundled_skill_context() {
     // settings_schema_path is only present when bundled_resources_dir() returns Some.
     assert!(context.len() >= 4);
     assert!(context.contains_key("yarp_server_url"));
-    assert!(context.contains_key("warp_cli_binary_name"));
+    assert!(context.contains_key("yarp_cli_binary_name"));
     assert!(context.contains_key("yarp_url_scheme"));
     assert!(context.contains_key("settings_file_path"));
 
@@ -449,7 +449,7 @@ fn test_build_bundled_skill_context() {
         &ChannelState::server_root_url().to_string()
     );
     assert_eq!(
-        context.get("warp_cli_binary_name").unwrap(),
+        context.get("yarp_cli_binary_name").unwrap(),
         ChannelState::channel().cli_command_name()
     );
     assert_eq!(

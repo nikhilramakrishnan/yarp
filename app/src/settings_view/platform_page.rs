@@ -38,7 +38,7 @@ use yarpui::{
 
 const MODAL_WIDTH: f32 = 460.;
 const MODAL_HEIGHT: f32 = 320.;
-const API_KEY_DOCS_URL: &str = "https://docs.warp.dev/reference/cli/api-keys";
+const API_KEY_DOCS_URL: &str = "https://github.com/hotfuzz/yarp/reference/cli/api-keys";
 
 #[derive(Clone, Copy)]
 pub enum PlatformPageViewEvent {

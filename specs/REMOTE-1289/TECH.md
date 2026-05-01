@@ -2,10 +2,10 @@
 
 ## Problem
 
-The server is adding `POST /harness-support/notify-user` and `POST /harness-support/finish-task` endpoints (see `warp-server` spec). Third-party harnesses invoke server APIs through the `oz` CLI, not directly. We need:
+The server is adding `POST /harness-support/notify-user` and `POST /harness-support/finish-task` endpoints (see `yarp-server` spec). Third-party harnesses invoke server APIs through the `oz` CLI, not directly. We need:
 
 1. Two new `oz harness-support` subcommands that call these endpoints.
-2. API client methods in the Warp client to make the HTTP calls.
+2. API client methods in the Yarp client to make the HTTP calls.
 3. Claude Code plugin skills so the harness can invoke the commands at the right time.
 
 ## Relevant Code
@@ -15,12 +15,12 @@ The server is adding `POST /harness-support/notify-user` and `POST /harness-supp
 - `app/src/server/server_api/harness_support.rs` — `HarnessSupportClient` trait + `ServerApi` impl
 - `app/src/ai/agent_sdk/telemetry.rs` — `CliTelemetryEvent` enum
 - `app/src/ai/agent_sdk/mod.rs (1193-1202)` — telemetry mapping for harness-support commands
-- `../claude-code-warp-internal/plugins/oz-harness-support/` — existing plugin (skills, hooks)
+- `../claude-code-yarp-internal/plugins/oz-harness-support/` — existing plugin (skills, hooks)
 
 ## Current State
 
 `oz harness-support` has two subcommands: `ping` and `report-artifact`. Each follows the same pattern:
-1. **CLI layer** (`warp_cli`): clap `Args`/`Subcommand` structs define the command shape.
+1. **CLI layer** (`yarp_cli`): clap `Args`/`Subcommand` structs define the command shape.
 2. **Handler layer** (`agent_sdk/harness_support.rs`): match on the command, get the `HarnessSupportClient`, spawn an async task, print result / terminate.
 3. **API client layer** (`server_api/harness_support.rs`): `HarnessSupportClient` trait method + `ServerApi` impl calling `self.post_public_api(path, body)`.
 4. **Telemetry**: each command has a `CliTelemetryEvent` variant.
@@ -91,7 +91,7 @@ HarnessSupportFinishTask { success: bool },
 
 Wire into `command_to_telemetry_event` in `mod.rs` and the `TelemetryEventDesc` impl.
 
-### 5. Claude Code plugin (`../claude-code-warp-internal/plugins/oz-harness-support/`)
+### 5. Claude Code plugin (`../claude-code-yarp-internal/plugins/oz-harness-support/`)
 
 **New skill: `oz-notify-user`**
 
@@ -119,7 +119,7 @@ sequenceDiagram
     participant CC as Claude Code (harness)
     participant OZ as oz CLI
     participant SA as ServerApi (client)
-    participant WS as warp-server
+    participant WS as yarp-server
 
     Note over CC,WS: Progress update
     CC->>OZ: oz harness-support notify-user --message "..."

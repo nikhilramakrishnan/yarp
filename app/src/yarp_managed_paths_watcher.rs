@@ -370,7 +370,7 @@ mod tests {
     };
 
     #[test]
-    fn yarp_managed_skill_dirs_contains_only_warp_home_path() {
+    fn yarp_managed_skill_dirs_contains_only_yarp_home_path() {
         let dirs = yarp_managed_skill_dirs();
         match yarp_home_skills_dir() {
             Some(yarp_home_skills_dir) => assert_eq!(dirs, vec![yarp_home_skills_dir]),
@@ -379,7 +379,7 @@ mod tests {
     }
 
     #[test]
-    fn yarp_managed_mcp_config_path_contains_only_warp_home_path() {
+    fn yarp_managed_mcp_config_path_contains_only_yarp_home_path() {
         match (
             home_dir(),
             yarp_home_mcp_config_file_path(),

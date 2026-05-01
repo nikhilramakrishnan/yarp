@@ -1,6 +1,6 @@
 # TECH — Don't auto-add indexed repos to Directory tab colors
 See also: `PRODUCT.md` in this directory.
-Linear: [APP-4115](https://linear.app/warpdotdev/issue/APP-4115/dont-auto-add-indexed-repos-including-worktrees-to-directory-tab).
+Linear: [APP-4115](https://linear.app/yarpdotdev/issue/APP-4115/dont-auto-add-indexed-repos-including-worktrees-to-directory-tab).
 ## Problem
 Two coupled code changes are needed to deliver the product behavior:
 1. Stop the `CodebaseIndexManager`-driven subscription that auto-populates `TabSettings.directory_tab_colors` with newly indexed paths.

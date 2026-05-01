@@ -1,18 +1,18 @@
 name: "Docubot"
-description: "Helps Warp engineers identify PRs that need documentation updates in GitBook"
+description: "Helps Yarp engineers identify PRs that need documentation updates in GitBook"
 inputs:
   prompt:
-    description: "Prompt to send to Warp"
+    description: "Prompt to send to Yarp"
     required: true
-  warp_api_key:
-    description: "Warp API key"
+  yarp_api_key:
+    description: "Yarp API key"
     required: true
-  warp_channel:
-    description: "Warp release channel (e.g., dev, preview, stable)"
+  yarp_channel:
+    description: "Yarp release channel (e.g., dev, preview, stable)"
     required: false
     default: "dev"
   profile_id:
-    description: "Warp profile ID"
+    description: "Yarp profile ID"
     required: false
   github_token:
     description: "GitHub token for cloning private repositories"
@@ -20,14 +20,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Warp CLI
-      uses: ./.github/actions/setup_warp_cli
+    - name: Setup Yarp CLI
+      uses: ./.github/actions/setup_yarp_cli
       with:
-        warp_channel: ${{ inputs.warp_channel }}
-    - name: Clone Warp GitBook repository
+        yarp_channel: ${{ inputs.yarp_channel }}
+    - name: Clone Yarp GitBook repository
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
-        repository: warpdotdev/gitbook
+        repository: hotfuzz/gitbook
         token: ${{ inputs.github_token }}
         path: gitbook
     - name: Create prompt file
@@ -120,19 +120,19 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        git config user.name "Warp Agent"
-        git config user.email "agent@warp.dev"
+        git config user.name "Yarp Agent"
+        git config user.email "agent@yarp.dev"
     
-    - name: Run Warp agent
+    - name: Run Yarp agent
       shell: bash
       env:
-        WARP_API_KEY: ${{ inputs.warp_api_key }}
+        YARP_API_KEY: ${{ inputs.yarp_api_key }}
         GH_TOKEN: ${{ inputs.github_token }}
         PROFILE_ID: ${{ inputs.profile_id }}
       run: |
         set -euo pipefail
         # Determine the CLI command name based on channel suffix
-        case "${{ inputs.warp_channel }}" in
+        case "${{ inputs.yarp_channel }}" in
           stable|stable_release|"") suffix="" ;;
           preview|preview_release) suffix="-preview" ;;
           dev|dev_release) suffix="-dev" ;;
@@ -140,7 +140,7 @@ runs:
           integration|integration_test) suffix="-integration" ;;
           *) suffix="" ;;
         esac
-        cmd="warp-cli${suffix}"
+        cmd="yarp-cli${suffix}"
 
         # Basic check the binary exists
         if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -151,17 +151,17 @@ runs:
         # Execute the agent run
         "$cmd" agent run \
           --prompt "$(cat prompt.output.txt)" \
-          --api-key "$WARP_API_KEY" \
+          --api-key "$YARP_API_KEY" \
           --cwd "$GITHUB_WORKSPACE" \
           ${PROFILE_ID:+--profile "$PROFILE_ID"}
-    - name: Upload Warp logs
+    - name: Upload Yarp logs
       if: ${{ always() }}
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        name: warp-logs.log
-        path: /home/runner/.local/state/warp-terminal-dev/warp_dev.log
+        name: yarp-logs.log
+        path: /home/runner/.local/state/yarp-terminal-dev/yarp_dev.log
         if-no-files-found: ignore
-    - name: Upload Warp prompt
+    - name: Upload Yarp prompt
       if: ${{ always() }}
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:

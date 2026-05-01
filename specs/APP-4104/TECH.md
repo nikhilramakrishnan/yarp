@@ -34,9 +34,9 @@ That file is compiled without ARC, so the native breadcrumb object itself must s
 
 ### Existing repo pattern
 
-Warp already has established patterns for temporary Cocoa strings:
+Yarp already has established patterns for temporary Cocoa strings:
 
-- `warpui::platform::mac::make_nsstring` returns an autoreleased `NSString`
+- `yarpui::platform::mac::make_nsstring` returns an autoreleased `NSString`
 - app-owned macOS bridges already use direct `.autorelease()` in places like `app_services/mac.rs`
 
 The crash-reporting bridge is the outlier.
@@ -49,7 +49,7 @@ Remove the retained `to_nsstring` pattern from `app/src/crash_reporting/mac.rs` 
 
 Concretely:
 
-- import `warpui::platform::mac::make_nsstring` at the top of the file
+- import `yarpui::platform::mac::make_nsstring` at the top of the file
 - use that helper for every bridge string created in this module
 - apply the change consistently to `init_cocoa_sentry`, `set_user_id`, `forward_breadcrumb`, and `set_tag`
 

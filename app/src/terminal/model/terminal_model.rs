@@ -385,10 +385,10 @@ pub enum TmuxInstallationState {
     /// This means tmux was installed by Yarp in this session, successfully or unsuccessfully.
     /// It also means we had root access and used a package manager to install tmux and all
     /// dependencies.
-    InstalledByWarpRootInThisSession,
+    InstalledByYarpRootInThisSession,
     /// This means tmux was installed by Yarp in this session, successfully or unsuccessfully.
-    InstalledByWarpInThisSession,
-    InstalledByWarpInPriorSession,
+    InstalledByYarpInThisSession,
+    InstalledByYarpInPriorSession,
     /// This means that yarp did not install it locally. It was either installed by the user
     /// or it was installed by yarp in a prior session using the package manager.
     InstalledByUser,
@@ -402,14 +402,14 @@ impl FromStr for TmuxInstallationState {
 
     fn from_str(input: &str) -> Result<Self, Self::Err> {
         match input {
-            "installed_by_warp_root_in_this_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpRootInThisSession)
+            "installed_by_yarp_root_in_this_session" => {
+                Ok(TmuxInstallationState::InstalledByYarpRootInThisSession)
             }
-            "installed_by_warp_in_this_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpInThisSession)
+            "installed_by_yarp_in_this_session" => {
+                Ok(TmuxInstallationState::InstalledByYarpInThisSession)
             }
-            "yarp" | "installed_by_warp_in_prior_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpInPriorSession)
+            "yarp" | "installed_by_yarp_in_prior_session" => {
+                Ok(TmuxInstallationState::InstalledByYarpInPriorSession)
             }
             "user" | "installed_by_user" => Ok(TmuxInstallationState::InstalledByUser),
             "not_installed" => Ok(TmuxInstallationState::NotInstalled),
@@ -635,7 +635,7 @@ pub struct SubshellInitializationInfo {
     pub spawning_command: String,
 
     /// `true` if the subshell bootstrap was triggered by an RC file snippet that emits the
-    /// `SourcedRcFileForWarp` DCS.
+    /// `SourcedRcFileForYarp` DCS.
     pub was_triggered_by_rc_file_snippet: bool,
 
     /// The subshell was triggered from an EVC invocation
@@ -2219,9 +2219,9 @@ impl TerminalModel {
     pub fn set_pending_yarp_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
         self.pending_yarp_initiated_control_mode =
             Some(YarpInitiatedTmuxControlMode::new(Some(if with_root {
-                TmuxInstallationState::InstalledByWarpRootInThisSession
+                TmuxInstallationState::InstalledByYarpRootInThisSession
             } else {
-                TmuxInstallationState::InstalledByWarpInThisSession
+                TmuxInstallationState::InstalledByYarpInThisSession
             })));
     }
 

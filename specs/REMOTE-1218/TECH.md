@@ -1,16 +1,16 @@
 # Tech Spec: Oz Platform Plugin Installation for Third-Party Harnesses
 
-Linear: [REMOTE-1218](https://linear.app/warpdotdev/issue/REMOTE-1218)
+Linear: [REMOTE-1218](https://linear.app/yarpdotdev/issue/REMOTE-1218)
 
 ## 1. Problem
 
-When a non-Oz harness (e.g. Claude Code) runs via the agent driver, `setup_harness` installs the **Warp notification plugin** (`warp@claude-code-warp` from `warpdotdev/claude-code-warp`). Harness runs also need a separate **Oz platform plugin** (`warp-cloud@claude-code-warp` from `warpdotdev/claude-code-warp-internal`) that connects the third-party CLI to the Oz platform — exposing tools, skills, and hooks (e.g. artifact reporting). This is distinct from the notification plugin: the platform plugin is about Oz integration, not just notifications.
+When a non-Oz harness (e.g. Claude Code) runs via the agent driver, `setup_harness` installs the **Yarp notification plugin** (`yarp@claude-code-yarp` from `yarpdotdev/claude-code-yarp`). Harness runs also need a separate **Oz platform plugin** (`yarp-cloud@claude-code-yarp` from `yarpdotdev/claude-code-yarp-internal`) that connects the third-party CLI to the Oz platform — exposing tools, skills, and hooks (e.g. artifact reporting). This is distinct from the notification plugin: the platform plugin is about Oz integration, not just notifications.
 
 Today, only (a) is installed. We need to also install (b) for all harness runs driven by the agent driver, while keeping (b) out of normal local interactive agent sessions.
 
 ## 2. Relevant Code
 
-- `app/src/ai/agent_sdk/driver.rs:1242-1264` — `setup_harness`: subscribes to CLI session events, installs the warp plugin
+- `app/src/ai/agent_sdk/driver.rs:1242-1264` — `setup_harness`: subscribes to CLI session events, installs the yarp plugin
 - `app/src/terminal/cli_agent_sessions/plugin_manager/mod.rs` — `CliAgentPluginManager` trait, `plugin_manager_for()` factory
 - `app/src/terminal/cli_agent_sessions/plugin_manager/claude.rs` — `ClaudeCodePluginManager`: install/update via `claude plugin marketplace add` + `claude plugin install`
 - `app/src/ai/agent_sdk/driver/harness/mod.rs:29` — `ThirdPartyHarness` trait
@@ -18,9 +18,9 @@ Today, only (a) is installed. We need to also install (b) for all harness runs d
 
 ### External
 
-- `warpdotdev/claude-code-warp-internal` — private repo containing both the existing `warp` plugin and the `warp-cloud` platform plugin
-- `.claude-plugin/marketplace.json` — declares `warp-cloud` as a marketplace entry: key `warp-cloud@claude-code-warp`, source `./plugins/warp-cloud`
-- `plugins/warp-cloud/skills/oz-report-artifact/` — platform-only skill for reporting PRs back to Oz
+- `yarpdotdev/claude-code-yarp-internal` — private repo containing both the existing `yarp` plugin and the `yarp-cloud` platform plugin
+- `.claude-plugin/marketplace.json` — declares `yarp-cloud` as a marketplace entry: key `yarp-cloud@claude-code-yarp`, source `./plugins/yarp-cloud`
+- `plugins/yarp-cloud/skills/oz-report-artifact/` — platform-only skill for reporting PRs back to Oz
 
 ## 3. Current State
 
@@ -30,13 +30,13 @@ Today, only (a) is installed. We need to also install (b) for all harness runs d
 
 For Claude, `ClaudeCodePluginManager::install()` runs:
 ```
-claude plugin marketplace add warpdotdev/claude-code-warp
-claude plugin install warp@claude-code-warp
+claude plugin marketplace add yarpdotdev/claude-code-yarp
+claude plugin install yarp@claude-code-yarp
 ```
 
-This installs the **public** `warp` plugin (notifications). There is no concept of a second platform plugin. The `CliAgentPluginManager` trait models a single plugin per CLI agent.
+This installs the **public** `yarp` plugin (notifications). There is no concept of a second platform plugin. The `CliAgentPluginManager` trait models a single plugin per CLI agent.
 
-The `claude-code-warp-internal` repo already defines the `warp-cloud` marketplace entry and contains the platform plugin, but nothing in warp-internal installs it.
+The `claude-code-yarp-internal` repo already defines the `yarp-cloud` marketplace entry and contains the platform plugin, but nothing in yarp-internal installs it.
 
 ## 4. Proposed Changes
 
@@ -61,19 +61,19 @@ We call this `install_platform_plugin` (not `install_cloud_plugin`) because this
 New constants in `claude.rs`:
 
 ```rust
-const PLATFORM_PLUGIN_KEY: &str = "warp-cloud@claude-code-warp";
-const PLATFORM_MARKETPLACE_REPO: &str = "warpdotdev/claude-code-warp-internal";
-const PLATFORM_MARKETPLACE_NAME: &str = "claude-code-warp-internal";
+const PLATFORM_PLUGIN_KEY: &str = "yarp-cloud@claude-code-yarp";
+const PLATFORM_MARKETPLACE_REPO: &str = "yarpdotdev/claude-code-yarp-internal";
+const PLATFORM_MARKETPLACE_NAME: &str = "claude-code-yarp-internal";
 ```
 
 Implementation: same pattern as `install()`, just targeting the internal repo/key:
 
 ```
-claude plugin marketplace add warpdotdev/claude-code-warp-internal
-claude plugin install warp-cloud@claude-code-warp
+claude plugin marketplace add yarpdotdev/claude-code-yarp-internal
+claude plugin install yarp-cloud@claude-code-yarp
 ```
 
-Note: this repo is **private**. The sandbox environment already has GitHub credentials configured (via `$GITHUB_ACCESS_TOKEN` in `entrypoint.sh`), and the `claude plugin marketplace add` command clones the repo via git, so it should work in cloud environments. For local `agent run --harness claude` runs, the user must have GitHub access to the `warpdotdev` org.
+Note: this repo is **private**. The sandbox environment already has GitHub credentials configured (via `$GITHUB_ACCESS_TOKEN` in `entrypoint.sh`), and the `claude plugin marketplace add` command clones the repo via git, so it should work in cloud environments. For local `agent run --harness claude` runs, the user must have GitHub access to the `yarpdotdev` org.
 
 **No version tracking or manual instructions needed.** Unlike the notification plugin (which has `minimum_plugin_version`, `needs_update`, and install/update instruction modals for the footer UI), the platform plugin is only installed programmatically by the driver. There is no user-facing install chip or modal. In cloud environments, containers are ephemeral so every run gets a fresh install. If we later expose this to local users, we'd add version tracking and instructions at that point.
 
@@ -131,27 +131,27 @@ sequenceDiagram
     Setup->>PM: plugin_manager_for(Claude)
     PM-->>Setup: Some(ClaudeCodePluginManager)
 
-    Note over Setup: Install warp plugin (existing)
+    Note over Setup: Install yarp plugin (existing)
     Setup->>PM: manager.install()
-    PM->>CLI: claude plugin marketplace add warpdotdev/claude-code-warp
-    PM->>CLI: claude plugin install warp@claude-code-warp
+    PM->>CLI: claude plugin marketplace add yarpdotdev/claude-code-yarp
+    PM->>CLI: claude plugin install yarp@claude-code-yarp
 
     Note over Setup: Install platform plugin (new)
     Setup->>PM: manager.install_platform_plugin()
-    PM->>CLI: claude plugin marketplace add warpdotdev/claude-code-warp-internal
-    PM->>CLI: claude plugin install warp-cloud@claude-code-warp
+    PM->>CLI: claude plugin marketplace add yarpdotdev/claude-code-yarp-internal
+    PM->>CLI: claude plugin install yarp-cloud@claude-code-yarp
 
     Setup-->>Driver: Ok(())
     Driver->>Driver: prepare_harness / run_harness
     Driver->>CC: claude --session-id ... < prompt
-    Note over CC: Both plugins active:<br/>warp (notifications) + warp-cloud (Oz platform)
+    Note over CC: Both plugins active:<br/>yarp (notifications) + yarp-cloud (Oz platform)
 ```
 
 ## 6. Risks and Mitigations
 
-**Private repo access.** `warpdotdev/claude-code-warp-internal` is private. Cloud environments have GitHub creds via `$GITHUB_ACCESS_TOKEN`. Local `agent run --harness claude` users need org access. **Mitigation:** `install_platform_plugin` is best-effort; failure is logged, not fatal.
+**Private repo access.** `yarpdotdev/claude-code-yarp-internal` is private. Cloud environments have GitHub creds via `$GITHUB_ACCESS_TOKEN`. Local `agent run --harness claude` users need org access. **Mitigation:** `install_platform_plugin` is best-effort; failure is logged, not fatal.
 
-**Plugin name collision.** The `warp` and `warp-cloud` plugins are in different marketplace repos. Claude Code's plugin system keys plugins by `<plugin_name>@<marketplace_name>`, so `warp@claude-code-warp` and `warp-cloud@claude-code-warp` are distinct. No collision risk.
+**Plugin name collision.** The `yarp` and `yarp-cloud` plugins are in different marketplace repos. Claude Code's plugin system keys plugins by `<plugin_name>@<marketplace_name>`, so `yarp@claude-code-yarp` and `yarp-cloud@claude-code-yarp` are distinct. No collision risk.
 
 **Install ordering.** We install the notification plugin first, then the platform plugin. If the platform install fails mid-way, the notification plugin is still active. This is the preferred degradation.
 

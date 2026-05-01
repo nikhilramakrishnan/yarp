@@ -20,7 +20,7 @@ use yarpui::{AppContext, SingletonEntity as _};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct GithubRepo {
-    /// Repository owner (e.g. "warpdotdev")
+    /// Repository owner (e.g. "hotfuzz")
     pub owner: String,
     /// Repository name (e.g. "yarp-internal")
     pub repo: String,

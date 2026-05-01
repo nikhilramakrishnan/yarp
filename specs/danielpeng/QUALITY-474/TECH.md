@@ -4,7 +4,7 @@ Linear: QUALITY-474
 
 ## Problem
 
-`CloudPreferencesSyncer::handle_initial_load` uses `ForceCloudToMatchLocal::No` on normal startup, meaning cloud values overwrite local values for all synced keys. This is incorrect when the user has made local changes (file edit while Warp was closed, or UI change while offline) that haven't been synced to cloud.
+`CloudPreferencesSyncer::handle_initial_load` uses `ForceCloudToMatchLocal::No` on normal startup, meaning cloud values overwrite local values for all synced keys. This is incorrect when the user has made local changes (file edit while Yarp was closed, or UI change while offline) that haven't been synced to cloud.
 
 ## Relevant Code
 
@@ -23,7 +23,7 @@ The `ForceCloudToMatchLocal::Yes` path already exists — it skips cloud→local
 Already implemented on the `daniel/inhibit-writes-mode` branch:
 - Flush suppression when TOML file fails to parse (broken file preserved on disk)
 - Settings error banner with workspace-level UI
-- `SettingsFileError` type, `WarpConfigUpdateEvent::SettingsErrors`/`SettingsErrorsCleared`
+- `SettingsFileError` type, `YarpConfigUpdateEvent::SettingsErrors`/`SettingsErrorsCleared`
 - `init_public_user_preferences()` returns `(Model, Option<String>)` with parse error
 
 ## Proposed Changes
@@ -233,11 +233,11 @@ sequenceDiagram
     participant Cloud as Cloud Storage
     participant PrivPrefs as Private Preferences
 
-    Note over User,File: User edits file while Warp is closed
+    Note over User,File: User edits file while Yarp is closed
 
     User->>File: Edit settings.toml
 
-    Note over LibRs: Warp starts up
+    Note over LibRs: Yarp starts up
     LibRs->>Init: initialize_cloud_preferences_syncer(toml_path, parse_error)
     Init->>File: file_content_hash(toml_path)
     Init->>PrivPrefs: Read stored hash

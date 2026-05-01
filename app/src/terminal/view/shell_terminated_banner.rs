@@ -216,7 +216,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://github.com/warpdotdev/Warp/issues/new/choose".to_string(),
+                                "https://github.com/hotfuzz/Warp/issues/new/choose".to_string(),
                             ));
                         })
                         .finish(),
@@ -226,7 +226,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://docs.warp.dev/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
+                                "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
                             ));
                         })
                         .finish(),
@@ -254,7 +254,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://github.com/warpdotdev/Warp/issues/new/choose".to_string(),
+                                "https://github.com/hotfuzz/Warp/issues/new/choose".to_string(),
                             ));
                         })
                         .finish(),
@@ -264,7 +264,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://docs.warp.dev/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
+                                "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
                             ));
                         })
                         .finish(),

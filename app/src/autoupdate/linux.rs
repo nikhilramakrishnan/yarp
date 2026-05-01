@@ -247,7 +247,7 @@ mod package_manager {
                 FormattedTextFragment::plain_text(" to install the update and re-launch Yarp.  "),
                 FormattedTextFragment::hyperlink(
                     "Please report any issues",
-                    "https://github.com/warpdotdev/Warp/issues/new/choose",
+                    "https://github.com/hotfuzz/Warp/issues/new/choose",
                 ),
             ]));
 
@@ -397,7 +397,7 @@ impl PackageManager {
                     let cache_dir_str = cache_dir.display();
                     // Back up the existing pacman.conf file just in case
                     // anything goes wrong, then add the repository config.
-                    format!("mkdir -p {cache_dir_str}{and}\\\ncp /etc/pacman.conf {cache_dir_str}{and}\\\nsudo sh -c \"echo '\n[{repo_name}]\nServer = https://releases.warp.dev/linux/pacman/\\$repo/\\$arch' >> /etc/pacman.conf\"{and}\\\n")
+                    format!("mkdir -p {cache_dir_str}{and}\\\ncp /etc/pacman.conf {cache_dir_str}{and}\\\nsudo sh -c \"echo '\n[{repo_name}]\nServer = https://releases.yarp.dev/linux/pacman/\\$repo/\\$arch' >> /etc/pacman.conf\"{and}\\\n")
                 } else {
                     String::new()
                 };
@@ -405,7 +405,7 @@ impl PackageManager {
                     // Retrieve our key from keys.openpgp.org and locally sign
                     // it before retrieving the package repository and
                     // installing the updated package.
-                    format!("sudo pacman-key -r \"linux-maintainers@warp.dev\" --keyserver hkp://keys.openpgp.org:80{and}\\\nsudo pacman-key --lsign-key \"linux-maintainers@warp.dev\"{and}\\\n")
+                    format!("sudo pacman-key -r \"linux-maintainers@yarp.dev\" --keyserver hkp://keys.openpgp.org:80{and}\\\nsudo pacman-key --lsign-key \"linux-maintainers@yarp.dev\"{and}\\\n")
                 } else {
                     String::new()
                 };
@@ -542,8 +542,8 @@ impl std::fmt::Display for PackageManager {
 }
 
 /// Returns whether the yarp apt repository is disabled due to a version update.
-/// This occurs if there's a `warpdotdev.list.distUpgrade` file but no `warpdotdev.sources` or
-/// `warpdotdev.list` file.
+/// This occurs if there's a `hotfuzz.list.distUpgrade` file but no `hotfuzz.sources` or
+/// `hotfuzz.list` file.
 /// In a traditional Ubuntu distro update, Ubuntu renames each source file from `foo.list` to
 /// `foo.list.distUpgrade`. It then creates a new version of `foo.list` (or `foo.sources` if
 /// updating to Ubuntu 24+) with the repo disabled.
@@ -551,7 +551,7 @@ impl std::fmt::Display for PackageManager {
 /// However, Ubuntu incorrectly thinks the Yarp source file is invalid (due to the addition of the
 /// `signed-by` key) so it only leaves the `*.distUpgrade` source file. We use the existence of this
 /// file to determine whether we need to run the special `yarp_handle_dist_upgrade` function to copy
-/// `warpdotdev.list.distUpgrade` back to `warpdotdev.list` to re-enable the repository.
+/// `hotfuzz.list.distUpgrade` back to `hotfuzz.list` to re-enable the repository.
 fn is_apt_repository_disabled_due_to_version_update(repo_name: &str) -> bool {
     let apt_sources_directory = match get_apt_sources_directory() {
         Ok(apt_sources_directory) => apt_sources_directory,
@@ -609,7 +609,7 @@ fn is_pacman_signing_key_installed() -> bool {
             "/etc/pacman.d/gnupg",
             "--list-keys",
             "--with-colons",
-            "linux-maintainers@warp.dev",
+            "linux-maintainers@yarp.dev",
         ])
         .output()
     {
@@ -667,7 +667,7 @@ fn repo_name(channel: Channel) -> String {
     let channel_suffix = package_name
         .strip_prefix("yarp-terminal")
         .unwrap_or_default();
-    format!("warpdotdev{channel_suffix}")
+    format!("hotfuzz{channel_suffix}")
 }
 
 #[cfg(test)]

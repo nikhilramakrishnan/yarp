@@ -667,15 +667,15 @@ const BOOTSTRAP_FAILED_DURATION: Duration = Duration::from_secs(7);
 /// during the bootstrap period.
 const ENV_VAR_BOOTSTRAP_FAILED_DURATION: Duration = Duration::from_secs(60);
 const KNOWN_ISSUES_URL: &str =
-    "https://docs.warp.dev/support-and-community/troubleshooting-and-support/known-issues";
+    "https://github.com/hotfuzz/yarp/support-and-community/troubleshooting-and-support/known-issues";
 
 /// Link to supported custom prompts.
 const PROMPT_COMPATIBILITY_URL: &str =
-    "https://docs.warp.dev/terminal/appearance/prompt#custom-prompt-compatibility-table";
+    "https://github.com/hotfuzz/yarp/terminal/appearance/prompt#custom-prompt-compatibility-table";
 
 /// Link to troubleshooting steps for ControlMaster errors.
 const CONTROLMASTER_ISSUES_URL: &str =
-    "https://docs.warp.dev/terminal/yarpify/ssh-legacy#troubleshooting";
+    "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#troubleshooting";
 
 /// Link to instructions on how to update p10k.
 const P10K_UPDATE_INSTRUCTIONS_URL: &str =
@@ -691,9 +691,9 @@ const MIN_DELTA_FOR_TEXT_SELECTION: f32 = 0.5;
 /// Notifications-specific info
 /// TODO (suraj): add documentation for notifications in gitbook
 const NOTIFICATIONS_LEARN_MORE_URL: &str =
-    "https://docs.warp.dev/terminal/more-features/notifications";
+    "https://github.com/hotfuzz/yarp/terminal/more-features/notifications";
 pub const NOTIFICATIONS_TROUBLESHOOT_URL: &str =
-    "https://docs.warp.dev/terminal/more-features/notifications#troubleshooting-notifications";
+    "https://github.com/hotfuzz/yarp/terminal/more-features/notifications#troubleshooting-notifications";
 
 const DEBOUNCE_PERIOD: Duration = Duration::from_millis(40);
 
@@ -13401,7 +13401,7 @@ impl TerminalView {
         }
         session_metadata.set_git_branches(git_branches.iter().flatten().map(|s| s.as_str()));
 
-        // https://github.com/warpdotdev/command-corrections/blob/df7848d4fb3da7883623e959889a296a07d88053/src/rules/cd/mod.rs#L31-L36
+        // https://github.com/hotfuzz/command-corrections/blob/df7848d4fb3da7883623e959889a296a07d88053/src/rules/cd/mod.rs#L31-L36
         // We don't currently support dynamic rules over SSH, so we should not attempt to correct commands if
         // inside ssh session.
         let is_ssh_command = SshYarpifyCommand::matches(input).is_some();
@@ -18778,8 +18778,8 @@ impl TerminalView {
                 AIAgentCitation::YarpDriveObject { uid } => {
                     ctx.emit(Event::OpenYarpDriveObjectInPane(uid.clone()));
                 }
-                AIAgentCitation::WarpDocumentation { path } => {
-                    ctx.open_url(&format!("https://docs.warp.dev/{path}"));
+                AIAgentCitation::YarpDocumentation { path } => {
+                    ctx.open_url(&format!("https://github.com/hotfuzz/yarp/{path}"));
                 }
                 AIAgentCitation::WebPage { url } => {
                     ctx.open_url(url);
@@ -19189,7 +19189,7 @@ impl TerminalView {
     /// WARNING: this method takes a lock on the TerminalModel.
     /// Caller must ensure the model is not already locked!
     ///
-    /// TODO: https://linear.app/warpdotdev/issue/CORE-277
+    /// TODO: https://linear.app/hotfuzz/issue/CORE-277
     pub fn redetermine_global_focus(&mut self, ctx: &mut ViewContext<Self>) {
         if self.context_menu_state.is_some() {
             // This is a hack to avoid focusing on the terminal which
@@ -23223,7 +23223,7 @@ impl TerminalView {
 
         match action {
             LearnMore => {
-                ctx.open_url("https://docs.warp.dev/terminal/yarpify/ssh-legacy#implementation");
+                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation");
             }
             Settings => {
                 if FeatureFlag::SSHTmuxWrapper.is_enabled() {

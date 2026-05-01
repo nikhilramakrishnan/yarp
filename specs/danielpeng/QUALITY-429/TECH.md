@@ -11,10 +11,10 @@ This required two coordinated changes:
 ## Relevant code
 
 - `crates/yarpui_extras/src/user_preferences/toml_backed.rs` — TOML preferences backend (`new()`, `reload_from_disk()`)
-- `app/src/settings/init.rs` — `init_public_user_preferences()`, `init()`, `handle_warp_config_change()`
+- `app/src/settings/init.rs` — `init_public_user_preferences()`, `init()`, `handle_yarp_config_change()`
 - `app/src/settings/mod.rs` — `SettingsFileError` enum
 - `crates/settings/src/manager.rs` — `SettingsManager::reload_all_public_settings()`, `validate_all_public_settings()`
-- `app/src/user_config/mod.rs` — `WarpConfigUpdateEvent::SettingsErrors` / `SettingsErrorsCleared`
+- `app/src/user_config/mod.rs` — `YarpConfigUpdateEvent::SettingsErrors` / `SettingsErrorsCleared`
 - `app/src/workspace/view.rs` — `WorkspaceBanner::InvalidSettings`, `render_settings_error_banner()`, `subscribe_to_settings_errors()`
 - `app/src/workspace/action.rs` — `WorkspaceAction::OpenSettingsFile`
 - `app/src/global_resource_handles.rs` — `settings_file_error` field for startup propagation
@@ -34,7 +34,7 @@ This required two coordinated changes:
 - `TomlBackedUserPreferences::new()` returns `(Self, Option<Error>)`. It always succeeds, starting with an empty document on parse failure.
 - `reload_all_public_settings()` returns `Vec<String>` of failed storage keys.
 - `validate_all_public_settings()` provides read-only startup validation.
-- Errors are propagated via `WarpConfigUpdateEvent` to the workspace banner system.
+- Errors are propagated via `YarpConfigUpdateEvent` to the workspace banner system.
 
 ## Proposed changes (as implemented)
 
@@ -56,8 +56,8 @@ pub enum SettingsFileError {
 
 #### Error capture — hot-reload path
 
-`handle_warp_config_change()` in `app/src/settings/init.rs`:
-- On `reload_from_disk()` failure → emits `WarpConfigUpdateEvent::SettingsErrors(FileParseFailed(...))`
+`handle_yarp_config_change()` in `app/src/settings/init.rs`:
+- On `reload_from_disk()` failure → emits `YarpConfigUpdateEvent::SettingsErrors(FileParseFailed(...))`
 - On success → calls `reload_all_public_settings()`. If failed keys returned → emits `SettingsErrors(InvalidSettings(...))`. If empty → emits `SettingsErrorsCleared`.
 
 #### Error capture — startup path
@@ -68,7 +68,7 @@ pub enum SettingsFileError {
 
 #### Event plumbing
 
-Two new `WarpConfigUpdateEvent` variants:
+Two new `YarpConfigUpdateEvent` variants:
 - `SettingsErrors(SettingsFileError)` — emitted when errors are detected
 - `SettingsErrorsCleared` — emitted when a reload succeeds with no errors
 
@@ -77,7 +77,7 @@ Two new `WarpConfigUpdateEvent` variants:
 - `WorkspaceBanner::InvalidSettings` variant added to the enum. Returns `true` from `is_dismissible()`.
 - `Workspace` fields: `settings_file_error: Option<SettingsFileError>`, `settings_error_banner_dismissed: bool`.
 - `render_settings_error_banner()` produces `WorkspaceBannerFields` with the appropriate message and an "Open settings file" button.
-- `subscribe_to_settings_errors()` subscribes to `WarpConfig` model for `SettingsErrors`/`SettingsErrorsCleared` events.
+- `subscribe_to_settings_errors()` subscribes to `YarpConfig` model for `SettingsErrors`/`SettingsErrorsCleared` events.
 - `WorkspaceAction::OpenSettingsFile` opens `settings.toml` in a code editor pane via `add_tab_for_code_file()`.
 
 ## End-to-end flow
@@ -106,23 +106,23 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant FileWatcher
-    participant WarpConfig
-    participant Handler as handle_warp_config_change
+    participant YarpConfig
+    participant Handler as handle_yarp_config_change
     participant Workspace
 
-    FileWatcher->>WarpConfig: Settings event
-    WarpConfig->>Handler: WarpConfigUpdateEvent::Settings
+    FileWatcher->>YarpConfig: Settings event
+    YarpConfig->>Handler: YarpConfigUpdateEvent::Settings
     Handler->>Handler: reload_from_disk() → Err
-    Handler->>WarpConfig: emit SettingsErrors(FileParseFailed)
-    WarpConfig->>Workspace: SettingsErrors → banner appears
+    Handler->>YarpConfig: emit SettingsErrors(FileParseFailed)
+    YarpConfig->>Workspace: SettingsErrors → banner appears
 
     Note over FileWatcher: User fixes file
-    FileWatcher->>WarpConfig: Settings event
-    WarpConfig->>Handler: WarpConfigUpdateEvent::Settings
+    FileWatcher->>YarpConfig: Settings event
+    YarpConfig->>Handler: YarpConfigUpdateEvent::Settings
     Handler->>Handler: reload_from_disk() → Ok
     Handler->>Handler: reload_all_public_settings() → []
-    Handler->>WarpConfig: emit SettingsErrorsCleared
-    WarpConfig->>Workspace: SettingsErrorsCleared → banner disappears
+    Handler->>YarpConfig: emit SettingsErrorsCleared
+    YarpConfig->>Workspace: SettingsErrorsCleared → banner disappears
 ```
 
 ## Risks and mitigations

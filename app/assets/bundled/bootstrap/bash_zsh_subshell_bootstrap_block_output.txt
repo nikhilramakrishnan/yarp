@@ -1,1 +1,1 @@
-echo -e '\n# Auto-Yarpify\n[[ "$-" == *i* ]] && printf '\''\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "%", "uname": "'$(uname)'"% }}\x9c'\'' ' >> %
+echo -e '\n# Auto-Yarpify\n[[ "$-" == *i* ]] && printf '\''\eP$f{"hook": "SourcedRcFileForYarp", "value": { "shell": "%", "uname": "'$(uname)'"% }}\x9c'\'' ' >> %

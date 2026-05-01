@@ -32,7 +32,7 @@ pub const MAC_MENUS_CONTEXT: DescriptionContext = DescriptionContext::Custom("ma
 pub enum CustomAction {
     NewTab,
     NewFile,
-    ShowAboutWarp,
+    ShowAboutYarp,
     ShowSettings,
     ConfigureKeybindings,
     ShowAccount,
@@ -435,7 +435,7 @@ pub fn custom_tag_to_keystroke(custom: CustomTag) -> Option<Keystroke> {
         }
         CustomAction::NewTerminalTab
         | CustomAction::NewFile
-        | CustomAction::ShowAboutWarp
+        | CustomAction::ShowAboutYarp
         | CustomAction::SplitPaneLeft
         | CustomAction::SelectAllBlocks
         | CustomAction::SplitPaneUp
@@ -885,7 +885,7 @@ pub fn cmd_or_ctrl_shift(key: &str) -> String {
             }
             // The need to uppercase the key because of the addition of the `shift`.
             // Keystroke::parse debug asserts if this the modifier is lowercase:
-            // https://github.com/warpdotdev/warp-internal/blob/c225b8cedd94fdba33e957cf1efb99d84768d193/ui/src/keymap.rs#L637/
+            // https://github.com/hotfuzz/yarp/blob/c225b8cedd94fdba33e957cf1efb99d84768d193/ui/src/keymap.rs#L637/
             key.to_ascii_uppercase().into()
         };
         format!("ctrl-shift-{key}")

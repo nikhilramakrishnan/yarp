@@ -456,7 +456,7 @@ fn is_newer_nondx12_nvidia_adapter_on_windows(adapter_info: &wgpu::AdapterInfo) 
 
 /// Returns whether this adapter is the integrated OpenGL driver for Windows running in Parallels.
 /// It caused problems with theme background images.
-/// https://linear.app/warpdotdev/issue/CORE-3692/background-images-broken-in-parallels
+/// https://linear.app/hotfuzz/issue/CORE-3692/background-images-broken-in-parallels
 fn is_gl_to_metal_adapter_on_windows_in_parallels(adapter_info: &wgpu::AdapterInfo) -> bool {
     cfg!(windows)
         && adapter_info.backend == Backend::Gl
@@ -507,7 +507,7 @@ fn is_intel_uhd_620_adapter_on_windows_with_vulkan_backend(
 /// window decorations (e.g. title bar height). Enabling native window decorations fixes the
 /// alignment.
 ///
-/// See: https://github.com/warpdotdev/Warp/issues/6120
+/// See: https://github.com/hotfuzz/Warp/issues/6120
 pub fn adapter_has_rendering_offset_bug(adapter_info: &wgpu::AdapterInfo) -> bool {
     if !cfg!(windows) {
         return false;
@@ -519,7 +519,7 @@ pub fn adapter_has_rendering_offset_bug(adapter_info: &wgpu::AdapterInfo) -> boo
     }
 
     // Known affected Intel integrated GPU models. This list is based on user reports from
-    // https://github.com/warpdotdev/Warp/issues/6120.
+    // https://github.com/hotfuzz/Warp/issues/6120.
     let affected_models = [
         "Intel(R) HD Graphics 4000",
         "Intel(R) HD Graphics 4400",
@@ -739,7 +739,7 @@ fn adapter_stability_sort_func(
         log::warn!(
             "Deprioritizing Vulkan-backed Nvidia adapter due to version < {} (unsupported).\nSee \
             the \"Graphics\" secion of our docs here: \
-            https://docs.warp.dev/help/known-issues#linux-1",
+            https://github.com/hotfuzz/yarp/help/known-issues#linux-1",
             *MIN_SUPPORTED_NVIDIA_VERSION
         );
         AdapterSupport::Unsupported

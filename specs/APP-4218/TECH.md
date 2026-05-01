@@ -72,5 +72,5 @@ References below are to `specs/APP-4218/PRODUCT.md` success criteria.
 None added. The `git_dialog` module ships without an integration harness today (see `specs/APP-4125/TECH.md`).
 ## Follow-ups
 - **Surface the detected parent in the dialog chrome** (a "Based on" row) once we have a way to populate it without visible latency — e.g. caching it on `DiffMetadata` so it's ready by the time the dialog opens.
-- **Per-branch override** for mis-detected parents (stored in `.git/config` as `branch.<name>.warpParent`).
+- **Per-branch override** for mis-detected parents (stored in `.git/config` as `branch.<name>.yarpParent`).
 - **Per-repo caching** inside `detect_parent_branch` if repeated detection shows up in profiles.

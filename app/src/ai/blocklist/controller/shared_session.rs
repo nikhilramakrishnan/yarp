@@ -413,7 +413,7 @@ impl BlocklistAIController {
                     warp_token_usage: conversation
                         .token_usage()
                         .iter()
-                        .filter_map(|u| u.to_proto_warp_usage())
+                        .filter_map(|u| u.to_proto_yarp_usage())
                         .collect(),
                     byok_token_usage: conversation
                         .token_usage()

@@ -1,5 +1,5 @@
 // Hard coded constants to divide keybindings into their respective categories/sections.
-// This should always align with documentation: https://docs.warp.dev/getting-started/keyboard-shortcuts
+// This should always align with documentation: https://github.com/hotfuzz/yarp/getting-started/keyboard-shortcuts
 
 use yarpui::keymap::Keystroke;
 
@@ -107,9 +107,9 @@ pub const TERMINAL_KEYBINDINGS: &[&str] = &[
 
 pub const FUNDAMENTALS_KEYBINDINGS: &[&str] = &[
     "workspace:new_window",
-    "workspace:hide_warp",
+    "workspace:hide_yarp",
     "workspace:hide_others",
-    "workspace:quit_warp",
+    "workspace:quit_yarp",
     "workspace:minimize",
 ];
 
@@ -123,7 +123,7 @@ pub fn get_additional_keybindings() -> Vec<CommandBinding> {
             Some(Keystroke::parse("cmd-n").expect("Valid keystroke")),
         ),
         CommandBinding::new(
-            "workspace:hide_warp".into(),
+            "workspace:hide_yarp".into(),
             "Hide Yarp".into(),
             Some(Keystroke::parse("cmd-h").expect("Valid keystroke")),
         ),
@@ -133,7 +133,7 @@ pub fn get_additional_keybindings() -> Vec<CommandBinding> {
             Some(Keystroke::parse("alt-cmd-h").expect("Valid keystroke")),
         ),
         CommandBinding::new(
-            "workspace:quit_warp".into(),
+            "workspace:quit_yarp".into(),
             "Quit Yarp".into(),
             Some(Keystroke::parse("cmd-q").expect("Valid keystroke")),
         ),

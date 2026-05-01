@@ -2660,7 +2660,7 @@ impl TypedActionView for AISettingsPageView {
             AISettingsPageAction::ToggleYarpDriveContext => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     let _ = settings
-                        .warp_drive_context_enabled
+                        .yarp_drive_context_enabled
                         .toggle_and_save_value(ctx);
                 });
                 ctx.notify();
@@ -3431,7 +3431,7 @@ impl SettingsWidget for UsageWidget {
                 }
             } else {
                 vec![
-                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@warp.dev"),
+                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@yarp.dev"),
                     FormattedTextFragment::plain_text(" for more AI usage."),
                 ]
             }
@@ -4365,7 +4365,7 @@ impl AgentsWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/codebase-context",
+                "https://github.com/hotfuzz/yarp/agent-platform/capabilities/codebase-context",
             ),
         ];
         let description = Container::new(
@@ -4443,7 +4443,7 @@ impl AgentsWidget {
                 FormattedTextFragment::plain_text(" or "),
                 FormattedTextFragment::hyperlink(
                     "learn more about MCPs.",
-                    "https://docs.warp.dev/agent-platform/capabilities/mcp",
+                    "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp",
                 ),
             ];
 
@@ -4739,7 +4739,7 @@ impl AIInputWidget {
                         FormattedTextFragment::plain_text("Encountered an incorrect detection? "),
                         FormattedTextFragment::hyperlink(
                             "Let us know",
-                            "https://warpdotdev.typeform.com/to/offrTIpq",
+                            "https://hotfuzz.typeform.com/to/offrTIpq",
                         ),
                     ]
                 });
@@ -4798,7 +4798,7 @@ impl AIInputWidget {
                     ),
                     FormattedTextFragment::hyperlink(
                         "Let us know",
-                        "https://warpdotdev.typeform.com/to/offrTIpq",
+                        "https://hotfuzz.typeform.com/to/offrTIpq",
                     ),
                 ]
             });
@@ -4907,7 +4907,7 @@ impl SettingsWidget for MCPServersWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/mcp",
+                "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp",
             ),
         ];
 
@@ -4953,7 +4953,7 @@ impl SettingsWidget for MCPServersWidget {
                                 ),
                                 FormattedTextFragment::hyperlink(
                                     "See supported providers.",
-                                    "https://docs.warp.dev/agent-platform/capabilities/mcp#file-based-mcp-servers",
+                                    "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp#file-based-mcp-servers",
                                 ),
                             ]
                         });
@@ -5038,7 +5038,7 @@ impl AIFactWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/rules",
+                "https://github.com/hotfuzz/yarp/agent-platform/capabilities/rules",
             ),
         ];
         let description = Container::new(
@@ -5104,7 +5104,7 @@ impl AIFactWidget {
         let toggle = render_ai_setting_toggle::<YarpDriveContextEnabled>(
             "Yarp Drive as agent context",
             AISettingsPageAction::ToggleYarpDriveContext,
-            *ai_settings.warp_drive_context_enabled,
+            *ai_settings.yarp_drive_context_enabled,
             ai_settings.is_any_ai_enabled(app),
             self.yarp_drive_context_toggle.clone(),
             &view.local_only_icon_tooltip_states,
@@ -6176,7 +6176,7 @@ impl ApiKeysWidget {
                 // to sales to enable BYOK on their existing plan.
                 if team.billing_metadata.customer_type == CustomerType::Enterprise {
                     vec![
-                        FormattedTextFragment::hyperlink("Contact sales", "mailto:sales@warp.dev"),
+                        FormattedTextFragment::hyperlink("Contact sales", "mailto:sales@yarp.dev"),
                         FormattedTextFragment::plain_text(
                             " to enable bringing your own API keys on your Enterprise plan.",
                         ),

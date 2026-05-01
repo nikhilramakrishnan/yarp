@@ -1,17 +1,17 @@
 use crate::{error::UserFacingError, schema};
 
 #[derive(cynic::QueryVariables, Debug)]
-pub struct ListWarpDevImagesVariables {}
+pub struct ListYarpDevImagesVariables {}
 
 #[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "RootQuery", variables = "ListWarpDevImagesVariables")]
-pub struct ListWarpDevImages {
-    #[cynic(rename = "listWarpDevImages")]
-    pub list_warp_dev_images: ListWarpDevImagesResult,
+#[cynic(graphql_type = "RootQuery", variables = "ListYarpDevImagesVariables")]
+pub struct ListYarpDevImages {
+    #[cynic(rename = "listYarpDevImages")]
+    pub list_yarp_dev_images: ListYarpDevImagesResult,
 }
 
 #[derive(cynic::QueryFragment, Debug, Clone)]
-pub struct ListWarpDevImagesOutput {
+pub struct ListYarpDevImagesOutput {
     pub images: Vec<ImageTag>,
 }
 
@@ -23,13 +23,13 @@ pub struct ImageTag {
 }
 
 #[derive(cynic::InlineFragments, Debug)]
-pub enum ListWarpDevImagesResult {
-    ListWarpDevImagesOutput(ListWarpDevImagesOutput),
+pub enum ListYarpDevImagesResult {
+    ListYarpDevImagesOutput(ListYarpDevImagesOutput),
     UserFacingError(UserFacingError),
     #[cynic(fallback)]
     Unknown,
 }
 
 crate::client::define_operation! {
-    ListWarpDevImages(ListWarpDevImagesVariables) -> ListWarpDevImages;
+    ListYarpDevImages(ListYarpDevImagesVariables) -> ListYarpDevImages;
 }

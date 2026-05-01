@@ -1,6 +1,6 @@
 # Remote Server File Tree Protocol — Tech Spec
 
-Linear: [APP-3788](https://linear.app/warpdotdev/issue/APP-3788)
+Linear: [APP-3788](https://linear.app/yarpdotdev/issue/APP-3788)
 
 ## Problem
 
@@ -13,7 +13,7 @@ The remote server binary (`crates/remote_server`) currently only handles `Initia
 
 ### Remote server (`crates/remote_server`)
 - `ServerModel` singleton handles stdin/stdout protobuf I/O
-- `run()` boots a headless warpui app with only `ServerModel`
+- `run()` boots a headless yarpui app with only `ServerModel`
 - Proto schema has only `Initialize`/`InitializeResponse`
 
 ### repo_metadata crate

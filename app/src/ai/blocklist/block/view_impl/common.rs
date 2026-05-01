@@ -76,7 +76,7 @@ use crate::{
                 TableSectionHandles,
             },
             code_block::{
-                render_code_block_plain, render_code_block_with_warp_text, CodeBlockOptions,
+                render_code_block_plain, render_code_block_with_yarp_text, CodeBlockOptions,
                 CodeSnippetButtonHandles,
             },
             inline_action::{
@@ -558,7 +558,7 @@ pub fn render_yarping_indicator_base(
 
     let appearance = Appearance::as_ref(app);
 
-    let should_indent_tip_for_warp_glyph = matches!(
+    let should_indent_tip_for_yarp_glyph = matches!(
         yarping_indicator_text,
         MaybeShimmeringText::Shimmering { .. }
     );
@@ -602,7 +602,7 @@ pub fn render_yarping_indicator_base(
         // Our yarping indicator text prepends the Yarp glyph (and a space) to the label.
         // If we render the tip directly underneath, it will align to the glyph instead of
         // the start of the actual yarping text.
-        let sub_element = if should_indent_tip_for_warp_glyph {
+        let sub_element = if should_indent_tip_for_yarp_glyph {
             let font_size = appearance.monospace_font_size() - 3.;
             let glyph_indent = Text::new_inline(
                 format!("{YARP_GLYPH} "),
@@ -2733,7 +2733,7 @@ pub fn render_code_output_section<A: Action>(
     let allow_execution = props.language.is_none_or(|lang| lang.is_shell());
 
     match props.editor_view {
-        Some(view) => render_code_block_with_warp_text(
+        Some(view) => render_code_block_with_yarp_text(
             CodeBlockOptions {
                 on_open: match (props.open_code_block_action_factory, open_source.clone()) {
                     #[allow(unused)]

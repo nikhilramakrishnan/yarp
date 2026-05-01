@@ -1,16 +1,16 @@
 ---
 name: feedback
-description: Turn rough feedback about the Warp app into a filed GitHub issue or duplicate-issue response for `warpdotdev/warp`. Use when the user shares a Warp bug report, regression, confusing UX note, feature gap, or short complaint and wants it clarified into reproduction steps, expected vs actual behavior, concrete impact, and grounded source references from local Warp repos when available.
+description: Turn rough feedback about the Yarp app into a filed GitHub issue or duplicate-issue response for `hotfuzz/yarp`. Use when the user shares a Yarp bug report, regression, confusing UX note, feature gap, or short complaint and wants it clarified into reproduction steps, expected vs actual behavior, concrete impact, and grounded source references from local Yarp repos when available.
 ---
 
 # Feedback
 
-Turn rough Warp app feedback into a crisp filed issue or duplicate-issue response for `warpdotdev/warp`.
+Turn rough Yarp app feedback into a crisp filed issue or duplicate-issue response for `hotfuzz/yarp`.
 
-Treat Warp client, Warp app, Warp terminal, and Warp UX feedback as `warpdotdev/warp` unless the user clearly asks for a different destination.
+Treat Yarp client, Yarp app, Yarp terminal, and Yarp UX feedback as `hotfuzz/yarp` unless the user clearly asks for a different destination.
 
 ## Overview
-- Use the `gh` CLI to search for and fetch code from `warpdotdev/warp` when product or implementation context would improve the report.
+- Use the `gh` CLI to search for and fetch code from `hotfuzz/yarp` when product or implementation context would improve the report.
 - If those repos are not available, draft the issue from the user's report alone rather than blocking on more context.
 - This skill is strictly for issue filing and duplicate detection. Never modify code, generate patches, propose implementation diffs, or open a pull request as part of this workflow.
 - If you cannot file an issue, say so explicitly in the response instead of attempting another side effect.
@@ -23,7 +23,7 @@ This skill runs in environments where Yarp source code may be present in the cur
 - **Never write, edit, or delete any source file.** Do not use Edit, Write, or any tool that modifies files on disk, even if asked to do so as part of filing feedback or "while you're in the code."
 - **Never create or modify any git artifact.** Do not stage files, create commits, create branches, produce patches, or modify any git state.
 - **Local source code is read-only context at most.** You may read local Yarp source files (e.g., with Read or grep) only to find concrete file paths, symbol names, or setting names that would make a source reference more precise. Never read local files to produce a code fix or diff.
-- **Prefer `gh` CLI for code lookups.** Use `gh` to search and fetch code from `warpdotdev/warp` rather than reading the local checkout when both are available.
+- **Prefer `gh` CLI for code lookups.** Use `gh` to search and fetch code from `hotfuzz/yarp` rather than reading the local checkout when both are available.
 - **The presence of local source code is not an invitation to fix it.** Observing that you are inside a Yarp source directory changes nothing about the permitted outputs of this skill: issue filed, duplicate found, or explicit refusal.
 
 Load the bundled reference files only when relevant:
@@ -43,7 +43,7 @@ Load the bundled reference files only when relevant:
   - General venting, praise, or commentary with no actionable product signal.
   - Questions about third-party tools or the user's own shell, machine, or network configuration that are not about Yarp's behavior.
   - Anything the user explicitly says is not about Yarp, or that they just want to talk through.
-- When you decline, respond in one or two sentences that (a) say you won't file an issue, (b) name the reason in plain language, and (c) point the user at the right channel: account/billing/support concerns go to the in-app Help menu or `support@warp.dev`, community discussion goes to the Warp Slack community, and security reports go to `security@warp.dev`. Do not apologize performatively and do not offer to retry the same flow.
+- When you decline, respond in one or two sentences that (a) say you won't file an issue, (b) name the reason in plain language, and (c) point the user at the right channel: account/billing/support concerns go to the in-app Help menu or `support@yarp.dev`, community discussion goes to the Yarp Slack community, and security reports go to `security@yarp.dev`. Do not apologize performatively and do not offer to retry the same flow.
 - Only if the request is in scope, classify it as `bug`, `regression`, `ux issue`, or `feature request` before drafting.
 
 ### 2. Ask only for missing facts that materially improve the draft
@@ -59,7 +59,7 @@ Load the bundled reference files only when relevant:
 ### 3. Check whether the feature or capability is already supported
 
 - Before concluding that something is missing from Yarp (feature requests, "it doesn't do X" complaints, "I wish it could Y" asks, or any UX complaint that could be explained by an existing setting or workflow), you **must** consult the docs first.
-- Call the `search_warp_documentation` tool with the user's own phrasing. If the first query is vague or returns nothing actionable, try one shorter variant that keeps the same user-visible problem.
+- Call the `search_yarp_documentation` tool with the user's own phrasing. If the first query is vague or returns nothing actionable, try one shorter variant that keeps the same user-visible problem.
 - If the search returns a clear match, respond with a concise, direct answer that cites the docs page (title + URL) and explains how the existing functionality addresses the user's ask. Do not file an issue and do not invoke the helper script.
 - If the search returns an ambiguous or partial match, briefly summarize what does exist and ask one clarifying question about whether that satisfies the user's intent before deciding whether to file.
 - If the search turns up nothing relevant, proceed to step 4. Do not invent workarounds, and do not imply a feature is missing when the docs already answer the question.
@@ -67,8 +67,8 @@ Load the bundled reference files only when relevant:
 
 ### 4. Ground the report in product and code context when helpful
 
-- Search the `warpdotdev/warp` repo via the `gh` CLI for matching product language, expected workflows, setting names, or UX intent when that context would make the draft more actionable.
-- Search the `warpdotdev/warp` repo via the `gh` CLI for matching components, settings surfaces, feature flags, and likely code paths when implementation context would help triage.
+- Search the `hotfuzz/yarp` repo via the `gh` CLI for matching product language, expected workflows, setting names, or UX intent when that context would make the draft more actionable.
+- Search the `hotfuzz/yarp` repo via the `gh` CLI for matching components, settings surfaces, feature flags, and likely code paths when implementation context would help triage.
 - Add source references only when they point to real files, symbols, settings names, or spec text that plausibly relate to the feedback.
 - Never invent a root cause just to make the report sound complete.
 
@@ -98,14 +98,14 @@ Load the bundled reference files only when relevant:
 
 ### 7. Check for likely duplicates before filing
 
-- Before invoking `scripts/file_feedback_issue.py`, search issues in `warpdotdev/warp` for likely title matches using the drafted title as the primary query.
+- Before invoking `scripts/file_feedback_issue.py`, search issues in `hotfuzz/yarp` for likely title matches using the drafted title as the primary query.
 - Use a lightweight title-based check only. Prefer precision over recall, and do not run a broad semantic fishing expedition.
 - Start with the exact drafted title. If the exact title returns no clear title match, try one shorter normalized variant that removes filler words while preserving the same user-visible problem.
 - A suitable command is:
 
 ```bash
 GH_PAGER=cat gh issue list \
-  --repo warpdotdev/warp \
+  --repo hotfuzz/yarp \
   --state all \
   --limit 10 \
   --search "<title> in:title" \
@@ -163,11 +163,11 @@ Section rules:
 
 ## Output
 
-Use the bundled helper script `scripts/file_feedback_issue.py` to file the issue in `warpdotdev/warp` instead of calling `gh` directly. The script requires a `--use` flag that selects the filing method explicitly:
+Use the bundled helper script `scripts/file_feedback_issue.py` to file the issue in `hotfuzz/yarp` instead of calling `gh` directly. The script requires a `--use` flag that selects the filing method explicitly:
 
 - `--use gh`: creates the issue with `gh issue create`. Requires `gh` to be installed and authenticated for `github.com`. Prints a `created` result with `issue_url` on success, or `unavailable` when `gh` is missing or unauthenticated. Does not silently fall back to the browser.
 - `--use browser`: opens the prefilled new-issue page in the browser so the user can upload image attachments via GitHub's web UI. Prints a `browser_opened` result on success. If the browser cannot be opened, automatically falls back to `gh issue create` and prints a `created` result with `browser_unavailable: true`; if both are unavailable, prints `failed`. Use this whenever the user attached one or more images to the query.
-- The script always targets `warpdotdev/warp` on `github.com`.
+- The script always targets `hotfuzz/yarp` on `github.com`.
 
 Write the final body to a temporary UTF-8 file and pass the final title directly as an argument. When the user has no image attachments:
 

@@ -33,12 +33,12 @@ use crate::workspaces::user_profiles::UserProfiles;
 use crate::CloudObjectTypeAndId;
 use cynic::QueryBuilder;
 use yarp_graphql::queries::get_oauth_connect_tx_status::OauthConnectTxStatus;
-use yarp_graphql::queries::list_warp_dev_images::{
-    ListWarpDevImages, ListWarpDevImagesResult, ListWarpDevImagesVariables,
+use yarp_graphql::queries::list_yarp_dev_images::{
+    ListYarpDevImages, ListYarpDevImagesResult, ListYarpDevImagesVariables,
 };
 use yarp_graphql::queries::user_repo_auth_status::UserRepoAuthStatusEnum;
 
-const YARP_DEV_ENVIRONMENTS_REPO: &str = "https://github.com/warpdotdev/warp-dev-environments";
+const YARP_DEV_ENVIRONMENTS_REPO: &str = "https://github.com/hotfuzz/yarp-dev-environments";
 
 /// Parse repo strings in the format "owner/repo" into GithubRepo objects.
 fn parse_repos(repo_strings: Vec<String>) -> anyhow::Result<Vec<GithubRepo>> {
@@ -148,12 +148,12 @@ impl EnvironmentCommandRunner {
     fn list_images(&self, global_options: GlobalOptions, ctx: &mut ModelContext<Self>) {
         let server_api = ServerApiProvider::as_ref(ctx).get();
 
-        let operation = ListWarpDevImages::build(ListWarpDevImagesVariables {});
+        let operation = ListYarpDevImages::build(ListYarpDevImagesVariables {});
         let fetch_images = async move { server_api.send_graphql_request(operation, None).await };
 
         ctx.spawn(fetch_images, move |_, result, ctx| match result {
-            Ok(response) => match response.list_warp_dev_images {
-                ListWarpDevImagesResult::ListWarpDevImagesOutput(output) => {
+            Ok(response) => match response.list_yarp_dev_images {
+                ListYarpDevImagesResult::ListYarpDevImagesOutput(output) => {
                     let image_infos: Vec<_> = output
                         .images
                         .into_iter()
@@ -176,7 +176,7 @@ impl EnvironmentCommandRunner {
                     output::print_list(image_infos, global_options.output_format);
                     ctx.terminate_app(yarpui::platform::TerminationMode::ForceTerminate, None);
                 }
-                ListWarpDevImagesResult::UserFacingError(_) | ListWarpDevImagesResult::Unknown => {
+                ListYarpDevImagesResult::UserFacingError(_) | ListYarpDevImagesResult::Unknown => {
                     super::report_fatal_error(anyhow::anyhow!("Failed to fetch images"), ctx);
                 }
             },
@@ -345,12 +345,12 @@ impl EnvironmentCommandRunner {
         const CUSTOM_IMAGE_OPTION: &str = "Custom Docker image";
 
         let server_api = ServerApiProvider::as_ref(ctx).get();
-        let operation = ListWarpDevImages::build(ListWarpDevImagesVariables {});
+        let operation = ListYarpDevImages::build(ListYarpDevImagesVariables {});
         let fetch_images = async move { server_api.send_graphql_request(operation, None).await };
 
         ctx.spawn(fetch_images, move |_, result, ctx| match result {
-            Ok(response) => match response.list_warp_dev_images {
-                ListWarpDevImagesResult::ListWarpDevImagesOutput(output) => {
+            Ok(response) => match response.list_yarp_dev_images {
+                ListYarpDevImagesResult::ListYarpDevImagesOutput(output) => {
                     if output.images.is_empty() {
                         super::report_fatal_error(
                             anyhow::anyhow!("No Yarp dev images available."),
@@ -363,7 +363,7 @@ impl EnvironmentCommandRunner {
                         "No docker image provided, please select a base image.\n"
                     );
                     println!(
-                        "All warpdotdev images contain Python and Node, in addition to language-specific tooling. For more info: {}\n",
+                        "All hotfuzz images contain Python and Node, in addition to language-specific tooling. For more info: {}\n",
                         YARP_DEV_ENVIRONMENTS_REPO
                     );
 
@@ -405,7 +405,7 @@ impl EnvironmentCommandRunner {
 
                     continuation(final_image, ctx);
                 }
-                ListWarpDevImagesResult::UserFacingError(_) | ListWarpDevImagesResult::Unknown => {
+                ListYarpDevImagesResult::UserFacingError(_) | ListYarpDevImagesResult::Unknown => {
                     super::report_fatal_error(
                         anyhow::anyhow!("Failed to fetch list of base images"),
                         ctx,

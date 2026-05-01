@@ -1,7 +1,7 @@
 # Fix CLI Agent Trailing Blank Line Trimming Edge Cases
 ## 1. Problem
 APP-4004 trimmed trailing blank rows from active CLI agent blocks by capping `BlockGrid::len_displayed()` at `GridHandler::content_len()`. Testing found two edge cases:
-- If the PTY cursor is positioned in rows that are trimmed out of the output height, Warp still renders the cursor at that translated row. Because the block height no longer includes those rows, the cursor can render outside the block and underneath adjacent UI such as the CLI agent toolbar.
+- If the PTY cursor is positioned in rows that are trimmed out of the output height, Yarp still renders the cursor at that translated row. Because the block height no longer includes those rows, the cursor can render outside the block and underneath adjacent UI such as the CLI agent toolbar.
 - Claude Code slash commands still leave visible empty rows in at least one flow. Typing `/` causes Claude to output extra rows for the suggestions menu. When `/` is cleared and the menu is gone, the rows can remain visually empty but still affect displayed height.
 The follow-up should keep the displayed output height, cursor rendering, and the content-length heuristic aligned around the same definition of “displayed content.”
 ## 2. Relevant code
@@ -79,7 +79,7 @@ Recommended tests:
   - Run Claude Code, type `/` to open slash-command suggestions, then clear `/`. The suggestion-menu rows collapse once Claude has cleared them.
   - Move a CLI agent cursor into blank rows below content. The output block height remains trimmed, and no cursor appears below the block or underneath the CLI agent toolbar.
   - Run Codex/OpenCode smoke flows from APP-4004 to confirm the original trailing-row trimming still works.
-Because this is a UI-rendering change, run the normal targeted Rust tests first, then visually verify the active CLI agent block behavior in Warp. If implementation changes rendering code, invoke the UI verification workflow before considering the implementation complete.
+Because this is a UI-rendering change, run the normal targeted Rust tests first, then visually verify the active CLI agent block behavior in Yarp. If implementation changes rendering code, invoke the UI verification workflow before considering the implementation complete.
 ## 7. Risks and mitigations
 - **Whitespace-only content may be intentional.** Restrict the new predicate to active CLI-agent trimming and keep the feature flag in place. Treating whitespace-only rows as trimmable is appropriate for the observed transient menu behavior but should not change terminal storage semantics globally.
 - **Styled blank rows can be visually meaningful.** If testing finds a CLI agent intentionally uses background-only rows as persistent UI, refine the predicate to count visibly non-default background runs while still ignoring cleared-row remnants. Start with glyph-visible content because it fixes the known Claude Code case with the smallest scope.

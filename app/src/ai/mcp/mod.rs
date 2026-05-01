@@ -145,7 +145,7 @@ mod tests {
     use super::{mcp_provider_from_file_path, MCPProvider};
 
     #[test]
-    fn mcp_provider_from_file_path_recognizes_warp_home_path() {
+    fn mcp_provider_from_file_path_recognizes_yarp_home_path() {
         if let Some(yarp_home_mcp_config_file_path) =
             yarp_core::paths::yarp_home_mcp_config_file_path()
         {

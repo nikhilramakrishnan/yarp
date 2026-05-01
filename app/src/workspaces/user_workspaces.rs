@@ -1462,7 +1462,7 @@ impl UserWorkspaces {
     /// (`Enable`/`Disable`) or editable (`RespectUserSetting`).
     pub fn get_agent_attribution_setting(&self) -> AdminEnablementSetting {
         self.current_team()
-            .map(|team| team.organization_settings.enable_warp_attribution.clone())
+            .map(|team| team.organization_settings.enable_yarp_attribution.clone())
             .unwrap_or_default()
     }
 

@@ -350,7 +350,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       fi
       # Set the title. Be sure to make the title a %s argument to prevent title content from ending up
       # in the block output, see:
-      # https://linear.app/warpdotdev/issue/WAR-6064/bash-commands-having-esc-write-the-command-to-the-block-output
+      # https://github.com/hotfuzz/yarp/issue/WAR-6064/bash-commands-having-esc-write-the-command-to-the-block-output
       printf "\033]0;%s\a" "$title"
     }
 
@@ -519,7 +519,7 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
         # Flush history
         history -a
 
-        # Reset the custom kill-whole-line binding as the user's bashrc (which is sourced after bashrc_warp)
+        # Reset the custom kill-whole-line binding as the user's bashrc (which is sourced after bashrc_yarp)
         # could have added another bind. This won't have any user-impact because these shortcuts are only run
         # in the context of the bash editor, which isn't displayed in Yarp.
         bind -r '"\C-p"'
@@ -905,10 +905,10 @@ if [ -z "$YARP_BOOTSTRAPPED" ]; then
       fi
     }
 
-    # Check if the warp apt source file has been renamed to `warpdotdev.list.distUpgrade` due to an ubuntu version update.
-    # If this occurred, we want to rename the source file back to `warpdotdev.list` to ensure updates can proceed.
-    # We purposefully skip this if either the `warpdotdev.list` file already exists (indicating that the user has already
-    # done this themselves) _or_ if a `warpdotdev.sources` file exists (which is the new Deb822 format for source files).
+    # Check if the yarp apt source file has been renamed to `yarp.list.distUpgrade` due to an ubuntu version update.
+    # If this occurred, we want to rename the source file back to `yarp.list` to ensure updates can proceed.
+    # We purposefully skip this if either the `yarp.list` file already exists (indicating that the user has already
+    # done this themselves) _or_ if a `yarp.sources` file exists (which is the new Deb822 format for source files).
     # The `.sources` file could only exist if a user manually created it; Ubuntu doesn't create one automatically for the
     # yarp source file due to a bug in its update flow where it considers our source file to be "invalid" because it
     # contains a `signed-by` key.
@@ -1139,7 +1139,7 @@ esac
     # the shell, but once bootstrap has completes, we want the value to be what
     # it would have been if we hadn't set an initial value.
     #
-    # For more context, see: https://github.com/warpdotdev/Warp/issues/1262
+    # For more context, see: https://github.com/hotfuzz/yarp/issues/1262
     if [[ $HISTFILESIZE == $YARP_INITIAL_HISTFILESIZE ]]; then
         unset HISTFILESIZE
     fi
@@ -1192,7 +1192,7 @@ esac
     # bash-preexec uses a DEBUG trap to trigger the preexec functions, it will run our preexec
     # functions before the command at PROMPT_COMMAND[1], PROMPT_COMMAND[2], etc. This means our
     # Preexec hook gets called without the user submitting a command, putting the input block into
-    # a broken state, e.g. see https://github.com/warpdotdev/Warp/issues/2636
+    # a broken state, e.g. see https://github.com/hotfuzz/yarp/issues/2636
     # If they end up fixing this, we may be able to remove this at some point, check this:
     #   https://github.com/rcaloras/bash-preexec/issues/130
     #

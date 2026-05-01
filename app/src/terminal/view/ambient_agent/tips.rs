@@ -73,7 +73,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
         ),
         CloudModeTip::new(
             "Run agents from GitHub Actions using the `fuzz-agent-action`.",
-            Some("https://github.com/warpdotdev/fuzz-agent-action"),
+            Some("https://github.com/hotfuzz/fuzz-agent-action"),
         ),
         CloudModeTip::new(
             "Call the Fuzz REST API to trigger agents from any backend service or internal tool.",

@@ -25,7 +25,7 @@ When the flag is **off**, both headers render identically to master.
 
 - Call site dispatches to `render_header` (flag on) or `render_header_legacy` (flag off)
 - **New layout** replaces the static "Code review" title with:
-  - **Repo path** — tilde-shortened (e.g. `~/Repos/warp-internal:`), rendered in semibold sub-text color
+  - **Repo path** — tilde-shortened (e.g. `~/Repos/yarp-internal:`), rendered in semibold sub-text color
   - **Branch name** — read from `DiffStateModel` via `get_diff_state_model()`
   - **Diff stats** — read from `CodeReviewView::loaded_diff_stats()`
 - Uses shared `CONTENT_LEFT_MARGIN` / `CONTENT_RIGHT_MARGIN` constants so the header aligns with the content area below

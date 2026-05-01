@@ -10,7 +10,7 @@ We are reshaping the Cloud Mode composing UI to match the new Figma design. Toda
 2. The editor/input box.
 3. A separate `AgentInputFooter` below the input box containing the environment selector, mic/file/voice buttons, chips, model/profile selector, etc.
 
-V2 changes the layout: a new **top row above the input box** that contains a host selector ("Warp"), the restyled harness selector ("Oz"), and (out of scope for this PR) an MCP-config button; and a **taller input box** whose **control footer is rendered inside the same rounded container**, holding the environment selector, voice button, image button, and profile/model selector. The legacy `AgentInputFooter` is not rendered in V2.
+V2 changes the layout: a new **top row above the input box** that contains a host selector ("Yarp"), the restyled harness selector ("Oz"), and (out of scope for this PR) an MCP-config button; and a **taller input box** whose **control footer is rendered inside the same rounded container**, holding the environment selector, voice button, image button, and profile/model selector. The legacy `AgentInputFooter` is not rendered in V2.
 
 This is gated behind a new feature flag `CloudModeInputV2`. When the flag is off, V1 behavior is unchanged.
 
@@ -43,17 +43,17 @@ No hex literals in client code.
 ### 1. Feature flag
 
 - `crates/yarp_features/src/lib.rs`: add `FeatureFlag::CloudModeInputV2`; add to `DOGFOOD_FLAGS`.
-- `app/Cargo.toml`: add `cloud_mode_input_v2 = ["cloud_mode"]` and include it in the default Warp `[features]` list.
+- `app/Cargo.toml`: add `cloud_mode_input_v2 = ["cloud_mode"]` and include it in the default Yarp `[features]` list.
 - `app/src/lib.rs`: wire `#[cfg(feature = "cloud_mode_input_v2")] FeatureFlag::CloudModeInputV2` into the compile-time flag list.
 
 Per `add-feature-flag` skill.
 
 ### 2. `HostSelector` (new view)
 
-New file `app/src/terminal/view/ambient_agent/host_selector.rs`. Mirrors `HarnessSelector`'s shape (ActionButton + generic `Menu<A>` positioned via `MenuPositioningProvider`), but its menu is currently stubbed with a single "Warp" entry.
+New file `app/src/terminal/view/ambient_agent/host_selector.rs`. Mirrors `HarnessSelector`'s shape (ActionButton + generic `Menu<A>` positioned via `MenuPositioningProvider`), but its menu is currently stubbed with a single "Yarp" entry.
 
 ```rust path=null start=null
-pub enum Host { Warp }
+pub enum Host { Yarp }
 
 pub enum HostSelectorAction { ToggleMenu, SelectHost(Host) }
 pub enum HostSelectorEvent   { MenuVisibilityChanged { open: bool } }

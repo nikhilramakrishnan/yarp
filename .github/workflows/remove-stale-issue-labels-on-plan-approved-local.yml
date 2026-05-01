@@ -12,7 +12,7 @@ jobs:
       contents: read
       issues: write
       pull-requests: read
-    uses: warpdotdev/oz-for-oss/.github/workflows/remove-stale-issue-labels-on-plan-approved.yml@main
+    uses: hotfuzz/oz-for-oss/.github/workflows/remove-stale-issue-labels-on-plan-approved.yml@main
     with:
       pr_number: ${{ github.event.pull_request.number }}
     secrets:

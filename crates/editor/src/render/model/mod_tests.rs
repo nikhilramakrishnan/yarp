@@ -1397,7 +1397,7 @@ fn test_link_at_offset_uses_cached_cell_links() {
                 FormattedTextFragment {
                     text: "bc".into(),
                     styles: FormattedTextStyles {
-                        hyperlink: Some(Hyperlink::Url("https://warp.dev".into())),
+                        hyperlink: Some(Hyperlink::Url("https://github.com/hotfuzz/yarp".into())),
                         ..Default::default()
                     },
                 },
@@ -1412,7 +1412,7 @@ fn test_link_at_offset_uses_cached_cell_links() {
     };
     table.cell_links = vec![
         vec![
-            vec![ParsedUrl::new(1..3, "https://warp.dev".into())],
+            vec![ParsedUrl::new(1..3, "https://github.com/hotfuzz/yarp".into())],
             vec![],
         ],
         vec![vec![], vec![]],
@@ -1420,11 +1420,11 @@ fn test_link_at_offset_uses_cached_cell_links() {
 
     assert_eq!(
         table.link_at_offset(CharOffset::from(1)),
-        Some("https://warp.dev".into())
+        Some("https://github.com/hotfuzz/yarp".into())
     );
     assert_eq!(
         table.link_at_offset(CharOffset::from(2)),
-        Some("https://warp.dev".into())
+        Some("https://github.com/hotfuzz/yarp".into())
     );
     assert_eq!(table.link_at_offset(CharOffset::from(0)), None);
     assert_eq!(table.link_at_offset(CharOffset::from(3)), None);

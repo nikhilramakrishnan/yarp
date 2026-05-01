@@ -224,7 +224,7 @@ impl Listener {
     // is finished is _not_ polled when the websocket is closed by the server and the CPU is asleep.
     // To get around this, we manually abort the future (effectively closing the websocket)
     // when the CPU goes to sleep and restart it when it's awakened.
-    // https://linear.app/warpdotdev/issue/CLD-172/websocket-hangs-when-closed-during-cpu-sleep
+    // https://linear.app/hotfuzz/issue/CLD-172/websocket-hangs-when-closed-during-cpu-sleep
     fn handle_cpu_event(&mut self, event: &SystemStatsEvent, ctx: &mut ModelContext<Self>) {
         match event {
             SystemStatsEvent::CpuWasAwakened => {
@@ -237,7 +237,7 @@ impl Listener {
                 // this handler just restarts the websocket so that `on_subscription_ready`
                 // can decide whether to refresh based on the sleep-time gap.
                 if self.should_subscribe_to_updates {
-                    self.get_warp_drive_updates(ctx);
+                    self.get_yarp_drive_updates(ctx);
                 }
             }
             SystemStatsEvent::CpuWillSleep => {
@@ -264,7 +264,7 @@ impl Listener {
                     }
 
                     if self.should_subscribe_to_updates {
-                        self.get_warp_drive_updates(ctx);
+                        self.get_yarp_drive_updates(ctx);
                     }
                 }
 
@@ -281,7 +281,7 @@ impl Listener {
     }
 
     fn start_listener(&mut self, ctx: &mut ModelContext<Self>) {
-        // yarp: there is no rtc.app.warp.dev websocket to subscribe to, and
+        // yarp: there is no rtc.app.yarp.dev websocket to subscribe to, and
         // no Yarp Drive backend to receive updates from. Skip the listener
         // entirely — `OssObjectClient` (Phase 8) services local-only object
         // reads from `~/.yarp/objects/`.
@@ -350,7 +350,7 @@ impl Listener {
         }
     }
 
-    fn get_warp_drive_updates(&mut self, ctx: &mut ModelContext<Self>) {
+    fn get_yarp_drive_updates(&mut self, ctx: &mut ModelContext<Self>) {
         let object_client = self.cloud_objects_client.clone();
         let (message_sender, message_receiver) = async_channel::unbounded();
         let subscription_ready_tx = self.subscription_ready_tx.clone();
@@ -372,7 +372,7 @@ impl Listener {
         );
 
         // Start the future that sends messages over the message_sender stream.
-        // TODO: we should investigate having get_warp_drive_updates (and in turn,
+        // TODO: we should investigate having get_yarp_drive_updates (and in turn,
         // start_graphql_streaming_operation) return an `impl Stream` so that we don't
         // need to spawn and then spawn_stream_local. For this, we'll need an equivalent
         // spawn_stream (which is like spawn_stream_local but polls the futures in the stream
@@ -386,7 +386,7 @@ impl Listener {
                     let start_time = Instant::now();
                     log::info!("Attempting to start websocket connection in CloudObjects::Listener");
                     let res = object_client
-                        .get_warp_drive_updates(
+                        .get_yarp_drive_updates(
                             message_sender,
                             subscription_ready_tx,
                         ).await;
@@ -411,7 +411,7 @@ impl Listener {
                         ctx.spawn(async move {
                             Timer::after(time_to_wait).await
                         }, |me, _, ctx| {
-                            me.get_warp_drive_updates(ctx);
+                            me.get_yarp_drive_updates(ctx);
                         });
                     }
                     RequestState::RequestFailedRetryPending(e) => {

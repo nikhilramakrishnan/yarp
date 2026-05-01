@@ -1,6 +1,6 @@
 # Yarp
 
-Yarp is a Hot Fuzz themed personal fork of `warp-external/warp-oss` that runs locally without the warp.dev backend and uses a bring-your-own LLM provider for AI features.
+Yarp is a Hot Fuzz themed personal fork of `warp-external/warp-oss` that runs locally without the yarp.dev backend and uses a bring-your-own LLM provider for AI features.
 
 ## Build
 
