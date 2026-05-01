@@ -90,7 +90,7 @@ impl IntentionSlide {
             .finish();
 
         let subtitle = FormattedTextElement::from_str(
-            "How do you want to work?",
+            "How do you want to police the terminal?",
             appearance.ui_font_family(),
             16.,
         )
@@ -237,7 +237,7 @@ impl IntentionSlide {
         };
 
         let description = FormattedTextElement::from_str(
-            "An agent-first experience with best in class terminal support. Get terminal and agent driven development AI features like:",
+            "Detective-grade agent assistance for fast investigation. Includes:",
             appearance.ui_font_family(),
             14.,
         )
@@ -357,7 +357,7 @@ impl IntentionSlide {
             .finish();
 
         let description = FormattedTextElement::from_str(
-            "A modern terminal optimized for speed, context, and control without AI.",
+            "Just the terminal. Fast, focused, zero cloud nonsense.",
             appearance.ui_font_family(),
             14.,
         )

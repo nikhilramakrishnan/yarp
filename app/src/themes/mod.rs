@@ -11,9 +11,9 @@ use yarp_core::ui::theme::YarpTheme;
 
 pub fn onboarding_theme_picker_themes() -> [YarpTheme; 4] {
     [
-        default_themes::phenomenon(),
         default_themes::dark_theme(),
         default_themes::light_theme(),
+        default_themes::phenomenon(),
         default_themes::adeberry(),
     ]
 }

@@ -159,7 +159,7 @@ impl IntroSlide {
 
         let subtitle_color = internal_colors::text_sub(theme, theme.background().into_solid());
         let subtitle = FormattedTextElement::from_str(
-            "A modern terminal with state of the art agents built in.",
+            "A terminal for the greater good. Local-first, BYO LLM, no nonsense.",
             appearance.ui_font_family(),
             16.,
         )

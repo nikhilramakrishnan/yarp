@@ -138,8 +138,8 @@ impl OnboardingMainView {
             AgentOnboardingEvent::ThemeSelected { theme_name } => {
                 let theme = match theme_name.as_str() {
                     "Phenomenon" => phenomenon(),
-                    "Dark" => dark_theme(),
-                    "Light" => light_theme(),
+                    "Sandford" => dark_theme(),
+                    "The Greater Good" => light_theme(),
                     "Adeberry" => adeberry(),
                     _ => return,
                 };

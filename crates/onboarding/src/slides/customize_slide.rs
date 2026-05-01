@@ -154,7 +154,7 @@ impl CustomizeUISlide {
             .finish();
 
         let subtitle = FormattedTextElement::from_str(
-            "Tailor your features and UI to your working style.",
+            "Tailor the precinct to your beat.",
             appearance.ui_font_family(),
             16.,
         )

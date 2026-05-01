@@ -323,7 +323,7 @@ impl AgentSlide {
     fn render_header(&self, appearance: &Appearance) -> Box<dyn Element> {
         let title = appearance
             .ui_builder()
-            .paragraph("Customize your Yarp Agent")
+            .paragraph("Brief your Detective")
             .with_style(UiComponentStyles {
                 font_size: Some(36.),
                 font_weight: Some(Weight::Medium),
@@ -333,7 +333,7 @@ impl AgentSlide {
             .finish();
 
         let subtitle = FormattedTextElement::from_str(
-            "Select your in-app agent's defaults.",
+            "Brief your detective.",
             appearance.ui_font_family(),
             16.,
         )

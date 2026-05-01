@@ -1,7 +1,7 @@
 use asset_macro::bundled_or_fetched_asset;
 use pathfinder_color::ColorU;
 use yarp_core::ui::{
-    color::{blend::Blend, coloru_with_opacity, OPAQUE},
+    color::{blend::Blend, coloru_with_opacity},
     theme::{
         color::CustomDetails, AnsiColor, AnsiColors, Details, Fill, HorizontalGradient, Image,
         TerminalColors, VerticalGradient, YarpTheme,
@@ -258,30 +258,83 @@ pub(super) fn adeberry_colors() -> TerminalColors {
     TerminalColors::new(ADEBERRY_NORMAL_COLORS, ADEBERRY_BRIGHT_COLORS)
 }
 
-/// Default bundled themes
+const SANDFORD_NORMAL_COLORS: AnsiColors = AnsiColors::new(
+    AnsiColor::from_u32(0x1A2438FF),
+    AnsiColor::from_u32(0x9F2A2AFF),
+    AnsiColor::from_u32(0x6B8E5CFF),
+    AnsiColor::from_u32(0xD4A24CFF),
+    AnsiColor::from_u32(0x5C7A99FF),
+    AnsiColor::from_u32(0xA66B8AFF),
+    AnsiColor::from_u32(0x7FA89EFF),
+    AnsiColor::from_u32(0xF5EFD8FF),
+);
+const SANDFORD_BRIGHT_COLORS: AnsiColors = AnsiColors::new(
+    AnsiColor::from_u32(0x4A5468FF),
+    AnsiColor::from_u32(0xC44545FF),
+    AnsiColor::from_u32(0x8AAB7AFF),
+    AnsiColor::from_u32(0xE8B85FFF),
+    AnsiColor::from_u32(0x7E97B7FF),
+    AnsiColor::from_u32(0xC18BAAFF),
+    AnsiColor::from_u32(0x9CC1B6FF),
+    AnsiColor::from_u32(0xFFFAECFF),
+);
+
+const GREATER_GOOD_NORMAL_COLORS: AnsiColors = AnsiColors::new(
+    AnsiColor::from_u32(0x2A1F14FF),
+    AnsiColor::from_u32(0x8C2424FF),
+    AnsiColor::from_u32(0x4A6B3AFF),
+    AnsiColor::from_u32(0xB07B1AFF),
+    AnsiColor::from_u32(0x3A5878FF),
+    AnsiColor::from_u32(0x804A6BFF),
+    AnsiColor::from_u32(0x4A766BFF),
+    AnsiColor::from_u32(0xE8D9B8FF),
+);
+const GREATER_GOOD_BRIGHT_COLORS: AnsiColors = AnsiColors::new(
+    AnsiColor::from_u32(0x4D3D2CFF),
+    AnsiColor::from_u32(0xB23030FF),
+    AnsiColor::from_u32(0x6E8C5CFF),
+    AnsiColor::from_u32(0xD49830FF),
+    AnsiColor::from_u32(0x5A789CFF),
+    AnsiColor::from_u32(0xA06A89FF),
+    AnsiColor::from_u32(0x6E9489FF),
+    AnsiColor::from_u32(0xF5E6C8FF),
+);
+
+pub(super) fn sandford_colors() -> TerminalColors {
+    TerminalColors::new(SANDFORD_NORMAL_COLORS, SANDFORD_BRIGHT_COLORS)
+}
+
+pub(super) fn greater_good_colors() -> TerminalColors {
+    TerminalColors::new(GREATER_GOOD_NORMAL_COLORS, GREATER_GOOD_BRIGHT_COLORS)
+}
+
+/// Default bundled dark theme — Sandford after dusk: police-uniform navy
+/// background, parchment foreground, constabulary red cursor.
 pub fn dark_theme() -> YarpTheme {
     YarpTheme::new(
-        Fill::Solid(ColorU::from_u32(0x000000FF)),
-        ColorU::from_u32(0xffffffff),
-        Fill::Solid(ColorU::from_u32(0x19AAD8FF)),
+        Fill::Solid(ColorU::from_u32(0x0E1A2EFF)),
+        ColorU::from_u32(0xF5EFD8FF),
+        Fill::Solid(ColorU::from_u32(0x9F2A2AFF)),
         None,
         Some(Details::Darker),
-        dark_mode_colors(),
+        sandford_colors(),
         None,
-        Some("Dark".to_string()),
+        Some("Sandford".to_string()),
     )
 }
 
+/// Default bundled light theme — pub interior: amber cream background,
+/// dark wood foreground, constabulary red accent. The Greater Good.
 pub fn light_theme() -> YarpTheme {
     YarpTheme::new(
-        Fill::Solid(ColorU::white()),
-        ColorU::new(17, 17, 17, OPAQUE),
-        Fill::Solid(ColorU::from_u32(0x00c2ffff)),
+        Fill::Solid(ColorU::from_u32(0xF5E6C8FF)),
+        ColorU::from_u32(0x2A1F14FF),
+        Fill::Solid(ColorU::from_u32(0x9F2A2AFF)),
         None,
         Some(Details::Lighter),
-        light_mode_colors(),
+        greater_good_colors(),
         None,
-        Some("Light".to_string()),
+        Some("The Greater Good".to_string()),
     )
 }
 
