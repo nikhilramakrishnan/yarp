@@ -971,7 +971,7 @@ impl View for SettingsImportView {
             .with_button_vertical_offset(DROPDOWN_VERTICAL_PADDING);
 
         const WELCOME_TEXT: &str = "Select a settings profile to import:";
-        const LOADING_TEXT: &str = "Looking for settings to import...";
+        const LOADING_TEXT: &str = "Sniffing around...";
 
         let mut display_new_session_text = false;
 
