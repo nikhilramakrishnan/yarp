@@ -25,6 +25,7 @@ use crate::{
     GlobalResourceHandlesProvider,
 };
 use about_page::AboutPageView;
+use council_page::CouncilPageView;
 use ai_provider_page::AIProviderPageView;
 use ai_page::{AISettingsPageAction, AISettingsPageEvent, AISettingsPageView, AISubpage};
 use appearance_page::{AppearancePageAction, AppearanceSettingsPageView};
@@ -83,6 +84,7 @@ mod appearance_page;
 mod billing_and_usage;
 mod billing_and_usage_page;
 mod code_page;
+mod council_page;
 mod delete_environment_confirmation_dialog;
 mod directory_color_add_picker;
 pub(crate) mod environments_page;
@@ -203,6 +205,7 @@ pub enum SettingsSection {
     Teams,
     YarpDrive,
     Yarpify,
+    Council,
     /// Internal backing-page identifier for AISettingsPageView. Multiple subpages
     /// (YarpAgent, AgentProfiles, Knowledge, ThirdPartyCLIAgents) share this single
     /// backing page, so this variant is needed as the key in `settings_pages`.
@@ -248,6 +251,7 @@ impl Display for SettingsSection {
             SettingsSection::CloudEnvironments => write!(f, "Environments"),
             SettingsSection::OzCloudAPIKeys => write!(f, "Fuzz Cloud API Keys"),
             SettingsSection::AIProvider => write!(f, "AI Provider"),
+            SettingsSection::Council => write!(f, "Council"),
             _ => write!(f, "{self:?}"),
         }
     }
@@ -972,6 +976,7 @@ macro_rules! update_page {
             SettingsPageViewHandle::AIProvider(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::CloudEnvironments(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::About(handle) => $ctx.update_view(handle, $update),
+            SettingsPageViewHandle::Council(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::Code(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::BillingAndUsage(handle) => $ctx.update_view(handle, $update),
             SettingsPageViewHandle::MCPServers(handle) => $ctx.update_view(handle, $update),
@@ -1055,6 +1060,9 @@ impl SettingsView {
 
         // About page
         let about_page_handle = ctx.add_view(AboutPageView::new);
+
+        // Council page (Sandford NWA persona roster)
+        let council_page_handle = ctx.add_view(CouncilPageView::new);
 
         // AI Provider page (Yarp local LLM config)
         let ai_provider_page_handle = ctx.add_view(AIProviderPageView::new);
@@ -1187,6 +1195,7 @@ impl SettingsView {
             SettingsPage::new(environments_page_handle.clone()),
             SettingsPage::new(privacy_page_handle),
             SettingsPage::new(ai_provider_page_handle),
+            SettingsPage::new(council_page_handle),
             SettingsPage::new(about_page_handle),
         ]);
 
@@ -1214,6 +1223,7 @@ impl SettingsView {
             SettingsNavItem::Page(SettingsSection::Features),
             SettingsNavItem::Page(SettingsSection::Keybindings),
             SettingsNavItem::Page(SettingsSection::AIProvider),
+            SettingsNavItem::Page(SettingsSection::Council),
             SettingsNavItem::Page(SettingsSection::Yarpify),
             SettingsNavItem::Page(SettingsSection::Privacy),
             SettingsNavItem::Page(SettingsSection::About),
@@ -1957,6 +1967,7 @@ impl SettingsView {
             SettingsPageViewHandle::Appearance(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::BillingAndUsage(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::About(v) => v.as_ref(app).should_render(app),
+            SettingsPageViewHandle::Council(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::OzCloudAPIKeys(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Privacy(v) => v.as_ref(app).should_render(app),
             SettingsPageViewHandle::Yarpify(v) => v.as_ref(app).should_render(app),
