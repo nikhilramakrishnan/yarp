@@ -16,7 +16,6 @@ use crate::terminal::settings::{SpacingMode, TerminalSettings};
 use crate::undo_close::UndoCloseStack;
 use crate::user_config::YarpConfig;
 use crate::util::bindings::{self, trigger_to_keystroke, CustomAction};
-use crate::util::links;
 use crate::workspace::sync_inputs::SyncedInputState;
 use crate::report_if_error;
 use ai::workspace::WorkspaceMetadata;
@@ -70,7 +69,6 @@ pub fn menu_bar(ctx: &mut AppContext) -> MenuBar {
         make_new_ai_menu(ctx),
         make_new_drive_menu(ctx),
         make_new_window_menu(),
-        make_new_help_menu(),
     ])
 }
 
@@ -183,12 +181,6 @@ fn make_new_app_menu(ctx: &AppContext) -> Menu {
     {
         menu_items.push(MenuItem::Services);
     }
-
-    menu_items.push(MenuItem::Separator);
-    menu_items.push(link_menu_item(
-        "Privacy Policy...",
-        links::PRIVACY_POLICY_URL.into(),
-    ));
 
     let debug_menu_items = debug_menu_items();
     if !debug_menu_items.is_empty() {
@@ -876,42 +868,6 @@ fn debug_menu_items() -> Vec<MenuItem> {
     }
 
     debug_menu_items
-}
-
-fn link_menu_item(title: &'static str, link: Cow<'static, str>) -> MenuItem {
-    MenuItem::Custom(CustomMenuItem::new(
-        title,
-        move |ctx| {
-            ctx.open_url(&link);
-        },
-        no_updates,
-        None,
-    ))
-}
-
-fn feedback_menu_item() -> MenuItem {
-    MenuItem::Custom(CustomMenuItem::new(
-        "Send Feedback...",
-        move |ctx| {
-            // Route through the root-view action so workspace windows can open the
-            // guided AI flow, while non-workspace windows still fall back to the
-            // browser-based feedback form.
-            ctx.dispatch_global_action("root_view:send_feedback", &());
-        },
-        no_updates,
-        None,
-    ))
-}
-
-fn make_new_help_menu() -> Menu {
-    Menu::new(
-        "Help",
-        vec![
-            feedback_menu_item(),
-            link_menu_item("GitHub Issues...", links::GITHUB_ISSUES_URL.into()),
-            link_menu_item("Yarp Slack Community...", links::SLACK_URL.into()),
-        ],
-    )
 }
 
 fn make_launch_config_menu_items(ctx: &mut AppContext) -> Vec<MenuItem> {

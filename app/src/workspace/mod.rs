@@ -1485,38 +1485,11 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
 
     // Add the ability to open all overflow menu items to the command palette.
     app.register_editable_bindings([
-        EditableBinding::new(
-            "workspace:show_invite_modal",
-            "Invite People...",
-            WorkspaceAction::ShowReferralSettingsPage,
-        )
-        .with_context_predicate(id!("Workspace"))
-        .with_custom_action(CustomAction::ReferAFriend),
-        EditableBinding::new(
-            "workspace:link_to_slack",
-            "Join our Slack community (opens external link)",
-            WorkspaceAction::JoinSlack,
-        )
-        .with_context_predicate(id!("Workspace")),
-        EditableBinding::new(
-            "workspace:send_feedback",
-            BindingDescription::new("Send feedback (opens external link)").with_dynamic_override(
-                |ctx| is_feedback_skill_available(ctx).then(|| "Send feedback with Fuzz".into()),
-            ),
-            WorkspaceAction::SendFeedback,
-        )
-        .with_context_predicate(id!("Workspace")),
         #[cfg(not(target_family = "wasm"))]
         EditableBinding::new(
             "workspace:view_logs",
             "View Yarp logs",
             WorkspaceAction::ViewLogs,
-        )
-        .with_context_predicate(id!("Workspace")),
-        EditableBinding::new(
-            "workspace:link_to_privacy_policy",
-            "View privacy policy (opens external link)",
-            WorkspaceAction::ViewPrivacyPolicy,
         )
         .with_context_predicate(id!("Workspace")),
     ]);
