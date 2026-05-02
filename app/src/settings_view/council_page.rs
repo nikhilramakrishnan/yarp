@@ -174,32 +174,40 @@ impl SettingsWidget for CouncilPageWidget {
                             .finish(),
                     );
                     for p in &team.members {
-                        let badge_name = if p.lead {
-                            format!("★ {} {}", p.badge, p.name)
+                        let lead_marker = if p.lead { "★ " } else { "   " };
+                        let cli_marker = if p.binary.is_some() {
+                            "  [CLI]"
                         } else {
-                            format!("   {} {}", p.badge, p.name)
+                            ""
                         };
+                        let badge_name =
+                            format!("{}{} {}{}", lead_marker, p.badge, p.name, cli_marker);
                         let role_voice = format!("{}  {}", p.role, p.voice);
-                        let card = Container::new(
-                            Flex::column()
-                                .with_cross_axis_alignment(CrossAxisAlignment::Start)
-                                .with_child(
-                                    ui_builder.span(badge_name).build().finish(),
-                                )
-                                .with_child(
-                                    ui_builder
-                                        .paragraph(role_voice)
-                                        .build()
-                                        .with_margin_top(4.)
-                                        .finish(),
-                                )
-                                .finish(),
-                        )
-                        .with_uniform_padding(10.)
-                        .with_margin_top(8.)
-                        .with_corner_radius(CornerRadius::with_all(Radius::Pixels(6.)))
-                        .with_background(theme.surface_3())
-                        .finish();
+                        let mut card_col = Flex::column()
+                            .with_cross_axis_alignment(CrossAxisAlignment::Start)
+                            .with_child(ui_builder.span(badge_name).build().finish())
+                            .with_child(
+                                ui_builder
+                                    .paragraph(role_voice)
+                                    .build()
+                                    .with_margin_top(4.)
+                                    .finish(),
+                            );
+                        if let Some(bin) = &p.binary {
+                            card_col = card_col.with_child(
+                                ui_builder
+                                    .span(format!("→ {bin}"))
+                                    .build()
+                                    .with_margin_top(4.)
+                                    .finish(),
+                            );
+                        }
+                        let card = Container::new(card_col.finish())
+                            .with_uniform_padding(10.)
+                            .with_margin_top(8.)
+                            .with_corner_radius(CornerRadius::with_all(Radius::Pixels(6.)))
+                            .with_background(theme.surface_3())
+                            .finish();
                         col = col.with_child(card);
                     }
                 }
