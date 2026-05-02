@@ -52,7 +52,7 @@ pub enum ThemeKind {
     #[schemars(description = "Phenomenon")]
     Phenomenon,
     #[default]
-    #[schemars(description = "Dark")]
+    #[schemars(description = "Sandford")]
     Dark,
     #[schemars(description = "Dracula")]
     Dracula,
@@ -66,7 +66,7 @@ pub enum ThemeKind {
     SolarizedDark,
     #[schemars(description = "Willow Dream")]
     WillowDream,
-    #[schemars(description = "Light")]
+    #[schemars(description = "The Greater Good")]
     Light,
     #[schemars(description = "Dark City")]
     DarkCity,
@@ -112,8 +112,8 @@ impl From<CustomTheme> for ThemeKind {
 impl std::fmt::Display for ThemeKind {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let value = match &self {
-            ThemeKind::Light => "Light",
-            ThemeKind::Dark => "Dark",
+            ThemeKind::Light => "The Greater Good",
+            ThemeKind::Dark => "Sandford",
             ThemeKind::Dracula => "Dracula",
             ThemeKind::SolarizedDark => "Solarized Dark",
             ThemeKind::SolarizedLight => "Solarized Light",
