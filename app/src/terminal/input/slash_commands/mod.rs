@@ -376,6 +376,14 @@ impl Input {
                     }
                 });
 
+                // /agent convenes the Sandford NWA council; /new stays the
+                // single-detective flow.
+                let prompt = if command.name == commands::AGENT.name {
+                    prompt.map(|p| crate::personas::convene_council(&p).unwrap_or(p))
+                } else {
+                    prompt
+                };
+
                 ctx.emit(Event::EnterAgentView {
                     initial_prompt: prompt,
                     conversation_id: None,

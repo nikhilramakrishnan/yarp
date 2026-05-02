@@ -53,6 +53,7 @@ mod notebooks;
 mod notification;
 mod palette;
 mod persistence;
+mod personas;
 mod platform;
 #[cfg(feature = "plugin_host")]
 mod plugin;
@@ -499,6 +500,10 @@ fn apply_scroll_multiplier(event: &mut Event, app: &AppContext) {
 pub fn run() -> Result<()> {
     // Perform any necessary platform-specific initialization.
     platform::init();
+
+    // Drop the default Sandford NWA roster on first launch; the user can edit
+    // ~/.yarp/personas.json to assemble new squads.
+    personas::Roster::write_default_if_missing();
 
     // Ensure feature flags are initialized before parsing command-line arguments.
     init_feature_flags();
