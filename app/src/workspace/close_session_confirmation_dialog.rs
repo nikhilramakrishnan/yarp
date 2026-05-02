@@ -120,7 +120,7 @@ impl View for CloseSessionConfirmationDialog {
         let cancel_button = appearance
             .ui_builder()
             .button(ButtonVariant::Basic, self.cancel_mouse_state.clone())
-            .with_centered_text_label("Cancel".into())
+            .with_centered_text_label("Stand down".into())
             .with_style(button_style)
             .build()
             .with_cursor(Cursor::PointingHand)

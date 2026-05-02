@@ -883,7 +883,7 @@ impl CommentListView {
                     ButtonVariant::Text,
                     self.view_state.cancel_button_mouse_state.clone(),
                 )
-                .with_text_label("Cancel".to_string())
+                .with_text_label("Stand down".to_string())
                 .build()
                 .finish(),
         )

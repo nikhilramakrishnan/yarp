@@ -1691,7 +1691,7 @@ impl ImageContextOptions {
             }
 
             if *is_processing_attached_images {
-                return "Loading...".into();
+                return "On the case...".into();
             }
 
             if *num_images_attached >= MAX_IMAGE_COUNT_FOR_QUERY {

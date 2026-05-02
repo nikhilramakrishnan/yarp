@@ -61,7 +61,7 @@ pub const SEARCH_PLACEHOLDER: &str = "Search by name or by keys (ex. \"cmd d\")"
 const SHORTCUT_CONFLICT_WARNING_TEXT: &str = "This shortcut conflicts with other keybinds";
 const KEYBINDINGS_PAGE_SHORTCUT: &str = "workspace:toggle_keybindings_page";
 const RESET_BUTTON_TEXT: &str = "Default";
-const CANCEL_BUTTON_TEXT: &str = "Cancel";
+const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const CLEAR_BUTTON_TEXT: &str = "Clear";
 const SAVE_BUTTON_TEXT: &str = "Save";
 
@@ -460,7 +460,7 @@ impl KeybindingRow {
                         )
                         .finish()
                     } else {
-                        render_button("Cancel", appearance, cancel_button_color)
+                        render_button("Stand down", appearance, cancel_button_color)
                     }
                 },
             )

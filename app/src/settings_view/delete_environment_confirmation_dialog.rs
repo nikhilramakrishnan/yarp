@@ -35,7 +35,7 @@ pub struct DeleteEnvironmentConfirmationDialog {
 impl DeleteEnvironmentConfirmationDialog {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
         let cancel_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Cancel", NakedTheme).on_click(|ctx| {
+            ActionButton::new("Stand down", NakedTheme).on_click(|ctx| {
                 ctx.dispatch_typed_action(DeleteEnvironmentConfirmationDialogAction::Cancel);
             })
         });

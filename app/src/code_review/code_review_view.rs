@@ -1313,7 +1313,7 @@ impl CodeReviewView {
         });
 
         let discard_cancel_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Cancel", NakedTheme).on_click(|ctx| {
+            ActionButton::new("Stand down", NakedTheme).on_click(|ctx| {
                 ctx.dispatch_typed_action(CodeReviewAction::CancelDiscardFile);
             })
         });

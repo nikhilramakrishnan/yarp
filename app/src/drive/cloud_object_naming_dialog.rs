@@ -36,7 +36,7 @@ const NOTEBOOK_TITLE: &str = "Notebook name";
 const FOLDER_TITLE: &str = "Folder name";
 const ENV_VAR_COLLECTION_TITLE: &str = "Collection name";
 const CREATE_BUTTON_TEXT: &str = "Create";
-const CANCEL_BUTTON_TEXT: &str = "Cancel";
+const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const RENAME_BUTTON_TEXT: &str = "Rename";
 
 /// Struct holding necessary infromation and states for the dialog

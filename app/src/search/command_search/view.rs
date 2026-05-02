@@ -579,7 +579,7 @@ impl CommandSearchView {
         let muted_color: ColorU = appearance.theme().nonactive_ui_text_color().into();
         let text = appearance
             .ui_builder()
-            .span("Loading...")
+            .span("On the case...")
             .with_style(UiComponentStyles {
                 font_size: Some(appearance.monospace_font_size()),
                 font_family_id: Some(appearance.ui_font_family()),

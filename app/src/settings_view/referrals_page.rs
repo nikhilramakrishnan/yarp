@@ -59,7 +59,7 @@ const BUTTON_FONT_SIZE: f32 = 12.;
 const LINK_BUTTON_TEXT: &str = "Copy link";
 const EMAIL_BUTTON_TEXT: &str = "Send";
 const EMAIL_BUTTON_SENDING_TEXT: &str = "Sending...";
-const LOADING_TEXT: &str = "Loading...";
+const LOADING_TEXT: &str = "On the case...";
 
 const LINK_COPIED_TOAST: &str = "Link copied.";
 const EMAIL_SUCCESS_TOAST: &str = "Successfully sent emails.";

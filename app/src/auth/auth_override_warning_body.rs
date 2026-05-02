@@ -35,7 +35,7 @@ const AUTH_OVERRIDE_CONFIRM_CONFIRMATION_STEP_HEADER: &str =
     "Delete personal Yarp Drive objects and preferences?";
 const AUTH_OVERRIDE_BULK_EXPORT_BUTTON_LABEL: &str = "Export your data";
 const AUTH_OVERRIDE_BULK_EXPORT_DESCRIPTION: &str = " to import later.";
-const AUTH_OVERRIDE_CANCEL_BUTTON_LABEL: &str = "Cancel";
+const AUTH_OVERRIDE_CANCEL_BUTTON_LABEL: &str = "Stand down";
 const AUTH_OVERRIDE_CONTINUE_BUTTON_LABEL: &str = "Continue";
 
 #[derive(Clone, Copy, Debug)]

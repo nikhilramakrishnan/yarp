@@ -647,7 +647,7 @@ fn render_reference_entry(
             } else {
                 // Show loading indicator when line_content is None
                 Text::new_inline(
-                    "Loading...",
+                    "On the case...",
                     appearance.monospace_font_family(),
                     appearance.monospace_font_size(),
                 )

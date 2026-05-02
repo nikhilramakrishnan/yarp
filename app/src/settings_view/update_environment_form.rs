@@ -1904,7 +1904,7 @@ impl UpdateEnvironmentForm {
                     .with_child(
                         Container::new(
                             Text::new(
-                                "Loading...",
+                                "On the case...",
                                 appearance.ui_font_family(),
                                 appearance.ui_font_size(),
                             )

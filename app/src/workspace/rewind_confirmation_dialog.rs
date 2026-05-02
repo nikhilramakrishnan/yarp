@@ -161,7 +161,7 @@ impl View for RewindConfirmationDialog {
                 } else {
                     cancel_text_color
                 };
-                Text::new_inline("Cancel", appearance.ui_font_family(), 14.)
+                Text::new_inline("Stand down", appearance.ui_font_family(), 14.)
                     .with_color(color.into_solid())
                     .finish()
             })

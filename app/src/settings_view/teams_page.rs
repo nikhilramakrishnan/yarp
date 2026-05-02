@@ -1325,7 +1325,7 @@ impl TeamsPageView {
     fn copy_invite_link(&mut self, link: &str, ctx: &mut ViewContext<Self>) {
         ctx.clipboard()
             .write(ClipboardContent::plain_text(link.to_string()));
-        self.show_toast("Link copied to clipboard!", ToastFlavor::Default, ctx);
+        self.show_toast("Link on record", ToastFlavor::Default, ctx);
     }
 
     fn remove_user_from_team(

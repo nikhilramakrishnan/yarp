@@ -1401,7 +1401,7 @@ impl EnvironmentsPageWidget {
         };
 
         let (github_button_label, github_button_enabled) = if dropdown_state.is_loading {
-            ("Loading...", false)
+            ("On the case...", false)
         } else if dropdown_state.load_error_message.is_some() {
             ("Retry", true)
         } else if dropdown_state.auth_url.is_some() {

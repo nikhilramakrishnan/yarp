@@ -286,7 +286,7 @@ impl ImportModal {
         let button_text = if !self.import_modal.as_ref(app).upload_in_progress(app) {
             "Close".to_string()
         } else {
-            "Cancel".to_string()
+            "Stand down".to_string()
         };
 
         Container::new(

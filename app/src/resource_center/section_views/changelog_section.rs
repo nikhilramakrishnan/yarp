@@ -30,7 +30,7 @@ struct ChangelogMouseStateHandles {
 }
 
 const CHANGELOG_FETCH_ERROR_MSG: &str = "Unable to fetch the latest changelog.";
-const CHANGELOG_LOADING_MSG: &str = "Loading...";
+const CHANGELOG_LOADING_MSG: &str = "On the case...";
 
 pub struct ChangelogSectionView {
     changelog_model_handle: ModelHandle<ChangelogModel>,

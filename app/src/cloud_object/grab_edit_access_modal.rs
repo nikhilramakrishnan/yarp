@@ -11,7 +11,7 @@ use yarpui::elements::{Container, MouseStateHandle, Text};
 use yarpui::ui_components::components::UiComponent;
 
 const EDIT_ANYWAY_CTA_LABEL: &str = "Edit anyway";
-const CANCEL_CTA_LABEL: &str = "Cancel";
+const CANCEL_CTA_LABEL: &str = "Stand down";
 const EDIT_ANYWAY_TEXT: &str =
     "If you take edit controls, the current editor will be forced into view mode";
 const CURRENTLY_EDITED_LABEL: &str = "This notebook is currently being edited";

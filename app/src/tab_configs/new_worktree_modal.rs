@@ -547,7 +547,7 @@ impl View for NewWorktreeModal {
         let cancel_button = appearance
             .ui_builder()
             .button(ButtonVariant::Text, self.cancel_button_mouse_state.clone())
-            .with_text_label("Cancel".to_string())
+            .with_text_label("Stand down".to_string())
             .with_style(text_button_base)
             .with_style(UiComponentStyles {
                 font_color: Some(main_text.into()),

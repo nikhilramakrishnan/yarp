@@ -740,7 +740,7 @@ impl FileNotebookView {
                         .with_text_and_icon_label(
                             TextAndIcon::new(
                                 TextAndIconAlignment::TextFirst,
-                                "Try again".to_string(),
+                                "Have another go".to_string(),
                                 Icon::Refresh.to_yarpui_icon(error_text_color),
                                 MainAxisSize::Min,
                                 MainAxisAlignment::Center,

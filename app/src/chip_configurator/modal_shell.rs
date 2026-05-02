@@ -293,7 +293,7 @@ fn render_buttons<A: Action + Clone + Copy + 'static>(
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let cancel_button = render_primary_button(
-        "Cancel".to_string(),
+        "Stand down".to_string(),
         ButtonVariant::Outlined,
         false,
         &config.mouse_handles.cancel,

@@ -499,12 +499,12 @@ impl GitDialog {
         has_upstream: bool,
         ctx: &mut ViewContext<Self>,
     ) -> Self {
-        // Commit's confirm button is a static "Confirm" with no icon; the
+        // Commit's confirm button is a static "Roger" with no icon; the
         // segmented intent selector inside the dialog is the sole UI that
         // communicates which of commit / commit-and-push / commit-and-create-PR
         // will actually run on click.
         let (confirm_button, cancel_button, close_button) =
-            Self::build_dialog_buttons("Confirm", None, ctx);
+            Self::build_dialog_buttons("Roger", None, ctx);
         let state = commit::new_state(&repo_path, allow_create_pr, has_upstream, ctx);
         let this = Self {
             repo_path,
@@ -585,7 +585,7 @@ impl GitDialog {
             button.on_click(|ctx| ctx.dispatch_typed_action(GitDialogAction::Confirm))
         });
         let cancel_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Cancel", NakedTheme)
+            ActionButton::new("Stand down", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .with_height(32.)
                 .on_click(|ctx| ctx.dispatch_typed_action(GitDialogAction::Cancel))

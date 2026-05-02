@@ -1822,7 +1822,7 @@ impl AIBlock {
                 );
 
                 let cancel_button = CompactibleActionButton::new(
-                    "Cancel".to_string(),
+                    "Stand down".to_string(),
                     Some(KeystrokeSource::Fixed(CTRL_C_KEYSTROKE.clone())),
                     ButtonSize::InlineActionHeader,
                     AIBlockAction::CancelRequestedAction {

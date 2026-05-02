@@ -325,7 +325,7 @@ impl View for PasteAuthTokenModalView {
         let cancel_button = self.cancel_button.render(
             appearance,
             button::Params {
-                content: button::Content::Label("Cancel".into()),
+                content: button::Content::Label("Stand down".into()),
                 theme: &button::themes::Naked,
                 options: button::Options {
                     on_click: Some(Box::new(|ctx, _app, _pos| {

@@ -23,7 +23,7 @@ const BUTTON_BORDER_RADIUS: f32 = 4.;
 const BORDER_WIDTH: f32 = 1.;
 
 const DIALOG_WIDTH: f32 = 450.;
-const CANCEL_TEXT: &str = "Cancel";
+const CANCEL_TEXT: &str = "Stand down";
 
 const DELETE_TEAM_TITLE_TEXT: &str = "Are you sure you want to delete this team?";
 const LEAVE_TEAM_TITLE_TEXT: &str = "Are you sure you want to leave this team?";

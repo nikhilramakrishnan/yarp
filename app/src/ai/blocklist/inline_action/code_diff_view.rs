@@ -122,7 +122,7 @@ use ai::diff_validation::{
     SearchAndReplace, V4AHunk,
 };
 
-const REQUESTED_EDIT_CANCEL_LABEL: &str = "Cancel";
+const REQUESTED_EDIT_CANCEL_LABEL: &str = "Stand down";
 const REQUESTED_EDIT_REFINE_LABEL: &str = "Refine";
 const REQUESTED_EDIT_ACCEPT_LABEL: &str = "Accept";
 const REQUESTED_EDIT_ACCEPT_AND_AUTOEXECUTE_LABEL: &str = "Auto-approve";

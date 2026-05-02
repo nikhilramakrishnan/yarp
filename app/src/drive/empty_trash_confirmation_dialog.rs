@@ -14,7 +14,7 @@ use crate::{
     ui_components::dialog::{dialog_styles, Dialog},
 };
 
-const CANCEL_TEXT: &str = "Cancel";
+const CANCEL_TEXT: &str = "Stand down";
 
 const EMPTY_TRASH_TITLE_TEXT: &str = "Are you sure you want to empty the trash?";
 const EMPTY_TRASH_BODY_TEXT: &str = "This action cannot be undone.";

@@ -332,7 +332,7 @@ pub(super) fn handle_sub_action(
                 state.intent = *new_intent;
             }
             // Re-highlight the selected segment. The confirm button's
-            // label is static ("Confirm"), so it doesn't need to update.
+            // label is static ("Roger"), so it doesn't need to update.
             if let GitDialogMode::Commit(state) = me.mode() {
                 apply_intent_selector(state, ctx);
             }

@@ -62,19 +62,19 @@ impl From<&DestructiveMCPConfirmationDialogVariant>
                 "Delete MCP server?".to_string(),
                 "This will uninstall and remove this MCP server from all your devices.".to_string(),
                 "Delete MCP".to_string(),
-                "Cancel".to_string(),
+                "Stand down".to_string(),
             ),
             DestructiveMCPConfirmationDialogVariant::DeleteShared => DestructiveMCPConfirmationDialogDisplayOptions::new(
                 "Delete shared MCP server?".to_string(),
                 "This will not only delete this MCP server for yourself, but also uninstall and remove this MCP server from Yarp and across all of your teammates' devices.".to_string(),
                 "Delete MCP".to_string(),
-                "Cancel".to_string(),
+                "Stand down".to_string(),
             ),
             DestructiveMCPConfirmationDialogVariant::Unshare => DestructiveMCPConfirmationDialogDisplayOptions::new(
                 "Remove shared MCP server from team?".to_string(),
                 "This will uninstall and remove this MCP server from Yarp and across all of your teammates' devices.".to_string(),
                 "Remove from team".to_string(),
-                "Cancel".to_string(),
+                "Stand down".to_string(),
             ),
         }
     }

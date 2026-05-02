@@ -172,7 +172,7 @@ const EDITOR_FONT_SIZE: f32 = 14.;
 
 const CREATE_BUTTON_TEXT: &str = "Create";
 const SAVE_BUTTON_TEXT: &str = "Update";
-const CANCEL_BUTTON_TEXT: &str = "Cancel";
+const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const BUTTON_PADDING: f32 = 12.;
 const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_BORDER_RADIUS: f32 = 4.;

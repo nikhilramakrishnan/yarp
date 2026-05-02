@@ -279,11 +279,11 @@ impl Component for Lightbox {
     }
 }
 
-/// Builds the shared "Loading..." text element used in both the `Loading` state
+/// Builds the shared "On the case..." text element used in both the `Loading` state
 /// and as the `before_load` fallback while the `AssetCache` fetches image bytes.
 fn loading_element(appearance: &Appearance) -> Box<dyn Element> {
     Text::new(
-        "Loading...",
+        "On the case...",
         appearance.ui_font_family(),
         lightbox_text_size(appearance),
     )

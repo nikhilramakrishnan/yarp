@@ -44,7 +44,7 @@ use crate::{
 /// For horizontal padding, use [`INLINE_ACTION_HORIZONTAL_PADDING`] for consistency.
 const ENV_VAR_COLLECTION_BODY_VERTICAL_PADDING: f32 = 16.;
 
-const ENV_VAR_COLLECTION_CANCEL_LABEL: &str = "Cancel";
+const ENV_VAR_COLLECTION_CANCEL_LABEL: &str = "Stand down";
 const ENV_VAR_COLLECTION_ACCEPT_LABEL: &str = "Run";
 
 lazy_static! {

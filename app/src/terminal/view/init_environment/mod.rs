@@ -84,7 +84,7 @@ impl InitEnvironmentBlock {
             ),
             // Skip button
             simple_navigation_button(
-                "Cancel".to_string(),
+                "Stand down".to_string(),
                 MouseStateHandle::default(),
                 InitEnvironmentBlockAction::Skip,
                 false,

@@ -784,7 +784,7 @@ impl EditorModal {
 
     fn render_buttons(&self, appearance: &Appearance) -> Box<dyn Element> {
         let cancel_button = self.render_primary_button(
-            "Cancel".to_string(),
+            "Stand down".to_string(),
             ButtonVariant::Outlined,
             false,
             self.mouse_state_handles.cancel_button_handle.clone(),

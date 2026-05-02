@@ -179,7 +179,7 @@ impl CommentEditor {
         });
 
         let close_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Cancel", NakedTheme)
+            ActionButton::new("Stand down", NakedTheme)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(CommentEditorAction::CloseEditor);
                 })
