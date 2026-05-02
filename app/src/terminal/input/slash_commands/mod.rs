@@ -376,13 +376,21 @@ impl Input {
                     }
                 });
 
-                // /agent convenes the Sandford NWA council; /new stays the
+                // /agent convenes the Sandford NWA council. If the team has
+                // any CLI-backed personas, fan out: each binary runs the
+                // prompt one-shot, then the lead synthesises a verdict. The
+                // resulting shell pipeline is dispatched to the terminal so
+                // its output renders as native blocks. /new stays the
                 // single-detective flow.
-                let prompt = if command.name == commands::AGENT.name {
-                    prompt.map(|p| crate::personas::convene_council(&p).unwrap_or(p))
-                } else {
-                    prompt
-                };
+                if command.name == commands::AGENT.name {
+                    if let Some(prompt) = prompt.as_ref() {
+                        if let Some(council_cmd) = crate::personas::build_council_command(prompt)
+                        {
+                            self.try_execute_command(&council_cmd, ctx);
+                            return true;
+                        }
+                    }
+                }
 
                 ctx.emit(Event::EnterAgentView {
                     initial_prompt: prompt,
