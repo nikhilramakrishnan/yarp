@@ -1,13 +1,16 @@
 //! Sandford NWA — the team-of-teams council.
 //!
 //! Personas live in `~/.yarp/personas.json`. Edit the file to assemble new
-//! squads or rewrite the briefing each persona delivers. `/agent` invokes the
-//! default team's council; each persona contributes their angle and the lead
-//! delivers the verdict.
+//! squads or change which CLI each persona is backed by. `/agent` invokes
+//! the default team's council; each CLI persona runs the prompt and the
+//! lead delivers a synthesised verdict.
 //!
-//! Structure: a roster has many teams; each team has many personas; one team
-//! is marked default. The default team is convened when `/agent` fires with
-//! a prompt.
+//! `role` and `voice` are display metadata for the Council settings page —
+//! they're not injected into the prompt sent to each CLI.
+//!
+//! Structure: a roster has many teams; each team has many personas; one
+//! team is marked default. The default team is convened when `/agent`
+//! fires with a prompt.
 
 use std::os::unix::fs::PermissionsExt as _;
 
