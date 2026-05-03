@@ -54,11 +54,6 @@ impl PersonaCard {
         }
     }
 
-    pub fn elapsed(&self) -> Option<std::time::Duration> {
-        let start = self.started_at?;
-        let end = self.finished_at.unwrap_or_else(Instant::now);
-        Some(end.duration_since(start))
-    }
 }
 
 /// Top-level council state. Owned by `CouncilController`.
