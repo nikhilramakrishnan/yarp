@@ -43,7 +43,6 @@ pub struct CouncilController {
     _tasks: Vec<SpawnedFutureHandle>,
     /// Drain timer handle. Re-armed each tick.
     _drain_handle: Option<SpawnedFutureHandle>,
-    synth_started: bool,
 }
 
 struct PersonaReceiver {
@@ -106,7 +105,6 @@ impl CouncilController {
             receivers: Vec::new(),
             _tasks: Vec::new(),
             _drain_handle: None,
-            synth_started: false,
         }
     }
 
@@ -201,10 +199,10 @@ impl CouncilController {
         if any {
             ctx.notify();
         }
-        // Once every persona is in a terminal phase and we haven't already
-        // spawned synthesis, kick it off.
-        if !self.synth_started && self.state.all_done() {
-            self.synth_started = true;
+        // Once every persona is in a terminal phase, kick off synthesis. The
+        // synth_invocation gets `take`n on entry, so subsequent ticks see
+        // None and skip — no separate "started" bookkeeping needed.
+        if self.state.all_done() && self.synth_invocation.is_some() {
             self.start_synthesis(ctx);
         }
     }
