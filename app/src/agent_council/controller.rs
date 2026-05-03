@@ -12,7 +12,6 @@ use std::time::Duration;
 use command::r#async::Command;
 use futures::channel::mpsc;
 use futures::AsyncBufReadExt as _;
-use futures::AsyncReadExt as _;
 use futures::StreamExt as _;
 use yarpui::r#async::{SpawnedFutureHandle, Timer};
 use yarpui::{Entity, ModelContext};
@@ -320,12 +319,18 @@ async fn drive_persona(
     prompt: String,
     tx: mpsc::UnboundedSender<CouncilEvent>,
 ) {
+    // Send stderr to /dev/null. If the CLI fails, the non-zero exit status
+    // surfaces as Finished { ok: false, reason: "exit N" }; we don't need
+    // the stderr text at the UI layer, and capturing it would mean either
+    // spawning a thread per persona to drain a pipe or wiring a second
+    // async read into this function. Re-add capture if a real diagnostic
+    // need shows up.
     let mut cmd = Command::new(&program);
     cmd.args(&args)
         .arg(&prompt)
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
+        .stderr(Stdio::null())
         .kill_on_drop(true);
     let mut child = match cmd.spawn() {
         Ok(c) => c,
@@ -348,28 +353,6 @@ async fn drive_persona(
             return;
         }
     };
-    // Drain stderr to keep the pipe from filling up. We don't surface its
-    // content right now (most CLIs are noisy on stderr) — log it instead.
-    if let Some(stderr) = child.stderr.take() {
-        let prog = program.clone();
-        let _ = std::thread::Builder::new()
-            .name(format!("council-stderr-{prog}"))
-            .spawn(move || {
-                futures::executor::block_on(async move {
-                    let mut buf = Vec::new();
-                    let mut s = stderr;
-                    let _ = s.read_to_end(&mut buf).await;
-                    if !buf.is_empty() {
-                        log::debug!(
-                            "council[{}] stderr: {}",
-                            prog,
-                            String::from_utf8_lossy(&buf)
-                        );
-                    }
-                });
-            });
-    }
-
     let reader = futures::io::BufReader::new(stdout);
     let mut lines = reader.lines();
     while let Some(line_res) = lines.next().await {
