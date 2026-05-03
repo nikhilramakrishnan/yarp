@@ -312,7 +312,10 @@ pub fn build_council_command(prompt: &str) -> Option<String> {
     ));
     script.push_str("PROMPT=\"$(cat \"$PROMPT_FILE\")\"\n");
     script.push_str("WORK=$(mktemp -d)\n");
-    script.push_str("trap 'rm -rf \"$WORK\"' EXIT\n");
+    // Clean up the temp work dir, the prompt file, and this script itself
+    // on exit. Bash already loaded the script into memory; deleting the
+    // file mid-execution is safe.
+    script.push_str("trap 'rm -rf \"$WORK\" \"$PROMPT_FILE\" \"$0\"' EXIT\n");
     script.push_str("\n");
     script.push_str("printf '🚓 **Sandford NWA convening on:** %s\\n\\n' \"$PROMPT\"\n");
 
