@@ -154,3 +154,27 @@ Cancellation: dropping the controller kills children via `child.kill()`.
 - Resuming an interrupted council.
 - Multi-team selection in the UI (still uses `Roster::default_team`).
 - Token/cost accounting per persona.
+
+## Status
+
+Built and committed:
+- `state.rs`, `event_stream.rs` (parser + 5 unit tests, all green)
+- `controller.rs` (process spawning, mpsc channel, 50ms drain timer,
+  synthesis pass; mirrors `OrchestrationEventPoller`'s pattern)
+- `view.rs` (vertical card stack, phase labels, thinking + output panes;
+  no markdown / collapsibles yet)
+- `personas::cli_invocations()` and `streaming_args_for()` in JSON modes
+
+Not yet wired:
+- `Event::EnterAgentCouncil { prompt }` in `terminal/input.rs`
+- Handler in `terminal/view.rs` that constructs the controller + view
+- The render **surface**: where does `CouncilView` actually appear? Open
+  question — a new pane (matches `EnterAgentView`), a `Modal` overlay
+  (lighter, but modals are dismissible), or a custom block in the active
+  terminal's block list. Lean: try Modal first, see how it feels, escalate
+  to a pane if too cramped.
+- Replace `try_execute_command(&council_cmd, ctx)` in
+  `slash_commands/mod.rs:387-393` with the event emit. Keep
+  `build_council_command` only as an env-flag fallback while we validate.
+- Visible smoke: `/agent <prompt>` end-to-end driving a card stack with
+  live thinking + output panes from claude.
