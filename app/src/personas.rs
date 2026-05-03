@@ -205,11 +205,63 @@ fn which_via_login_shell(bin: &str) -> Option<String> {
 
 /// Pick the synthesiser for a verdict pass: prefer a lead CLI persona; else
 /// the first CLI persona in the team.
-fn synthesiser(team: &Team) -> Option<&Persona> {
+pub fn synthesiser(team: &Team) -> Option<&Persona> {
     team.members
         .iter()
         .find(|p| p.lead && p.binary.is_some())
         .or_else(|| team.members.iter().find(|p| p.binary.is_some()))
+}
+
+/// One CLI invocation ready to spawn: persona, the binary path, and the
+/// argv prefix that puts the CLI in **streaming JSON mode**. The caller
+/// appends the user prompt as the trailing positional argument.
+pub struct CliInvocation<'a> {
+    pub persona: &'a Persona,
+    pub program: String,
+    pub streaming_args: Vec<String>,
+    pub binary_basename: String,
+}
+
+/// Iterate the team's CLI-backed personas and yield one invocation each, in
+/// streaming JSON mode (so the UI can render Thinking vs Output phases
+/// distinctly). Personas without a binary are skipped — the council view is
+/// only useful when at least one CLI is present.
+pub fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
+    team.members
+        .iter()
+        .filter_map(|p| {
+            let binary = p.binary.as_deref()?;
+            let basename = std::path::Path::new(binary)
+                .file_name()
+                .and_then(|s| s.to_str())
+                .unwrap_or("")
+                .to_owned();
+            let args = streaming_args_for(&basename)
+                .iter()
+                .map(|s| (*s).to_owned())
+                .collect();
+            Some(CliInvocation {
+                persona: p,
+                program: binary.to_owned(),
+                streaming_args: args,
+                binary_basename: basename,
+            })
+        })
+        .collect()
+}
+
+/// Argv prefix that puts each known CLI in newline-delimited JSON streaming
+/// mode. Trailing arg should be the prompt.
+fn streaming_args_for(basename: &str) -> &'static [&'static str] {
+    match basename {
+        "claude" => &["-p", "--output-format", "stream-json", "--verbose"],
+        "codex" => &["exec", "--json"],
+        // gemini's streaming mode isn't pinned; fall back to one-shot text.
+        "gemini" => &["-p"],
+        "aider" => &["--message"],
+        "cursor-agent" => &["--print"],
+        _ => &[],
+    }
 }
 
 /// Map a binary basename to the one-shot invocation that takes the prompt as

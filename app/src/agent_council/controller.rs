@@ -1,0 +1,408 @@
+//! Owns the council run: spawns one async task per persona, drains their
+//! events into `CouncilState`, and (when all peers finish) runs a synthesis
+//! pass through the lead.
+//!
+//! Modeled on `OrchestrationEventPoller`'s drain-timer pattern: producer
+//! tasks push `CouncilEvent`s into an `mpsc::UnboundedSender`; a periodic
+//! timer in this model drains the receivers and applies events to state.
+
+use std::process::Stdio;
+use std::time::{Duration, Instant};
+
+use command::r#async::Command;
+use futures::channel::mpsc;
+use futures::AsyncBufReadExt as _;
+use futures::AsyncReadExt as _;
+use futures::StreamExt as _;
+use yarpui::r#async::{SpawnedFutureHandle, Timer};
+use yarpui::{Entity, ModelContext};
+
+use crate::agent_council::event_stream::{parse_line, CliKind, CouncilEvent};
+use crate::agent_council::state::{CardPhase, CouncilState, PersonaCard};
+use crate::personas::{cli_invocations, Roster, Team};
+
+const DRAIN_INTERVAL_MS: u64 = 50;
+
+pub struct CouncilController {
+    pub state: CouncilState,
+    receivers: Vec<PersonaReceiver>,
+    /// Producer task handles. Dropped on controller drop, which cancels the
+    /// futures and (because we set `kill_on_drop`) kills the children.
+    _tasks: Vec<SpawnedFutureHandle>,
+    /// Drain timer handle. Re-armed each tick.
+    _drain_handle: Option<SpawnedFutureHandle>,
+    synth_started: bool,
+}
+
+struct PersonaReceiver {
+    /// Index into `state.cards`. `None` means the synthesis card.
+    card_index: Option<usize>,
+    rx: mpsc::UnboundedReceiver<CouncilEvent>,
+    finished: bool,
+}
+
+impl Entity for CouncilController {
+    type Event = ();
+}
+
+impl CouncilController {
+    /// Build a controller seeded with one card per CLI persona on the team.
+    /// Caller is responsible for then calling `start` to spawn processes.
+    pub fn new(prompt: String, team: &Team) -> Self {
+        let cards: Vec<PersonaCard> = cli_invocations(team)
+            .iter()
+            .map(|inv| {
+                PersonaCard::new(
+                    inv.persona.badge.clone(),
+                    inv.persona.name.clone(),
+                    inv.binary_basename.clone(),
+                )
+            })
+            .collect();
+        let state = CouncilState {
+            prompt,
+            cards,
+            verdict: None,
+        };
+        Self {
+            state,
+            receivers: Vec::new(),
+            _tasks: Vec::new(),
+            _drain_handle: None,
+            synth_started: false,
+        }
+    }
+
+    /// Spawn one process per persona. Each writes events into a channel that
+    /// the drain timer drains back into state on the main thread.
+    pub fn start(&mut self, ctx: &mut ModelContext<Self>) {
+        let Some(roster) = Roster::load() else {
+            log::warn!("council: no roster configured; nothing to dispatch");
+            return;
+        };
+        let Some(team) = roster.default_team().cloned() else {
+            return;
+        };
+        let invocations = cli_invocations(&team);
+
+        for (idx, inv) in invocations.iter().enumerate() {
+            let (tx, rx) = mpsc::unbounded();
+            self.receivers.push(PersonaReceiver {
+                card_index: Some(idx),
+                rx,
+                finished: false,
+            });
+
+            let program = inv.program.clone();
+            let args = inv.streaming_args.clone();
+            let kind = CliKind::from_basename(&inv.binary_basename);
+            let prompt = self.state.prompt.clone();
+
+            let handle = ctx.spawn(
+                async move {
+                    drive_persona(program, args, kind, prompt, tx).await;
+                },
+                |_me, _, _ctx| {},
+            );
+            self._tasks.push(handle);
+
+            if let Some(card) = self.state.cards.get_mut(idx) {
+                card.phase = CardPhase::Spawned;
+                card.started_at = Some(Instant::now());
+            }
+        }
+
+        self.start_drain_timer(ctx);
+    }
+
+    fn start_drain_timer(&mut self, ctx: &mut ModelContext<Self>) {
+        let handle = ctx.spawn(
+            async move {
+                Timer::after(Duration::from_millis(DRAIN_INTERVAL_MS)).await;
+            },
+            |me, _, ctx| {
+                me.drain(ctx);
+                if !me.is_complete() {
+                    me.start_drain_timer(ctx);
+                } else {
+                    me._drain_handle = None;
+                }
+            },
+        );
+        self._drain_handle = Some(handle);
+    }
+
+    fn drain(&mut self, ctx: &mut ModelContext<Self>) {
+        let mut any = false;
+        for r in &mut self.receivers {
+            if r.finished {
+                continue;
+            }
+            loop {
+                match r.rx.try_next() {
+                    Ok(Some(ev)) => {
+                        any = true;
+                        apply_event(&mut self.state, r.card_index, ev, &mut r.finished);
+                    }
+                    Ok(None) => {
+                        // Channel closed without a Finished event — treat as
+                        // a clean EOF.
+                        if !r.finished {
+                            apply_event(
+                                &mut self.state,
+                                r.card_index,
+                                CouncilEvent::Finished {
+                                    ok: true,
+                                    reason: None,
+                                },
+                                &mut r.finished,
+                            );
+                        }
+                        break;
+                    }
+                    Err(_) => break, // empty
+                }
+            }
+        }
+        if any {
+            ctx.notify();
+        }
+        // Once every persona is in a terminal phase and we haven't already
+        // spawned synthesis, kick it off.
+        if !self.synth_started && self.state.all_done() {
+            self.synth_started = true;
+            self.start_synthesis(ctx);
+        }
+    }
+
+    fn is_complete(&self) -> bool {
+        self.receivers.iter().all(|r| r.finished)
+    }
+
+    fn start_synthesis(&mut self, ctx: &mut ModelContext<Self>) {
+        let Some(roster) = Roster::load() else {
+            return;
+        };
+        let Some(team) = roster.default_team() else {
+            return;
+        };
+        let Some(lead) = crate::personas::synthesiser(team) else {
+            return; // No CLI lead; verdict stays None and we're done.
+        };
+        let Some(binary) = lead.binary.as_deref() else {
+            return;
+        };
+        let basename = std::path::Path::new(binary)
+            .file_name()
+            .and_then(|s| s.to_str())
+            .unwrap_or("")
+            .to_owned();
+        let kind = CliKind::from_basename(&basename);
+        let args: Vec<String> = match basename.as_str() {
+            "claude" => ["-p", "--output-format", "stream-json", "--verbose"]
+                .iter()
+                .map(|s| (*s).to_owned())
+                .collect(),
+            "codex" => vec!["exec".to_owned(), "--json".to_owned()],
+            _ => Vec::new(),
+        };
+
+        let synth_prompt = build_synth_prompt(&self.state);
+        let mut card = PersonaCard::new(
+            lead.badge.clone(),
+            lead.name.clone(),
+            basename.clone(),
+        );
+        card.phase = CardPhase::Spawned;
+        card.started_at = Some(Instant::now());
+        self.state.verdict = Some(card);
+
+        let (tx, rx) = mpsc::unbounded();
+        self.receivers.push(PersonaReceiver {
+            card_index: None, // None == verdict
+            rx,
+            finished: false,
+        });
+
+        let program = binary.to_owned();
+        let handle = ctx.spawn(
+            async move {
+                drive_persona(program, args, kind, synth_prompt, tx).await;
+            },
+            |_me, _, _ctx| {},
+        );
+        self._tasks.push(handle);
+        self.start_drain_timer(ctx);
+    }
+}
+
+fn apply_event(
+    state: &mut CouncilState,
+    card_index: Option<usize>,
+    ev: CouncilEvent,
+    finished: &mut bool,
+) {
+    let card: &mut PersonaCard = match card_index {
+        Some(i) => match state.cards.get_mut(i) {
+            Some(c) => c,
+            None => return,
+        },
+        None => match state.verdict.as_mut() {
+            Some(c) => c,
+            None => return,
+        },
+    };
+    match ev {
+        CouncilEvent::ThinkingStarted => card.phase = CardPhase::Thinking,
+        CouncilEvent::ThinkingDelta(s) => {
+            card.thinking.push_str(&s);
+            card.phase = CardPhase::Thinking;
+        }
+        CouncilEvent::ThinkingEnded => {} // phase will flip on next OutputStarted/Delta
+        CouncilEvent::OutputStarted => card.phase = CardPhase::Streaming,
+        CouncilEvent::OutputDelta(s) => {
+            card.output.push_str(&s);
+            card.phase = CardPhase::Streaming;
+        }
+        CouncilEvent::OutputEnded => {}
+        CouncilEvent::ToolCall { name, summary } => {
+            // Trim summary; some tool inputs are large JSON blobs.
+            let summary = if summary.len() > 200 {
+                format!("{}…", &summary[..200])
+            } else {
+                summary
+            };
+            card.tool_calls.push(format!("{name}: {summary}"));
+        }
+        CouncilEvent::Finished { ok, reason } => {
+            card.finished_at = Some(Instant::now());
+            card.phase = if ok {
+                CardPhase::Done
+            } else {
+                CardPhase::Failed(reason.unwrap_or_else(|| "process failed".into()))
+            };
+            *finished = true;
+        }
+    }
+}
+
+/// Compose the synthesiser's prompt out of the prompt + every card's output.
+fn build_synth_prompt(state: &CouncilState) -> String {
+    let mut s = String::new();
+    s.push_str("You are the lead of the Sandford NWA on this case:\n\n");
+    s.push_str(&state.prompt);
+    s.push_str("\n\n");
+    for card in &state.cards {
+        s.push_str(&format!("{} {} said:\n", card.badge, card.name));
+        s.push_str(card.output.trim());
+        s.push_str("\n\n");
+    }
+    s.push_str(
+        "Identify points of agreement and disagreement, name the trade-off, \
+         and deliver a tight final verdict. Cut the fluff.",
+    );
+    s
+}
+
+/// One persona's lifecycle: spawn the child, stream stdout line-by-line into
+/// the channel as `CouncilEvent`s, then send `Finished` on EOF or error.
+async fn drive_persona(
+    program: String,
+    args: Vec<String>,
+    kind: CliKind,
+    prompt: String,
+    tx: mpsc::UnboundedSender<CouncilEvent>,
+) {
+    let mut cmd = Command::new(&program);
+    cmd.args(&args)
+        .arg(&prompt)
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .kill_on_drop(true);
+    let mut child = match cmd.spawn() {
+        Ok(c) => c,
+        Err(e) => {
+            let _ = tx.unbounded_send(CouncilEvent::Finished {
+                ok: false,
+                reason: Some(format!("spawn failed: {e}")),
+            });
+            return;
+        }
+    };
+
+    let stdout = match child.stdout.take() {
+        Some(s) => s,
+        None => {
+            let _ = tx.unbounded_send(CouncilEvent::Finished {
+                ok: false,
+                reason: Some("no stdout pipe".into()),
+            });
+            return;
+        }
+    };
+    // Drain stderr to keep the pipe from filling up. We don't surface its
+    // content right now (most CLIs are noisy on stderr) — log it instead.
+    if let Some(stderr) = child.stderr.take() {
+        let prog = program.clone();
+        let _ = std::thread::Builder::new()
+            .name(format!("council-stderr-{prog}"))
+            .spawn(move || {
+                futures::executor::block_on(async move {
+                    let mut buf = Vec::new();
+                    let mut s = stderr;
+                    let _ = s.read_to_end(&mut buf).await;
+                    if !buf.is_empty() {
+                        log::debug!(
+                            "council[{}] stderr: {}",
+                            prog,
+                            String::from_utf8_lossy(&buf)
+                        );
+                    }
+                });
+            });
+    }
+
+    let reader = futures::io::BufReader::new(stdout);
+    let mut lines = reader.lines();
+    while let Some(line_res) = lines.next().await {
+        match line_res {
+            Ok(line) => {
+                for ev in parse_line(kind, &line) {
+                    if tx.unbounded_send(ev).is_err() {
+                        return; // controller went away; stop reading
+                    }
+                }
+            }
+            Err(e) => {
+                let _ = tx.unbounded_send(CouncilEvent::Finished {
+                    ok: false,
+                    reason: Some(format!("read error: {e}")),
+                });
+                return;
+            }
+        }
+    }
+
+    // Stdout closed — wait for exit so we know success/failure.
+    match child.status().await {
+        Ok(status) if status.success() => {
+            let _ = tx.unbounded_send(CouncilEvent::Finished {
+                ok: true,
+                reason: None,
+            });
+        }
+        Ok(status) => {
+            let _ = tx.unbounded_send(CouncilEvent::Finished {
+                ok: false,
+                reason: Some(format!("exit {}", status.code().unwrap_or(-1))),
+            });
+        }
+        Err(e) => {
+            let _ = tx.unbounded_send(CouncilEvent::Finished {
+                ok: false,
+                reason: Some(format!("wait failed: {e}")),
+            });
+        }
+    }
+}
