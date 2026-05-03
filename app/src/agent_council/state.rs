@@ -1,7 +1,5 @@
 //! State for the council view: per-persona cards plus the synthesis card.
 
-use std::time::Instant;
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CardPhase {
     /// Process not yet spawned.
@@ -35,8 +33,6 @@ pub struct PersonaCard {
     pub output: String,
     /// Compact summaries of any tool_use events the CLI emitted.
     pub tool_calls: Vec<String>,
-    pub started_at: Option<Instant>,
-    pub finished_at: Option<Instant>,
 }
 
 impl PersonaCard {
@@ -49,11 +45,8 @@ impl PersonaCard {
             thinking: String::new(),
             output: String::new(),
             tool_calls: Vec::new(),
-            started_at: None,
-            finished_at: None,
         }
     }
-
 }
 
 /// Top-level council state. Owned by `CouncilController`.
@@ -68,14 +61,6 @@ pub struct CouncilState {
 }
 
 impl CouncilState {
-    pub fn new(prompt: String) -> Self {
-        Self {
-            prompt,
-            cards: Vec::new(),
-            verdict: None,
-        }
-    }
-
     pub fn all_done(&self) -> bool {
         !self.cards.is_empty() && self.cards.iter().all(|c| c.phase.is_terminal())
     }

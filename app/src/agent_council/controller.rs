@@ -7,7 +7,7 @@
 //! timer in this model drains the receivers and applies events to state.
 
 use std::process::Stdio;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use command::r#async::Command;
 use futures::channel::mpsc;
@@ -147,7 +147,6 @@ impl CouncilController {
 
             if let Some(card) = self.state.cards.get_mut(idx) {
                 card.phase = CardPhase::Spawned;
-                card.started_at = Some(Instant::now());
             }
         }
         self.invocations = invocations;
@@ -231,7 +230,6 @@ impl CouncilController {
             inv.binary_basename.clone(),
         );
         card.phase = CardPhase::Spawned;
-        card.started_at = Some(Instant::now());
         self.state.verdict = Some(card);
 
         let (tx, rx) = mpsc::unbounded();
@@ -295,7 +293,6 @@ fn apply_event(
             card.tool_calls.push(format!("{name}: {summary}"));
         }
         CouncilEvent::Finished { ok, reason } => {
-            card.finished_at = Some(Instant::now());
             card.phase = if ok {
                 CardPhase::Done
             } else {
