@@ -9,6 +9,4 @@
 pub mod controller;
 pub mod event_stream;
 pub mod state;
-
-// Wired up incrementally:
-// pub mod view;
+pub mod view;
