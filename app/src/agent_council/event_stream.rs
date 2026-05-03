@@ -9,14 +9,12 @@ use serde_json::Value;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CouncilEvent {
-    /// Persona started reasoning. Some CLIs don't expose this; fine to skip.
-    ThinkingStarted,
+    /// Reasoning chunk. Each chunk flips the persona's phase to Thinking
+    /// and appends to the thinking buffer.
     ThinkingDelta(String),
-    ThinkingEnded,
-    /// Persona started emitting user-visible output.
-    OutputStarted,
+    /// User-visible output chunk. Flips phase to Streaming and appends to
+    /// the output buffer.
     OutputDelta(String),
-    OutputEnded,
     /// Compact, one-line summary of a tool invocation. Render as a chip.
     ToolCall {
         name: String,
@@ -47,16 +45,6 @@ impl CliKind {
             "claude" => Self::Claude,
             "codex" => Self::Codex,
             _ => Self::PlainText,
-        }
-    }
-
-    /// One-shot args that put the CLI in JSON streaming mode and accept the
-    /// prompt as the trailing positional. Caller appends the prompt last.
-    pub fn streaming_args(self) -> &'static [&'static str] {
-        match self {
-            Self::Claude => &["-p", "--output-format", "stream-json", "--verbose"],
-            Self::Codex => &["exec", "--json"],
-            Self::PlainText => &[],
         }
     }
 }
@@ -227,13 +215,4 @@ mod tests {
         assert_eq!(parse_line(CliKind::PlainText, ""), vec![]);
     }
 
-    #[test]
-    fn streaming_args_match_oneshot_for_known_clis() {
-        assert_eq!(
-            CliKind::Claude.streaming_args(),
-            &["-p", "--output-format", "stream-json", "--verbose"]
-        );
-        assert_eq!(CliKind::Codex.streaming_args(), &["exec", "--json"]);
-        assert!(CliKind::PlainText.streaming_args().is_empty());
-    }
 }

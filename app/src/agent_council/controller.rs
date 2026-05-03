@@ -19,7 +19,7 @@ use yarpui::{Entity, ModelContext};
 
 use crate::agent_council::event_stream::{parse_line, CliKind, CouncilEvent};
 use crate::agent_council::state::{CardPhase, CouncilState, PersonaCard};
-use crate::personas::{cli_invocations, synthesiser, Team};
+use crate::personas::{cli_invocations, streaming_args_for, synthesiser, Team};
 
 const DRAIN_INTERVAL_MS: u64 = 50;
 
@@ -82,14 +82,10 @@ impl CouncilController {
                 .and_then(|s| s.to_str())
                 .unwrap_or("")
                 .to_owned();
-            let args: Vec<String> = match basename.as_str() {
-                "claude" => ["-p", "--output-format", "stream-json", "--verbose"]
-                    .iter()
-                    .map(|s| (*s).to_owned())
-                    .collect(),
-                "codex" => vec!["exec".to_owned(), "--json".to_owned()],
-                _ => Vec::new(),
-            };
+            let args = streaming_args_for(&basename)
+                .iter()
+                .map(|s| (*s).to_owned())
+                .collect();
             Some(OwnedInvocation {
                 program: binary.to_owned(),
                 streaming_args: args,
@@ -271,18 +267,14 @@ fn apply_event(
         },
     };
     match ev {
-        CouncilEvent::ThinkingStarted => card.phase = CardPhase::Thinking,
         CouncilEvent::ThinkingDelta(s) => {
             card.thinking.push_str(&s);
             card.phase = CardPhase::Thinking;
         }
-        CouncilEvent::ThinkingEnded => {} // phase will flip on next OutputStarted/Delta
-        CouncilEvent::OutputStarted => card.phase = CardPhase::Streaming,
         CouncilEvent::OutputDelta(s) => {
             card.output.push_str(&s);
             card.phase = CardPhase::Streaming;
         }
-        CouncilEvent::OutputEnded => {}
         CouncilEvent::ToolCall { name, summary } => {
             // Trim summary; some tool inputs are large JSON blobs.
             let summary = if summary.len() > 200 {

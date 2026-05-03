@@ -252,7 +252,7 @@ pub(crate) fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
 
 /// Argv prefix that puts each known CLI in newline-delimited JSON streaming
 /// mode. Trailing arg should be the prompt.
-fn streaming_args_for(basename: &str) -> &'static [&'static str] {
+pub(crate) fn streaming_args_for(basename: &str) -> &'static [&'static str] {
     match basename {
         "claude" => &["-p", "--output-format", "stream-json", "--verbose"],
         "codex" => &["exec", "--json"],
