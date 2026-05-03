@@ -205,7 +205,7 @@ fn which_via_login_shell(bin: &str) -> Option<String> {
 
 /// Pick the synthesiser for a verdict pass: prefer a lead CLI persona; else
 /// the first CLI persona in the team.
-pub fn synthesiser(team: &Team) -> Option<&Persona> {
+pub(crate) fn synthesiser(team: &Team) -> Option<&Persona> {
     team.members
         .iter()
         .find(|p| p.lead && p.binary.is_some())
@@ -215,7 +215,7 @@ pub fn synthesiser(team: &Team) -> Option<&Persona> {
 /// One CLI invocation ready to spawn: persona, the binary path, and the
 /// argv prefix that puts the CLI in **streaming JSON mode**. The caller
 /// appends the user prompt as the trailing positional argument.
-pub struct CliInvocation<'a> {
+pub(crate) struct CliInvocation<'a> {
     pub persona: &'a Persona,
     pub program: String,
     pub streaming_args: Vec<String>,
@@ -226,7 +226,7 @@ pub struct CliInvocation<'a> {
 /// streaming JSON mode (so the UI can render Thinking vs Output phases
 /// distinctly). Personas without a binary are skipped — the council view is
 /// only useful when at least one CLI is present.
-pub fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
+pub(crate) fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
     team.members
         .iter()
         .filter_map(|p| {
@@ -397,48 +397,3 @@ fn shell_escape(s: &str) -> String {
     out
 }
 
-/// Wrap a user prompt with council framing. Returns None if no roster is
-/// configured or the default team has no members; caller falls back to the
-/// raw prompt. Kept as a fallback for when no CLI personas are configured.
-pub fn convene_council(prompt: &str) -> Option<String> {
-    let roster = Roster::load()?;
-    let team = roster.default_team()?;
-    if team.members.is_empty() {
-        return None;
-    }
-
-    let mut out = String::new();
-    out.push_str("[Sandford NWA council convened — ");
-    let lead = team.members.iter().find(|p| p.lead).or_else(|| team.members.first())?;
-    out.push_str(&format!("{} {} presides", lead.badge, lead.name));
-    let supporting: Vec<_> = team
-        .members
-        .iter()
-        .filter(|p| !p.lead || p.name != lead.name)
-        .collect();
-    if !supporting.is_empty() {
-        out.push_str("; ");
-        let names: Vec<_> = supporting
-            .iter()
-            .map(|p| format!("{} {}", p.badge, p.name))
-            .collect();
-        out.push_str(&names.join(", "));
-        out.push_str(" weigh in");
-    }
-    out.push_str(".]\n\n");
-    out.push_str("Roster briefing:\n");
-    for p in &team.members {
-        let suffix = match &p.binary {
-            Some(path) => format!(" (CLI agent at {path})"),
-            None => String::new(),
-        };
-        out.push_str(&format!(
-            "- **{} {}**{suffix} — {} {}\n",
-            p.badge, p.name, p.role, p.voice
-        ));
-    }
-    out.push_str("\nFormat your reply as: each persona contributes a labelled section (e.g. `**Sgt Angel:**`) with their angle on the case below. Personas marked as CLI agents speak with the voice of that local tool — give their take in the style that tool would respond. The lead delivers the final verdict last under `**Verdict:**`. Keep each take tight; no waffle.\n\n");
-    out.push_str("Case file:\n");
-    out.push_str(prompt);
-    Some(out)
-}

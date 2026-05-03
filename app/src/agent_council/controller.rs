@@ -19,12 +19,24 @@ use yarpui::{Entity, ModelContext};
 
 use crate::agent_council::event_stream::{parse_line, CliKind, CouncilEvent};
 use crate::agent_council::state::{CardPhase, CouncilState, PersonaCard};
-use crate::personas::{cli_invocations, Roster, Team};
+use crate::personas::{cli_invocations, synthesiser, Team};
 
 const DRAIN_INTERVAL_MS: u64 = 50;
 
+/// One persona's spawn recipe. Captured at controller construction so we
+/// don't re-walk the roster on every `start` / synthesis pass.
+struct OwnedInvocation {
+    program: String,
+    streaming_args: Vec<String>,
+    binary_basename: String,
+    badge: String,
+    name: String,
+}
+
 pub struct CouncilController {
     pub state: CouncilState,
+    invocations: Vec<OwnedInvocation>,
+    synth_invocation: Option<OwnedInvocation>,
     receivers: Vec<PersonaReceiver>,
     /// Producer task handles. Dropped on controller drop, which cancels the
     /// futures and (because we set `kill_on_drop`) kills the children.
@@ -49,16 +61,43 @@ impl CouncilController {
     /// Build a controller seeded with one card per CLI persona on the team.
     /// Caller is responsible for then calling `start` to spawn processes.
     pub fn new(prompt: String, team: &Team) -> Self {
-        let cards: Vec<PersonaCard> = cli_invocations(team)
-            .iter()
-            .map(|inv| {
-                PersonaCard::new(
-                    inv.persona.badge.clone(),
-                    inv.persona.name.clone(),
-                    inv.binary_basename.clone(),
-                )
+        let invocations: Vec<OwnedInvocation> = cli_invocations(team)
+            .into_iter()
+            .map(|inv| OwnedInvocation {
+                program: inv.program,
+                streaming_args: inv.streaming_args,
+                binary_basename: inv.binary_basename,
+                badge: inv.persona.badge.clone(),
+                name: inv.persona.name.clone(),
             })
             .collect();
+        let cards: Vec<PersonaCard> = invocations
+            .iter()
+            .map(|inv| PersonaCard::new(inv.badge.clone(), inv.name.clone(), inv.binary_basename.clone()))
+            .collect();
+        let synth_invocation = synthesiser(team).and_then(|lead| {
+            let binary = lead.binary.as_deref()?;
+            let basename = std::path::Path::new(binary)
+                .file_name()
+                .and_then(|s| s.to_str())
+                .unwrap_or("")
+                .to_owned();
+            let args: Vec<String> = match basename.as_str() {
+                "claude" => ["-p", "--output-format", "stream-json", "--verbose"]
+                    .iter()
+                    .map(|s| (*s).to_owned())
+                    .collect(),
+                "codex" => vec!["exec".to_owned(), "--json".to_owned()],
+                _ => Vec::new(),
+            };
+            Some(OwnedInvocation {
+                program: binary.to_owned(),
+                streaming_args: args,
+                binary_basename: basename,
+                badge: lead.badge.clone(),
+                name: lead.name.clone(),
+            })
+        });
         let state = CouncilState {
             prompt,
             cards,
@@ -66,6 +105,8 @@ impl CouncilController {
         };
         Self {
             state,
+            invocations,
+            synth_invocation,
             receivers: Vec::new(),
             _tasks: Vec::new(),
             _drain_handle: None,
@@ -76,15 +117,13 @@ impl CouncilController {
     /// Spawn one process per persona. Each writes events into a channel that
     /// the drain timer drains back into state on the main thread.
     pub fn start(&mut self, ctx: &mut ModelContext<Self>) {
-        let Some(roster) = Roster::load() else {
-            log::warn!("council: no roster configured; nothing to dispatch");
+        if self.invocations.is_empty() {
+            log::warn!("council: no CLI personas to dispatch");
             return;
-        };
-        let Some(team) = roster.default_team().cloned() else {
-            return;
-        };
-        let invocations = cli_invocations(&team);
-
+        }
+        // Take the invocations out so we can borrow self mutably while
+        // iterating; put them back after.
+        let invocations = std::mem::take(&mut self.invocations);
         for (idx, inv) in invocations.iter().enumerate() {
             let (tx, rx) = mpsc::unbounded();
             self.receivers.push(PersonaReceiver {
@@ -111,7 +150,7 @@ impl CouncilController {
                 card.started_at = Some(Instant::now());
             }
         }
-
+        self.invocations = invocations;
         self.start_drain_timer(ctx);
     }
 
@@ -180,38 +219,16 @@ impl CouncilController {
     }
 
     fn start_synthesis(&mut self, ctx: &mut ModelContext<Self>) {
-        let Some(roster) = Roster::load() else {
-            return;
+        let Some(inv) = self.synth_invocation.take() else {
+            return; // no CLI lead; verdict stays None
         };
-        let Some(team) = roster.default_team() else {
-            return;
-        };
-        let Some(lead) = crate::personas::synthesiser(team) else {
-            return; // No CLI lead; verdict stays None and we're done.
-        };
-        let Some(binary) = lead.binary.as_deref() else {
-            return;
-        };
-        let basename = std::path::Path::new(binary)
-            .file_name()
-            .and_then(|s| s.to_str())
-            .unwrap_or("")
-            .to_owned();
-        let kind = CliKind::from_basename(&basename);
-        let args: Vec<String> = match basename.as_str() {
-            "claude" => ["-p", "--output-format", "stream-json", "--verbose"]
-                .iter()
-                .map(|s| (*s).to_owned())
-                .collect(),
-            "codex" => vec!["exec".to_owned(), "--json".to_owned()],
-            _ => Vec::new(),
-        };
-
+        let kind = CliKind::from_basename(&inv.binary_basename);
         let synth_prompt = build_synth_prompt(&self.state);
+
         let mut card = PersonaCard::new(
-            lead.badge.clone(),
-            lead.name.clone(),
-            basename.clone(),
+            inv.badge.clone(),
+            inv.name.clone(),
+            inv.binary_basename.clone(),
         );
         card.phase = CardPhase::Spawned;
         card.started_at = Some(Instant::now());
@@ -224,7 +241,8 @@ impl CouncilController {
             finished: false,
         });
 
-        let program = binary.to_owned();
+        let program = inv.program;
+        let args = inv.streaming_args;
         let handle = ctx.spawn(
             async move {
                 drive_persona(program, args, kind, synth_prompt, tx).await;
