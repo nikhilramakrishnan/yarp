@@ -250,7 +250,9 @@ impl CouncilController {
             |_me, _, _ctx| {},
         );
         self._tasks.push(handle);
-        self.start_drain_timer(ctx);
+        // Drain timer is re-armed by its own callback when !is_complete(),
+        // so we don't arm it here — the new receiver flips is_complete()
+        // back to false and the next tick will keep the loop alive.
     }
 }
 
