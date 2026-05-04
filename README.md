@@ -36,7 +36,7 @@ The macOS bundle lands at `target/debug/bundle/osx/Yarp.app`.
 
 ## What's different from upstream Warp
 
-- **Local only.** No login, no warp.dev round-trips.
+- **No backend.** No login, no warp.dev round-trips.
 - **Bring your own LLM.** Configure your OpenAI / Anthropic / etc. key in settings.
 - **Hot Fuzz themed.** Copy, palette, default agent personas.
 - **Same terminal.** Block-based command UI, AI inline suggestions, command palette.
