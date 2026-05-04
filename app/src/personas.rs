@@ -321,6 +321,13 @@ pub(crate) fn persona_header_color(name: &str) -> &'static str {
         "codex" => "\\033[1;38;5;35m",
         "gemini" => "\\033[1;38;5;39m",
         "Nicholas Angel" => "\\033[1;38;5;220m",
+        // Hot Fuzz roster: each constable gets a distinct hue so the cluster
+        // reads as four voices, not a uniform wall of bold. Hues mirror voice:
+        // Danny excitable (terracotta), Doris sharp-eyed (cool teal),
+        // Frank strategic devil's advocate (cool lavender).
+        "Danny Butterman" => "\\033[1;38;5;167m",
+        "Doris Thatcher" => "\\033[1;38;5;109m",
+        "Frank Butterman" => "\\033[1;38;5;104m",
         _ => "\\033[1m",
     }
 }
