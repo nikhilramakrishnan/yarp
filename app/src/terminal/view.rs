@@ -19987,7 +19987,7 @@ impl TerminalView {
                            : >{launched_q}\n\
                            {bg_launches}\n\
                          fi\n\
-                         printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                          start=$(date +%s)\n\
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
