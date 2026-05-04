@@ -310,6 +310,21 @@ pub(crate) fn shell_quote_smart(s: &str) -> String {
     }
 }
 
+/// ANSI 256-color escape (bold + foreground) for a persona's header line,
+/// keyed off the persona's display name. Brand-aligned where it makes
+/// sense — Anthropic orange, OpenAI green, Google blue — and gold for the
+/// team lead so the verdict block stands out. Unknown names fall back to
+/// plain bold so the header still pops.
+pub(crate) fn persona_header_color(name: &str) -> &'static str {
+    match name {
+        "claude" => "\\033[1;38;5;208m",
+        "codex" => "\\033[1;38;5;35m",
+        "gemini" => "\\033[1;38;5;39m",
+        "Nicholas Angel" => "\\033[1;38;5;220m",
+        _ => "\\033[1m",
+    }
+}
+
 /// Build the shell command for one persona's CLI invocation in the council
 /// chain. The generic shape is `<binary> <plain_args> '<prompt>' | tee
 /// <take_file>` — stdout is mirrored to the take file so the synth pass can

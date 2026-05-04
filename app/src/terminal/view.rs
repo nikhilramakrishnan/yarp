@@ -19902,7 +19902,7 @@ impl TerminalView {
                     // occasionally does this on substantive prompts).
                     let script_body = format!(
                         "#!/usr/bin/env bash\n\
-                         printf '\\033[1m%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                          ( {cmd} ) &\n\
                          pid=$!\n\
                          ( sleep 120; pkill -TERM -P $pid 2>/dev/null; \
@@ -19915,6 +19915,7 @@ impl TerminalView {
                          [ $rc -ge 128 ] && echo && \
                            echo '(persona timed out after 120s)'\n\
                          exit 0\n",
+                        color = crate::personas::persona_header_color(&inv.persona.name),
                         badge = crate::personas::shell_quote_one(&inv.persona.badge),
                         name = crate::personas::shell_quote_one(&inv.persona.name),
                     );
@@ -20026,9 +20027,10 @@ impl TerminalView {
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -f {script_q}{take_cleanup}' EXIT\n\
-                             printf '\\033[1m%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
                             script_q = crate::personas::shell_quote_one(&synth_script_path),
+                            color = crate::personas::persona_header_color(&header_persona.name),
                             badge = crate::personas::shell_quote_one(&header_persona.badge),
                             name = crate::personas::shell_quote_one(&header_persona.name),
                         );
