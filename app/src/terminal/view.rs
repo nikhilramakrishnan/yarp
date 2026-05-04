@@ -19987,7 +19987,7 @@ impl TerminalView {
                          while [ ! -e {done_q} ]; do\n\
                            printf '\\r\\033[38;5;244m%s investigating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                            i=$((i+1))\n\
-                           sleep 0.2\n\
+                           sleep 0.1\n\
                          done\n\
                          printf '\\r\\033[K'\n\
                          take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
@@ -20162,7 +20162,7 @@ impl TerminalView {
                                while true; do\n\
                                  printf '\\r\\033[38;5;244m%s deliberating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                                  i=$((i+1))\n\
-                                 sleep 0.2\n\
+                                 sleep 0.1\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
                              {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
