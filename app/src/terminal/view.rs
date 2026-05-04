@@ -19981,8 +19981,8 @@ impl TerminalView {
                            : >{launched_q}\n\
                            {bg_launches}\n\
                          fi\n\
-                         while [ ! -e {done_q} ]; do sleep 0.2; done\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         while [ ! -e {done_q} ]; do sleep 0.2; done\n\
                          take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
