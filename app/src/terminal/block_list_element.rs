@@ -2504,10 +2504,12 @@ impl BlockListElement {
         let cell_size_height = block_grid_params.grid_render_params.cell_size.y();
         let block_banner_height = block.block_banner_height().as_f64() as f32 * cell_size_height;
 
-        if draw_border_between_blocks && block_borders_enabled {
+        if draw_border_between_blocks && block_borders_enabled && !block.council_block() {
             // The border belongs *above* the block banner, if there is one. The grid_origin has
             // already been updated to point to below that banner, so we do the subtraction to go
             // up and draw the border above it.
+            // Council blocks suppress the divider above each block — the cluster reads as one
+            // combined output, with the persona's colored badge as the only intra-cluster framing.
             let border_origin = *grid_origin - vec2f(0., block_banner_height);
             Self::draw_border_between_blocks(border_origin, block_grid_params, ctx);
         }
