@@ -184,8 +184,6 @@ In flight (Task 3):
 - Replace the stub handler with `insert_rich_content(...)` call
 
 Remaining after Task 3:
-- Delete `personas::build_council_command`, `oneshot_args_for`,
-  `shell_escape` (now unreferenced).
 - Smoke test: `/agent how should we ship this?` opens a card stack
   with live thinking + output from claude/codex/gemini, plus a synth
   verdict at the bottom.
