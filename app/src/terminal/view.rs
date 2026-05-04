@@ -20237,7 +20237,6 @@ impl TerminalView {
                                  printf '\\r\\033[K'\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
-                                 echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 60 ]; then\n\
                                    text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
@@ -20248,10 +20247,10 @@ impl TerminalView {
                                else\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
-                                 echo\n\
                                  text='(no verdict)'\n\
                                  stamp_color='179'\n\
                                fi\n\
+                               echo\n\
                                pad=$(( cols - ${{#text}} ))\n\
                                [ $pad -lt 0 ] && pad=0\n\
                                printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
