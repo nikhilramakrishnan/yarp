@@ -20002,15 +20002,19 @@ impl TerminalView {
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
                          fi\n\
+                         cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
                            [ -n \"$take_content\" ] && echo\n\
-                           printf '\\033[38;5;244m(timed out after 120s)\\033[0m\\n'\n\
+                           text='(timed out after 120s)'\n\
                          elif [ -z \"$take_content\" ]; then\n\
-                           printf '\\033[38;5;244m(no report)\\033[0m\\n'\n\
+                           text='(no report)'\n\
                          else\n\
                            echo\n\
-                           printf '\\033[38;5;244m(reported in %ss)\\033[0m\\n' \"$elapsed\"\n\
+                           text=$(printf '(reported in %ss)' \"$elapsed\")\n\
                          fi\n\
+                         pad=$(( cols - ${{#text}} ))\n\
+                         [ $pad -lt 0 ] && pad=0\n\
+                         printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
                         bg_launches = bg_launches,
