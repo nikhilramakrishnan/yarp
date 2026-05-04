@@ -19890,13 +19890,18 @@ impl TerminalView {
                             .file_name()
                             .and_then(|s| s.to_str())
                             .unwrap_or("");
-                        // Assemble the synth prompt safely: printf with
-                        // single-quoted format strings (no $ / ` / \\
-                        // expansion), and `cat` to inline take-file
-                        // contents verbatim. The result is captured by an
-                        // outer "$()" and passed as a single argv to the
-                        // lead — none of the user's prompt or the
-                        // personas' outputs get re-evaluated by the shell.
+                        // Assemble the synth prompt safely inside a script
+                        // we drop to /tmp: printf with single-quoted format
+                        // strings (no $ / ` / \\ expansion), and `cat` to
+                        // inline take-file contents verbatim. The result is
+                        // captured by an outer "$()" and passed as a single
+                        // argv to the lead — none of the user's prompt or
+                        // the personas' outputs get re-evaluated by the
+                        // shell.
+                        //
+                        // We drop the assembly to a script so the visible
+                        // command is just `bash /tmp/...synth.sh` instead of
+                        // a 600-char inline blob — keeps the block readable.
                         let mut assembly = String::new();
                         assembly.push_str(&format!(
                             "printf '%s' {}",
@@ -19931,38 +19936,58 @@ impl TerminalView {
                             .map(|a| crate::personas::shell_quote_one(a))
                             .collect::<Vec<_>>()
                             .join(" ");
-                        // Append a `; rm -f <takes>` to the synth command so
-                        // /tmp cleanup runs as part of the same block — no
-                        // separate empty-output cleanup block. Cleanup
-                        // happens regardless of synth exit (the ; is
-                        // unconditional).
-                        let rm_suffix = if take_files.is_empty() {
-                            String::new()
-                        } else {
-                            let rm_args = take_files
-                                .iter()
-                                .map(|f| crate::personas::shell_quote_one(f))
-                                .collect::<Vec<_>>()
-                                .join(" ");
-                            format!("; rm -f {rm_args}")
-                        };
+                        // Build the in-script cleanup of takes + the script
+                        // self-delete via trap, so /tmp doesn't leak even if
+                        // the user kills the block mid-stream.
+                        let mut take_cleanup = String::new();
+                        if !take_files.is_empty() {
+                            take_cleanup.push(' ');
+                            for f in &take_files {
+                                take_cleanup.push_str(&crate::personas::shell_quote_one(f));
+                                take_cleanup.push(' ');
+                            }
+                        }
+                        let synth_script_path =
+                            format!("/tmp/yarp-council-{work_id}-synth.sh");
                         // Use the FULL detected path, same reasoning as the
                         // per-persona case: PATH may resolve `claude` to an
                         // older Homebrew copy that breaks on piped stdout.
-                        let cmd = if lead_args.is_empty() {
+                        let claude_invocation = if lead_args.is_empty() {
                             format!(
-                                "{} \"$({assembly})\"{rm_suffix}",
+                                "{} \"$({assembly})\"",
                                 crate::personas::shell_quote_one(lead_bin),
                             )
                         } else {
                             format!(
-                                "{} {} \"$({assembly})\"{rm_suffix}",
+                                "{} {} \"$({assembly})\"",
                                 crate::personas::shell_quote_one(lead_bin),
                                 lead_args,
                             )
                         };
-                        chain.push_back(cmd);
-                        synth_attached = true;
+                        let script_body = format!(
+                            "#!/usr/bin/env bash\n\
+                             trap 'rm -f {script_q}{take_cleanup}' EXIT\n\
+                             {claude_invocation}\n",
+                            script_q = crate::personas::shell_quote_one(&synth_script_path),
+                        );
+                        // Best-effort write; if it fails, fall through to
+                        // the no-synth path below so the council still
+                        // produces output (and takes still get cleaned up).
+                        if std::fs::write(&synth_script_path, script_body).is_ok() {
+                            #[cfg(unix)]
+                            {
+                                use std::os::unix::fs::PermissionsExt as _;
+                                let _ = std::fs::set_permissions(
+                                    &synth_script_path,
+                                    std::fs::Permissions::from_mode(0o755),
+                                );
+                            }
+                            chain.push_back(format!(
+                                "bash {}",
+                                crate::personas::shell_quote_one(&synth_script_path),
+                            ));
+                            synth_attached = true;
+                        }
                     }
                 }
                 // If we couldn't attach cleanup to a synth command (no
