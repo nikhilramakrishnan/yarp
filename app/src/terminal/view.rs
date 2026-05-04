@@ -20240,6 +20240,7 @@ impl TerminalView {
                         let synth_fifo_path = format!("{work_dir}/synth.fifo");
                         let synth_timeout_path = format!("{work_dir}/synth.timeout");
                         let synth_err_path = format!("{work_dir}/synth.err");
+                        let synth_rc_path = format!("{work_dir}/synth.rc");
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
@@ -20274,7 +20275,7 @@ impl TerminalView {
                              fi\n\
                              echo\n\
                              mkfifo {fifo_q} 2>/dev/null\n\
-                             {claude_invocation} >{fifo_q} 2>{synth_err_q} &\n\
+                             ( {claude_invocation} >{fifo_q} 2>{synth_err_q}; echo $? > {synth_rc_q} ) &\n\
                              claude_pid=$!\n\
                              ( sleep 300; touch {synth_timeout_q}; kill_tree TERM $claude_pid; sleep 2; kill_tree KILL $claude_pid ) &\n\
                              watcher=$!\n\
@@ -20297,6 +20298,12 @@ impl TerminalView {
                                  cat\n\
                                  got_output=1\n\
                                fi\n\
+                               for _ in 1 2 3 4 5; do\n\
+                                 [ -e {synth_rc_q} ] && break\n\
+                                 sleep 0.1\n\
+                               done\n\
+                               synth_rc=$(cat {synth_rc_q} 2>/dev/null)\n\
+                               synth_rc=${{synth_rc:-0}}\n\
                                if [ -e {synth_timeout_q} ]; then\n\
                                  {err_block}\
                                  elapsed=$(( $(date +%s) - start ))\n\
@@ -20304,6 +20311,15 @@ impl TerminalView {
                                    text=$(printf '(timed out after %ss)' \"$elapsed\")\n\
                                  else\n\
                                    text=$(printf '(timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                 fi\n\
+                                 stamp_color='179'\n\
+                               elif [ \"$synth_rc\" -ne 0 ] && [ \"$synth_rc\" -lt 128 ]; then\n\
+                                 {err_block}\
+                                 elapsed=$(( $(date +%s) - start ))\n\
+                                 if [ $elapsed -lt 60 ]; then\n\
+                                   text=$(printf '(crashed after %ss)' \"$elapsed\")\n\
+                                 else\n\
+                                   text=$(printf '(crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='179'\n\
                                elif [ -n \"$got_output\" ]; then\n\
@@ -20364,6 +20380,7 @@ impl TerminalView {
                             fifo_q = crate::personas::shell_quote_one(&synth_fifo_path),
                             synth_timeout_q = crate::personas::shell_quote_one(&synth_timeout_path),
                             synth_err_q = crate::personas::shell_quote_one(&synth_err_path),
+                            synth_rc_q = crate::personas::shell_quote_one(&synth_rc_path),
                             launched_q = crate::personas::shell_quote_one(&launched_marker),
                             err_block = crate::personas::council_err_tail_block(
                                 &crate::personas::shell_quote_one(&synth_err_path),
