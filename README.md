@@ -17,13 +17,9 @@
 
 ## Preamble
 
-Yarp is what happens when you fork a fast, AI-augmented terminal and decide that:
-
-- It should run **fully local** with no `warp.dev` backend dependency
-- The AI should use **whatever LLM provider you bring** (OpenAI, Anthropic, etc.)
-- If you're going to maintain a fork, you might as well commit to a bit
-
-Everything that talked to Warp's cloud — auth, Warp Drive, cloud agents, telemetry, session sharing — has been stripped or stubbed. Yarp boots, opens a terminal, runs your shell, and gets out of the way.
+Yarp is a personal fork of Warp Terminal. It runs locally, uses whatever
+LLM provider you bring, and leans into a Hot Fuzz theme because forks
+are more fun with a bit.
 
 > "By the power of Greyskull!"
 > &nbsp;&nbsp;— Sgt. Nicholas Angel, when his terminal Just Works™
@@ -40,10 +36,10 @@ The macOS bundle lands at `target/debug/bundle/osx/Yarp.app`.
 
 ## What's different from upstream Warp
 
-- **No backend.** No login, no telemetry, no cloud sync, no warp.dev round-trips.
-- **Bring your own LLM.** Configure your OpenAI / Anthropic / etc. key in settings; Yarp talks to the provider directly.
-- **OSS channel only.** Stable / Dev / Preview / Local channels and their bin entries are deleted (~1,000 LOC + ~5 MB of channel assets gone).
-- **Same terminal.** Block-based command UI, AI inline suggestions, command palette — all the good parts of Warp's UX.
+- **Local only.** No login, no warp.dev round-trips.
+- **Bring your own LLM.** Configure your OpenAI / Anthropic / etc. key in settings.
+- **Hot Fuzz themed.** Copy, palette, default agent personas.
+- **Same terminal.** Block-based command UI, AI inline suggestions, command palette.
 
 ## Status
 
