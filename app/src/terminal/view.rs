@@ -20218,6 +20218,7 @@ impl TerminalView {
                         // badge stays the visual anchor for the verdict.
                         let synth_fifo_path = format!("{work_dir}/synth.fifo");
                         let synth_timeout_path = format!("{work_dir}/synth.timeout");
+                        let synth_err_path = format!("{work_dir}/synth.err");
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
@@ -20236,7 +20237,7 @@ impl TerminalView {
                              printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              mkfifo {fifo_q} 2>/dev/null\n\
-                             {claude_invocation} >{fifo_q} 2>/dev/null &\n\
+                             {claude_invocation} >{fifo_q} 2>{synth_err_q} &\n\
                              claude_pid=$!\n\
                              ( sleep 300; touch {synth_timeout_q}; kill_tree TERM $claude_pid; sleep 2; kill_tree KILL $claude_pid ) &\n\
                              watcher=$!\n\
@@ -20271,6 +20272,16 @@ impl TerminalView {
                                  fi\n\
                                  stamp_color='244'\n\
                                else\n\
+                                 err_last=\"$(tail -n 10 {synth_err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
+                                 err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
+                                 if [ -n \"$err_last\" ]; then\n\
+                                   max_err=$(( cols - 2 ))\n\
+                                   [ $max_err -lt 20 ] && max_err=20\n\
+                                   if [ ${{#err_last}} -gt $max_err ]; then\n\
+                                     err_last=\"${{err_last:0:$max_err}}…\"\n\
+                                   fi\n\
+                                   printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
+                                 fi\n\
                                  text='(no verdict)'\n\
                                  stamp_color='179'\n\
                                fi\n\
@@ -20290,6 +20301,7 @@ impl TerminalView {
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             fifo_q = crate::personas::shell_quote_one(&synth_fifo_path),
                             synth_timeout_q = crate::personas::shell_quote_one(&synth_timeout_path),
+                            synth_err_q = crate::personas::shell_quote_one(&synth_err_path),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
                             name = crate::personas::shell_quote_one(&lead_persona.name),
