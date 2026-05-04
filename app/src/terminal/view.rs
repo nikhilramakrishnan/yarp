@@ -19929,10 +19929,10 @@ impl TerminalView {
                             );
                         }
                         persona_scripts.push(script_path.clone());
-                        chain.push_back(format!(
-                            "bash {}",
-                            crate::personas::shell_quote_smart(&script_path),
-                        ));
+                        // Script is +x with a #! shebang, so the chain
+                        // command can just be the path itself — no `bash `
+                        // prefix needed. Cleaner block command line.
+                        chain.push_back(crate::personas::shell_quote_smart(&script_path));
                     } else {
                         chain.push_back(cmd);
                     }
@@ -20046,9 +20046,8 @@ impl TerminalView {
                                     std::fs::Permissions::from_mode(0o755),
                                 );
                             }
-                            chain.push_back(format!(
-                                "bash {}",
-                                crate::personas::shell_quote_smart(&synth_script_path),
+                            chain.push_back(crate::personas::shell_quote_smart(
+                                &synth_script_path,
                             ));
                             synth_attached = true;
                         }
