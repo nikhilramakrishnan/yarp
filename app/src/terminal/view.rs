@@ -20229,9 +20229,11 @@ impl TerminalView {
                                done ) &\n\
                              SPIN_PID=$!\n\
                              {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
-                               if IFS= read -r first; then\n\
-                                 kill $SPIN_PID 2>/dev/null\n\
-                                 printf '\\r\\033[K'\n\
+                               IFS= read -r first\n\
+                               read_rc=$?\n\
+                               kill $SPIN_PID 2>/dev/null\n\
+                               printf '\\r\\033[K'\n\
+                               if [ $read_rc -eq 0 ]; then\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
@@ -20242,8 +20244,6 @@ impl TerminalView {
                                  fi\n\
                                  stamp_color='244'\n\
                                else\n\
-                                 kill $SPIN_PID 2>/dev/null\n\
-                                 printf '\\r\\033[K'\n\
                                  text='(no verdict)'\n\
                                  stamp_color='179'\n\
                                fi\n\
