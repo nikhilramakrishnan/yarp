@@ -19824,13 +19824,10 @@ impl TerminalView {
                 let work_id = uuid::Uuid::new_v4();
                 let mut chain: std::collections::VecDeque<String> =
                     std::collections::VecDeque::new();
-                // Header block: a printf so users can see "convening on the
-                // case" framing as its own native block, separating the
-                // council run from any preceding shell history.
-                chain.push_back(format!(
-                    "printf '🚓 Sandford NWA convening on the case: %s\\n' {}",
-                    crate::personas::shell_quote_one(&prompt)
-                ));
+                // No header block — the slash-command block the user just
+                // typed (\`/agent <prompt>\`) is already visible above the
+                // chain and serves as the framing. A separate "convening"
+                // printf block was redundant noise.
                 let mut take_files: Vec<String> = Vec::new();
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
@@ -19858,6 +19855,7 @@ impl TerminalView {
                     };
                     chain.push_back(cmd);
                 }
+                let mut synth_attached = false;
                 if let Some(synth) = crate::personas::synthesiser(&team) {
                     if let Some(lead_bin) = synth.binary.as_deref() {
                         let lead_basename = std::path::Path::new(lead_bin)
@@ -19905,24 +19903,41 @@ impl TerminalView {
                             .map(|a| crate::personas::shell_quote_one(a))
                             .collect::<Vec<_>>()
                             .join(" ");
+                        // Append a `; rm -f <takes>` to the synth command so
+                        // /tmp cleanup runs as part of the same block — no
+                        // separate empty-output cleanup block. Cleanup
+                        // happens regardless of synth exit (the ; is
+                        // unconditional).
+                        let rm_suffix = if take_files.is_empty() {
+                            String::new()
+                        } else {
+                            let rm_args = take_files
+                                .iter()
+                                .map(|f| crate::personas::shell_quote_one(f))
+                                .collect::<Vec<_>>()
+                                .join(" ");
+                            format!("; rm -f {rm_args}")
+                        };
                         let cmd = if lead_args.is_empty() {
                             format!(
-                                "{} \"$({assembly})\"",
+                                "{} \"$({assembly})\"{rm_suffix}",
                                 crate::personas::shell_quote_one(lead_bin),
                             )
                         } else {
                             format!(
-                                "{} {} \"$({assembly})\"",
+                                "{} {} \"$({assembly})\"{rm_suffix}",
                                 crate::personas::shell_quote_one(lead_bin),
                                 lead_args,
                             )
                         };
                         chain.push_back(cmd);
+                        synth_attached = true;
                     }
                 }
-                // Cleanup block: rm the take files we tee'd to so /tmp
-                // doesn't leak after the run.
-                if !take_files.is_empty() {
+                // If we couldn't attach cleanup to a synth command (no
+                // synthesiser configured, or no binary on the lead), put
+                // it on its own block so /tmp doesn't leak.
+                if !synth_attached && !take_files.is_empty() {
                     let rm_args = take_files
                         .iter()
                         .map(|f| crate::personas::shell_quote_one(f))
