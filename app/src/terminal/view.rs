@@ -2808,12 +2808,6 @@ pub struct TerminalView {
     /// Persisted across renders so the animation doesn't restart.
     remote_server_shimmer_handle: ShimmeringTextStateHandle,
 
-    /// Holds the council controller alive while a `/agent` run is in
-    /// flight. Render surface integration is a follow-up; without this
-    /// the controller would drop on scope exit and kill its child
-    /// processes.
-    #[allow(dead_code)]
-    agent_council_controller: Option<ModelHandle<crate::agent_council::controller::CouncilController>>,
 }
 
 /// Parameters stashed when a code review pane open is requested with
@@ -4071,7 +4065,6 @@ impl TerminalView {
             focus_handle: None,
             sessions,
             remote_server_shimmer_handle: ShimmeringTextStateHandle::new(),
-            agent_council_controller: None,
             active_block_metadata: None,
             block_text_selection_start_position: None,
             background_executor: ctx.background_executor().clone(),
@@ -19775,30 +19768,43 @@ impl TerminalView {
                 }
             },
             InputEvent::EnterAgentCouncil { prompt } => {
-                let team = crate::personas::Roster::load()
-                    .and_then(|r| r.default_team().cloned());
-                if let Some(team) = team {
-                    let prompt = prompt.clone();
-                    let controller = ctx.add_model(|_| {
-                        crate::agent_council::controller::CouncilController::new(
-                            prompt.clone(),
-                            &team,
-                        )
-                    });
-                    controller.update(ctx, |c, ctx| c.start(ctx));
-                    let card_count = controller.as_ref(ctx).state.cards.len();
-                    log::info!(
-                        "EnterAgentCouncil fired with prompt: {} ({} cards)",
-                        prompt,
-                        card_count
-                    );
-                    self.agent_council_controller = Some(controller);
-                } else {
+                let Some(roster) = crate::personas::Roster::load() else {
                     log::warn!(
-                        "EnterAgentCouncil fired with prompt: {} but no team loaded",
+                        "EnterAgentCouncil fired with prompt: {} but no roster loaded",
                         prompt
                     );
-                }
+                    return;
+                };
+                let Some(team) = roster.default_team().cloned() else {
+                    log::warn!(
+                        "EnterAgentCouncil fired with prompt: {} but no default team",
+                        prompt
+                    );
+                    return;
+                };
+                let prompt = prompt.clone();
+                let controller = ctx.add_model(|_| {
+                    crate::agent_council::controller::CouncilController::new(
+                        prompt.clone(),
+                        &team,
+                    )
+                });
+                controller.update(ctx, |c, ctx| c.start(ctx));
+                let council_view = ctx.add_view(|ctx| {
+                    crate::agent_council::view::CouncilView::new(controller, ctx)
+                });
+                log::info!("EnterAgentCouncil fired with prompt: {}", prompt);
+                self.insert_rich_content(
+                    Some(RichContentType::AgentCouncil),
+                    council_view,
+                    Some(RichContentMetadata::AgentCouncil {
+                        prompt: prompt.clone(),
+                    }),
+                    RichContentInsertionPosition::Append {
+                        insert_below_long_running_block: false,
+                    },
+                    ctx,
+                );
             }
             InputEvent::EnterCloudAgentView { initial_prompt } => {
                 self.enter_cloud_agent_view(initial_prompt.clone(), ctx);

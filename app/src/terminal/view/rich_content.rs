@@ -177,6 +177,10 @@ impl RichContent {
         matches!(self.metadata, Some(RichContentMetadata::AgentViewZeroState))
     }
 
+    pub fn is_agent_council(&self) -> bool {
+        matches!(self.metadata, Some(RichContentMetadata::AgentCouncil { .. }))
+    }
+
     pub fn is_pending_user_query(&self) -> bool {
         matches!(self.metadata, Some(RichContentMetadata::PendingUserQuery))
     }
@@ -272,6 +276,9 @@ pub enum RichContentMetadata {
     TerminalViewZeroState,
     PluginInstructionsBlock,
     PendingUserQuery,
+    AgentCouncil {
+        prompt: String,
+    },
 }
 
 impl TerminalView {
