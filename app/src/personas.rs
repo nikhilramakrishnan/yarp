@@ -320,12 +320,12 @@ pub(crate) fn council_err_tail_block(err_path_quoted: &str, preceded_by: &str) -
          err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
          if [ -n \"$err_last\" ]; then\n\
            if [ -n \"{preceded_by}\" ]; then echo; fi\n\
-           max_err=$(( cols - 2 ))\n\
+           max_err=$(( cols - 4 ))\n\
            [ $max_err -lt 20 ] && max_err=20\n\
            if [ ${{#err_last}} -gt $max_err ]; then\n\
              err_last=\"${{err_last:0:$max_err}}…\"\n\
            fi\n\
-           printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
+           printf '\\033[38;5;240m↳ \\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
          fi\n"
     )
 }
