@@ -20031,9 +20031,10 @@ impl TerminalView {
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                          while [ ! -e {done_q} ]; do\n\
+                           sleep 0.1\n\
+                           [ -e {done_q} ] && break\n\
                            printf '\\r{spin_color}%s\\033[3;38;5;244m investigating…\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                            i=$((i+1))\n\
-                           sleep 0.1\n\
                          done\n\
                          printf '\\r\\033[K'\n\
                          elapsed=$(cat {took_q} 2>/dev/null)\n\
@@ -20283,9 +20284,9 @@ impl TerminalView {
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                                while true; do\n\
+                                 sleep 0.1\n\
                                  printf '\\r{spin_color}%s\\033[3;38;5;244m deliberating…\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                                  i=$((i+1))\n\
-                                 sleep 0.1\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
                              cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
