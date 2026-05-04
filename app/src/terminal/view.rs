@@ -20258,7 +20258,6 @@ impl TerminalView {
                              }}\n\
                              kill $SPIN_PID 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
-                             printf '\\r\\033[K'\n\
                              close=$(printf '─%.0s' $(seq 1 $cols))\n\
                              echo\n\
                              printf '\\033[38;5;240m%s\\033[0m\\n' \"$close\"\n\
