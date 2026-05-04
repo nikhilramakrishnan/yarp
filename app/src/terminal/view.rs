@@ -20030,7 +20030,7 @@ impl TerminalView {
                          fi\n\
                          cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
-                           [ -n \"$take_content\" ] && echo\n\
+                           echo\n\
                            text='(timed out after 2m)'\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
@@ -20044,6 +20044,7 @@ impl TerminalView {
                              fi\n\
                              printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
                            fi\n\
+                           echo\n\
                            text='(no report)'\n\
                            stamp_color='179'\n\
                          else\n\
@@ -20249,6 +20250,7 @@ impl TerminalView {
                                else\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
+                                 echo\n\
                                  cols=$(tput cols 2>/dev/null || echo 80)\n\
                                  text='(no verdict)'\n\
                                  pad=$(( cols - ${{#text}} ))\n\
