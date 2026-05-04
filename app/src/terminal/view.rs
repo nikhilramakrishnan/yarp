@@ -19982,7 +19982,14 @@ impl TerminalView {
                            {bg_launches}\n\
                          fi\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
-                         while [ ! -e {done_q} ]; do sleep 0.2; done\n\
+                         i=0\n\
+                         spin='|/-\\'\n\
+                         while [ ! -e {done_q} ]; do\n\
+                           printf '\\r\\033[38;5;244m%s working...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
+                           i=$((i+1))\n\
+                           sleep 0.2\n\
+                         done\n\
+                         printf '\\r\\033[K'\n\
                          take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
