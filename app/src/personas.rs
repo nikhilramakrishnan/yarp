@@ -324,7 +324,7 @@ pub(crate) fn council_err_tail_block(err_path_quoted: &str) -> String {
            if [ ${{#err_last}} -gt $max_err ]; then\n\
              err_last=\"${{err_last:0:$max_err}}…\"\n\
            fi\n\
-           printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
+           printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
          fi\n"
     )
 }
