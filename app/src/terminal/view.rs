@@ -20276,7 +20276,7 @@ impl TerminalView {
                                else\n\
                                  sub=$(printf '%s reports missing' \"$missing\")\n\
                                fi\n\
-                               printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
+                               printf '  \\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
                              fi\n\
                              echo\n\
                              mkfifo {fifo_q} 2>/dev/null\n\
