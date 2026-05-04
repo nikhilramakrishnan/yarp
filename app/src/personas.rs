@@ -322,9 +322,7 @@ pub(crate) fn council_err_tail_block(err_path_quoted: &str, preceded_by: &str) -
            if [ -n \"{preceded_by}\" ]; then echo; fi\n\
            max_err=$(( cols - 4 ))\n\
            [ $max_err -lt 20 ] && max_err=20\n\
-           if [ ${{#err_last}} -gt $max_err ]; then\n\
-             err_last=\"${{err_last:0:$max_err}}…\"\n\
-           fi\n\
+           err_last=$(printf '%s' \"$err_last\" | MAX=$max_err perl -CSD -e 'use utf8; my $m=$ENV{{MAX}}+0; my $s; {{ local $/; $s=<STDIN>; }} print length($s)>$m ? substr($s,0,$m).\"…\" : $s')\n\
            printf '\\033[38;5;240m↳ \\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
          fi\n"
     )
