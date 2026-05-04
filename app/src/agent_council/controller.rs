@@ -37,11 +37,23 @@ pub struct CouncilController {
     invocations: Vec<OwnedInvocation>,
     synth_invocation: Option<OwnedInvocation>,
     receivers: Vec<PersonaReceiver>,
-    /// Producer task handles. Dropped on controller drop, which cancels the
-    /// futures and (because we set `kill_on_drop`) kills the children.
+    /// Producer task handles. Aborted in `Drop` (handle drop alone does not
+    /// cancel — the producer was `.detach()`ed inside `spawn`), which drops
+    /// the future and the local `Child`; `kill_on_drop` then kills it.
     _tasks: Vec<SpawnedFutureHandle>,
-    /// Drain timer handle. Re-armed each tick.
+    /// Drain timer handle. Re-armed each tick. Aborted in `Drop`.
     _drain_handle: Option<SpawnedFutureHandle>,
+}
+
+impl Drop for CouncilController {
+    fn drop(&mut self) {
+        for h in &self._tasks {
+            h.abort();
+        }
+        if let Some(h) = self._drain_handle.as_ref() {
+            h.abort();
+        }
+    }
 }
 
 struct PersonaReceiver {
@@ -196,7 +208,10 @@ impl CouncilController {
             }
         }
         if any {
-            ctx.notify();
+            // Subscribers (e.g. CouncilView) only fire on Effect::Event, so
+            // emit instead of notify; otherwise the view never re-renders
+            // mid-stream. See yarpui_core/src/core/model/context.rs.
+            ctx.emit(());
         }
         // Once every persona is in a terminal phase, kick off synthesis. The
         // synth_invocation gets `take`n on entry, so subsequent ticks see

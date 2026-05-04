@@ -1547,6 +1547,7 @@ impl BlockList {
                             RichContentType::AIBlock
                                 | RichContentType::EnterAgentView
                                 | RichContentType::InlineAgentViewHeader
+                                | RichContentType::AgentCouncil
                         )
                     }) {
                         self.dirty_rich_content_items.insert(*view_id);
