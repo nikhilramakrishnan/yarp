@@ -20048,7 +20048,11 @@ impl TerminalView {
                            stamp_color='179'\n\
                          else\n\
                            echo\n\
-                           text=$(printf '(reported in %ss)' \"$elapsed\")\n\
+                           if [ $elapsed -lt 60 ]; then\n\
+                             text=$(printf '(reported in %ss)' \"$elapsed\")\n\
+                           else\n\
+                             text=$(printf '(reported in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                           fi\n\
                            stamp_color='244'\n\
                          fi\n\
                          pad=$(( cols - ${{#text}} ))\n\
@@ -20231,7 +20235,11 @@ impl TerminalView {
                                  echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  cols=$(tput cols 2>/dev/null || echo 80)\n\
-                                 text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
+                                 if [ $elapsed -lt 60 ]; then\n\
+                                   text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
+                                 else\n\
+                                   text=$(printf '(delivered in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                 fi\n\
                                  pad=$(( cols - ${{#text}} ))\n\
                                  [ $pad -lt 0 ] && pad=0\n\
                                  printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
