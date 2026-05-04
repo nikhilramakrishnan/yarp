@@ -2067,6 +2067,10 @@ impl Block {
             // padding used on blocks looks bad on the alt screen, so we use a smaller amount here.
             // This will allow full-screen programs (e.g. `git log`) to fill the window properly
             LONG_RUNNING_BOTTOM_PADDING_LINES.into_lines()
+        } else if self.council_block {
+            // Council blocks are a tight cluster of 4 (3 constables + synth) — keep the gap
+            // between them minimal so they read as one combined output, not four separate runs.
+            (self.padding.bottom * 0.35).into_lines()
         } else {
             self.padding.bottom.into_lines()
         }
