@@ -20167,6 +20167,7 @@ impl TerminalView {
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             start=$(date +%s)\n\
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                                while true; do\n\
@@ -20181,6 +20182,8 @@ impl TerminalView {
                                  printf '\\r\\033[K'\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
+                                 elapsed=$(( $(date +%s) - start ))\n\
+                                 printf '\\033[38;5;244m(verdict in %ss)\\033[0m\\n' \"$elapsed\"\n\
                                else\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
