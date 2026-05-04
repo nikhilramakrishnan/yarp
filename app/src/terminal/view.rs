@@ -20008,6 +20008,7 @@ impl TerminalView {
                          elif [ -z \"$take_content\" ]; then\n\
                            printf '\\033[38;5;244m(no report)\\033[0m\\n'\n\
                          else\n\
+                           echo\n\
                            printf '\\033[38;5;244m(reported in %ss)\\033[0m\\n' \"$elapsed\"\n\
                          fi\n\
                          exit 0\n",
@@ -20182,6 +20183,7 @@ impl TerminalView {
                                  printf '\\r\\033[K'\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
+                                 echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  printf '\\033[38;5;244m(verdict in %ss)\\033[0m\\n' \"$elapsed\"\n\
                                else\n\
