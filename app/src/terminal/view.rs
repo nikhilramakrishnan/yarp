@@ -20015,6 +20015,7 @@ impl TerminalView {
                          pad=$(( cols - ${{#text}} ))\n\
                          [ $pad -lt 0 ] && pad=0\n\
                          printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
+                         echo\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
                         bg_launches = bg_launches,
