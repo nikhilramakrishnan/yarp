@@ -19862,7 +19862,7 @@ impl TerminalView {
                     take_files.push(take_file.clone());
                     let args = crate::personas::plain_args_for(&inv.binary_basename)
                         .iter()
-                        .map(|a| crate::personas::shell_quote_one(a))
+                        .map(|a| crate::personas::shell_quote_smart(a))
                         .collect::<Vec<_>>()
                         .join(" ");
                     // Use the FULL detected path, not the basename. PATH
@@ -19873,20 +19873,24 @@ impl TerminalView {
                     // detected persona at ~/.local/bin/claude is 2.1.126 and
                     // works. Detection already picked the right binary; the
                     // chain must invoke that exact one.
+                    //
+                    // Smart-quote the binary path and take file (always safe
+                    // chars) but full single-quote the user prompt (can hold
+                    // anything).
                     let cmd = if args.is_empty() {
                         format!(
                             "{} {} | tee {}",
-                            crate::personas::shell_quote_one(&inv.program),
+                            crate::personas::shell_quote_smart(&inv.program),
                             crate::personas::shell_quote_one(&prompt),
-                            crate::personas::shell_quote_one(&take_file),
+                            crate::personas::shell_quote_smart(&take_file),
                         )
                     } else {
                         format!(
                             "{} {} {} | tee {}",
-                            crate::personas::shell_quote_one(&inv.program),
+                            crate::personas::shell_quote_smart(&inv.program),
                             args,
                             crate::personas::shell_quote_one(&prompt),
-                            crate::personas::shell_quote_one(&take_file),
+                            crate::personas::shell_quote_smart(&take_file),
                         )
                     };
                     chain.push_back(cmd);
@@ -19992,7 +19996,7 @@ impl TerminalView {
                             }
                             chain.push_back(format!(
                                 "bash {}",
-                                crate::personas::shell_quote_one(&synth_script_path),
+                                crate::personas::shell_quote_smart(&synth_script_path),
                             ));
                             synth_attached = true;
                         }

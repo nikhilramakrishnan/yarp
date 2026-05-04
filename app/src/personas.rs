@@ -288,6 +288,28 @@ pub(crate) fn shell_quote_one(s: &str) -> String {
     out
 }
 
+/// Like `shell_quote_one`, but skips the quotes for inputs that contain only
+/// "safe" characters — alphanumerics and the punctuation set used in flags
+/// and paths (`-`, `_`, `.`, `/`, `=`, `:`, `,`, `+`, `@`, `%`). Result is
+/// still safe to feed to `try_execute_command` because every character that
+/// could trigger word-splitting, expansion, redirection, or substitution is
+/// quoted. Use this when building command strings shown to the user — it
+/// reads dramatically cleaner than `'-p' 'exec' '--flag'`.
+pub(crate) fn shell_quote_smart(s: &str) -> String {
+    if s.is_empty() {
+        return "''".to_string();
+    }
+    let safe = s.chars().all(|c| {
+        c.is_ascii_alphanumeric()
+            || matches!(c, '-' | '_' | '.' | '/' | '=' | ':' | ',' | '+' | '@' | '%')
+    });
+    if safe {
+        s.to_string()
+    } else {
+        shell_quote_one(s)
+    }
+}
+
 pub(crate) fn streaming_args_for(basename: &str) -> &'static [&'static str] {
     match basename {
         "claude" => &["-p", "--output-format", "stream-json", "--verbose"],
