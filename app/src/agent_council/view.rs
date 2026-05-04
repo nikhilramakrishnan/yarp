@@ -179,46 +179,97 @@ fn block_chrome(body: Box<dyn Element>, appearance: &Appearance) -> Box<dyn Elem
         .finish()
 }
 
-/// Layout for a fan-out persona block. Header strip with the persona's name +
-/// phase label, then thinking + output panes, then any tool-call chips, then
-/// a failure reason if applicable.
+/// Layout for a fan-out persona block. Two-column structure mirroring
+/// `query.rs::render_query`: persona badge as an "avatar" in the left
+/// column, content column on the right with name+phase header, command
+/// preview, then thinking + output, tool calls, failure reason.
 fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Box<dyn Element> {
     let theme = appearance.theme();
     let bg = theme.background();
     let main_color = theme.main_text_color(bg).into_solid();
+    let sub_color = theme.sub_text_color(bg).into_solid();
 
-    let mut col = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
+    // LEFT COLUMN: badge as a fixed-size chip, sized like an avatar.
+    let badge_chip = Container::new(
+        Text::new(
+            card.badge.clone(),
+            appearance.ui_font_family(),
+            appearance.ui_font_size(),
+        )
+        .with_color(theme.main_text_color(theme.surface_3()).into_solid())
+        .with_style(Properties::default().weight(Weight::Bold))
+        .finish(),
+    )
+    .with_background(theme.surface_3())
+    .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
+    .with_horizontal_padding(8.)
+    .with_vertical_padding(4.)
+    .with_margin_right(16.)
+    .finish();
 
-    // Header: a row that mirrors AIBlock's "avatar + query" layout. The
-    // badge sits in a small chip on the left (theme.surface_3 background,
-    // 4px corner radius, padded — same recipe as AIBlock's attached-blocks
-    // chip, view_impl/header.rs:188-193). The persona name + phase label
-    // go to the right in bold, like the user's query in AIBlock.
-    col.add_child(
-        Container::new(persona_header_row(card, appearance))
+    // RIGHT COLUMN: vertical stack of name+phase, command preview, body.
+    let mut content = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
+
+    // Name + phase header row (within the content column).
+    let name_text = if card.name == card.binary_basename {
+        card.name.clone()
+    } else {
+        format!("{} ({})", card.name, card.binary_basename)
+    };
+    let header_row = Flex::row()
+        .with_cross_axis_alignment(CrossAxisAlignment::Center)
+        .with_main_axis_size(MainAxisSize::Max)
+        .with_child(
+            Shrinkable::new(
+                1.,
+                Text::new(
+                    name_text,
+                    appearance.ui_font_family(),
+                    appearance.ui_font_size(),
+                )
+                .with_color(main_color)
+                .with_style(Properties::default().weight(Weight::Bold))
+                .finish(),
+            )
+            .finish(),
+        )
+        .with_child(
+            Container::new(
+                Text::new(
+                    phase_label(&card.phase).to_owned(),
+                    appearance.ui_font_family(),
+                    appearance.ui_font_size(),
+                )
+                .with_color(sub_color)
+                .finish(),
+            )
+            .with_margin_left(8.)
+            .finish(),
+        )
+        .finish();
+    content.add_child(
+        Container::new(header_row)
             .with_margin_bottom(6.)
             .finish(),
     );
 
-    // Below the header: the prompt being asked of this persona, in
-    // monospace with a "$ " prefix. Mirrors the way a shell command block
-    // shows its command at the top — readers can see what each persona is
-    // running without having to remember the original /agent prompt.
-    let prompt_row = Container::new(
-        Text::new(
-            format!("$ {} {}", card.binary_basename, shell_quote(prompt)),
-            appearance.monospace_font_family(),
-            appearance.ui_font_size(),
+    // Command preview row.
+    content.add_child(
+        Container::new(
+            Text::new(
+                format!("$ {} {}", card.binary_basename, shell_quote(prompt)),
+                appearance.monospace_font_family(),
+                appearance.ui_font_size(),
+            )
+            .with_color(sub_color)
+            .finish(),
         )
-        .with_color(theme.sub_text_color(theme.background()).into_solid())
+        .with_margin_bottom(8.)
         .finish(),
-    )
-    .with_margin_bottom(8.)
-    .finish();
-    col.add_child(prompt_row);
+    );
 
     if !card.thinking.is_empty() {
-        col.add_child(
+        content.add_child(
             Container::new(
                 Text::new(
                     "Thinking",
@@ -231,7 +282,7 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
             .with_margin_bottom(2.)
             .finish(),
         );
-        col.add_child(
+        content.add_child(
             Container::new(render_markdown_or_plain(
                 &card.thinking,
                 appearance,
@@ -247,7 +298,7 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
     let show_output = !matches!(card.phase, CardPhase::Failed(_));
     if show_output {
         if card.output.is_empty() {
-            col.add_child(
+            content.add_child(
                 Container::new(
                     Text::new("…", appearance.ui_font_family(), appearance.ui_font_size())
                         .finish(),
@@ -255,7 +306,7 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
                 .finish(),
             );
         } else {
-            col.add_child(
+            content.add_child(
                 Container::new(render_markdown_or_plain(
                     &card.output,
                     appearance,
@@ -267,7 +318,7 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
     }
 
     for tc in &card.tool_calls {
-        col.add_child(
+        content.add_child(
             Container::new(
                 Text::new(
                     format!("• {tc}"),
@@ -281,7 +332,7 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
     }
 
     if let CardPhase::Failed(reason) = &card.phase {
-        col.add_child(
+        content.add_child(
             Container::new(
                 Text::new(
                     format!("Failed: {reason}"),
@@ -295,7 +346,13 @@ fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Bo
         );
     }
 
-    col.finish()
+    // Outer two-column row: badge avatar on the left, content column on the
+    // right, mirroring `query.rs::render_query`'s avatar+query layout.
+    Flex::row()
+        .with_cross_axis_alignment(CrossAxisAlignment::Start)
+        .with_child(badge_chip)
+        .with_child(Shrinkable::new(1., content.finish()).finish())
+        .finish()
 }
 
 /// Layout for the synthesis verdict. Header is the literal "Verdict", body
@@ -399,65 +456,6 @@ fn render_markdown_or_plain(
 }
 
 /// Header row: badge chip on the left, persona name + phase on the right.
-/// Mirrors `view_impl/query.rs::render_query`'s avatar+query Flex::row
-/// layout and `view_impl/header.rs::188`'s chip styling.
-fn persona_header_row(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> {
-    let theme = appearance.theme();
-    let chip_bg = theme.surface_3();
-    let chip_text = theme.main_text_color(theme.surface_3()).into_solid();
-    let main_color = theme.main_text_color(theme.background()).into_solid();
-    let sub_color = theme.sub_text_color(theme.background()).into_solid();
-
-    let chip = Container::new(
-        Text::new(
-            card.badge.clone(),
-            appearance.ui_font_family(),
-            appearance.ui_font_size(),
-        )
-        .with_color(chip_text)
-        .with_style(Properties::default().weight(Weight::Bold))
-        .finish(),
-    )
-    .with_background(chip_bg)
-    .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
-    .with_horizontal_padding(8.)
-    .with_vertical_padding(4.)
-    .with_margin_right(12.)
-    .finish();
-
-    // Skip the basename parens when name == basename (auto-detected CLIs).
-    let name_text = if card.name == card.binary_basename {
-        card.name.clone()
-    } else {
-        format!("{} ({})", card.name, card.binary_basename)
-    };
-
-    let name_el = Text::new(
-        name_text,
-        appearance.ui_font_family(),
-        appearance.ui_font_size(),
-    )
-    .with_color(main_color)
-    .with_style(Properties::default().weight(Weight::Bold))
-    .finish();
-
-    let phase_el = Text::new(
-        phase_label(&card.phase).to_owned(),
-        appearance.ui_font_family(),
-        appearance.ui_font_size(),
-    )
-    .with_color(sub_color)
-    .finish();
-
-    Flex::row()
-        .with_cross_axis_alignment(CrossAxisAlignment::Center)
-        .with_main_axis_size(MainAxisSize::Max)
-        .with_child(chip)
-        .with_child(Shrinkable::new(1., name_el).finish())
-        .with_child(Container::new(phase_el).with_margin_left(8.).finish())
-        .finish()
-}
-
 /// Wrap `s` in double-quotes if it contains whitespace or shell metacharacters.
 /// Cheap escaping — good enough for the command-preview row, not for actual
 /// execution (the controller doesn't use this).
