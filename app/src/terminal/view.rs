@@ -20038,20 +20038,35 @@ impl TerminalView {
                         // We drop the assembly to a script so the visible
                         // command is just `bash /tmp/...synth.sh` instead of
                         // a 600-char inline blob — keeps the block readable.
+                        // Identify the lead by persona, not just "the lead",
+                        // so the synth model adopts the lead's role and voice
+                        // verbatim from the roster — keeps the verdict in
+                        // character. Falls back to synth's own identity if
+                        // no member is flagged `lead: true`.
+                        let lead_persona =
+                            team.members.iter().find(|p| p.lead).unwrap_or(synth);
                         let mut assembly = String::new();
+                        let opener = format!(
+                            "You are {} {}, lead of the Sandford NWA. {} {} \
+                             Your officers have reported in on this case. \
+                             You are the SIO; deliver the verdict.\n\n\
+                             THE CASE:\n",
+                            lead_persona.badge,
+                            lead_persona.name,
+                            lead_persona.role,
+                            lead_persona.voice,
+                        );
                         assembly.push_str(&format!(
                             "printf '%s' {}",
-                            crate::personas::shell_quote_one(
-                                "You are the lead of the Sandford NWA on this case:\n\n"
-                            ),
+                            crate::personas::shell_quote_one(&opener),
                         ));
                         assembly.push_str(&format!(
-                            "; printf '%s\\n\\n' {}",
+                            "; printf '%s\\n\\nOFFICER REPORTS:\\n\\n' {}",
                             crate::personas::shell_quote_one(&prompt),
                         ));
                         for (idx, inv) in invocations.iter().enumerate() {
                             assembly.push_str(&format!(
-                                "; printf '%s %s said:\\n' {} {}",
+                                "; printf '%s %s reported:\\n' {} {}",
                                 crate::personas::shell_quote_one(&inv.persona.badge),
                                 crate::personas::shell_quote_one(&inv.persona.name),
                             ));
@@ -20064,7 +20079,10 @@ impl TerminalView {
                         assembly.push_str(&format!(
                             "; printf '%s' {}",
                             crate::personas::shell_quote_one(
-                                "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
+                                "YOUR VERDICT (as SIO): \
+                                 Where do the officers agree? Where do they break? \
+                                 Name the trade-off. Make the call. \
+                                 By the book — evidence over instinct, no fluff.",
                             ),
                         ));
                         let lead_args = crate::personas::plain_args_for(lead_basename)
@@ -20093,23 +20111,19 @@ impl TerminalView {
                                 lead_args,
                             )
                         };
-                        // Lead the synth block with the team's designated
-                        // lead persona's badge+name (Sgt Nicholas Angel by
-                        // default), so it reads as the lead's verdict even
-                        // when the actual synth CLI is one of the constables.
-                        // Falls back to the synth persona's own identity if
-                        // no lead is designated.
-                        let header_persona =
-                            team.members.iter().find(|p| p.lead).unwrap_or(synth);
+                        // Header reuses the same lead_persona resolved above
+                        // for the prompt opener — keeps the badge+name in the
+                        // visible block in lockstep with the identity the
+                        // synth model was told to adopt.
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
-                            color = crate::personas::persona_header_color(&header_persona.name),
-                            badge = crate::personas::shell_quote_one(&header_persona.badge),
-                            name = crate::personas::shell_quote_one(&header_persona.name),
+                            color = crate::personas::persona_header_color(&lead_persona.name),
+                            badge = crate::personas::shell_quote_one(&lead_persona.badge),
+                            name = crate::personas::shell_quote_one(&lead_persona.name),
                         );
                         // Best-effort write; if it fails, fall through to
                         // the no-synth path below so the council still
