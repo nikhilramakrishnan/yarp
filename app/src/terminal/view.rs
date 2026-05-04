@@ -20365,7 +20365,7 @@ impl TerminalView {
                                else\n\
                                  dur=$(printf '%dm%02ds' $((chain_total/60)) $((chain_total%60)))\n\
                                fi\n\
-                               close_label=\" took $dur \"\n\
+                               close_label=\" $dur \"\n\
                                label_w=${{#close_label}}\n\
                                if [ $cols -ge $(( label_w + 6 )) ]; then\n\
                                  half_cl=$(( (cols - label_w) / 2 ))\n\
@@ -20374,7 +20374,7 @@ impl TerminalView {
                                  close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
                                  printf '\\033[38;5;240m%s\\033[3m%s\\033[23m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
                                else\n\
-                                 printf '\\033[3;38;5;240mtook %s\\033[0m\\n' \"$dur\"\n\
+                                 printf '\\033[3;38;5;240m%s\\033[0m\\n' \"$dur\"\n\
                                fi\n\
                              else\n\
                                close=$(printf '─%.0s' $(seq 1 $cols))\n\
