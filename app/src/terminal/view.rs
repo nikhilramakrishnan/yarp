@@ -19790,13 +19790,38 @@ impl TerminalView {
                     )
                 });
                 controller.update(ctx, |c, ctx| c.start(ctx));
-                let council_view = ctx.add_view(|ctx| {
-                    crate::agent_council::view::CouncilView::new(controller, ctx)
+                let card_count = controller.as_ref(ctx).state.cards.len();
+                log::info!(
+                    "EnterAgentCouncil fired with prompt: {} ({} personas)",
+                    prompt,
+                    card_count
+                );
+                for idx in 0..card_count {
+                    let block = ctx.add_view(|ctx| {
+                        crate::agent_council::view::PersonaBlock::new(
+                            controller.clone(),
+                            idx,
+                            ctx,
+                        )
+                    });
+                    self.insert_rich_content(
+                        Some(RichContentType::AgentCouncil),
+                        block,
+                        Some(RichContentMetadata::AgentCouncil {
+                            prompt: prompt.clone(),
+                        }),
+                        RichContentInsertionPosition::Append {
+                            insert_below_long_running_block: false,
+                        },
+                        ctx,
+                    );
+                }
+                let verdict_block = ctx.add_view(|ctx| {
+                    crate::agent_council::view::VerdictBlock::new(controller, ctx)
                 });
-                log::info!("EnterAgentCouncil fired with prompt: {}", prompt);
                 self.insert_rich_content(
                     Some(RichContentType::AgentCouncil),
-                    council_view,
+                    verdict_block,
                     Some(RichContentMetadata::AgentCouncil {
                         prompt: prompt.clone(),
                     }),
