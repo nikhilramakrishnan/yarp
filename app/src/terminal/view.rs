@@ -19837,17 +19837,22 @@ impl TerminalView {
                         .map(|a| crate::personas::shell_quote_one(a))
                         .collect::<Vec<_>>()
                         .join(" ");
+                    // Use the basename rather than the full detected path so
+                    // the command line in the block reads `claude -p '...'`
+                    // instead of `/Users/.../.local/bin/claude -p '...'`.
+                    // The user's shell will resolve the basename via PATH —
+                    // same resolution that detect_cli_personas uses.
                     let cmd = if args.is_empty() {
                         format!(
                             "{} {} | tee {}",
-                            crate::personas::shell_quote_one(&inv.program),
+                            crate::personas::shell_quote_one(&inv.binary_basename),
                             crate::personas::shell_quote_one(&prompt),
                             crate::personas::shell_quote_one(&take_file),
                         )
                     } else {
                         format!(
                             "{} {} {} | tee {}",
-                            crate::personas::shell_quote_one(&inv.program),
+                            crate::personas::shell_quote_one(&inv.binary_basename),
                             args,
                             crate::personas::shell_quote_one(&prompt),
                             crate::personas::shell_quote_one(&take_file),
@@ -19918,15 +19923,17 @@ impl TerminalView {
                                 .join(" ");
                             format!("; rm -f {rm_args}")
                         };
+                        // Use basename for the lead too — same reasoning as
+                        // the per-persona case.
                         let cmd = if lead_args.is_empty() {
                             format!(
                                 "{} \"$({assembly})\"{rm_suffix}",
-                                crate::personas::shell_quote_one(lead_bin),
+                                crate::personas::shell_quote_one(&lead_basename),
                             )
                         } else {
                             format!(
                                 "{} {} \"$({assembly})\"{rm_suffix}",
-                                crate::personas::shell_quote_one(lead_bin),
+                                crate::personas::shell_quote_one(&lead_basename),
                                 lead_args,
                             )
                         };
