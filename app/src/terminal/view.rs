@@ -20132,10 +20132,18 @@ impl TerminalView {
                         // synth model was told to adopt. The leading rule +
                         // VERDICT label sets the SIO's final call apart from
                         // the constable reports above.
+                        // Rule width tracks the terminal: half = (cols-9)/2,
+                        // padded on each side of " VERDICT ". `seq` is in
+                        // base macOS and Linux coreutils. Floor at 3 so a
+                        // very narrow window still gets a recognisable rule.
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
-                             printf '{color}━━━━━━━━━━━━━━━━━━━━ VERDICT ━━━━━━━━━━━━━━━━━━━━\\033[0m\\n' \n\
+                             cols=$(tput cols 2>/dev/null || echo 80)\n\
+                             half=$(( (cols - 9) / 2 ))\n\
+                             [ $half -lt 3 ] && half=3\n\
+                             rule=$(printf '━%.0s' $(seq 1 $half))\n\
+                             printf '{color}%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
