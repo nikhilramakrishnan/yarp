@@ -20273,7 +20273,7 @@ impl TerminalView {
                                IFS= read -r first\n\
                                read_rc=$?\n\
                                kill $SPIN_PID 2>/dev/null\n\
-                               printf '\\r\\033[K'\n\
+                               printf '\\r\\033[K\\033[0m'\n\
                                if [ $read_rc -eq 0 ] || [ -n \"$first\" ]; then\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
