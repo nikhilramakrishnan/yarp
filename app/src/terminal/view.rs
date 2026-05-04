@@ -19991,7 +19991,7 @@ impl TerminalView {
                            [ -n \"$take_content\" ] && echo\n\
                            printf '\\033[38;5;244m(persona timed out after 120s)\\033[0m\\n'\n\
                          elif [ -z \"$take_content\" ]; then\n\
-                           printf '\\033[38;5;244m(no output)\\033[0m\\n'\n\
+                           printf '\\033[38;5;244m(no report)\\033[0m\\n'\n\
                          fi\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
