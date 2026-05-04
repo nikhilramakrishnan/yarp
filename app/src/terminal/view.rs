@@ -19983,9 +19983,9 @@ impl TerminalView {
                          fi\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                          i=0\n\
-                         spin='|/-\\'\n\
+                         spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                          while [ ! -e {done_q} ]; do\n\
-                           printf '\\r\\033[38;5;244m%s investigating...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
+                           printf '\\r\\033[38;5;244m%s investigating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                            i=$((i+1))\n\
                            sleep 0.2\n\
                          done\n\
@@ -20158,9 +20158,9 @@ impl TerminalView {
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              ( i=0\n\
-                               spin='|/-\\'\n\
+                               spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                                while true; do\n\
-                                 printf '\\r\\033[38;5;244m%s deliberating...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
+                                 printf '\\r\\033[38;5;244m%s deliberating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                                  i=$((i+1))\n\
                                  sleep 0.2\n\
                                done ) &\n\
