@@ -20228,7 +20228,13 @@ impl TerminalView {
                              rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
                              rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
                              printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
-                             printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             printf '{color}%s %s\\033[0m\\n' {badge} {name}\n\
+                             total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
+                             reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
+                             if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
+                               printf '\\033[3;38;5;179m%s of %s officers reported\\033[0m\\n' \"$reported\" \"$total\"\n\
+                             fi\n\
+                             echo\n\
                              mkfifo {fifo_q} 2>/dev/null\n\
                              {claude_invocation} >{fifo_q} 2>{synth_err_q} &\n\
                              claude_pid=$!\n\
