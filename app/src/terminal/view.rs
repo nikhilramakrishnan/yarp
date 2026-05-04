@@ -20231,6 +20231,7 @@ impl TerminalView {
                                done ) &\n\
                              SPIN_PID=$!\n\
                              {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
+                               cols=$(tput cols 2>/dev/null || echo 80)\n\
                                if IFS= read -r first; then\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
@@ -20238,25 +20239,22 @@ impl TerminalView {
                                  cat\n\
                                  echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
-                                 cols=$(tput cols 2>/dev/null || echo 80)\n\
                                  if [ $elapsed -lt 60 ]; then\n\
                                    text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
                                  else\n\
                                    text=$(printf '(delivered in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
-                                 pad=$(( cols - ${{#text}} ))\n\
-                                 [ $pad -lt 0 ] && pad=0\n\
-                                 printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
+                                 stamp_color='244'\n\
                                else\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
                                  echo\n\
-                                 cols=$(tput cols 2>/dev/null || echo 80)\n\
                                  text='(no verdict)'\n\
-                                 pad=$(( cols - ${{#text}} ))\n\
-                                 [ $pad -lt 0 ] && pad=0\n\
-                                 printf '\\033[3;38;5;179m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
+                                 stamp_color='179'\n\
                                fi\n\
+                               pad=$(( cols - ${{#text}} ))\n\
+                               [ $pad -lt 0 ] && pad=0\n\
+                               printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
                              }}\n\
                              kill $SPIN_PID 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
