@@ -20265,7 +20265,7 @@ impl TerminalView {
                                read_rc=$?\n\
                                kill $SPIN_PID 2>/dev/null\n\
                                printf '\\r\\033[K'\n\
-                               if [ $read_rc -eq 0 ]; then\n\
+                               if [ $read_rc -eq 0 ] || [ -n \"$first\" ]; then\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
                                  got_output=1\n\
