@@ -20058,7 +20058,7 @@ impl TerminalView {
                            fi\n\
                            stamp_color='244'\n\
                          fi\n\
-                         echo\n\
+                         if [ -n \"$take_content\" ] || [ -n \"$err_last\" ]; then echo; fi\n\
                          pad=$(( cols - ${{#text}} ))\n\
                          [ $pad -lt 0 ] && pad=0\n\
                          printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
@@ -20293,7 +20293,7 @@ impl TerminalView {
                                  fi\n\
                                  stamp_color='179'\n\
                                fi\n\
-                               echo\n\
+                               if [ -n \"$got_output\" ] || [ -n \"$err_last\" ]; then echo; fi\n\
                                pad=$(( cols - ${{#text}} ))\n\
                                [ $pad -lt 0 ] && pad=0\n\
                                printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
