@@ -20185,11 +20185,19 @@ impl TerminalView {
                                  cat\n\
                                  echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
-                                 printf '\\033[3;38;5;244m(verdict in %ss)\\033[0m\\n' \"$elapsed\"\n\
+                                 cols=$(tput cols 2>/dev/null || echo 80)\n\
+                                 text=$(printf '(verdict in %ss)' \"$elapsed\")\n\
+                                 pad=$(( cols - ${{#text}} ))\n\
+                                 [ $pad -lt 0 ] && pad=0\n\
+                                 printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
                                else\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
-                                 printf '\\033[3;38;5;244m(no verdict)\\033[0m\\n'\n\
+                                 cols=$(tput cols 2>/dev/null || echo 80)\n\
+                                 text='(no verdict)'\n\
+                                 pad=$(( cols - ${{#text}} ))\n\
+                                 [ $pad -lt 0 ] && pad=0\n\
+                                 printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
                                fi\n\
                              }}\n\
                              kill $SPIN_PID 2>/dev/null\n\
