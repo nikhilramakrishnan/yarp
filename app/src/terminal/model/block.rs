@@ -2052,9 +2052,15 @@ impl Block {
     }
 
     pub fn padding_top(&self) -> Lines {
-        if self.missing_command() || !self.ready_to_render() || self.council_block {
+        if self.missing_command() || !self.ready_to_render() {
+            Lines::zero()
+        } else if self.council_block && !self.council_synth {
+            // Constables are a tight cluster — flush top, so badges read as
+            // one combined output rather than independently-padded blocks.
             Lines::zero()
         } else {
+            // Synth keeps full top padding so the VERDICT rule sits apart
+            // from the constable cluster above — telegraphs the phase change.
             match self.block_banner {
                 // Truncate the padding if there is a banner, so not break the visual relationship
                 // between the block and banner, but still allow it to be smaller in compact mode.
