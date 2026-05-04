@@ -1,12 +1,14 @@
 //! Native council UI for `/agent <prompt>`.
 //!
-//! Once wired into the slash command, this module replaces the
-//! terminal-block bash fan-out in `personas::build_council_command` with
-//! a Yarp view that renders each persona as a card with explicit Thinking
-//! and Output phases, plus a final synthesised verdict.
+//! `/agent` emits `Event::EnterAgentCouncil`, which inserts a
+//! `CouncilView` as a custom rich-content block in the active terminal's
+//! block list. Each detected CLI persona (claude/codex/gemini/…) runs in
+//! a child process with its JSON-streaming flag set; the controller
+//! parses events and the view renders a card per persona with Thinking
+//! and Output phases, capped by a synthesised Verdict card.
 //!
-//! Today the legacy bash path is still live; the wire-up step is tracked
-//! in `specs/agent-council/PLAN.md`.
+//! See `specs/agent-council/PLAN.md` for design notes and `SMOKE.md`
+//! for the end-to-end test plan.
 
 pub mod controller;
 pub mod event_stream;
