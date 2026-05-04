@@ -19857,27 +19857,25 @@ impl TerminalView {
                         .map(|a| crate::personas::shell_quote_one(a))
                         .collect::<Vec<_>>()
                         .join(" ");
-                    // Use the basename rather than the full detected path so
-                    // the command line in the block reads `claude -p '...'`
-                    // instead of `/Users/.../.local/bin/claude -p '...'`.
-                    // The user's shell will resolve the basename via PATH —
-                    // same resolution that detect_cli_personas uses.
-                    // Merge stderr into stdout so a CLI's failure mode (e.g.
-                    // "Execution error", auth prompts, trust-dir refusals)
-                    // ends up in the visible block AND in the take file the
-                    // synth pass reads. Without 2>&1, stderr bypasses tee and
-                    // the synth sees an empty take.
+                    // Use the FULL detected path, not the basename. PATH
+                    // resolution at the user's shell can land on a different
+                    // (older, broken) copy of the same CLI — concretely,
+                    // `claude` at /opt/homebrew/bin is 2.0.73 and emits
+                    // "Execution error" on any piped stdout, while the
+                    // detected persona at ~/.local/bin/claude is 2.1.126 and
+                    // works. Detection already picked the right binary; the
+                    // chain must invoke that exact one.
                     let cmd = if args.is_empty() {
                         format!(
-                            "{} {} 2>&1 | tee {}",
-                            crate::personas::shell_quote_one(&inv.binary_basename),
+                            "{} {} | tee {}",
+                            crate::personas::shell_quote_one(&inv.program),
                             crate::personas::shell_quote_one(&prompt),
                             crate::personas::shell_quote_one(&take_file),
                         )
                     } else {
                         format!(
-                            "{} {} {} 2>&1 | tee {}",
-                            crate::personas::shell_quote_one(&inv.binary_basename),
+                            "{} {} {} | tee {}",
+                            crate::personas::shell_quote_one(&inv.program),
                             args,
                             crate::personas::shell_quote_one(&prompt),
                             crate::personas::shell_quote_one(&take_file),
@@ -19948,17 +19946,18 @@ impl TerminalView {
                                 .join(" ");
                             format!("; rm -f {rm_args}")
                         };
-                        // Use basename for the lead too — same reasoning as
-                        // the per-persona case.
+                        // Use the FULL detected path, same reasoning as the
+                        // per-persona case: PATH may resolve `claude` to an
+                        // older Homebrew copy that breaks on piped stdout.
                         let cmd = if lead_args.is_empty() {
                             format!(
                                 "{} \"$({assembly})\"{rm_suffix}",
-                                crate::personas::shell_quote_one(&lead_basename),
+                                crate::personas::shell_quote_one(lead_bin),
                             )
                         } else {
                             format!(
                                 "{} {} \"$({assembly})\"{rm_suffix}",
-                                crate::personas::shell_quote_one(&lead_basename),
+                                crate::personas::shell_quote_one(lead_bin),
                                 lead_args,
                             )
                         };
