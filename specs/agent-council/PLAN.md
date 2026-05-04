@@ -158,23 +158,34 @@ Cancellation: dropping the controller kills children via `child.kill()`.
 ## Status
 
 Built and committed:
-- `state.rs`, `event_stream.rs` (parser + 5 unit tests, all green)
+- `state.rs`, `event_stream.rs` (parser + 4 unit tests, all green)
 - `controller.rs` (process spawning, mpsc channel, 50ms drain timer,
   synthesis pass; mirrors `OrchestrationEventPoller`'s pattern)
-- `view.rs` (vertical card stack, phase labels, thinking + output panes;
-  no markdown / collapsibles yet)
+- `view.rs` (vertical card stack, phase labels, thinking + output panes
+  rendered via `markdown_parser::parse_markdown` + `FormattedTextElement`)
 - `personas::cli_invocations()` and `streaming_args_for()` in JSON modes
+- `Event::EnterAgentCouncil { prompt }` plumbed through
+  `terminal/input.rs` → `terminal/view.rs` (stub handler) →
+  `slash_commands/mod.rs` (emits the event when CLI personas exist;
+  falls through to `EnterAgentView` otherwise) [9832af78]
 
-Not yet wired:
-- `Event::EnterAgentCouncil { prompt }` in `terminal/input.rs`
-- Handler in `terminal/view.rs` that constructs the controller + view
-- The render **surface**: where does `CouncilView` actually appear? Open
-  question — a new pane (matches `EnterAgentView`), a `Modal` overlay
-  (lighter, but modals are dismissible), or a custom block in the active
-  terminal's block list. Lean: try Modal first, see how it feels, escalate
-  to a pane if too cramped.
-- Replace `try_execute_command(&council_cmd, ctx)` in
-  `slash_commands/mod.rs:387-393` with the event emit. Keep
-  `build_council_command` only as an env-flag fallback while we validate.
-- Visible smoke: `/agent <prompt>` end-to-end driving a card stack with
-  live thinking + output panes from claude.
+**Render surface decision:** custom rich-content block, *not* a pane
+push or a modal. Research found that `EnterAgentView` itself uses
+rich-content + controller subscription (PLAN.md previously claimed it
+used a pane push — that was wrong). `AIBlock` is the proof that a
+streaming, controller-backed view works through `insert_rich_content`.
+Lowest line count, matches the existing mental model of "/agent output
+appears in the terminal block list."
+
+In flight (Task 3):
+- `RichContentType::AgentCouncil` in `terminal/model/rich_content.rs`
+- `RichContentMetadata::AgentCouncil { prompt }` in
+  `terminal/view/rich_content.rs`
+- Replace the stub handler with `insert_rich_content(...)` call
+
+Remaining after Task 3:
+- Delete `personas::build_council_command`, `oneshot_args_for`,
+  `shell_escape` (now unreferenced).
+- Smoke test: `/agent how should we ship this?` opens a card stack
+  with live thinking + output from claude/codex/gemini, plus a synth
+  verdict at the bottom.
