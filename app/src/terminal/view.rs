@@ -20266,7 +20266,7 @@ impl TerminalView {
                              fi\n\
                              printf '{color}%s %s\\033[0m\\n' {badge} {name}\n\
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
-                             reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
+                             reported=$(grep -l '[^[:space:]]' {work_dir_q}/*.out 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
                                missing=$(( total - reported ))\n\
                                if [ \"$reported\" -eq 0 ]; then\n\
