@@ -4,7 +4,6 @@
 pub enum RichContentType {
     AIBlock,
     EnterAgentView,
-    AgentCouncil,
     YarpifySuccessBlock,
     InlineAgentViewHeader,
     AgentViewZeroState,
@@ -19,10 +18,6 @@ impl RichContentType {
 
     pub fn is_agent_view_block(&self) -> bool {
         matches!(self, Self::EnterAgentView)
-    }
-
-    pub fn is_agent_council_block(&self) -> bool {
-        matches!(self, Self::AgentCouncil)
     }
 
     pub fn is_inline_agent_view_header(&self) -> bool {

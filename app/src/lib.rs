@@ -1,7 +1,6 @@
 // Suppress warnings about rustdoc style.
 #![allow(clippy::doc_lazy_continuation)]
 
-mod agent_council;
 mod ai;
 mod alloc;
 mod antivirus;
