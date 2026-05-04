@@ -11,14 +11,21 @@
 //! Both block types subscribe to their `CouncilController` and `notify` on
 //! every emit, so streaming output repaints live.
 
+use std::sync::Arc;
+
 use markdown_parser::parse_markdown;
+use parking_lot::RwLock;
 use pathfinder_color::ColorU;
 use yarpui::elements::{
     Border, Container, CornerRadius, CrossAxisAlignment, Element, Empty, Flex,
-    FormattedTextElement, MainAxisSize, ParentElement, Radius, Shrinkable, Text,
+    FormattedTextElement, MainAxisSize, ParentElement, Radius, SelectableArea, SelectionHandle,
+    Shrinkable, Text,
 };
 use yarpui::fonts::{Properties, Weight};
 use yarpui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
+
+use crate::terminal::block_list_element::BlockListMenuSource;
+use crate::terminal::view::TerminalAction;
 
 use crate::agent_council::controller::CouncilController;
 use crate::agent_council::state::{CardPhase, PersonaCard};
@@ -35,6 +42,8 @@ const VERTICAL_PADDING: f32 = 16.;
 pub struct PersonaBlock {
     controller: ModelHandle<CouncilController>,
     card_index: usize,
+    selection_handle: SelectionHandle,
+    selected_text: Arc<RwLock<Option<String>>>,
 }
 
 impl Entity for PersonaBlock {
@@ -51,6 +60,8 @@ impl PersonaBlock {
         Self {
             controller,
             card_index,
+            selection_handle: SelectionHandle::default(),
+            selected_text: Arc::new(RwLock::new(None)),
         }
     }
 }
@@ -66,10 +77,11 @@ impl View for PersonaBlock {
         let Some(card) = controller.state.cards.get(self.card_index) else {
             return Empty::new().finish();
         };
-        block_chrome(
+        let chrome = block_chrome(
             persona_body(card, &controller.state.prompt, appearance),
             appearance,
-        )
+        );
+        wrap_selectable(chrome, &self.selection_handle, &self.selected_text)
     }
 }
 
@@ -78,6 +90,8 @@ impl View for PersonaBlock {
 /// chrome and a small attribution footer.
 pub struct VerdictBlock {
     controller: ModelHandle<CouncilController>,
+    selection_handle: SelectionHandle,
+    selected_text: Arc<RwLock<Option<String>>>,
 }
 
 impl Entity for VerdictBlock {
@@ -90,7 +104,11 @@ impl VerdictBlock {
         ctx: &mut ViewContext<Self>,
     ) -> Self {
         ctx.subscribe_to_model(&controller, |_this, _, _evt, ctx| ctx.notify());
-        Self { controller }
+        Self {
+            controller,
+            selection_handle: SelectionHandle::default(),
+            selected_text: Arc::new(RwLock::new(None)),
+        }
     }
 }
 
@@ -105,8 +123,35 @@ impl View for VerdictBlock {
         let Some(card) = controller.state.verdict.as_ref() else {
             return Empty::new().finish();
         };
-        block_chrome(verdict_body(card, appearance), appearance)
+        let chrome = block_chrome(verdict_body(card, appearance), appearance);
+        wrap_selectable(chrome, &self.selection_handle, &self.selected_text)
     }
+}
+
+/// Wrap an element in a `SelectableArea` so the user can drag-select text
+/// inside the block (and copy with Cmd+C / right-click → Copy). Mirrors the
+/// pattern AIBlock uses at `view_impl.rs:1197`.
+fn wrap_selectable(
+    body: Box<dyn Element>,
+    selection_handle: &SelectionHandle,
+    selected_text: &Arc<RwLock<Option<String>>>,
+) -> Box<dyn Element> {
+    let captured_selected_text = selected_text.clone();
+    SelectableArea::new(
+        selection_handle.clone(),
+        move |selection_args, _, _| {
+            *captured_selected_text.write() = selection_args.selection;
+        },
+        body,
+    )
+    .on_selection_right_click(move |ctx, position| {
+        ctx.dispatch_typed_action(TerminalAction::BlockListContextMenu(
+            BlockListMenuSource::OutsideBlockRightClick {
+                position_in_terminal_view: position,
+            },
+        ));
+    })
+    .finish()
 }
 
 /// Wrap `body` in AIBlock-style block chrome: tinted background overlay
