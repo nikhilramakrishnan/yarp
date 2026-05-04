@@ -20030,7 +20030,6 @@ impl TerminalView {
                          fi\n\
                          cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
-                           echo\n\
                            text='(timed out after 2m)'\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
@@ -20044,11 +20043,9 @@ impl TerminalView {
                              fi\n\
                              printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
                            fi\n\
-                           echo\n\
                            text='(no report)'\n\
                            stamp_color='179'\n\
                          else\n\
-                           echo\n\
                            if [ $elapsed -lt 60 ]; then\n\
                              text=$(printf '(reported in %ss)' \"$elapsed\")\n\
                            else\n\
@@ -20056,6 +20053,7 @@ impl TerminalView {
                            fi\n\
                            stamp_color='244'\n\
                          fi\n\
+                         echo\n\
                          pad=$(( cols - ${{#text}} ))\n\
                          [ $pad -lt 0 ] && pad=0\n\
                          printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
