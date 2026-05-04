@@ -2711,6 +2711,11 @@ pub struct TerminalView {
     /// A list of callbacks to run on the next [`ModelEvent::AfterBlockCompleted`] received.
     block_completed_callbacks: Vec<TerminalViewCallback>,
 
+    /// True while a `/agent` shell-command chain is in flight. Prevents a
+    /// second `/agent` invocation from interleaving its commands with the
+    /// first chain's pending dispatches.
+    council_chain_in_flight: bool,
+
     /// A list of callbacks to run on the next
     /// [`BlocklistAIControllerEvent::FinishedReceivingOutput`] received, regardless of the finish reason.
     conversation_completed_callbacks: Vec<ConversationFinishedCallback>,
@@ -4132,6 +4137,7 @@ impl TerminalView {
             #[cfg(feature = "local_fs")]
             deferred_code_review_open: None,
             block_completed_callbacks: Default::default(),
+            council_chain_in_flight: false,
             conversation_completed_callbacks: Default::default(),
             current_repo_path: None,
             terminal_title: Default::default(),
@@ -4418,6 +4424,7 @@ impl TerminalView {
         ctx: &mut ViewContext<Self>,
     ) {
         let Some(cmd) = chain.pop_front() else {
+            self.council_chain_in_flight = false;
             return;
         };
         let dispatched = self.input.update(ctx, |input, ctx| {
@@ -4425,9 +4432,16 @@ impl TerminalView {
         });
         if !dispatched {
             log::warn!("council: try_execute_command returned false; aborting chain");
+            self.council_chain_in_flight = false;
             return;
         }
         if chain.is_empty() {
+            // Last command dispatched. Mark chain as done after the next
+            // block-completion callback drains; until then, in-flight is
+            // still true (we still have a block running).
+            self.on_next_block_completed(move |me, _ctx| {
+                me.council_chain_in_flight = false;
+            });
             return;
         }
         self.on_next_block_completed(move |me, ctx| {
@@ -19797,6 +19811,12 @@ impl TerminalView {
                 }
             },
             InputEvent::EnterAgentCouncil { prompt } => {
+                if self.council_chain_in_flight {
+                    log::warn!(
+                        "EnterAgentCouncil ignored: a council chain is already in flight"
+                    );
+                    return;
+                }
                 let Some(roster) = crate::personas::Roster::load() else {
                     log::warn!(
                         "EnterAgentCouncil fired with prompt: {} but no roster loaded",
@@ -19956,6 +19976,7 @@ impl TerminalView {
                     "EnterAgentCouncil dispatching {} sequential shell commands",
                     chain.len()
                 );
+                self.council_chain_in_flight = true;
                 self.dispatch_council_chain(chain, ctx);
             }
             InputEvent::EnterCloudAgentView { initial_prompt } => {
