@@ -19985,7 +19985,7 @@ impl TerminalView {
                          i=0\n\
                          spin='|/-\\'\n\
                          while [ ! -e {done_q} ]; do\n\
-                           printf '\\r\\033[38;5;244m%s working...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
+                           printf '\\r\\033[38;5;244m%s investigating...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
                            i=$((i+1))\n\
                            sleep 0.2\n\
                          done\n\
