@@ -20047,7 +20047,9 @@ impl TerminalView {
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            {err_block}\
-                           if [ $elapsed -lt 60 ]; then\n\
+                           if [ $elapsed -lt 3 ]; then\n\
+                             text='(no report)'\n\
+                           elif [ $elapsed -lt 60 ]; then\n\
                              text=$(printf '(no report after %ss)' \"$elapsed\")\n\
                            else\n\
                              text=$(printf '(no report after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
@@ -20295,7 +20297,9 @@ impl TerminalView {
                                else\n\
                                  {err_block}\
                                  elapsed=$(( $(date +%s) - start ))\n\
-                                 if [ $elapsed -lt 60 ]; then\n\
+                                 if [ $elapsed -lt 3 ]; then\n\
+                                   text='(no verdict)'\n\
+                                 elif [ $elapsed -lt 60 ]; then\n\
                                    text=$(printf '(no verdict after %ss)' \"$elapsed\")\n\
                                  else\n\
                                    text=$(printf '(no verdict after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
