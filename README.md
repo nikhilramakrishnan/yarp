@@ -17,9 +17,7 @@
 
 ## Preamble
 
-Yarp is a personal fork of Warp Terminal. It runs locally, uses whatever
-LLM provider you bring, and leans into a Hot Fuzz theme because forks
-are more fun with a bit.
+I started playing around with Warp because I liked it but ended up thinking it would be funny if we had a terminal that resembled a police station, and every prompt is a case file. 
 
 > "By the power of Greyskull!"
 > &nbsp;&nbsp;— Sgt. Nicholas Angel, when his terminal Just Works™
@@ -34,20 +32,11 @@ cargo check --bin yarp      # quick type-check
 
 The macOS bundle lands at `target/debug/bundle/osx/Yarp.app`.
 
-## What's different from upstream Warp
-
-- **No backend.** No login, no warp.dev round-trips.
-- **Bring your own LLM.** Configure your OpenAI / Anthropic / etc. key in settings.
-- **Hot Fuzz themed.** Copy, palette, default agent personas.
-- **Same terminal.** Block-based command UI, AI inline suggestions, command palette.
-
 ## Status
 
-This is a **personal fork**, maintained for personal use. It is:
+This is an unstable personal fork but you can use it if you like it.
 
 - Not affiliated with, endorsed by, or sponsored by Warp / Denver Technologies, Inc.
-- Not accepting issues or PRs as a general policy (it's mine)
-- Not stable — things break on purpose
 
 > "Forget it Nicholas, it's Sandford."
 > &nbsp;&nbsp;— Inspector Frank Butterman, gently advising you to lower your expectations
@@ -67,7 +56,7 @@ Bundled third-party crate license texts are reproduced verbatim in the app's "Ab
 
 ## Acknowledgements
 
-To the team behind Warp Terminal — Yarp exists because the original is good enough to be worth forking. Every nice thing you'll see here came from upstream.
+We love Warp and what they've done for the developer experience. We stand on the shoulders of giants.
 
 To Edgar Wright, Simon Pegg, and Nick Frost — for *Hot Fuzz* (2007).
 
