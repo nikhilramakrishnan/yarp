@@ -4440,6 +4440,7 @@ impl TerminalView {
             self.council_chain_in_flight = false;
             return;
         }
+        let is_synth = chain.is_empty();
         if let Some(block) = self
             .model
             .lock()
@@ -4448,8 +4449,11 @@ impl TerminalView {
             .get_mut(council_block_idx.0)
         {
             block.set_council_block(true);
+            if is_synth {
+                block.set_council_synth(true);
+            }
         }
-        if chain.is_empty() {
+        if is_synth {
             // Last command dispatched. Mark chain as done after the next
             // block-completion callback drains; until then, in-flight is
             // still true (we still have a block running).

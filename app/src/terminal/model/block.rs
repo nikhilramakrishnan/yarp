@@ -426,6 +426,11 @@ pub struct Block {
     /// the standard dogfood debug chrome (NLD-override indicator, memory-stats
     /// footer) — those add noise to a UI that's meant to read like a verdict.
     council_block: bool,
+    /// True for the synth (last) block in a council chain. Synth blocks still
+    /// suppress chrome like other council blocks, but they sit at the BOTTOM
+    /// of the cluster — the next visible block below is a regular prompt, so
+    /// they need full bottom padding (not the tight 0.35× the constables use).
+    council_synth: bool,
 }
 
 #[cfg(debug_assertions)]
@@ -1022,6 +1027,7 @@ impl Block {
             },
             nld_overridden: false,
             council_block: false,
+            council_synth: false,
             is_oz_environment_startup_command: false,
         }
     }
@@ -1106,6 +1112,14 @@ impl Block {
 
     pub fn set_council_block(&mut self, council_block: bool) {
         self.council_block = council_block;
+    }
+
+    pub fn council_synth(&self) -> bool {
+        self.council_synth
+    }
+
+    pub fn set_council_synth(&mut self, council_synth: bool) {
+        self.council_synth = council_synth;
     }
 
     /// Sets whether NLD was overridden at command submission time.
@@ -2067,9 +2081,11 @@ impl Block {
             // padding used on blocks looks bad on the alt screen, so we use a smaller amount here.
             // This will allow full-screen programs (e.g. `git log`) to fill the window properly
             LONG_RUNNING_BOTTOM_PADDING_LINES.into_lines()
-        } else if self.council_block {
-            // Council blocks are a tight cluster of 4 (3 constables + synth) — keep the gap
-            // between them minimal so they read as one combined output, not four separate runs.
+        } else if self.council_block && !self.council_synth {
+            // Council constables are a tight cluster — keep the gap minimal so they read as
+            // one combined output, not three separate runs. The synth (last block) keeps full
+            // bottom padding because what follows it is a regular prompt, not another council
+            // block, and it needs room to breathe.
             (self.padding.bottom * 0.35).into_lines()
         } else {
             self.padding.bottom.into_lines()
