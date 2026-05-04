@@ -20079,8 +20079,14 @@ impl TerminalView {
                                 crate::personas::shell_quote_one(&inv.persona.badge),
                                 crate::personas::shell_quote_one(&inv.persona.name),
                             ));
+                            // Empty takes (CLI failure or timeout) would
+                            // otherwise feed claude an empty body under a
+                            // "Constable X reported:" header — claude has
+                            // been observed to hallucinate plausible content
+                            // for the missing officer. Inline a `(no report)`
+                            // sentinel so the synth knows to ignore it.
                             assembly.push_str(&format!(
-                                "; cat {} 2>/dev/null",
+                                "; t=$(cat {} 2>/dev/null); printf '%s' \"${{t:-(no report)}}\"",
                                 crate::personas::shell_quote_one(&take_files[idx]),
                             ));
                             assembly.push_str("; printf '\\n\\n'");
