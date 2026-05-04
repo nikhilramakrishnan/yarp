@@ -66,7 +66,10 @@ impl View for PersonaBlock {
         let Some(card) = controller.state.cards.get(self.card_index) else {
             return Empty::new().finish();
         };
-        block_chrome(persona_body(card, appearance), appearance)
+        block_chrome(
+            persona_body(card, &controller.state.prompt, appearance),
+            appearance,
+        )
     }
 }
 
@@ -134,7 +137,7 @@ fn block_chrome(body: Box<dyn Element>, appearance: &Appearance) -> Box<dyn Elem
 /// Layout for a fan-out persona block. Header strip with the persona's name +
 /// phase label, then thinking + output panes, then any tool-call chips, then
 /// a failure reason if applicable.
-fn persona_body(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> {
+fn persona_body(card: &PersonaCard, prompt: &str, appearance: &Appearance) -> Box<dyn Element> {
     let theme = appearance.theme();
     let bg = theme.background();
     let main_color = theme.main_text_color(bg).into_solid();
@@ -148,9 +151,26 @@ fn persona_body(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element>
     // go to the right in bold, like the user's query in AIBlock.
     col.add_child(
         Container::new(persona_header_row(card, appearance))
-            .with_margin_bottom(8.)
+            .with_margin_bottom(6.)
             .finish(),
     );
+
+    // Below the header: the prompt being asked of this persona, in
+    // monospace with a "$ " prefix. Mirrors the way a shell command block
+    // shows its command at the top — readers can see what each persona is
+    // running without having to remember the original /agent prompt.
+    let prompt_row = Container::new(
+        Text::new(
+            format!("$ {} {}", card.binary_basename, shell_quote(prompt)),
+            appearance.monospace_font_family(),
+            appearance.ui_font_size(),
+        )
+        .with_color(theme.sub_text_color(theme.background()).into_solid())
+        .finish(),
+    )
+    .with_margin_bottom(8.)
+    .finish();
+    col.add_child(prompt_row);
 
     if !card.thinking.is_empty() {
         col.add_child(
@@ -391,6 +411,31 @@ fn persona_header_row(card: &PersonaCard, appearance: &Appearance) -> Box<dyn El
         .with_child(Shrinkable::new(1., name_el).finish())
         .with_child(Container::new(phase_el).with_margin_left(8.).finish())
         .finish()
+}
+
+/// Wrap `s` in double-quotes if it contains whitespace or shell metacharacters.
+/// Cheap escaping — good enough for the command-preview row, not for actual
+/// execution (the controller doesn't use this).
+fn shell_quote(s: &str) -> String {
+    if s.is_empty() {
+        return "\"\"".to_owned();
+    }
+    let needs_quoting = s
+        .chars()
+        .any(|c| c.is_whitespace() || matches!(c, '\'' | '"' | '$' | '`' | '\\' | ';' | '|' | '&' | '<' | '>' | '(' | ')'));
+    if !needs_quoting {
+        return s.to_owned();
+    }
+    let mut out = String::with_capacity(s.len() + 2);
+    out.push('"');
+    for c in s.chars() {
+        if matches!(c, '"' | '\\' | '$' | '`') {
+            out.push('\\');
+        }
+        out.push(c);
+    }
+    out.push('"');
+    out
 }
 
 fn phase_label(phase: &CardPhase) -> &'static str {
