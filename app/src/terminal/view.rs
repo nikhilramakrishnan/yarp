@@ -19887,6 +19887,27 @@ impl TerminalView {
                     );
                     return;
                 }
+                if let Ok(entries) = std::fs::read_dir("/tmp/yarp") {
+                    let stale_after =
+                        std::time::Duration::from_secs(60 * 60);
+                    let now = std::time::SystemTime::now();
+                    for entry in entries.flatten() {
+                        let path = entry.path();
+                        if path == std::path::Path::new(&work_dir) {
+                            continue;
+                        }
+                        let stale = entry
+                            .metadata()
+                            .and_then(|m| m.modified())
+                            .ok()
+                            .and_then(|m| now.duration_since(m).ok())
+                            .map(|d| d > stale_after)
+                            .unwrap_or(false);
+                        if stale {
+                            let _ = std::fs::remove_dir_all(&path);
+                        }
+                    }
+                }
                 let mut chain: std::collections::VecDeque<String> =
                     std::collections::VecDeque::new();
                 // No header block — the slash-command block the user just
