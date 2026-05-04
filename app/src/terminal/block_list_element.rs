@@ -2571,39 +2571,43 @@ impl BlockListElement {
         };
 
         // Update grid_origin and draw command.
+        // Council blocks suppress the visible command line — the persona's
+        // own colored header is the framing, the script path is just noise.
         let command_grid_properties = Properties::default();
-        block.prompt_and_command_grid().draw(
-            command_origin,
-            element_origin,
-            glyphs,
-            COMMAND_ALPHA,
-            highlighted_url
-                .filter(|url| url.is_in_command_content() && url.block_index == block_index)
-                .map(|url| &url.inner),
-            link_tool_tip
-                .filter(|url| url.is_in_command_content() && url.block_index == block_index)
-                .map(|url| &url.inner),
-            hovered_secret,
-            block_list_find_run
-                .map(|run| run.matches_for_block_grid(block_index, GridType::PromptAndCommand)),
-            block_list_find_run
-                .and_then(|run| run.focused_match())
-                .and_then(|focused_match| match focused_match {
-                    BlockListMatch::CommandBlock(m)
-                        if m.block_index == block_index
-                            && m.grid_type == GridType::PromptAndCommand =>
-                    {
-                        Some(&m.range)
-                    }
-                    _ => None,
-                }),
-            command_grid_properties,
-            block_grid_params,
-            cursor_visible.then(|| block.prompt_and_command_grid().cursor_style().shape),
-            image_metadata,
-            ctx,
-            app,
-        );
+        if !block.council_block() {
+            block.prompt_and_command_grid().draw(
+                command_origin,
+                element_origin,
+                glyphs,
+                COMMAND_ALPHA,
+                highlighted_url
+                    .filter(|url| url.is_in_command_content() && url.block_index == block_index)
+                    .map(|url| &url.inner),
+                link_tool_tip
+                    .filter(|url| url.is_in_command_content() && url.block_index == block_index)
+                    .map(|url| &url.inner),
+                hovered_secret,
+                block_list_find_run
+                    .map(|run| run.matches_for_block_grid(block_index, GridType::PromptAndCommand)),
+                block_list_find_run
+                    .and_then(|run| run.focused_match())
+                    .and_then(|focused_match| match focused_match {
+                        BlockListMatch::CommandBlock(m)
+                            if m.block_index == block_index
+                                && m.grid_type == GridType::PromptAndCommand =>
+                        {
+                            Some(&m.range)
+                        }
+                        _ => None,
+                    }),
+                command_grid_properties,
+                block_grid_params,
+                cursor_visible.then(|| block.prompt_and_command_grid().cursor_style().shape),
+                image_metadata,
+                ctx,
+                app,
+            );
+        }
 
         // Only render the cursor in the command grid if the command grid is active and if it's
         // long running. This is to avoid jitter where a cursor just flickers while the pty is

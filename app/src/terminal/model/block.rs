@@ -1781,6 +1781,9 @@ impl Block {
     }
 
     pub fn prompt_and_command_number_of_rows(&self) -> usize {
+        if self.council_block {
+            return 0;
+        }
         self.header_grid.prompt_and_command_number_of_rows()
     }
 
@@ -1951,7 +1954,7 @@ impl Block {
     /// In the case of combined grid: for Yarp prompt, this includes the height of both the Yarp prompt
     /// AND combined grid; for PS1, this is just the combined grid (PS1 is included there).
     pub fn prompt_and_command_height(&self) -> Lines {
-        if !self.ready_to_render() {
+        if !self.ready_to_render() || self.council_block {
             Lines::zero()
         } else if self.header_grid.honor_ps1 {
             // No padding between prompt and command in the case of PS1 (combined grid).
@@ -1990,7 +1993,7 @@ impl Block {
 
     /// Returns prompt height in lines.
     pub fn prompt_height(&self) -> Lines {
-        if !self.ready_to_render() {
+        if !self.ready_to_render() || self.council_block {
             Lines::zero()
         } else {
             self.header_grid.prompt_height()
@@ -2035,7 +2038,7 @@ impl Block {
     }
 
     pub fn padding_top(&self) -> Lines {
-        if self.missing_command() || !self.ready_to_render() {
+        if self.missing_command() || !self.ready_to_render() || self.council_block {
             Lines::zero()
         } else {
             match self.block_banner {
@@ -2048,7 +2051,7 @@ impl Block {
     }
 
     pub fn command_padding_top(&self) -> Lines {
-        if self.header_grid.is_command_empty() || !self.ready_to_render() {
+        if self.header_grid.is_command_empty() || !self.ready_to_render() || self.council_block {
             Lines::zero()
         } else {
             self.padding.command_padding_top.into_lines()
