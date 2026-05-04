@@ -20260,7 +20260,7 @@ impl TerminalView {
                                half_r=$(( cols - 9 - half_l ))\n\
                                rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
                                rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
-                               printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
+                               printf '\\033[38;5;178m%s \\033[1;38;5;220mVERDICT\\033[22;38;5;178m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
                              else\n\
                                printf '\\033[38;5;220m\\033[1mVERDICT\\033[22m\\033[0m\\n'\n\
                              fi\n\
