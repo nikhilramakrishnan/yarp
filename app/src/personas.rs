@@ -384,6 +384,20 @@ pub(crate) fn persona_display_name(name: &str) -> String {
     }
 }
 
+/// Promote a constable's `PC` badge to `Sgt` for the synth pass, so the lead's
+/// visible header matches the SIO role it plays in the verdict prompt instead
+/// of looking like another constable. Mirrors Nicholas Angel's rank in the
+/// Sandford NWA roster.
+pub(crate) fn persona_synth_badge(badge: &str) -> String {
+    if let Some(rest) = badge.strip_prefix("PC ") {
+        format!("Sgt {rest}")
+    } else if badge == "PC" {
+        "Sgt".into()
+    } else {
+        badge.to_string()
+    }
+}
+
 /// Build the shell command for one persona's CLI invocation in the council
 /// chain. The generic shape is `<binary> <plain_args> '<prompt>' | tee
 /// <take_file>` — stdout is mirrored to the take file so the synth pass can

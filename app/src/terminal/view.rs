@@ -20393,7 +20393,9 @@ impl TerminalView {
                             ),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             spin_color = crate::personas::persona_spinner_color(&lead_persona.name),
-                            badge = crate::personas::shell_quote_one(&lead_persona.badge),
+                            badge = crate::personas::shell_quote_one(
+                                &crate::personas::persona_synth_badge(&lead_persona.badge),
+                            ),
                             name = crate::personas::shell_quote_one(
                                 &crate::personas::persona_display_name(&lead_persona.name),
                             ),
