@@ -314,11 +314,12 @@ pub(crate) fn shell_quote_smart(s: &str) -> String {
 /// in muted gold (179) above the failure stamp, ANSI-stripped and truncated
 /// to fit the terminal. Caller must have set `cols` in the shell scope.
 /// `err_path_quoted` must already be shell-quoted (e.g. via `shell_quote_one`).
-pub(crate) fn council_err_tail_block(err_path_quoted: &str) -> String {
+pub(crate) fn council_err_tail_block(err_path_quoted: &str, preceded_by: &str) -> String {
     format!(
         "err_last=\"$(tail -n 10 {err_path_quoted} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
          err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
          if [ -n \"$err_last\" ]; then\n\
+           if [ -n \"{preceded_by}\" ]; then echo; fi\n\
            max_err=$(( cols - 2 ))\n\
            [ $max_err -lt 20 ] && max_err=20\n\
            if [ ${{#err_last}} -gt $max_err ]; then\n\

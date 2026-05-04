@@ -20038,7 +20038,6 @@ impl TerminalView {
                          fi\n\
                          cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
-                           if [ -n \"$take_content\" ]; then echo; fi\n\
                            {err_block}\
                            text='(timed out after 2m)'\n\
                            stamp_color='179'\n\
@@ -20071,6 +20070,7 @@ impl TerminalView {
                         take_q = crate::personas::shell_quote_one(take_file),
                         err_block = crate::personas::council_err_tail_block(
                             &crate::personas::shell_quote_one(err_file),
+                            "$take_content",
                         ),
                         took_q = crate::personas::shell_quote_one(took_file),
                         color = crate::personas::persona_header_color(&inv.persona.name),
@@ -20271,7 +20271,6 @@ impl TerminalView {
                                  got_output=1\n\
                                fi\n\
                                if [ -e {synth_timeout_q} ]; then\n\
-                                 if [ -n \"$got_output\" ]; then echo; fi\n\
                                  {err_block}\
                                  text='(timed out after 5m)'\n\
                                  stamp_color='179'\n\
@@ -20332,6 +20331,7 @@ impl TerminalView {
                             launched_q = crate::personas::shell_quote_one(&launched_marker),
                             err_block = crate::personas::council_err_tail_block(
                                 &crate::personas::shell_quote_one(&synth_err_path),
+                                "$got_output",
                             ),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
