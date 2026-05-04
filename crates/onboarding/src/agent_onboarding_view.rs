@@ -111,7 +111,7 @@ impl AgentOnboardingView {
     /// Creates a new AgentOnboardingView.
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        theme_picker_themes: [YarpTheme; 4],
+        theme_picker_themes: [YarpTheme; 2],
         skippable: bool,
         models: Vec<OnboardingModelInfo>,
         default_model_id: LLMId,

@@ -207,23 +207,15 @@ pub struct LoginSlideView {
 /// the same themed right panel the user was looking at on the theme slide.
 const VISUAL_IMAGE_PATHS: &[&str] = &[
     // Terminal intention
-    "async/png/onboarding/terminal_intention/theme/theme_phenomenon_vertical.png",
-    "async/png/onboarding/terminal_intention/theme/theme_phenomenon_horizontal.png",
     "async/png/onboarding/terminal_intention/theme/theme_dark_vertical.png",
     "async/png/onboarding/terminal_intention/theme/theme_dark_horizontal.png",
     "async/png/onboarding/terminal_intention/theme/theme_light_vertical.png",
     "async/png/onboarding/terminal_intention/theme/theme_light_horizontal.png",
-    "async/png/onboarding/terminal_intention/theme/theme_adeberry_vertical.png",
-    "async/png/onboarding/terminal_intention/theme/theme_adeberry_horizontal.png",
     // Agent intention
-    "async/png/onboarding/agent_intention/theme/theme_phenomenon_vertical.png",
-    "async/png/onboarding/agent_intention/theme/theme_phenomenon_horizontal.png",
     "async/png/onboarding/agent_intention/theme/theme_dark_vertical.png",
     "async/png/onboarding/agent_intention/theme/theme_dark_horizontal.png",
     "async/png/onboarding/agent_intention/theme/theme_light_vertical.png",
     "async/png/onboarding/agent_intention/theme/theme_light_horizontal.png",
-    "async/png/onboarding/agent_intention/theme/theme_adeberry_vertical.png",
-    "async/png/onboarding/agent_intention/theme/theme_adeberry_horizontal.png",
 ];
 
 fn resolve_visual_path(
@@ -236,10 +228,8 @@ fn resolve_visual_path(
         OnboardingIntention::Terminal => "terminal_intention",
     };
     let name_key = match theme_name {
-        "Phenomenon" => "phenomenon",
-        "Dark" => "dark",
-        "Light" => "light",
-        "Adeberry" => "adeberry",
+        "The Greater Good" => "light",
+        "Sandford" => "dark",
         _ => "dark",
     };
     let orientation = if use_vertical_tabs {

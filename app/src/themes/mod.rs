@@ -9,11 +9,6 @@ pub mod theme_deletion_modal;
 
 use yarp_core::ui::theme::YarpTheme;
 
-pub fn onboarding_theme_picker_themes() -> [YarpTheme; 4] {
-    [
-        default_themes::dark_theme(),
-        default_themes::light_theme(),
-        default_themes::phenomenon(),
-        default_themes::adeberry(),
-    ]
+pub fn onboarding_theme_picker_themes() -> [YarpTheme; 2] {
+    [default_themes::dark_theme(), default_themes::light_theme()]
 }
