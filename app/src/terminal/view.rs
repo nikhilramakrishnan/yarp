@@ -20253,7 +20253,6 @@ impl TerminalView {
                                [ $pad -lt 0 ] && pad=0\n\
                                printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
                              }}\n\
-                             kill $SPIN_PID 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
                              close=$(printf '─%.0s' $(seq 1 $cols))\n\
                              echo\n\
