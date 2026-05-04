@@ -19833,6 +19833,12 @@ impl TerminalView {
                     log::warn!(
                         "EnterAgentCouncil ignored: a council chain is already in flight"
                     );
+                    self.input.update(ctx, |input, ctx| {
+                        input.try_execute_command(
+                            "printf '\\033[38;5;244m(council already deliberating — wait for verdict)\\033[0m\\n'",
+                            ctx,
+                        )
+                    });
                     return;
                 }
                 let Some(roster) = crate::personas::Roster::load() else {
