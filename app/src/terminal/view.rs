@@ -19858,9 +19858,22 @@ impl TerminalView {
                 // printf block was redundant noise.
                 let mut take_files: Vec<String> = Vec::new();
                 let mut persona_scripts: Vec<String> = Vec::new();
+                let mut bg_scripts: Vec<String> = Vec::new();
+                let mut done_markers: Vec<String> = Vec::new();
+                let mut timeout_markers: Vec<String> = Vec::new();
+                let launched_marker = format!("/tmp/yarp-council-{work_id}-launched");
+                // Pass 1: write bg-worker scripts. Each runs its CLI inside
+                // a 120s hand-rolled timeout (macOS has no `timeout` binary)
+                // and signals completion via a `.done` marker; if the CLI
+                // was killed by the timeout it also writes a `.timeout`
+                // marker so the displayer can surface that message.
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
+                    let done_marker = format!("/tmp/yarp-council-{work_id}-{idx}.done");
+                    let timeout_marker = format!("/tmp/yarp-council-{work_id}-{idx}.timeout");
                     take_files.push(take_file.clone());
+                    done_markers.push(done_marker.clone());
+                    timeout_markers.push(timeout_marker.clone());
                     // Use the FULL detected path, not the basename. PATH
                     // resolution at the user's shell can land on a different
                     // (older, broken) copy of the same CLI — concretely,
@@ -19875,40 +19888,18 @@ impl TerminalView {
                         &prompt,
                         &take_file,
                     );
-                    // Drop each persona's invocation into its own /tmp
-                    // script so the visible chain block is just `bash
-                    // /tmp/yarp-council-{id}-{basename}.sh` instead of a
-                    // 200-char inline blob (codex especially). Persona
-                    // basename in the script path keeps the script
-                    // identifiable at a glance. If the script write fails,
-                    // fall back to inline so the council still runs.
-                    let script_path = format!(
-                        "/tmp/yarp-council-{work_id}-{}.sh",
+                    let bg_script_path = format!(
+                        "/tmp/yarp-council-{work_id}-{}-bg.sh",
                         inv.binary_basename,
                     );
-                    // Lead each persona's block with a bolded "<badge>
-                    // <name>" header so the council reads as a council.
-                    // Header goes to stdout directly (visible in the block),
-                    // not through tee/--output-last-message, so the take
-                    // file the synth reads stays free of the header line.
-                    //
-                    // Wrap the actual CLI invocation in a hand-rolled bash
-                    // timeout (macOS has no `timeout` binary): run the
-                    // pipeline in a subshell, spawn a watcher that pkills
-                    // the subshell's children after 120s if they're still
-                    // alive, and surface a clear "(persona timed out…)"
-                    // line. Without this the council hangs indefinitely
-                    // when one CLI gets stuck on the API (gemini-cli
-                    // occasionally does this on substantive prompts).
-                    let script_body = format!(
+                    let bg_body = format!(
                         "#!/usr/bin/env bash\n\
-                         printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                          kill_tree() {{ local sig=$1 p=$2; \
                            for c in $(pgrep -P $p 2>/dev/null); do \
                              kill_tree $sig $c; \
                            done; \
                            kill -$sig $p 2>/dev/null; }}\n\
-                         ( {cmd} ) &\n\
+                         ( {cmd} ) >/dev/null 2>&1 &\n\
                          pid=$!\n\
                          ( sleep 120; kill_tree TERM $pid; sleep 2; \
                            kill_tree KILL $pid ) &\n\
@@ -19917,28 +19908,91 @@ impl TerminalView {
                          rc=$?\n\
                          kill_tree KILL $watcher 2>/dev/null\n\
                          wait $watcher 2>/dev/null\n\
-                         [ $rc -ge 128 ] && echo && \
-                           echo '(persona timed out after 120s)'\n\
-                         exit 0\n",
-                        color = crate::personas::persona_header_color(&inv.persona.name),
-                        badge = crate::personas::shell_quote_one(&inv.persona.badge),
-                        name = crate::personas::shell_quote_one(&inv.persona.name),
+                         [ $rc -ge 128 ] && touch {timeout_q}\n\
+                         touch {done_q}\n",
+                        timeout_q = crate::personas::shell_quote_one(&timeout_marker),
+                        done_q = crate::personas::shell_quote_one(&done_marker),
                     );
-                    if std::fs::write(&script_path, &script_body).is_ok() {
+                    if std::fs::write(&bg_script_path, &bg_body).is_ok() {
                         #[cfg(unix)]
                         {
                             use std::os::unix::fs::PermissionsExt as _;
                             let _ = std::fs::set_permissions(
-                                &script_path,
+                                &bg_script_path,
                                 std::fs::Permissions::from_mode(0o755),
                             );
                         }
-                        persona_scripts.push(script_path.clone());
+                        bg_scripts.push(bg_script_path);
+                    }
+                }
+                // Pass 2: write displayer scripts. The first one to run
+                // bg-launches every persona's worker (idempotent via the
+                // `launched` marker), then every displayer waits for its
+                // own persona's `.done` marker and prints. This collapses
+                // the wall-clock cost from sum(personas) to
+                // max(personas) — typically ~32s → ~12s before the synth.
+                let bg_launches = bg_scripts
+                    .iter()
+                    .map(|s| {
+                        format!(
+                            "bash {} </dev/null >/dev/null 2>&1 & disown",
+                            crate::personas::shell_quote_one(s),
+                        )
+                    })
+                    .collect::<Vec<_>>()
+                    .join("; ");
+                for (idx, inv) in invocations.iter().enumerate() {
+                    let display_script_path = format!(
+                        "/tmp/yarp-council-{work_id}-{}.sh",
+                        inv.binary_basename,
+                    );
+                    let take_file = &take_files[idx];
+                    let done_marker = &done_markers[idx];
+                    let timeout_marker = &timeout_markers[idx];
+                    let display_body = format!(
+                        "#!/usr/bin/env bash\n\
+                         if [ ! -e {launched_q} ]; then\n\
+                           : >{launched_q}\n\
+                           {bg_launches}\n\
+                         fi\n\
+                         while [ ! -e {done_q} ]; do sleep 0.2; done\n\
+                         printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         cat {take_q}\n\
+                         [ -e {timeout_q} ] && echo && \
+                           echo '(persona timed out after 120s)'\n\
+                         exit 0\n",
+                        launched_q = crate::personas::shell_quote_one(&launched_marker),
+                        bg_launches = bg_launches,
+                        done_q = crate::personas::shell_quote_one(done_marker),
+                        timeout_q = crate::personas::shell_quote_one(timeout_marker),
+                        take_q = crate::personas::shell_quote_one(take_file),
+                        color = crate::personas::persona_header_color(&inv.persona.name),
+                        badge = crate::personas::shell_quote_one(&inv.persona.badge),
+                        name = crate::personas::shell_quote_one(&inv.persona.name),
+                    );
+                    if std::fs::write(&display_script_path, &display_body).is_ok() {
+                        #[cfg(unix)]
+                        {
+                            use std::os::unix::fs::PermissionsExt as _;
+                            let _ = std::fs::set_permissions(
+                                &display_script_path,
+                                std::fs::Permissions::from_mode(0o755),
+                            );
+                        }
+                        persona_scripts.push(display_script_path.clone());
                         // Script is +x with a #! shebang, so the chain
                         // command can just be the path itself — no `bash `
                         // prefix needed. Cleaner block command line.
-                        chain.push_back(crate::personas::shell_quote_smart(&script_path));
+                        chain.push_back(crate::personas::shell_quote_smart(&display_script_path));
                     } else {
+                        // Fallback: synchronous inline invocation if we
+                        // couldn't write the displayer script.
+                        let cmd = crate::personas::build_persona_cmd(
+                            &inv.binary_basename,
+                            &inv.program,
+                            &prompt,
+                            take_file,
+                        );
                         chain.push_back(cmd);
                     }
                 }
@@ -20000,7 +20054,14 @@ impl TerminalView {
                         // /tmp doesn't leak even if the user kills the block
                         // mid-stream.
                         let mut take_cleanup = String::new();
-                        for f in take_files.iter().chain(persona_scripts.iter()) {
+                        for f in take_files
+                            .iter()
+                            .chain(persona_scripts.iter())
+                            .chain(bg_scripts.iter())
+                            .chain(done_markers.iter())
+                            .chain(timeout_markers.iter())
+                            .chain(std::iter::once(&launched_marker))
+                        {
                             take_cleanup.push(' ');
                             take_cleanup.push_str(&crate::personas::shell_quote_one(f));
                         }
@@ -20062,8 +20123,14 @@ impl TerminalView {
                 // synthesiser configured, or no binary on the lead), put
                 // it on its own block so /tmp doesn't leak.
                 if !synth_attached {
-                    let cleanup_files: Vec<&String> =
-                        take_files.iter().chain(persona_scripts.iter()).collect();
+                    let cleanup_files: Vec<&String> = take_files
+                        .iter()
+                        .chain(persona_scripts.iter())
+                        .chain(bg_scripts.iter())
+                        .chain(done_markers.iter())
+                        .chain(timeout_markers.iter())
+                        .chain(std::iter::once(&launched_marker))
+                        .collect();
                     if !cleanup_files.is_empty() {
                         let rm_args = cleanup_files
                             .iter()
