@@ -19992,7 +19992,7 @@ impl TerminalView {
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                          while [ ! -e {done_q} ]; do\n\
-                           printf '\\r\\033[38;5;244m%s investigating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
+                           printf '\\r\\033[38;5;246m%s\\033[38;5;244m investigating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                            i=$((i+1))\n\
                            sleep 0.1\n\
                          done\n\
@@ -20177,7 +20177,7 @@ impl TerminalView {
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                                while true; do\n\
-                                 printf '\\r\\033[38;5;244m%s deliberating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
+                                 printf '\\r\\033[38;5;246m%s\\033[38;5;244m deliberating...\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                                  i=$((i+1))\n\
                                  sleep 0.1\n\
                                done ) &\n\
