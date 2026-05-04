@@ -20006,15 +20006,18 @@ impl TerminalView {
                          if [ -e {timeout_q} ]; then\n\
                            [ -n \"$take_content\" ] && echo\n\
                            text='(timed out after 120s)'\n\
+                           stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            text='(no report)'\n\
+                           stamp_color='179'\n\
                          else\n\
                            echo\n\
                            text=$(printf '(reported in %ss)' \"$elapsed\")\n\
+                           stamp_color='244'\n\
                          fi\n\
                          pad=$(( cols - ${{#text}} ))\n\
                          [ $pad -lt 0 ] && pad=0\n\
-                         printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
+                         printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
                          echo\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
@@ -20202,7 +20205,7 @@ impl TerminalView {
                                  text='(no verdict)'\n\
                                  pad=$(( cols - ${{#text}} ))\n\
                                  [ $pad -lt 0 ] && pad=0\n\
-                                 printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
+                                 printf '\\033[3;38;5;179m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
                                fi\n\
                              }}\n\
                              kill $SPIN_PID 2>/dev/null\n\
