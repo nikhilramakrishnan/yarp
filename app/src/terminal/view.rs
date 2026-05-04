@@ -20013,7 +20013,7 @@ impl TerminalView {
                            : >{launched_q}\n\
                            {bg_launches}\n\
                          fi\n\
-                         printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                          start=$(date +%s)\n\
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
@@ -20218,7 +20218,7 @@ impl TerminalView {
                              rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
                              rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
                              printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
-                             printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              start=$(date +%s)\n\
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
