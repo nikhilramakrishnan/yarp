@@ -20232,7 +20232,12 @@ impl TerminalView {
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
-                               printf '\\033[3;38;5;179m%s of %s officers reported\\033[0m\\n' \"$reported\" \"$total\"\n\
+                               if [ \"$reported\" -eq 0 ]; then\n\
+                                 sub='no officers reported'\n\
+                               else\n\
+                                 sub=$(printf '%s of %s officers reported' \"$reported\" \"$total\")\n\
+                               fi\n\
+                               printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
                              fi\n\
                              echo\n\
                              mkfifo {fifo_q} 2>/dev/null\n\
