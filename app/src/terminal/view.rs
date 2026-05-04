@@ -20031,7 +20031,7 @@ impl TerminalView {
                          cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
                            [ -n \"$take_content\" ] && echo\n\
-                           text='(timed out after 120s)'\n\
+                           text='(timed out after 2m)'\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            err_last=\"$(tail -n 10 {err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
