@@ -369,6 +369,23 @@ pub(crate) fn persona_spinner_color(name: &str) -> &'static str {
     }
 }
 
+/// Display-friendly persona name. CLI binaries are stored lowercase
+/// (`claude`, `codex`) because that's how they live on the user's PATH, but
+/// alongside title-cased badge labels like `PC (Anthropic)` the lowercase
+/// reads as a typo. Capitalize for the visible header and for citing officers
+/// in the synth verdict; identifiers (color lookup, binary spawn) keep the
+/// raw lowercase.
+pub(crate) fn persona_display_name(name: &str) -> String {
+    match name {
+        "claude" => "Claude".into(),
+        "codex" => "Codex".into(),
+        "gemini" => "Gemini".into(),
+        "aider" => "Aider".into(),
+        "cursor-agent" => "Cursor".into(),
+        _ => name.to_string(),
+    }
+}
+
 /// Build the shell command for one persona's CLI invocation in the council
 /// chain. The generic shape is `<binary> <plain_args> '<prompt>' | tee
 /// <take_file>` — stdout is mirrored to the take file so the synth pass can

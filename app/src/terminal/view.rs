@@ -20098,7 +20098,9 @@ impl TerminalView {
                         color = crate::personas::persona_header_color(&inv.persona.name),
                         spin_color = crate::personas::persona_spinner_color(&inv.persona.name),
                         badge = crate::personas::shell_quote_one(&inv.persona.badge),
-                        name = crate::personas::shell_quote_one(&inv.persona.name),
+                        name = crate::personas::shell_quote_one(
+                            &crate::personas::persona_display_name(&inv.persona.name),
+                        ),
                     );
                     if std::fs::write(&display_script_path, &display_body).is_ok() {
                         #[cfg(unix)]
@@ -20176,7 +20178,9 @@ impl TerminalView {
                             assembly.push_str(&format!(
                                 "; printf '%s %s reported:\\n' {} {}",
                                 crate::personas::shell_quote_one(&inv.persona.badge),
-                                crate::personas::shell_quote_one(&inv.persona.name),
+                                crate::personas::shell_quote_one(
+                                    &crate::personas::persona_display_name(&inv.persona.name),
+                                ),
                             ));
                             // Empty takes (CLI failure or timeout) would
                             // otherwise feed claude an empty body under a
@@ -20390,7 +20394,9 @@ impl TerminalView {
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             spin_color = crate::personas::persona_spinner_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
-                            name = crate::personas::shell_quote_one(&lead_persona.name),
+                            name = crate::personas::shell_quote_one(
+                                &crate::personas::persona_display_name(&lead_persona.name),
+                            ),
                         );
                         // Best-effort write; if it fails, fall through to
                         // the no-synth path below so the council still
