@@ -20234,13 +20234,15 @@ impl TerminalView {
                                done; \
                                kill -$sig $p 2>/dev/null; }}\n\
                              cols=$(tput cols 2>/dev/null || echo 80)\n\
-                             half_l=$(( (cols - 9) / 2 ))\n\
-                             [ $half_l -lt 3 ] && half_l=3\n\
-                             half_r=$(( cols - 9 - half_l ))\n\
-                             [ $half_r -lt 3 ] && half_r=3\n\
-                             rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
-                             rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
-                             printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
+                             if [ $cols -ge 15 ]; then\n\
+                               half_l=$(( (cols - 9) / 2 ))\n\
+                               half_r=$(( cols - 9 - half_l ))\n\
+                               rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
+                               rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
+                               printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
+                             else\n\
+                               printf '\\033[38;5;220m\\033[1mVERDICT\\033[22m\\033[0m\\n'\n\
+                             fi\n\
                              printf '{color}%s %s\\033[0m\\n' {badge} {name}\n\
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
@@ -20326,13 +20328,15 @@ impl TerminalView {
                                fi\n\
                                close_label=\" took $dur \"\n\
                                label_w=${{#close_label}}\n\
-                               half_cl=$(( (cols - label_w) / 2 ))\n\
-                               [ $half_cl -lt 3 ] && half_cl=3\n\
-                               half_cr=$(( cols - label_w - half_cl ))\n\
-                               [ $half_cr -lt 3 ] && half_cr=3\n\
-                               close_l=$(printf '─%.0s' $(seq 1 $half_cl))\n\
-                               close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
-                               printf '\\033[38;5;240m%s\\033[3m%s\\033[23m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
+                               if [ $cols -ge $(( label_w + 6 )) ]; then\n\
+                                 half_cl=$(( (cols - label_w) / 2 ))\n\
+                                 half_cr=$(( cols - label_w - half_cl ))\n\
+                                 close_l=$(printf '─%.0s' $(seq 1 $half_cl))\n\
+                                 close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
+                                 printf '\\033[38;5;240m%s\\033[3m%s\\033[23m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
+                               else\n\
+                                 printf '\\033[3;38;5;240mtook %s\\033[0m\\n' \"$dur\"\n\
+                               fi\n\
                              else\n\
                                close=$(printf '─%.0s' $(seq 1 $cols))\n\
                                printf '\\033[38;5;240m%s\\033[0m\\n' \"$close\"\n\
