@@ -19903,14 +19903,19 @@ impl TerminalView {
                     let script_body = format!(
                         "#!/usr/bin/env bash\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         kill_tree() {{ local sig=$1 p=$2; \
+                           for c in $(pgrep -P $p 2>/dev/null); do \
+                             kill_tree $sig $c; \
+                           done; \
+                           kill -$sig $p 2>/dev/null; }}\n\
                          ( {cmd} ) &\n\
                          pid=$!\n\
-                         ( sleep 120; pkill -TERM -P $pid 2>/dev/null; \
-                           kill -TERM $pid 2>/dev/null ) &\n\
+                         ( sleep 120; kill_tree TERM $pid; sleep 2; \
+                           kill_tree KILL $pid ) &\n\
                          watcher=$!\n\
                          wait $pid 2>/dev/null\n\
                          rc=$?\n\
-                         kill -TERM $watcher 2>/dev/null\n\
+                         kill_tree KILL $watcher 2>/dev/null\n\
                          wait $watcher 2>/dev/null\n\
                          [ $rc -ge 128 ] && echo && \
                            echo '(persona timed out after 120s)'\n\
