@@ -5,7 +5,11 @@
 //! its own `ctx.notify()` on every emit; the controller emits `()` whenever
 //! it drains new events.
 
-use yarpui::elements::{Container, CrossAxisAlignment, Element, Flex, ParentElement, Text};
+use markdown_parser::parse_markdown;
+use pathfinder_color::ColorU;
+use yarpui::elements::{
+    Container, CrossAxisAlignment, Element, Flex, FormattedTextElement, ParentElement, Text,
+};
 use yarpui::fonts::{Properties, Weight};
 use yarpui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
 
@@ -89,6 +93,13 @@ impl View for CouncilView {
 fn render_card(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> {
     let mut col = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
+    // Colors derived from the current theme. We use main_text_color over the
+    // theme background for body content; inline code gets the same so it stays
+    // legible without an emphasis swap (no bg fill on code spans here).
+    let theme = appearance.theme();
+    let bg = theme.background();
+    let main_text_color = theme.main_text_color(bg).into_solid();
+
     // Header row: badge + name + binary + phase label.
     let header = format!(
         "{} {} ({}) — {}",
@@ -123,14 +134,11 @@ fn render_card(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> 
             .finish(),
         );
         col.add_child(
-            Container::new(
-                Text::new(
-                    card.thinking.clone(),
-                    appearance.ui_font_family(),
-                    appearance.ui_font_size(),
-                )
-                .finish(),
-            )
+            Container::new(render_markdown_or_plain(
+                &card.thinking,
+                appearance,
+                main_text_color,
+            ))
             .with_margin_bottom(4.)
             .finish(),
         );
@@ -138,18 +146,17 @@ fn render_card(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> 
 
     // Output (always shown so empty cards still have a slot).
     col.add_child(
-        Container::new(
+        Container::new(if card.output.is_empty() {
+            // Empty placeholder stays plain Text — there's no markdown to render.
             Text::new(
-                if card.output.is_empty() {
-                    "…".to_owned()
-                } else {
-                    card.output.clone()
-                },
+                "…".to_owned(),
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
-            .finish(),
-        )
+            .finish()
+        } else {
+            render_markdown_or_plain(&card.output, appearance, main_text_color)
+        })
         .with_margin_bottom(2.)
         .finish(),
     );
@@ -191,6 +198,34 @@ fn render_card(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> 
         .with_margin_top(6.)
         .with_margin_bottom(6.)
         .finish()
+}
+
+/// Parse `body` as markdown and render with the given color, falling back to a
+/// plain `Text` element if the parser rejects the input. Council output comes
+/// from third-party CLIs (claude, codex, etc.) and may not be valid markdown.
+fn render_markdown_or_plain(
+    body: &str,
+    appearance: &Appearance,
+    text_color: ColorU,
+) -> Box<dyn Element> {
+    match parse_markdown(body) {
+        Ok(parsed) => FormattedTextElement::new(
+            parsed,
+            appearance.ui_font_size(),
+            appearance.ui_font_family(),
+            appearance.ui_font_family(),
+            text_color,
+            Default::default(),
+        )
+        .with_inline_code_properties(Some(text_color), None)
+        .finish(),
+        Err(_) => Text::new(
+            body.to_owned(),
+            appearance.ui_font_family(),
+            appearance.ui_font_size(),
+        )
+        .finish(),
+    }
 }
 
 fn phase_label(phase: &CardPhase) -> &'static str {
