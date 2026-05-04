@@ -20361,7 +20361,10 @@ impl TerminalView {
                 // it on its own block so /tmp doesn't leak.
                 if !synth_attached {
                     chain.push_back(format!(
-                        "rm -rf {}",
+                        "cols=$(tput cols 2>/dev/null || echo 80); \
+                         close=$(printf '─%.0s' $(seq 1 $cols)); \
+                         printf '\\033[38;5;240m%s\\033[0m\\n\\n' \"$close\"; \
+                         rm -rf {}",
                         crate::personas::shell_quote_one(&work_dir),
                     ));
                 }
