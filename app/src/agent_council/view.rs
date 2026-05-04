@@ -14,8 +14,8 @@
 use markdown_parser::parse_markdown;
 use pathfinder_color::ColorU;
 use yarpui::elements::{
-    Border, Container, CrossAxisAlignment, Element, Empty, Flex, FormattedTextElement,
-    ParentElement, Text,
+    Border, Container, CornerRadius, CrossAxisAlignment, Element, Empty, Flex,
+    FormattedTextElement, MainAxisSize, ParentElement, Radius, Shrinkable, Text,
 };
 use yarpui::fonts::{Properties, Weight};
 use yarpui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
@@ -106,15 +106,23 @@ impl View for VerdictBlock {
     }
 }
 
-/// Wrap `body` in the standard Warp block chrome: full-width container with
-/// horizontal padding from `PADDING_LEFT`, vertical padding, and a 1px top
-/// border in the theme outline color. No corner radius, no background fill —
-/// blocks look like horizontal strips, the same way shell command blocks do.
+/// Wrap `body` in AIBlock-style block chrome: tinted background overlay
+/// (`theme.ai_blocks_overlay()`) so council blocks visually distinguish from
+/// regular shell command blocks the same way AIBlock does, with a 1px top
+/// border in the outline color and the standard horizontal terminal
+/// padding. This is the same chrome AIBlock uses (`view_impl.rs:1128-1190`):
+///
+/// - background: `theme.ai_blocks_overlay()`
+/// - top border: 1px `theme.outline()`
+/// - top padding: 16px (`CONTENT_VERTICAL_PADDING`)
+/// - horizontal padding: `PADDING_LEFT`
 fn block_chrome(body: Box<dyn Element>, appearance: &Appearance) -> Box<dyn Element> {
     let theme = appearance.theme();
     Container::new(body)
+        .with_background(theme.ai_blocks_overlay())
         .with_horizontal_padding(*PADDING_LEFT)
-        .with_vertical_padding(VERTICAL_PADDING)
+        .with_padding_top(VERTICAL_PADDING)
+        .with_padding_bottom(VERTICAL_PADDING)
         .with_border(
             Border::new(1.)
                 .with_sides(true, false, false, false)
@@ -133,28 +141,15 @@ fn persona_body(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element>
 
     let mut col = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
-    // Header: "{badge} {name} — {phase}". When the persona's name equals the
-    // binary basename (the default for auto-detected CLIs), don't print the
-    // basename twice — it reads as "claude (claude)".
-    let label = if card.name == card.binary_basename {
-        format!("{} {} — {}", card.badge, card.name, phase_label(&card.phase))
-    } else {
-        format!(
-            "{} {} ({}) — {}",
-            card.badge,
-            card.name,
-            card.binary_basename,
-            phase_label(&card.phase)
-        )
-    };
+    // Header: a row that mirrors AIBlock's "avatar + query" layout. The
+    // badge sits in a small chip on the left (theme.surface_3 background,
+    // 4px corner radius, padded — same recipe as AIBlock's attached-blocks
+    // chip, view_impl/header.rs:188-193). The persona name + phase label
+    // go to the right in bold, like the user's query in AIBlock.
     col.add_child(
-        Container::new(
-            Text::new(label, appearance.ui_font_family(), appearance.ui_font_size())
-                .with_style(Properties::default().weight(Weight::Bold))
-                .finish(),
-        )
-        .with_margin_bottom(8.)
-        .finish(),
+        Container::new(persona_header_row(card, appearance))
+            .with_margin_bottom(8.)
+            .finish(),
     );
 
     if !card.thinking.is_empty() {
@@ -336,6 +331,66 @@ fn render_markdown_or_plain(
         )
         .finish(),
     }
+}
+
+/// Header row: badge chip on the left, persona name + phase on the right.
+/// Mirrors `view_impl/query.rs::render_query`'s avatar+query Flex::row
+/// layout and `view_impl/header.rs::188`'s chip styling.
+fn persona_header_row(card: &PersonaCard, appearance: &Appearance) -> Box<dyn Element> {
+    let theme = appearance.theme();
+    let chip_bg = theme.surface_3();
+    let chip_text = theme.main_text_color(theme.surface_3()).into_solid();
+    let main_color = theme.main_text_color(theme.background()).into_solid();
+    let sub_color = theme.sub_text_color(theme.background()).into_solid();
+
+    let chip = Container::new(
+        Text::new(
+            card.badge.clone(),
+            appearance.ui_font_family(),
+            appearance.ui_font_size(),
+        )
+        .with_color(chip_text)
+        .with_style(Properties::default().weight(Weight::Bold))
+        .finish(),
+    )
+    .with_background(chip_bg)
+    .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
+    .with_horizontal_padding(8.)
+    .with_vertical_padding(4.)
+    .with_margin_right(12.)
+    .finish();
+
+    // Skip the basename parens when name == basename (auto-detected CLIs).
+    let name_text = if card.name == card.binary_basename {
+        card.name.clone()
+    } else {
+        format!("{} ({})", card.name, card.binary_basename)
+    };
+
+    let name_el = Text::new(
+        name_text,
+        appearance.ui_font_family(),
+        appearance.ui_font_size(),
+    )
+    .with_color(main_color)
+    .with_style(Properties::default().weight(Weight::Bold))
+    .finish();
+
+    let phase_el = Text::new(
+        phase_label(&card.phase).to_owned(),
+        appearance.ui_font_family(),
+        appearance.ui_font_size(),
+    )
+    .with_color(sub_color)
+    .finish();
+
+    Flex::row()
+        .with_cross_axis_alignment(CrossAxisAlignment::Center)
+        .with_main_axis_size(MainAxisSize::Max)
+        .with_child(chip)
+        .with_child(Shrinkable::new(1., name_el).finish())
+        .with_child(Container::new(phase_el).with_margin_left(8.).finish())
+        .finish()
 }
 
 fn phase_label(phase: &CardPhase) -> &'static str {
