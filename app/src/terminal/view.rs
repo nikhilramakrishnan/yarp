@@ -20330,9 +20330,9 @@ impl TerminalView {
                                elif [ -n \"$got_output\" ]; then\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 60 ]; then\n\
-                                   text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
+                                   text=$(printf '(verdict in %ss)' \"$elapsed\")\n\
                                  else\n\
-                                   text=$(printf '(delivered in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                   text=$(printf '(verdict in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='244'\n\
                                else\n\
