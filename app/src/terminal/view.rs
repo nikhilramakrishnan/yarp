@@ -19988,6 +19988,7 @@ impl TerminalView {
                            {bg_launches}\n\
                          fi\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         start=$(date +%s)\n\
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                          while [ ! -e {done_q} ]; do\n\
@@ -19996,6 +19997,7 @@ impl TerminalView {
                            sleep 0.1\n\
                          done\n\
                          printf '\\r\\033[K'\n\
+                         elapsed=$(( $(date +%s) - start ))\n\
                          take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
@@ -20005,6 +20007,8 @@ impl TerminalView {
                            printf '\\033[38;5;244m(timed out after 120s)\\033[0m\\n'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            printf '\\033[38;5;244m(no report)\\033[0m\\n'\n\
+                         else\n\
+                           printf '\\033[38;5;244m(reported in %ss)\\033[0m\\n' \"$elapsed\"\n\
                          fi\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
