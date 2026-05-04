@@ -20239,9 +20239,9 @@ impl TerminalView {
                              reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
                                if [ \"$reported\" -eq 0 ]; then\n\
-                                 sub='no officers reported'\n\
+                                 sub='no one reported back'\n\
                                else\n\
-                                 sub=$(printf '%s of %s officers reported' \"$reported\" \"$total\")\n\
+                                 sub=$(printf '%s of %s reported back' \"$reported\" \"$total\")\n\
                                fi\n\
                                printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
                              fi\n\
