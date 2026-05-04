@@ -19897,6 +19897,7 @@ impl TerminalView {
                 let mut bg_scripts: Vec<String> = Vec::new();
                 let mut done_markers: Vec<String> = Vec::new();
                 let mut timeout_markers: Vec<String> = Vec::new();
+                let mut err_files: Vec<String> = Vec::new();
                 let launched_marker = format!("{work_dir}/.launched");
                 // Pass 1: write bg-worker scripts. Each runs its CLI inside
                 // a 120s hand-rolled timeout (macOS has no `timeout` binary)
@@ -19908,9 +19909,11 @@ impl TerminalView {
                     let take_file = format!("{work_dir}/{basename}.out");
                     let done_marker = format!("{work_dir}/{basename}.done");
                     let timeout_marker = format!("{work_dir}/{basename}.timeout");
+                    let err_file = format!("{work_dir}/{basename}.err");
                     take_files.push(take_file.clone());
                     done_markers.push(done_marker.clone());
                     timeout_markers.push(timeout_marker.clone());
+                    err_files.push(err_file.clone());
                     // Use the FULL detected path, not the basename. PATH
                     // resolution at the user's shell can land on a different
                     // (older, broken) copy of the same CLI — concretely,
@@ -19933,7 +19936,7 @@ impl TerminalView {
                              kill_tree $sig $c; \
                            done; \
                            kill -$sig $p 2>/dev/null; }}\n\
-                         ( {cmd} ) >/dev/null 2>&1 &\n\
+                         ( {cmd} ) >/dev/null 2>{err_q} &\n\
                          pid=$!\n\
                          ( sleep 120; kill_tree TERM $pid; sleep 2; \
                            kill_tree KILL $pid ) &\n\
@@ -19946,6 +19949,7 @@ impl TerminalView {
                          touch {done_q}\n",
                         timeout_q = crate::personas::shell_quote_one(&timeout_marker),
                         done_q = crate::personas::shell_quote_one(&done_marker),
+                        err_q = crate::personas::shell_quote_one(&err_file),
                     );
                     if std::fs::write(&bg_script_path, &bg_body).is_ok() {
                         #[cfg(unix)]
@@ -19981,6 +19985,7 @@ impl TerminalView {
                     let take_file = &take_files[idx];
                     let done_marker = &done_markers[idx];
                     let timeout_marker = &timeout_markers[idx];
+                    let err_file = &err_files[idx];
                     let display_body = format!(
                         "#!/usr/bin/env bash\n\
                          if [ ! -e {launched_q} ]; then\n\
@@ -20008,6 +20013,15 @@ impl TerminalView {
                            text='(timed out after 120s)'\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
+                           err_last=\"$(tail -n 10 {err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
+                           if [ -n \"$err_last\" ]; then\n\
+                             max_err=$(( cols - 2 ))\n\
+                             [ $max_err -lt 20 ] && max_err=20\n\
+                             if [ ${{#err_last}} -gt $max_err ]; then\n\
+                               err_last=\"${{err_last:0:$max_err}}…\"\n\
+                             fi\n\
+                             printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
+                           fi\n\
                            text='(no report)'\n\
                            stamp_color='179'\n\
                          else\n\
@@ -20025,6 +20039,7 @@ impl TerminalView {
                         done_q = crate::personas::shell_quote_one(done_marker),
                         timeout_q = crate::personas::shell_quote_one(timeout_marker),
                         take_q = crate::personas::shell_quote_one(take_file),
+                        err_q = crate::personas::shell_quote_one(err_file),
                         color = crate::personas::persona_header_color(&inv.persona.name),
                         badge = crate::personas::shell_quote_one(&inv.persona.badge),
                         name = crate::personas::shell_quote_one(&inv.persona.name),
