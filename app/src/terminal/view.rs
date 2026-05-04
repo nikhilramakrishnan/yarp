@@ -4427,6 +4427,11 @@ impl TerminalView {
             self.council_chain_in_flight = false;
             return;
         };
+        // The block that's about to receive this command is the active one.
+        // Capture its index now so we can mark it as a council block once
+        // the dispatch lands — the renderer suppresses dogfood debug chrome
+        // (NLD-override indicator, memory-stats footer) for council blocks.
+        let council_block_idx = self.model.lock().block_list().active_block_index();
         let dispatched = self.input.update(ctx, |input, ctx| {
             input.try_execute_command(&cmd, ctx)
         });
@@ -4434,6 +4439,15 @@ impl TerminalView {
             log::warn!("council: try_execute_command returned false; aborting chain");
             self.council_chain_in_flight = false;
             return;
+        }
+        if let Some(block) = self
+            .model
+            .lock()
+            .block_list_mut()
+            .blocks_mut()
+            .get_mut(council_block_idx.0)
+        {
+            block.set_council_block(true);
         }
         if chain.is_empty() {
             // Last command dispatched. Mark chain as done after the next
@@ -21639,7 +21653,13 @@ impl TerminalView {
 
         // On Local and Dev channels, append an indicator when NLD was overridden.
         // Skip the honor_ps1 case since there's no good place to display the extra text.
-        if !block.honor_ps1() && block.nld_overridden() && ChannelState::enable_debug_features() {
+        // Council blocks (`/agent` chain output) suppress this — their persona header
+        // is the framing the user sees, debug chrome would just add noise.
+        if !block.honor_ps1()
+            && !block.council_block()
+            && block.nld_overridden()
+            && ChannelState::enable_debug_features()
+        {
             prompt.push_str(" (nld overridden)");
         }
 

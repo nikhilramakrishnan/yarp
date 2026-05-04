@@ -420,6 +420,12 @@ pub struct Block {
     ///
     /// This is used for debugging UI shown in the block header on dogfood builds.
     nld_overridden: bool,
+
+    /// Whether this block was spawned as part of a `/agent` council chain.
+    /// Council blocks are framed by their persona header and shouldn't carry
+    /// the standard dogfood debug chrome (NLD-override indicator, memory-stats
+    /// footer) — those add noise to a UI that's meant to read like a verdict.
+    council_block: bool,
 }
 
 #[cfg(debug_assertions)]
@@ -1015,6 +1021,7 @@ impl Block {
                 None => AgentViewVisibility::new_from_terminal(),
             },
             nld_overridden: false,
+            council_block: false,
             is_oz_environment_startup_command: false,
         }
     }
@@ -1091,6 +1098,14 @@ impl Block {
     /// This is used for debugging UI shown in the block header on dogfood builds.
     pub fn nld_overridden(&self) -> bool {
         self.nld_overridden
+    }
+
+    pub fn council_block(&self) -> bool {
+        self.council_block
+    }
+
+    pub fn set_council_block(&mut self, council_block: bool) {
+        self.council_block = council_block;
     }
 
     /// Sets whether NLD was overridden at command submission time.

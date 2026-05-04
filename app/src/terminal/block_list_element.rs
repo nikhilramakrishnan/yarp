@@ -3549,7 +3549,7 @@ impl Element for BlockListElement {
         if DebugSettings::as_ref(app).should_show_memory_stats() {
             for block_index in &visible_block_indices {
                 if let Some(block) = model.block_list().block_at(*block_index) {
-                    if !block.has_footer() {
+                    if !block.has_footer() || block.council_block() {
                         continue;
                     }
 
