@@ -20284,14 +20284,34 @@ impl TerminalView {
                              kill_tree KILL $watcher 2>/dev/null\n\
                              wait $watcher 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
-                             close=$(printf '─%.0s' $(seq 1 $cols))\n\
+                             chain_start=$(stat -f %m {launched_q} 2>/dev/null || stat -c %Y {launched_q} 2>/dev/null)\n\
                              echo\n\
-                             printf '\\033[38;5;240m%s\\033[0m\\n' \"$close\"\n\
+                             if [ -n \"$chain_start\" ]; then\n\
+                               chain_total=$(( $(date +%s) - chain_start ))\n\
+                               if [ $chain_total -lt 60 ]; then\n\
+                                 dur=\"${{chain_total}}s\"\n\
+                               else\n\
+                                 dur=$(printf '%dm%02ds' $((chain_total/60)) $((chain_total%60)))\n\
+                               fi\n\
+                               close_label=\" deliberated in $dur \"\n\
+                               label_w=${{#close_label}}\n\
+                               half_cl=$(( (cols - label_w) / 2 ))\n\
+                               [ $half_cl -lt 3 ] && half_cl=3\n\
+                               half_cr=$(( cols - label_w - half_cl ))\n\
+                               [ $half_cr -lt 3 ] && half_cr=3\n\
+                               close_l=$(printf '─%.0s' $(seq 1 $half_cl))\n\
+                               close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
+                               printf '\\033[38;5;240m%s%s%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
+                             else\n\
+                               close=$(printf '─%.0s' $(seq 1 $cols))\n\
+                               printf '\\033[38;5;240m%s\\033[0m\\n' \"$close\"\n\
+                             fi\n\
                              echo\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             fifo_q = crate::personas::shell_quote_one(&synth_fifo_path),
                             synth_timeout_q = crate::personas::shell_quote_one(&synth_timeout_path),
                             synth_err_q = crate::personas::shell_quote_one(&synth_err_path),
+                            launched_q = crate::personas::shell_quote_one(&launched_marker),
                             err_block = crate::personas::council_err_tail_block(
                                 &crate::personas::shell_quote_one(&synth_err_path),
                             ),
