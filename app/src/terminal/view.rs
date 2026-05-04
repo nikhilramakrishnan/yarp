@@ -19835,7 +19835,7 @@ impl TerminalView {
                     );
                     self.input.update(ctx, |input, ctx| {
                         input.try_execute_command(
-                            "printf '\\033[38;5;244m(council already deliberating — wait for verdict)\\033[0m\\n'",
+                            "printf '\\033[3;38;5;244m(council already deliberating — wait for verdict)\\033[0m\\n'",
                             ctx,
                         )
                     });
