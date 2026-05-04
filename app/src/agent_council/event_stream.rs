@@ -132,38 +132,48 @@ fn parse_codex_line(line: &str) -> Vec<CouncilEvent> {
         return vec![CouncilEvent::OutputDelta(format!("{line}\n"))];
     };
     let kind = v.get("type").and_then(Value::as_str).unwrap_or("");
+    // Match codex's actual `exec --json` schema with exact strings. The old
+    // permissive `contains("completed")` swallowed `item.completed` events
+    // before we could pull `item.text` out of them, so cards stayed empty.
     match kind {
-        // Codex's exact event schema isn't pinned here; keep this
-        // permissive. Anything that looks like an assistant text delta
-        // becomes OutputDelta; anything completion-shaped becomes Finished.
-        s if s.contains("delta") || s.contains("message") => {
-            let text = v
-                .get("delta")
-                .or_else(|| v.get("text"))
-                .or_else(|| v.pointer("/item/content"))
+        "thread.started" | "turn.started" => Vec::new(),
+        "item.completed" => {
+            let item_type = v
+                .pointer("/item/type")
                 .and_then(Value::as_str)
                 .unwrap_or("");
-            if text.is_empty() {
-                Vec::new()
+            if item_type == "agent_message" {
+                let text = v
+                    .pointer("/item/text")
+                    .and_then(Value::as_str)
+                    .unwrap_or("");
+                if text.is_empty() {
+                    Vec::new()
+                } else {
+                    vec![CouncilEvent::OutputDelta(text.to_owned())]
+                }
             } else {
-                vec![CouncilEvent::OutputDelta(text.to_owned())]
+                // reasoning, tool_call, etc. — ignore for now.
+                Vec::new()
             }
         }
-        s if s.contains("completed") || s.contains("done") || s == "task.completed" => {
+        "turn.completed" => {
             vec![CouncilEvent::Finished {
                 ok: true,
                 reason: None,
             }]
         }
-        s if s.contains("error") || s.contains("failed") => {
-            let msg = v
+        s if s == "turn.failed" || s.ends_with(".failed") => {
+            let reason = v
                 .get("message")
                 .and_then(Value::as_str)
-                .map(str::to_owned);
-            vec![CouncilEvent::Finished {
-                ok: false,
-                reason: msg,
-            }]
+                .map(str::to_owned)
+                .or_else(|| {
+                    v.pointer("/error/message")
+                        .and_then(Value::as_str)
+                        .map(str::to_owned)
+                });
+            vec![CouncilEvent::Finished { ok: false, reason }]
         }
         _ => Vec::new(),
     }
@@ -215,4 +225,33 @@ mod tests {
         assert_eq!(parse_line(CliKind::PlainText, ""), vec![]);
     }
 
+    #[test]
+    fn codex_real_capture_extracts_text_then_finishes() {
+        // Real `codex exec --json` output: thread.started + turn.started are
+        // setup chatter, item.completed/agent_message carries the text, and
+        // turn.completed terminates. The previous parser's `contains("completed")`
+        // arm swallowed item.completed before the text could be extracted.
+        let lines = [
+            r#"{"type":"thread.started","thread_id":"019df078-ee65-7a90-a795-11cd66268d23"}"#,
+            r#"{"type":"turn.started"}"#,
+            r#"{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Hi there"}}"#,
+            r#"{"type":"turn.completed","usage":{"input_tokens":18973}}"#,
+        ];
+        let got: Vec<Vec<CouncilEvent>> = lines
+            .iter()
+            .map(|l| parse_line(CliKind::Codex, l))
+            .collect();
+        assert_eq!(
+            got,
+            vec![
+                vec![],
+                vec![],
+                vec![CouncilEvent::OutputDelta("Hi there".to_owned())],
+                vec![CouncilEvent::Finished {
+                    ok: true,
+                    reason: None,
+                }],
+            ]
+        );
+    }
 }
