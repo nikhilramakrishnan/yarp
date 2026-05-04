@@ -20114,10 +20114,13 @@ impl TerminalView {
                         // Header reuses the same lead_persona resolved above
                         // for the prompt opener — keeps the badge+name in the
                         // visible block in lockstep with the identity the
-                        // synth model was told to adopt.
+                        // synth model was told to adopt. The leading rule +
+                        // VERDICT label sets the SIO's final call apart from
+                        // the constable reports above.
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
+                             printf '{color}━━━━━━━━━━━━━━━━━━━━ VERDICT ━━━━━━━━━━━━━━━━━━━━\\033[0m\\n' \n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
