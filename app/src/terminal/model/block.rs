@@ -2095,6 +2095,11 @@ impl Block {
     pub fn padding_middle(&self) -> Lines {
         if self.is_background() || self.output_grid.is_empty() || !self.ready_to_render() {
             Lines::zero()
+        } else if self.council_block {
+            // Middle padding sits between the (suppressed) prompt area and the output.
+            // For council blocks the prompt is hidden, so this padding becomes a stray
+            // top buffer above the persona badge — kill it so the badge sits tight.
+            Lines::zero()
         } else {
             self.padding.middle.into_lines()
         }
