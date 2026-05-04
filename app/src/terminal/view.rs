@@ -20157,7 +20157,25 @@ impl TerminalView {
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
-                             {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}'\n",
+                             ( i=0\n\
+                               spin='|/-\\'\n\
+                               while true; do\n\
+                                 printf '\\r\\033[38;5;244m%s deliberating...\\033[0m' \"${{spin:$((i%4)):1}}\"\n\
+                                 i=$((i+1))\n\
+                                 sleep 0.2\n\
+                               done ) &\n\
+                             SPIN_PID=$!\n\
+                             {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
+                               if IFS= read -r first; then\n\
+                                 kill $SPIN_PID 2>/dev/null\n\
+                                 printf '\\r\\033[K'\n\
+                                 printf '%s\\n' \"$first\"\n\
+                                 cat\n\
+                               fi\n\
+                             }}\n\
+                             kill $SPIN_PID 2>/dev/null\n\
+                             wait $SPIN_PID 2>/dev/null\n\
+                             printf '\\r\\033[K'\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
