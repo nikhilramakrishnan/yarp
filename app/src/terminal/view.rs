@@ -19879,23 +19879,23 @@ impl TerminalView {
                             ),
                         ));
                         assembly.push_str(&format!(
-                            " && printf '%s\\n\\n' {}",
+                            "; printf '%s\\n\\n' {}",
                             crate::personas::shell_quote_one(&prompt),
                         ));
                         for (idx, inv) in invocations.iter().enumerate() {
                             assembly.push_str(&format!(
-                                " && printf '%s %s said:\\n' {} {}",
+                                "; printf '%s %s said:\\n' {} {}",
                                 crate::personas::shell_quote_one(&inv.persona.badge),
                                 crate::personas::shell_quote_one(&inv.persona.name),
                             ));
                             assembly.push_str(&format!(
-                                " && cat {} 2>/dev/null",
+                                "; cat {} 2>/dev/null",
                                 crate::personas::shell_quote_one(&take_files[idx]),
                             ));
-                            assembly.push_str(" && printf '\\n\\n'");
+                            assembly.push_str("; printf '\\n\\n'");
                         }
                         assembly.push_str(&format!(
-                            " && printf '%s' {}",
+                            "; printf '%s' {}",
                             crate::personas::shell_quote_one(
                                 "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
                             ),
