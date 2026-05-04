@@ -340,6 +340,14 @@ pub(crate) fn build_persona_cmd(
         "codex" => format!(
             "{prog} exec --skip-git-repo-check --ephemeral --output-last-message {take} {prompt_q} >/dev/null 2>&1; cat {take}; echo",
         ),
+        // Gemini prints `Loaded cached credentials.` to STDERR as a preamble
+        // before the real answer. Merge stderr into stdout (so the line goes
+        // through the same pipe as the answer), then filter that one line
+        // before tee so the take file and the visible block stay focused on
+        // the agent's response.
+        "gemini" => format!(
+            "{prog} -p {prompt_q} 2>&1 | grep -vF 'Loaded cached credentials.' | tee {take}",
+        ),
         _ => {
             let args = plain_args_for(basename)
                 .iter()

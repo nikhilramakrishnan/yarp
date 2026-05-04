@@ -19857,6 +19857,7 @@ impl TerminalView {
                 // chain and serves as the framing. A separate "convening"
                 // printf block was redundant noise.
                 let mut take_files: Vec<String> = Vec::new();
+                let mut persona_scripts: Vec<String> = Vec::new();
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
                     take_files.push(take_file.clone());
@@ -19874,7 +19875,35 @@ impl TerminalView {
                         &prompt,
                         &take_file,
                     );
-                    chain.push_back(cmd);
+                    // Drop each persona's invocation into its own /tmp
+                    // script so the visible chain block is just `bash
+                    // /tmp/yarp-council-{id}-{basename}.sh` instead of a
+                    // 200-char inline blob (codex especially). Persona
+                    // basename in the script path keeps the script
+                    // identifiable at a glance. If the script write fails,
+                    // fall back to inline so the council still runs.
+                    let script_path = format!(
+                        "/tmp/yarp-council-{work_id}-{}.sh",
+                        inv.binary_basename,
+                    );
+                    let script_body = format!("#!/usr/bin/env bash\n{cmd}\n");
+                    if std::fs::write(&script_path, &script_body).is_ok() {
+                        #[cfg(unix)]
+                        {
+                            use std::os::unix::fs::PermissionsExt as _;
+                            let _ = std::fs::set_permissions(
+                                &script_path,
+                                std::fs::Permissions::from_mode(0o755),
+                            );
+                        }
+                        persona_scripts.push(script_path.clone());
+                        chain.push_back(format!(
+                            "bash {}",
+                            crate::personas::shell_quote_smart(&script_path),
+                        ));
+                    } else {
+                        chain.push_back(cmd);
+                    }
                 }
                 let mut synth_attached = false;
                 if let Some(synth) = crate::personas::synthesiser(&team) {
@@ -19929,16 +19958,14 @@ impl TerminalView {
                             .map(|a| crate::personas::shell_quote_one(a))
                             .collect::<Vec<_>>()
                             .join(" ");
-                        // Build the in-script cleanup of takes + the script
-                        // self-delete via trap, so /tmp doesn't leak even if
-                        // the user kills the block mid-stream.
+                        // Build the in-script cleanup of takes + per-persona
+                        // scripts + the synth script self-delete via trap, so
+                        // /tmp doesn't leak even if the user kills the block
+                        // mid-stream.
                         let mut take_cleanup = String::new();
-                        if !take_files.is_empty() {
+                        for f in take_files.iter().chain(persona_scripts.iter()) {
                             take_cleanup.push(' ');
-                            for f in &take_files {
-                                take_cleanup.push_str(&crate::personas::shell_quote_one(f));
-                                take_cleanup.push(' ');
-                            }
+                            take_cleanup.push_str(&crate::personas::shell_quote_one(f));
                         }
                         let synth_script_path =
                             format!("/tmp/yarp-council-{work_id}-synth.sh");
@@ -19986,13 +20013,17 @@ impl TerminalView {
                 // If we couldn't attach cleanup to a synth command (no
                 // synthesiser configured, or no binary on the lead), put
                 // it on its own block so /tmp doesn't leak.
-                if !synth_attached && !take_files.is_empty() {
-                    let rm_args = take_files
-                        .iter()
-                        .map(|f| crate::personas::shell_quote_one(f))
-                        .collect::<Vec<_>>()
-                        .join(" ");
-                    chain.push_back(format!("rm -f {rm_args}"));
+                if !synth_attached {
+                    let cleanup_files: Vec<&String> =
+                        take_files.iter().chain(persona_scripts.iter()).collect();
+                    if !cleanup_files.is_empty() {
+                        let rm_args = cleanup_files
+                            .iter()
+                            .map(|f| crate::personas::shell_quote_one(f))
+                            .collect::<Vec<_>>()
+                            .join(" ");
+                        chain.push_back(format!("rm -f {rm_args}"));
+                    }
                 }
                 log::info!(
                     "EnterAgentCouncil dispatching {} sequential shell commands",
