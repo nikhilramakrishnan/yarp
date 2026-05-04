@@ -4406,6 +4406,35 @@ impl TerminalView {
         self.block_completed_callbacks.push(Box::new(callback));
     }
 
+    /// Dispatch a queue of shell commands sequentially, one per native
+    /// terminal block. Pops the front, fires it via `try_execute_command`,
+    /// and registers a `on_next_block_completed` callback that recursively
+    /// dispatches the remainder. Used by `/agent` to fan a council prompt
+    /// across CLI personas with each persona landing in its own native
+    /// block (rather than sharing one rich-content widget).
+    fn dispatch_council_chain(
+        &mut self,
+        mut chain: std::collections::VecDeque<String>,
+        ctx: &mut ViewContext<Self>,
+    ) {
+        let Some(cmd) = chain.pop_front() else {
+            return;
+        };
+        let dispatched = self.input.update(ctx, |input, ctx| {
+            input.try_execute_command(&cmd, ctx)
+        });
+        if !dispatched {
+            log::warn!("council: try_execute_command returned false; aborting chain");
+            return;
+        }
+        if chain.is_empty() {
+            return;
+        }
+        self.on_next_block_completed(move |me, ctx| {
+            me.dispatch_council_chain(chain, ctx);
+        });
+    }
+
     fn set_pending_cloud_mode_start_callback(
         &mut self,
         callback: TerminalViewCallback,
@@ -19783,53 +19812,64 @@ impl TerminalView {
                     return;
                 };
                 let prompt = prompt.clone();
-                let controller = ctx.add_model(|_| {
-                    crate::agent_council::controller::CouncilController::new(
-                        prompt.clone(),
-                        &team,
-                    )
-                });
-                controller.update(ctx, |c, ctx| c.start(ctx));
-                let card_count = controller.as_ref(ctx).state.cards.len();
-                log::info!(
-                    "EnterAgentCouncil fired with prompt: {} ({} personas)",
-                    prompt,
-                    card_count
-                );
-                for idx in 0..card_count {
-                    let block = ctx.add_view(|ctx| {
-                        crate::agent_council::view::PersonaBlock::new(
-                            controller.clone(),
-                            idx,
-                            ctx,
-                        )
-                    });
-                    self.insert_rich_content(
-                        Some(RichContentType::AgentCouncil),
-                        block,
-                        Some(RichContentMetadata::AgentCouncil {
-                            prompt: prompt.clone(),
-                        }),
-                        RichContentInsertionPosition::Append {
-                            insert_below_long_running_block: false,
-                        },
-                        ctx,
-                    );
+                let invocations = crate::personas::cli_invocations(&team);
+                if invocations.is_empty() {
+                    return;
                 }
-                let verdict_block = ctx.add_view(|ctx| {
-                    crate::agent_council::view::VerdictBlock::new(controller, ctx)
-                });
-                self.insert_rich_content(
-                    Some(RichContentType::AgentCouncil),
-                    verdict_block,
-                    Some(RichContentMetadata::AgentCouncil {
-                        prompt: prompt.clone(),
-                    }),
-                    RichContentInsertionPosition::Append {
-                        insert_below_long_running_block: false,
-                    },
-                    ctx,
+                // Build a chain of real shell commands — one per persona,
+                // each tee'ing its output to a temp file so the final synth
+                // command can read all takes. The chain is dispatched
+                // sequentially via on_next_block_completed so each persona
+                // ends up in its own native terminal block.
+                let work_id = uuid::Uuid::new_v4();
+                let mut chain: std::collections::VecDeque<String> =
+                    std::collections::VecDeque::new();
+                let mut take_files: Vec<String> = Vec::new();
+                for (idx, inv) in invocations.iter().enumerate() {
+                    let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
+                    take_files.push(take_file.clone());
+                    let cmd = format!(
+                        "{} -p {} | tee {}",
+                        crate::personas::shell_quote_one(&inv.program),
+                        crate::personas::shell_quote_one(&prompt),
+                        crate::personas::shell_quote_one(&take_file),
+                    );
+                    chain.push_back(cmd);
+                }
+                if let Some(synth) = crate::personas::synthesiser(&team) {
+                    if let Some(lead_bin) = synth.binary.as_deref() {
+                        let mut synth_prompt = String::new();
+                        synth_prompt.push_str(
+                            "You are the lead of the Sandford NWA on this case:\n\n",
+                        );
+                        synth_prompt.push_str(&prompt);
+                        synth_prompt.push_str("\n\n");
+                        for (idx, inv) in invocations.iter().enumerate() {
+                            synth_prompt.push_str(&format!(
+                                "{} {} said:\n",
+                                inv.persona.badge, inv.persona.name
+                            ));
+                            synth_prompt.push_str(&format!(
+                                "$(cat {} 2>/dev/null)\n\n",
+                                take_files[idx]
+                            ));
+                        }
+                        synth_prompt.push_str(
+                            "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
+                        );
+                        let cmd = format!(
+                            "{} -p \"{}\"",
+                            crate::personas::shell_quote_one(lead_bin),
+                            synth_prompt.replace('\\', "\\\\").replace('"', "\\\""),
+                        );
+                        chain.push_back(cmd);
+                    }
+                }
+                log::info!(
+                    "EnterAgentCouncil dispatching {} sequential shell commands",
+                    chain.len()
                 );
+                self.dispatch_council_chain(chain, ctx);
             }
             InputEvent::EnterCloudAgentView { initial_prompt } => {
                 self.enter_cloud_agent_view(initial_prompt.clone(), ctx);

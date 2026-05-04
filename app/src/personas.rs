@@ -252,6 +252,24 @@ pub(crate) fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
 
 /// Argv prefix that puts each known CLI in newline-delimited JSON streaming
 /// mode. Trailing arg should be the prompt.
+/// Single-quote shell quoting for one argument: wraps `s` in `'…'` and
+/// escapes any embedded single-quote as `'\''`. Safe for arbitrary content
+/// and the right primitive for building shell command strings to feed to
+/// `try_execute_command`.
+pub(crate) fn shell_quote_one(s: &str) -> String {
+    let mut out = String::with_capacity(s.len() + 2);
+    out.push('\'');
+    for c in s.chars() {
+        if c == '\'' {
+            out.push_str("'\\''");
+        } else {
+            out.push(c);
+        }
+    }
+    out.push('\'');
+    out
+}
+
 pub(crate) fn streaming_args_for(basename: &str) -> &'static [&'static str] {
     match basename {
         "claude" => &["-p", "--output-format", "stream-json", "--verbose"],
