@@ -20171,6 +20171,10 @@ impl TerminalView {
                                  printf '\\r\\033[K'\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
+                               else\n\
+                                 kill $SPIN_PID 2>/dev/null\n\
+                                 printf '\\r\\033[K'\n\
+                                 printf '\\033[38;5;244m(no verdict)\\033[0m\\n'\n\
                                fi\n\
                              }}\n\
                              kill $SPIN_PID 2>/dev/null\n\
