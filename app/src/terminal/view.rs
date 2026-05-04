@@ -20167,7 +20167,7 @@ impl TerminalView {
                              [ $half -lt 3 ] && half=3\n\
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
-                             printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              start=$(date +%s)\n\
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
