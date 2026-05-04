@@ -20174,7 +20174,7 @@ impl TerminalView {
                              half=$(( (cols - 9) / 2 ))\n\
                              [ $half -lt 3 ] && half=3\n\
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
-                             printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n\\n' \"$rule\" \"$rule\"\n\
+                             printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              start=$(date +%s)\n\
                              ( i=0\n\
