@@ -252,6 +252,21 @@ pub(crate) fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
 
 /// Argv prefix that puts each known CLI in newline-delimited JSON streaming
 /// mode. Trailing arg should be the prompt.
+/// Argv prefix for plain (non-JSON-streaming) one-shot output. The new
+/// shell-command council chain uses plain mode so each persona's output
+/// renders as a normal native terminal block. Mirrors `streaming_args_for`
+/// shape but drops the structured-event flags.
+pub(crate) fn plain_args_for(basename: &str) -> &'static [&'static str] {
+    match basename {
+        "claude" => &["-p"],
+        "codex" => &["exec"],
+        "gemini" => &["-p"],
+        "aider" => &["--message"],
+        "cursor-agent" => &["--print"],
+        _ => &[],
+    }
+}
+
 /// Single-quote shell quoting for one argument: wraps `s` in `'…'` and
 /// escapes any embedded single-quote as `'\''`. Safe for arbitrary content
 /// and the right primitive for building shell command strings to feed to

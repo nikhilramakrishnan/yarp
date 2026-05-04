@@ -19835,16 +19835,35 @@ impl TerminalView {
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
                     take_files.push(take_file.clone());
-                    let cmd = format!(
-                        "{} -p {} | tee {}",
-                        crate::personas::shell_quote_one(&inv.program),
-                        crate::personas::shell_quote_one(&prompt),
-                        crate::personas::shell_quote_one(&take_file),
-                    );
+                    let args = crate::personas::plain_args_for(&inv.binary_basename)
+                        .iter()
+                        .map(|a| crate::personas::shell_quote_one(a))
+                        .collect::<Vec<_>>()
+                        .join(" ");
+                    let cmd = if args.is_empty() {
+                        format!(
+                            "{} {} | tee {}",
+                            crate::personas::shell_quote_one(&inv.program),
+                            crate::personas::shell_quote_one(&prompt),
+                            crate::personas::shell_quote_one(&take_file),
+                        )
+                    } else {
+                        format!(
+                            "{} {} {} | tee {}",
+                            crate::personas::shell_quote_one(&inv.program),
+                            args,
+                            crate::personas::shell_quote_one(&prompt),
+                            crate::personas::shell_quote_one(&take_file),
+                        )
+                    };
                     chain.push_back(cmd);
                 }
                 if let Some(synth) = crate::personas::synthesiser(&team) {
                     if let Some(lead_bin) = synth.binary.as_deref() {
+                        let lead_basename = std::path::Path::new(lead_bin)
+                            .file_name()
+                            .and_then(|s| s.to_str())
+                            .unwrap_or("");
                         let mut synth_prompt = String::new();
                         synth_prompt.push_str(
                             "You are the lead of the Sandford NWA on this case:\n\n",
@@ -19864,11 +19883,27 @@ impl TerminalView {
                         synth_prompt.push_str(
                             "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
                         );
-                        let cmd = format!(
-                            "{} -p \"{}\"",
-                            crate::personas::shell_quote_one(lead_bin),
-                            synth_prompt.replace('\\', "\\\\").replace('"', "\\\""),
-                        );
+                        let lead_args = crate::personas::plain_args_for(lead_basename)
+                            .iter()
+                            .map(|a| crate::personas::shell_quote_one(a))
+                            .collect::<Vec<_>>()
+                            .join(" ");
+                        let escaped_prompt =
+                            synth_prompt.replace('\\', "\\\\").replace('"', "\\\"");
+                        let cmd = if lead_args.is_empty() {
+                            format!(
+                                "{} \"{}\"",
+                                crate::personas::shell_quote_one(lead_bin),
+                                escaped_prompt,
+                            )
+                        } else {
+                            format!(
+                                "{} {} \"{}\"",
+                                crate::personas::shell_quote_one(lead_bin),
+                                lead_args,
+                                escaped_prompt,
+                            )
+                        };
                         chain.push_back(cmd);
                     }
                 }
