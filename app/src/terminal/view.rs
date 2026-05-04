@@ -20114,7 +20114,7 @@ impl TerminalView {
                             // for the missing officer. Inline a `(no report)`
                             // sentinel so the synth knows to ignore it.
                             assembly.push_str(&format!(
-                                "; t=$(cat {} 2>/dev/null); printf '%s' \"${{t:-(no report)}}\"",
+                                "; t=$(cat {} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}'); printf '%s' \"${{t:-(no report)}}\"",
                                 crate::personas::shell_quote_one(&take_files[idx]),
                             ));
                             assembly.push_str("; printf '\\n\\n'");
