@@ -20307,7 +20307,7 @@ impl TerminalView {
                                else\n\
                                  dur=$(printf '%dm%02ds' $((chain_total/60)) $((chain_total%60)))\n\
                                fi\n\
-                               close_label=\" deliberated in $dur \"\n\
+                               close_label=\" took $dur \"\n\
                                label_w=${{#close_label}}\n\
                                half_cl=$(( (cols - label_w) / 2 ))\n\
                                [ $half_cl -lt 3 ] && half_cl=3\n\
