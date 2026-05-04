@@ -107,46 +107,40 @@ Borrow visual idioms from `child_agent_status_card.rs` (status icon by phase,
 dismiss button, click-to-expand) and from agent_view's streaming markdown
 rendering.
 
-## Wiring
+## Wiring (landed)
 
-1. `app/src/personas.rs` — add `cli_invocations()` that returns
-   `Vec<(Persona, ProgramAndArgs)>` for live CLI personas in **JSON mode**
-   (e.g. `claude` → `["-p","--output-format","stream-json","--verbose"]`).
-   Replace `oneshot_args_for` callers used by `build_council_command`. Keep
-   `build_council_command` only as the no-UI fallback path or delete it once
-   the council view is the default.
+1. `app/src/personas.rs` — `cli_invocations()` returns invocations for
+   live CLI personas in JSON mode; `streaming_args_for(basename)` is
+   the canonical lookup. Legacy bash path (`build_council_command`,
+   `oneshot_args_for`, `shell_escape`) deleted in `e9774db7`.
 
-2. `app/src/terminal/input.rs` — add `Event::EnterAgentCouncil { prompt: String }`.
+2. `app/src/terminal/input.rs` — `Event::EnterAgentCouncil { prompt }`
+   landed in `9832af78`.
 
-3. `app/src/terminal/view.rs` — handle `InputEvent::EnterAgentCouncil` by
-   opening `CouncilView` in the active pane (pane-level overlay or a new
-   block-list slot — TBD; lean toward "modal-like overlay over the terminal
-   view", same pattern that ssh/agent flows use).
+3. `app/src/terminal/view.rs` — `InputEvent::EnterAgentCouncil` builds
+   the controller, calls `start(ctx)`, wraps in a `CouncilView`, and
+   inserts via `insert_rich_content(RichContentType::AgentCouncil, …)`
+   (`11975ffc`).
 
-4. `app/src/terminal/input/slash_commands/mod.rs:385-393` — replace the
-   `try_execute_command(&council_cmd, ctx)` branch with
-   `ctx.emit(Event::EnterAgentCouncil { prompt })`. Keep `build_council_command`
-   as a degraded fallback only if no pane is available, or drop it.
+4. `app/src/terminal/input/slash_commands/mod.rs` — emits the event
+   when CLI personas exist; falls through to `EnterAgentView` when not.
 
 ## Process spawning
 
-Use `command::r#async::Command::new_with_process_group(bin)` so the council
-view's "cancel" can kill the whole tree. `Stdio::piped()` for stdout +
-stderr. Spawn one Yarp foreground task per persona that reads lines and
-forwards them to the controller via a channel or direct
-`controller.update_in(ctx, ...)`.
+`command::r#async::Command` with `kill_on_drop(true)`. `Stdio::piped()`
+on stdout, `Stdio::null()` on stderr. One yarp task per persona reads
+lines into an mpsc channel; a 50ms drain timer in `CouncilController`
+applies events to state on the main thread. Dropping the controller
+aborts the tasks, which drops the `Child`, which kills the process.
 
-Cancellation: dropping the controller kills children via `child.kill()`.
+## Resolved questions
 
-## Open questions
-
-- **Pane vs overlay**: does the council view replace the terminal block list
-  for the active terminal, or open as a modal pane stack? Default: pane stack
-  (matches `EnterAgentView`).
-- **Persistence**: should council runs survive restart? First cut: no.
-- **Synthesis prompt**: today it's a string template in
-  `build_council_command`. Move it into `controller.rs` and pass via stdin
-  rather than as an argv arg (avoids huge command lines).
+- **Render surface**: custom rich-content block (Option 3) — see
+  research findings inline in commit `11975ffc`.
+- **Persistence**: not in first cut.
+- **Synthesis prompt**: assembled in `controller.rs::build_synth_prompt`
+  and passed as the trailing positional argv (claude/codex argv length
+  limits aren't a concern for the prompts we generate).
 
 ## Out of scope (first cut)
 
