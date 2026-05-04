@@ -20210,7 +20210,8 @@ impl TerminalView {
                              printf '\\r\\033[K'\n\
                              cols=$(tput cols 2>/dev/null || echo 80)\n\
                              close=$(printf '─%.0s' $(seq 1 $cols))\n\
-                             printf '\\033[2;38;5;240m%s\\033[0m\\n' \"$close\"\n",
+                             printf '\\033[2;38;5;240m%s\\033[0m\\n' \"$close\"\n\
+                             echo\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
