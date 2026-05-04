@@ -20212,10 +20212,13 @@ impl TerminalView {
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
                              cols=$(tput cols 2>/dev/null || echo 80)\n\
-                             half=$(( (cols - 9) / 2 ))\n\
-                             [ $half -lt 3 ] && half=3\n\
-                             rule=$(printf '━%.0s' $(seq 1 $half))\n\
-                             printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
+                             half_l=$(( (cols - 9) / 2 ))\n\
+                             [ $half_l -lt 3 ] && half_l=3\n\
+                             half_r=$(( cols - 9 - half_l ))\n\
+                             [ $half_r -lt 3 ] && half_r=3\n\
+                             rule_l=$(printf '━%.0s' $(seq 1 $half_l))\n\
+                             rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
+                             printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
                              printf '\\033[1m{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              start=$(date +%s)\n\
                              ( i=0\n\
