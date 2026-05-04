@@ -20195,6 +20195,7 @@ impl TerminalView {
                              kill $SPIN_PID 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
                              printf '\\r\\033[K'\n\
+                             cols=$(tput cols 2>/dev/null || echo 80)\n\
                              close=$(printf '━%.0s' $(seq 1 $cols))\n\
                              printf '\\033[38;5;220m%s\\033[0m\\n' \"$close\"\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
