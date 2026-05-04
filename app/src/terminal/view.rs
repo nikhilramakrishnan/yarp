@@ -19864,6 +19864,19 @@ impl TerminalView {
                     .chars()
                     .take(8)
                     .collect::<String>();
+                // Per-chain working dir under /tmp/yarp. All scripts +
+                // markers + take files live in here; cleanup is a single
+                // rm -rf at chain end. Block command lines also read as
+                // `/tmp/yarp/{id}/{persona}` — persona name is the
+                // trailing segment, far cleaner than the prior flat
+                // `/tmp/yarp-council-{id}-{persona}.sh`.
+                let work_dir = format!("/tmp/yarp/{work_id}");
+                if std::fs::create_dir_all(&work_dir).is_err() {
+                    log::warn!(
+                        "EnterAgentCouncil could not create work dir {work_dir}; aborting"
+                    );
+                    return;
+                }
                 let mut chain: std::collections::VecDeque<String> =
                     std::collections::VecDeque::new();
                 // No header block — the slash-command block the user just
@@ -19871,20 +19884,20 @@ impl TerminalView {
                 // chain and serves as the framing. A separate "convening"
                 // printf block was redundant noise.
                 let mut take_files: Vec<String> = Vec::new();
-                let mut persona_scripts: Vec<String> = Vec::new();
                 let mut bg_scripts: Vec<String> = Vec::new();
                 let mut done_markers: Vec<String> = Vec::new();
                 let mut timeout_markers: Vec<String> = Vec::new();
-                let launched_marker = format!("/tmp/yarp-council-{work_id}-launched");
+                let launched_marker = format!("{work_dir}/.launched");
                 // Pass 1: write bg-worker scripts. Each runs its CLI inside
                 // a 120s hand-rolled timeout (macOS has no `timeout` binary)
                 // and signals completion via a `.done` marker; if the CLI
                 // was killed by the timeout it also writes a `.timeout`
                 // marker so the displayer can surface that message.
-                for (idx, inv) in invocations.iter().enumerate() {
-                    let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
-                    let done_marker = format!("/tmp/yarp-council-{work_id}-{idx}.done");
-                    let timeout_marker = format!("/tmp/yarp-council-{work_id}-{idx}.timeout");
+                for inv in invocations.iter() {
+                    let basename = &inv.binary_basename;
+                    let take_file = format!("{work_dir}/{basename}.out");
+                    let done_marker = format!("{work_dir}/{basename}.done");
+                    let timeout_marker = format!("{work_dir}/{basename}.timeout");
                     take_files.push(take_file.clone());
                     done_markers.push(done_marker.clone());
                     timeout_markers.push(timeout_marker.clone());
@@ -19902,10 +19915,7 @@ impl TerminalView {
                         &prompt,
                         &take_file,
                     );
-                    let bg_script_path = format!(
-                        "/tmp/yarp-council-{work_id}-{}-bg.sh",
-                        inv.binary_basename,
-                    );
+                    let bg_script_path = format!("{work_dir}/{basename}.bg");
                     let bg_body = format!(
                         "#!/usr/bin/env bash\n\
                          kill_tree() {{ local sig=$1 p=$2; \
@@ -19956,10 +19966,8 @@ impl TerminalView {
                     .collect::<Vec<_>>()
                     .join("; ");
                 for (idx, inv) in invocations.iter().enumerate() {
-                    let display_script_path = format!(
-                        "/tmp/yarp-council-{work_id}-{}.sh",
-                        inv.binary_basename,
-                    );
+                    let display_script_path =
+                        format!("{work_dir}/{}", inv.binary_basename);
                     let take_file = &take_files[idx];
                     let done_marker = &done_markers[idx];
                     let timeout_marker = &timeout_markers[idx];
@@ -19993,10 +20001,11 @@ impl TerminalView {
                                 std::fs::Permissions::from_mode(0o755),
                             );
                         }
-                        persona_scripts.push(display_script_path.clone());
                         // Script is +x with a #! shebang, so the chain
                         // command can just be the path itself — no `bash `
-                        // prefix needed. Cleaner block command line.
+                        // prefix needed. Cleaner block command line; with
+                        // the new layout the visible command reads as
+                        // `/tmp/yarp/{id}/claude` etc.
                         chain.push_back(crate::personas::shell_quote_smart(&display_script_path));
                     } else {
                         // Fallback: synchronous inline invocation if we
@@ -20063,24 +20072,12 @@ impl TerminalView {
                             .map(|a| crate::personas::shell_quote_one(a))
                             .collect::<Vec<_>>()
                             .join(" ");
-                        // Build the in-script cleanup of takes + per-persona
-                        // scripts + the synth script self-delete via trap, so
-                        // /tmp doesn't leak even if the user kills the block
-                        // mid-stream.
-                        let mut take_cleanup = String::new();
-                        for f in take_files
-                            .iter()
-                            .chain(persona_scripts.iter())
-                            .chain(bg_scripts.iter())
-                            .chain(done_markers.iter())
-                            .chain(timeout_markers.iter())
-                            .chain(std::iter::once(&launched_marker))
-                        {
-                            take_cleanup.push(' ');
-                            take_cleanup.push_str(&crate::personas::shell_quote_one(f));
-                        }
-                        let synth_script_path =
-                            format!("/tmp/yarp-council-{work_id}-synth.sh");
+                        // Cleanup is a single rm -rf on the per-chain work
+                        // dir — every script, marker, and take file lives
+                        // inside it, so we don't need to enumerate them.
+                        // The trap fires on EXIT so /tmp doesn't leak even
+                        // if the user kills the block mid-stream.
+                        let synth_script_path = format!("{work_dir}/lead");
                         // Use the FULL detected path, same reasoning as the
                         // per-persona case: PATH may resolve `claude` to an
                         // older Homebrew copy that breaks on piped stdout.
@@ -20106,10 +20103,10 @@ impl TerminalView {
                             team.members.iter().find(|p| p.lead).unwrap_or(synth);
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
-                             trap 'rm -f {script_q}{take_cleanup}' EXIT\n\
+                             trap 'rm -rf {work_dir_q}' EXIT\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
-                            script_q = crate::personas::shell_quote_one(&synth_script_path),
+                            work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             color = crate::personas::persona_header_color(&header_persona.name),
                             badge = crate::personas::shell_quote_one(&header_persona.badge),
                             name = crate::personas::shell_quote_one(&header_persona.name),
@@ -20137,22 +20134,10 @@ impl TerminalView {
                 // synthesiser configured, or no binary on the lead), put
                 // it on its own block so /tmp doesn't leak.
                 if !synth_attached {
-                    let cleanup_files: Vec<&String> = take_files
-                        .iter()
-                        .chain(persona_scripts.iter())
-                        .chain(bg_scripts.iter())
-                        .chain(done_markers.iter())
-                        .chain(timeout_markers.iter())
-                        .chain(std::iter::once(&launched_marker))
-                        .collect();
-                    if !cleanup_files.is_empty() {
-                        let rm_args = cleanup_files
-                            .iter()
-                            .map(|f| crate::personas::shell_quote_one(f))
-                            .collect::<Vec<_>>()
-                            .join(" ");
-                        chain.push_back(format!("rm -f {rm_args}"));
-                    }
+                    chain.push_back(format!(
+                        "rm -rf {}",
+                        crate::personas::shell_quote_one(&work_dir),
+                    ));
                 }
                 log::info!(
                     "EnterAgentCouncil dispatching {} sequential shell commands",
