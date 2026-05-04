@@ -19841,7 +19841,15 @@ impl TerminalView {
                 // command can read all takes. The chain is dispatched
                 // sequentially via on_next_block_completed so each persona
                 // ends up in its own native terminal block.
-                let work_id = uuid::Uuid::new_v4();
+                // Short ID for /tmp paths — full UUID dominates the visible
+                // command line; first 8 hex chars are plenty unique inside a
+                // single user's /tmp for the lifetime of one chain.
+                let work_id = uuid::Uuid::new_v4()
+                    .simple()
+                    .to_string()
+                    .chars()
+                    .take(8)
+                    .collect::<String>();
                 let mut chain: std::collections::VecDeque<String> =
                     std::collections::VecDeque::new();
                 // No header block — the slash-command block the user just
