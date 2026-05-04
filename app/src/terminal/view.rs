@@ -20039,7 +20039,11 @@ impl TerminalView {
                          cols=$(tput cols 2>/dev/null || echo 80)\n\
                          if [ -e {timeout_q} ]; then\n\
                            {err_block}\
-                           text='(timed out after 2m)'\n\
+                           if [ $elapsed -lt 60 ]; then\n\
+                             text=$(printf '(timed out after %ss)' \"$elapsed\")\n\
+                           else\n\
+                             text=$(printf '(timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                           fi\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            {err_block}\
@@ -20273,7 +20277,12 @@ impl TerminalView {
                                fi\n\
                                if [ -e {synth_timeout_q} ]; then\n\
                                  {err_block}\
-                                 text='(timed out after 5m)'\n\
+                                 elapsed=$(( $(date +%s) - start ))\n\
+                                 if [ $elapsed -lt 60 ]; then\n\
+                                   text=$(printf '(timed out after %ss)' \"$elapsed\")\n\
+                                 else\n\
+                                   text=$(printf '(timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                 fi\n\
                                  stamp_color='179'\n\
                                elif [ -n \"$got_output\" ]; then\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
