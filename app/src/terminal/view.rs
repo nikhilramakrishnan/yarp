@@ -19891,12 +19891,32 @@ impl TerminalView {
                     // Header goes to stdout directly (visible in the block),
                     // not through tee/--output-last-message, so the take
                     // file the synth reads stays free of the header line.
+                    //
+                    // Wrap the actual CLI invocation in a hand-rolled bash
+                    // timeout (macOS has no `timeout` binary): run the
+                    // pipeline in a subshell, spawn a watcher that pkills
+                    // the subshell's children after 120s if they're still
+                    // alive, and surface a clear "(persona timed out…)"
+                    // line. Without this the council hangs indefinitely
+                    // when one CLI gets stuck on the API (gemini-cli
+                    // occasionally does this on substantive prompts).
                     let script_body = format!(
                         "#!/usr/bin/env bash\n\
-                         printf '\\033[1m%s %s\\033[0m\\n\\n' {} {}\n\
-                         {cmd}\n",
-                        crate::personas::shell_quote_one(&inv.persona.badge),
-                        crate::personas::shell_quote_one(&inv.persona.name),
+                         printf '\\033[1m%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                         ( {cmd} ) &\n\
+                         pid=$!\n\
+                         ( sleep 120; pkill -TERM -P $pid 2>/dev/null; \
+                           kill -TERM $pid 2>/dev/null ) &\n\
+                         watcher=$!\n\
+                         wait $pid 2>/dev/null\n\
+                         rc=$?\n\
+                         kill -TERM $watcher 2>/dev/null\n\
+                         wait $watcher 2>/dev/null\n\
+                         [ $rc -ge 128 ] && echo && \
+                           echo '(persona timed out after 120s)'\n\
+                         exit 0\n",
+                        badge = crate::personas::shell_quote_one(&inv.persona.badge),
+                        name = crate::personas::shell_quote_one(&inv.persona.name),
                     );
                     if std::fs::write(&script_path, &script_body).is_ok() {
                         #[cfg(unix)]
