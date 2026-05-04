@@ -19886,7 +19886,18 @@ impl TerminalView {
                         "/tmp/yarp-council-{work_id}-{}.sh",
                         inv.binary_basename,
                     );
-                    let script_body = format!("#!/usr/bin/env bash\n{cmd}\n");
+                    // Lead each persona's block with a bolded "<badge>
+                    // <name>" header so the council reads as a council.
+                    // Header goes to stdout directly (visible in the block),
+                    // not through tee/--output-last-message, so the take
+                    // file the synth reads stays free of the header line.
+                    let script_body = format!(
+                        "#!/usr/bin/env bash\n\
+                         printf '\\033[1m%s %s\\033[0m\\n\\n' {} {}\n\
+                         {cmd}\n",
+                        crate::personas::shell_quote_one(&inv.persona.badge),
+                        crate::personas::shell_quote_one(&inv.persona.name),
+                    );
                     if std::fs::write(&script_path, &script_body).is_ok() {
                         #[cfg(unix)]
                         {
@@ -19984,11 +19995,22 @@ impl TerminalView {
                                 lead_args,
                             )
                         };
+                        // Lead the synth block with the team's designated
+                        // lead persona's badge+name (Sgt Nicholas Angel by
+                        // default), so it reads as the lead's verdict even
+                        // when the actual synth CLI is one of the constables.
+                        // Falls back to the synth persona's own identity if
+                        // no lead is designated.
+                        let header_persona =
+                            team.members.iter().find(|p| p.lead).unwrap_or(synth);
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -f {script_q}{take_cleanup}' EXIT\n\
+                             printf '\\033[1m%s %s\\033[0m\\n\\n' {badge} {name}\n\
                              {claude_invocation}\n",
                             script_q = crate::personas::shell_quote_one(&synth_script_path),
+                            badge = crate::personas::shell_quote_one(&header_persona.badge),
+                            name = crate::personas::shell_quote_one(&header_persona.name),
                         );
                         // Best-effort write; if it fails, fall through to
                         // the no-synth path below so the council still
