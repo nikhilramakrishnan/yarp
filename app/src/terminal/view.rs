@@ -19983,7 +19983,7 @@ impl TerminalView {
                          fi\n\
                          while [ ! -e {done_q} ]; do sleep 0.2; done\n\
                          printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
-                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d')\"\n\
+                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
                          fi\n\
@@ -20150,7 +20150,7 @@ impl TerminalView {
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
-                             {claude_invocation} | sed '/[^[:space:]]/,$!d'\n",
+                             {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}'\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
