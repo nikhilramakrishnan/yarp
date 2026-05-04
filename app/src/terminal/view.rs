@@ -20150,7 +20150,7 @@ impl TerminalView {
                              rule=$(printf '━%.0s' $(seq 1 $half))\n\
                              printf '\\033[38;5;220m%s VERDICT %s\\033[0m\\n' \"$rule\" \"$rule\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
-                             {claude_invocation}\n",
+                             {claude_invocation} | sed '/[^[:space:]]/,$!d'\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
