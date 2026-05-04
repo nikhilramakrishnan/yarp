@@ -20194,7 +20194,7 @@ impl TerminalView {
                                  echo\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  cols=$(tput cols 2>/dev/null || echo 80)\n\
-                                 text=$(printf '(verdict in %ss)' \"$elapsed\")\n\
+                                 text=$(printf '(delivered in %ss)' \"$elapsed\")\n\
                                  pad=$(( cols - ${{#text}} ))\n\
                                  [ $pad -lt 0 ] && pad=0\n\
                                  printf '\\033[3;38;5;244m%*s%s\\033[0m\\n' \"$pad\" '' \"$text\"\n\
