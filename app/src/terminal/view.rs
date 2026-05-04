@@ -19986,11 +19986,13 @@ impl TerminalView {
                          take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
-                         elif [ ! -e {timeout_q} ]; then\n\
+                         fi\n\
+                         if [ -e {timeout_q} ]; then\n\
+                           [ -n \"$take_content\" ] && echo\n\
+                           printf '\\033[38;5;244m(persona timed out after 120s)\\033[0m\\n'\n\
+                         elif [ -z \"$take_content\" ]; then\n\
                            printf '\\033[38;5;244m(no output)\\033[0m\\n'\n\
                          fi\n\
-                         [ -e {timeout_q} ] && echo && \
-                           printf '\\033[38;5;244m(persona timed out after 120s)\\033[0m\\n'\n\
                          exit 0\n",
                         launched_q = crate::personas::shell_quote_one(&launched_marker),
                         bg_launches = bg_launches,
