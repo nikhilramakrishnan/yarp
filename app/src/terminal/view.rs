@@ -20041,16 +20041,7 @@ impl TerminalView {
                            text='(timed out after 2m)'\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
-                           err_last=\"$(tail -n 10 {err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
-                           err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
-                           if [ -n \"$err_last\" ]; then\n\
-                             max_err=$(( cols - 2 ))\n\
-                             [ $max_err -lt 20 ] && max_err=20\n\
-                             if [ ${{#err_last}} -gt $max_err ]; then\n\
-                               err_last=\"${{err_last:0:$max_err}}…\"\n\
-                             fi\n\
-                             printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
-                           fi\n\
+                           {err_block}\
                            text='(no report)'\n\
                            stamp_color='179'\n\
                          else\n\
@@ -20072,7 +20063,9 @@ impl TerminalView {
                         done_q = crate::personas::shell_quote_one(done_marker),
                         timeout_q = crate::personas::shell_quote_one(timeout_marker),
                         take_q = crate::personas::shell_quote_one(take_file),
-                        err_q = crate::personas::shell_quote_one(err_file),
+                        err_block = crate::personas::council_err_tail_block(
+                            &crate::personas::shell_quote_one(err_file),
+                        ),
                         took_q = crate::personas::shell_quote_one(took_file),
                         color = crate::personas::persona_header_color(&inv.persona.name),
                         badge = crate::personas::shell_quote_one(&inv.persona.badge),
@@ -20272,16 +20265,7 @@ impl TerminalView {
                                  fi\n\
                                  stamp_color='244'\n\
                                else\n\
-                                 err_last=\"$(tail -n 10 {synth_err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
-                                 err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
-                                 if [ -n \"$err_last\" ]; then\n\
-                                   max_err=$(( cols - 2 ))\n\
-                                   [ $max_err -lt 20 ] && max_err=20\n\
-                                   if [ ${{#err_last}} -gt $max_err ]; then\n\
-                                     err_last=\"${{err_last:0:$max_err}}…\"\n\
-                                   fi\n\
-                                   printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
-                                 fi\n\
+                                 {err_block}\
                                  text='(no verdict)'\n\
                                  stamp_color='179'\n\
                                fi\n\
@@ -20302,6 +20286,9 @@ impl TerminalView {
                             fifo_q = crate::personas::shell_quote_one(&synth_fifo_path),
                             synth_timeout_q = crate::personas::shell_quote_one(&synth_timeout_path),
                             synth_err_q = crate::personas::shell_quote_one(&synth_err_path),
+                            err_block = crate::personas::council_err_tail_block(
+                                &crate::personas::shell_quote_one(&synth_err_path),
+                            ),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
                             name = crate::personas::shell_quote_one(&lead_persona.name),

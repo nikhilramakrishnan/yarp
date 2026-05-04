@@ -310,6 +310,25 @@ pub(crate) fn shell_quote_smart(s: &str) -> String {
     }
 }
 
+/// Shell snippet that surfaces the last meaningful line of a stderr capture
+/// in muted gold (179) above the failure stamp, ANSI-stripped and truncated
+/// to fit the terminal. Caller must have set `cols` in the shell scope.
+/// `err_path_quoted` must already be shell-quoted (e.g. via `shell_quote_one`).
+pub(crate) fn council_err_tail_block(err_path_quoted: &str) -> String {
+    format!(
+        "err_last=\"$(tail -n 10 {err_path_quoted} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
+         err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
+         if [ -n \"$err_last\" ]; then\n\
+           max_err=$(( cols - 2 ))\n\
+           [ $max_err -lt 20 ] && max_err=20\n\
+           if [ ${{#err_last}} -gt $max_err ]; then\n\
+             err_last=\"${{err_last:0:$max_err}}…\"\n\
+           fi\n\
+           printf '\\033[38;5;179m%s\\033[0m\\n' \"$err_last\"\n\
+         fi\n"
+    )
+}
+
 /// ANSI 256-color escape (bold + foreground) for a persona's header line,
 /// keyed off the persona's display name. Brand-aligned where it makes
 /// sense — Anthropic orange, OpenAI green, Google blue — and gold for the
