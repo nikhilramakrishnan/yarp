@@ -1036,6 +1036,9 @@ pub enum Event {
         conversation_id: Option<AIConversationId>,
         origin: AgentViewEntryOrigin,
     },
+    EnterAgentCouncil {
+        prompt: String,
+    },
     EnterCloudAgentView {
         initial_prompt: Option<String>,
     },

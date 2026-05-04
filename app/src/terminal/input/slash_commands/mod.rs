@@ -377,17 +377,20 @@ impl Input {
                 });
 
                 // /agent convenes the Sandford NWA council. If the team has
-                // any CLI-backed personas, fan out: each binary runs the
-                // prompt one-shot, then the lead synthesises a verdict. The
-                // resulting shell pipeline is dispatched to the terminal so
-                // its output renders as native blocks. /new stays the
-                // single-detective flow.
+                // any CLI-backed personas, emit EnterAgentCouncil so the
+                // native council view takes over. Otherwise fall through to
+                // the standard agent view.
                 if command.name == commands::AGENT.name {
                     if let Some(prompt) = prompt.as_ref() {
-                        if let Some(council_cmd) = crate::personas::build_council_command(prompt)
-                        {
-                            self.try_execute_command(&council_cmd, ctx);
-                            return true;
+                        if let Some(roster) = crate::personas::Roster::load() {
+                            if let Some(team) = roster.default_team() {
+                                if !crate::personas::cli_invocations(team).is_empty() {
+                                    ctx.emit(Event::EnterAgentCouncil {
+                                        prompt: prompt.clone(),
+                                    });
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }
