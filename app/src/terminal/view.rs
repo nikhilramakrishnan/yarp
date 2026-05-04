@@ -19824,6 +19824,13 @@ impl TerminalView {
                 let work_id = uuid::Uuid::new_v4();
                 let mut chain: std::collections::VecDeque<String> =
                     std::collections::VecDeque::new();
+                // Header block: a printf so users can see "convening on the
+                // case" framing as its own native block, separating the
+                // council run from any preceding shell history.
+                chain.push_back(format!(
+                    "printf '🚓 Sandford NWA convening on the case: %s\\n' {}",
+                    crate::personas::shell_quote_one(&prompt)
+                ));
                 let mut take_files: Vec<String> = Vec::new();
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
@@ -19864,6 +19871,16 @@ impl TerminalView {
                         );
                         chain.push_back(cmd);
                     }
+                }
+                // Cleanup block: rm the take files we tee'd to so /tmp
+                // doesn't leak after the run.
+                if !take_files.is_empty() {
+                    let rm_args = take_files
+                        .iter()
+                        .map(|f| crate::personas::shell_quote_one(f))
+                        .collect::<Vec<_>>()
+                        .join(" ");
+                    chain.push_back(format!("rm -f {rm_args}"));
                 }
                 log::info!(
                     "EnterAgentCouncil dispatching {} sequential shell commands",
