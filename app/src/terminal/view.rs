@@ -19862,16 +19862,21 @@ impl TerminalView {
                     // instead of `/Users/.../.local/bin/claude -p '...'`.
                     // The user's shell will resolve the basename via PATH —
                     // same resolution that detect_cli_personas uses.
+                    // Merge stderr into stdout so a CLI's failure mode (e.g.
+                    // "Execution error", auth prompts, trust-dir refusals)
+                    // ends up in the visible block AND in the take file the
+                    // synth pass reads. Without 2>&1, stderr bypasses tee and
+                    // the synth sees an empty take.
                     let cmd = if args.is_empty() {
                         format!(
-                            "{} {} | tee {}",
+                            "{} {} 2>&1 | tee {}",
                             crate::personas::shell_quote_one(&inv.binary_basename),
                             crate::personas::shell_quote_one(&prompt),
                             crate::personas::shell_quote_one(&take_file),
                         )
                     } else {
                         format!(
-                            "{} {} {} | tee {}",
+                            "{} {} {} 2>&1 | tee {}",
                             crate::personas::shell_quote_one(&inv.binary_basename),
                             args,
                             crate::personas::shell_quote_one(&prompt),

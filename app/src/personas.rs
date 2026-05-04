@@ -259,7 +259,10 @@ pub(crate) fn cli_invocations(team: &Team) -> Vec<CliInvocation<'_>> {
 pub(crate) fn plain_args_for(basename: &str) -> &'static [&'static str] {
     match basename {
         "claude" => &["-p"],
-        "codex" => &["exec"],
+        // codex refuses to run outside a trusted git repo unless told to skip
+        // the check. The council can be invoked from anywhere (e.g. ~), so
+        // pass the flag unconditionally.
+        "codex" => &["exec", "--skip-git-repo-check"],
         "gemini" => &["-p"],
         "aider" => &["--message"],
         "cursor-agent" => &["--print"],
