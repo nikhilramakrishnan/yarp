@@ -19864,44 +19864,57 @@ impl TerminalView {
                             .file_name()
                             .and_then(|s| s.to_str())
                             .unwrap_or("");
-                        let mut synth_prompt = String::new();
-                        synth_prompt.push_str(
-                            "You are the lead of the Sandford NWA on this case:\n\n",
-                        );
-                        synth_prompt.push_str(&prompt);
-                        synth_prompt.push_str("\n\n");
+                        // Assemble the synth prompt safely: printf with
+                        // single-quoted format strings (no $ / ` / \\
+                        // expansion), and `cat` to inline take-file
+                        // contents verbatim. The result is captured by an
+                        // outer "$()" and passed as a single argv to the
+                        // lead — none of the user's prompt or the
+                        // personas' outputs get re-evaluated by the shell.
+                        let mut assembly = String::new();
+                        assembly.push_str(&format!(
+                            "printf '%s' {}",
+                            crate::personas::shell_quote_one(
+                                "You are the lead of the Sandford NWA on this case:\n\n"
+                            ),
+                        ));
+                        assembly.push_str(&format!(
+                            " && printf '%s\\n\\n' {}",
+                            crate::personas::shell_quote_one(&prompt),
+                        ));
                         for (idx, inv) in invocations.iter().enumerate() {
-                            synth_prompt.push_str(&format!(
-                                "{} {} said:\n",
-                                inv.persona.badge, inv.persona.name
+                            assembly.push_str(&format!(
+                                " && printf '%s %s said:\\n' {} {}",
+                                crate::personas::shell_quote_one(&inv.persona.badge),
+                                crate::personas::shell_quote_one(&inv.persona.name),
                             ));
-                            synth_prompt.push_str(&format!(
-                                "$(cat {} 2>/dev/null)\n\n",
-                                take_files[idx]
+                            assembly.push_str(&format!(
+                                " && cat {} 2>/dev/null",
+                                crate::personas::shell_quote_one(&take_files[idx]),
                             ));
+                            assembly.push_str(" && printf '\\n\\n'");
                         }
-                        synth_prompt.push_str(
-                            "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
-                        );
+                        assembly.push_str(&format!(
+                            " && printf '%s' {}",
+                            crate::personas::shell_quote_one(
+                                "Identify points of agreement and disagreement, name the trade-off, and deliver a tight final verdict. Cut the fluff.",
+                            ),
+                        ));
                         let lead_args = crate::personas::plain_args_for(lead_basename)
                             .iter()
                             .map(|a| crate::personas::shell_quote_one(a))
                             .collect::<Vec<_>>()
                             .join(" ");
-                        let escaped_prompt =
-                            synth_prompt.replace('\\', "\\\\").replace('"', "\\\"");
                         let cmd = if lead_args.is_empty() {
                             format!(
-                                "{} \"{}\"",
+                                "{} \"$({assembly})\"",
                                 crate::personas::shell_quote_one(lead_bin),
-                                escaped_prompt,
                             )
                         } else {
                             format!(
-                                "{} {} \"{}\"",
+                                "{} {} \"$({assembly})\"",
                                 crate::personas::shell_quote_one(lead_bin),
                                 lead_args,
-                                escaped_prompt,
                             )
                         };
                         chain.push_back(cmd);
