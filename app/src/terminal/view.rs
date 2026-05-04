@@ -20247,10 +20247,13 @@ impl TerminalView {
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(ls -1 {work_dir_q}/*.took 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
+                               missing=$(( total - reported ))\n\
                                if [ \"$reported\" -eq 0 ]; then\n\
-                                 sub='no one reported back'\n\
+                                 sub='no reports'\n\
+                               elif [ \"$missing\" -eq 1 ]; then\n\
+                                 sub='1 report missing'\n\
                                else\n\
-                                 sub=$(printf '%s of %s reported back' \"$reported\" \"$total\")\n\
+                                 sub=$(printf '%s reports missing' \"$missing\")\n\
                                fi\n\
                                printf '\\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
                              fi\n\
