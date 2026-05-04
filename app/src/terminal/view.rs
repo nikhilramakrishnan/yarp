@@ -20025,7 +20025,7 @@ impl TerminalView {
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                          while [ ! -e {done_q} ]; do\n\
-                           printf '\\r\\033[38;5;246m%s\\033[3;38;5;244m investigating…\\033[0m' \"${{spin[$((i%10))]}}\"\n\
+                           printf '\\r{spin_color}%s\\033[3;38;5;244m investigating…\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                            i=$((i+1))\n\
                            sleep 0.1\n\
                          done\n\
@@ -20074,6 +20074,7 @@ impl TerminalView {
                         ),
                         took_q = crate::personas::shell_quote_one(took_file),
                         color = crate::personas::persona_header_color(&inv.persona.name),
+                        spin_color = crate::personas::persona_spinner_color(&inv.persona.name),
                         badge = crate::personas::shell_quote_one(&inv.persona.badge),
                         name = crate::personas::shell_quote_one(&inv.persona.name),
                     );

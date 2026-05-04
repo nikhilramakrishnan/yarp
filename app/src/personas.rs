@@ -352,6 +352,23 @@ pub(crate) fn persona_header_color(name: &str) -> &'static str {
     }
 }
 
+/// Same hue as the persona header but without the bold attribute, for the
+/// spinner glyph that sits beneath the colored header while the persona is
+/// thinking. Visually ties the spinner to its owner so a 4-constable cluster
+/// reads as four braille dots in four hues rather than a uniform gray row.
+pub(crate) fn persona_spinner_color(name: &str) -> &'static str {
+    match name {
+        "claude" => "\\033[38;5;208m",
+        "codex" => "\\033[38;5;35m",
+        "gemini" => "\\033[38;5;39m",
+        "Nicholas Angel" => "\\033[38;5;220m",
+        "Danny Butterman" => "\\033[38;5;167m",
+        "Doris Thatcher" => "\\033[38;5;109m",
+        "Frank Butterman" => "\\033[38;5;104m",
+        _ => "\\033[38;5;246m",
+    }
+}
+
 /// Build the shell command for one persona's CLI invocation in the council
 /// chain. The generic shape is `<binary> <plain_args> '<prompt>' | tee
 /// <take_file>` — stdout is mirrored to the take file so the synth pass can
