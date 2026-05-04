@@ -20229,7 +20229,6 @@ impl TerminalView {
                                done ) &\n\
                              SPIN_PID=$!\n\
                              {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
-                               cols=$(tput cols 2>/dev/null || echo 80)\n\
                                if IFS= read -r first; then\n\
                                  kill $SPIN_PID 2>/dev/null\n\
                                  printf '\\r\\033[K'\n\
