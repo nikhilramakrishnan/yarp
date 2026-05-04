@@ -20014,6 +20014,7 @@ impl TerminalView {
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            err_last=\"$(tail -n 10 {err_q} 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 1)\"\n\
+                           err_last=$(printf '%s' \"$err_last\" | sed -E \"s/$(printf '\\033')\\[[0-9;]*[a-zA-Z]//g\")\n\
                            if [ -n \"$err_last\" ]; then\n\
                              max_err=$(( cols - 2 ))\n\
                              [ $max_err -lt 20 ] && max_err=20\n\
