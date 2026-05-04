@@ -19918,6 +19918,7 @@ impl TerminalView {
                 let mut bg_scripts: Vec<String> = Vec::new();
                 let mut done_markers: Vec<String> = Vec::new();
                 let mut timeout_markers: Vec<String> = Vec::new();
+                let mut crash_markers: Vec<String> = Vec::new();
                 let mut err_files: Vec<String> = Vec::new();
                 let mut took_files: Vec<String> = Vec::new();
                 let launched_marker = format!("{work_dir}/.launched");
@@ -19931,11 +19932,13 @@ impl TerminalView {
                     let take_file = format!("{work_dir}/{basename}.out");
                     let done_marker = format!("{work_dir}/{basename}.done");
                     let timeout_marker = format!("{work_dir}/{basename}.timeout");
+                    let crash_marker = format!("{work_dir}/{basename}.crash");
                     let err_file = format!("{work_dir}/{basename}.err");
                     let took_file = format!("{work_dir}/{basename}.took");
                     take_files.push(take_file.clone());
                     done_markers.push(done_marker.clone());
                     timeout_markers.push(timeout_marker.clone());
+                    crash_markers.push(crash_marker.clone());
                     err_files.push(err_file.clone());
                     took_files.push(took_file.clone());
                     // Use the FULL detected path, not the basename. PATH
@@ -19971,9 +19974,11 @@ impl TerminalView {
                          kill_tree KILL $watcher 2>/dev/null\n\
                          wait $watcher 2>/dev/null\n\
                          [ $rc -ge 128 ] && touch {timeout_q}\n\
+                         [ $rc -ne 0 ] && [ $rc -lt 128 ] && touch {crash_q}\n\
                          echo $(( $(date +%s) - bg_start )) > {took_q}\n\
                          touch {done_q}\n",
                         timeout_q = crate::personas::shell_quote_one(&timeout_marker),
+                        crash_q = crate::personas::shell_quote_one(&crash_marker),
                         took_q = crate::personas::shell_quote_one(&took_file),
                         done_q = crate::personas::shell_quote_one(&done_marker),
                         err_q = crate::personas::shell_quote_one(&err_file),
@@ -20012,6 +20017,7 @@ impl TerminalView {
                     let take_file = &take_files[idx];
                     let done_marker = &done_markers[idx];
                     let timeout_marker = &timeout_markers[idx];
+                    let crash_marker = &crash_markers[idx];
                     let err_file = &err_files[idx];
                     let took_file = &took_files[idx];
                     let display_body = format!(
@@ -20055,6 +20061,14 @@ impl TerminalView {
                              text=$(printf '(no report after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
+                         elif [ -e {crash_q} ]; then\n\
+                           {err_block}\
+                           if [ $elapsed -lt 60 ]; then\n\
+                             text=$(printf '(crashed after %ss)' \"$elapsed\")\n\
+                           else\n\
+                             text=$(printf '(crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                           fi\n\
+                           stamp_color='179'\n\
                          else\n\
                            if [ $elapsed -lt 60 ]; then\n\
                              text=$(printf '(reported in %ss)' \"$elapsed\")\n\
@@ -20073,6 +20087,7 @@ impl TerminalView {
                         bg_launches = bg_launches,
                         done_q = crate::personas::shell_quote_one(done_marker),
                         timeout_q = crate::personas::shell_quote_one(timeout_marker),
+                        crash_q = crate::personas::shell_quote_one(crash_marker),
                         take_q = crate::personas::shell_quote_one(take_file),
                         err_block = crate::personas::council_err_tail_block(
                             &crate::personas::shell_quote_one(err_file),
