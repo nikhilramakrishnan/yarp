@@ -20051,6 +20051,14 @@ impl TerminalView {
                              text=$(printf '(timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
+                         elif [ -e {crash_q} ]; then\n\
+                           {err_block}\
+                           if [ $elapsed -lt 60 ]; then\n\
+                             text=$(printf '(crashed after %ss)' \"$elapsed\")\n\
+                           else\n\
+                             text=$(printf '(crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                           fi\n\
+                           stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
                            {err_block}\
                            if [ $elapsed -lt 3 ]; then\n\
@@ -20059,14 +20067,6 @@ impl TerminalView {
                              text=$(printf '(no report after %ss)' \"$elapsed\")\n\
                            else\n\
                              text=$(printf '(no report after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
-                           fi\n\
-                           stamp_color='179'\n\
-                         elif [ -e {crash_q} ]; then\n\
-                           {err_block}\
-                           if [ $elapsed -lt 60 ]; then\n\
-                             text=$(printf '(crashed after %ss)' \"$elapsed\")\n\
-                           else\n\
-                             text=$(printf '(crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
                          else\n\
