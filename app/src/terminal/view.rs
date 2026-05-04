@@ -19860,11 +19860,6 @@ impl TerminalView {
                 for (idx, inv) in invocations.iter().enumerate() {
                     let take_file = format!("/tmp/yarp-council-{work_id}-{idx}.out");
                     take_files.push(take_file.clone());
-                    let args = crate::personas::plain_args_for(&inv.binary_basename)
-                        .iter()
-                        .map(|a| crate::personas::shell_quote_smart(a))
-                        .collect::<Vec<_>>()
-                        .join(" ");
                     // Use the FULL detected path, not the basename. PATH
                     // resolution at the user's shell can land on a different
                     // (older, broken) copy of the same CLI — concretely,
@@ -19873,26 +19868,12 @@ impl TerminalView {
                     // detected persona at ~/.local/bin/claude is 2.1.126 and
                     // works. Detection already picked the right binary; the
                     // chain must invoke that exact one.
-                    //
-                    // Smart-quote the binary path and take file (always safe
-                    // chars) but full single-quote the user prompt (can hold
-                    // anything).
-                    let cmd = if args.is_empty() {
-                        format!(
-                            "{} {} | tee {}",
-                            crate::personas::shell_quote_smart(&inv.program),
-                            crate::personas::shell_quote_one(&prompt),
-                            crate::personas::shell_quote_smart(&take_file),
-                        )
-                    } else {
-                        format!(
-                            "{} {} {} | tee {}",
-                            crate::personas::shell_quote_smart(&inv.program),
-                            args,
-                            crate::personas::shell_quote_one(&prompt),
-                            crate::personas::shell_quote_smart(&take_file),
-                        )
-                    };
+                    let cmd = crate::personas::build_persona_cmd(
+                        &inv.binary_basename,
+                        &inv.program,
+                        &prompt,
+                        &take_file,
+                    );
                     chain.push_back(cmd);
                 }
                 let mut synth_attached = false;

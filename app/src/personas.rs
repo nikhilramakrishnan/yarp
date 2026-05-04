@@ -310,6 +310,51 @@ pub(crate) fn shell_quote_smart(s: &str) -> String {
     }
 }
 
+/// Build the shell command for one persona's CLI invocation in the council
+/// chain. The generic shape is `<binary> <plain_args> '<prompt>' | tee
+/// <take_file>` — stdout is mirrored to the take file so the synth pass can
+/// re-read every persona's answer. Some CLIs print so much banner /
+/// narration / framing noise that a plain `tee` makes the council block
+/// unreadable AND poisons the synth's input; for those we tailor the
+/// invocation so the take file holds a clean final answer and the visible
+/// block stays focused on the answer.
+pub(crate) fn build_persona_cmd(
+    basename: &str,
+    program: &str,
+    prompt: &str,
+    take_file: &str,
+) -> String {
+    let prog = shell_quote_smart(program);
+    let take = shell_quote_smart(take_file);
+    let prompt_q = shell_quote_one(prompt);
+    match basename {
+        // codex prints a verbose banner (workdir/model/provider/approval/
+        // sandbox/reasoning effort/session id), an "exec" narration of the
+        // shell calls it makes, an `ERROR codex_core::session: failed to
+        // record rollout items` line, and a duplicated final answer.
+        // `--output-last-message` writes ONLY the final agent message to a
+        // file; `--ephemeral` skips session persistence (suppresses the
+        // rollout-items error). Hide stdout entirely (it's pure noise) and
+        // `cat` the take file at the end so the block displays the clean
+        // answer once codex finishes.
+        "codex" => format!(
+            "{prog} exec --skip-git-repo-check --ephemeral --output-last-message {take} {prompt_q} >/dev/null 2>&1; cat {take}; echo",
+        ),
+        _ => {
+            let args = plain_args_for(basename)
+                .iter()
+                .map(|a| shell_quote_smart(a))
+                .collect::<Vec<_>>()
+                .join(" ");
+            if args.is_empty() {
+                format!("{prog} {prompt_q} | tee {take}")
+            } else {
+                format!("{prog} {args} {prompt_q} | tee {take}")
+            }
+        }
+    }
+}
+
 pub(crate) fn streaming_args_for(basename: &str) -> &'static [&'static str] {
     match basename {
         "claude" => &["-p", "--output-format", "stream-json", "--verbose"],
