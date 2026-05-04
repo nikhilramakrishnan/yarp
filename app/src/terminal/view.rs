@@ -20216,9 +20216,16 @@ impl TerminalView {
                         // Rule uses non-bold gold so the structural separator
                         // reads quieter than the bold badge below it — the
                         // badge stays the visual anchor for the verdict.
+                        let synth_fifo_path = format!("{work_dir}/synth.fifo");
+                        let synth_timeout_path = format!("{work_dir}/synth.timeout");
                         let script_body = format!(
                             "#!/usr/bin/env bash\n\
                              trap 'rm -rf {work_dir_q}' EXIT\n\
+                             kill_tree() {{ local sig=$1 p=$2; \
+                               for c in $(pgrep -P $p 2>/dev/null); do \
+                                 kill_tree $sig $c; \
+                               done; \
+                               kill -$sig $p 2>/dev/null; }}\n\
                              cols=$(tput cols 2>/dev/null || echo 80)\n\
                              half_l=$(( (cols - 9) / 2 ))\n\
                              [ $half_l -lt 3 ] && half_l=3\n\
@@ -20228,6 +20235,11 @@ impl TerminalView {
                              rule_r=$(printf '━%.0s' $(seq 1 $half_r))\n\
                              printf '\\033[38;5;220m%s \\033[1mVERDICT\\033[22m %s\\033[0m\\n' \"$rule_l\" \"$rule_r\"\n\
                              printf '{color}%s %s\\033[0m\\n\\n' {badge} {name}\n\
+                             mkfifo {fifo_q} 2>/dev/null\n\
+                             {claude_invocation} >{fifo_q} 2>/dev/null &\n\
+                             claude_pid=$!\n\
+                             ( sleep 300; touch {synth_timeout_q}; kill_tree TERM $claude_pid; sleep 2; kill_tree KILL $claude_pid ) &\n\
+                             watcher=$!\n\
                              start=$(date +%s)\n\
                              ( i=0\n\
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
@@ -20237,12 +20249,15 @@ impl TerminalView {
                                  sleep 0.1\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
-                             {claude_invocation} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
+                             cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
                                IFS= read -r first\n\
                                read_rc=$?\n\
                                kill $SPIN_PID 2>/dev/null\n\
                                printf '\\r\\033[K'\n\
-                               if [ $read_rc -eq 0 ]; then\n\
+                               if [ -e {synth_timeout_q} ]; then\n\
+                                 text='(timed out after 5m)'\n\
+                                 stamp_color='179'\n\
+                               elif [ $read_rc -eq 0 ]; then\n\
                                  printf '%s\\n' \"$first\"\n\
                                  cat\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
@@ -20261,12 +20276,17 @@ impl TerminalView {
                                [ $pad -lt 0 ] && pad=0\n\
                                printf '\\033[3;38;5;%sm%*s%s\\033[0m\\n' \"$stamp_color\" \"$pad\" '' \"$text\"\n\
                              }}\n\
+                             wait $claude_pid 2>/dev/null\n\
+                             kill_tree KILL $watcher 2>/dev/null\n\
+                             wait $watcher 2>/dev/null\n\
                              wait $SPIN_PID 2>/dev/null\n\
                              close=$(printf '─%.0s' $(seq 1 $cols))\n\
                              echo\n\
                              printf '\\033[38;5;240m%s\\033[0m\\n' \"$close\"\n\
                              echo\n",
                             work_dir_q = crate::personas::shell_quote_one(&work_dir),
+                            fifo_q = crate::personas::shell_quote_one(&synth_fifo_path),
+                            synth_timeout_q = crate::personas::shell_quote_one(&synth_timeout_path),
                             color = crate::personas::persona_header_color(&lead_persona.name),
                             badge = crate::personas::shell_quote_one(&lead_persona.badge),
                             name = crate::personas::shell_quote_one(&lead_persona.name),
