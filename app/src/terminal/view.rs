@@ -20264,7 +20264,7 @@ impl TerminalView {
                              else\n\
                                printf '\\033[38;5;220m\\033[1mVERDICT\\033[22m\\033[0m\\n'\n\
                              fi\n\
-                             printf '{color}%s %s\\033[0m\\n' {badge} {name}\n\
+                             printf '{color}%s\\033[0m {spin_color}%s\\033[0m\\n' {badge} {name}\n\
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(grep -l '[^[:space:]]' {work_dir_q}/*.out 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
