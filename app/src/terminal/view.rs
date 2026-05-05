@@ -20372,9 +20372,9 @@ impl TerminalView {
                                  half_cr=$(( cols - label_w - half_cl ))\n\
                                  close_l=$(printf '─%.0s' $(seq 1 $half_cl))\n\
                                  close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
-                                 printf '\\033[38;5;240m%s\\033[3m%s\\033[23m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
+                                 printf '\\033[38;5;240m%s\\033[3;38;5;244m%s\\033[23;38;5;240m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
                                else\n\
-                                 printf '\\033[3;38;5;240m%s\\033[0m\\n' \"$dur\"\n\
+                                 printf '\\033[3;38;5;244m%s\\033[0m\\n' \"$dur\"\n\
                                fi\n\
                              else\n\
                                close=$(printf '─%.0s' $(seq 1 $cols))\n\
