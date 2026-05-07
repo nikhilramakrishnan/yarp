@@ -951,7 +951,7 @@ impl Input {
                          else \
                            since_str=$(printf '%s \\033[2;38;5;240m(just now)\\033[0m' \"$when\"); \
                          fi; \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_str\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m%b\\033[0m\\n' 'since' \"${{sit_av:-}}\" \"$since_str\"; \
                        fi; \
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
