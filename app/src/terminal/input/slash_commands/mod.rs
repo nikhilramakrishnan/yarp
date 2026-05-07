@@ -528,12 +528,15 @@ impl Input {
                     } else {
                         ""
                     };
+                    let name_lc = p.name.to_ascii_lowercase();
                     let line = format!(
-                        "printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
-                         \\033[3;38;5;244m%s\\033[0m{lead_tag}\\n' {badge} {name} {role}; ",
+                        "you=''; if [ \"${{YARP_CALLSIGN:-}}\" = {name_lc} ]; then you=' \\033[1;38;5;35m← you\\033[0m'; fi; \
+                         printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
+                         \\033[3;38;5;244m%s\\033[0m{lead_tag}%s\\n' {badge} {name} {role} \"$you\"; ",
                         badge_color = badge_color,
                         name_color = name_color,
                         lead_tag = lead_tag,
+                        name_lc = crate::personas::shell_quote_one(&name_lc),
                         badge = crate::personas::shell_quote_one(&p.badge),
                         name = crate::personas::shell_quote_one(&p.name),
                         role = crate::personas::shell_quote_one(role),
