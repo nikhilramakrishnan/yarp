@@ -686,13 +686,13 @@ impl Input {
                      [ -z \"$n\" ] && n=0; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
-                       nicholas|angel) quote={q_angel}; cs_avatar='🎯'; quote_av='🎯' ;; \
-                       frank|butterman.snr) quote={q_frank}; cs_avatar='🦔'; quote_av='🦔' ;; \
-                       danny|butterman) quote={q_danny}; cs_avatar='🍦'; quote_av='🍦' ;; \
-                       andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡'; quote_av='🤡' ;; \
-                       doris|thatcher) quote={q_doris}; cs_avatar='🚓'; quote_av='🚓' ;; \
-                       tony) quote={q_tony}; cs_avatar='📻'; quote_av='📻' ;; \
-                       *) quote={q_random}; cs_avatar=''; quote_av={q_random_av} ;; \
+                       nicholas|angel) quote={q_angel}; cs_avatar='🎯'; quote_av='🎯'; cs_color=39 ;; \
+                       frank|butterman.snr) quote={q_frank}; cs_avatar='🦔'; quote_av='🦔'; cs_color=220 ;; \
+                       danny|butterman) quote={q_danny}; cs_avatar='🍦'; quote_av='🍦'; cs_color=213 ;; \
+                       andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡'; quote_av='🤡'; cs_color=208 ;; \
+                       doris|thatcher) quote={q_doris}; cs_avatar='🚓'; quote_av='🚓'; cs_color=165 ;; \
+                       tony) quote={q_tony}; cs_avatar='📻'; quote_av='📻'; cs_color=226 ;; \
+                       *) quote={q_random}; cs_avatar=''; quote_av={q_random_av}; cs_color=220 ;; \
                      esac; \
                      if [ -n \"$quote_av\" ]; then quote_prefix=\"$quote_av  \"; else quote_prefix=''; fi; \
                      case_id=$(printf '%s' \"$ts\" | tail -c 4); \
@@ -701,9 +701,9 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📂 \\033[1;38;5;220m\"%s\"\\033[0m\\n' 'tab' {tab}; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
                        if [ -n \"$cs_avatar\" ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s \\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"$cs_avatar\" \"${{YARP_CALLSIGN}}\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s \\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"$cs_avatar\" \"$cs_color\" \"${{YARP_CALLSIGN}}\"; \
                        else \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️ \\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"${{YARP_CALLSIGN}}\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️ \\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"$cs_color\" \"${{YARP_CALLSIGN}}\"; \
                        fi; \
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[3;38;5;244mall units\\033[0m\\n' 'notified'; \
