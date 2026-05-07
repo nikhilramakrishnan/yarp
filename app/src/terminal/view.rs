@@ -20286,14 +20286,26 @@ impl TerminalView {
                              printf '  \\033[3;38;5;244m{framing}\\033[0m\\n'\n\
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(grep -l '[^[:space:]]' {work_dir_q}/*.out 2>/dev/null | wc -l | tr -d ' ')\n\
+                             missing_names=()\n\
+                             for bg in {work_dir_q}/*.bg; do\n\
+                               [ -f \"$bg\" ] || continue\n\
+                               base=$(basename \"$bg\" .bg)\n\
+                               out=\"{work_dir_q}/${{base}}.out\"\n\
+                               if ! grep -q '[^[:space:]]' \"$out\" 2>/dev/null; then\n\
+                                 cap=$(printf '%s' \"$base\" | awk '{{print toupper(substr($0,1,1))substr($0,2)}}')\n\
+                                 missing_names+=(\"$cap\")\n\
+                               fi\n\
+                             done\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
-                               missing=$(( total - reported ))\n\
                                if [ \"$reported\" -eq 0 ]; then\n\
                                  sub='no reports'\n\
-                               elif [ \"$missing\" -eq 1 ]; then\n\
-                                 sub='1 report missing'\n\
+                               elif [ ${{#missing_names[@]}} -eq 1 ]; then\n\
+                                 sub=$(printf \"%s's report missing\" \"${{missing_names[0]}}\")\n\
+                               elif [ ${{#missing_names[@]}} -eq 2 ]; then\n\
+                                 sub=$(printf \"%s and %s reports missing\" \"${{missing_names[0]}}\" \"${{missing_names[1]}}\")\n\
                                else\n\
-                                 sub=$(printf '%s reports missing' \"$missing\")\n\
+                                 joined=$(printf '%s, ' \"${{missing_names[@]}}\" | sed 's/, $//; s/, \\([^,]*\\)$/ and \\1/')\n\
+                                 sub=$(printf '%s reports missing' \"$joined\")\n\
                                fi\n\
                                printf '  \\033[3;38;5;179m%s\\033[0m\\n' \"$sub\"\n\
                              fi\n\
