@@ -1099,7 +1099,7 @@ impl Input {
                        esac; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmon duty\\033[0m\\n' 'callsign' \"$sit_av\" \"$sit_color\" \"$callsign\" \"$sit_color\"; \
                      else \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📛 \\033[3;38;5;244munclaimed — /duty <name> to claim\\033[0m\\n' 'callsign'; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📛 \\033[2;3;38;5;220munclaimed — /duty <name> to claim\\033[0m\\n' 'callsign'; \
                      fi; \
                      duty_marker=\"/tmp/yarp-radio/.duty-${{user}}\"; \
                      if [ -f \"$duty_marker\" ]; then \
