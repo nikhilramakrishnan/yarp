@@ -648,7 +648,19 @@ impl Input {
                         pool[nanos % pool.len()]
                     }
                 };
-                let q_random = CASE_QUOTES[nanos % CASE_QUOTES.len()].1;
+                let avatar_for = |key: &str| -> &'static str {
+                    match key {
+                        "angel" => "🎯",
+                        "frank" => "🦔",
+                        "danny" => "🍦",
+                        "andy" => "🤡",
+                        "doris" => "🚓",
+                        "tony" => "📻",
+                        _ => "",
+                    }
+                };
+                let (q_random_key, q_random) = CASE_QUOTES[nanos % CASE_QUOTES.len()];
+                let q_random_av = avatar_for(q_random_key);
                 let q_angel = pick_for("angel");
                 let q_frank = pick_for("frank");
                 let q_danny = pick_for("danny");
@@ -674,21 +686,23 @@ impl Input {
                      [ -z \"$n\" ] && n=0; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
-                       nicholas|angel) quote={q_angel}; cs_avatar='🎯' ;; \
-                       frank|butterman.snr) quote={q_frank}; cs_avatar='🦔' ;; \
-                       danny|butterman) quote={q_danny}; cs_avatar='🍦' ;; \
-                       andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡' ;; \
-                       doris|thatcher) quote={q_doris}; cs_avatar='🚓' ;; \
-                       tony) quote={q_tony}; cs_avatar='📻' ;; \
-                       *) quote={q_random}; cs_avatar='' ;; \
+                       nicholas|angel) quote={q_angel}; cs_avatar='🎯'; quote_av='🎯' ;; \
+                       frank|butterman.snr) quote={q_frank}; cs_avatar='🦔'; quote_av='🦔' ;; \
+                       danny|butterman) quote={q_danny}; cs_avatar='🍦'; quote_av='🍦' ;; \
+                       andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡'; quote_av='🤡' ;; \
+                       doris|thatcher) quote={q_doris}; cs_avatar='🚓'; quote_av='🚓' ;; \
+                       tony) quote={q_tony}; cs_avatar='📻'; quote_av='📻' ;; \
+                       *) quote={q_random}; cs_avatar=''; quote_av={q_random_av} ;; \
                      esac; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ] && [ -n \"$cs_avatar\" ]; then filed_by=\"✍️  filed by $cs_avatar @${{YARP_CALLSIGN}} — \"; \
                      elif [ -n \"${{YARP_CALLSIGN:-}}\" ]; then filed_by=\"✍️  filed by @${{YARP_CALLSIGN}} — \"; \
                      else filed_by=''; fi; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n  📂 \\033[38;5;178mtab → \"%s\"\\033[0m\\n  📣 \\033[3;38;5;244m%sall units notified\\033[0m\\n  📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244min queue\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$filed_by\" \"$n\" \"$quote\"",
+                     if [ -n \"$quote_av\" ]; then quote_prefix=\"$quote_av  \"; else quote_prefix=''; fi; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n  📂 \\033[38;5;178mtab → \"%s\"\\033[0m\\n  📣 \\033[3;38;5;244m%sall units notified\\033[0m\\n  📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244min queue\\033[0m\\n  %s\\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$filed_by\" \"$n\" \"$quote_prefix\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
+                    q_random_av = crate::personas::shell_quote_one(q_random_av),
                     q_angel = crate::personas::shell_quote_one(q_angel),
                     q_frank = crate::personas::shell_quote_one(q_frank),
                     q_danny = crate::personas::shell_quote_one(q_danny),
