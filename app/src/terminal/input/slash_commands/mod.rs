@@ -469,7 +469,11 @@ impl Input {
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
                      [ -z \"$ts\" ] && ts=$(date +%s)000; \
                      file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
-                     sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
+                       sender=\"@${{YARP_CALLSIGN}}\"; \
+                     else \
+                       sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     fi; \
                      target={target}; \
                      {{ \
                        printf 'from: %s\\n' \"$sender\"; \
@@ -563,7 +567,11 @@ impl Input {
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
                      [ -z \"$ts\" ] && ts=$(date +%s)000; \
                      file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
-                     sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
+                       sender=\"@${{YARP_CALLSIGN}}\"; \
+                     else \
+                       sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     fi; \
                      {{ \
                        printf 'from: %s\\n' \"$sender\"; \
                        printf '\\n'; \
