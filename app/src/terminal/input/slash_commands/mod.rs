@@ -729,7 +729,18 @@ impl Input {
                     }
                 } else {
                     "if [ -n \"$YARP_CALLSIGN\" ]; then \
-                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n' 'unit' \"$YARP_CALLSIGN\"; \
+                       cs_lc=$(printf '%s' \"$YARP_CALLSIGN\" | tr '[:upper:]' '[:lower:]'); \
+                       av=''; \
+                       case \"$cs_lc\" in \
+                         nicholas|angel) av='🎯' ;; \
+                         frank|butterman.snr) av='🦔' ;; \
+                         danny|butterman) av='🍦' ;; \
+                         andy|wainwright|cartwright) av='🤡' ;; \
+                         doris|thatcher) av='🚓' ;; \
+                         tony) av='📻' ;; \
+                       esac; \
+                       if [ -n \"$av\" ]; then unit_disp=\"$av @$YARP_CALLSIGN\"; else unit_disp=\"@$YARP_CALLSIGN\"; fi; \
+                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n' 'unit' \"$unit_disp\"; \
                      else \
                        printf '\\033[3;38;5;179m🎖  no callsign claimed\\033[0m\\n  \\033[3;38;5;244m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
                      fi"
