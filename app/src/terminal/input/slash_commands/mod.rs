@@ -889,7 +889,7 @@ impl Input {
                        if [ \"$qn\" -gt 0 ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[2;3;38;5;220mpending — /inbox to read\\033[0m\\n' 'queue' \"$qn\"; \
                        else \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[3;38;5;244minbox clear\\033[0m\\n' 'queue'; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[2;3;38;5;220minbox clear\\033[0m\\n' 'queue'; \
                        fi; \
                        printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
                      else \
