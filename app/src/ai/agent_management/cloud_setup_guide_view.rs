@@ -109,7 +109,7 @@ impl CloudSetupGuideView {
         let mut header_container = Flex::column().with_spacing(8.);
 
         let title = Text::new(
-            "Getting started with Fuzz cloud agents",
+            "Joining the Fuzz: a beginner's guide to ambient officers",
             appearance.ui_font_family(),
             title_font_size,
         )
@@ -119,7 +119,7 @@ impl CloudSetupGuideView {
         header_container.add_child(title);
 
         let subtitle = Text::new(
-            "Start Fuzz cloud agents directly in Yarp from an integration (Linear, Slack), with an event (GitHub, built-in schedule), or programmatically with the Fuzz SDK or CLI.",
+            "Dispatch Fuzz ambient officers straight from Yarp — radio them in via an integration (Linear, Slack), kick them off with an event (GitHub, built-in schedule), or call them in over the wire with the Fuzz SDK or CLI.",
             appearance.ui_font_family(),
             subtitle_font_size,
         )
@@ -347,7 +347,7 @@ impl CloudSetupGuideView {
         .finish();
 
         let sub_description = Container::new(Self::render_description_with_link(
-            "Use Yarp's environment setup command to have an agent help you through it. ",
+            "Use Yarp's beat setup command to have a PC walk you through it. ",
             appearance,
         ))
         .with_padding_left(46.)
@@ -417,7 +417,7 @@ impl CloudSetupGuideView {
             .finish();
 
         let sub_description = Container::new(Self::render_description_with_link(
-            "Integrate Slack or Linear to assign Yarp's Agent tasks with @Yarp. ",
+            "Wire up Slack or Linear so you can radio Yarp's PCs in with @Yarp. ",
             appearance,
         ))
         .with_padding_left(46.)

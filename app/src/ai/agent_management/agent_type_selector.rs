@@ -126,7 +126,7 @@ impl AgentTypeSelector {
         let theme = appearance.theme();
 
         let title = Text::new(
-            "Choose your agent".to_string(),
+            "Pick your PC".to_string(),
             appearance.ui_font_family(),
             TITLE_FONT_SIZE,
         )
@@ -333,8 +333,8 @@ impl AgentTypeSelector {
         let cloud_agent_option = self.render_option(
             0,
             Icon::OzCloud,
-            "Cloud agent",
-            "Runs autonomously in a cloud environment you choose. Best for parallel or long-running work.",
+            "Ambient officer",
+            "Walks the beat on its own from a beat you pick. Best for parallel patrols or long stake-outs.",
             true,
             self.cloud_agent_mouse_state.clone(),
             AgentTypeSelectorAction::SelectCloudAgent,
@@ -344,8 +344,8 @@ impl AgentTypeSelector {
         let local_agent_option = self.render_option(
             1,
             Icon::Fuzz,
-            "Local agent",
-            "Runs on your machine and requires supervision. Best for quick, interactive tasks.",
+            "Desk PC",
+            "Works the case at your desk under your eye. Best for quick door-to-door jobs.",
             false,
             self.local_agent_mouse_state.clone(),
             AgentTypeSelectorAction::SelectLocalAgent,
