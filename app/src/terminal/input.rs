@@ -1139,10 +1139,10 @@ pub enum InputAction {
     /// Clears attached blocks and text selection context.
     ClearAttachedContext,
 
-    /// Fired when the "Get Figma MCP" contextual button is clicked.
+    /// Fired when the "Bring in Figma MCP" contextual button is clicked.
     FigmaAddButtonClicked,
 
-    /// Fired when the "Enable Figma MCP" contextual button is clicked.
+    /// Fired when the "Swear in Figma MCP" contextual button is clicked.
     FigmaEnableButtonClicked,
 }
 
