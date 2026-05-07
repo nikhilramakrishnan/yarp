@@ -991,10 +991,10 @@ impl Input {
                        printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\" \"$prev_color\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$tier_icon\" \"$shift_str\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;%dmon the beat\\033[0m\\n' 'shift' \"$tier_icon\" \"$shift_str\" \"$prev_color\"; \
                      fi; \
                      if [ \"$n\" -gt 0 ]; then \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s)\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'radio' \"$n\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s)\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'radio' \"$n\" \"$prev_color\"; \
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
                      fi; \
