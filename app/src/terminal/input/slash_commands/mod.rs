@@ -693,7 +693,7 @@ impl Input {
                      {{ \
                        printf 'from: %s\\n' \"$sender\"; \
                        printf '\\n'; \
-                       printf 'case opened: %s' {name}; \
+                       printf 'case opened: %s\\n' {name}; \
                      }} > \"$file\"; \
                      n=$(ls /tmp/yarp-radio/*.msg 2>/dev/null | wc -l | tr -d ' '); \
                      [ -z \"$n\" ] && n=0; \
@@ -1330,7 +1330,7 @@ impl Input {
                           tag=\" → @${target}\"; \
                         else tag=''; tag_sgr='3;38;5;244'; fi; \
                         printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[%sm%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag_sgr\" \"$tag\"; \
-                        tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
+                        tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line || [ -n \"$line\" ]; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
                       }; \
