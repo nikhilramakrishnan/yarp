@@ -176,7 +176,7 @@ impl MessageProvider<TerminalMessageArgs<'_>> for ErroredBlockMessageProducer {
         Some(Message::new(vec![
             MessageItem::keystroke(keystroke),
             MessageItem::text(format!(
-                " attach `{}` output as agent context",
+                " attach `{}` output as case context",
                 truncated_command_for_block(&block.command_to_string())
             )),
         ]))
@@ -204,7 +204,7 @@ impl MessageProvider<TerminalMessageArgs<'_>> for AgentMessageProducer {
                     key: "enter".to_owned(),
                     ..Default::default()
                 }),
-                MessageItem::text(" new conversation"),
+                MessageItem::text(" new case file"),
             ])
             .with_color(message_magenta(theme)),
         )
@@ -235,7 +235,7 @@ impl MessageProvider<TerminalMessageArgs<'_>> for PlanMessageProducer {
                     key: "enter".to_owned(),
                     ..Default::default()
                 }),
-                MessageItem::text(" plan with agent"),
+                MessageItem::text(" briefing with the PC"),
             ])
             .with_color(message_magenta(theme)),
         )
@@ -257,7 +257,7 @@ impl MessageProvider<TerminalMessageArgs<'_>> for ContinueConversationMessagePro
         let keystroke = keybinding_name_to_keystroke(commands::CONVERSATIONS.name, args.app)?;
         Some(Message::new(vec![
             MessageItem::keystroke(keystroke),
-            MessageItem::text(" to continue conversation"),
+            MessageItem::text(" to keep the case file going"),
         ]))
     }
 }
@@ -344,11 +344,11 @@ impl MessageProvider<TerminalMessageArgs<'_>> for DefaultMessageProducer {
         if let Some(keystroke) = keystroke {
             Some(Message::new(vec![
                 MessageItem::keystroke(keystroke),
-                MessageItem::text(" new /agent conversation"),
+                MessageItem::text(" new /agent case file"),
             ]))
         } else {
             Some(Message::new(vec![MessageItem::text(
-                "/agent for new conversation",
+                "/agent for new case file",
             )]))
         }
     }
@@ -366,7 +366,7 @@ impl MessageProvider<Option<&AcceptHistoryItem>> for InlineHistoryMessageProduce
                 vec![enter, MessageItem::text(" to execute")]
             }
             Some(AcceptHistoryItem::AIPrompt { .. }) => {
-                vec![enter, MessageItem::text(" to send")]
+                vec![enter, MessageItem::text(" to radio in")]
             }
             Some(AcceptHistoryItem::Conversation { title, .. }) => {
                 vec![enter, MessageItem::text(format!(" to open '{title}'"))]

@@ -338,7 +338,7 @@ impl Input {
                     self.ephemeral_message_model.update(ctx, |model, ctx| {
                         let appearance = Appearance::handle(ctx).as_ref(ctx);
                         let message = Message::from_text(
-                            "cannot start new conversation while terminal command is running",
+                            "can't open a new case file while the radio's tied up on a command",
                         )
                         .with_text_color(appearance.theme().ansi_fg_red());
                         model.show_ephemeral_message(
@@ -1777,7 +1777,7 @@ impl Input {
                     .as_ref(ctx)
                     .active_conversation(self.terminal_view_id)
                 else {
-                    show_error_toast("No active conversation to export".to_owned(), ctx);
+                    show_error_toast("No open case file to file out".to_owned(), ctx);
                     return true;
                 };
 
@@ -1791,7 +1791,7 @@ impl Input {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::default(String::from(
-                        "Conversation exported to clipboard",
+                        "Case file copied to clipboard",
                     ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
@@ -1807,7 +1807,7 @@ impl Input {
                 #[cfg(target_family = "wasm")]
                 {
                     show_error_toast(
-                        "Export conversation to file unsupported in web".to_owned(),
+                        "Filing the case file out to disk isn't supported on web".to_owned(),
                         ctx,
                     );
                     return true;
@@ -1930,17 +1930,17 @@ impl Input {
                     .active_conversation(self.terminal_view_id);
                 if conversation.is_none() {
                     show_error_toast(
-                        "Cannot show conversation cost: no active conversation".to_owned(),
+                        "Can't tally case-file costs: no open case file".to_owned(),
                         ctx,
                     );
                 } else if conversation.is_some_and(|c| c.is_empty()) {
                     show_error_toast(
-                        "Cannot show conversation cost: conversation is empty".to_owned(),
+                        "Can't tally case-file costs: case file's empty".to_owned(),
                         ctx,
                     );
                 } else if conversation.is_some_and(|c| !c.status().is_done()) {
                     show_error_toast(
-                        "Cannot show conversation cost: conversation is in progress".to_owned(),
+                        "Can't tally case-file costs: case file's still active".to_owned(),
                         ctx,
                     );
                 } else {
@@ -1953,7 +1953,7 @@ impl Input {
                     .as_ref(ctx)
                     .selected_conversation_id(ctx)
                 else {
-                    show_error_toast("/fork requires an active conversation".to_owned(), ctx);
+                    show_error_toast("/fork needs an open case file".to_owned(), ctx);
                     return true;
                 };
 
@@ -1983,7 +1983,7 @@ impl Input {
                     .selected_conversation_id(ctx)
                 else {
                     show_error_toast(
-                        "/fork-and-compact requires an active conversation".to_owned(),
+                        "/fork-and-compact needs an open case file".to_owned(),
                         ctx,
                     );
                     return true;
@@ -2012,7 +2012,7 @@ impl Input {
                     .is_none()
                 {
                     show_error_toast(
-                        "/compact-and requires an active conversation".to_owned(),
+                        "/compact-and needs an open case file".to_owned(),
                         ctx,
                     );
                     return true;
@@ -2029,7 +2029,7 @@ impl Input {
                     .as_ref(ctx)
                     .selected_conversation_id(ctx)
                 else {
-                    show_error_toast("/queue requires an active conversation".to_owned(), ctx);
+                    show_error_toast("/queue needs an open case file".to_owned(), ctx);
                     return true;
                 };
 

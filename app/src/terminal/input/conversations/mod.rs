@@ -52,9 +52,9 @@ impl InlineMenuAction for AcceptConversation {
             let is_active = active_ids.contains(&ConversationOrTaskId::ConversationId(data.id));
 
             let text = if is_active {
-                " go to conversation"
+                " jump to the case file"
             } else {
-                " continue in this pane"
+                " pick it up here"
             };
 
             let navigation_data = data.clone();
@@ -89,7 +89,7 @@ impl InlineMenuAction for AcceptConversation {
                     background_color: Some(ColorU::transparent_black()),
                 },
                 MessageItem::Text {
-                    content: " continue in this pane".into(),
+                    content: " pick it up here".into(),
                     color: Some(disabled_color),
                 },
             ]);

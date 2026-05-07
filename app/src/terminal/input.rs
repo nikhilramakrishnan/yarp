@@ -4573,7 +4573,7 @@ impl Input {
             let window_id = ctx.window_id();
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 let toast =
-                    DismissibleToast::default(String::from("No active conversation to export"));
+                    DismissibleToast::default(String::from("No open case file to file out"));
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
             return;
@@ -14020,7 +14020,7 @@ impl TypedActionView for Input {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Cannot start a new conversation while agent is monitoring a command.".to_string()
+                                "Can't open a new case file — the PC's still on a command.".to_string()
                             ),
                             window_id,
                             ctx,
