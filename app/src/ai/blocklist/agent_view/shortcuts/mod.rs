@@ -176,7 +176,7 @@ pub fn render_agent_shortcuts_view(
             shortcuts.push(render_shortcut(
                 ShortcutProps {
                     keystroke,
-                    text: "toggle conversation list".into(),
+                    text: "toggle case file list".into(),
                     ..Default::default()
                 },
                 app,
@@ -187,7 +187,7 @@ pub fn render_agent_shortcuts_view(
     shortcuts.push(render_shortcut(
         ShortcutProps {
             keystroke: Keystroke::parse(cmd_or_ctrl_shift("y")).expect("is valid keystroke"),
-            text: "search and continue conversations".into(),
+            text: "search and resume case files".into(),
             ..Default::default()
         },
         app,
@@ -203,7 +203,7 @@ pub fn render_agent_shortcuts_view(
     shortcuts.push(render_shortcut(
         ShortcutProps {
             keystroke: new_conversation_keystroke.clone(),
-            text: "start a new conversation".into(),
+            text: "open a new case file".into(),
             ..Default::default()
         },
         app,

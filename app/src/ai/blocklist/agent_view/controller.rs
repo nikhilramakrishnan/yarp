@@ -1052,7 +1052,7 @@ fn new_conversation_keybinding_confirmation_message(
     let appearance = Appearance::handle(app).as_ref(app);
     Message::new(vec![
         MessageItem::keystroke(keystroke),
-        MessageItem::text("again to start new conversation"),
+        MessageItem::text("again to open a new case file"),
     ])
     .with_text_color(appearance.theme().ansi_fg_magenta())
 }
