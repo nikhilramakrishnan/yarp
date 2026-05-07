@@ -152,7 +152,7 @@ impl ConversationActionButtonsRow {
         let copy_link_button = ctx.add_typed_action_view(|_| {
             Self::make_action_button(
                 Icon::Link,
-                "Copy link to run",
+                "Copy frequency to dispatch",
                 None,
                 AgentDetailsAction::CopyLink,
             )

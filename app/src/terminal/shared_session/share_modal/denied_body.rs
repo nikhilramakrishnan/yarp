@@ -10,7 +10,7 @@ use yarpui::{
 use super::style::{self, MODAL_PADDING};
 
 const SESSION_BUILD_FREE_PLAN_SUBHEADER: &str = "Yarp's free and pro plans only come with a limited radio quota.\n\nFor wider channel access, step up to the Build plan.";
-const VIEW_PLANS_TEXT: &str = "View plans";
+const VIEW_PLANS_TEXT: &str = "Compare plans";
 
 pub struct DeniedBody {
     button_mouse_state: MouseStateHandle,

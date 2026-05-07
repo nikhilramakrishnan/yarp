@@ -218,9 +218,9 @@ impl View for WasmNUXDialog {
                 ))
         } else {
             let object_kind = match web_intent_parser::current_web_intent() {
-                Some(WebIntent::DriveObject(_)) => "Yarp Drive objects",
-                Some(WebIntent::SessionView(_)) => "shared sessions",
-                _ => "Yarp links",
+                Some(WebIntent::DriveObject(_)) => "drive case files",
+                Some(WebIntent::SessionView(_)) => "open channels",
+                _ => "Yarp frequencies",
             };
 
             Dialog::new(

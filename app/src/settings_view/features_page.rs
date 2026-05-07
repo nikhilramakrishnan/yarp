@@ -5225,7 +5225,7 @@ impl SettingsWidget for ConfirmCloseSharedSessionWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "warning popup modal dialog shared session close"
+        "warning popup modal dialog open channel stand down close"
     }
 
     fn render(
@@ -5237,7 +5237,7 @@ impl SettingsWidget for ConfirmCloseSharedSessionWidget {
         let ui_builder = appearance.ui_builder();
         let session_settings = SessionSettings::as_ref(app);
         render_body_item::<FeaturesPageAction>(
-            "Confirm before closing shared session".into(),
+            "Confirm before standing down an open channel".into(),
             None,
             LocalOnlyIconState::for_setting(
                 ShouldConfirmCloseSession::storage_key(),
