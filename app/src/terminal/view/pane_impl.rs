@@ -114,8 +114,9 @@ impl TerminalView {
         // it with a themed string so the tab reads as a Sandford NWA debrief.
         if self.council_chain_in_flight {
             self.is_using_conversation_for_pane_header_title = false;
+            let title = self.with_radio_badge("Sandford NWA · Debrief".to_string());
             self.pane_configuration.update(ctx, |pane_config, ctx| {
-                pane_config.set_title("Sandford NWA · Debrief".to_string(), ctx);
+                pane_config.set_title(title, ctx);
                 if FeatureFlag::AgentView.is_enabled() {
                     pane_config.refresh_pane_header_overflow_menu_items(ctx);
                 }
@@ -148,6 +149,7 @@ impl TerminalView {
                 }
             }
         };
+        let new_pane_title = self.with_radio_badge(new_pane_title);
         self.pane_configuration.update(ctx, |pane_config, ctx| {
             pane_config.set_title(new_pane_title, ctx);
             if FeatureFlag::AgentView.is_enabled() {
@@ -156,6 +158,20 @@ impl TerminalView {
             pane_config.notify_header_content_changed(ctx);
         });
         self.update_agent_view_pane_header(ctx);
+    }
+
+    /// Prepend a 📻 N badge to a pane title when /tmp/yarp-radio has
+    /// pending transmissions. Inter-terminal awareness without a full
+    /// notifications system — the count drains when /inbox empties the queue.
+    fn with_radio_badge(&self, title: String) -> String {
+        if self.radio_pending_count == 0 {
+            return title;
+        }
+        if title.is_empty() {
+            format!("📻 {}", self.radio_pending_count)
+        } else {
+            format!("📻 {} · {}", self.radio_pending_count, title)
+        }
     }
 
     /// Returns the shareable object for the active agent view conversation, if any.

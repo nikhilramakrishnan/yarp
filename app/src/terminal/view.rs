@@ -2716,6 +2716,11 @@ pub struct TerminalView {
     /// first chain's pending dispatches.
     council_chain_in_flight: bool,
 
+    /// Pending radio (/radio) transmissions queued in /tmp/yarp-radio.
+    /// Polled on a 5s interval; surfaces as a 📻 N badge on the pane title
+    /// so other terminals can flag inbound transmissions without /inbox.
+    radio_pending_count: u32,
+
     /// A list of callbacks to run on the next
     /// [`BlocklistAIControllerEvent::FinishedReceivingOutput`] received, regardless of the finish reason.
     conversation_completed_callbacks: Vec<ConversationFinishedCallback>,
@@ -3529,6 +3534,15 @@ impl TerminalView {
 
         let _ = ctx.spawn_stream_local(resize_rx, Self::after_terminal_view_layout, |_, _| {});
 
+        // Poll the /radio inbox every 5s so the pane title can surface a
+        // 📻 N badge for queued transmissions. Filesystem state lives at
+        // /tmp/yarp-radio; the badge clears when /inbox empties the queue.
+        let _ = ctx.spawn_stream_local(
+            async_io::Timer::interval(Duration::from_secs(5)),
+            |view, _, ctx| view.refresh_radio_pending_count(ctx),
+            |_, _| {},
+        );
+
         let menu_positioning_provider = Arc::new(TerminalViewMenuPositioningProvider {
             parent: ctx.handle(),
         });
@@ -4138,6 +4152,7 @@ impl TerminalView {
             deferred_code_review_open: None,
             block_completed_callbacks: Default::default(),
             council_chain_in_flight: false,
+            radio_pending_count: 0,
             conversation_completed_callbacks: Default::default(),
             current_repo_path: None,
             terminal_title: Default::default(),
@@ -4402,6 +4417,31 @@ impl TerminalView {
         send_telemetry_from_ctx!(TelemetryEvent::SessionCreation, ctx);
 
         terminal_view
+    }
+
+    /// Count pending /tmp/yarp-radio/*.msg transmissions and refresh the
+    /// pane title if the count changed. Driven by the 5s interval timer
+    /// armed in the constructor.
+    fn refresh_radio_pending_count(&mut self, ctx: &mut ViewContext<Self>) {
+        let new_count = std::fs::read_dir("/tmp/yarp-radio")
+            .ok()
+            .map(|entries| {
+                entries
+                    .filter_map(Result::ok)
+                    .filter(|e| {
+                        e.file_name()
+                            .to_str()
+                            .map(|n| n.ends_with(".msg"))
+                            .unwrap_or(false)
+                    })
+                    .count() as u32
+            })
+            .unwrap_or(0);
+
+        if new_count != self.radio_pending_count {
+            self.radio_pending_count = new_count;
+            self.update_pane_configuration(ctx);
+        }
     }
 
     /// Schedule a callback to run after the next [`ModelEvent::AfterBlockCompleted`] received.
