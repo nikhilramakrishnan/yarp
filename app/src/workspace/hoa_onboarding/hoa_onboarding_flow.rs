@@ -448,8 +448,8 @@ impl HoaOnboardingFlow {
         };
 
         self.render_callout_content(
-            "Introducing vertical tabs - the new default",
-            "Vertical tabs show all open agent and terminal panes, grouped by tab. Customize what information you want to see to support your workflow.",
+            "Vertical tabs — the new default",
+            "Vertical tabs lay out every open PC and terminal pane, grouped by tab. Pick what shows on the docket so the desk reads the way you work.",
             Some(checkbox_row),
             button,
             appearance,
@@ -458,7 +458,7 @@ impl HoaOnboardingFlow {
 
     fn render_inbox_callout(&self, appearance: &Appearance) -> Box<dyn Element> {
         let title = Text::new(
-            "Meet your new agent inbox",
+            "Meet your new PC pigeonhole",
             appearance.ui_font_family(),
             16.,
         )
@@ -480,7 +480,7 @@ impl HoaOnboardingFlow {
 
         let formatted = FormattedText::new([FormattedTextLine::Line(vec![
             FormattedTextFragment::plain_text(
-                "Yarp pipes through notifications from any CLI coding agent into a unified notification center that works across all coding agents and harnesses. ",
+                "Yarp patches every CLI PC's radio chatter into one pigeonhole that reads across every PC and harness on the roster. ",
             ),
             learn_more_fragment,
         ])]);

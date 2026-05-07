@@ -28,11 +28,11 @@ const SUBSCRIBE_ITEMS: &[&str] = &[
     "1,500 credits per month",
     "Access to frontier OpenAI, Anthropic, and Google models",
     "Access to Reload credits and volume-based discounts",
-    "Extended cloud agents access",
+    "Extended ambient officer access",
     "Highest codebase indexing limits",
     "Unlimited Yarp Drive objects and collaboration",
     "Private email support",
-    "Unlimited cloud conversation storage",
+    "Unlimited central records storage",
 ];
 
 #[derive(Debug, Clone)]

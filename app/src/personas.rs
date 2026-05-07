@@ -147,13 +147,13 @@ fn detect_cli_personas() -> Vec<Persona> {
         (
             "aider",
             "Aider",
-            "Aider CLI on this machine.",
+            "Aider CLI on this desk.",
             "Git-aware and edit-focused; opinionated about diffs and commit hygiene.",
         ),
         (
             "cursor-agent",
             "Cursor",
-            "Cursor agent CLI on this machine.",
+            "Cursor PC CLI on this desk.",
             "IDE-native; comfortable with multi-file refactors and fast iteration.",
         ),
     ];

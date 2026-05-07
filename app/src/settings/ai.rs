@@ -344,7 +344,7 @@ impl DefaultSessionMode {
     settings_value::SettingsValue,
 )]
 #[schemars(
-    description = "Controls how agent thinking is displayed after streaming.",
+    description = "Controls how PC reasoning is read out after streaming.",
     rename_all = "snake_case"
 )]
 pub enum ThinkingDisplayMode {
@@ -364,7 +364,7 @@ settings::macros::implement_setting_for_enum!(
     SyncToCloud::Globally(RespectUserSyncSetting::Yes),
     private: false,
     toml_path: "agents.yarp_agent.other.thinking_display_mode",
-    description: "Controls how agent thinking traces are displayed after streaming.",
+    description: "Controls how PC reasoning traces are read out after streaming.",
 );
 
 impl ThinkingDisplayMode {
@@ -379,9 +379,9 @@ impl ThinkingDisplayMode {
 
     pub fn command_palette_description(&self) -> &'static str {
         match self {
-            ThinkingDisplayMode::ShowAndCollapse => "Set agent thinking display: show & collapse",
-            ThinkingDisplayMode::AlwaysShow => "Set agent thinking display: always show",
-            ThinkingDisplayMode::NeverShow => "Set agent thinking display: never show",
+            ThinkingDisplayMode::ShowAndCollapse => "Set PC reasoning readout: show & collapse",
+            ThinkingDisplayMode::AlwaysShow => "Set PC reasoning readout: always show",
+            ThinkingDisplayMode::NeverShow => "Set PC reasoning readout: never show",
         }
     }
 
@@ -468,7 +468,7 @@ pub struct AIRequestQuotaInfo {
     settings_value::SettingsValue,
 )]
 #[schemars(
-    description = "File read permission level for the agent.",
+    description = "File read permission level for the PC.",
     rename_all = "snake_case"
 )]
 pub enum AgentModeCodingPermissionsType {

@@ -14666,7 +14666,7 @@ impl Workspace {
         {
             AuthManager::handle(ctx).update(ctx, |auth_manager, ctx| {
                 auth_manager.attempt_login_gated_feature(
-                    "Run Agent Mode Workflow",
+                    "Run PC Mode Workflow",
                     AuthViewVariant::RequireLoginCloseable,
                     ctx,
                 )

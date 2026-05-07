@@ -112,7 +112,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Configure MCP servers to give Fuzz cloud agents access to GitHub, Linear, and Sentry.",
+            "Wire up MCP servers so Fuzz ambient officers can radio GitHub, Linear, and Sentry.",
             None,
         ),
         CloudModeTip::new(

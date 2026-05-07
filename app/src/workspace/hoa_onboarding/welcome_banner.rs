@@ -98,7 +98,7 @@ pub fn render_welcome_banner(
 
     // Title
     let title = Text::new(
-        "Introducing universal agent support: level up any coding agent with Yarp",
+        "Universal PC support — kit out any coding constable with Yarp",
         appearance.ui_font_family(),
         20.,
     )

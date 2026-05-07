@@ -185,7 +185,7 @@ impl FirstTimeCloudAgentSetupView {
 
         // Bold/semibold text in foreground color (per Figma: font-semibold text-[#e3e2df])
         Text::new(
-            "Cloud agents require an environment that they'll run in to get their task done. Create your first environment below. You'll be able to edit the environment later, or add new environments when you need them.",
+            "Ambient officers need a beat to walk to work the call. Set up your first beat below. You can rework it later, or add new beats as the patrol grows.",
             appearance.ui_font_family(),
             appearance.ui_font_size(),
         )

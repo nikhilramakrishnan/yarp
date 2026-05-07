@@ -239,7 +239,7 @@ impl GetStartedView {
                 Container::new(
                     appearance
                         .ui_builder()
-                        .paragraph("The Agentic Development Environment")
+                        .paragraph("The Police Constable's Development Environment")
                         .with_style(UiComponentStyles {
                             font_size: Some(14.),
                             font_family_id: Some(appearance.monospace_font_family()),

@@ -53,7 +53,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::Fuzz,
         title: "Open Automated Development",
-        description: "The Yarp repo is managed by an agent-first workflow powered by Fuzz, our cloud agent orchestration platform.",
+        description: "The Yarp repo is run PC-first, dispatched by Fuzz, our ambient officer orchestration platform.",
         inline_link: None,
     },
     FeatureItem {
@@ -207,7 +207,7 @@ impl OpenYarpLaunchModal {
 
     fn render_description(appearance: &Appearance) -> Box<dyn Element> {
         Text::new(
-            "You, our community, can participate in building Yarp using an agent-first workflow.",
+            "You, our community, can join the watch and help build Yarp PC-first.",
             appearance.ui_font_family(),
             14.,
         )

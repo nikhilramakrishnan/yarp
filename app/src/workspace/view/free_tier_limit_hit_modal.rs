@@ -269,7 +269,7 @@ impl FreeTierLimitHitModal {
                             Container::new({
                                 let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
                                     FormattedTextFragment::plain_text(
-                                        "Extended cloud agents access".to_string(),
+                                        "Extended ambient officer access".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()

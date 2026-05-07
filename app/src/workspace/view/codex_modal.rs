@@ -122,7 +122,7 @@ impl CodexModal {
 
         // Description - first paragraph
         let description_1 = FormattedTextElement::from_str(
-            "Codex is OpenAI's most advanced agentic coding model for real-world engineering.",
+            "Codex is OpenAI's most advanced coding constable for real-world engineering.",
             appearance.ui_font_family(),
             14.,
         )

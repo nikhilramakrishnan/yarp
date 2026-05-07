@@ -28,7 +28,7 @@ impl Slide for OzLaunchSlide {
     fn modal_subtext_paragraphs(&self) -> Vec<FormattedTextLine> {
         vec![FormattedTextLine::Line(vec![
             FormattedTextFragment::plain_text(
-                "Infinitely scalable coding agent — run in local sessions or in the cloud.",
+                "Infinitely scalable PC — dispatch from your desk or call up an ambient officer over the radio.",
             ),
         ])]
     }
@@ -57,31 +57,31 @@ impl Slide for OzLaunchSlide {
 
     fn display_text(&self) -> Option<&'static str> {
         Some(match self {
-            OzLaunchSlide::CloudAgents => "Cloud agents",
-            OzLaunchSlide::AgentAutomations => "Agent automations",
-            OzLaunchSlide::AgentManagement => "Agent management",
+            OzLaunchSlide::CloudAgents => "Ambient officers",
+            OzLaunchSlide::AgentAutomations => "PC automations",
+            OzLaunchSlide::AgentManagement => "Duty roster",
             OzLaunchSlide::LaunchCredits => "A little gift",
         })
     }
 
     fn short_label(&self) -> &'static str {
         match self {
-            OzLaunchSlide::CloudAgents => "Cloud agents",
-            OzLaunchSlide::AgentAutomations => "Agent automations",
-            OzLaunchSlide::AgentManagement => "Agent management",
+            OzLaunchSlide::CloudAgents => "Ambient officers",
+            OzLaunchSlide::AgentAutomations => "PC automations",
+            OzLaunchSlide::AgentManagement => "Duty roster",
             OzLaunchSlide::LaunchCredits => "Launch credits",
         }
     }
 
     fn title(&self) -> &'static str {
         match self {
-            OzLaunchSlide::CloudAgents => "Break out of your laptop with cloud agents",
+            OzLaunchSlide::CloudAgents => "Step away from the desk — ambient officers cover the patrol",
             OzLaunchSlide::AgentAutomations => {
-                "Orchestrate agents, turning Skills into automations"
+                "Run the briefing room — turn Skills into standing orders"
             }
-            OzLaunchSlide::AgentManagement => "Track local and cloud agents seamlessly",
+            OzLaunchSlide::AgentManagement => "Track every PC on the duty roster, desk and ambient",
             OzLaunchSlide::LaunchCredits => {
-                "1,000 free cloud agent credits when you upgrade to Yarp Build"
+                "1,000 free ambient officer credits when you upgrade to Yarp Build"
             }
         }
     }
@@ -93,16 +93,16 @@ impl Slide for OzLaunchSlide {
     fn content(&self) -> &'static str {
         match self {
             OzLaunchSlide::CloudAgents => {
-                "Use cloud agents to run many agents in parallel, keep agents working when you close your laptop, or start agents programmatically. Plus, you can check on their work through the web."
+                "Dispatch ambient officers to work calls in parallel, keep them on patrol after you've checked off duty, or call them up over the radio. You can listen in on the comms over the web too."
             }
             OzLaunchSlide::AgentAutomations => {
-                "Fuzz agents can be defined using the standard Skills format. You can use the built in scheduler to setup agents to run autonomously at set intervals, or use the Fuzz SDK or API to programmatically start and manage Fuzz agents."
+                "Fuzz PCs are written up using the standard Skills format. The duty scheduler can put PCs on patrol at set intervals, or you can radio them in via the Fuzz SDK or API to start and manage Fuzz PCs from anywhere."
             }
             OzLaunchSlide::AgentManagement => {
-                "View all of your agents across local and cloud sessions in the Yarp app. Join live agent sessions, continue tasks locally, and steer agents with one click."
+                "Read the whole roster — desk PCs and ambient officers — from inside Yarp. Listen in on a live shift, take the call back to your desk, or steer a PC with one click."
             }
             OzLaunchSlide::LaunchCredits => {
-                "Upgrade to Build this month and receive 1,000 extra credits to try using Fuzz. Credits are only eligible for Fuzz runs in Yarp-hosted cloud environments."
+                "Upgrade to Build this month and you'll get 1,000 extra credits to put Fuzz on patrol. Credits only count toward Fuzz shifts in Yarp-hosted environments."
             }
         }
     }
