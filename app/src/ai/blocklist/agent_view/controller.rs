@@ -24,20 +24,20 @@ use super::{DismissalStrategy, EphemeralMessage, EphemeralMessageModel};
 /// Error returned when entering the agent view fails.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
 pub enum EnterAgentViewError {
-    #[error("Already in agent mode.")]
+    #[error("Already on patrol.")]
     AlreadyInAgentView,
-    #[error("Cannot enter agent mode while a command is running.")]
+    #[error("Can't go on patrol while a command's still running.")]
     LongRunningCommand,
 }
 
 /// Error returned when exiting the agent view fails.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
 pub enum ExitAgentViewError {
-    #[error("Cannot exit agent while command is running.")]
+    #[error("Can't stand down while a command's still running.")]
     LongRunningCommand,
-    #[error("Cannot exit conversation as a viewer.")]
+    #[error("Viewers can't close out a case.")]
     ConversationViewer,
-    #[error("Cannot exit cloud agent.")]
+    #[error("Can't stand down a cloud unit.")]
     AmbientAgent,
 }
 
