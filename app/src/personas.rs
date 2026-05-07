@@ -420,6 +420,24 @@ pub(crate) fn persona_verdict_phrase(name: &str) -> &'static str {
     }
 }
 
+/// In-character "(no report)" replacement for the per-officer status line when
+/// a persona's take comes back empty. Generic `⌀ (no report)` reads as a tool
+/// failure; persona-named declination keeps the police-station character intact
+/// even when a CLI returns nothing. Single-quote-free and `%`-free so it
+/// inlines safely into the display script's bash literals and printf formats.
+pub(crate) fn persona_decline_phrase(name: &str) -> &'static str {
+    match name {
+        "claude" => "no comment",
+        "codex" => "no output",
+        "gemini" => "no consensus",
+        "Nicholas Angel" => "no comment",
+        "Danny Butterman" => "kept quiet",
+        "Doris Thatcher" => "had nowt to say",
+        "Frank Butterman" => "withheld it",
+        _ => "no report",
+    }
+}
+
 /// Display-friendly persona name. CLI binaries are stored lowercase
 /// (`claude`, `codex`) because that's how they live on the user's PATH, but
 /// alongside title-cased badge labels like `PC (Anthropic)` the lowercase

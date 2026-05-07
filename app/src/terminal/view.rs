@@ -20069,11 +20069,11 @@ impl TerminalView {
                          elif [ -z \"$take_content\" ]; then\n\
                            {err_block}\
                            if [ $elapsed -lt 3 ]; then\n\
-                             text='⌀ (no report)'\n\
+                             text='⌀ ({decline})'\n\
                            elif [ $elapsed -lt 60 ]; then\n\
-                             text=$(printf '⌀ (no report after %ss)' \"$elapsed\")\n\
+                             text=$(printf '⌀ ({decline} after %ss)' \"$elapsed\")\n\
                            else\n\
-                             text=$(printf '⌀ (no report after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                             text=$(printf '⌀ ({decline} after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
                          else\n\
@@ -20112,6 +20112,7 @@ impl TerminalView {
                         tag = crate::personas::shell_quote_one(
                             &crate::personas::persona_role_tag(&inv.persona),
                         ),
+                        decline = crate::personas::persona_decline_phrase(&inv.persona.name),
                     );
                     if std::fs::write(&display_script_path, &display_body).is_ok() {
                         #[cfg(unix)]
