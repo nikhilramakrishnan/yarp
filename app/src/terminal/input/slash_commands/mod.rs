@@ -881,7 +881,7 @@ impl Input {
                            fi; \
                          fi; \
                        fi; \
-                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;%dm%s\\033[0m\\n' 'unit' \"$color\" \"$unit_disp\"; \
+                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcurrent callsign\\033[0m\\n\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;%dm%s\\033[0m\\n' \"$color\" \"$YARP_CALLSIGN\" \"$color\" 'unit' \"$color\" \"$unit_disp\"; \
                        if [ -n \"$since_row\" ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;%dm%b\\033[0m\\n' 'since' \"$tier_icon\" \"$tier_color\" \"$since_row\"; \
                        fi; \
@@ -895,7 +895,7 @@ impl Input {
                        shopt -s nullglob; \
                        qfiles=(/tmp/yarp-radio/*.msg); \
                        qn=${#qfiles[@]}; \
-                       printf '\\033[3;38;5;179m🎖  no callsign claimed\\033[0m\\n'; \
+                       printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[2;3;38;5;179mno callsign claimed\\033[0m\\n\\n'; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;240m🎯 angel · 🦔 frank · 🍦 danny · 🤡 andy · 🚓 doris · 📻 tony\\033[0m\\n' 'examples'; \
                        if [ \"$qn\" -gt 0 ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[3;38;5;244mpending — claim a callsign first to read directs\\033[0m\\n' 'queue' \"$qn\"; \
