@@ -695,6 +695,7 @@ impl Input {
                          unset YARP_CALLSIGN; \
                          duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
                          shift_str=''; \
+                         ended_at=$(date '+%H:%M'); \
                          if [ -f \"$duty_marker\" ]; then \
                            start=$(cat \"$duty_marker\" 2>/dev/null); \
                            if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
@@ -726,7 +727,8 @@ impl Input {
                          fi; \
                          if [ -n \"$shift_str\" ]; then \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
-                         fi".to_owned()
+                         fi; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m\\n' 'ended' \"$ended_at\"".to_owned()
                     } else {
                         let cs_lower = cs.to_ascii_lowercase();
                         let cs = cs_lower.as_str();
