@@ -437,6 +437,31 @@ pub(crate) fn persona_display_name(name: &str) -> String {
     }
 }
 
+/// Short, in-character tag for a council header — the trailing italic
+/// descriptor next to the persona's badge and name. Prefers the first clause
+/// of `voice` (the in-character "how they report" sentence) over `role`,
+/// which for CLI-detected personas redundantly restates the vendor already
+/// shown in the badge ("Anthropic Claude CLI on this machine" next to a
+/// `PC (Anthropic) Claude` header reads as a typo). Falls back to the first
+/// sentence of `role` for personas without a voice. Lowercased to read as a
+/// modifier rather than a title.
+pub(crate) fn persona_role_tag(persona: &Persona) -> String {
+    fn first_clause(s: &str) -> &str {
+        let s = s.trim();
+        let cut = s
+            .find(|c: char| c == ';' || c == '.' || c == ',')
+            .unwrap_or(s.len());
+        s[..cut].trim()
+    }
+    let voice_clause = first_clause(&persona.voice);
+    let pick = if voice_clause.is_empty() {
+        first_clause(&persona.role)
+    } else {
+        voice_clause
+    };
+    pick.to_lowercase()
+}
+
 /// Promote a constable's `PC` badge to `Sgt` for the synth pass, so the lead's
 /// visible header matches the SIO role it plays in the verdict prompt instead
 /// of looking like another constable. Mirrors Nicholas Angel's rank in the

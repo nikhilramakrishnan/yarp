@@ -20110,11 +20110,7 @@ impl TerminalView {
                         ),
                         position = format!("({}/{})", idx + 1, invocations.len()),
                         tag = crate::personas::shell_quote_one(
-                            inv.persona.role
-                                .split('.')
-                                .next()
-                                .unwrap_or(&inv.persona.role)
-                                .trim(),
+                            &crate::personas::persona_role_tag(&inv.persona),
                         ),
                     );
                     if std::fs::write(&display_script_path, &display_body).is_ok() {
