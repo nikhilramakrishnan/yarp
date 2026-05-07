@@ -718,6 +718,15 @@ impl Input {
                        *) quote={q_random}; cs_avatar=''; quote_av={q_random_av}; cs_color=220 ;; \
                      esac; \
                      if [ -n \"$quote_av\" ]; then quote_prefix=\"$quote_av  \"; else quote_prefix=''; fi; \
+                     case \"$quote_av\" in \
+                       '🎯') q_color=39 ;; \
+                       '🦔') q_color=220 ;; \
+                       '🍦') q_color=213 ;; \
+                       '🤡') q_color=208 ;; \
+                       '🚓') q_color=165 ;; \
+                       '📻') q_color=226 ;; \
+                       *) q_color=244 ;; \
+                     esac; \
                      case_id=$(printf '%s' \"$ts\" | tail -c 4); \
                      printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mactive\\033[0m\\n\\n' {name}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;179m#%s\\033[0m\\n' 'case' \"$case_id\"; \
@@ -731,7 +740,7 @@ impl Input {
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[2;3;38;5;179mall units\\033[0m\\n' 'notified'; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;179mpending\\033[0m\\n' 'queue' \"$n\"; \
-                     printf '\\n  %s\\033[2;3;38;5;%dm“%s”\\033[0m\\n' \"$quote_prefix\" \"$cs_color\" \"$quote\"",
+                     printf '\\n  %s\\033[2;3;38;5;%dm“%s”\\033[0m\\n' \"$quote_prefix\" \"$q_color\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
