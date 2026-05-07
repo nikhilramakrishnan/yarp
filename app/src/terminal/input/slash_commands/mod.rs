@@ -708,7 +708,7 @@ impl Input {
                      esac; \
                      if [ -n \"$quote_av\" ]; then quote_prefix=\"$quote_av  \"; else quote_prefix=''; fi; \
                      case_id=$(printf '%s' \"$ts\" | tail -c 4); \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n' {name}; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mactive\\033[0m\\n\\n' {name}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;179m#%s\\033[0m\\n' 'case #' \"$case_id\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📂 \\033[1;38;5;220m\"%s\"\\033[0m\\n' 'tab' {tab}; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
