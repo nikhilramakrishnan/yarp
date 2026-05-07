@@ -5938,6 +5938,37 @@ impl Workspace {
         });
     }
 
+    /// Radio every other open Yarp station and bounce their dock icons —
+    /// the cross-window "look at me" poke. The currently focused window is
+    /// excluded from the flash so the sender doesn't bounce themselves.
+    fn flash_other_stations(&mut self, ctx: &mut ViewContext<Self>) {
+        let current_window_id = ctx.window_id();
+        let other_workspaces: Vec<_> = WorkspaceRegistry::as_ref(ctx)
+            .all_workspaces(ctx)
+            .into_iter()
+            .filter(|(window_id, _)| *window_id != current_window_id)
+            .collect();
+
+        let count = other_workspaces.len();
+        for (_, workspace_handle) in other_workspaces {
+            workspace_handle.update(ctx, |_, ctx| {
+                ctx.request_user_attention();
+            });
+        }
+
+        let message = if count == 0 {
+            "No other stations on duty.".to_owned()
+        } else if count == 1 {
+            "Radioed 1 other station.".to_owned()
+        } else {
+            format!("Radioed {count} other stations.")
+        };
+
+        self.toast_stack.update(ctx, |toast_stack, ctx| {
+            toast_stack.add_ephemeral_toast(DismissibleToast::default(message), ctx);
+        });
+    }
+
     #[cfg(not(target_family = "wasm"))]
     fn view_logs(&mut self, ctx: &mut ViewContext<Self>) {
         ctx.spawn(
@@ -19943,6 +19974,7 @@ impl TypedActionView for Workspace {
             ViewLatestChangelog => self.view_latest_changelog(ctx),
             ViewPrivacyPolicy => self.view_privacy_policy(ctx),
             SendFeedback => self.send_feedback(ctx),
+            FlashOtherStations => self.flash_other_stations(ctx),
             #[cfg(not(target_family = "wasm"))]
             ViewLogs => self.view_logs(ctx),
             ChangeCursor(cursor) => self.change_cursor(*cursor, ctx),

@@ -195,6 +195,9 @@ pub enum WorkspaceAction {
     ViewLatestChangelog,
     ViewPrivacyPolicy,
     SendFeedback,
+    /// Radio every other open Yarp station and bounce their dock icons —
+    /// the cross-window "look at me" poke.
+    FlashOtherStations,
     /// Open the log directory in the system file explorer with the current log file selected.
     #[cfg(not(target_family = "wasm"))]
     ViewLogs,
@@ -778,6 +781,7 @@ impl WorkspaceAction {
             | ViewLatestChangelog
             | ViewPrivacyPolicy
             | SendFeedback
+            | FlashOtherStations
             | ChangeCursor(_)
             | ToggleBlockSnackbar
             | ToggleErrorUnderlining
