@@ -20279,6 +20279,7 @@ impl TerminalView {
                                printf '\\033[38;5;220m\\033[1mVERDICT\\033[22m\\033[0m\\n'\n\
                              fi\n\
                              printf '{color}%s\\033[0m {spin_color}%s\\033[0m \\033[3;38;5;240m· SIO\\033[0m\\n' {badge} {name}\n\
+                             printf '  \\033[3;38;5;244m{framing}\\033[0m\\n'\n\
                              total=$(ls -1 {work_dir_q}/*.bg 2>/dev/null | wc -l | tr -d ' ')\n\
                              reported=$(grep -l '[^[:space:]]' {work_dir_q}/*.out 2>/dev/null | wc -l | tr -d ' ')\n\
                              if [ \"$total\" -gt 0 ] && [ \"$reported\" -lt \"$total\" ]; then\n\
@@ -20419,6 +20420,7 @@ impl TerminalView {
                                 &crate::personas::persona_display_name(&lead_persona.name),
                             ),
                             verdict_phrase = crate::personas::persona_verdict_phrase(&lead_persona.name),
+                            framing = crate::personas::persona_sio_framing(&lead_persona.name),
                         );
                         // Best-effort write; if it fails, fall through to
                         // the no-synth path below so the council still

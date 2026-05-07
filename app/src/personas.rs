@@ -475,6 +475,26 @@ pub(crate) fn persona_crash_phrase(name: &str) -> &'static str {
     }
 }
 
+/// One-line in-character framing the SIO speaks just under the verdict
+/// header, before the synth spinner kicks in. Without it the verdict block
+/// jumps from the `Sgt Nicholas Angel · SIO` header straight into the
+/// spinner's `weighing the evidence…` — the framing line gives the lead a
+/// moment of voice, anchoring the synth output as theirs. Same single-
+/// quote-free / `%`-free contract as the other phrase helpers because it
+/// inlines into the same display script's bash literals.
+pub(crate) fn persona_sio_framing(name: &str) -> &'static str {
+    match name {
+        "claude" => "Reviewing the takes.",
+        "codex" => "Synthesising the council.",
+        "gemini" => "Aggregating the views.",
+        "Nicholas Angel" => "Right. Reviewing the evidence.",
+        "Danny Butterman" => "Alright, having a butchers.",
+        "Doris Thatcher" => "Right then, let me see.",
+        "Frank Butterman" => "Quite. Reviewing the case.",
+        _ => "Reviewing the evidence.",
+    }
+}
+
 /// Display-friendly persona name. CLI binaries are stored lowercase
 /// (`claude`, `codex`) because that's how they live on the user's PATH, but
 /// alongside title-cased badge labels like `PC (Anthropic)` the lowercase
