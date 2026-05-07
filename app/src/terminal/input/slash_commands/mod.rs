@@ -641,13 +641,16 @@ impl Input {
                      }} > \"$file\"; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
-                       nicholas|angel) quote={q_angel} ;; \
-                       frank|butterman.snr) quote={q_frank} ;; \
-                       danny|butterman) quote={q_danny} ;; \
-                       andy|wainwright|cartwright) quote={q_andy} ;; \
-                       *) quote={q_random} ;; \
+                       nicholas|angel) quote={q_angel}; cs_avatar='🎯' ;; \
+                       frank|butterman.snr) quote={q_frank}; cs_avatar='🦔' ;; \
+                       danny|butterman) quote={q_danny}; cs_avatar='🍦' ;; \
+                       andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡' ;; \
+                       *) quote={q_random}; cs_avatar='' ;; \
                      esac; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$quote\"",
+                     if [ -n \"${{YARP_CALLSIGN:-}}\" ] && [ -n \"$cs_avatar\" ]; then filed_by=\"filed by $cs_avatar @${{YARP_CALLSIGN}} — \"; \
+                     elif [ -n \"${{YARP_CALLSIGN:-}}\" ]; then filed_by=\"filed by @${{YARP_CALLSIGN}} — \"; \
+                     else filed_by=''; fi; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244m%sall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$filed_by\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
