@@ -11551,11 +11551,11 @@ impl TerminalView {
                     .map(|state| match state {
                         RemoteServerSetupState::Installing {
                             progress_percent: Some(p),
-                        } => format!("Installing... ({p}%)"),
+                        } => format!("Issuing kit... ({p}%)"),
                         RemoteServerSetupState::Installing {
                             progress_percent: None,
-                        } => "Installing...".to_string(),
-                        RemoteServerSetupState::Initializing => "Initializing...".to_string(),
+                        } => "Issuing kit...".to_string(),
+                        RemoteServerSetupState::Initializing => "Reporting for duty...".to_string(),
                         _ => "Bringing the unit online...".to_string(),
                     })
             })

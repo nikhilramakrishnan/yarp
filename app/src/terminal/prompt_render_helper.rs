@@ -256,11 +256,11 @@ impl PromptRenderHelper {
                     RemoteServerSetupState::Checking => "Bringing the unit online...".to_string(),
                     RemoteServerSetupState::Installing {
                         progress_percent: Some(p),
-                    } => format!("Installing Yarp SSH tools... ({p}%)"),
+                    } => format!("Issuing Yarp SSH kit... ({p}%)"),
                     RemoteServerSetupState::Installing {
                         progress_percent: None,
-                    } => "Installing Yarp SSH tools...".to_string(),
-                    RemoteServerSetupState::Initializing => "Initializing...".to_string(),
+                    } => "Issuing Yarp SSH kit...".to_string(),
+                    RemoteServerSetupState::Initializing => "Reporting for duty...".to_string(),
                     RemoteServerSetupState::Ready => "Bringing the unit online...".to_string(),
                     RemoteServerSetupState::Failed { .. } => "Bringing the unit online...".to_string(),
                 };
@@ -432,7 +432,7 @@ impl PromptRenderHelper {
             let prompt = PromptAndPadding {
                 element: PromptAndPaddingElement::Text(Box::new(
                     Text::new_inline(
-                        "Loading prompt...",
+                        "Cueing the prompt...",
                         appearance.monospace_font_family(),
                         appearance.monospace_font_size(),
                     )
