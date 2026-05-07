@@ -365,9 +365,9 @@ impl AgentInputFooter {
                 })
         });
         let rich_input_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("Rich Input", AgentInputButtonTheme)
+            ActionButton::new("Notebook", AgentInputButtonTheme)
                 .with_icon(Icon::TextInput)
-                .with_tooltip("Open Rich Input")
+                .with_tooltip("Open notebook")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_keybinding(
@@ -419,7 +419,7 @@ impl AgentInputFooter {
         });
 
         let update_plugin_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Update Yarp plugin", InstallPluginButtonTheme)
+            ActionButton::new("Reissue Yarp plugin", InstallPluginButtonTheme)
                 .with_icon(Icon::Download)
                 .with_tooltip("New issue of the Yarp plugin is in")
                 .with_size(cli_button_size)
@@ -524,8 +524,8 @@ impl AgentInputFooter {
                 let is_open = matches!(new_input_state, CLIAgentInputState::Open { .. });
                 me.rich_input_button.update(ctx, |button, ctx| {
                     if is_open {
-                        button.set_label("Hide Rich Input", ctx);
-                        button.set_tooltip(Some("Hide Rich Input"), ctx);
+                        button.set_label("Stash notebook", ctx);
+                        button.set_tooltip(Some("Stash notebook"), ctx);
                         button.set_keybinding(
                             Some(KeystrokeSource::Binding(
                                 OPEN_CLI_AGENT_RICH_INPUT_KEYBINDING,
@@ -533,8 +533,8 @@ impl AgentInputFooter {
                             ctx,
                         );
                     } else {
-                        button.set_label("Rich Input", ctx);
-                        button.set_tooltip(Some("Open Rich Input"), ctx);
+                        button.set_label("Notebook", ctx);
+                        button.set_tooltip(Some("Open notebook"), ctx);
                         button.set_keybinding(
                             Some(KeystrokeSource::Binding(
                                 OPEN_CLI_AGENT_RICH_INPUT_KEYBINDING,
@@ -1045,7 +1045,7 @@ impl AgentInputFooter {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             toast_stack.add_ephemeral_toast(
                 DismissibleToast::error(
-                    "Auto-install of the plugin didn't take. \
+                    "Couldn't book the plugin in automatically. \
                      Click the chip again for the manual procedure."
                         .to_owned(),
                 ),

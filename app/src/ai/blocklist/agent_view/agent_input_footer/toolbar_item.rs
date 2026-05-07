@@ -116,7 +116,7 @@ impl AgentToolbarItemKind {
             Self::FileAttach => "Attach File",
             Self::ContextWindowUsage => "Context Usage",
             Self::FileExplorer => "File Explorer",
-            Self::RichInput => "Rich Input",
+            Self::RichInput => "Notebook",
             Self::ShareSession => "/remote-control",
             Self::Settings => "Settings",
             Self::FastForwardToggle => "Fast Forward",
