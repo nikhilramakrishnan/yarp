@@ -591,10 +591,35 @@ impl Input {
                     if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
                         "unset YARP_CALLSIGN; printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'".to_owned()
                     } else {
+                        let roster = crate::personas::Roster::load()
+                            .unwrap_or_else(crate::personas::Roster::default_sandford);
+                        let persona = roster
+                            .default_team()
+                            .and_then(|t| t.members.iter()
+                                .find(|p| p.name.eq_ignore_ascii_case(cs)));
+                        let persona_lines = if let Some(p) = persona {
+                            let role = p.role.split('.').next().unwrap_or(&p.role).trim();
+                            let lead_tag = if p.lead {
+                                " \\033[3;38;5;220m⭐ lead\\033[0m"
+                            } else {
+                                ""
+                            };
+                            format!(
+                                "; printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;220m%s\\033[0m \\033[1;38;5;178m%s\\033[0m{lead_tag}\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' 'persona' {badge} {name} 'role' {role}",
+                                badge = crate::personas::shell_quote_one(&p.badge),
+                                name = crate::personas::shell_quote_one(&p.name),
+                                role = crate::personas::shell_quote_one(role),
+                                lead_tag = lead_tag,
+                            )
+                        } else {
+                            String::new()
+                        };
                         format!(
                             "export YARP_CALLSIGN={cs}; \
-                             printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n  \\033[3;38;5;244m/inbox will now flag traffic addressed to @%s as DIRECT\\033[0m\\n' 'unit' {cs} {cs}",
+                             printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n' 'unit' {cs}{persona_lines}; \
+                             printf '  \\033[3;38;5;244m/inbox will flag traffic addressed to @%s as DIRECT\\033[0m\\n' {cs}",
                             cs = crate::personas::shell_quote_one(cs),
+                            persona_lines = persona_lines,
                         )
                     }
                 } else {
