@@ -487,7 +487,18 @@ impl Input {
                        printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → @%s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" \"$target\" {body}; \
                      else \
                        printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" {body}; \
-                     fi",
+                     fi; \
+                     cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
+                     case \"$cs_lc\" in \
+                       nicholas|angel) signoff='Have a nice evening.' ;; \
+                       danny|butterman) signoff='Yarp.' ;; \
+                       doris|thatcher) signoff='Out.' ;; \
+                       frank|butterman.snr) signoff='The greater good.' ;; \
+                       andy|wainwright|cartwright) signoff='Crusty Jugglers.' ;; \
+                       tony) signoff='Yarp.' ;; \
+                       *) signoff='10-4.' ;; \
+                     esac; \
+                     printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"$signoff\"",
                     target = crate::personas::shell_quote_one(target),
                     body = crate::personas::shell_quote_one(message),
                 );
