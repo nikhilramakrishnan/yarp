@@ -1214,7 +1214,7 @@ impl Input {
                           fi; \
                         done; \
                         if [ \"$removed\" -eq 0 ]; then \
-                          printf '\\033[3;38;5;244m📻 INBOX  nothing to clear\\033[0m\\n'; \
+                          printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[2;3;38;5;179mnothing to clear\\033[0m\\n'; \
                           empty_flavors=(\"All quiet on the western front. — Frank\" \"Already shipshape. — Nicholas\" \"Pub? — Danny\" \"Perfectly innocent explanation. — Angel\"); \
                           printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${empty_flavors[$((RANDOM % ${#empty_flavors[@]}))]}\"; \
                         else \
