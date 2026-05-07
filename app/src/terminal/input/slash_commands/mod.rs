@@ -767,7 +767,29 @@ impl Input {
                          tony) av='📻' ;; \
                        esac; \
                        if [ -n \"$av\" ]; then unit_disp=\"$av @$YARP_CALLSIGN\"; else unit_disp=\"@$YARP_CALLSIGN\"; fi; \
-                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n' 'unit' \"$unit_disp\"; \
+                       since_row=''; \
+                       duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
+                       if [ -f \"$duty_marker\" ]; then \
+                         start=$(cat \"$duty_marker\" 2>/dev/null); \
+                         if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
+                           now=$(date +%s); \
+                           elapsed=$((now - start)); \
+                           hh=$((elapsed / 3600)); mm=$(((elapsed % 3600) / 60)); \
+                           when=$(date -r \"$start\" '+%H:%M' 2>/dev/null || echo '—'); \
+                           if [ $hh -gt 0 ]; then \
+                             since_row=$(printf '%s \\033[2;38;5;240m(%dh %02dm)\\033[0m' \"$when\" $hh $mm); \
+                           elif [ $mm -gt 0 ]; then \
+                             since_row=$(printf '%s \\033[2;38;5;240m(%dm)\\033[0m' \"$when\" $mm); \
+                           else \
+                             since_row=$(printf '%s \\033[2;38;5;240m(just now)\\033[0m' \"$when\"); \
+                           fi; \
+                         fi; \
+                       fi; \
+                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'unit' \"$unit_disp\"; \
+                       if [ -n \"$since_row\" ]; then \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_row\"; \
+                       fi; \
+                       printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
                      else \
                        printf '\\033[3;38;5;179m🎖  no callsign claimed\\033[0m\\n  \\033[3;38;5;244m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
                      fi"
