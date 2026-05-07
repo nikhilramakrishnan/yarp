@@ -49,7 +49,7 @@ fn test_prompt_context_menu_items_shared_session_viewer_no_edit_prompt() {
             // Edit prompt (disabled for shared-session viewers)
             assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
             assert!(items[1].is_separator());
-            assert_eq!(items[2].fields().unwrap().label(), "Edit prompt");
+            assert_eq!(items[2].fields().unwrap().label(), "Reissue the prompt");
             assert!(items[2].fields().unwrap().is_disabled());
         });
     })

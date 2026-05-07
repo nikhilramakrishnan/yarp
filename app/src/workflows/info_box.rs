@@ -253,9 +253,9 @@ impl WorkflowsMoreInfoView {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let label = if cloud_workflow.model().data.is_agent_mode_workflow() {
-            "Edit prompt"
+            "Reissue the prompt"
         } else {
-            "Edit workflow"
+            "Reissue the workflow"
         };
         let workflow = cloud_workflow.clone();
         render_hoverable_card_button(

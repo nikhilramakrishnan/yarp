@@ -2718,7 +2718,7 @@ fn test_prompt_context_menu_items_for_ps1() {
             assert_eq!(len, 3);
             assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
             assert!(items[1].is_separator());
-            assert_eq!(items[2].fields().unwrap().label(), "Edit prompt");
+            assert_eq!(items[2].fields().unwrap().label(), "Reissue the prompt");
             assert!(!items[2].fields().unwrap().is_disabled());
         });
     })
@@ -2779,7 +2779,7 @@ fn test_prompt_context_menu_items_for_context_chips() {
                 "Copy Time (12-hour format)"
             );
             assert!(items[3].is_separator());
-            assert_eq!(items[4].fields().unwrap().label(), "Edit prompt");
+            assert_eq!(items[4].fields().unwrap().label(), "Reissue the prompt");
             assert!(!items[4].fields().unwrap().is_disabled());
         });
     })
@@ -2818,7 +2818,7 @@ fn test_prompt_context_menu_items_for_no_context_chips() {
             // Edit prompt
             assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
             assert!(items[1].is_separator());
-            assert_eq!(items[2].fields().unwrap().label(), "Edit prompt");
+            assert_eq!(items[2].fields().unwrap().label(), "Reissue the prompt");
             assert!(!items[2].fields().unwrap().is_disabled());
         });
     })
@@ -2854,7 +2854,7 @@ fn test_prompt_context_menu_items_for_agent_toolbelt_flag() {
                     .filter_map(|item| item.fields().map(|fields| fields.label()))
                     .collect::<Vec<_>>();
 
-                assert!(!labels.contains(&"Edit prompt"));
+                assert!(!labels.contains(&"Reissue the prompt"));
                 assert!(!labels.contains(&"Reissue the duty kit"));
             });
         }
@@ -2867,7 +2867,7 @@ fn test_prompt_context_menu_items_for_agent_toolbelt_flag() {
                     .iter()
                     .filter_map(|item| item.fields().map(|fields| fields.label()))
                     .collect::<Vec<_>>();
-                assert!(!labels.contains(&"Edit prompt"));
+                assert!(!labels.contains(&"Reissue the prompt"));
                 assert!(labels.contains(&"Reissue the duty kit"));
             });
         }

@@ -56,10 +56,10 @@ const DROPDOWN_WIDTH: f32 = 72.;
 const MODAL_CONTENT_FONT_SIZE: f32 = 14.;
 const CHECKBOX_SIZE: f32 = 16.;
 
-const MODAL_TITLE: &str = "Edit prompt";
+const MODAL_TITLE: &str = "Reissue the prompt";
 const YARP_PROMPT_SECTION_HEADER: &str = "Yarp terminal prompt";
 const SHELL_PROMPT_SECTION_HEADER: &str = "Shell prompt (PS1)";
-const RESTORE_DEFAULT_BUTTON: &str = "Restore default";
+const RESTORE_DEFAULT_BUTTON: &str = "Back to standard issue";
 
 pub fn init(app: &mut AppContext) {
     use yarpui::keymap::macros::*;
@@ -799,7 +799,7 @@ impl EditorModal {
             || (matches!(self.prompt_type, PromptType::Yarp)
                 && self.chip_configurator.used_chips.is_empty());
         let save_button = self.render_primary_button(
-            "Save changes".to_string(),
+            "File changes".to_string(),
             ButtonVariant::Accent,
             save_disabled,
             self.mouse_state_handles.save_button_handle.clone(),
