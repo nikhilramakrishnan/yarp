@@ -235,18 +235,18 @@ fn map_conversation_status(
                 Some(error) => classify_renderable_error(error),
                 None => (
                     AgentTaskState::Error,
-                    Some(TaskStatusUpdate::message("Agent encountered an error")),
+                    Some(TaskStatusUpdate::message("The PC ran into trouble")),
                 ),
             }
         }
         ConversationStatus::Cancelled => (
             AgentTaskState::Cancelled,
-            Some(TaskStatusUpdate::message("Cancelled by user")),
+            Some(TaskStatusUpdate::message("Stood down by you")),
         ),
         ConversationStatus::Blocked { blocked_action } => (
             AgentTaskState::Blocked,
             Some(TaskStatusUpdate::message(format!(
-                "The agent got stuck waiting for user confirmation on the action: {blocked_action}"
+                "The PC's flagging for sign-off on: {blocked_action}"
             ))),
         ),
     }

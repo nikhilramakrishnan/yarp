@@ -1023,9 +1023,9 @@ fn exit_confirmation_message(
                 ..Default::default()
             },
             if should_stop_and_exit {
-                "again to stop and exit"
+                "again to stand down and clock off"
             } else {
-                "again to exit"
+                "again to clock off"
             },
         ),
         ExitConfirmationTrigger::CtrlC => (
@@ -1034,7 +1034,7 @@ fn exit_confirmation_message(
                 ctrl: true,
                 ..Default::default()
             },
-            "again to exit",
+            "again to clock off",
         ),
     };
 

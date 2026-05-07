@@ -189,12 +189,12 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
         // --- Cancellation / Blocked (no error code) ---
         AgentDriverError::ConversationCancelled { .. } => (
             AgentTaskState::Cancelled,
-            TaskStatusUpdate::message("Task cancelled."),
+            TaskStatusUpdate::message("Case stood down."),
         ),
         AgentDriverError::ConversationBlocked { blocked_action } => (
             AgentTaskState::Blocked,
             TaskStatusUpdate::message(format!(
-                "The agent got stuck waiting for user confirmation on the action: {blocked_action}"
+                "The PC's flagging for sign-off on: {blocked_action}"
             )),
         ),
 
