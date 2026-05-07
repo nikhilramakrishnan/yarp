@@ -851,7 +851,9 @@ impl Input {
                         fi; \
                       done; \
                       ordered=(\"${direct_q[@]}\" \"${broadcast_q[@]}\" \"${relay_q[@]}\"); \
+                      idx=0; \
                       for f in \"${ordered[@]}\"; do \
+                        idx=$((idx+1)); \
                         base=$(basename \"$f\" .msg); \
                         ts=${base%%-*}; \
                         ts_s=$((ts / 1000)); \
@@ -885,7 +887,7 @@ impl Input {
                           body_color='\\033[38;5;178m'; \
                           tag=''; \
                         fi; \
-                        printf '  %b\\033[2;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$badge\" \"$human\" \"$sender_color\" \"$sender\" \"$tag\"; \
+                        printf '  \\033[2;38;5;240m%2d\\033[0m %b\\033[2;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
