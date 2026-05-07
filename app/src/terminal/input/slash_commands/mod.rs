@@ -675,10 +675,16 @@ impl Input {
                     "user=\"${{USER:-unknown}}\"; \
                      host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
                      cwd=\"$(pwd)\"; \
+                     callsign=\"${{YARP_CALLSIGN:-}}\"; \
                      shopt -s nullglob; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[3;38;5;244m%s station\\033[0m\\n\\n' {team}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     if [ -n \"$callsign\" ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mon duty\\033[0m\\n' 'callsign' \"$callsign\"; \
+                     else \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244munclaimed — /duty <name> to claim\\033[0m\\n' 'callsign'; \
+                     fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
