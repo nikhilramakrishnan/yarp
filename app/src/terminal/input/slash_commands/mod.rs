@@ -440,24 +440,49 @@ impl Input {
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(name.to_owned()));
             }
             radio if command.name == commands::RADIO.name => {
-                let Some(message) = argument
+                let Some(raw) = argument
                     .map(|a| a.trim())
                     .filter(|a| !a.is_empty())
                 else {
                     show_error_toast(
-                        "Please provide a message: /radio <message>".to_owned(),
+                        "Please provide a message: /radio [@unit] <message>".to_owned(),
                         ctx,
                     );
                     return true;
                 };
+                let (target, message) = match raw.strip_prefix('@') {
+                    Some(rest) => match rest.split_once(char::is_whitespace) {
+                        Some((t, body)) => (t.trim(), body.trim()),
+                        None => (rest.trim(), ""),
+                    },
+                    None => ("", raw),
+                };
+                if message.is_empty() {
+                    show_error_toast(
+                        "Please provide a message body: /radio @unit <message>".to_owned(),
+                        ctx,
+                    );
+                    return true;
+                }
                 let cmd = format!(
                     "mkdir -p /tmp/yarp-radio; \
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
                      [ -z \"$ts\" ] && ts=$(date +%s)000; \
                      file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
                      sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
-                     {{ printf 'from: %s\\n\\n' \"$sender\"; printf '%s' {body}; }} > \"$file\"; \
-                     printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" {body}",
+                     target={target}; \
+                     {{ \
+                       printf 'from: %s\\n' \"$sender\"; \
+                       [ -n \"$target\" ] && printf 'to: %s\\n' \"$target\"; \
+                       printf '\\n'; \
+                       printf '%s' {body}; \
+                     }} > \"$file\"; \
+                     if [ -n \"$target\" ]; then \
+                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → @%s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" \"$target\" {body}; \
+                     else \
+                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" {body}; \
+                     fi",
+                    target = crate::personas::shell_quote_one(target),
                     body = crate::personas::shell_quote_one(message),
                 );
                 self.try_execute_command(&cmd, ctx);
@@ -465,6 +490,8 @@ impl Input {
             inbox if command.name == commands::INBOX.name => {
                 let cmd = "shopt -s nullglob; \
                     files=(/tmp/yarp-radio/*.msg); \
+                    me_user=\"${USER:-unknown}\"; \
+                    me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
                     if [ ${#files[@]} -eq 0 ]; then \
                       printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
                     else \
@@ -476,13 +503,34 @@ impl Input {
                         pid=${rest%%-*}; \
                         ts_s=$((ts / 1000)); \
                         human=$(date -r \"$ts_s\" '+%H:%M:%S' 2>/dev/null || echo \"$ts\"); \
-                        line1=$(head -1 \"$f\" 2>/dev/null); \
-                        case \"$line1\" in \
-                          from:*) sender=\"${line1#from: }\"; tail_n=3 ;; \
-                          *)      sender=\"unknown\";          tail_n=1 ;; \
-                        esac; \
-                        printf '  \\033[2;38;5;244m[%s pid=%s]\\033[0m \\033[1;38;5;220m%s\\033[0m\\n' \"$human\" \"$pid\" \"$sender\"; \
-                        tail -n +$tail_n \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    \\033[38;5;178m%s\\033[0m\\n' \"$line\"; done; \
+                        sender=\"unknown\"; target=\"\"; body_start=1; \
+                        while IFS= read -r line; do \
+                          case \"$line\" in \
+                            from:*) sender=\"${line#from: }\"; body_start=$((body_start+1));; \
+                            to:*)   target=\"${line#to: }\";   body_start=$((body_start+1));; \
+                            \"\")    body_start=$((body_start+1)); break;; \
+                            *)      break;; \
+                          esac; \
+                        done < \"$f\"; \
+                        if [ -n \"$target\" ]; then \
+                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ]; then \
+                            badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; \
+                            sender_color='\\033[1;38;5;35m'; \
+                            body_color='\\033[38;5;179m'; \
+                          else \
+                            badge='\\033[2;38;5;240m▸ relay  \\033[0m '; \
+                            sender_color='\\033[2;38;5;240m'; \
+                            body_color='\\033[2;38;5;240m'; \
+                          fi; \
+                          tag=\" → @${target}\"; \
+                        else \
+                          badge='\\033[1;38;5;220m📻 ALL   \\033[0m '; \
+                          sender_color='\\033[1;38;5;220m'; \
+                          body_color='\\033[38;5;178m'; \
+                          tag=''; \
+                        fi; \
+                        printf '  %b\\033[2;38;5;244m[%s pid=%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$badge\" \"$human\" \"$pid\" \"$sender_color\" \"$sender\" \"$tag\"; \
+                        tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         rm -f \"$f\"; \
                         echo; \
                       done; \
