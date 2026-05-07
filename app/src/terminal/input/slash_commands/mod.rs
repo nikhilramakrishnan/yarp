@@ -505,7 +505,9 @@ impl Input {
                 };
                 let count = team.members.len();
                 let header = format!(
-                    "printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[3;38;5;244m%s — %d \
+                    "shopt -s nullglob; \
+                     yarp_msgs=(/tmp/yarp-radio/*.msg); \
+                     printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[3;38;5;244m%s — %d \
                      personas\\033[0m\\n\\n' {team} {count}; ",
                     team = crate::personas::shell_quote_one(&team.name),
                     count = count,
@@ -532,9 +534,20 @@ impl Input {
                     };
                     let name_lc = p.name.to_ascii_lowercase();
                     let line = format!(
-                        "you=''; if [ \"${{YARP_CALLSIGN:-}}\" = {name_lc} ]; then you=' \\033[1;38;5;35m← you\\033[0m'; fi; \
+                        "mail=0; \
+                         if [ ${{#yarp_msgs[@]}} -gt 0 ]; then \
+                           for f in \"${{yarp_msgs[@]}}\"; do \
+                             t=$(awk '/^to: /{{sub(/^to: /,\"\"); print; exit}}' \"$f\" 2>/dev/null); \
+                             [ -z \"$t\" ] && continue; \
+                             t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                             [ \"$t_lc\" = {name_lc} ] && mail=$((mail+1)); \
+                           done; \
+                         fi; \
+                         mail_tag=''; \
+                         [ \"$mail\" -gt 0 ] && mail_tag=$(printf ' \\033[1;38;5;35m📬 %d\\033[0m' \"$mail\"); \
+                         you=''; if [ \"${{YARP_CALLSIGN:-}}\" = {name_lc} ]; then you=' \\033[1;38;5;35m← you\\033[0m'; fi; \
                          printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
-                         \\033[3;38;5;244m%s\\033[0m{lead_tag}%s\\n' {badge} {name} {role} \"$you\"; ",
+                         \\033[3;38;5;244m%s\\033[0m{lead_tag}%s%s\\n' {badge} {name} {role} \"$mail_tag\" \"$you\"; ",
                         badge_color = badge_color,
                         name_color = name_color,
                         lead_tag = lead_tag,
