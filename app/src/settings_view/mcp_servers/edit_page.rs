@@ -538,12 +538,12 @@ impl MCPServersEditPageView {
             let window_id = ctx.window_id();
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 toast_stack.add_ephemeral_toast(
-                    DismissibleToast::error("This MCP server contains secrets. Visit Settings > Privacy to modify your secret redaction settings.".to_string()),
+                    DismissibleToast::error("There's classified info in this MCP server. Head to Standing Orders > Privacy to adjust redaction.".to_string()),
                     window_id,
                     ctx,
                 );
             });
-            return Err("This MCP server contains secrets. Visit Settings > Privacy to modify your secret redaction settings.".to_string());
+            return Err("There's classified info in this MCP server. Head to Standing Orders > Privacy to adjust redaction.".to_string());
         }
 
         Ok(())
@@ -598,13 +598,13 @@ impl MCPServersEditPageView {
             let window_id = ctx.window_id();
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 toast_stack.add_ephemeral_toast(
-                    DismissibleToast::error("No MCP Server specified.".to_string()),
+                    DismissibleToast::error("No MCP server on the call sheet.".to_string()),
                     window_id,
                     ctx,
                 );
             });
 
-            return Err("No MCP Server specified.".to_string());
+            return Err("No MCP server on the call sheet.".to_string());
         }
 
         if parsed_templatable_mcp_servers.len() > 1 {
@@ -612,7 +612,7 @@ impl MCPServersEditPageView {
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 toast_stack.add_ephemeral_toast(
                     DismissibleToast::error(
-                        "Cannot add multiple MCP servers while editing a single server."
+                        "One server at a time, sergeant — you're already editing one."
                             .to_string(),
                     ),
                     window_id,
@@ -621,7 +621,7 @@ impl MCPServersEditPageView {
             });
 
             return Err(
-                "Cannot add multiple MCP servers while editing a single server.".to_string(),
+                "One server at a time, sergeant — you're already editing one.".to_string(),
             );
         }
 
@@ -895,7 +895,7 @@ impl TypedActionView for MCPServersEditPageView {
                         let window_id = ctx.window_id();
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
-                                DismissibleToast::error("No MCP Server specified.".to_string()),
+                                DismissibleToast::error("No MCP server on the call sheet.".to_string()),
                                 window_id,
                                 ctx,
                             );

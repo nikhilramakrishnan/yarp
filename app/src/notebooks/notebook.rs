@@ -823,7 +823,7 @@ impl NotebookView {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(
-                            "This notebook cannot be saved because its content contains secrets"
+                            "Can't file this casebook — there's classified info in the body."
                                 .to_string(),
                         ),
                         window_id,
@@ -1751,7 +1751,7 @@ impl NotebookView {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(
-                            "This notebook cannot be saved because its title contains secrets"
+                            "Can't file this casebook — there's classified info in the title."
                                 .to_string(),
                         ),
                         window_id,
