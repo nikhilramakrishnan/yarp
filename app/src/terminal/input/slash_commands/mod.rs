@@ -1066,7 +1066,7 @@ impl Input {
                           printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${empty_flavors[$((RANDOM % ${#empty_flavors[@]}))]}\"; \
                         else \
                           printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[38;5;179mqueue cleared\\033[0m \\033[2;38;5;240m· %d transmission(s) discarded\\033[0m\\n' \"$removed\"; \
-                          done_flavors=(\"Right then, sorted. — Frank\" \"Paperwork: tidy. — Nicholas\" \"By the power of Greyskull. — Danny\" \"Crusty Jugglers. — Andy\"); \
+                          done_flavors=(\"Right then, sorted. — Frank\" \"Paperwork: tidy. — Nicholas\" \"By the power of Greyskull. — Danny\" \"Crusty Jugglers. — Andy\" \"Yarp. — Tony\"); \
                           printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${done_flavors[$((RANDOM % ${#done_flavors[@]}))]}\"; \
                         fi";
                     self.try_execute_command(clear_cmd, ctx);
