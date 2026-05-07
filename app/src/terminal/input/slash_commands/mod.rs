@@ -815,6 +815,7 @@ impl Input {
                     ("doris", "Off home, then. — Doris"),
                     ("doris", "Mind how you go. — Doris"),
                     ("tony", "Yarp. — Tony"),
+                    ("tony", "Narp. — Tony"),
                     ("any", "Yarp. — Michael"),
                     ("any", "The greater good. — The NWA"),
                 ];
