@@ -816,8 +816,8 @@ impl Input {
                     ("doris", "Mind how you go. — Doris"),
                     ("tony", "Yarp. — Tony"),
                     ("tony", "Narp. — Tony"),
-                    ("any", "Yarp. — Michael"),
                     ("any", "The greater good. — The NWA"),
+                    ("any", "Punish the bad. Promote the good. — The NWA"),
                 ];
                 let nanos = {
                     use std::time::{SystemTime, UNIX_EPOCH};
@@ -932,7 +932,7 @@ impl Input {
                     "He's not Judge Judy and Executioner. — Andy",
                     "It's not Sunday, the gun shop's shut. — Angel",
                     "The greater good. — The NWA",
-                    "Yarp. — Michael",
+                    "Yarp. — Tony",
                     "Narp. — Tony",
                     "Yeah, but he gets to ride the horse. — Doris",
                     "Forget it, Nicholas, it's Sandford. — Frank",
