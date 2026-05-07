@@ -177,9 +177,9 @@ pub enum ChangelogHeader {
 impl fmt::Display for ChangelogHeader {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            ChangelogHeader::NewFeatures => write!(f, "New features"),
-            ChangelogHeader::Improvements => write!(f, "Improvements"),
-            ChangelogHeader::BugFixes => write!(f, "Bug fixes"),
+            ChangelogHeader::NewFeatures => write!(f, "Fresh kit"),
+            ChangelogHeader::Improvements => write!(f, "Sharper kit"),
+            ChangelogHeader::BugFixes => write!(f, "Patched up"),
         }
     }
 }

@@ -467,9 +467,9 @@ impl LoginSlideView {
 
         let is_terminal = matches!(self.intention, OnboardingIntention::Terminal);
         let title_text = if is_terminal {
-            "Get started with Yarp Drive"
+            "Sign on for the Yarp Drive beat"
         } else {
-            "Get started with AI"
+            "Sign on for AI duty"
         };
         let title = FormattedTextElement::from_str(title_text, appearance.ui_font_family(), 36.)
             .with_color(internal_colors::text_main(
@@ -660,7 +660,7 @@ impl LoginSlideView {
         };
 
         let title = FormattedTextElement::from_str(
-            "Sign in on your browser to continue",
+            "Hop over to your browser to sign on",
             appearance.ui_font_family(),
             36.,
         )
