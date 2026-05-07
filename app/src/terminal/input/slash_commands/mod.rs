@@ -1057,16 +1057,16 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;220m%s\\033[0m\\033[2;38;5;244m@\\033[0m\\033[1;38;5;220m%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      if [ -n \"$callsign\" ]; then \
                        cs_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
-                       sit_av=''; \
+                       sit_av=''; sit_color=220; \
                        case \"$cs_lc\" in \
-                         nicholas|angel) sit_av='🎯 ' ;; \
-                         frank|butterman.snr) sit_av='🦔 ' ;; \
-                         danny|butterman) sit_av='🍦 ' ;; \
-                         andy|wainwright|cartwright) sit_av='🤡 ' ;; \
-                         doris|thatcher) sit_av='🚓 ' ;; \
-                         tony) sit_av='📻 ' ;; \
+                         nicholas|angel) sit_av='🎯 '; sit_color=39 ;; \
+                         frank|butterman.snr) sit_av='🦔 '; sit_color=220 ;; \
+                         danny|butterman) sit_av='🍦 '; sit_color=213 ;; \
+                         andy|wainwright|cartwright) sit_av='🤡 '; sit_color=208 ;; \
+                         doris|thatcher) sit_av='🚓 '; sit_color=165 ;; \
+                         tony) sit_av='📻 '; sit_color=226 ;; \
                        esac; \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mon duty\\033[0m\\n' 'callsign' \"$sit_av\" \"$callsign\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mon duty\\033[0m\\n' 'callsign' \"$sit_av\" \"$sit_color\" \"$callsign\"; \
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m 📛 \\033[3;38;5;244munclaimed — /duty <name> to claim\\033[0m\\n' 'callsign'; \
                      fi; \
