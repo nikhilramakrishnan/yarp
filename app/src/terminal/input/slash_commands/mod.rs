@@ -1247,9 +1247,9 @@ impl Input {
                     else me_hdr=''; fi; \
                     if [ ${#files[@]} -eq 0 ]; then \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
-                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244mno traffic\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$me_hdr\" \"$pruned\"; \
+                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mno traffic\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$me_hdr\" \"$pruned\"; \
                       else \
-                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244mno traffic\\033[0m\\n' \"$me_hdr\"; \
+                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mno traffic\\033[0m\\n' \"$me_hdr\"; \
                       fi; \
                       flavors=(\"It's all gone a bit Pete Tong. — Andy\" \"Nothing happens here. — Nicholas\" \"Yarp. — Michael\" \"Pub? — Danny\" \"All quiet on Sandford. — Frank\" \"The greater good. — The NWA\" \"Yeah, but he gets to ride the horse. — Doris\"); \
                       printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${flavors[$((RANDOM % ${#flavors[@]}))]}\"; \
