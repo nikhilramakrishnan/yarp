@@ -1463,6 +1463,17 @@ impl Input {
                         me_full_lc=$(printf '%s' \"$me_full\" | tr '[:upper:]' '[:lower:]'); \
                         me_call=\"${YARP_CALLSIGN:-}\"; \
                         me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
+                        _norm_cs() { \
+                          case \"$1\" in \
+                            nicholas) printf 'angel' ;; \
+                            butterman) printf 'danny' ;; \
+                            thatcher) printf 'doris' ;; \
+                            butterman.snr) printf 'frank' ;; \
+                            wainwright|cartwright) printf 'andy' ;; \
+                            *) printf '%s' \"$1\" ;; \
+                          esac; \
+                        }; \
+                        me_call_norm=$(_norm_cs \"$me_call_lc\"); \
                         removed=0; \
                         for f in \"${files[@]}\"; do \
                           t=$(awk '/^to: /{sub(/^to: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
@@ -1470,7 +1481,8 @@ impl Input {
                             rm -f \"$f\" && removed=$((removed+1)); \
                           else \
                             t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
-                            if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                            t_norm=$(_norm_cs \"$t_lc\"); \
+                            if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_norm\" ] && [ \"$t_norm\" = \"$me_call_norm\" ]; }; then \
                               rm -f \"$f\" && removed=$((removed+1)); \
                             fi; \
                           fi; \
@@ -1497,6 +1509,17 @@ impl Input {
                     me_full_lc=$(printf '%s' \"$me_full\" | tr '[:upper:]' '[:lower:]'); \
                     me_call=\"${YARP_CALLSIGN:-}\"; \
                     me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
+                    _norm_cs() { \
+                      case \"$1\" in \
+                        nicholas) printf 'angel' ;; \
+                        butterman) printf 'danny' ;; \
+                        thatcher) printf 'doris' ;; \
+                        butterman.snr) printf 'frank' ;; \
+                        wainwright|cartwright) printf 'andy' ;; \
+                        *) printf '%s' \"$1\" ;; \
+                      esac; \
+                    }; \
+                    me_call_norm=$(_norm_cs \"$me_call_lc\"); \
                     me_av=''; \
                     case \"$me_call_lc\" in \
                       nicholas|angel) me_av='🎯' ;; \
@@ -1513,8 +1536,9 @@ impl Input {
                     for f in \"${files[@]}\"; do \
                       fr=$(awk '/^from: /{sub(/^from: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
                       fr_simple=$(printf '%s' \"$fr\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
+                      fr_norm=$(_norm_cs \"$fr_simple\"); \
                       if [ -n \"$fr_simple\" ]; then \
-                        if { [ -n \"$me_call_lc\" ] && [ \"$fr_simple\" = \"$me_call_lc\" ]; } || [ \"$fr_simple\" = \"$me_user_lc\" ]; then \
+                        if { [ -n \"$me_call_norm\" ] && [ \"$fr_norm\" = \"$me_call_norm\" ]; } || [ \"$fr_simple\" = \"$me_user_lc\" ]; then \
                           continue; \
                         fi; \
                       fi; \
@@ -1542,7 +1566,8 @@ impl Input {
                           broadcast_q+=(\"$f\"); \
                         else \
                           t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
-                          if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                          t_norm=$(_norm_cs \"$t_lc\"); \
+                          if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_norm\" ] && [ \"$t_norm\" = \"$me_call_norm\" ]; }; then \
                             direct_q+=(\"$f\"); \
                           else \
                             relay_q+=(\"$f\"); \
