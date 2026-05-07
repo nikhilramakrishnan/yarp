@@ -253,7 +253,7 @@ impl PromptRenderHelper {
         if let Some(pending_session_id) = model.pending_session_id() {
             if let Some(state) = sessions.remote_server_setup_state(pending_session_id) {
                 return match state {
-                    RemoteServerSetupState::Checking => "Starting shell...".to_string(),
+                    RemoteServerSetupState::Checking => "Bringing the unit online...".to_string(),
                     RemoteServerSetupState::Installing {
                         progress_percent: Some(p),
                     } => format!("Installing Yarp SSH tools... ({p}%)"),
@@ -261,16 +261,19 @@ impl PromptRenderHelper {
                         progress_percent: None,
                     } => "Installing Yarp SSH tools...".to_string(),
                     RemoteServerSetupState::Initializing => "Initializing...".to_string(),
-                    RemoteServerSetupState::Ready => "Starting shell...".to_string(),
-                    RemoteServerSetupState::Failed { .. } => "Starting shell...".to_string(),
+                    RemoteServerSetupState::Ready => "Bringing the unit online...".to_string(),
+                    RemoteServerSetupState::Failed { .. } => "Bringing the unit online...".to_string(),
                 };
             }
         }
 
         if !sessions.is_empty() {
-            "Starting shell...".to_string()
+            "Bringing the unit online...".to_string()
         } else {
-            format!("Starting {}...", model.shell_launch_state().display_name())
+            format!(
+                "Bringing the {} unit online...",
+                model.shell_launch_state().display_name()
+            )
         }
     }
 

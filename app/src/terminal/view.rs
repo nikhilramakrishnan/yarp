@@ -11556,10 +11556,10 @@ impl TerminalView {
                             progress_percent: None,
                         } => "Installing...".to_string(),
                         RemoteServerSetupState::Initializing => "Initializing...".to_string(),
-                        _ => "Starting shell...".to_string(),
+                        _ => "Bringing the unit online...".to_string(),
                     })
             })
-            .unwrap_or_else(|| "Starting shell...".to_string());
+            .unwrap_or_else(|| "Bringing the unit online...".to_string());
 
         let shimmer_element = shimmering_yarp_loading_text(
             message,

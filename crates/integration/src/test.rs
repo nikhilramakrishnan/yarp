@@ -2326,7 +2326,7 @@ pub fn test_shell_reinitializing() -> Builder {
                         let model = model_arc.lock();
 
                         async_assert_eq!(
-                            "Starting shell...".to_string(),
+                            "Bringing the unit online...".to_string(),
                             view.prompt_render_helper
                                 .prompt_working_dir(&model, view.sessions(ctx)),
                             "Checking the prompt value"

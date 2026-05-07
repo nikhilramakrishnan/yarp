@@ -21,12 +21,15 @@ use crate::{
     ui_components::{blended_colors, icons::Icon},
 };
 
-const AGENT_PROMPT_TO_INTERACT_MESSAGE: &str = "Prompt agent to interact with";
-const AGENT_WAITING_ON_INSTRUCTIONS_MESSAGE: &str = "Agent is waiting on instructions";
-const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str = "Agent is waiting for command to exit";
-const AGENT_BLOCKED_MESSAGE: &str = "Agent needs your permission to continue";
-const AGENT_IN_CONTROL_MESSAGE: &str = "Agent is in control";
-const USER_IN_CONTROL_MESSAGE: &str = "User is in control";
+// Hot Fuzz Sandford NWA voice — terse, procedural, Angel-tier register.
+// These strings are the inline header you stare at all day; they should
+// sound like dispatch on the radio, not a generic chat agent.
+const AGENT_PROMPT_TO_INTERACT_MESSAGE: &str = "Tag the agent in on";
+const AGENT_WAITING_ON_INSTRUCTIONS_MESSAGE: &str = "Agent's stood down — awaiting orders";
+const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str = "Agent's holding the line — command still running";
+const AGENT_BLOCKED_MESSAGE: &str = "Agent's flagging for sign-off — over to you";
+const AGENT_IN_CONTROL_MESSAGE: &str = "Agent on patrol";
+const USER_IN_CONTROL_MESSAGE: &str = "You've got the wheel";
 
 /// A header rendered as rich content above the active block when Agent View is in inline mode.
 pub struct InlineAgentViewHeader {
