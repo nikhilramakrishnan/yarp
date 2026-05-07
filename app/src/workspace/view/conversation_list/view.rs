@@ -683,7 +683,7 @@ fn render_zero_state(
 
     let new_conversation_button =
         Hoverable::new(zero_state_button_mouse_state, move |mouse_state| {
-            let label = Text::new_inline("New conversation", appearance.ui_font_family(), 12.)
+            let label = Text::new_inline("Open a new case", appearance.ui_font_family(), 12.)
                 .with_color(theme.main_text_color(theme.background()).into_solid())
                 .finish();
 

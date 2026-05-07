@@ -66,7 +66,7 @@ impl ConversationSearchItem {
         Flex::row()
             .with_child(
                 Text::new_inline(
-                    "New conversation",
+                    "Open a new case",
                     appearance.ui_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -87,7 +87,7 @@ impl ConversationSearchItem {
         let appearance = Appearance::as_ref(app);
 
         let action_title = Text::new_inline(
-            "Fork current conversation",
+            "Spin off the current case",
             appearance.ui_font_family(),
             appearance.monospace_font_size(),
         )
@@ -419,22 +419,22 @@ impl SearchItem for ConversationSearchItem {
                 )
             }
             ConversationAction::Fork { title, .. } => {
-                format!("Fork current conversation ({title})")
+                format!("Spin off the current case ({title})")
             }
-            ConversationAction::New => "New conversation".to_string(),
+            ConversationAction::New => "Open a new case".to_string(),
         }
     }
 
     fn accessibility_help_message(&self) -> Option<String> {
         match &self.action_info {
             ConversationAction::Resume(matched_conversation) => Some(format!(
-                "Press enter to navigate to conversation \"{}\".",
+                "Press enter to pull up case \"{}\".",
                 matched_conversation.as_ref().conversation.title()
             )),
             ConversationAction::Fork { .. } => {
-                Some("Press enter to fork the current conversation into a new conversation.".into())
+                Some("Press enter to spin off the current case into a new one.".into())
             }
-            ConversationAction::New => Some("Press enter to create a new conversation.".into()),
+            ConversationAction::New => Some("Press enter to open a new case.".into()),
         }
     }
 }
