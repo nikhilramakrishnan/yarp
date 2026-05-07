@@ -1635,7 +1635,7 @@ impl TeamsPageView {
                 if current_user_has_owner_permissions && !team_member_has_owner_permissions {
                     actions.push(ItemAction {
                         icon: Icon::Users,
-                        label: "Transfer ownership".to_string(),
+                        label: "Hand over the watch".to_string(),
                         action: TeamsPageAction::ShowTransferOwnershipModal {
                             new_owner_email: member.email.clone(),
                             new_owner_uid: member.uid,
@@ -1652,7 +1652,7 @@ impl TeamsPageView {
                     if team_member_has_admin_permissions {
                         actions.push(ItemAction {
                             icon: Icon::ArrowDown,
-                            label: "Demote from admin".to_string(),
+                            label: "Bust down to officer".to_string(),
                             action: TeamsPageAction::SetTeamMemberRole {
                                 team_uid: team.uid,
                                 user_uid: member.uid,
@@ -1662,7 +1662,7 @@ impl TeamsPageView {
                     } else {
                         actions.push(ItemAction {
                             icon: Icon::ArrowUp,
-                            label: "Promote to admin".to_string(),
+                            label: "Promote to chief".to_string(),
                             action: TeamsPageAction::SetTeamMemberRole {
                                 team_uid: team.uid,
                                 user_uid: member.uid,
@@ -1676,7 +1676,7 @@ impl TeamsPageView {
                 if current_user_has_admin_permissions && !team_member_has_owner_permissions {
                     actions.push(ItemAction {
                         icon: Icon::X,
-                        label: "Remove from team".to_string(),
+                        label: "Pull off the roster".to_string(),
                         action: TeamsPageAction::RemoveUserFromTeam {
                             user_uid: member.uid,
                             team_uid: team.uid,
@@ -2062,7 +2062,7 @@ impl TeamsWidget {
             .with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
-                    "Contact support",
+                    "Raise support",
                     Icon::Phone.to_yarpui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
@@ -2091,7 +2091,7 @@ impl TeamsWidget {
             .with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
-                    "Manage billing",
+                    "Run the books",
                     Icon::CoinsStacked.to_yarpui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
@@ -2122,7 +2122,7 @@ impl TeamsWidget {
             .with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
-                    "Open admin panel",
+                    "Open the chief's panel",
                     Icon::Users.to_yarpui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
@@ -2384,7 +2384,7 @@ impl TeamsWidget {
                         appearance
                             .ui_builder()
                             .link(
-                                "Reset links".into(),
+                                "Reissue line".into(),
                                 None,
                                 Some(Box::new(move |ctx| {
                                     ctx.dispatch_typed_action(TeamsPageAction::ResetInviteLinks {
@@ -2732,7 +2732,7 @@ impl TeamsWidget {
         section.add_child(
             SavePosition::new(
                 Container::new(
-                    self.render_subsection_header("Team Members".to_owned(), appearance),
+                    self.render_subsection_header("On the roster".to_owned(), appearance),
                 )
                 .with_padding_bottom(16.)
                 .finish(),
@@ -2764,7 +2764,7 @@ impl TeamsWidget {
 
         // 1) "Restrict by domain" header
         section.add_child(
-            Container::new(self.render_sub_header("Restrict by domain".to_owned(), appearance))
+            Container::new(self.render_sub_header("Badge domain rules".to_owned(), appearance))
                 .with_padding_top(16.)
                 .finish(),
         );
@@ -2826,7 +2826,7 @@ impl TeamsWidget {
                 let actions = if has_admin_permissions {
                     vec![ItemAction {
                         icon: Icon::X,
-                        label: "Remove domain".to_string(),
+                        label: "Pull the domain".to_string(),
                         action: TeamsPageAction::DeleteDomainRestriction {
                             domain_uid: domain_restriction.uid,
                             team_uid: team.uid,
@@ -3653,9 +3653,9 @@ impl TeamsWidget {
         let mut page = Flex::column();
 
         // Title, subtitle, and description
-        page.add_child(render_sub_header(appearance, "Teams".to_string(), None));
+        page.add_child(render_sub_header(appearance, "Stations".to_string(), None));
         page.add_child(
-            self.render_sub_header_with_subtext_color(appearance, "Create a team".to_string()),
+            self.render_sub_header_with_subtext_color(appearance, "Stand up a station".to_string()),
         );
         page.add_child(
             Container::new(
@@ -4009,7 +4009,7 @@ impl TeamsWidget {
                     font_size: Some(14.),
                     ..Default::default()
                 })
-                .with_centered_text_label("Contact Admin to request access".to_string())
+                .with_centered_text_label("Raise the chief to sign on".to_string())
                 .disabled()
                 .build()
                 .finish()
