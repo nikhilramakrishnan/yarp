@@ -659,6 +659,8 @@ impl Input {
                        printf '\\n'; \
                        printf 'case opened: %s' {name}; \
                      }} > \"$file\"; \
+                     n=$(ls /tmp/yarp-radio/*.msg 2>/dev/null | wc -l | tr -d ' '); \
+                     [ -z \"$n\" ] && n=0; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
                        nicholas|angel) quote={q_angel}; cs_avatar='🎯' ;; \
@@ -672,7 +674,7 @@ impl Input {
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ] && [ -n \"$cs_avatar\" ]; then filed_by=\"✍️  filed by $cs_avatar @${{YARP_CALLSIGN}} — \"; \
                      elif [ -n \"${{YARP_CALLSIGN:-}}\" ]; then filed_by=\"✍️  filed by @${{YARP_CALLSIGN}} — \"; \
                      else filed_by=''; fi; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n  📂 \\033[38;5;178mtab → \"%s\"\\033[0m\\n  📣 \\033[3;38;5;244m%sall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$filed_by\" \"$quote\"",
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n  📂 \\033[38;5;178mtab → \"%s\"\\033[0m\\n  📣 \\033[3;38;5;244m%sall units notified\\033[0m\\n  📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244min queue\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$filed_by\" \"$n\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
