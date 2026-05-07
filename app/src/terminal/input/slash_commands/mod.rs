@@ -762,6 +762,24 @@ impl Input {
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244munclaimed — /duty <name> to claim\\033[0m\\n' 'callsign'; \
                      fi; \
+                     duty_marker=\"/tmp/yarp-radio/.duty-${{user}}\"; \
+                     if [ -f \"$duty_marker\" ]; then \
+                       start=$(cat \"$duty_marker\" 2>/dev/null); \
+                       if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
+                         now=$(date +%s); \
+                         elapsed=$((now - start)); \
+                         hh=$((elapsed / 3600)); mm=$(((elapsed % 3600) / 60)); \
+                         when=$(date -r \"$start\" '+%H:%M' 2>/dev/null || echo '—'); \
+                         if [ $hh -gt 0 ]; then \
+                           since_str=$(printf '%s \\033[2;38;5;240m(%dh %02dm)\\033[0m' \"$when\" $hh $mm); \
+                         elif [ $mm -gt 0 ]; then \
+                           since_str=$(printf '%s \\033[2;38;5;240m(%dm)\\033[0m' \"$when\" $mm); \
+                         else \
+                           since_str=$(printf '%s \\033[2;38;5;240m(just now)\\033[0m' \"$when\"); \
+                         fi; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_str\"; \
+                       fi; \
+                     fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
