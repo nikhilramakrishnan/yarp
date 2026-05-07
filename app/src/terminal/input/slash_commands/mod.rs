@@ -748,7 +748,7 @@ impl Input {
                             "export YARP_CALLSIGN={cs}; \
                              mkdir -p /tmp/yarp-radio; \
                              date +%s > \"/tmp/yarp-radio/.duty-${{USER:-unknown}}\" 2>/dev/null; \
-                             printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m\\n' 'unit' {badge_prefix} {cs}{persona_lines}; \
+                             printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[1;38;5;179m@%s\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m\\n' {cs} 'unit' {badge_prefix} {cs}{persona_lines}; \
                              printf '\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {greeting}; \
                              printf '  \\033[3;38;5;244m/inbox will flag traffic addressed to @%s as DIRECT\\033[0m\\n' {cs}",
                             cs = crate::personas::shell_quote_one(cs),
