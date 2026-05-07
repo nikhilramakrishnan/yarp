@@ -931,7 +931,7 @@ impl Input {
                     "The greater good. — The NWA",
                     "Have you ever fired two guns whilst jumping through the air? — Danny",
                     "Yarp. — Michael",
-                    "Murder, murder, murder. — Angel",
+                    "Yeah, but he gets to ride the horse. — Doris",
                     "Forget it, Nicholas, it's Sandford. — Frank",
                     "Pub? — Danny",
                 ];
