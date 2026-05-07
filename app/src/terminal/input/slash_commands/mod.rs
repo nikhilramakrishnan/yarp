@@ -769,6 +769,8 @@ impl Input {
                       else \
                         printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
                       fi; \
+                      flavors=(\"It's all gone a bit Pete Tong. — Andy\" \"Nothing happens here. — Nicholas\" \"Yarp. — Michael\" \"Pub? — Danny\" \"All quiet on Sandford. — Frank\" \"The greater good. — The NWA\" \"By the power of Greyskull. — Danny\"); \
+                      printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${flavors[$((RANDOM % ${#flavors[@]}))]}\"; \
                     else \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
                         printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"${#files[@]}\" \"$pruned\"; \
