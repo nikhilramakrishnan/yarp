@@ -12366,7 +12366,7 @@ impl Input {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(
-                            "Cannot send queries as a read-only viewer.".to_string(),
+                            "Can't raise dispatch as an ear-only listener.".to_string(),
                         ),
                         window_id,
                         ctx,

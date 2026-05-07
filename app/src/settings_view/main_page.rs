@@ -56,7 +56,7 @@ use yarpui::{
 };
 
 const PHOTO_SIZE: f32 = 40.;
-const REFERRAL_CTA: &str = "Earn rewards by sharing Yarp with friends & colleagues";
+const REFERRAL_CTA: &str = "Earn rewards — call Yarp in for the lads & lasses";
 const REGULAR_TEXT_FONT_SIZE: f32 = 12.;
 const VERTICAL_MARGIN: f32 = 24.;
 const LOG_OUT_TEXT: &str = "Log out";
