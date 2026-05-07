@@ -124,7 +124,7 @@ use crate::workspace::WorkspaceAction;
 const ENABLE_NLD_TOOLTIP: &str = "Pick up commands off the wire";
 const DISABLE_NLD_TOOLTIP: &str = "Stand down command sweep";
 
-const FAST_FORWARD_ON_TOOLTIP: &str = "Stop rubber-stamping the agent's moves";
+const FAST_FORWARD_ON_TOOLTIP: &str = "Stop rubber-stamping the PC's moves";
 const FAST_FORWARD_OFF_TOOLTIP: &str = "Sign off on every move this case";
 
 const START_REMOTE_CONTROL_TOOLTIP: &str = "Patch in remote unit";
