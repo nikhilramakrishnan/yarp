@@ -878,8 +878,8 @@ impl Input {
                        tony) prev_av='📻' ;; \
                      esac; \
                      if [ -n \"$prev_call\" ]; then \
-                       if [ -n \"$prev_av\" ]; then disp=\"$prev_av @$prev_call\"; else disp=\"📛 @$prev_call\"; fi; \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$disp\"; \
+                       if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_call\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
