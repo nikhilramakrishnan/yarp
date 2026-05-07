@@ -961,7 +961,17 @@ impl Input {
                         pool[nanos % pool.len()]
                     }
                 };
-                let q_random = SIGN_OFFS[nanos % SIGN_OFFS.len()].1;
+                let q_random_entry = SIGN_OFFS[nanos % SIGN_OFFS.len()];
+                let q_random = q_random_entry.1;
+                let q_random_av = match q_random_entry.0 {
+                    "angel" => "🎯",
+                    "frank" => "🦔",
+                    "danny" => "🍦",
+                    "andy" => "🤡",
+                    "doris" => "🚓",
+                    "tony" => "📻",
+                    _ => "",
+                };
                 let q_angel = pick_for("angel");
                 let q_frank = pick_for("frank");
                 let q_danny = pick_for("danny");
@@ -1029,9 +1039,9 @@ impl Input {
                        andy|wainwright|cartwright) signoff={q_andy} ;; \
                        doris|thatcher) signoff={q_doris} ;; \
                        tony) signoff={q_tony} ;; \
-                       *) signoff={q_random} ;; \
+                       *) signoff={q_random}; signoff_av={q_random_av} ;; \
                      esac; \
-                     signoff_av=\"$prev_av\"; \
+                     signoff_av=\"${{signoff_av:-$prev_av}}\"; \
                      if [ -n \"${{shift_str:-}}\" ]; then \
                        if [ \"${{h:-0}}\" -ge 8 ] 2>/dev/null; then \
                          signoff='Get yourself home. Long night. — Frank'; signoff_av='🦔'; \
@@ -1056,6 +1066,7 @@ impl Input {
                        printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"; \
                      fi",
                     q_random = crate::personas::shell_quote_one(q_random),
+                    q_random_av = crate::personas::shell_quote_one(q_random_av),
                     q_angel = crate::personas::shell_quote_one(q_angel),
                     q_frank = crate::personas::shell_quote_one(q_frank),
                     q_danny = crate::personas::shell_quote_one(q_danny),
