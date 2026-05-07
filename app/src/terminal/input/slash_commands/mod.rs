@@ -985,7 +985,7 @@ impl Input {
                          printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_str\"; \
                        fi; \
                      fi; \
-                     printf '  \\033[2;38;5;244m%-10s\\033[0m 👣 \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 👣 \\033[1;38;5;179m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 🛂 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
                      direct=0; broadcast=0; for_others=0; others_buf=\"\"; \
