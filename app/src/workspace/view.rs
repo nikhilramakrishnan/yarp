@@ -5951,8 +5951,16 @@ impl Workspace {
 
         let count = other_workspaces.len();
         for (_, workspace_handle) in other_workspaces {
-            workspace_handle.update(ctx, |_, ctx| {
+            workspace_handle.update(ctx, |workspace, ctx| {
                 ctx.request_user_attention();
+                workspace.toast_stack.update(ctx, |toast_stack, ctx| {
+                    toast_stack.add_ephemeral_toast(
+                        DismissibleToast::default(
+                            "Radio in from another station.".to_owned(),
+                        ),
+                        ctx,
+                    );
+                });
             });
         }
 
