@@ -805,16 +805,16 @@ impl NotificationsTrigger {
     pub fn discovery_banner_copy(&self) -> &'static str {
         match self {
             NotificationsTrigger::LongRunningCommand(..) => {
-                "Yarp can notify you when long-running commands finish."
+                "Yarp can radio you when a long patrol finishes."
             }
             NotificationsTrigger::AgentTaskCompleted(..) => {
-                "Yarp can notify you when an agent finishes responding."
+                "Yarp can radio you when the PC files their report."
             }
             NotificationsTrigger::NeedsAttention => {
-                "Yarp can notify you when a command or agent needs your attention."
+                "Yarp can radio you when a command or PC needs your eyes."
             }
             NotificationsTrigger::PasswordPrompt => {
-                "Yarp can notify you when you're prompted to enter a password."
+                "Yarp can radio you when you're called to clear a password."
             }
         }
     }
@@ -6487,24 +6487,23 @@ impl TerminalView {
                 .get_pending_action(app)
                 .map(|action| match &action.action {
                     AIAgentActionType::RequestCommandOutput { command, .. } => {
-                        format!("Fuzz needs your permission to run `{command}`")
+                        format!("PC's asking the go-ahead to run `{command}`")
                     }
                     AIAgentActionType::ReadFiles(..) => {
-                        "Fuzz needs your permission to read files".to_string()
+                        "PC's asking the go-ahead to read files".to_string()
                     }
                     AIAgentActionType::SearchCodebase(..) => {
-                        "Fuzz needs your permission to search your codebase".to_string()
+                        "PC's asking the go-ahead to search your codebase".to_string()
                     }
                     AIAgentActionType::RequestFileEdits { .. } => {
-                        "Fuzz needs your permission to edit a file".to_string()
+                        "PC's asking the go-ahead to edit a file".to_string()
                     }
                     AIAgentActionType::WriteToLongRunningShellCommand { .. } => {
-                        "Fuzz needs your permission to interact with a running shell command"
-                            .to_string()
+                        "PC's asking the go-ahead to chime in on a running command".to_string()
                     }
-                    _ => "Fuzz needs your confirmation to continue".to_string(),
+                    _ => "PC's asking the go-ahead to continue".to_string(),
                 })
-                .unwrap_or("Fuzz needs your confirmation to continue".to_string());
+                .unwrap_or("PC's asking the go-ahead to continue".to_string());
             return Some(AIBlockNotificationSummary {
                 success: false,
                 title,
