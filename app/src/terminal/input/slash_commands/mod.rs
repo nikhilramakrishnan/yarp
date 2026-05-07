@@ -613,6 +613,8 @@ impl Input {
                     ("andy", "Crusty Jugglers. — Andy"),
                     ("doris", "Crispy Christ. — Doris"),
                     ("doris", "She's about to receive a great whopping kiss. — Doris"),
+                    ("tony", "Yarp. — Tony"),
+                    ("tony", "Narp. — Tony"),
                 ];
                 let nanos = {
                     use std::time::{SystemTime, UNIX_EPOCH};
@@ -638,6 +640,7 @@ impl Input {
                 let q_danny = pick_for("danny");
                 let q_andy = pick_for("andy");
                 let q_doris = pick_for("doris");
+                let q_tony = pick_for("tony");
                 let cmd = format!(
                     "mkdir -p /tmp/yarp-radio; \
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
@@ -660,7 +663,7 @@ impl Input {
                        danny|butterman) quote={q_danny}; cs_avatar='🍦' ;; \
                        andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡' ;; \
                        doris|thatcher) quote={q_doris}; cs_avatar='🚓' ;; \
-                       tony) quote={q_random}; cs_avatar='📻' ;; \
+                       tony) quote={q_tony}; cs_avatar='📻' ;; \
                        *) quote={q_random}; cs_avatar='' ;; \
                      esac; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ] && [ -n \"$cs_avatar\" ]; then filed_by=\"filed by $cs_avatar @${{YARP_CALLSIGN}} — \"; \
@@ -675,6 +678,7 @@ impl Input {
                     q_danny = crate::personas::shell_quote_one(q_danny),
                     q_andy = crate::personas::shell_quote_one(q_andy),
                     q_doris = crate::personas::shell_quote_one(q_doris),
+                    q_tony = crate::personas::shell_quote_one(q_tony),
                 );
                 self.try_execute_command(&cmd, ctx);
             }
