@@ -148,7 +148,7 @@ impl FirstTimeCloudAgentSetupView {
         // Title - 20px medium weight
         column.add_child(
             Text::new(
-                "Start a new Fuzz cloud agent",
+                "Dispatch a new Fuzz ambient officer",
                 appearance.ui_font_family(),
                 20.,
             )
@@ -158,7 +158,7 @@ impl FirstTimeCloudAgentSetupView {
         );
 
         let description_fragments = vec![FormattedTextFragment::plain_text(
-            "Use Fuzz cloud agents to run parallel agents, build agents that run autonomously, and check in on your agents from anywhere.",
+            "Send Fuzz ambient officers out on parallel patrol, build PCs that work cases on their own, and check the radio on any officer from anywhere.",
         )];
         column.add_child(
             FormattedTextElement::new(
@@ -218,10 +218,10 @@ impl FirstTimeCloudAgentSetupView {
 
         // Banner text - dynamic based on credits
         let credits_text = if credits == 1 {
-            "You have 1 free credit to use on Fuzz cloud agents.".to_string()
+            "You have 1 free credit to dispatch a Fuzz ambient officer.".to_string()
         } else {
             format!(
-                "You have {} free credits to use on Fuzz cloud agents.",
+                "You have {} free credits to dispatch Fuzz ambient officers.",
                 credits
             )
         };

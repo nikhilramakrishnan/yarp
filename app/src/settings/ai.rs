@@ -786,7 +786,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.active_ai.agent_mode_query_suggestions_enabled",
-        description: "Controls whether prompt suggestions are shown in agent mode.",
+        description: "Controls whether prompt suggestions are shown in PC mode.",
     }
 
     // This field should not be referenced directly to lookup Code Suggestions
@@ -845,7 +845,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.active_ai.rule_suggestions_enabled",
-        description: "Controls whether the agent suggests rules to save after responses.",
+        description: "Controls whether the PC suggests rules to save after responses.",
         feature_flag: FeatureFlag::SuggestedRules,
     }
     // This field should not be referenced directly to lookup Voice AI enablement -- use the
@@ -903,7 +903,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.profiles.agent_mode_command_execution_allowlist",
-        description: "Commands that the agent can execute without explicit permission.",
+        description: "Commands the PC can execute without asking permission.",
     },
     // Predicates that Agent Mode can use to decide if a command must
     // be executed by the user.
@@ -917,7 +917,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.profiles.agent_mode_command_execution_denylist",
-        description: "Commands that the agent must always ask before executing.",
+        description: "Commands the PC must always radio in before executing.",
     },
     // Enabled iff Agent Mode can execute readonly commands without explicit user consent.
     //
@@ -930,7 +930,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.profiles.agent_mode_execute_readonly_commands",
-        description: "Whether the agent can auto-execute read-only commands without asking.",
+        description: "Whether the PC can auto-run read-only commands without radioing in.",
     },
     // Determines coding permissions that Agent Mode has.
     // Note that if Agent Mode has permissions to execute readonly commands,

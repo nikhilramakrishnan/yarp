@@ -105,7 +105,7 @@ impl AmbientAgentEntryBlock {
         ai_context_model
             .selected_conversation(app)
             .and_then(|c| c.title())
-            .unwrap_or_else(|| "New cloud agent".to_owned())
+            .unwrap_or_else(|| "New ambient officer".to_owned())
     }
 
     fn ambient_agent_view_model<'a>(&self, app: &'a AppContext) -> &'a AmbientAgentViewModel {
@@ -119,9 +119,9 @@ impl AmbientAgentEntryBlock {
     fn detail_text(&self, app: &AppContext) -> Option<&'static str> {
         match self.ambient_agent_view_model(app).status() {
             Status::NotAmbientAgent | Status::Setup | Status::Composing => None,
-            Status::WaitingForSession { .. } => Some("Starting environment..."),
-            Status::AgentRunning => Some("Agent is working on task"),
-            Status::Failed { .. } => Some("Agent failed"),
+            Status::WaitingForSession { .. } => Some("Walking the beat..."),
+            Status::AgentRunning => Some("PC working the case"),
+            Status::Failed { .. } => Some("PC down"),
             Status::NeedsGithubAuth { .. } => Some("Authentication required"),
             Status::Cancelled { .. } => Some("Cancelled"),
         }

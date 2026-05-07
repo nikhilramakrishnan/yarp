@@ -155,7 +155,7 @@ fn render_tier_limits_footer(
     }
 
     let mut fragments = vec![FormattedTextFragment::plain_text(format!(
-        "Your agent is currently running on a {} machine. ",
+        "Your PC is currently on patrol from a {} desk. ",
         specs
     ))];
 
@@ -166,7 +166,7 @@ fn render_tier_limits_footer(
 
     fragments.push(FormattedTextFragment::hyperlink("Upgrade", upgrade_url));
     fragments.push(FormattedTextFragment::plain_text(
-        " for more powerful cloud agents.",
+        " for stronger ambient officers.",
     ));
 
     let formatted_text = FormattedText::new(vec![FormattedTextLine::Line(fragments)]);
@@ -411,7 +411,7 @@ pub fn render_cloud_mode_cancelled_screen(appearance: &Appearance) -> Box<dyn El
 
     // Title text - "Cloud Agent Run Cancelled"
     let title_text = Text::new(
-        "Cloud Agent Run Cancelled",
+        "Ambient officer stand-down",
         appearance.ui_font_family(),
         appearance.monospace_font_size() + 2.,
     )

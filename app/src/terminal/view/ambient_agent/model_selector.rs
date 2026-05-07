@@ -51,7 +51,7 @@ const SEARCH_FOOTER_TOP_MARGIN: f32 = 4.;
 
 const SEARCH_PLACEHOLDER_TEXT: &str = "Search models";
 
-const BUTTON_TOOLTIP: &str = "Choose agent model";
+const BUTTON_TOOLTIP: &str = "Choose PC model";
 
 const NO_RESULTS_LABEL: &str = "No results";
 

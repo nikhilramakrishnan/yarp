@@ -83,7 +83,7 @@ pub fn render_loading_footer(appearance: &Appearance) -> Box<dyn Element> {
     let border_color = blended_colors::neutral_4(theme);
 
     build_centered_footer(
-        "Cloud agent starting up…".to_string(),
+        "Ambient officer reporting in…".to_string(),
         "You'll be able to interact with Fuzz soon".to_string(),
         header_color,
         body_color,
@@ -106,7 +106,7 @@ pub fn render_error_footer(error_message: &str, appearance: &Appearance) -> Box<
     let border_color = theme.ui_error_color();
 
     build_centered_footer(
-        "Agent failed".to_string(),
+        "PC down".to_string(),
         error_message.to_string(),
         header_color,
         body_color,

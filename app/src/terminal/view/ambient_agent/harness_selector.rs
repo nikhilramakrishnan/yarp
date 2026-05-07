@@ -51,10 +51,10 @@ const MENU_WIDTH: f32 = 208.;
 const ITEM_ICON_SIZE: f32 = 16.;
 
 /// Tooltip string for the closed-state button.
-const BUTTON_TOOLTIP: &str = "Agent harness";
+const BUTTON_TOOLTIP: &str = "PC harness";
 
 /// Label rendered at the top of the dropdown.
-const MENU_HEADER_LABEL: &str = "Agent harness";
+const MENU_HEADER_LABEL: &str = "PC harness";
 
 /// Actions dispatched by the [`HarnessSelector`].
 #[derive(Clone, Debug, PartialEq)]
