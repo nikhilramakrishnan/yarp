@@ -656,7 +656,7 @@ impl CodeDiffView {
                     full: ("Failed to save file for accepted AgentMode diffs for {}: {}", file_path_clone, error)
                 );
                 let toast = DismissibleToast::error(format!(
-                    "Failed to save file {file_path_clone}"
+                    "Couldn't file the report: {file_path_clone}"
                 ));
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
@@ -1160,7 +1160,7 @@ impl CodeDiffView {
                     .unwrap_or_else(|| "file".to_string());
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::error(format!("Failed to revert changes to {file_name}")),
+                        DismissibleToast::error(format!("Couldn't roll back the case file: {file_name}")),
                         window_id,
                         ctx,
                     );

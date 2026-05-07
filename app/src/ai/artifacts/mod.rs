@@ -387,7 +387,7 @@ pub fn download_file_artifact<V: yarpui::View>(
                 log::warn!("Failed to load file artifact {artifact_uid}: {error}");
                 show_file_download_toast(
                     &artifact_uid,
-                    DismissibleToast::error("Failed to prepare file download.".to_string()),
+                    DismissibleToast::error("Couldn't bag the evidence file.".to_string()),
                     ctx,
                 );
             }
@@ -448,7 +448,7 @@ fn open_file_download_picker<V: yarpui::View>(
                 move |_me, result, ctx| match result {
                     Ok(()) => show_file_download_toast(
                         &artifact_uid,
-                        DismissibleToast::success(format!("Downloaded {toast_filename}.")),
+                        DismissibleToast::success(format!("Logged {toast_filename} into evidence.")),
                         ctx,
                     ),
                     Err(error) => {
@@ -456,7 +456,7 @@ fn open_file_download_picker<V: yarpui::View>(
                         show_file_download_toast(
                             &artifact_uid,
                             DismissibleToast::error(format!(
-                                "Failed to download {toast_filename}."
+                                "Couldn't log {toast_filename} into evidence."
                             )),
                             ctx,
                         );
