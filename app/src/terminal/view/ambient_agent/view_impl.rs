@@ -749,11 +749,11 @@ impl TerminalView {
         } else {
             // Show loading screen - determine the message based on progress state
             let message = if progress.harness_started_at.is_some() {
-                "Starting Environment (Step 3/3)"
+                "Walking the beat (Step 3/3)"
             } else if progress.claimed_at.is_some() {
-                "Creating Environment (Step 2/3)"
+                "Setting up the beat (Step 2/3)"
             } else {
-                "Connecting to Host (Step 1/3)"
+                "Raising the patrol post (Step 1/3)"
             };
 
             render_cloud_mode_loading_screen(
