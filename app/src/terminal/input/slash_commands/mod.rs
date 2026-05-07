@@ -529,7 +529,7 @@ impl Input {
                 let header = format!(
                     "shopt -s nullglob; \
                      yarp_msgs=(/tmp/yarp-radio/*.msg); \
-                     printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[3;38;5;244m%s — %d \
+                     printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m— %d \
                      personas\\033[0m\\n\\n' {team} {count}; ",
                     team = crate::personas::shell_quote_one(&team.name),
                     count = count,
