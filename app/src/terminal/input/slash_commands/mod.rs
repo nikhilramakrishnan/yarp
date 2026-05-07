@@ -706,7 +706,7 @@ impl Input {
                            fi; \
                            rm -f \"$duty_marker\"; \
                          fi; \
-                         printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'; \
+                         printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[3;38;5;244mcallsign cleared\\033[0m\\n'; \
                          if [ -n \"$shift_str\" ]; then \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
                          fi".to_owned()
