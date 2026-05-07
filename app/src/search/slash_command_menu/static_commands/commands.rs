@@ -503,6 +503,19 @@ pub const CLOCK_OUT: StaticCommand = StaticCommand {
     argument: None,
 };
 
+pub const DUTY: StaticCommand = StaticCommand {
+    name: "/duty",
+    description: "Claim a callsign so direct radio reaches this tab",
+    icon_path: "bundled/svg/stars-01.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: Some(Argument {
+        hint_text: Some("<callsign>"),
+        is_optional: true,
+        should_execute_on_selection: false,
+    }),
+};
+
 pub static COMMAND_REGISTRY: LazyLock<Registry> = LazyLock::new(Registry::new);
 
 /// A unique identifier for a static slash command.
@@ -598,6 +611,7 @@ fn all_commands() -> Vec<StaticCommand> {
         SITREP,
         CASE,
         CLOCK_OUT,
+        DUTY,
     ];
 
     if FeatureFlag::LocalDockerSandbox.is_enabled() {

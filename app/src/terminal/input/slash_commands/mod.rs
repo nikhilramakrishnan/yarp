@@ -575,6 +575,30 @@ impl Input {
                 );
                 self.try_execute_command(&cmd, ctx);
             }
+            _duty if command.name == commands::DUTY.name => {
+                let callsign = argument
+                    .map(|a| a.trim())
+                    .filter(|a| !a.is_empty());
+                let cmd = if let Some(cs) = callsign {
+                    if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
+                        "unset YARP_CALLSIGN; printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'".to_owned()
+                    } else {
+                        format!(
+                            "export YARP_CALLSIGN={cs}; \
+                             printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n  \\033[3;38;5;244m/inbox will now flag traffic addressed to @%s as DIRECT\\033[0m\\n' 'unit' {cs} {cs}",
+                            cs = crate::personas::shell_quote_one(cs),
+                        )
+                    }
+                } else {
+                    "if [ -n \"$YARP_CALLSIGN\" ]; then \
+                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n' 'unit' \"$YARP_CALLSIGN\"; \
+                     else \
+                       printf '\\033[3;38;5;179m🎖  no callsign claimed\\033[0m\\n  \\033[3;38;5;244m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
+                     fi"
+                        .to_owned()
+                };
+                self.try_execute_command(&cmd, ctx);
+            }
             _clock_out if command.name == commands::CLOCK_OUT.name => {
                 const SIGN_OFFS: &[&str] = &[
                     "Pub? — Danny",
@@ -671,6 +695,7 @@ impl Input {
                     files=(/tmp/yarp-radio/*.msg); \
                     me_user=\"${USER:-unknown}\"; \
                     me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                    me_call=\"${YARP_CALLSIGN:-}\"; \
                     if [ ${#files[@]} -eq 0 ]; then \
                       printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
                     else \
@@ -693,7 +718,7 @@ impl Input {
                         done < \"$f\"; \
                         consume=1; \
                         if [ -n \"$target\" ]; then \
-                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ]; then \
+                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ] || { [ -n \"$me_call\" ] && [ \"$target\" = \"$me_call\" ]; }; then \
                             badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; \
                             sender_color='\\033[1;38;5;35m'; \
                             body_color='\\033[38;5;179m'; \
