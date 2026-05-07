@@ -581,7 +581,7 @@ impl Input {
                     script.push_str(&line);
                     if let Some(bin) = p.binary.as_deref() {
                         let bin_line = format!(
-                            "printf '       \\033[2;38;5;244m↳ %s\\033[0m\\n' {bin}; ",
+                            "printf '       \\033[2;38;5;244m↳ 🤖 %s\\033[0m\\n' {bin}; ",
                             bin = crate::personas::shell_quote_one(bin),
                         );
                         script.push_str(&bin_line);
