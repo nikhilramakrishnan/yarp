@@ -24,11 +24,11 @@ use crate::{
 // Hot Fuzz Sandford NWA voice — terse, procedural, Angel-tier register.
 // These strings are the inline header you stare at all day; they should
 // sound like dispatch on the radio, not a generic chat agent.
-const AGENT_PROMPT_TO_INTERACT_MESSAGE: &str = "Tag the agent in on";
-const AGENT_WAITING_ON_INSTRUCTIONS_MESSAGE: &str = "Agent's stood down — awaiting orders";
-const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str = "Agent's holding the line — command still running";
-const AGENT_BLOCKED_MESSAGE: &str = "Agent's flagging for sign-off — over to you";
-const AGENT_IN_CONTROL_MESSAGE: &str = "Agent on patrol";
+const AGENT_PROMPT_TO_INTERACT_MESSAGE: &str = "Tag the PC in on";
+const AGENT_WAITING_ON_INSTRUCTIONS_MESSAGE: &str = "PC's stood down — awaiting orders";
+const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str = "PC's holding the line — command still running";
+const AGENT_BLOCKED_MESSAGE: &str = "PC's flagging for sign-off — over to you";
+const AGENT_IN_CONTROL_MESSAGE: &str = "PC on patrol";
 const USER_IN_CONTROL_MESSAGE: &str = "You've got the wheel";
 
 /// A header rendered as rich content above the active block when Agent View is in inline mode.

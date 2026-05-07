@@ -390,7 +390,7 @@ impl View for AgentViewZeroStateBlock {
                 icon: Icon::OzCloud,
             }
         } else {
-            let mut local_description = "Radio in below to brief the agent".to_owned();
+            let mut local_description = "Radio in below to brief the PC".to_owned();
             let active_session = self.active_session(app);
             let location_label = active_session.as_deref().and_then(|session| {
                 format_session_location(session, self.current_working_directory.as_deref())
