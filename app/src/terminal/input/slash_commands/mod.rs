@@ -450,12 +450,22 @@ impl Input {
                     );
                     return true;
                 };
-                let (target_raw, message) = match raw.strip_prefix('@') {
-                    Some(rest) => match rest.split_once(char::is_whitespace) {
+                let (target_raw, message) = if let Some(rest) = raw.strip_prefix('@') {
+                    match rest.split_once(char::is_whitespace) {
                         Some((t, body)) => (t.trim(), body.trim()),
                         None => (rest.trim(), ""),
-                    },
-                    None => ("", raw),
+                    }
+                } else if let Some((t, body)) = raw.split_once(':') {
+                    let t = t.trim();
+                    if !t.is_empty()
+                        && t.chars().all(|c| c.is_alphanumeric() || c == '.' || c == '_')
+                    {
+                        (t, body.trim())
+                    } else {
+                        ("", raw)
+                    }
+                } else {
+                    ("", raw)
                 };
                 let target_lc = target_raw.to_ascii_lowercase();
                 let target = target_lc.as_str();
