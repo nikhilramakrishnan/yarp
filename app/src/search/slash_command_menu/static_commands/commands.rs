@@ -463,6 +463,24 @@ pub const INBOX: StaticCommand = StaticCommand {
     argument: None,
 };
 
+pub const ROSTER: StaticCommand = StaticCommand {
+    name: "/roster",
+    description: "Show the active council roster",
+    icon_path: "bundled/svg/users-02.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: None,
+};
+
+pub const SITREP: StaticCommand = StaticCommand {
+    name: "/sitrep",
+    description: "Situational report — station status",
+    icon_path: "bundled/svg/info.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: None,
+};
+
 pub static COMMAND_REGISTRY: LazyLock<Registry> = LazyLock::new(Registry::new);
 
 /// A unique identifier for a static slash command.
@@ -554,6 +572,8 @@ fn all_commands() -> Vec<StaticCommand> {
         MODEL.clone(),
         RADIO,
         INBOX,
+        ROSTER,
+        SITREP,
     ];
 
     if FeatureFlag::LocalDockerSandbox.is_enabled() {

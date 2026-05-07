@@ -487,6 +487,98 @@ impl Input {
                 );
                 self.try_execute_command(&cmd, ctx);
             }
+            roster if command.name == commands::ROSTER.name => {
+                let roster = crate::personas::Roster::load()
+                    .unwrap_or_else(crate::personas::Roster::default_sandford);
+                let team = match roster.default_team() {
+                    Some(team) => team,
+                    None => {
+                        show_error_toast("No team configured in personas.json".to_owned(), ctx);
+                        return true;
+                    }
+                };
+                let count = team.members.len();
+                let header = format!(
+                    "printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[3;38;5;244m%s — %d \
+                     personas\\033[0m\\n\\n' {team} {count}; ",
+                    team = crate::personas::shell_quote_one(&team.name),
+                    count = count,
+                );
+                let mut script = String::from(header);
+                for p in &team.members {
+                    let role = p
+                        .role
+                        .split('.')
+                        .next()
+                        .unwrap_or(&p.role)
+                        .trim();
+                    let (badge_color, name_color) = if p.lead {
+                        ("38;5;220", "1;38;5;220")
+                    } else if p.binary.is_some() {
+                        ("38;5;39", "1;38;5;39")
+                    } else {
+                        ("38;5;178", "1;38;5;178")
+                    };
+                    let lead_tag = if p.lead {
+                        " \\033[3;38;5;220m⭐ lead\\033[0m"
+                    } else {
+                        ""
+                    };
+                    let line = format!(
+                        "printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
+                         \\033[3;38;5;244m%s\\033[0m{lead_tag}\\n' {badge} {name} {role}; ",
+                        badge_color = badge_color,
+                        name_color = name_color,
+                        lead_tag = lead_tag,
+                        badge = crate::personas::shell_quote_one(&p.badge),
+                        name = crate::personas::shell_quote_one(&p.name),
+                        role = crate::personas::shell_quote_one(role),
+                    );
+                    script.push_str(&line);
+                    if let Some(bin) = p.binary.as_deref() {
+                        let bin_line = format!(
+                            "printf '       \\033[2;38;5;244m↳ %s\\033[0m\\n' {bin}; ",
+                            bin = crate::personas::shell_quote_one(bin),
+                        );
+                        script.push_str(&bin_line);
+                    }
+                }
+                self.try_execute_command(&script, ctx);
+            }
+            sitrep if command.name == commands::SITREP.name => {
+                let roster = crate::personas::Roster::load()
+                    .unwrap_or_else(crate::personas::Roster::default_sandford);
+                let team_name = roster
+                    .default_team()
+                    .map(|t| t.name.clone())
+                    .unwrap_or_else(|| "—".into());
+                let team_size = roster.default_team().map(|t| t.members.len()).unwrap_or(0);
+                let cli_count = roster
+                    .default_team()
+                    .map(|t| crate::personas::cli_invocations(t).len())
+                    .unwrap_or(0);
+                let cmd = format!(
+                    "user=\"${{USER:-unknown}}\"; \
+                     host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     cwd=\"$(pwd)\"; \
+                     shopt -s nullglob; \
+                     queue=(/tmp/yarp-radio/*.msg); \
+                     printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[3;38;5;244m%s station\\033[0m\\n\\n' {team}; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
+                     n=${{#queue[@]}}; \
+                     if [ \"$n\" -gt 0 ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
+                     else \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mall quiet on the air\\033[0m\\n' 'radio'; \
+                     fi",
+                    team = crate::personas::shell_quote_one(&team_name),
+                    size = team_size,
+                    clis = cli_count,
+                );
+                self.try_execute_command(&cmd, ctx);
+            }
             inbox if command.name == commands::INBOX.name => {
                 let cmd = "shopt -s nullglob; \
                     files=(/tmp/yarp-radio/*.msg); \
