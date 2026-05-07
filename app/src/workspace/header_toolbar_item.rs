@@ -39,7 +39,7 @@ impl HeaderToolbarItemKind {
         match self {
             Self::TabsPanel => "Tabs Panel",
             Self::ToolsPanel => "Tools Panel",
-            Self::AgentManagement => "Agent Management",
+            Self::AgentManagement => "Duty Roster",
             Self::CodeReview => "Code Review",
             Self::NotificationsMailbox => "Notifications",
         }

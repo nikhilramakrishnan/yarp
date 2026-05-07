@@ -38,8 +38,8 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     },
     FeatureItem {
         icon: Icon::Inbox,
-        title: "Agent inbox",
-        description: "Notifications when any agent needs your attention, also accessible in a central inbox",
+        title: "PC pigeonhole",
+        description: "Radio chatter from any PC that needs your eyes, all routed to one central pigeonhole",
     },
     FeatureItem {
         icon: Icon::MessageCheckSquare,

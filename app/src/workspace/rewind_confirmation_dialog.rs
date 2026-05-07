@@ -201,7 +201,7 @@ impl View for RewindConfirmationDialog {
             Dialog::new(
                 "Rewind".into(),
                 Some(
-                    "Wind it back? Code and case file go back to this point, and any commands the agent's running get called off. The original case file is filed in the records."
+                    "Wind it back? Code and case file go back to this point, and any commands the PC's running get called off. The original case file is filed in the records."
                         .into(),
                 ),
                 UiComponentStyles {

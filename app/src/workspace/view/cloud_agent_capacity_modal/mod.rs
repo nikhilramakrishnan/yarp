@@ -148,10 +148,10 @@ impl CloudAgentCapacityModal {
         if can_upgrade {
             let upgrade_suffix = match self.variant {
                 CloudAgentCapacityModalVariant::ConcurrentLimit => {
-                    " Upgrade your plan for more concurrent cloud agents."
+                    " Upgrade your plan to put more ambient officers on the duty roster at once."
                 }
                 CloudAgentCapacityModalVariant::OutOfCredits => {
-                    " Upgrade your plan to continue running cloud agents."
+                    " Upgrade your plan to keep ambient officers on patrol."
                 }
             };
             explanation_text.push_str(upgrade_suffix);
@@ -220,7 +220,7 @@ impl CloudAgentCapacityModal {
 
             // Benefits list based on plan type
             let mut benefits = vec![
-                format!("{} the number of concurrent cloud agents", agent_multiplier),
+                format!("{} the ambient officers on patrol at once", agent_multiplier),
                 credits_text,
                 "Bring your own API key".to_string(),
             ];
