@@ -639,6 +639,8 @@ impl Input {
                         );
                         format!(
                             "export YARP_CALLSIGN={cs}; \
+                             mkdir -p /tmp/yarp-radio; \
+                             date +%s > \"/tmp/yarp-radio/.duty-${{USER:-unknown}}\" 2>/dev/null; \
                              printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m\\n' 'unit' {cs}{persona_lines}; \
                              printf '\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {greeting}; \
                              printf '  \\033[3;38;5;244m/inbox will flag traffic addressed to @%s as DIRECT\\033[0m\\n' {cs}",
@@ -684,10 +686,27 @@ impl Input {
                      queue=(/tmp/yarp-radio/*.msg); \
                      n=${{#queue[@]}}; \
                      if [ \"$n\" -gt 0 ]; then rm -f /tmp/yarp-radio/*.msg; fi; \
+                     duty_marker=\"/tmp/yarp-radio/.duty-${{user}}\"; \
+                     shift_str=\"\"; \
+                     if [ -f \"$duty_marker\" ]; then \
+                       start=$(cat \"$duty_marker\" 2>/dev/null); \
+                       now=$(date +%s); \
+                       if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
+                         elapsed=$((now - start)); \
+                         h=$((elapsed / 3600)); m=$(((elapsed % 3600) / 60)); s=$((elapsed % 60)); \
+                         if [ $h -gt 0 ]; then shift_str=$(printf '%dh %02dm' $h $m); \
+                         elif [ $m -gt 0 ]; then shift_str=$(printf '%dm %02ds' $m $s); \
+                         else shift_str=$(printf '%ds' $s); fi; \
+                       fi; \
+                       rm -f \"$duty_marker\"; \
+                     fi; \
                      printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' \"$when\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      if [ -n \"$prev_call\" ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_call\"; \
+                     fi; \
+                     if [ -n \"$shift_str\" ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
                      fi; \
                      if [ \"$n\" -gt 0 ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
