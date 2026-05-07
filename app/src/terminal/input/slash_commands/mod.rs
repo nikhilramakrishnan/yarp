@@ -662,7 +662,18 @@ impl Input {
                 script.push_str(
                     "printf '  \\033[2;3;38;5;179m/duty <name> to claim · /radio <name>: <msg> to send\\033[0m\\n'; ",
                 );
-                self.try_execute_command(&script, ctx);
+                // Stash the assembled bash one-liner in a temp file and have
+                // the shell exec that. Keeps the typed command short so the
+                // PTY echo doesn't dump ~50 lines of script source into the
+                // scrollback before the rendered roster appears.
+                let nanos = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_nanos())
+                    .unwrap_or(0);
+                let path = format!("/tmp/yarp-roster-{nanos}.sh");
+                let _ = std::fs::write(&path, &script);
+                let cmd = format!("bash {path}; rm -f {path}");
+                self.try_execute_command(&cmd, ctx);
             }
             case if command.name == commands::CASE.name => {
                 let Some(name) = argument
