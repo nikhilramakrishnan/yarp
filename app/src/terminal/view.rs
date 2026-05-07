@@ -20053,17 +20053,17 @@ impl TerminalView {
                          if [ -e {timeout_q} ]; then\n\
                            {err_block}\
                            if [ $elapsed -lt 60 ]; then\n\
-                             text=$(printf '⏱ (timed out after %ss)' \"$elapsed\")\n\
+                             text=$(printf '⏱ ({timeout} after %ss)' \"$elapsed\")\n\
                            else\n\
-                             text=$(printf '⏱ (timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                             text=$(printf '⏱ ({timeout} after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
                          elif [ -e {crash_q} ]; then\n\
                            {err_block}\
                            if [ $elapsed -lt 60 ]; then\n\
-                             text=$(printf '⚠ (crashed after %ss)' \"$elapsed\")\n\
+                             text=$(printf '⚠ ({crash} after %ss)' \"$elapsed\")\n\
                            else\n\
-                             text=$(printf '⚠ (crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                             text=$(printf '⚠ ({crash} after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                            fi\n\
                            stamp_color='179'\n\
                          elif [ -z \"$take_content\" ]; then\n\
@@ -20113,6 +20113,8 @@ impl TerminalView {
                             &crate::personas::persona_role_tag(&inv.persona),
                         ),
                         decline = crate::personas::persona_decline_phrase(&inv.persona.name),
+                        timeout = crate::personas::persona_timeout_phrase(&inv.persona.name),
+                        crash = crate::personas::persona_crash_phrase(&inv.persona.name),
                     );
                     if std::fs::write(&display_script_path, &display_body).is_ok() {
                         #[cfg(unix)]

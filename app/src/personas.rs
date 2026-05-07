@@ -438,6 +438,43 @@ pub(crate) fn persona_decline_phrase(name: &str) -> &'static str {
     }
 }
 
+/// In-character timeout phrase for the per-officer status line when a
+/// persona's worker hits the 120s watchdog. Generic `⏱ (timed out)` reads as
+/// tooling failure; persona-named variants keep the police-radio framing
+/// (Nicholas goes "off the airwaves", Doris "loses the plot"). Same single-
+/// quote-free / `%`-free contract as `persona_decline_phrase` because both
+/// inline into the same display script's bash literals and printf formats.
+pub(crate) fn persona_timeout_phrase(name: &str) -> &'static str {
+    match name {
+        "claude" => "lost the thread",
+        "codex" => "stalled",
+        "gemini" => "no signal",
+        "Nicholas Angel" => "off the airwaves",
+        "Danny Butterman" => "wandered off",
+        "Doris Thatcher" => "lost the plot",
+        "Frank Butterman" => "indisposed",
+        _ => "timed out",
+    }
+}
+
+/// In-character crash phrase for the per-officer status line when a persona's
+/// worker exits non-zero. Same contract as `persona_timeout_phrase`. Hot Fuzz
+/// characters get radio-code / colloquial variants (Nicholas → 10-7, Danny →
+/// "fell over"); CLI personas stay closer to a developer's vocabulary so the
+/// status line is still legible to someone debugging a real failure.
+pub(crate) fn persona_crash_phrase(name: &str) -> &'static str {
+    match name {
+        "claude" => "stumbled",
+        "codex" => "stack faulted",
+        "gemini" => "errored out",
+        "Nicholas Angel" => "10-7",
+        "Danny Butterman" => "fell over",
+        "Doris Thatcher" => "had a moment",
+        "Frank Butterman" => "compromised",
+        _ => "crashed",
+    }
+}
+
 /// Display-friendly persona name. CLI binaries are stored lowercase
 /// (`claude`, `codex`) because that's how they live on the user's PATH, but
 /// alongside title-cased badge labels like `PC (Anthropic)` the lowercase
