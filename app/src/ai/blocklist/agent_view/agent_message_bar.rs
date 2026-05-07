@@ -67,7 +67,7 @@ pub struct AgentMessageBarMouseStates {
     pub toggle_conversation_menu: MouseStateHandle,
     pub toggle_code_review: MouseStateHandle,
     pub clear_attached_context: MouseStateHandle,
-    /// Mouse state handle for the "Bring in Figma MCP" contextual button.
+    /// Mouse state handle for the "Book in Figma MCP" contextual button.
     pub figma_install_button: MouseStateHandle,
     /// Mouse state handle for the "Swear in Figma MCP" contextual button.
     pub figma_enable_button: MouseStateHandle,
@@ -360,7 +360,7 @@ impl View for AgentMessageBar {
             Some(FigmaMcpStatus::NotInstalled) => {
                 message.items.push(figma_chip(
                     self.mouse_states.figma_install_button.clone(),
-                    "Bring in Figma MCP",
+                    "Book in Figma MCP",
                     Some(InputAction::FigmaAddButtonClicked),
                 ));
             }

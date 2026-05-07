@@ -542,7 +542,7 @@ fn current_working_directory_for_zero_state(terminal_model: &TerminalModel) -> O
 enum AgentViewDescription {
     /// Plain text descriptions (used for local agent mode).
     PlainText(Vec<Cow<'static, str>>),
-    /// Cloud mode description with "Visit docs" hyperlink.
+    /// Cloud mode description with "Read the briefing" hyperlink.
     CloudModeWithDocsLink,
 }
 
@@ -627,7 +627,7 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
             items.push(
                 Container::new(
                     Text::new(
-                        "Run your agent task in an isolated cloud environment.",
+                        "Send a unit out to patrol an isolated cloud beat.",
                         appearance.ui_font_family(),
                         appearance.monospace_font_size(),
                     )
@@ -638,12 +638,12 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
                 .finish(),
             );
 
-            // Second line: text with "Visit docs" hyperlink.
+            // Second line: text with "Read the briefing" hyperlink.
             let description_with_link = FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::plain_text(
-                    "Use cloud agents to run parallel agents, build agents that run autonomously, and check in on your agents from anywhere. ",
+                    "Run units in parallel, set them on long patrols, and check in from any station. ",
                 ),
-                FormattedTextFragment::hyperlink("Visit docs", CLOUD_AGENT_DOCS_URL),
+                FormattedTextFragment::hyperlink("Read the briefing", CLOUD_AGENT_DOCS_URL),
             ])]);
 
             items.push(
@@ -1092,7 +1092,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
                                 .with_child(
                                     Container::new(
                                         Text::new(
-                                            "View changelog",
+                                            "Read the duty log",
                                             appearance.ui_font_family(),
                                             appearance.monospace_font_size() - 2.,
                                         )

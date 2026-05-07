@@ -1139,7 +1139,7 @@ pub enum InputAction {
     /// Clears attached blocks and text selection context.
     ClearAttachedContext,
 
-    /// Fired when the "Bring in Figma MCP" contextual button is clicked.
+    /// Fired when the "Book in Figma MCP" contextual button is clicked.
     FigmaAddButtonClicked,
 
     /// Fired when the "Swear in Figma MCP" contextual button is clicked.
@@ -3673,7 +3673,7 @@ impl Input {
                             "Inline conversation menu: active conversation missing navigation data: {conversation_navigation_data:?}"
                         );
                         ctx.emit(Event::ShowToast {
-                            message: "Couldn't navigate to conversation.".to_string(),
+                            message: "Couldn't navigate to that case file.".to_string(),
                             flavor: ToastFlavor::Error,
                         });
                         return;

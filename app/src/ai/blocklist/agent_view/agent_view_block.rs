@@ -264,7 +264,7 @@ impl View for AgentViewEntryBlock {
                     Text::new(
                         conversation
                             .title()
-                            .unwrap_or("Untitled conversation".to_string()),
+                            .unwrap_or("Untitled case".to_string()),
                         appearance.ui_font_family(),
                         appearance.monospace_font_size(),
                     )
@@ -294,7 +294,7 @@ impl View for AgentViewEntryBlock {
         let is_open_elsewhere = is_active && !is_active_in_this_pane;
 
         let subtext = if is_open_elsewhere {
-            Some("Open in different pane")
+            Some("Open on a different shift")
         } else if self.is_restored {
             Some("Restored")
         } else if !self.is_new
@@ -396,7 +396,7 @@ impl TypedActionView for AgentViewEntryBlock {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Couldn't navigate to conversation.".to_string(),
+                                    "Couldn't navigate to that case file.".to_string(),
                                 ),
                                 window_id,
                                 ctx,

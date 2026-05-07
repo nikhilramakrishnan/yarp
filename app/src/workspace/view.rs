@@ -12580,13 +12580,13 @@ impl Workspace {
                                 .find(|binding| binding.name == "workspace:view_changelog")
                                 .and_then(|binding| trigger_to_keystroke(binding.trigger));
 
-                            let mut link = ToastLink::new("View changelog".to_owned())
+                            let mut link = ToastLink::new("Read the duty log".to_owned())
                                 .with_onclick_action(WorkspaceAction::ViewLatestChangelog);
                             if let Some(keystroke) = keystroke {
                                 link = link.with_keystroke(keystroke);
                             }
 
-                            let toast = DismissibleToast::default(String::from("Yarp updated!"))
+                            let toast = DismissibleToast::default(String::from("Yarp's been reissued!"))
                                 .with_link(link);
 
                             stack.add_ephemeral_toast(toast, ctx);
