@@ -721,8 +721,23 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
+                     direct=0; \
                      if [ \"$n\" -gt 0 ]; then \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
+                       call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
+                       full=\"${{user}}@${{host}}\"; \
+                       for f in \"${{queue[@]}}\"; do \
+                         t=$(awk '/^to: /{{sub(/^to: /,\"\"); print; exit}}' \"$f\" 2>/dev/null); \
+                         [ -z \"$t\" ] && continue; \
+                         t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                         if [ \"$t\" = \"$user\" ] || [ \"$t\" = \"$full\" ] || {{ [ -n \"$call_lc\" ] && [ \"$t_lc\" = \"$call_lc\" ]; }}; then \
+                           direct=$((direct+1)); \
+                         fi; \
+                       done; \
+                       if [ \"$direct\" -gt 0 ]; then \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$n\"; \
+                       else \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
+                       fi; \
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mall quiet on the air\\033[0m\\n' 'radio'; \
                      fi; \
