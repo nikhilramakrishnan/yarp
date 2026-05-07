@@ -20471,6 +20471,38 @@ impl TerminalView {
                         crate::personas::shell_quote_one(&work_dir),
                     ));
                 }
+                // Collapse the chain into a single bash script so the user's
+                // shell prompt (PS1, e.g. `~ (1m 48.04s)`) doesn't render
+                // between persona cards. With 3 personas + synth, four
+                // separate blocks would print three inter-block PS1 lines —
+                // one mega-script means the shell only returns to its prompt
+                // once, after the synth finishes.
+                let chain = if chain.len() > 1 {
+                    let combined_path = format!("{work_dir}/chain.sh");
+                    let mut body = String::from("#!/usr/bin/env bash\n");
+                    for entry in chain.iter() {
+                        body.push_str(entry);
+                        body.push('\n');
+                    }
+                    if std::fs::write(&combined_path, &body).is_ok() {
+                        #[cfg(unix)]
+                        {
+                            use std::os::unix::fs::PermissionsExt as _;
+                            let _ = std::fs::set_permissions(
+                                &combined_path,
+                                std::fs::Permissions::from_mode(0o755),
+                            );
+                        }
+                        let mut collapsed: std::collections::VecDeque<String> =
+                            std::collections::VecDeque::new();
+                        collapsed.push_back(crate::personas::shell_quote_smart(&combined_path));
+                        collapsed
+                    } else {
+                        chain
+                    }
+                } else {
+                    chain
+                };
                 log::info!(
                     "EnterAgentCouncil dispatching {} sequential shell commands",
                     chain.len()
