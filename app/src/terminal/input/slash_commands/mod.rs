@@ -875,7 +875,11 @@ impl Input {
                        tony) signoff={q_tony} ;; \
                        *) signoff={q_random} ;; \
                      esac; \
-                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"",
+                     if [ -n \"$prev_av\" ]; then \
+                       printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' \"$prev_av\" \"$signoff\"; \
+                     else \
+                       printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"; \
+                     fi",
                     q_random = crate::personas::shell_quote_one(q_random),
                     q_angel = crate::personas::shell_quote_one(q_angel),
                     q_frank = crate::personas::shell_quote_one(q_frank),
