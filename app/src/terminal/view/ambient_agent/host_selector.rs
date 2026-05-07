@@ -33,9 +33,9 @@ const HEADER_VERTICAL_PADDING: f32 = 6.;
 
 const MENU_WIDTH: f32 = 208.;
 
-const BUTTON_TOOLTIP: &str = "Execution host";
+const BUTTON_TOOLTIP: &str = "Patrol post";
 
-const MENU_HEADER_LABEL: &str = "Execution host";
+const MENU_HEADER_LABEL: &str = "Patrol post";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Host {

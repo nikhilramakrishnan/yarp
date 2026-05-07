@@ -85,14 +85,14 @@ use yarpui::{
 
 const TEAM_MEMBERS_HEADER_POSITION_ID: &str = "team_settings:team_members_header";
 // Styling for team create page
-const TEAM_NAME_EDITOR_PLACEHOLDER_TEXT: &str = "Team name";
+const TEAM_NAME_EDITOR_PLACEHOLDER_TEXT: &str = "Station name";
 const CREATE_TEAM_BUTTON_LEFT_PADDING: f32 = 10.;
 const CREATE_TEAM_DESCRIPTION: &str = "Stand up a station and the squad runs cases together — file ambient officer beats, environments, duty schedules, and case files between you. Keep a station case log on hand for fellow officers and PCs.";
 
 // Styling for team management page
-const LEAVE_TEAM_BUTTON_LABEL: &str = "Leave team";
-const DELETE_TEAM_BUTTON_LABEL: &str = "Delete team";
-const CREATE_TEAM_BUTTON_LABEL: &str = "Create";
+const LEAVE_TEAM_BUTTON_LABEL: &str = "Sign off the squad";
+const DELETE_TEAM_BUTTON_LABEL: &str = "Strike the station";
+const CREATE_TEAM_BUTTON_LABEL: &str = "Stand up";
 const APPROVE_DOMAINS_PLACEHOLDER: &str = "Domains, comma separated";
 const EMAILS_PLACEHOLDER: &str = "Emails, comma separated";
 const APPROVE_DOMAINS_BUTTON_LABEL: &str = "Set";
@@ -733,7 +733,7 @@ impl TeamsPageView {
             .to_string();
         let rename_team_editor = ctx.add_typed_action_view(|ctx| {
             let mut input = ClickableTextInput::new(team_name, ctx);
-            input.set_placeholder_text("Your new team name", ctx);
+            input.set_placeholder_text("Your new station name", ctx);
             input
         });
         ctx.subscribe_to_view(&rename_team_editor, |me, _, event, ctx| {
@@ -760,7 +760,7 @@ impl TeamsPageView {
         });
         let transfer_ownership_modal = ctx.add_typed_action_view(|ctx| {
             Modal::new(
-                Some("Transfer team ownership?".to_string()),
+                Some("Hand over the watch?".to_string()),
                 transfer_ownership_modal_body,
                 ctx,
             )
