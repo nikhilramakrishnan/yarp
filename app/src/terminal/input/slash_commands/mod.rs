@@ -1257,9 +1257,9 @@ impl Input {
                       printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${flavors[$((RANDOM % ${#flavors[@]}))]}\"; \
                     else \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
-                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\" \"$pruned\"; \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;220m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\" \"$pruned\"; \
                       else \
-                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\"; \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;220m%d transmission(s)\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\"; \
                       fi; \
                       direct_q=(); broadcast_q=(); relay_q=(); \
                       for f in \"${files[@]}\"; do \
