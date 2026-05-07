@@ -68,7 +68,7 @@ const INNER_MARGIN: f32 = 20.;
 const MODAL_WIDTH: f32 = 862.;
 const BLOCK_TITLE_INPUT_WIDTH: f32 = 800.;
 
-const BLOCK_TITLE_PLACEHOLDER: &str = "Title (optional)";
+const BLOCK_TITLE_PLACEHOLDER: &str = "Case file title (optional)";
 
 // TODO(vorporeal): This is 12 in the specs, but I think our 14pt font is a bit
 // taller than 14pt?
@@ -86,7 +86,7 @@ const OUTPUT_OPTION: (&str, DisplaySetting) = ("Output", DisplaySetting::Output)
 
 /// This default title is helpful for screen readers.
 const DEFAULT_EMBED_TITLE: &str = "embedded yarp block";
-const BLOCK_CREATION_FAILED_MESSAGE: &str = "Something went wrong. Please try again.";
+const BLOCK_CREATION_FAILED_MESSAGE: &str = "Couldn't file that one. Try again.";
 
 #[derive(PartialEq)]
 enum ShareRequestState {
@@ -502,7 +502,7 @@ impl ShareBlockModal {
             );
             ctx.clipboard().write(ClipboardContent::plain_text(link));
             ctx.emit(ShareBlockModalEvent::ShowToast {
-                message: "Link copied.".to_string(),
+                message: "Case file link copied.".to_string(),
                 flavor: ToastFlavor::Default,
             });
         }
@@ -546,7 +546,7 @@ impl ShareBlockModal {
         ctx.clipboard()
             .write(ClipboardContent::plain_text(embed_snippet));
         ctx.emit(ShareBlockModalEvent::ShowToast {
-            message: "Embed code copied.".to_string(),
+            message: "Pinned report copied.".to_string(),
             flavor: ToastFlavor::Success,
         });
     }
@@ -626,7 +626,7 @@ impl ShareBlockModal {
     fn render_create_block_buttons_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         let create_link_button = self.render_create_block_button(
             appearance,
-            "Create link",
+            "File the case",
             Icon::Link,
             ButtonVariant::Accent,
             self.mouse_state_handles
@@ -636,7 +636,7 @@ impl ShareBlockModal {
         );
         let get_embed_button = self.render_create_block_button(
             appearance,
-            "Get embed",
+            "Pin the report",
             Icon::Code1,
             ButtonVariant::Basic,
             self.mouse_state_handles
@@ -663,7 +663,7 @@ impl ShareBlockModal {
             TextAndIconAlignment::TextFirst,
             if let ShareRequestState::Pending(pending_share_type) = self.request_state {
                 if pending_share_type == share_type {
-                    "Creating block...".to_string()
+                    "Filing...".to_string()
                 } else {
                     text_label.to_string()
                 }
@@ -764,7 +764,7 @@ impl ShareBlockModal {
                     .manage_permalinks_mouse_state
                     .clone(),
             )
-            .with_centered_text_label("Manage shared blocks".to_string())
+            .with_centered_text_label("Open the case files".to_string())
             .with_style(
                 self.button_style_overrides(appearance)
                     .set_font_size(12.)
@@ -870,7 +870,7 @@ impl ShareBlockModal {
             if link_generated {
                 self.block_title_editor.as_ref(app).buffer_text(app)
             } else {
-                "Share block".to_string()
+                "File the report".to_string()
             },
             appearance.ui_font_family(),
             24.,
@@ -958,7 +958,7 @@ impl ShareBlockModal {
                 .finish();
             let show_prompt_description = appearance
                 .ui_builder()
-                .span("Show prompt".to_string())
+                .span("Include the call-in".to_string())
                 .build()
                 .with_margin_left(2.)
                 .finish();
@@ -1059,7 +1059,7 @@ impl ShareBlockModal {
 
             let redact_secrets_description = appearance
                 .ui_builder()
-                .span("Redact secrets (API keys, passwords, IP addresses, PII etc.)".to_string())
+                .span("Black out the sensitive bits (keys, passwords, IPs, PII)".to_string())
                 .build()
                 .with_margin_left(4.)
                 .finish();

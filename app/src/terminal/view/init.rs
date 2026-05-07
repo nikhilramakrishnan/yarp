@@ -954,7 +954,7 @@ pub fn init(app: &mut AppContext) {
         }),
         EditableBinding::new(
             "terminal:stop_sharing_current_session",
-            "Stop sharing current session",
+            "Close radio channel for current session",
             TerminalAction::StopSharingCurrentSession {
                 source: SharedSessionActionSource::CommandPalette,
             },

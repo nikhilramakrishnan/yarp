@@ -324,9 +324,9 @@ impl<'a> UnsavedStateSummary<'a> {
 
         if self.shared_sessions > 0 {
             info_text_lines.push(format!(
-                "You are sharing {} {}{scope_suffix}",
+                "{} {} on the air{scope_suffix}",
                 self.shared_sessions,
-                pluralize(self.shared_sessions, "session", "sessions")
+                pluralize(self.shared_sessions, "channel", "channels")
             ));
         }
 
