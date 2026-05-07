@@ -834,7 +834,7 @@ impl Input {
                              printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[1;38;5;{claim_color}m@%s\\033[0m \\033[2;3;38;5;{claim_color}mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;{claim_color}m@%s\\033[0m\\n' {cs} 'unit' {badge_prefix} {cs}{persona_lines}; \
                              printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m\\n' 'started' \"$started_at\"; \
                              printf '\\n  \\033[2;3;38;5;{claim_color}m“%s”\\033[0m\\n' {greeting}; \
-                             printf '  \\033[3;38;5;244m/inbox will flag traffic addressed to @%s as DIRECT\\033[0m\\n' {cs}",
+                             printf '  \\033[2;3;38;5;{claim_color}m/inbox will flag traffic addressed to @%s as DIRECT\\033[0m\\n' {cs}",
                             cs = crate::personas::shell_quote_one(cs),
                             persona_lines = persona_lines,
                             greeting = greeting,
