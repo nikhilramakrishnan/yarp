@@ -1009,7 +1009,7 @@ impl Input {
                       done; \
                       print_msg() { \
                         local f=\"$1\" idx=\"$2\" kind=\"$3\"; \
-                        local base ts ts_s human sender target body_start line badge sender_color body_color tag consume; \
+                        local base ts ts_s human sender target body_start line badge sender_color body_color tag consume sender_lc avatar sender_disp; \
                         base=$(basename \"$f\" .msg); \
                         ts=${base%%-*}; \
                         ts_s=$((ts / 1000)); \
@@ -1029,7 +1029,18 @@ impl Input {
                           relay)     badge='\\033[2;38;5;240m▸ relay  \\033[0m '; sender_color='\\033[2;38;5;240m'; body_color='\\033[2;38;5;240m'; consume=0 ;; \
                         esac; \
                         if [ -n \"$target\" ]; then tag=\" → @${target}\"; else tag=''; fi; \
-                        printf '  \\033[2;38;5;240m%2d\\033[0m %b\\033[2;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender\" \"$tag\"; \
+                        sender_lc=$(printf '%s' \"$sender\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
+                        case \"$sender_lc\" in \
+                          nicholas|angel) avatar='🎯' ;; \
+                          frank|butterman.snr) avatar='🦔' ;; \
+                          danny|butterman) avatar='🍦' ;; \
+                          andy|wainwright|cartwright) avatar='🤡' ;; \
+                          doris|thatcher) avatar='🚓' ;; \
+                          tony) avatar='📻' ;; \
+                          *) avatar='' ;; \
+                        esac; \
+                        if [ -n \"$avatar\" ]; then sender_disp=\"$avatar $sender\"; else sender_disp=\"$sender\"; fi; \
+                        printf '  \\033[2;38;5;240m%2d\\033[0m %b\\033[2;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
