@@ -123,7 +123,7 @@ pub fn render_agent_shortcuts_view(
                     key: "!".to_owned(),
                     ..Default::default()
                 },
-                text: "input shell command".into(),
+                text: "key in a shell command".into(),
                 ..Default::default()
             },
             app,
@@ -148,7 +148,7 @@ pub fn render_agent_shortcuts_view(
                 key: "@".to_owned(),
                 ..Default::default()
             },
-            text: "for file paths and attaching other context".into(),
+            text: "for file paths and case context".into(),
             ..Default::default()
         },
         app,
@@ -161,7 +161,7 @@ pub fn render_agent_shortcuts_view(
             shortcuts.push(render_shortcut(
                 ShortcutProps {
                     keystroke,
-                    text: "open code review".into(),
+                    text: "open the case review".into(),
                     ..Default::default()
                 },
                 app,
@@ -231,7 +231,7 @@ pub fn render_agent_shortcuts_view(
                 ctrl: true,
                 ..Default::default()
             },
-            text: "pause agent".into(),
+            text: "stand the PC down".into(),
             ..Default::default()
         },
         app,
@@ -243,7 +243,7 @@ pub fn render_agent_shortcuts_view(
                 key: "escape".to_owned(),
                 ..Default::default()
             },
-            text: "go back to terminal".into(),
+            text: "back to the radio room".into(),
             ..Default::default()
         },
         app,
