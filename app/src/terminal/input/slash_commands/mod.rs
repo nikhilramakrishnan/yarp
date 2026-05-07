@@ -450,13 +450,15 @@ impl Input {
                     );
                     return true;
                 };
-                let (target, message) = match raw.strip_prefix('@') {
+                let (target_raw, message) = match raw.strip_prefix('@') {
                     Some(rest) => match rest.split_once(char::is_whitespace) {
                         Some((t, body)) => (t.trim(), body.trim()),
                         None => (rest.trim(), ""),
                     },
                     None => ("", raw),
                 };
+                let target_lc = target_raw.to_ascii_lowercase();
+                let target = target_lc.as_str();
                 if message.is_empty() {
                     show_error_toast(
                         "Please provide a message body: /radio @unit <message>".to_owned(),
