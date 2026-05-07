@@ -121,13 +121,13 @@ const INVITE_BY_EMAIL_EXPIRY_INSTRUCTIONS: &str = "Call-ins by name run for 7 da
 const INVALID_EMAILS_INSTRUCTIONS: &str =
     "Some of those badges aren't valid, are already on the line, or are already on the roster.";
 
-const OFFLINE_TEXT: &str = "You are offline.";
+const OFFLINE_TEXT: &str = "You're off the air.";
 
 const LIMIT_HIT_ADMIN_TEXT: &str =
-    "You've reached the team member limit for your plan. Upgrade to add more teammates.";
-const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've reached the team member limit for your plan. Contact support@yarp.dev to add more teammates.";
+    "Roster's full for your plan. Upgrade the station to sign more officers on.";
+const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "Roster's full for your plan. Raise support@yarp.dev to sign more officers on.";
 const LIMIT_HIT_NON_ADMIN_TEXT: &str =
-    "You've reached the team member limit for your plan. Contact a team admin to add more teammates.";
+    "Roster's full for your plan. Raise the station chief to sign more officers on.";
 
 const DELINQUENT_ADMIN_NON_SELF_SERVE_TEXT: &str = "Call-ins are off the air — there's a payment issue on the books. Raise support@yarp.dev to get back on frequency.";
 const DELINQUENT_NON_ADMIN_TEXT: &str = "Call-ins are off the air — there's a payment issue on the books. Raise the station chief to get back on frequency.";
@@ -137,11 +137,11 @@ const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_PREFIX_TEXT: &str = "Please ";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_LINK_TEXT: &str = "update your payment information";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_SUFFIX_TEXT: &str = " to restore access.";
 
-const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've exceeded the team member limit for your plan. Please contact support@yarp.dev to upgrade your team.";
+const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "Roster's overloaded for your plan. Raise support@yarp.dev to upgrade the station.";
 const TEAM_LIMIT_EXCEEDED_NON_ADMIN_TEXT: &str =
-    "You've exceeded the team member limit for your plan. Contact a team admin to upgrade your team.";
+    "Roster's overloaded for your plan. Raise the station chief to upgrade the station.";
 const TEAM_LIMIT_EXCEEDED_ADMIN_UPGRADEABLE: &str =
-    "You've exceeded the team member limit for your plan. Upgrade to add more teammates.";
+    "Roster's overloaded for your plan. Upgrade the station to sign more officers on.";
 
 const MAX_CHIP_WIDTH: f32 = 280.;
 
@@ -254,22 +254,22 @@ impl From<&TeamsPageAction> for LoginGatedFeature {
     fn from(val: &TeamsPageAction) -> LoginGatedFeature {
         use TeamsPageAction::*;
         match val {
-            LeaveTeam => "Leave Team",
-            ShowDeleteTeamConfirmationDialog => "Delete Team",
-            CreateTeam => "Create Team",
-            DeletePendingEmailInvitation { .. } => "Delete Pending Email Invitation",
-            RemoveUserFromTeam { .. } => "Remove User From Team",
-            AddDomainRestrictions { .. } => "Add Domain Restrictions",
-            DeleteDomainRestriction { .. } => "Delete Domain Restriction",
-            SendEmailInvites { .. } => "Send Email Invites",
-            GenerateUpgradeLink { .. } => "Generate Upgrade Link",
-            GenerateStripeBillingPortalLink { .. } => "Generate Stripe Billing Portal Link",
-            OpenAdminPanel { .. } => "Open Admin Panel",
-            ContactSupport => "Contact Support",
+            LeaveTeam => "Sign Off The Squad",
+            ShowDeleteTeamConfirmationDialog => "Strike The Station",
+            CreateTeam => "Stand Up A Station",
+            DeletePendingEmailInvitation { .. } => "Pull A Pending Call-In",
+            RemoveUserFromTeam { .. } => "Pull An Officer Off The Roster",
+            AddDomainRestrictions { .. } => "Add Badge Domains",
+            DeleteDomainRestriction { .. } => "Pull A Badge Domain",
+            SendEmailInvites { .. } => "Dispatch Call-Ins",
+            GenerateUpgradeLink { .. } => "Raise The Upgrade Desk",
+            GenerateStripeBillingPortalLink { .. } => "Raise The Billing Desk",
+            OpenAdminPanel { .. } => "Open The Chief's Panel",
+            ContactSupport => "Raise Support",
             ToggleTeamDiscoverability { .. } | ToggleTeamDiscoverabilityBeforeCreation => {
-                "Toggle Team Discoverability"
+                "Switch The Open-Roster Setting"
             }
-            JoinTeamWithTeamDiscovery { .. } => "Join Team With Team Discovery",
+            JoinTeamWithTeamDiscovery { .. } => "Sign On Through The Open Roster",
             _ => "Unknown reason",
         }
     }
