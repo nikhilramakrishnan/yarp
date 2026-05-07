@@ -790,7 +790,7 @@ impl Input {
                        fi; \
                        printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m ⭐ \\033[1;38;5;220m%s\\033[0m\\n' 'unit' \"$unit_disp\"; \
                        if [ -n \"$since_row\" ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_row\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_row\"; \
                        fi; \
                        printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
                      else \
