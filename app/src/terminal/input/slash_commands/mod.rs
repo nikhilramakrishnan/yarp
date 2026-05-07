@@ -866,7 +866,7 @@ impl Input {
                        rm -f \"$duty_marker\"; \
                      fi; \
                      printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' \"$when\"; \
-                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
                      prev_av=''; \
                      case \"$prev_lc\" in \
@@ -955,7 +955,7 @@ impl Input {
                      shopt -s nullglob; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[3;38;5;244m%s station\\033[0m\\n\\n' {team}; \
-                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      if [ -n \"$callsign\" ]; then \
                        cs_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
                        sit_av=''; \
