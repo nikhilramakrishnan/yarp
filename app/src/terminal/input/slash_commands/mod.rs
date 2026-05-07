@@ -1017,8 +1017,17 @@ impl Input {
                          signoff='That was quick. — Andy'; signoff_av='🤡'; \
                        fi; \
                      fi; \
+                     case \"$signoff_av\" in \
+                       '🎯') so_color=39 ;; \
+                       '🦔') so_color=220 ;; \
+                       '🍦') so_color=213 ;; \
+                       '🤡') so_color=208 ;; \
+                       '🚓') so_color=165 ;; \
+                       '📻') so_color=226 ;; \
+                       *) so_color=244 ;; \
+                     esac; \
                      if [ -n \"$signoff_av\" ]; then \
-                       printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff_av\" \"$signoff\"; \
+                       printf '\\n  %s \\033[2;3;38;5;%dm“%s”\\033[0m\\n' \"$signoff_av\" \"$so_color\" \"$signoff\"; \
                      else \
                        printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"; \
                      fi",
