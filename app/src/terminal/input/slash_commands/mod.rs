@@ -993,7 +993,7 @@ impl Input {
                        fi; \
                        if [ -z \"$callsign\" ] && [ \"$for_others\" -gt 0 ]; then \
                          others_summary=$(printf '%b' \"$others_buf\" | sort | uniq -c | sort -rn | awk 'BEGIN {{ a[\"nicholas\"]=\"🎯\"; a[\"angel\"]=\"🎯\"; a[\"frank\"]=\"🦔\"; a[\"butterman.snr\"]=\"🦔\"; a[\"danny\"]=\"🍦\"; a[\"butterman\"]=\"🍦\"; a[\"andy\"]=\"🤡\"; a[\"wainwright\"]=\"🤡\"; a[\"cartwright\"]=\"🤡\"; a[\"doris\"]=\"🚓\"; a[\"thatcher\"]=\"🚓\"; a[\"tony\"]=\"📻\" }} NR<=4 {{ av=a[$2]; sep=(NR==1?\"\":\" \"); if (av) printf sep \"%s @%s:%d\", av, $2, $1; else printf sep \"@%s:%d\", $2, $1 }}'); \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[2;38;5;240m%s\\033[0m \\033[3;38;5;244m— /duty <name> to read\\033[0m\\n' 'for others' \"$others_summary\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📨 \\033[2;38;5;240m%s\\033[0m \\033[3;38;5;244m— /duty <name> to read\\033[0m\\n' 'for others' \"$others_summary\"; \
                        fi; \
                      else \
                        hour=$(date +%H); \
