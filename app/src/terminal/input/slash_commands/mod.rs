@@ -708,7 +708,7 @@ impl Input {
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[3;38;5;244mall units\\033[0m\\n' 'notified'; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mpending\\033[0m\\n' 'queue' \"$n\"; \
-                     printf '\\n  %s\\033[3;38;5;240m“%s”\\033[0m\\n' \"$quote_prefix\" \"$quote\"",
+                     printf '\\n  %s\\033[2;3;38;5;%dm“%s”\\033[0m\\n' \"$quote_prefix\" \"$cs_color\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
@@ -1138,7 +1138,16 @@ impl Input {
                        esac; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' 'radio' \"$radio_msg\"; \
                      fi; \
-                     printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' {quote_av} {quote}",
+                     case {quote_av} in \
+                       '🎯') q_color=39 ;; \
+                       '🦔') q_color=220 ;; \
+                       '🍦') q_color=213 ;; \
+                       '🤡') q_color=208 ;; \
+                       '🚓') q_color=165 ;; \
+                       '📻') q_color=226 ;; \
+                       *) q_color=244 ;; \
+                     esac; \
+                     printf '\\n  %s \\033[2;3;38;5;%dm“%s”\\033[0m\\n' {quote_av} \"$q_color\" {quote}",
                     team = crate::personas::shell_quote_one(&team_name),
                     size = team_size,
                     clis = cli_count,
