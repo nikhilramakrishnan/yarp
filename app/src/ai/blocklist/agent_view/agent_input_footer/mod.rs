@@ -1741,7 +1741,7 @@ impl AgentInputFooter {
         let window_id = ctx.window_id();
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             let toast = DismissibleToast::error(String::from(
-                "Failed to start voice input (you may need to enable Microphone access)",
+                "Couldn't open the radio (microphone access may be off).",
             ));
             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
         });
@@ -1754,7 +1754,7 @@ impl AgentInputFooter {
             if let Some(toggle_key) = settings.maybe_setup_first_time_voice(ctx) {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::success(format!(
-                        "Voice input is enabled. You can also press and hold the `{}` key to activate voice input (configure in Settings > AI > Voice)",
+                        "Radio's hot. Press and hold `{}` to call in (Standing Orders > AI > Voice to retune).",
                         toggle_key.display_name()
                     ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
@@ -2062,7 +2062,7 @@ fn render_ftu_callout(
                     Expanded::new(
                         1.,
                         Text::new(
-                            "Now using Full Terminal Agent's default model.",
+                            "Reassigned to Full Terminal Agent's standing officer.",
                             appearance.ui_font_family(),
                             appearance.monospace_font_size() - 2.,
                         )

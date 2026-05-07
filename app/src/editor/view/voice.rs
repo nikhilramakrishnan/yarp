@@ -330,7 +330,7 @@ impl EditorView {
                                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                     let toast = crate::view_components::DismissibleToast::success(
                                         format!(
-                                            "Voice input is enabled. You can also press and hold the `{}` key to activate voice input (configure in Settings > AI > Voice)",
+                                            "Radio's hot. Press and hold `{}` to call in (Standing Orders > AI > Voice to retune).",
                                             toggle_key.display_name()
                                         )
                                             .to_string(),
@@ -360,7 +360,7 @@ impl EditorView {
         let active_window_id = ctx.window_id();
         ToastStack::handle(ctx).update(ctx, move |toast_stack, ctx| {
             let mut toast = crate::view_components::DismissibleToast::error(String::from(
-                "Failed to start voice input (you may need to enable Microphone access)",
+                "Couldn't open the radio (microphone access may be off).",
             ));
             // Set an id so the toast is shown at most once.
             toast = toast.with_object_id(MICROPHONE_ACCESS_ERROR_ID.to_string());
