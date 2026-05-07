@@ -1160,15 +1160,15 @@ impl Input {
                       }; \
                       idx=0; \
                       if [ ${#direct_q[@]} -gt 0 ]; then \
-                        printf '\\033[1;38;5;35m  ▸ DIRECT\\033[0m \\033[2;38;5;240m(%d)\\033[0m\\n' \"${#direct_q[@]}\"; \
+                        printf '\\033[1;38;5;35m  ▸ DIRECT\\033[0m \\033[2;3;38;5;240m(%d)\\033[0m\\n' \"${#direct_q[@]}\"; \
                         for f in \"${direct_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" direct; done; \
                       fi; \
                       if [ ${#broadcast_q[@]} -gt 0 ]; then \
-                        printf '\\033[1;38;5;220m  📻 BROADCASTS\\033[0m \\033[2;38;5;240m(%d)\\033[0m\\n' \"${#broadcast_q[@]}\"; \
+                        printf '\\033[1;38;5;220m  📻 BROADCASTS\\033[0m \\033[2;3;38;5;240m(%d)\\033[0m\\n' \"${#broadcast_q[@]}\"; \
                         for f in \"${broadcast_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" broadcast; done; \
                       fi; \
                       if [ ${#relay_q[@]} -gt 0 ]; then \
-                        printf '\\033[2;38;5;240m  ▸ RELAY\\033[0m \\033[2;38;5;240m(%d)\\033[0m \\033[3;38;5;244mnot for you\\033[0m\\n' \"${#relay_q[@]}\"; \
+                        printf '\\033[2;38;5;240m  ▸ RELAY\\033[0m \\033[2;3;38;5;240m(%d)\\033[0m \\033[3;38;5;244mnot for you\\033[0m\\n' \"${#relay_q[@]}\"; \
                         for f in \"${relay_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" relay; done; \
                       fi; \
                     fi";
