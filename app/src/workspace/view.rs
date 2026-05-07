@@ -11477,7 +11477,7 @@ impl Workspace {
                 log::error!("Failed to load Fuzz conversation {conversation_id} for forking.");
                 WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::error(
-                        "Failed to load conversation for forking.".to_owned(),
+                        "Couldn't pull up the case file to branch.".to_owned(),
                     );
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
@@ -12143,7 +12143,7 @@ impl Workspace {
         self.palette.update(ctx, |view, ctx| {
             view.reset(ctx);
             view.set_fixed_query_filters(
-                "Search recent repos and conversations".to_string(),
+                "Search recent repos and case files".to_string(),
                 vec![QueryFilter::HistoricalConversations, QueryFilter::Repos],
                 ctx,
             );
@@ -16577,7 +16577,7 @@ impl Workspace {
                         ToolPanelView::ProjectExplorer => "Project explorer",
                         ToolPanelView::GlobalSearch { .. } => "Global search",
                         ToolPanelView::YarpDrive => "Yarp Drive",
-                        ToolPanelView::ConversationListView => "Agent conversations",
+                        ToolPanelView::ConversationListView => "Case files",
                     }
                 } else {
                     "Tools panel"

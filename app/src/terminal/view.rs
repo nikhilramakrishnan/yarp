@@ -16511,7 +16511,7 @@ impl TerminalView {
                     },
                 ),
                 (
-                    "Copy conversation ID".to_string(),
+                    "Copy case file ID".to_string(),
                     ContextMenuAction::CopyConversationId {
                         conversation_id: conversation_token.clone(),
                     },

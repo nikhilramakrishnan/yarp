@@ -491,7 +491,7 @@ define_settings_group!(TabSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "appearance.vertical_tabs.use_latest_prompt_as_title",
-        description: "Whether vertical tab names for agent conversations use the latest user prompt.",
+        description: "Whether vertical tab names for case files use the latest radio call from you.",
     },
     vertical_tabs_display_granularity: VerticalTabsDisplayGranularity,
     vertical_tabs_tab_item_mode: VerticalTabsTabItemMode,

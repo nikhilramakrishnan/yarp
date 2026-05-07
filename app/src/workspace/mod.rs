@@ -737,7 +737,7 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding(cmd_or_ctrl_shift("b")),
         EditableBinding::new(
             LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME,
-            BindingDescription::new("Left Panel: Agent conversations"),
+            BindingDescription::new("Left Panel: Case files"),
             WorkspaceAction::ToggleConversationListView,
         )
         .with_group(bindings::BindingGroup::Navigation.as_str())
@@ -796,9 +796,9 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME,
-            BindingDescription::new("Toggle Agent conversation list view").with_custom_description(
+            BindingDescription::new("Toggle case file list view").with_custom_description(
                 bindings::MAC_MENUS_CONTEXT,
-                "Agent conversation list view",
+                "Case file list view",
             ),
             WorkspaceAction::ToggleConversationListView,
         )
