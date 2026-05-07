@@ -465,7 +465,7 @@ pub const INBOX: StaticCommand = StaticCommand {
 
 pub const ROSTER: StaticCommand = StaticCommand {
     name: "/roster",
-    description: "Show the active council roster",
+    description: "Show the precinct roster",
     icon_path: "bundled/svg/users-02.svg",
     availability: Availability::LOCAL,
     auto_enter_ai_mode: false,
@@ -474,7 +474,7 @@ pub const ROSTER: StaticCommand = StaticCommand {
 
 pub const SITREP: StaticCommand = StaticCommand {
     name: "/sitrep",
-    description: "Situational report — station status",
+    description: "Situational report from the station",
     icon_path: "bundled/svg/info.svg",
     availability: Availability::LOCAL,
     auto_enter_ai_mode: false,
