@@ -551,8 +551,21 @@ impl Input {
                 let header = format!(
                     "if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      yarp_msgs=(/tmp/yarp-radio/*.msg); \
-                     printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179m— %d \
-                     personas\\033[0m\\n\\n' {team} {count}; ",
+                     callsign=\"${{YARP_CALLSIGN:-}}\"; \
+                     title_av='👮'; \
+                     if [ -n \"$callsign\" ]; then \
+                       title_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
+                       case \"$title_lc\" in \
+                         nicholas|angel) title_av='🎯' ;; \
+                         frank|butterman.snr) title_av='🦔' ;; \
+                         danny|butterman) title_av='🍦' ;; \
+                         andy|wainwright|cartwright) title_av='🤡' ;; \
+                         doris|thatcher) title_av='🚓' ;; \
+                         tony) title_av='📻' ;; \
+                       esac; \
+                     fi; \
+                     printf '\\033[1;38;5;220m%s ROSTER\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179m— %d \
+                     personas\\033[0m\\n\\n' \"$title_av\" {team} {count}; ",
                     team = crate::personas::shell_quote_one(&team.name),
                     count = count,
                 );
