@@ -218,10 +218,10 @@ impl FirstTimeCloudAgentSetupView {
 
         // Banner text - dynamic based on credits
         let credits_text = if credits == 1 {
-            "You have 1 free credit to dispatch a Fuzz ambient officer.".to_string()
+            "1 free shift on the rota for an ambient officer.".to_string()
         } else {
             format!(
-                "You have {} free credits to dispatch Fuzz ambient officers.",
+                "{} free shifts on the rota for ambient officers.",
                 credits
             )
         };
