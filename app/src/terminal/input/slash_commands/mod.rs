@@ -775,7 +775,22 @@ impl Input {
                       else \
                         printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"${#files[@]}\"; \
                       fi; \
+                      direct_q=(); broadcast_q=(); relay_q=(); \
                       for f in \"${files[@]}\"; do \
+                        t=$(awk '/^to: /{sub(/^to: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
+                        if [ -z \"$t\" ]; then \
+                          broadcast_q+=(\"$f\"); \
+                        else \
+                          t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                          if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                            direct_q+=(\"$f\"); \
+                          else \
+                            relay_q+=(\"$f\"); \
+                          fi; \
+                        fi; \
+                      done; \
+                      ordered=(\"${direct_q[@]}\" \"${broadcast_q[@]}\" \"${relay_q[@]}\"); \
+                      for f in \"${ordered[@]}\"; do \
                         base=$(basename \"$f\" .msg); \
                         ts=${base%%-*}; \
                         rest=${base#*-}; \
