@@ -20045,7 +20045,7 @@ impl TerminalView {
                          printf '\\r\\033[K'\n\
                          elapsed=$(cat {took_q} 2>/dev/null)\n\
                          elapsed=${{elapsed:-$(( $(date +%s) - start ))}}\n\
-                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}')\"\n\
+                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
                          fi\n\
