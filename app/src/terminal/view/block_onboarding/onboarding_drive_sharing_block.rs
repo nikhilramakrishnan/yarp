@@ -51,10 +51,10 @@ impl Entity for OnboardingDriveSharingBlock {
     type Event = ();
 }
 
-const TITLE_TEXT: &str = "Sharing in Yarp Drive";
+const TITLE_TEXT: &str = "Filing case files at Sandford";
 const BODY_TEXT: &[&str] = &[
-    "You can now share drive objects, in Yarp or on the web, with anyone - Yarp user or not. Click Share in the Yarp Drive menu or the pane header to share via link or email.",
-    "You’ll be able to modify the access permissions any time.",
+    "Drive objects can be filed and put on the air, in Yarp or on the web, with any officer or civilian. Hit File in the Yarp Drive menu or the pane header to put a case on a frequency or send it by post.",
+    "Access can be reworked any time the case calls for it.",
 ];
 
 const BLOCK_PADDING: f32 = 16.;
@@ -100,8 +100,8 @@ impl View for OnboardingDriveSharingBlock {
         }
 
         let button_label = match CloudModel::as_ref(app).get_by_uid(&self.object_id.uid()) {
-            Some(object) => format!("Share {}", object.display_name()),
-            None => format!("Share this {}", self.object_id.object_type()),
+            Some(object) => format!("File {}", object.display_name()),
+            None => format!("File this {}", self.object_id.object_type()),
         };
         let object_id = self.object_id;
         let button = appearance

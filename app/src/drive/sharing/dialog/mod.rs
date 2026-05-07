@@ -77,7 +77,7 @@ const EMAIL_EDITOR_WIDTH: f32 = 100.;
 
 const SHARING_DIALOG_WIDTH: f32 = 425.;
 
-const NO_ACCESS_LABEL: &str = "No access";
+const NO_ACCESS_LABEL: &str = "Off the case";
 
 #[derive(Default)]
 struct UiStateHandles {
@@ -925,7 +925,7 @@ impl SharingDialog {
             let window_id = ctx.window_id();
             let object_name = self.targeted_object_name(ctx);
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                let toast = DismissibleToast::default(format!("Copied link to {object_name}."));
+                let toast = DismissibleToast::default(format!("Frequency to {object_name} copied."));
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
         }
@@ -1465,7 +1465,7 @@ impl SharingDialog {
 
             if !validation_state.duplicate_guests.is_empty() {
                 let error_text = format!(
-                    "Already shared with {}",
+                    "Already on the air with {}",
                     validation_state.duplicate_guests.iter().format(", ")
                 );
                 contents.add_child(self.render_error_message(error_text, appearance));
@@ -1760,7 +1760,7 @@ impl SharingDialog {
     fn render_access_header(&self, appearance: &Appearance) -> Box<dyn Element> {
         appearance
             .ui_builder()
-            .span("Who has access")
+            .span("Who's on the case")
             .with_style(UiComponentStyles {
                 font_color: Some(style::label_text(appearance)),
                 font_size: Some(style::PRIMARY_TEXT_SIZE),
@@ -1824,8 +1824,8 @@ impl SharingDialog {
             return None;
         }
 
-        const PREFIX: &str = "You must have full access to manage permissions. You have ";
-        const SUFFIX: &str = " access.";
+        const PREFIX: &str = "Need full clearance to rework the case. Yours is ";
+        const SUFFIX: &str = ".";
         let access_level_start = PREFIX.chars().count();
         let access_level_end = access_level_start + access_level.name().chars().count();
 
@@ -1855,8 +1855,8 @@ impl SharingDialog {
         let owner = self.owner(app)?;
 
         let tooltip_text = match owner {
-            Subject::Team(_) => "Team objects automatically grant full permissions to team members",
-            _ => "Owners always have full permissions on their objects",
+            Subject::Team(_) => "Station case files: every officer runs the case.",
+            _ => "The owning officer always runs the case.",
         };
         let owner_access_label = render_with_detail_tooltip(
             tooltip_text,
@@ -1998,13 +1998,13 @@ impl SharingDialog {
         let is_ai_conversation = matches!(self.target, Some(ShareableObject::AIConversation(_)));
 
         let mut items = vec![
-            MenuItemFields::new("Only people invited")
+            MenuItemFields::new("By invitation only")
                 .with_on_select_action(SharingDialogAction::SetLinkPermissions(None))
                 .with_icon(Icon::Lock)
                 .with_disabled(inherited_access)
                 .into_item(),
             MenuItem::Separator,
-            MenuItemFields::new("Anyone with the link")
+            MenuItemFields::new("Anyone tuned in")
                 .with_no_interaction_on_hover()
                 .with_icon(Icon::Globe)
                 .into_item(),
@@ -2179,13 +2179,13 @@ impl SharingDialog {
         let inherited_access = self.team_sharing_state.inheritance.is_some();
         let current_access_level = self.team_sharing_state.access_level;
         let items = [
-            MenuItemFields::new("Only invited teammates")
+            MenuItemFields::new("Invited officers only")
                 .with_on_select_action(SharingDialogAction::SetTeamPermissions(None))
                 .with_icon(Icon::Lock)
                 .with_disabled(inherited_access)
                 .into_item(),
             MenuItem::Separator,
-            MenuItemFields::new("Teammates with the link")
+            MenuItemFields::new("Officers tuned in")
                 .with_no_interaction_on_hover()
                 .with_icon(Icon::Users)
                 .into_item(),
@@ -2424,7 +2424,7 @@ impl SharingDialog {
             .with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
-                    "Copy link",
+                    "Copy frequency",
                     Icon::Link.to_yarpui_icon(copy_button_foreground),
                     MainAxisSize::Min,
                     MainAxisAlignment::SpaceBetween,
