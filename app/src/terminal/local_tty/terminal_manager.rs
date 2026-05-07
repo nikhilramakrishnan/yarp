@@ -1562,7 +1562,7 @@ impl TerminalManager {
 
                 terminal_view.update(ctx, |view, ctx| {
                     view.show_persistent_toast(
-                        "Something went wrong. Please try sharing again.".to_string(),
+                        "Something went sideways. Open the channel again.".to_string(),
                         ToastFlavor::Error,
                         ctx,
                     );

@@ -1237,7 +1237,7 @@ impl Network {
 }
 
 const NO_QUOTA_REMAINING_MESSAGE: &str =
-    "Session sharing usage exceeded for the day. Please try again later.";
+    "Day's airtime quota's burned. Try again later.";
 
 /// Converts [`SessionTerminatedReason`] to a user-facing string.
 pub fn session_terminated_reason_string(
@@ -1251,10 +1251,10 @@ pub fn session_terminated_reason_string(
         }
         SessionTerminatedReason::ExceededSizeLimit => {
             let max_bytes = max_session_size.get_appropriate_unit(UnitType::Decimal);
-            format!("Session limit ({max_bytes}) exceeded. Please reshare to continue.")
+            format!("Channel limit ({max_bytes}) blown. Open the channel again to keep going.")
         }
         SessionTerminatedReason::InternalServerError { .. } => {
-            "Session ended due to an internal error. Please try sharing again.".to_string()
+            "Channel cut off — internal error at dispatch. Open the channel again.".to_string()
         }
     }
 }
@@ -1263,16 +1263,16 @@ pub fn session_terminated_reason_string(
 pub fn failed_to_initialize_session_user_error(reason: &FailedToInitializeSessionReason) -> String {
     match reason {
         FailedToInitializeSessionReason::InternalServerError { .. } => {
-            "An internal error occurred. Please try sharing again."
+            "Dispatch hit an internal snag. Open the channel again."
         }
         FailedToInitializeSessionReason::ScrollbackTooLarge {} => {
-            "Scrollback exceeds limit. Try sharing again without scrollback."
+            "Scrollback's over the limit. Open the channel again without it."
         }
         FailedToInitializeSessionReason::NoUserQuotaRemaining { .. } => {
             // TODO: we should pass down the next refresh time to tell the user.
             NO_QUOTA_REMAINING_MESSAGE
         }
-        FailedToInitializeSessionReason::UserNotFound => "You must be logged in to share sessions.",
+        FailedToInitializeSessionReason::UserNotFound => "Sign on at Sandford to open a channel.",
     }
     .to_string()
 }

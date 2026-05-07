@@ -339,7 +339,7 @@ impl View for Body {
         } else if disabled_count > 1 {
             // Multiple options disabled - mention both reasons if agent conversations exist
             if self.has_agent_conversations {
-                Some("Some options are off — the session is over the sharing limit and there are case files on the radio")
+                Some("Some options are off — the session's over the channel quota and there are case files on the air")
             } else {
                 Some("Some options are off — the session's over the channel quota")
             }

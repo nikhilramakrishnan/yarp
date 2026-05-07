@@ -1521,7 +1521,7 @@ impl Space {
                     "Team".to_string()
                 }
             }
-            Space::Shared => "Shared with me".to_string(),
+            Space::Shared => "Filed to my desk".to_string(),
         }
     }
 }

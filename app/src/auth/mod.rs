@@ -144,11 +144,11 @@ pub fn maybe_log_out(app: &mut AppContext) {
 
         if num_shared_sessions > 0 {
             let plural = if num_shared_sessions > 1 {
-                "sessions"
+                "channels open"
             } else {
-                "session"
+                "channel open"
             };
-            info_text_vec.push(format!("You have {num_shared_sessions} shared {plural}."));
+            info_text_vec.push(format!("You've got {num_shared_sessions} {plural} on the air."));
         }
 
         if num_unsaved_objects > 0 {
