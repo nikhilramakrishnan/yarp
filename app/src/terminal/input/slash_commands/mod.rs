@@ -951,7 +951,16 @@ impl Input {
                          printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[2;38;5;240m%s\\033[0m \\033[3;38;5;244m— /duty <name> to read\\033[0m\\n' 'for others' \"$others_summary\"; \
                        fi; \
                      else \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mall quiet on the air\\033[0m\\n' 'radio'; \
+                       hour=$(date +%H); \
+                       case \"$hour\" in \
+                         0[0-5]) radio_msg='everyone tucked in' ;; \
+                         0[6-9]|10) radio_msg='kettle on' ;; \
+                         11|12|13) radio_msg='off to the supermarket' ;; \
+                         14|15|16|17) radio_msg='cornetto weather' ;; \
+                         18|19|20|21) radio_msg='down the Crown for one' ;; \
+                         *) radio_msg='all quiet on the air' ;; \
+                       esac; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' 'radio' \"$radio_msg\"; \
                      fi; \
                      printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' {quote}",
                     team = crate::personas::shell_quote_one(&team_name),
