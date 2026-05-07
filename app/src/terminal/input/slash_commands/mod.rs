@@ -591,24 +591,39 @@ impl Input {
                 };
                 let tab_name = format!("Case: {}", name);
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(tab_name.clone()));
-                const CASE_QUOTES: &[&str] = &[
-                    "Murder, murder, murder. — Angel",
-                    "I dare say there's a perfectly innocent explanation. — Angel",
-                    "It's all there in black and white. — Frank",
-                    "Have a look at the evidence. — Angel",
-                    "By the power of Greyskull. — Danny",
-                    "Crusty Jugglers. — Andy",
-                    "Forget it, Nicholas, it's Sandford. — Frank",
-                    "He's not a slasher. — Frank",
+                const CASE_QUOTES: &[(&str, &str)] = &[
+                    ("angel", "Murder, murder, murder. — Angel"),
+                    ("angel", "I dare say there's a perfectly innocent explanation. — Angel"),
+                    ("angel", "Have a look at the evidence. — Angel"),
+                    ("frank", "It's all there in black and white. — Frank"),
+                    ("frank", "Forget it, Nicholas, it's Sandford. — Frank"),
+                    ("frank", "He's not a slasher. — Frank"),
+                    ("danny", "By the power of Greyskull. — Danny"),
+                    ("andy", "Crusty Jugglers. — Andy"),
                 ];
-                let quote = {
+                let nanos = {
                     use std::time::{SystemTime, UNIX_EPOCH};
-                    let nanos = SystemTime::now()
+                    SystemTime::now()
                         .duration_since(UNIX_EPOCH)
                         .map(|d| d.subsec_nanos() as usize)
-                        .unwrap_or(0);
-                    CASE_QUOTES[nanos % CASE_QUOTES.len()]
+                        .unwrap_or(0)
                 };
+                let pick_for = |key: &str| -> &'static str {
+                    let pool: Vec<&'static str> = CASE_QUOTES.iter()
+                        .filter(|(k, _)| *k == key)
+                        .map(|(_, q)| *q)
+                        .collect();
+                    if pool.is_empty() {
+                        CASE_QUOTES[nanos % CASE_QUOTES.len()].1
+                    } else {
+                        pool[nanos % pool.len()]
+                    }
+                };
+                let q_random = CASE_QUOTES[nanos % CASE_QUOTES.len()].1;
+                let q_angel = pick_for("angel");
+                let q_frank = pick_for("frank");
+                let q_danny = pick_for("danny");
+                let q_andy = pick_for("andy");
                 let cmd = format!(
                     "mkdir -p /tmp/yarp-radio; \
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
@@ -624,10 +639,22 @@ impl Input {
                        printf '\\n'; \
                        printf 'case opened: %s' {name}; \
                      }} > \"$file\"; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} {quote}",
+                     cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
+                     case \"$cs_lc\" in \
+                       nicholas|angel) quote={q_angel} ;; \
+                       frank|butterman.snr) quote={q_frank} ;; \
+                       danny|butterman) quote={q_danny} ;; \
+                       andy|wainwright|cartwright) quote={q_andy} ;; \
+                       *) quote={q_random} ;; \
+                     esac; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
-                    quote = crate::personas::shell_quote_one(quote),
+                    q_random = crate::personas::shell_quote_one(q_random),
+                    q_angel = crate::personas::shell_quote_one(q_angel),
+                    q_frank = crate::personas::shell_quote_one(q_frank),
+                    q_danny = crate::personas::shell_quote_one(q_danny),
+                    q_andy = crate::personas::shell_quote_one(q_andy),
                 );
                 self.try_execute_command(&cmd, ctx);
             }
