@@ -719,8 +719,8 @@ impl Input {
                          printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️ \\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmon case\\033[0m\\n' 'filed by' \"$cs_color\" \"${{YARP_CALLSIGN}}\" \"$cs_color\"; \
                        fi; \
                      fi; \
-                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[3;38;5;244mall units\\033[0m\\n' 'notified'; \
-                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mpending\\033[0m\\n' 'queue' \"$n\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[2;3;38;5;179mall units\\033[0m\\n' 'notified'; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;179mpending\\033[0m\\n' 'queue' \"$n\"; \
                      printf '\\n  %s\\033[2;3;38;5;%dm“%s”\\033[0m\\n' \"$quote_prefix\" \"$cs_color\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
