@@ -926,7 +926,7 @@ impl Input {
                     .map(|t| crate::personas::cli_invocations(t).len())
                     .unwrap_or(0);
                 const QUOTES: &[&str] = &[
-                    "By the power of Greyskull. — Danny",
+                    "He's not Judge Judy and Executioner. — Andy",
                     "It's not Sunday, the gun shop's shut. — Angel",
                     "The greater good. — The NWA",
                     "Have you ever fired two guns whilst jumping through the air? — Danny",
