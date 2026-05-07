@@ -813,6 +813,7 @@ impl Input {
                     ("andy", "Crusty Jugglers. — Andy"),
                     ("andy", "Cool. — Andy"),
                     ("doris", "Off home, then. — Doris"),
+                    ("doris", "Mind how you go. — Doris"),
                     ("tony", "Yarp. — Tony"),
                     ("any", "Yarp. — Michael"),
                     ("any", "The greater good. — The NWA"),
