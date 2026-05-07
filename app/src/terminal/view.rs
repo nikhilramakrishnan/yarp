@@ -20049,7 +20049,9 @@ impl TerminalView {
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
                          fi\n\
-                         cols=$(tput cols 2>/dev/null || echo 80)\n\
+                         cols=$(stty size </dev/tty 2>/dev/null | awk '{{print $2}}')\n\
+                         [ -z \"$cols\" ] && cols=$(tput cols 2>/dev/null)\n\
+                         [ -z \"$cols\" ] && cols=80\n\
                          if [ -e {timeout_q} ]; then\n\
                            {err_block}\
                            if [ $elapsed -lt 60 ]; then\n\
@@ -20268,7 +20270,9 @@ impl TerminalView {
                                  kill_tree $sig $c; \
                                done; \
                                kill -$sig $p 2>/dev/null; }}\n\
-                             cols=$(tput cols 2>/dev/null || echo 80)\n\
+                             cols=$(stty size </dev/tty 2>/dev/null | awk '{{print $2}}')\n\
+                             [ -z \"$cols\" ] && cols=$(tput cols 2>/dev/null)\n\
+                             [ -z \"$cols\" ] && cols=80\n\
                              if [ $cols -ge 15 ]; then\n\
                                half_l=$(( (cols - 9) / 2 ))\n\
                                half_r=$(( cols - 9 - half_l ))\n\
@@ -20446,7 +20450,9 @@ impl TerminalView {
                 // it on its own block so /tmp doesn't leak.
                 if !synth_attached {
                     chain.push_back(format!(
-                        "cols=$(tput cols 2>/dev/null || echo 80); \
+                        "cols=$(stty size </dev/tty 2>/dev/null | awk '{{print $2}}'); \
+                         [ -z \"$cols\" ] && cols=$(tput cols 2>/dev/null); \
+                         [ -z \"$cols\" ] && cols=80; \
                          close=$(printf '─%.0s' $(seq 1 $cols)); \
                          printf '\\033[38;5;240m%s\\033[0m\\n\\n' \"$close\"; \
                          rm -rf {}",
