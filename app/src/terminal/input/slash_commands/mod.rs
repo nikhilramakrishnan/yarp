@@ -1149,13 +1149,13 @@ impl Input {
                          fi; \
                        done; \
                        if [ \"$direct\" -gt 0 ] && [ \"$broadcast\" -gt 0 ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· \\033[0m\\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$broadcast\" \"$n\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· \\033[0m\\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[2;3;38;5;35m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$broadcast\" \"$n\"; \
                        elif [ \"$direct\" -gt 0 ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$n\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[2;3;38;5;35m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$n\"; \
                        elif [ \"$broadcast\" -gt 0 ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$broadcast\" \"$n\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[2;3;38;5;220m— /inbox to read\\033[0m\\n' 'radio' \"$broadcast\" \"$n\"; \
                        else \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[2;3;38;5;220m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
                        fi; \
                        if [ -z \"$callsign\" ] && [ \"$for_others\" -gt 0 ]; then \
                          others_summary=$(printf '%b' \"$others_buf\" | sort | uniq -c | sort -rn | awk 'BEGIN {{ a[\"nicholas\"]=\"🎯\"; a[\"angel\"]=\"🎯\"; a[\"frank\"]=\"🦔\"; a[\"butterman.snr\"]=\"🦔\"; a[\"danny\"]=\"🍦\"; a[\"butterman\"]=\"🍦\"; a[\"andy\"]=\"🤡\"; a[\"wainwright\"]=\"🤡\"; a[\"cartwright\"]=\"🤡\"; a[\"doris\"]=\"🚓\"; a[\"thatcher\"]=\"🚓\"; a[\"tony\"]=\"📻\" }} NR<=4 {{ av=a[$2]; sep=(NR==1?\"\":\" \"); if (av) printf sep \"%s @%s:%d\", av, $2, $1; else printf sep \"@%s:%d\", $2, $1 }}'); \
