@@ -4437,6 +4437,12 @@ impl TerminalView {
         });
         if !dispatched {
             log::warn!("council: try_execute_command returned false; aborting chain");
+            self.input.update(ctx, |input, ctx| {
+                input.try_execute_command(
+                    "printf '\\033[3;38;5;179m(council aborted — could not dispatch next block)\\033[0m\\n'",
+                    ctx,
+                )
+            });
             self.council_chain_in_flight = false;
             return;
         }
