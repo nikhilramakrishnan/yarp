@@ -1084,7 +1084,7 @@ impl Input {
                      callsign=\"${{YARP_CALLSIGN:-}}\"; \
                      shopt -s nullglob; \
                      queue=(/tmp/yarp-radio/*.msg); \
-                     printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244mstation\\033[0m\\n\\n' {team}; \
+                     printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mstation\\033[0m\\n\\n' {team}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;220m%s\\033[0m\\033[2;38;5;244m@\\033[0m\\033[1;38;5;220m%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      if [ -n \"$callsign\" ]; then \
                        cs_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
