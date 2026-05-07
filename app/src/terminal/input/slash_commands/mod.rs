@@ -455,8 +455,9 @@ impl Input {
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
                      [ -z \"$ts\" ] && ts=$(date +%s)000; \
                      file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
-                     printf '%s' {body} > \"$file\"; \
-                     printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244mdispatched to all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' {body}",
+                     sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     {{ printf 'from: %s\\n\\n' \"$sender\"; printf '%s' {body}; }} > \"$file\"; \
+                     printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" {body}",
                     body = crate::personas::shell_quote_one(message),
                 );
                 self.try_execute_command(&cmd, ctx);
@@ -475,8 +476,13 @@ impl Input {
                         pid=${rest%%-*}; \
                         ts_s=$((ts / 1000)); \
                         human=$(date -r \"$ts_s\" '+%H:%M:%S' 2>/dev/null || echo \"$ts\"); \
-                        printf '  \\033[2;38;5;244m[%s pid=%s]\\033[0m\\n' \"$human\" \"$pid\"; \
-                        while IFS= read -r line; do printf '    \\033[38;5;178m%s\\033[0m\\n' \"$line\"; done < \"$f\"; \
+                        line1=$(head -1 \"$f\" 2>/dev/null); \
+                        case \"$line1\" in \
+                          from:*) sender=\"${line1#from: }\"; tail_n=3 ;; \
+                          *)      sender=\"unknown\";          tail_n=1 ;; \
+                        esac; \
+                        printf '  \\033[2;38;5;244m[%s pid=%s]\\033[0m \\033[1;38;5;220m%s\\033[0m\\n' \"$human\" \"$pid\" \"$sender\"; \
+                        tail -n +$tail_n \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    \\033[38;5;178m%s\\033[0m\\n' \"$line\"; done; \
                         rm -f \"$f\"; \
                         echo; \
                       done; \
