@@ -612,7 +612,7 @@ impl Input {
                     }
                 }
                 script.push_str(
-                    "printf '  \\033[3;38;5;244m/duty <name> to claim · /radio <name>: <msg> to send\\033[0m\\n'; ",
+                    "printf '  \\033[2;3;38;5;179m/duty <name> to claim · /radio <name>: <msg> to send\\033[0m\\n'; ",
                 );
                 self.try_execute_command(&script, ctx);
             }
