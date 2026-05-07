@@ -20032,7 +20032,7 @@ impl TerminalView {
                            : >{launched_q}\n\
                            {bg_launches}\n\
                          fi\n\
-                         printf '{color}%s\\033[0m {spin_color}%s\\033[0m \\033[2;38;5;244m{position}\\033[0m\\n\\n' {badge} {name}\n\
+                         printf '{color}%s\\033[0m {spin_color}%s\\033[0m \\033[2;38;5;244m{position}\\033[0m \\033[3;38;5;244m%s\\033[0m\\n\\n' {badge} {name} {tag}\n\
                          start=$(date +%s)\n\
                          i=0\n\
                          spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
@@ -20108,6 +20108,13 @@ impl TerminalView {
                             &crate::personas::persona_display_name(&inv.persona.name),
                         ),
                         position = format!("({}/{})", idx + 1, invocations.len()),
+                        tag = crate::personas::shell_quote_one(
+                            inv.persona.role
+                                .split('.')
+                                .next()
+                                .unwrap_or(&inv.persona.role)
+                                .trim(),
+                        ),
                     );
                     if std::fs::write(&display_script_path, &display_body).is_ok() {
                         #[cfg(unix)]
