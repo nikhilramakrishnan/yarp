@@ -959,14 +959,14 @@ impl TeamsPageView {
                     .user_workspaces
                     .as_ref(ctx)
                     .current_team()
-                    .map_or("Successfully joined team".to_string(), |team| {
-                        format!("Successfully joined {}", team.name)
+                    .map_or("Signed on to the station".to_string(), |team| {
+                        format!("Signed on at {}", team.name)
                     });
                 self.show_success(message, ctx);
                 ctx.notify();
             }
             UserWorkspacesEvent::JoinTeamWithTeamDiscoveryRejected(err) => {
-                self.show_error("Failed to join team", Some(err), ctx);
+                self.show_error("Couldn't sign on to the station", Some(err), ctx);
             }
             UserWorkspacesEvent::FetchDiscoverableTeamsSuccess(teams) => {
                 self.discoverable_teams_states = teams
@@ -980,18 +980,18 @@ impl TeamsPageView {
                 log::error!("Failed to fetch discoverable teams: {e:?}");
             }
             UserWorkspacesEvent::TransferTeamOwnershipSuccess => {
-                self.show_success("Successfully transferred team ownership", ctx);
+                self.show_success("Watch handed over", ctx);
                 ctx.notify();
             }
             UserWorkspacesEvent::TransferTeamOwnershipRejected(err) => {
-                self.show_error("Failed to transfer team ownership", Some(err), ctx);
+                self.show_error("Couldn't hand over the watch", Some(err), ctx);
             }
             UserWorkspacesEvent::SetTeamMemberRoleSuccess => {
                 self.update_team_members_state(ctx);
-                self.show_success("Successfully updated team member role", ctx);
+                self.show_success("Officer's rank updated", ctx);
             }
             UserWorkspacesEvent::SetTeamMemberRoleRejected(err) => {
-                self.show_error("Failed to update team member role", Some(err), ctx);
+                self.show_error("Couldn't update the officer's rank", Some(err), ctx);
             }
             UserWorkspacesEvent::UpdateWorkspaceSettingsSuccess => {
                 // as of right now, this is only emitted on the billing & usage page
@@ -1042,18 +1042,18 @@ impl TeamsPageView {
     ) {
         match event {
             TeamUpdateManagerEvent::LeaveError => {
-                let error = "Error leaving team".to_string();
+                let error = "Couldn't sign off the squad".to_string();
                 self.show_error(error, None, ctx);
             }
             TeamUpdateManagerEvent::LeaveSuccess => {
-                self.show_success("Successfully left team", ctx);
+                self.show_success("Signed off the squad", ctx);
                 ctx.notify();
             }
             TeamUpdateManagerEvent::RenameTeamSuccess => {
-                self.show_success("Successfully renamed team", ctx)
+                self.show_success("Station renamed", ctx)
             }
             TeamUpdateManagerEvent::RenameTeamError => {
-                self.show_error("Failed to rename team", None, ctx)
+                self.show_error("Couldn't rename the station", None, ctx)
             }
         }
     }
