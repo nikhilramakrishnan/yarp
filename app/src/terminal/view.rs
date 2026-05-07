@@ -20304,7 +20304,7 @@ impl TerminalView {
                                spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)\n\
                                while true; do\n\
                                  sleep 0.1\n\
-                                 printf '\\r{spin_color}%s\\033[3;38;5;244m deliberating…\\033[0m' \"${{spin[$((i%10))]}}\"\n\
+                                 printf '\\r{spin_color}%s\\033[3;38;5;244m {verdict_phrase}\\033[0m' \"${{spin[$((i%10))]}}\"\n\
                                  i=$((i+1))\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
@@ -20419,6 +20419,7 @@ impl TerminalView {
                             name = crate::personas::shell_quote_one(
                                 &crate::personas::persona_display_name(&lead_persona.name),
                             ),
+                            verdict_phrase = crate::personas::persona_verdict_phrase(&lead_persona.name),
                         );
                         // Best-effort write; if it fails, fall through to
                         // the no-synth path below so the council still

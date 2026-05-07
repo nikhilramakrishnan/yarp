@@ -402,6 +402,24 @@ pub(crate) fn persona_spinner_phrase(name: &str) -> &'static str {
     }
 }
 
+/// Verdict-time spinner phrase for the SIO, used during the synth pass after
+/// every officer has reported. Distinct from `persona_spinner_phrase` because
+/// "investigating" is the wrong tense once the evidence is in — the SIO is
+/// now ruling, not gathering. Phrases stay in each persona's voice so the
+/// synth block doesn't drop character at its most visible moment.
+pub(crate) fn persona_verdict_phrase(name: &str) -> &'static str {
+    match name {
+        "claude" => "synthesising…",
+        "codex" => "compiling verdict…",
+        "gemini" => "reaching consensus…",
+        "Nicholas Angel" => "weighing the evidence…",
+        "Danny Butterman" => "is it the answer?…",
+        "Doris Thatcher" => "calling it…",
+        "Frank Butterman" => "for the greater good…",
+        _ => "ruling it…",
+    }
+}
+
 /// Display-friendly persona name. CLI binaries are stored lowercase
 /// (`claude`, `codex`) because that's how they live on the user's PATH, but
 /// alongside title-cased badge labels like `PC (Anthropic)` the lowercase
