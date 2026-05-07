@@ -22339,6 +22339,21 @@ impl TerminalView {
         tool_tip_below_button: bool,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
+        // Council blocks (`/agent` chain output) suppress the block label
+        // (working-dir prompt + elapsed time). The cluster is a single
+        // dossier — the persona badges + right-aligned report stamps are
+        // the framing the user sees, and a `~` + duration above the
+        // first card just leaks shell chrome into the case file.
+        if let Some(block) = model.block_list().block_at(index) {
+            if block.council_block() {
+                return SavePosition::new(
+                    Flex::row().finish(),
+                    format!("block_index:{index}").as_str(),
+                )
+                .finish();
+            }
+        }
+
         let terminal_theme_prompt: ColorU = appearance
             .theme()
             .sub_text_color(appearance.theme().background())
