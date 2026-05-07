@@ -391,10 +391,10 @@ impl AgentInputFooter {
         });
 
         let install_plugin_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Enable notifications", InstallPluginButtonTheme)
+            ActionButton::new("Wire up dispatch", InstallPluginButtonTheme)
                 .with_icon(Icon::Download)
                 .with_tooltip(
-                    "Install the Yarp plugin to enable rich agent notifications within Yarp",
+                    "Install the Yarp plugin so dispatch can radio in officer alerts",
                 )
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
@@ -405,9 +405,9 @@ impl AgentInputFooter {
         });
 
         let plugin_instructions_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Notifications setup instructions", InstallPluginButtonTheme)
+            ActionButton::new("Dispatch setup briefing", InstallPluginButtonTheme)
                 .with_icon(Icon::Info)
-                .with_tooltip("View instructions to install the Yarp plugin")
+                .with_tooltip("Read the briefing on installing the Yarp plugin")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_adjoined_side(AdjoinedSide::Right)
@@ -421,7 +421,7 @@ impl AgentInputFooter {
         let update_plugin_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Update Yarp plugin", InstallPluginButtonTheme)
                 .with_icon(Icon::Download)
-                .with_tooltip("A new version of the Yarp plugin is available")
+                .with_tooltip("New issue of the Yarp plugin is in")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_adjoined_side(AdjoinedSide::Right)
@@ -431,9 +431,9 @@ impl AgentInputFooter {
         });
 
         let update_instructions_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Plugin update instructions", InstallPluginButtonTheme)
+            ActionButton::new("Plugin update briefing", InstallPluginButtonTheme)
                 .with_icon(Icon::Info)
-                .with_tooltip("View instructions to update the Yarp plugin")
+                .with_tooltip("Read the briefing on updating the Yarp plugin")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_adjoined_side(AdjoinedSide::Right)
@@ -488,7 +488,7 @@ impl AgentInputFooter {
                 #[cfg(not(target_family = "wasm"))]
                 if let CLIAgentSessionsModelEvent::Started { .. } = event {
                     if let Some(agent) = me.cli_agent(ctx) {
-                        let label = format!("Enable {} notifications", agent.display_name());
+                        let label = format!("Wire up {} dispatch", agent.display_name());
                         me.install_plugin_button.update(ctx, |button, ctx| {
                             button.set_label(label, ctx);
                         });
@@ -1045,8 +1045,8 @@ impl AgentInputFooter {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             toast_stack.add_ephemeral_toast(
                 DismissibleToast::error(
-                    "Could not automatically install plugin. \
-                     Please click the chip again for manual installation steps."
+                    "Auto-install of the plugin didn't take. \
+                     Click the chip again for the manual procedure."
                         .to_owned(),
                 ),
                 window_id,
@@ -1222,10 +1222,10 @@ impl AgentInputFooter {
             .cli_agent(ctx)
             .and_then(plugin_manager_for)
             .map(|m| m.install_success_message())
-            .unwrap_or("Yarp plugin installed. Please restart the session to activate.");
+            .unwrap_or("Yarp plugin signed in. Restart the session to bring it on duty.");
         self.handle_plugin_operation(
-            "Installing Yarp plugin...",
-            "Failed to install Yarp plugin",
+            "Booking in the Yarp plugin...",
+            "Couldn't book in the Yarp plugin",
             success_msg,
             PluginChipTelemetryKind::Install,
             |manager| async move { manager.install().await },
@@ -1239,10 +1239,10 @@ impl AgentInputFooter {
             .cli_agent(ctx)
             .and_then(plugin_manager_for)
             .map(|m| m.update_success_message())
-            .unwrap_or("Yarp plugin updated. Please restart the session to activate.");
+            .unwrap_or("Yarp plugin reissued. Restart the session to bring it on duty.");
         self.handle_plugin_operation(
-            "Updating Yarp plugin...",
-            "Failed to update Yarp plugin",
+            "Reissuing the Yarp plugin...",
+            "Couldn't reissue the Yarp plugin",
             success_msg,
             PluginChipTelemetryKind::Update,
             |manager| async move { manager.update().await },
