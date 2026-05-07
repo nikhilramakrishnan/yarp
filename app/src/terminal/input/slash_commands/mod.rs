@@ -882,11 +882,7 @@ impl Input {
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$disp\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
-                       if [ -n \"$prev_av\" ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$prev_av\" \"$shift_str\"; \
-                       else \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
-                       fi; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
                      fi; \
                      if [ \"$n\" -gt 0 ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
