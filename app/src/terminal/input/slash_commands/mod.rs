@@ -574,7 +574,7 @@ impl Input {
                         ("38;5;178".to_string(), "1;38;5;178".to_string())
                     };
                     let lead_tag = if p.lead {
-                        " \\033[3;38;5;220m⭐ lead\\033[0m"
+                        " \\033[3;38;5;220m⭐\\033[0m"
                     } else {
                         ""
                     };
