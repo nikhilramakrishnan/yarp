@@ -385,23 +385,22 @@ impl View for AgentViewZeroStateBlock {
 
         let header_props = if self.origin.is_cloud_agent() {
             HeaderProps {
-                title: "New Fuzz cloud agent conversation".into(),
+                title: "Open a new cloud case file".into(),
                 description: AgentViewDescription::CloudModeWithDocsLink,
                 icon: Icon::OzCloud,
             }
         } else {
-            let mut local_description =
-                "Send a prompt below to start a new conversation".to_owned();
+            let mut local_description = "Radio in below to brief the agent".to_owned();
             let active_session = self.active_session(app);
             let location_label = active_session.as_deref().and_then(|session| {
                 format_session_location(session, self.current_working_directory.as_deref())
             });
             if let Some(location_label) = location_label {
-                local_description += &format!(" in `{location_label}`");
+                local_description += &format!(" on `{location_label}`");
             }
 
             HeaderProps {
-                title: "New Fuzz agent conversation".into(),
+                title: "Open a new case file".into(),
                 description: AgentViewDescription::PlainText(vec![local_description.into()]),
                 icon: Icon::Fuzz,
             }
@@ -862,7 +861,7 @@ fn render_recent_conversations_section(
         .with_child(
             Container::new(
                 Text::new(
-                    "RECENT ACTIVITY",
+                    "RECENT CASES",
                     appearance.ui_font_family(),
                     header_font_size,
                 )
