@@ -776,7 +776,7 @@ impl Input {
                            if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\" \"$prev_color\"; \
                          else \
-                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mnone active\\033[0m\\n' 'callsign'; \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[2;3;38;5;179mnone active\\033[0m\\n' 'callsign'; \
                          fi; \
                          if [ -n \"$shift_str\" ]; then \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;%dmon the beat\\033[0m\\n' 'shift' \"$shift_str\" \"$prev_color\"; \
