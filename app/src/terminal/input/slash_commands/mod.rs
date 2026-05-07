@@ -786,6 +786,15 @@ impl Input {
                     } else {
                         let cs_lower = cs.to_ascii_lowercase();
                         let cs = cs_lower.as_str();
+                        let claim_color: u8 = match cs {
+                            "nicholas" | "angel" => 39,
+                            "frank" | "butterman.snr" => 220,
+                            "danny" | "butterman" => 213,
+                            "andy" | "wainwright" | "cartwright" => 208,
+                            "doris" | "thatcher" => 165,
+                            "tony" => 226,
+                            _ => 179,
+                        };
                         let roster = crate::personas::Roster::load()
                             .unwrap_or_else(crate::personas::Roster::default_sandford);
                         let persona = roster
@@ -800,11 +809,12 @@ impl Input {
                                 ""
                             };
                             format!(
-                                "; printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;220m%s\\033[0m \\033[1;38;5;178m%s\\033[0m{lead_tag}\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' 'persona' {badge} {name} 'role' {role}",
+                                "; printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;220m%s\\033[0m \\033[1;38;5;178m%s\\033[0m{lead_tag}\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[2;3;38;5;{claim_color}m%s\\033[0m\\n' 'persona' {badge} {name} 'role' {role}",
                                 badge = crate::personas::shell_quote_one(&p.badge),
                                 name = crate::personas::shell_quote_one(&p.name),
                                 role = crate::personas::shell_quote_one(role),
                                 lead_tag = lead_tag,
+                                claim_color = claim_color,
                             )
                         } else {
                             String::new()
@@ -817,15 +827,6 @@ impl Input {
                                 .map(|p| format!("{} ", p.badge))
                                 .unwrap_or_else(|| "📛 ".to_string()),
                         );
-                        let claim_color: u8 = match cs {
-                            "nicholas" | "angel" => 39,
-                            "frank" | "butterman.snr" => 220,
-                            "danny" | "butterman" => 213,
-                            "andy" | "wainwright" | "cartwright" => 208,
-                            "doris" | "thatcher" => 165,
-                            "tony" => 226,
-                            _ => 179,
-                        };
                         format!(
                             "export YARP_CALLSIGN={cs}; \
                              mkdir -p /tmp/yarp-radio; \
