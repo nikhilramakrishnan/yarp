@@ -771,7 +771,7 @@ impl TerminalView {
             ctx,
         );
         self.show_persistent_toast(
-            "Sharing ended due to inactivity".to_owned(),
+            "Channel went quiet — radio silence.".to_owned(),
             ToastFlavor::Error,
             ctx,
         );
@@ -1632,7 +1632,7 @@ impl TerminalView {
 
         if model.shared_session_status().is_sharer_or_viewer() {
             items.push(
-                MenuItemFields::new("Copy session sharing link")
+                MenuItemFields::new("Copy radio frequency")
                     .with_on_select_action(TerminalAction::CopySharedSessionLink {
                         source: SharedSessionActionSource::RightClickMenu,
                     })

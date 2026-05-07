@@ -1007,16 +1007,16 @@ impl FailedToJoinReason {
     /// This error message will be displayed to the user.
     pub fn user_facing_error_message(&self) -> &str {
         match self {
-            FailedToJoinReason::Unknown => "Failed to join shared session.",
+            FailedToJoinReason::Unknown => "Couldn't tune into the channel.",
             FailedToJoinReason::FailedToConnectToServer => {
-                "Failed to connect. Please try again later."
+                "Couldn't raise dispatch. Try again later."
             }
-            FailedToJoinReason::SessionNotFound => "Shared session not found.",
-            FailedToJoinReason::WrongPassword => "Invalid session sharing link.",
+            FailedToJoinReason::SessionNotFound => "Channel's not on the air.",
+            FailedToJoinReason::WrongPassword => "Frequency's no good.",
             FailedToJoinReason::MaxNumberOfParticipantsReached => {
-                "The maximum number of participants for this shared session has been reached."
+                "Channel's at capacity."
             }
-            FailedToJoinReason::SessionNotAccessible => "You don't have access to this link.",
+            FailedToJoinReason::SessionNotAccessible => "You're not on this channel.",
         }
     }
 }
@@ -1038,19 +1038,19 @@ impl From<session_sharing_protocol::viewer::FailedToJoinReason> for FailedToJoin
 pub fn session_ended_reason_string(reason: &SessionEndedReason) -> String {
     match reason {
         SessionEndedReason::InternalServerError => {
-            "Something went wrong. Please ask sharer to reshare to continue.".to_owned()
+            "Crossed wires — ask the sharer to reopen the channel.".to_owned()
         }
         SessionEndedReason::InactivityLimitReached => {
-            "Sharing ended due to sharer inactivity".to_owned()
+            "Channel closed — sharer's gone radio silent.".to_owned()
         }
-        _ => "Session ended.".to_owned(),
+        _ => "Channel closed.".to_owned(),
     }
 }
 
 pub fn viewer_removed_reason_string(reason: &ViewerRemovedReason) -> String {
     match reason {
         ViewerRemovedReason::LostAccess => {
-            "Your access to the session was removed. Please ask sharer to reshare to continue."
+            "You're off the channel — ask the sharer to wave you back on."
                 .to_owned()
         }
     }
@@ -1060,9 +1060,9 @@ pub fn viewer_removed_reason_string(reason: &ViewerRemovedReason) -> String {
 pub fn command_execution_failure_reason_string(reason: &CommandExecutionFailureReason) -> String {
     match reason {
         CommandExecutionFailureReason::InsufficientPermissions => {
-            "Insufficient permissions. Please request edit access.".to_owned()
+            "Radio's read-only — wave for edit access.".to_owned()
         }
-        _ => "Failed to execute command. Please try again.".to_owned(),
+        _ => "Order didn't go through. Try again.".to_owned(),
     }
 }
 
@@ -1070,9 +1070,9 @@ pub fn command_execution_failure_reason_string(reason: &CommandExecutionFailureR
 pub fn write_to_pty_failure_reason_string(reason: &WriteToPtyFailureReason) -> String {
     match reason {
         WriteToPtyFailureReason::InsufficientPermissions => {
-            "Insufficient permissions. Please request edit access.".to_owned()
+            "Radio's read-only — wave for edit access.".to_owned()
         }
-        _ => "Failed to make edit. Please try again.".to_owned(),
+        _ => "Edit didn't take. Try again.".to_owned(),
     }
 }
 
@@ -1080,13 +1080,13 @@ pub fn write_to_pty_failure_reason_string(reason: &WriteToPtyFailureReason) -> S
 pub fn agent_prompt_failure_reason_string(reason: &AgentPromptFailureReason) -> String {
     match reason {
         AgentPromptFailureReason::InsufficientPermissions => {
-            "Insufficient permissions. Please request edit access.".to_owned()
+            "Radio's read-only — wave for edit access.".to_owned()
         }
         AgentPromptFailureReason::InvalidConversation => {
             "Case file's no good. Have another go.".to_owned()
         }
         AgentPromptFailureReason::CommandInProgress => {
-            "A long running command is currently in progress. Please wait for it to complete before sending an agent prompt.".to_owned()
+            "Stake-out in progress. Hold off on PC orders until it wraps.".to_owned()
         }
     }
 }
@@ -1095,9 +1095,9 @@ pub fn agent_prompt_failure_reason_string(reason: &AgentPromptFailureReason) -> 
 pub fn control_action_failure_reason_string(reason: &ControlActionFailureReason) -> String {
     match reason {
         ControlActionFailureReason::InsufficientPermissions => {
-            "Insufficient permissions. Please request edit access.".to_owned()
+            "Radio's read-only — wave for edit access.".to_owned()
         }
-        _ => "Failed to perform action. Please try again.".to_owned(),
+        _ => "That didn't go through. Try again.".to_owned(),
     }
 }
 

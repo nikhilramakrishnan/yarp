@@ -148,7 +148,7 @@ impl InactivityModalBody {
 
     fn render_countdown(&self, appearance: &Appearance) -> Box<dyn Element> {
         let text = format!(
-            "Sharing will end in {}:{:02} due to inactivity.",
+            "Channel goes quiet in {}:{:02} — no chatter.",
             self.duration.as_secs() / 60,
             self.duration.as_secs() % 60,
         );
@@ -204,7 +204,7 @@ impl InactivityModalBody {
                 font_weight: Some(Weight::Bold),
                 ..Default::default()
             })
-            .with_centered_text_label(String::from("Continue sharing"))
+            .with_centered_text_label(String::from("Stay on the air"))
             .build()
             .with_cursor(Cursor::PointingHand)
             .on_click(move |ctx, _, _| {
@@ -231,7 +231,7 @@ impl View for InactivityModalBody {
 
         let header = Container::new(
             Text::new_inline(
-                "Are you still there?",
+                "Still on the channel?",
                 appearance.ui_font_family(),
                 HEADER_FONT_SIZE,
             )

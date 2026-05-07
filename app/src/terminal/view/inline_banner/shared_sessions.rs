@@ -101,11 +101,11 @@ pub fn render_inline_shared_session_started_banner(
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let label = if is_shared_ambient_agent_session {
-        "Environment started"
+        "Beat patrol started"
     } else if is_remote_control {
-        "Remote control active"
+        "Radio control active"
     } else {
-        "Sharing started"
+        "Channel open"
     };
     render_inline_shared_session_banner(is_active, label.to_string(), started_at, appearance)
 }
@@ -117,11 +117,11 @@ pub fn render_inline_shared_session_ended_banner(
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let label = if is_shared_ambient_agent_session {
-        "Environment ended"
+        "Beat patrol ended"
     } else if is_remote_control {
-        "Remote control stopped"
+        "Radio control stood down"
     } else {
-        "Sharing ended"
+        "Channel closed"
     };
     render_inline_shared_session_banner(false, label.to_string(), ended_at, appearance)
 }
