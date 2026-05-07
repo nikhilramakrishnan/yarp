@@ -517,9 +517,9 @@ impl Input {
                      esac; \
                      if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"📛 @$target\"; fi; \
                      if [ -n \"$target\" ]; then \
-                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[2;3;38;5;%dm%s → %s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$tcolor\" \"$sender_disp\" \"$target_disp\" {body}; \
+                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[2;3;38;5;%dm%s → %s\\033[0m\\n  \\033[38;5;178m“%s”\\033[0m\\n' \"$tcolor\" \"$sender_disp\" \"$target_disp\" {body}; \
                      else \
-                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[2;3;38;5;179m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" {body}; \
+                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[2;3;38;5;179m%s → all units\\033[0m\\n  \\033[38;5;178m“%s”\\033[0m\\n' \"$sender_disp\" {body}; \
                      fi; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
