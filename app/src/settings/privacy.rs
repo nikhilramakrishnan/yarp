@@ -122,7 +122,7 @@ define_settings_group!(YarpDrivePrivacySettings, settings: [
         private: false,
         storage_key: "CloudConversationStorageEnabled",
         toml_path: "agents.cloud_conversation_storage_enabled",
-        description: "Whether conversations are stored in the cloud.",
+        description: "Whether case files are kept in the cloud.",
     },
 ]);
 

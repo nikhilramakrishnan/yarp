@@ -1354,7 +1354,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.cloud_agent_computer_use_enabled",
-        description: "Whether computer use is enabled for cloud agent conversations.",
+        description: "Whether computer use is enabled on cloud cases.",
     }
 
     // Whether multi-agent orchestration is enabled. When enabled, the agent can
@@ -1409,7 +1409,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.show_conversation_history",
-        description: "Whether conversation history appears in the tools panel.",
+        description: "Whether case history is on the rack.",
     }
 
 
