@@ -963,8 +963,18 @@ impl Input {
                        tony) signoff={q_tony} ;; \
                        *) signoff={q_random} ;; \
                      esac; \
-                     if [ -n \"$prev_av\" ]; then \
-                       printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' \"$prev_av\" \"$signoff\"; \
+                     signoff_av=\"$prev_av\"; \
+                     if [ -n \"${{shift_str:-}}\" ]; then \
+                       if [ \"${{h:-0}}\" -ge 8 ] 2>/dev/null; then \
+                         signoff='Get yourself home. Long night. — Frank'; signoff_av='🦔'; \
+                       elif [ \"${{h:-0}}\" -ge 4 ] 2>/dev/null; then \
+                         signoff='Skip to the end. — Danny'; signoff_av='🍦'; \
+                       elif [ \"${{h:-0}}\" -eq 0 ] && [ \"${{m:-0}}\" -lt 5 ] 2>/dev/null; then \
+                         signoff='That was quick. — Andy'; signoff_av='🤡'; \
+                       fi; \
+                     fi; \
+                     if [ -n \"$signoff_av\" ]; then \
+                       printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff_av\" \"$signoff\"; \
                      else \
                        printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"; \
                      fi",
