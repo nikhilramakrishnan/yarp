@@ -2716,10 +2716,16 @@ pub struct TerminalView {
     /// first chain's pending dispatches.
     council_chain_in_flight: bool,
 
-    /// Pending radio (/radio) transmissions queued in /tmp/yarp-radio.
-    /// Polled on a 5s interval; surfaces as a 📻 N badge on the pane title
-    /// so other terminals can flag inbound transmissions without /inbox.
+    /// Pending radio (/radio) transmissions queued in /tmp/yarp-radio
+    /// addressed to the local user's current callsign. Off-duty this
+    /// holds the global queue depth (no callsign filter).
+    /// Polled on a 5s interval; surfaces as the 📻 N tab title badge.
     radio_pending_count: u32,
+
+    /// Pending broadcast transmissions (no `to:` header) when the local
+    /// user is on duty. Off-duty this is 0 — broadcasts roll into
+    /// `radio_pending_count`. Surfaces as the 📢 N suffix on the badge.
+    radio_broadcast_count: u32,
 
     /// A list of callbacks to run on the next
     /// [`BlocklistAIControllerEvent::FinishedReceivingOutput`] received, regardless of the finish reason.
@@ -4153,6 +4159,7 @@ impl TerminalView {
             block_completed_callbacks: Default::default(),
             council_chain_in_flight: false,
             radio_pending_count: 0,
+            radio_broadcast_count: 0,
             conversation_completed_callbacks: Default::default(),
             current_repo_path: None,
             terminal_title: Default::default(),
@@ -4438,32 +4445,38 @@ impl TerminalView {
             .filter(|s| !s.is_empty())
             .map(|s| normalize_radio_callsign(&s).to_string());
 
-        let new_count = std::fs::read_dir(dir)
-            .ok()
-            .map(|entries| {
-                entries
-                    .filter_map(Result::ok)
-                    .filter(|e| {
-                        e.file_name()
-                            .to_str()
-                            .map(|n| n.ends_with(".msg"))
-                            .unwrap_or(false)
-                    })
-                    .filter(|e| match my_callsign.as_deref() {
-                        None => true,
-                        Some(my) => match read_radio_to_header(&e.path()) {
-                            None => true,
-                            Some(target) => {
-                                normalize_radio_callsign(&target.to_ascii_lowercase()) == my
-                            }
-                        },
-                    })
-                    .count() as u32
-            })
-            .unwrap_or(0);
+        let mut direct: u32 = 0;
+        let mut broadcast: u32 = 0;
+        if let Ok(entries) = std::fs::read_dir(dir) {
+            for entry in entries.filter_map(Result::ok) {
+                let is_msg = entry
+                    .file_name()
+                    .to_str()
+                    .map(|n| n.ends_with(".msg"))
+                    .unwrap_or(false);
+                if !is_msg {
+                    continue;
+                }
+                let to = read_radio_to_header(&entry.path());
+                match (&my_callsign, to) {
+                    // Off-duty: every message rolls into the direct bucket
+                    // so the badge stays a single "📻 N" total queue depth.
+                    (None, _) => direct += 1,
+                    // On-duty broadcast: no `to:` header, addressed to all.
+                    (Some(_), None) => broadcast += 1,
+                    // On-duty addressed: only counts if it's for us.
+                    (Some(my), Some(target)) => {
+                        if normalize_radio_callsign(&target.to_ascii_lowercase()) == my {
+                            direct += 1;
+                        }
+                    }
+                }
+            }
+        }
 
-        if new_count != self.radio_pending_count {
-            self.radio_pending_count = new_count;
+        if direct != self.radio_pending_count || broadcast != self.radio_broadcast_count {
+            self.radio_pending_count = direct;
+            self.radio_broadcast_count = broadcast;
             self.update_pane_configuration(ctx);
         }
     }

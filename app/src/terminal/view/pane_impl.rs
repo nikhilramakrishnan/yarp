@@ -160,17 +160,31 @@ impl TerminalView {
         self.update_agent_view_pane_header(ctx);
     }
 
-    /// Prepend a 📻 N badge to a pane title when /tmp/yarp-radio has
-    /// pending transmissions. Inter-terminal awareness without a full
-    /// notifications system — the count drains when /inbox empties the queue.
+    /// Prepend a 📻 N · 📢 M badge to a pane title when /tmp/yarp-radio
+    /// has pending transmissions. Direct (📻) is the count addressed to
+    /// this user's current callsign — or, off-duty, the global queue
+    /// depth. Broadcast (📢) is the on-duty count of unaddressed traffic.
+    /// Either zero is suppressed; both zero suppresses the badge entirely.
     fn with_radio_badge(&self, title: String) -> String {
-        if self.radio_pending_count == 0 {
+        let direct = self.radio_pending_count;
+        let broadcast = self.radio_broadcast_count;
+        if direct == 0 && broadcast == 0 {
             return title;
         }
+        let mut badge = String::new();
+        if direct > 0 {
+            badge.push_str(&format!("📻 {direct}"));
+        }
+        if broadcast > 0 {
+            if !badge.is_empty() {
+                badge.push_str(" · ");
+            }
+            badge.push_str(&format!("📢 {broadcast}"));
+        }
         if title.is_empty() {
-            format!("📻 {}", self.radio_pending_count)
+            badge
         } else {
-            format!("📻 {} · {}", self.radio_pending_count, title)
+            format!("{badge} · {title}")
         }
     }
 
