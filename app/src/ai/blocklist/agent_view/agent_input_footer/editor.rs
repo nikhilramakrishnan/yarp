@@ -23,8 +23,8 @@ use settings::Setting as _;
 
 use super::toolbar_item::AgentToolbarItemKind;
 
-const AGENT_MODAL_TITLE: &str = "Edit agent toolbelt";
-const CLI_MODAL_TITLE: &str = "Edit CLI agent toolbelt";
+const AGENT_MODAL_TITLE: &str = "Reissue the duty kit";
+const CLI_MODAL_TITLE: &str = "Reissue the CLI duty kit";
 
 /// Controls which set of items and settings the editor modal operates on.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -212,7 +212,7 @@ impl View for AgentToolbarInlineEditor {
         render_chip_editor_sections(
             &self.chip_configurator,
             ChipEditorSectionsConfig {
-                available_section_label: "Available chips",
+                available_section_label: "Kit on the rack",
                 is_at_defaults: self.is_at_defaults(),
                 reset_action: AgentToolbarInlineEditorAction::ResetDefault,
                 activate_action: AgentToolbarInlineEditorAction::Activate,
@@ -362,7 +362,7 @@ impl View for AgentToolbarEditorModal {
             &self.chip_configurator,
             ChipEditorModalConfig {
                 title: self.modal_title(),
-                available_section_label: "Available chips",
+                available_section_label: "Kit on the rack",
                 is_at_defaults: self.is_at_defaults(),
                 is_dirty: self.is_dirty,
                 cancel_action: AgentToolbarEditorAction::Cancel,

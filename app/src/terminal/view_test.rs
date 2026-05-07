@@ -2855,7 +2855,7 @@ fn test_prompt_context_menu_items_for_agent_toolbelt_flag() {
                     .collect::<Vec<_>>();
 
                 assert!(!labels.contains(&"Edit prompt"));
-                assert!(!labels.contains(&"Edit agent toolbelt"));
+                assert!(!labels.contains(&"Reissue the duty kit"));
             });
         }
 
@@ -2868,7 +2868,7 @@ fn test_prompt_context_menu_items_for_agent_toolbelt_flag() {
                     .filter_map(|item| item.fields().map(|fields| fields.label()))
                     .collect::<Vec<_>>();
                 assert!(!labels.contains(&"Edit prompt"));
-                assert!(labels.contains(&"Edit agent toolbelt"));
+                assert!(labels.contains(&"Reissue the duty kit"));
             });
         }
     })

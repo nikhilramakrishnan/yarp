@@ -105,7 +105,7 @@ impl GenericMenuItem for NewEnvironmentMenuItem {
     }
 
     fn name(&self) -> String {
-        "New environment".to_string()
+        "New beat".to_string()
     }
 
     fn icon(&self, _app: &AppContext) -> Option<Icon> {
@@ -142,7 +142,7 @@ impl EnvironmentSelector {
         let button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("", AgentInputButtonTheme)
                 .with_icon(Icon::Globe4)
-                .with_tooltip("Choose an environment")
+                .with_tooltip("Pick the beat")
                 .with_size(ButtonSize::AgentInputButton)
                 .with_disabled_theme(DisabledTheme)
                 .on_click(|ctx| {
@@ -337,7 +337,7 @@ impl EnvironmentSelector {
             .selected_environment_id()
             .and_then(|id| CloudAmbientAgentEnvironment::get_by_id(id, ctx))
             .map(|env| env.model().string_model.display_name())
-            .unwrap_or_else(|| "New environment".to_string());
+            .unwrap_or_else(|| "New beat".to_string());
 
         let is_configuring = self.is_configuring(ctx);
 
@@ -345,9 +345,9 @@ impl EnvironmentSelector {
             button.set_label(label, ctx);
             button.set_tooltip(
                 if is_configuring {
-                    Some("Choose an environment")
+                    Some("Pick the beat")
                 } else {
-                    Some("Agent environment")
+                    Some("Officer's beat")
                 },
                 ctx,
             );
