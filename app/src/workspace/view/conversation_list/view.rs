@@ -668,7 +668,7 @@ fn render_zero_state(
         .with_child(
             ConstrainedBox::new(
                 FormattedTextElement::from_str(
-                    "Your active and past conversations with local and ambient agents will appear here.",
+                    "Open and closed case files with your on-duty PCs and ambient officers land here.",
                     appearance.ui_font_family(),
                     14.,
                 )
@@ -784,8 +784,8 @@ fn render_section_header(
 
     let title_text = Text::new_inline(
         match section {
-            ConversationSection::Active => "ACTIVE",
-            ConversationSection::Past => "PAST",
+            ConversationSection::Active => "OPEN CASES",
+            ConversationSection::Past => "CLOSED CASES",
         },
         appearance.ui_font_family(),
         11.,
@@ -858,7 +858,7 @@ impl TypedActionView for ConversationListView {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Conversations cannot be deleted while in progress.".to_string(),
+                                "Can't bin a case file while it's still active.".to_string(),
                             ),
                             window_id,
                             ctx,
@@ -873,7 +873,7 @@ impl TypedActionView for ConversationListView {
                     .as_ref(ctx)
                     .get_item_by_id(&id, ctx)
                     .map(|c| c.title(ctx).to_string())
-                    .unwrap_or_else(|| "Conversation".to_string());
+                    .unwrap_or_else(|| "Case file".to_string());
                 ctx.emit(Event::ShowDeleteConfirmationDialog {
                     conversation_id: *conversation_id,
                     conversation_title,
@@ -907,7 +907,7 @@ impl TypedActionView for ConversationListView {
                         .with_disabled(is_ambient_agent_conversation);
                     if is_ambient_agent_conversation {
                         delete_item = delete_item
-                            .with_tooltip("Ambient agent conversations cannot be deleted");
+                            .with_tooltip("Ambient officer case files can't be binned");
                     }
 
                     // Check if conversation is shareable:
@@ -932,7 +932,7 @@ impl TypedActionView for ConversationListView {
                     // Only show share item if the conversation is shareable
                     let share_item = if is_shareable {
                         Some(
-                            MenuItemFields::new("Share conversation")
+                            MenuItemFields::new("Share case file")
                                 .with_on_select_action(
                                     ConversationListViewAction::OpenShareDialog { conversation_id },
                                 )
@@ -946,7 +946,7 @@ impl TypedActionView for ConversationListView {
                         // Forking from a closed ambient agent conversation is not supported at this point.
                         if !is_ambient_agent_conversation {
                             Some([
-                                MenuItemFields::new("Fork in new pane")
+                                MenuItemFields::new("Branch case file in new pane")
                                     .with_on_select_action(
                                         ConversationListViewAction::ForkConversation {
                                             conversation_id,
@@ -954,7 +954,7 @@ impl TypedActionView for ConversationListView {
                                         },
                                     )
                                     .into_item(),
-                                MenuItemFields::new("Fork in new tab")
+                                MenuItemFields::new("Branch case file in new tab")
                                     .with_on_select_action(
                                         ConversationListViewAction::ForkConversation {
                                             conversation_id,
@@ -1040,7 +1040,7 @@ impl TypedActionView for ConversationListView {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Conversations cannot be deleted while in progress."
+                                    "Can't bin a case file while it's still active."
                                         .to_string(),
                                 ),
                                 window_id,
@@ -1063,7 +1063,7 @@ impl TypedActionView for ConversationListView {
                 let conversation_title = item
                     .as_ref()
                     .map(|c| c.title(ctx).to_string())
-                    .unwrap_or_else(|| "Conversation".to_string());
+                    .unwrap_or_else(|| "Case file".to_string());
                 ctx.emit(Event::ShowDeleteConfirmationDialog {
                     conversation_id: *ai_conversation_id,
                     conversation_title,
@@ -1180,7 +1180,7 @@ impl View for ConversationListView {
         } else if self.item_count() == 0 {
             Container::new(
                 Text::new_inline(
-                    "No matching conversations",
+                    "No matching case files",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )
