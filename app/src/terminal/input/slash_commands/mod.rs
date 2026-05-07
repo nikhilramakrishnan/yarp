@@ -591,6 +591,8 @@ impl Input {
                     if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
                         "unset YARP_CALLSIGN; printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'".to_owned()
                     } else {
+                        let cs_lower = cs.to_ascii_lowercase();
+                        let cs = cs_lower.as_str();
                         let roster = crate::personas::Roster::load()
                             .unwrap_or_else(crate::personas::Roster::default_sandford);
                         let persona = roster
