@@ -822,7 +822,7 @@ impl Input {
                         let persona_lines = if let Some(p) = persona {
                             let role = p.role.split('.').next().unwrap_or(&p.role).trim();
                             let lead_tag = if p.lead {
-                                " \\033[3;38;5;220m⭐ lead\\033[0m"
+                                " \\033[3;38;5;220m⭐\\033[0m"
                             } else {
                                 ""
                             };
