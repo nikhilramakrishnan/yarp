@@ -1246,6 +1246,32 @@ impl Input {
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👣 \\033[1;38;5;179m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 🛂 \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;220m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
+                     patrol_count=0; patrol_str=\"\"; \
+                     for cf in /tmp/yarp-radio/.callsign-*; do \
+                       [ -f \"$cf\" ] || continue; \
+                       cs=$(cat \"$cf\" 2>/dev/null); \
+                       [ -z \"$cs\" ] && continue; \
+                       cs_lc=$(printf '%s' \"$cs\" | tr '[:upper:]' '[:lower:]'); \
+                       cs_av='📛'; \
+                       case \"$cs_lc\" in \
+                         nicholas|angel) cs_av='🎯' ;; \
+                         frank|butterman.snr) cs_av='🦔' ;; \
+                         danny|butterman) cs_av='🍦' ;; \
+                         andy|wainwright|cartwright) cs_av='🤡' ;; \
+                         doris|thatcher) cs_av='🚓' ;; \
+                         tony) cs_av='📻' ;; \
+                       esac; \
+                       cs_user=\"${{cf##*/.callsign-}}\"; \
+                       you_tag=\"\"; \
+                       if [ \"$cs_user\" = \"$user\" ]; then \
+                         you_tag=\" \\033[2;3;38;5;82m(you)\\033[0m\"; \
+                       fi; \
+                       patrol_str=\"${{patrol_str}}${{cs_av}} @${{cs}}${{you_tag}}  \"; \
+                       patrol_count=$((patrol_count+1)); \
+                     done; \
+                     if [ $patrol_count -gt 0 ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;179m%d on patrol\\033[0m  %b\\n' 'precinct' \"$patrol_count\" \"$patrol_str\"; \
+                     fi; \
                      n=${{#queue[@]}}; \
                      direct=0; broadcast=0; for_others=0; others_buf=\"\"; \
                      call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
