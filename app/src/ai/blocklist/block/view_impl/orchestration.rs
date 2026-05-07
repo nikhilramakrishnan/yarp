@@ -39,7 +39,7 @@ use super::common::render_scrollable_collapsible_content;
 use super::output::{action_icon, Props};
 use super::WithContentItemSpacing;
 
-const GENERATING_TITLE_PLACEHOLDER: &str = "Generating title...";
+const GENERATING_TITLE_PLACEHOLDER: &str = "Filing the case...";
 const ORCHESTRATION_COLLAPSED_MAX_HEIGHT: f32 = 200.;
 
 fn agent_display_name_from_id(
@@ -48,7 +48,7 @@ fn agent_display_name_from_id(
     app: &AppContext,
 ) -> String {
     if orchestrator_agent_id.is_some_and(|id| id == agent_id) {
-        return "Orchestrator agent".to_string();
+        return "Watch commander".to_string();
     }
     if let Some(conversation_id) = conversation_id_for_agent_id(agent_id, app) {
         if let Some(conversation) =
@@ -59,7 +59,7 @@ fn agent_display_name_from_id(
             }
         }
     }
-    "Unknown agent".to_string()
+    "Officer unknown".to_string()
 }
 
 fn orchestrator_agent_id_for_conversation(
@@ -135,7 +135,7 @@ pub(super) fn render_messages_received_from_agents(
 
     // Header row with icon and collapse chevron
     let header = render_requested_action_row_for_text(
-        format!("Messages received ({})", messages.len()).into(),
+        format!("Calls received ({})", messages.len()).into(),
         appearance.ui_font_family(),
         Some(status_icon),
         chevron,
@@ -225,7 +225,7 @@ pub(super) fn render_send_message(
                 let status_icon = inline_action_icons::green_check_icon(appearance).finish();
                 let chevron = render_collapse_chevron(message_id, props, app);
                 let header = render_requested_action_row_for_text(
-                    format!("Sent message to {recipients}: {subject}").into(),
+                    format!("Radioed in to {recipients}: {subject}").into(),
                     appearance.ui_font_family(),
                     Some(status_icon),
                     chevron,
@@ -258,7 +258,7 @@ pub(super) fn render_send_message(
                     .finish();
             }
             SendMessageToAgentResult::Error(error) => {
-                let label = format!("Failed to send message to {recipients}: {error}");
+                let label = format!("Comm dropped to {recipients}: {error}");
                 let status_icon = inline_action_icons::red_x_icon(appearance).finish();
                 return render_requested_action_row_for_text(
                     label.into(),
@@ -275,7 +275,7 @@ pub(super) fn render_send_message(
                 .finish();
             }
             SendMessageToAgentResult::Cancelled => {
-                let label = format!("Send message to {recipients} cancelled.");
+                let label = format!("Comm to {recipients} stood down.");
                 let status_icon = inline_action_icons::cancelled_icon(appearance).finish();
                 return render_requested_action_row_for_text(
                     label.into(),
@@ -301,7 +301,7 @@ pub(super) fn render_send_message(
         || status.as_ref().is_some_and(|s| s.is_queued());
 
     let label_fragments = vec![
-        FormattedTextFragment::plain_text("Sending message to "),
+        FormattedTextFragment::plain_text("Calling in to "),
         FormattedTextFragment::bold(&recipients),
         FormattedTextFragment::plain_text(format!(": {subject}")),
     ];
@@ -378,7 +378,7 @@ pub(super) fn render_start_agent(
         let (label_fragments, status_icon) = match result {
             StartAgentResult::Success { .. } => (
                 vec![
-                    FormattedTextFragment::plain_text("Started agent "),
+                    FormattedTextFragment::plain_text("Dispatched "),
                     FormattedTextFragment::bold(name),
                     FormattedTextFragment::plain_text(start_agent_success_suffix(execution_mode)),
                 ],
@@ -396,7 +396,7 @@ pub(super) fn render_start_agent(
                 vec![
                     FormattedTextFragment::plain_text(start_agent_cancelled_prefix(execution_mode)),
                     FormattedTextFragment::bold(name),
-                    FormattedTextFragment::plain_text(" cancelled."),
+                    FormattedTextFragment::plain_text(" stood down."),
                 ],
                 inline_action_icons::cancelled_icon(appearance).finish(),
             ),
@@ -532,22 +532,22 @@ fn start_agent_success_suffix(execution_mode: &StartAgentExecutionMode) -> &'sta
 
 fn start_agent_error_prefix(execution_mode: &StartAgentExecutionMode) -> &'static str {
     match execution_mode {
-        StartAgentExecutionMode::Local { .. } => "Failed to start agent ",
-        StartAgentExecutionMode::Remote { .. } => "Failed to start remote agent ",
+        StartAgentExecutionMode::Local { .. } => "Couldn't dispatch ",
+        StartAgentExecutionMode::Remote { .. } => "Couldn't dispatch remote unit ",
     }
 }
 
 fn start_agent_cancelled_prefix(execution_mode: &StartAgentExecutionMode) -> &'static str {
     match execution_mode {
-        StartAgentExecutionMode::Local { .. } => "Start agent ",
-        StartAgentExecutionMode::Remote { .. } => "Start remote agent ",
+        StartAgentExecutionMode::Local { .. } => "Dispatch of ",
+        StartAgentExecutionMode::Remote { .. } => "Remote dispatch of ",
     }
 }
 
 fn start_agent_in_progress_prefix(execution_mode: &StartAgentExecutionMode) -> &'static str {
     match execution_mode {
-        StartAgentExecutionMode::Local { .. } => "Starting agent ",
-        StartAgentExecutionMode::Remote { .. } => "Starting remote agent ",
+        StartAgentExecutionMode::Local { .. } => "Dispatching ",
+        StartAgentExecutionMode::Remote { .. } => "Dispatching remote ",
     }
 }
 

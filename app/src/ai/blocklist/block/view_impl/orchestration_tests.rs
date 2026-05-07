@@ -54,15 +54,15 @@ fn start_agent_copy_uses_local_labels_for_local_children() {
     assert_eq!(start_agent_success_suffix(&execution_mode), " locally.");
     assert_eq!(
         start_agent_error_prefix(&execution_mode),
-        "Failed to start agent "
+        "Couldn't dispatch "
     );
     assert_eq!(
         start_agent_cancelled_prefix(&execution_mode),
-        "Start agent "
+        "Dispatch of "
     );
     assert_eq!(
         start_agent_in_progress_prefix(&execution_mode),
-        "Starting agent "
+        "Dispatching "
     );
 }
 
@@ -81,15 +81,15 @@ fn start_agent_copy_uses_remote_labels_for_remote_children() {
     assert_eq!(start_agent_success_suffix(&execution_mode), " remotely.");
     assert_eq!(
         start_agent_error_prefix(&execution_mode),
-        "Failed to start remote agent "
+        "Couldn't dispatch remote unit "
     );
     assert_eq!(
         start_agent_cancelled_prefix(&execution_mode),
-        "Start remote agent "
+        "Remote dispatch of "
     );
     assert_eq!(
         start_agent_in_progress_prefix(&execution_mode),
-        "Starting remote agent "
+        "Dispatching remote "
     );
 }
 
@@ -116,7 +116,7 @@ fn child_conversation_card_data_for_success_result_without_available_title_uses_
             Some(ChildConversationCardData {
                 conversation_id,
                 agent_name: "Agent".to_string(),
-                title: "Generating title...".to_string(),
+                title: "Filing the case...".to_string(),
                 status: ConversationStatus::InProgress,
             })
         );
@@ -199,7 +199,7 @@ fn agent_display_name_from_id_returns_orchestrator_label() {
         let actual = app.read(|ctx| {
             agent_display_name_from_id("orchestrator-agent-id", Some("orchestrator-agent-id"), ctx)
         });
-        assert_eq!(actual, "Orchestrator agent");
+        assert_eq!(actual, "Watch commander");
     });
 }
 
@@ -209,7 +209,7 @@ fn agent_display_name_from_id_returns_unknown_fallback() {
         app.add_singleton_model(|_| BlocklistAIHistoryModel::new_for_test());
         let actual =
             app.read(|ctx| agent_display_name_from_id("missing-agent-id", Some("other-id"), ctx));
-        assert_eq!(actual, "Unknown agent");
+        assert_eq!(actual, "Officer unknown");
     });
 }
 
