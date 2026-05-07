@@ -580,6 +580,24 @@ impl Input {
                 };
                 let tab_name = format!("Case: {}", name);
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(tab_name.clone()));
+                const CASE_QUOTES: &[&str] = &[
+                    "Murder, murder, murder. — Angel",
+                    "I dare say there's a perfectly innocent explanation. — Angel",
+                    "It's all there in black and white. — Frank",
+                    "Have a look at the evidence. — Angel",
+                    "By the power of Greyskull. — Danny",
+                    "Crusty Jugglers. — Andy",
+                    "Forget it, Nicholas, it's Sandford. — Frank",
+                    "He's not a slasher. — Frank",
+                ];
+                let quote = {
+                    use std::time::{SystemTime, UNIX_EPOCH};
+                    let nanos = SystemTime::now()
+                        .duration_since(UNIX_EPOCH)
+                        .map(|d| d.subsec_nanos() as usize)
+                        .unwrap_or(0);
+                    CASE_QUOTES[nanos % CASE_QUOTES.len()]
+                };
                 let cmd = format!(
                     "mkdir -p /tmp/yarp-radio; \
                      ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
@@ -595,9 +613,10 @@ impl Input {
                        printf '\\n'; \
                        printf 'case opened: %s' {name}; \
                      }} > \"$file\"; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n' {name} {tab}",
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n  \\033[3;38;5;240m“%s”\\033[0m\\n' {name} {tab} {quote}",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
+                    quote = crate::personas::shell_quote_one(quote),
                 );
                 self.try_execute_command(&cmd, ctx);
             }
