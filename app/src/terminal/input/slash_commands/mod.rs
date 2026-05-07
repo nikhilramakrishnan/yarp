@@ -812,6 +812,7 @@ impl Input {
                         "prev_call=\"${YARP_CALLSIGN:-}\"; \
                          unset YARP_CALLSIGN; \
                          duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
+                         rm -f \"/tmp/yarp-radio/.callsign-${USER:-unknown}\"; \
                          shift_str=''; \
                          ended_at=$(date '+%H:%M'); \
                          if [ -f \"$duty_marker\" ]; then \
@@ -919,6 +920,7 @@ impl Input {
                             "export YARP_CALLSIGN={cs}; \
                              mkdir -p /tmp/yarp-radio; \
                              date +%s > \"/tmp/yarp-radio/.duty-${{USER:-unknown}}\" 2>/dev/null; \
+                             printf '%s' {cs} > \"/tmp/yarp-radio/.callsign-${{USER:-unknown}}\" 2>/dev/null; \
                              started_at=$(date '+%H:%M'); \
                              printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[1;38;5;{claim_color}m@%s\\033[0m \\033[2;3;38;5;{claim_color}mcallsign claimed\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;{claim_color}m@%s\\033[0m\\n' {cs} 'unit' {badge_prefix} {cs}{persona_lines}; \
                              printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m\\n' 'started' \"$started_at\"; \
@@ -1054,6 +1056,7 @@ impl Input {
                      when=\"$(date '+%a %H:%M' 2>/dev/null || date)\"; \
                      prev_call=\"${{YARP_CALLSIGN:-}}\"; \
                      unset YARP_CALLSIGN; \
+                     rm -f \"/tmp/yarp-radio/.callsign-${{user}}\"; \
                      if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      n=${{#queue[@]}}; \

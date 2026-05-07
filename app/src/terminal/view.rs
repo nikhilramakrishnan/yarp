@@ -4422,8 +4422,23 @@ impl TerminalView {
     /// Count pending /tmp/yarp-radio/*.msg transmissions and refresh the
     /// pane title if the count changed. Driven by the 5s interval timer
     /// armed in the constructor.
+    ///
+    /// When the local user has claimed a callsign (via /duty, which writes
+    /// `.callsign-${USER}` alongside the duty timestamp), the count scopes
+    /// to messages addressed to that callsign plus broadcasts (no `to:`
+    /// header) — so the badge means "you have N waiting". Off-duty, it
+    /// falls back to the global queue depth.
     fn refresh_radio_pending_count(&mut self, ctx: &mut ViewContext<Self>) {
-        let new_count = std::fs::read_dir("/tmp/yarp-radio")
+        let dir = "/tmp/yarp-radio";
+        let user = std::env::var("USER").ok().filter(|u| !u.is_empty());
+        let my_callsign = user
+            .as_deref()
+            .and_then(|u| std::fs::read_to_string(format!("{dir}/.callsign-{u}")).ok())
+            .map(|s| s.trim().to_ascii_lowercase())
+            .filter(|s| !s.is_empty())
+            .map(|s| normalize_radio_callsign(&s).to_string());
+
+        let new_count = std::fs::read_dir(dir)
             .ok()
             .map(|entries| {
                 entries
@@ -4433,6 +4448,15 @@ impl TerminalView {
                             .to_str()
                             .map(|n| n.ends_with(".msg"))
                             .unwrap_or(false)
+                    })
+                    .filter(|e| match my_callsign.as_deref() {
+                        None => true,
+                        Some(my) => match read_radio_to_header(&e.path()) {
+                            None => true,
+                            Some(target) => {
+                                normalize_radio_callsign(&target.to_ascii_lowercase()) == my
+                            }
+                        },
                     })
                     .count() as u32
             })
@@ -13137,6 +13161,40 @@ fn fork_label_for_query(query: &str) -> String {
         };
         format!("Fork from \"{truncated}{suffix}\"")
     }
+}
+
+/// Collapse persona aliases to a canonical lowercase callsign so a terminal
+/// claiming `/duty angel` matches `/radio @nicholas` traffic and vice-versa.
+/// Returns the input unchanged for unknown callsigns.
+fn normalize_radio_callsign(cs: &str) -> &str {
+    match cs {
+        "nicholas" | "angel" | "nicholas angel" => "angel",
+        "danny" | "butterman" | "danny butterman" => "danny",
+        "doris" | "thatcher" | "doris thatcher" => "doris",
+        "frank" | "butterman.snr" | "frank butterman" => "frank",
+        "andy" | "wainwright" | "cartwright" | "andy wainwright" | "andy cartwright" => "andy",
+        other => other,
+    }
+}
+
+/// Parse the `to:` header from a /tmp/yarp-radio/*.msg file. Returns None
+/// for broadcasts (no `to:` line before the blank-line body separator).
+fn read_radio_to_header(path: &std::path::Path) -> Option<String> {
+    let content = std::fs::read_to_string(path).ok()?;
+    for line in content.lines() {
+        if line.is_empty() {
+            return None;
+        }
+        let lower = line.to_ascii_lowercase();
+        if let Some(rest) = lower.strip_prefix("to:") {
+            let v = rest.trim();
+            if v.is_empty() {
+                return None;
+            }
+            return Some(v.to_string());
+        }
+    }
+    None
 }
 
 impl TerminalView {
