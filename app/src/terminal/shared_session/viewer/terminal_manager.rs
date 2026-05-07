@@ -732,7 +732,7 @@ impl TerminalManager {
                 Self::shared_session_ended(&view, model.clone(), ctx);
                 view.update(ctx, |terminal_view, ctx| {
                     terminal_view.show_persistent_toast(
-                        "Failed to reconnect. Please try again later.".to_owned(),
+                        "Couldn't raise dispatch. Try again later.".to_owned(),
                         ToastFlavor::Error,
                         ctx,
                     );

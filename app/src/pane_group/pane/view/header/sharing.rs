@@ -28,9 +28,9 @@ use crate::{
 use super::{Event, OpenOverlay, PaneHeader, PaneHeaderAction};
 
 const UNSHARABLE_CONVERSATION_TOOLTIP: &str =
-    "This conversation cannot be shared because it is not \
-    stored in the cloud.\nTo sync to cloud and share, enable the setting under Settings > Privacy, \
-    and then make another request.";
+    "This case file's off-grid — can't put it on the radio.\n\
+    To sync the file to dispatch and open a channel, flip the switch \
+    under Settings > Privacy, then call it in again.";
 
 /// Pane header component for sharing the pane contents.
 pub struct SharedPaneContent {
@@ -186,10 +186,10 @@ impl<P: BackingView> PaneHeader<P> {
                 (
                     Icon::Share,
                     self.open_overlay == OpenOverlay::SharingDialog,
-                    "Share".to_string(),
+                    "Open channel".to_string(),
                 )
             } else {
-                (Icon::Link, false, "Copy link".to_string())
+                (Icon::Link, false, "Copy radio frequency".to_string())
             };
 
         let ui_builder = appearance.ui_builder().clone();

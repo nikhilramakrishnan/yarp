@@ -676,7 +676,7 @@ impl From<&WorkspaceAction> for LoginGatedFeature {
             CreateTeamFolder => "Creating a team folder",
             CreateTeamEnvVarCollection => "Creating a team environment variable collection",
             CreateTeamAIPrompt => "Creating a team prompt",
-            OpenShareSessionModal(_) => "Sharing a session",
+            OpenShareSessionModal(_) => "Opening a channel",
             _ => "Unknown reason",
         }
     }

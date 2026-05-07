@@ -56,7 +56,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Tune in to any Fuzz ambient officer's patrol in real-time using PC Session Sharing.",
+            "Tune into any Fuzz officer's beat live by opening a radio channel.",
             None,
         ),
         CloudModeTip::new(

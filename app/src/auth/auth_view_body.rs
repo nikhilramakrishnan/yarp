@@ -608,13 +608,13 @@ impl AuthViewBody {
 
         let text = match self.variant {
             AuthViewVariant::RequireLoginCloseable  => {
-                "In order to use Yarp's AI features or collaborate with others, please create an account."
+                "Need a badge to call PCs in or work with the rest of the station — sign on with dispatch first."
             }
             AuthViewVariant::HitDriveObjectLimitCloseable => {
-                "In order to create more objects in Yarp Drive, please create an account."
+                "Need a badge to file more case work into the station drive — sign on with dispatch first."
             }
             AuthViewVariant::ShareRequirementCloseable => {
-                "In order to share, please create an account."
+                "Need a badge to open a channel — sign on with dispatch first."
             }
             _ => "",
         };
@@ -643,7 +643,7 @@ impl AuthViewBody {
             AuthViewVariant::Initial => "Welcome to Sandford!",
             AuthViewVariant::RequireLoginCloseable
             | AuthViewVariant::HitDriveObjectLimitCloseable
-            | AuthViewVariant::ShareRequirementCloseable => "Sign up for Yarp",
+            | AuthViewVariant::ShareRequirementCloseable => "Sign on at Sandford",
         };
 
         ui_builder
