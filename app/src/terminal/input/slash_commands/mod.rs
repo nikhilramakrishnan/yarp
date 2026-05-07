@@ -553,12 +553,24 @@ impl Input {
                         .next()
                         .unwrap_or(&p.role)
                         .trim();
-                    let (badge_color, name_color) = if p.lead {
-                        ("38;5;220", "1;38;5;220")
+                    let name_lc_pre = p.name.to_ascii_lowercase();
+                    let persona_color = match name_lc_pre.as_str() {
+                        "nicholas" | "angel" => Some(39),
+                        "frank" | "butterman.snr" => Some(220),
+                        "danny" | "butterman" => Some(213),
+                        "andy" | "wainwright" | "cartwright" => Some(208),
+                        "doris" | "thatcher" => Some(165),
+                        "tony" => Some(226),
+                        _ => None,
+                    };
+                    let (badge_color, name_color) = if let Some(c) = persona_color {
+                        (format!("38;5;{}", c), format!("1;38;5;{}", c))
+                    } else if p.lead {
+                        ("38;5;220".to_string(), "1;38;5;220".to_string())
                     } else if p.binary.is_some() {
-                        ("38;5;39", "1;38;5;39")
+                        ("38;5;39".to_string(), "1;38;5;39".to_string())
                     } else {
-                        ("38;5;178", "1;38;5;178")
+                        ("38;5;178".to_string(), "1;38;5;178".to_string())
                     };
                     let lead_tag = if p.lead {
                         " \\033[3;38;5;220m⭐ lead\\033[0m"
