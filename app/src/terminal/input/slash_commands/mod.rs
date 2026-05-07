@@ -1109,10 +1109,10 @@ impl Input {
                          elapsed=$((now - start)); \
                          hh=$((elapsed / 3600)); mm=$(((elapsed % 3600) / 60)); \
                          when=$(date -r \"$start\" '+%H:%M' 2>/dev/null || echo '—'); \
-                         if [ $hh -ge 8 ]; then tier_icon='🌙'; \
-                         elif [ $hh -ge 4 ]; then tier_icon='🔴'; \
-                         elif [ $hh -ge 1 ]; then tier_icon='🟡'; \
-                         else tier_icon='🟢'; \
+                         if [ $hh -ge 8 ]; then tier_icon='🌙'; tier_color=165; \
+                         elif [ $hh -ge 4 ]; then tier_icon='🔴'; tier_color=196; \
+                         elif [ $hh -ge 1 ]; then tier_icon='🟡'; tier_color=220; \
+                         else tier_icon='🟢'; tier_color=82; \
                          fi; \
                          if [ $hh -gt 0 ]; then \
                            since_str=$(printf '%s \\033[2;38;5;240m(%dh %02dm)\\033[0m' \"$when\" $hh $mm); \
@@ -1121,7 +1121,7 @@ impl Input {
                          else \
                            since_str=$(printf '%s \\033[2;38;5;240m(just now)\\033[0m' \"$when\"); \
                          fi; \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$tier_icon\" \"$since_str\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;%dm%b\\033[0m\\n' 'since' \"$tier_icon\" \"$tier_color\" \"$since_str\"; \
                        fi; \
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👣 \\033[1;38;5;179m%s\\033[0m\\n' 'beat' \"$cwd\"; \
