@@ -1167,7 +1167,7 @@ impl Input {
                          if [ -z \"$t\" ]; then \
                            broadcast=$((broadcast+1)); continue; \
                          fi; \
-                         t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                         t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
                          if [ \"$t\" = \"$user\" ] || [ \"$t\" = \"$full\" ] || {{ [ -n \"$call_lc\" ] && [ \"$t_lc\" = \"$call_lc\" ]; }}; then \
                            direct=$((direct+1)); \
                          else \
@@ -1236,7 +1236,7 @@ impl Input {
                           if [ -z \"$t\" ]; then \
                             rm -f \"$f\" && removed=$((removed+1)); \
                           else \
-                            t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                            t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
                             if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
                               rm -f \"$f\" && removed=$((removed+1)); \
                             fi; \
@@ -1306,7 +1306,7 @@ impl Input {
                         if [ -z \"$t\" ]; then \
                           broadcast_q+=(\"$f\"); \
                         else \
-                          t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                          t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
                           if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
                             direct_q+=(\"$f\"); \
                           else \
@@ -1358,7 +1358,8 @@ impl Input {
                             *) tcolor=244 ;; \
                           esac; \
                           if [ \"$kind\" = relay ]; then tag_sgr='2;3;38;5;240'; else tag_sgr=\"3;38;5;${tcolor}\"; fi; \
-                          tag=\" → @${target}\"; \
+                          target_disp=$(printf '%s' \"$target\" | sed 's/^@//'); \
+                          tag=\" → @${target_disp}\"; \
                         else tag=''; tag_sgr='3;38;5;244'; fi; \
                         printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[%sm%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag_sgr\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line || [ -n \"$line\" ]; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
