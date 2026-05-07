@@ -91,7 +91,7 @@ fn render_user_query(
     if ambient_agent_model.error_message().is_some() {
         column.add_child(
             Text::new(
-                "Failed",
+                "PC down",
                 appearance.ui_font_family(),
                 appearance.monospace_font_size(),
             )

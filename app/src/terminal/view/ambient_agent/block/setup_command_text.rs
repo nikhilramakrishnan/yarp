@@ -150,9 +150,9 @@ impl View for CloudModeSetupTextBlock {
                             &self.agent_view_controller,
                             app,
                         ) {
-                            "Running setup commands..."
+                            "Kitting out the beat..."
                         } else {
-                            "Ran setup commands"
+                            "Beat kit complete"
                         },
                         appearance.ai_font_family(),
                         appearance.monospace_font_size(),

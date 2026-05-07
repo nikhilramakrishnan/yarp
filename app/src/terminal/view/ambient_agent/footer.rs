@@ -84,7 +84,7 @@ pub fn render_loading_footer(appearance: &Appearance) -> Box<dyn Element> {
 
     build_centered_footer(
         "Ambient officer reporting in…".to_string(),
-        "You'll be able to interact with Fuzz soon".to_string(),
+        "Stand by — you'll be on the radio in a tick".to_string(),
         header_color,
         body_color,
         background,
