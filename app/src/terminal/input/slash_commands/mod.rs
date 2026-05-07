@@ -1012,23 +1012,23 @@ impl Input {
                     .default_team()
                     .map(|t| crate::personas::cli_invocations(t).len())
                     .unwrap_or(0);
-                const QUOTES: &[&str] = &[
-                    "He's not Judge Judy and Executioner. — Andy",
-                    "Murder. Mur-der. — Andy",
-                    "It's not Sunday, the gun shop's shut. — Angel",
-                    "It's all about the paperwork. — Angel",
-                    "The greater good. — The NWA",
-                    "All for the good of Sandford. — The NWA",
-                    "Yarp. — Tony",
-                    "Narp. — Tony",
-                    "Yeah, but he gets to ride the horse. — Doris",
-                    "Oh, give it some welly. — Doris",
-                    "Forget it, Nicholas, it's Sandford. — Frank",
-                    "Welcome to Sandford. — Frank",
-                    "Pub? — Danny",
-                    "Have you ever fired your gun in the air and yelled aaaaargh? — Danny",
+                const QUOTES: &[(&str, &str)] = &[
+                    ("🤡", "He's not Judge Judy and Executioner. — Andy"),
+                    ("🤡", "Murder. Mur-der. — Andy"),
+                    ("🎯", "It's not Sunday, the gun shop's shut. — Angel"),
+                    ("🎯", "It's all about the paperwork. — Angel"),
+                    ("🦔", "The greater good. — The NWA"),
+                    ("🦔", "All for the good of Sandford. — The NWA"),
+                    ("📻", "Yarp. — Tony"),
+                    ("📻", "Narp. — Tony"),
+                    ("🚓", "Yeah, but he gets to ride the horse. — Doris"),
+                    ("🚓", "Oh, give it some welly. — Doris"),
+                    ("🦔", "Forget it, Nicholas, it's Sandford. — Frank"),
+                    ("🦔", "Welcome to Sandford. — Frank"),
+                    ("🍦", "Pub? — Danny"),
+                    ("🍦", "Have you ever fired your gun in the air and yelled aaaaargh? — Danny"),
                 ];
-                let quote = {
+                let (quote_av, quote) = {
                     use std::time::{SystemTime, UNIX_EPOCH};
                     let nanos = SystemTime::now()
                         .duration_since(UNIX_EPOCH)
@@ -1128,10 +1128,11 @@ impl Input {
                        esac; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' 'radio' \"$radio_msg\"; \
                      fi; \
-                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' {quote}",
+                     printf '\\n  %s \\033[3;38;5;244m“%s”\\033[0m\\n' {quote_av} {quote}",
                     team = crate::personas::shell_quote_one(&team_name),
                     size = team_size,
                     clis = cli_count,
+                    quote_av = crate::personas::shell_quote_one(quote_av),
                     quote = crate::personas::shell_quote_one(quote),
                 );
                 self.try_execute_command(&cmd, ctx);
