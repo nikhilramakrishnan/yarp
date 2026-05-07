@@ -1152,10 +1152,17 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 🛂 \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;220m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
                      direct=0; broadcast=0; for_others=0; others_buf=\"\"; \
+                     call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
+                     full=\"${{user}}@${{host}}\"; \
                      if [ \"$n\" -gt 0 ]; then \
-                       call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
-                       full=\"${{user}}@${{host}}\"; \
                        for f in \"${{queue[@]}}\"; do \
+                         fr=$(awk '/^from: /{{sub(/^from: /,\"\"); print; exit}}' \"$f\" 2>/dev/null); \
+                         fr_simple=$(printf '%s' \"$fr\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
+                         if [ -n \"$fr_simple\" ]; then \
+                           if {{ [ -n \"$call_lc\" ] && [ \"$fr_simple\" = \"$call_lc\" ]; }} || [ \"$fr\" = \"$user\" ] || [ \"$fr\" = \"$full\" ]; then \
+                             n=$((n-1)); continue; \
+                           fi; \
+                         fi; \
                          t=$(awk '/^to: /{{sub(/^to: /,\"\"); print; exit}}' \"$f\" 2>/dev/null); \
                          if [ -z \"$t\" ]; then \
                            broadcast=$((broadcast+1)); continue; \
@@ -1168,6 +1175,8 @@ impl Input {
                            others_buf=\"$others_buf$t_lc\"$'\\n'; \
                          fi; \
                        done; \
+                     fi; \
+                     if [ \"$n\" -gt 0 ]; then \
                        if [ \"$direct\" -gt 0 ] && [ \"$broadcast\" -gt 0 ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;35m%d direct\\033[0m \\033[2;38;5;240m· \\033[0m\\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[2;3;38;5;35m— /inbox to read\\033[0m\\n' 'radio' \"$direct\" \"$broadcast\" \"$n\"; \
                        elif [ \"$direct\" -gt 0 ]; then \
