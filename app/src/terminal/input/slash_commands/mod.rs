@@ -1168,7 +1168,7 @@ impl Input {
                         for f in \"${broadcast_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" broadcast; done; \
                       fi; \
                       if [ ${#relay_q[@]} -gt 0 ]; then \
-                        printf '\\033[2;38;5;240m  RELAY\\033[0m \\033[2;38;5;240m(%d not for you)\\033[0m\\n' \"${#relay_q[@]}\"; \
+                        printf '\\033[2;38;5;240m  RELAY\\033[0m \\033[2;38;5;240m(%d)\\033[0m \\033[3;38;5;244mnot for you\\033[0m\\n' \"${#relay_q[@]}\"; \
                         for f in \"${relay_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" relay; done; \
                       fi; \
                     fi";
