@@ -16446,7 +16446,7 @@ impl Workspace {
         let body = appearance
             .ui_builder()
             .wrappable_text(
-                "Ask Yarp AI to explain errors, suggest commands or write scripts.".to_owned(),
+                "Brief Yarp AI to break down errors, suggest commands, or write scripts.".to_owned(),
                 true,
             )
             .with_style(UiComponentStyles {

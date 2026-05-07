@@ -36,8 +36,8 @@ use yarpui::{
     AppContext, Element, SingletonEntity,
 };
 
-const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Ask Yarp AI for command suggestions";
-const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into shell command using Yarp AI";
+const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Get a command tip from Yarp AI";
+const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into a shell command via Yarp AI";
 
 #[derive(Clone, Debug)]
 pub enum YarpAISearchItem {

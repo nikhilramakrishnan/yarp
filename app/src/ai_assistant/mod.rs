@@ -35,7 +35,7 @@ mod test_util;
 pub const PROMPT_CHARACTER_LIMIT: usize = 1000;
 
 pub const AI_ASSISTANT_FEATURE_NAME: &str = "Yarp AI";
-pub const ASK_AI_ASSISTANT_TEXT: &str = "Ask Yarp AI";
+pub const ASK_AI_ASSISTANT_TEXT: &str = "Brief Yarp AI";
 
 pub const AI_ASSISTANT_SVG_PATH: &str = "bundled/svg/ai-assistant.svg";
 
