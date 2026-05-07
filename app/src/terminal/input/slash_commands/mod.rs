@@ -891,7 +891,7 @@ impl Input {
                        else \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[2;3;38;5;220minbox clear\\033[0m\\n' 'queue'; \
                        fi; \
-                       printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
+                       printf '  \\033[2;3;38;5;%dm/duty <name> to change · /duty off to clear\\033[0m\\n' \"$color\"; \
                      else \
                        shopt -s nullglob; \
                        qfiles=(/tmp/yarp-radio/*.msg); \
