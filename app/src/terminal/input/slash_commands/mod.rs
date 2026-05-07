@@ -1395,7 +1395,7 @@ impl Input {
                           tony) avatar='📻' ;; \
                           *) avatar='' ;; \
                         esac; \
-                        if [ -n \"$avatar\" ]; then sender_disp=\"$avatar $sender\"; else sender_disp=\"$sender\"; fi; \
+                        if [ -n \"$avatar\" ]; then sender_disp=\"$avatar $sender\"; else sender_disp=\"📛 $sender\"; fi; \
                         if [ -n \"$target\" ]; then \
                           target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
                           case \"$target_lc\" in \
@@ -1408,8 +1408,18 @@ impl Input {
                             *) tcolor=244 ;; \
                           esac; \
                           if [ \"$kind\" = relay ]; then tag_sgr='2;3;38;5;240'; else tag_sgr=\"3;38;5;${tcolor}\"; fi; \
-                          target_disp=$(printf '%s' \"$target\" | sed 's/^@//'); \
-                          tag=\" → @${target_disp}\"; \
+                          tav=''; \
+                          case \"$target_lc\" in \
+                            nicholas|angel) tav='🎯' ;; \
+                            frank|butterman.snr) tav='🦔' ;; \
+                            danny|butterman) tav='🍦' ;; \
+                            andy|wainwright|cartwright) tav='🤡' ;; \
+                            doris|thatcher) tav='🚓' ;; \
+                            tony) tav='📻' ;; \
+                          esac; \
+                          target_bare=$(printf '%s' \"$target\" | sed 's/^@//'); \
+                          if [ -n \"$tav\" ]; then target_disp=\"$tav @${target_bare}\"; else target_disp=\"📛 @${target_bare}\"; fi; \
+                          tag=\" → ${target_disp}\"; \
                         else tag=''; tag_sgr='3;38;5;244'; fi; \
                         printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[%sm%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag_sgr\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line || [ -n \"$line\" ]; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
