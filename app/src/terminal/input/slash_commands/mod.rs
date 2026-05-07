@@ -825,8 +825,14 @@ impl Input {
                        fi; \
                        printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
                      else \
+                       shopt -s nullglob; \
+                       qfiles=(/tmp/yarp-radio/*.msg); \
+                       qn=${#qfiles[@]}; \
                        printf '\\033[3;38;5;179m🎖  no callsign claimed\\033[0m\\n'; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;240m🎯 angel · 🦔 frank · 🍦 danny · 🤡 andy · 🚓 doris · 📻 tony\\033[0m\\n' 'examples'; \
+                       if [ \"$qn\" -gt 0 ]; then \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[3;38;5;244mpending — claim a callsign first to read directs\\033[0m\\n' 'queue' \"$qn\"; \
+                       fi; \
                        printf '  \\033[3;38;5;244m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
                      fi"
                         .to_owned()
