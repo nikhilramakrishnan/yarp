@@ -83,7 +83,7 @@ impl SharerGrantBody {
                 width: Some(BUTTON_WIDTH),
                 ..Default::default()
             })
-            .with_centered_text_label(String::from("Make Editor"))
+            .with_centered_text_label(String::from("Hand them the radio"))
             .build()
             .with_cursor(Cursor::PointingHand)
             .on_click(move |ctx, _, _| {
@@ -111,8 +111,8 @@ impl View for SharerGrantBody {
         let appearance = Appearance::as_ref(app);
         let button_row = self.render_button_row(appearance);
 
-        let text1 = "This grants the ability to execute commands on your";
-        let text2 = "behalf. Use with caution.";
+        let text1 = "Lets them call orders in on your";
+        let text2 = "desk. Mind who you hand the radio to.";
         let text_body = Container::new(
             Flex::column()
                 .with_child(
