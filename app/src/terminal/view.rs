@@ -20308,7 +20308,7 @@ impl TerminalView {
                                  i=$((i+1))\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
-                             cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | {{\n\
+                             cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g' | {{\n\
                                IFS= read -r first\n\
                                read_rc=$?\n\
                                kill $SPIN_PID 2>/dev/null\n\
