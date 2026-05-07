@@ -153,7 +153,7 @@ const HOVER_PREVIEW_Y_OFFSET: f32 = 0.;
 
 const CREATE_TEAM_ICON_WIDTH: f32 = 16.;
 const CREATE_TEAM_ICON_HEIGHT: f32 = 16.;
-const CREATE_TEAM_TEXT: &str = "Share commands & knowledge with your teammates.";
+const CREATE_TEAM_TEXT: &str = "Hand commands & case notes to fellow officers.";
 
 const LOADING_ICON_WIDTH: f32 = 16.;
 const LOADING_ICON_HEIGHT: f32 = 16.;
@@ -194,10 +194,10 @@ const SORTING_BUTTON_TOOLTIP_LABEL: &str = "Sort by";
 const RETRY_BUTTON_TOOLTIP_LABEL: &str = "Retry sync";
 
 const SHARED_OBJECT_LIMIT_HIT_BANNER_LINE: &str =
-    "Upgrade for access to more notebooks, workflows, shared sessions, and AI credits.";
+    "Upgrade for more notebooks, workflows, channels on the air, and AI credits.";
 
 const PAYMENT_ISSUE_BANNER_LINE_1: &str =
-    "Shared objects have been restricted due to a subscription payment issue.";
+    "Case files locked down — subscription payment's gone south.";
 
 const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN: &str =
     "Please update your payment information to restore access.";
@@ -2083,7 +2083,7 @@ impl DriveIndex {
 
     fn render_team_space_zero_state(&self, appearance: &Appearance) -> Box<dyn Element> {
         let hint_text =
-            "Drag or move a personal workflow or notebook here to share it with your team.";
+            "Drag a personal workflow or notebook here to file it with the squad.";
         let zero_state_info = Container::new(
             appearance
                 .ui_builder()
@@ -4457,7 +4457,7 @@ impl DriveIndex {
                         );
                         if editability.can_edit() {
                             menu_items.push(
-                                MenuItemFields::new("Share")
+                                MenuItemFields::new("File")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
                                         yarp_drive_item_id: *yarp_drive_item_id,
                                     })
@@ -4686,7 +4686,7 @@ impl DriveIndex {
                         }
                         if editability.can_edit() {
                             menu_items.push(
-                                MenuItemFields::new("Share")
+                                MenuItemFields::new("File")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
                                         yarp_drive_item_id: *yarp_drive_item_id,
                                     })
