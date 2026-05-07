@@ -2727,6 +2727,13 @@ pub struct TerminalView {
     /// `radio_pending_count`. Surfaces as the 📢 N suffix on the badge.
     radio_broadcast_count: u32,
 
+    /// Callsign claimed by `/duty` for this user (read from
+    /// /tmp/yarp-radio/.callsign-${USER} on the same 5s tick as the
+    /// radio counts). Stored normalized via `normalize_radio_callsign`
+    /// so duty-state checks compare apples to apples. Surfaces as a
+    /// callsign avatar prefix on the pane title — e.g. `🎯 zsh`.
+    current_callsign: Option<String>,
+
     /// A list of callbacks to run on the next
     /// [`BlocklistAIControllerEvent::FinishedReceivingOutput`] received, regardless of the finish reason.
     conversation_completed_callbacks: Vec<ConversationFinishedCallback>,
@@ -4160,6 +4167,7 @@ impl TerminalView {
             council_chain_in_flight: false,
             radio_pending_count: 0,
             radio_broadcast_count: 0,
+            current_callsign: None,
             conversation_completed_callbacks: Default::default(),
             current_repo_path: None,
             terminal_title: Default::default(),
@@ -4474,9 +4482,13 @@ impl TerminalView {
             }
         }
 
-        if direct != self.radio_pending_count || broadcast != self.radio_broadcast_count {
+        if direct != self.radio_pending_count
+            || broadcast != self.radio_broadcast_count
+            || my_callsign != self.current_callsign
+        {
             self.radio_pending_count = direct;
             self.radio_broadcast_count = broadcast;
+            self.current_callsign = my_callsign;
             self.update_pane_configuration(ctx);
         }
     }

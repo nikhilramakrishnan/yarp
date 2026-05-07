@@ -161,16 +161,20 @@ impl TerminalView {
     }
 
     /// Prepend a 📻 N · 📢 M badge to a pane title when /tmp/yarp-radio
-    /// has pending transmissions. Direct (📻) is the count addressed to
-    /// this user's current callsign — or, off-duty, the global queue
-    /// depth. Broadcast (📢) is the on-duty count of unaddressed traffic.
-    /// Either zero is suppressed; both zero suppresses the badge entirely.
+    /// has pending transmissions, and a callsign avatar (e.g. 🎯) when
+    /// the user is on duty. Direct (📻) is the count addressed to this
+    /// user's current callsign — or, off-duty, the global queue depth.
+    /// Broadcast (📢) is the on-duty count of unaddressed traffic.
+    /// Layout: `📻 N · 📢 M · 🎯 title`. Either count being zero
+    /// suppresses that segment; off-duty drops the avatar entirely.
     fn with_radio_badge(&self, title: String) -> String {
         let direct = self.radio_pending_count;
         let broadcast = self.radio_broadcast_count;
-        if direct == 0 && broadcast == 0 {
-            return title;
-        }
+        let avatar = self
+            .current_callsign
+            .as_deref()
+            .and_then(callsign_avatar);
+
         let mut badge = String::new();
         if direct > 0 {
             badge.push_str(&format!("📻 {direct}"));
@@ -181,10 +185,17 @@ impl TerminalView {
             }
             badge.push_str(&format!("📢 {broadcast}"));
         }
-        if title.is_empty() {
-            badge
-        } else {
-            format!("{badge} · {title}")
+
+        let avatar_title = match (avatar, title.is_empty()) {
+            (Some(av), true) => av.to_string(),
+            (Some(av), false) => format!("{av} {title}"),
+            (None, _) => title,
+        };
+
+        match (badge.is_empty(), avatar_title.is_empty()) {
+            (true, _) => avatar_title,
+            (false, true) => badge,
+            (false, false) => format!("{badge} · {avatar_title}"),
         }
     }
 
@@ -1104,4 +1115,21 @@ fn default_agent_conversation_title(is_ambient_agent: bool) -> String {
     } else {
         "New agent conversation".to_owned()
     }
+}
+
+/// Map a normalized Hot Fuzz callsign to its emoji avatar. Input is
+/// already alias-normalized by `normalize_radio_callsign` (e.g.
+/// `nicholas` arrives as `angel`), so each canonical handle has a
+/// single arm here. Returns `None` for unknown callsigns so the pane
+/// title falls through unchanged rather than showing a generic 📛.
+fn callsign_avatar(callsign: &str) -> Option<&'static str> {
+    Some(match callsign {
+        "angel" => "🎯",
+        "frank" => "🦔",
+        "danny" => "🍦",
+        "andy" => "🤡",
+        "doris" => "🚓",
+        "tony" => "📻",
+        _ => return None,
+    })
 }
