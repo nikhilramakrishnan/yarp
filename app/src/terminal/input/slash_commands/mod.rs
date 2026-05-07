@@ -742,6 +742,7 @@ impl Input {
                     me_user=\"${USER:-unknown}\"; \
                     me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
                     me_call=\"${YARP_CALLSIGN:-}\"; \
+                    me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
                     if [ ${#files[@]} -eq 0 ]; then \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
                         printf '\\033[3;38;5;244m📻 INBOX  no traffic \\033[0m\\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$pruned\"; \
@@ -772,7 +773,8 @@ impl Input {
                         done < \"$f\"; \
                         consume=1; \
                         if [ -n \"$target\" ]; then \
-                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ] || { [ -n \"$me_call\" ] && [ \"$target\" = \"$me_call\" ]; }; then \
+                          target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
+                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$target_lc\" = \"$me_call_lc\" ]; }; then \
                             badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; \
                             sender_color='\\033[1;38;5;35m'; \
                             body_color='\\033[38;5;179m'; \
