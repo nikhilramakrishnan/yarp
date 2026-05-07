@@ -557,6 +557,24 @@ impl Input {
                     .default_team()
                     .map(|t| crate::personas::cli_invocations(t).len())
                     .unwrap_or(0);
+                const QUOTES: &[&str] = &[
+                    "By the power of Greyskull. — Danny",
+                    "It's not Sunday, the gun shop's shut. — Angel",
+                    "The greater good. — The NWA",
+                    "Have you ever fired two guns whilst jumping through the air? — Danny",
+                    "Yarp. — Michael",
+                    "Murder, murder, murder. — Angel",
+                    "Forget it, Nicholas, it's Sandford. — Frank",
+                    "Pub? — Danny",
+                ];
+                let quote = {
+                    use std::time::{SystemTime, UNIX_EPOCH};
+                    let nanos = SystemTime::now()
+                        .duration_since(UNIX_EPOCH)
+                        .map(|d| d.subsec_nanos() as usize)
+                        .unwrap_or(0);
+                    QUOTES[nanos % QUOTES.len()]
+                };
                 let cmd = format!(
                     "user=\"${{USER:-unknown}}\"; \
                      host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
@@ -572,10 +590,12 @@ impl Input {
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mall quiet on the air\\033[0m\\n' 'radio'; \
-                     fi",
+                     fi; \
+                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' {quote}",
                     team = crate::personas::shell_quote_one(&team_name),
                     size = team_size,
                     clis = cli_count,
+                    quote = crate::personas::shell_quote_one(quote),
                 );
                 self.try_execute_command(&cmd, ctx);
             }
