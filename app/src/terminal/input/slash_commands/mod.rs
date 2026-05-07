@@ -545,6 +545,36 @@ impl Input {
                 }
                 self.try_execute_command(&script, ctx);
             }
+            case if command.name == commands::CASE.name => {
+                let Some(name) = argument
+                    .map(|n| n.trim())
+                    .filter(|n| !n.is_empty())
+                else {
+                    show_error_toast(
+                        "Please name the case: /case <name>".to_owned(),
+                        ctx,
+                    );
+                    return true;
+                };
+                let tab_name = format!("Case: {}", name);
+                ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(tab_name.clone()));
+                let cmd = format!(
+                    "mkdir -p /tmp/yarp-radio; \
+                     ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
+                     [ -z \"$ts\" ] && ts=$(date +%s)000; \
+                     file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
+                     sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     {{ \
+                       printf 'from: %s\\n' \"$sender\"; \
+                       printf '\\n'; \
+                       printf 'case opened: %s' {name}; \
+                     }} > \"$file\"; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[3;38;5;244m%s\\033[0m\\n  \\033[38;5;178mtab → \"%s\"\\033[0m\\n  \\033[3;38;5;244mall units notified\\033[0m\\n' {name} {tab}",
+                    name = crate::personas::shell_quote_one(name),
+                    tab = crate::personas::shell_quote_one(&tab_name),
+                );
+                self.try_execute_command(&cmd, ctx);
+            }
             sitrep if command.name == commands::SITREP.name => {
                 let roster = crate::personas::Roster::load()
                     .unwrap_or_else(crate::personas::Roster::default_sandford);

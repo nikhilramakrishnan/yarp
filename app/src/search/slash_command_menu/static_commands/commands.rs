@@ -481,6 +481,19 @@ pub const SITREP: StaticCommand = StaticCommand {
     argument: None,
 };
 
+pub const CASE: StaticCommand = StaticCommand {
+    name: "/case",
+    description: "Open a case — rename tab and notify other units",
+    icon_path: "bundled/svg/folder.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: Some(Argument {
+        hint_text: Some("<case name>"),
+        is_optional: false,
+        should_execute_on_selection: false,
+    }),
+};
+
 pub static COMMAND_REGISTRY: LazyLock<Registry> = LazyLock::new(Registry::new);
 
 /// A unique identifier for a static slash command.
@@ -574,6 +587,7 @@ fn all_commands() -> Vec<StaticCommand> {
         INBOX,
         ROSTER,
         SITREP,
+        CASE,
     ];
 
     if FeatureFlag::LocalDockerSandbox.is_enabled() {
