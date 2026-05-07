@@ -40,75 +40,75 @@ impl AITip for CloudModeTip {
 pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
     vec![
         CloudModeTip::new(
-            "Install the Fuzz Slack integration to trigger agents from any channel or DM.",
+            "Install the Fuzz Slack integration to dispatch ambient officers from any channel or DM.",
             None,
         ),
         CloudModeTip::new(
-            "Build programmatic agents using Fuzz's TypeScript and Python SDKs.",
+            "Build programmatic PCs using Fuzz's TypeScript and Python SDKs.",
             None,
         ),
         CloudModeTip::new(
-            "Set team or personal secrets for agents using the `fuzz secret` command.",
+            "Set team or personal secrets for ambient officers using the `fuzz secret` command.",
             None,
         ),
         CloudModeTip::new(
-            "View all your agent runs and their status in the Fuzz web app.",
+            "View all your PC patrols and their status in the Fuzz web app.",
             None,
         ),
         CloudModeTip::new(
-            "Join any Fuzz cloud agent run in real-time using Agent Session Sharing.",
+            "Tune in to any Fuzz ambient officer's patrol in real-time using PC Session Sharing.",
             None,
         ),
         CloudModeTip::new(
-            "Set up recurring agents that run on cron schedules for automated maintenance.",
+            "Set up recurring patrols on cron schedules so a PC walks the beat without you radioing in.",
             None,
         ),
         CloudModeTip::new(
-            "Create agents that automatically fix bugs when issues are filed in Linear.",
+            "Dispatch PCs that automatically work the case when issues are filed in Linear.",
             None,
         ),
         CloudModeTip::new(
-            "Build agents that respond to CI failures and attempt automatic fixes.",
+            "Stand up PCs that respond to CI failures and have a go at fixing them.",
             None,
         ),
         CloudModeTip::new(
-            "Run agents from GitHub Actions using the `fuzz-agent-action`.",
+            "Send PCs out from GitHub Actions using the `fuzz-agent-action`.",
             Some("https://github.com/hotfuzz/fuzz-agent-action"),
         ),
         CloudModeTip::new(
-            "Call the Fuzz REST API to trigger agents from any backend service or internal tool.",
+            "Call the Fuzz REST API to dispatch PCs from any backend service or internal tool.",
             None,
         ),
         CloudModeTip::new(
-            "Create reusable environments with Docker images for consistent agent execution.",
+            "Kit out reusable beats with Docker images so every PC walks into the same scene.",
             None,
         ),
         CloudModeTip::new(
-            "Share agent session links with your team for collaborative debugging.",
+            "Share PC session links with your team for collaborative case work.",
             None,
         ),
         CloudModeTip::new(
-            "Use the `--share` flag with the Fuzz CLI to enable session sharing from anywhere.",
+            "Use the `--share` flag with the Fuzz CLI to open the radio channel from anywhere.",
             None,
         ),
         CloudModeTip::new(
-            "Fork a completed Fuzz cloud agent session into Yarp to continue the work locally.",
+            "Fork a completed Fuzz ambient officer's case file into Yarp to keep working it from your desk.",
             None,
         ),
         CloudModeTip::new(
-            "Build internal tools that use agents to answer questions from your databases.",
+            "Stand up internal tools that send PCs to answer questions from your databases.",
             None,
         ),
         CloudModeTip::new(
-            "Create a scheduled agent to clean up stale feature flags every week.",
+            "Put a scheduled PC on the rota to bin stale feature flags every week.",
             None,
         ),
         CloudModeTip::new(
-            "Tag @Fuzz in Linear issues to automatically investigate and propose fixes.",
+            "Tag @Fuzz in Linear issues to dispatch a PC to investigate and propose a fix.",
             None,
         ),
         CloudModeTip::new(
-            "Run agents on remote dev boxes or CI runners using the Fuzz CLI.",
+            "Send PCs out on remote dev boxes or CI runners using the Fuzz CLI.",
             None,
         ),
         CloudModeTip::new(
@@ -116,87 +116,87 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Use `fuzz agent run` to kick off tasks without opening the Yarp terminal.",
+            "Use `fuzz agent run` to dispatch a PC without ever opening the Yarp terminal.",
             None,
         ),
         CloudModeTip::new(
-            "View your teammates' agent runs in the Fuzz web app for shared visibility.",
+            "Tune in to your colleagues' PC patrols in the Fuzz web app for shared visibility.",
             None,
         ),
         CloudModeTip::new(
-            "Build agents that automatically triage and label incoming GitHub issues.",
+            "Stand up PCs that automatically triage and label incoming GitHub issues.",
             None,
         ),
         CloudModeTip::new(
-            "Set up an agent to generate daily summaries of newly opened issues.",
+            "Put a PC on the rota to file a daily report on newly opened issues.",
             None,
         ),
         CloudModeTip::new(
-            "Create an agent that automatically reviews PRs and suggests improvements.",
+            "Dispatch a PC to review PRs on the spot and radio in suggested improvements.",
             None,
         ),
         CloudModeTip::new(
-            "Use `fuzz environment create` to define reproducible execution contexts.",
+            "Use `fuzz environment create` to lay out reproducible beats for your PCs.",
             None,
         ),
         CloudModeTip::new(
-            "Trigger agents from webhooks to respond to production incidents.",
+            "Trigger PCs from webhooks to respond to production incidents.",
             None,
         ),
         CloudModeTip::new(
-            "Build an agent that restarts services or scales deployments when alerts fire.",
+            "Stand up a PC that restarts services or scales deployments the moment alerts fire.",
             None,
         ),
         CloudModeTip::new(
-            "Use personal secrets for credentials that should only be used by your agents.",
+            "Use personal secrets for credentials that should only ride along with your own PCs.",
             None,
         ),
         CloudModeTip::new(
-            "Use team secrets for shared infrastructure credentials across all agents.",
+            "Use team secrets for shared infrastructure credentials across the whole duty roster.",
             None,
         ),
         CloudModeTip::new(
-            "Create an agent that runs nightly to check for dependency updates.",
+            "Put a PC on the night shift to check for dependency updates.",
             None,
         ),
         CloudModeTip::new(
-            "Build an agent that automatically formats and lints code on a schedule.",
+            "Stand up a PC that formats and lints code on a fixed rota.",
             None,
         ),
         CloudModeTip::new(
-            "Use `fuzz schedule create` to set up cron-triggered agents.",
+            "Use `fuzz schedule create` to put PCs on a cron-triggered rota.",
             None,
         ),
         CloudModeTip::new(
-            "Pause and resume scheduled agents without deleting them using `fuzz schedule pause`.",
+            "Stand a scheduled PC down and back up without binning them using `fuzz schedule pause`.",
             None,
         ),
         CloudModeTip::new(
-            "Use `fuzz mcp list` to see which MCP servers are available to your agents.",
+            "Use `fuzz mcp list` to see which MCP servers your PCs can radio.",
             None,
         ),
         CloudModeTip::new(
-            "Build an internal Slack bot that delegates coding tasks to Fuzz agents.",
+            "Stand up an internal Slack bot that hands off coding work to Fuzz PCs.",
             None,
         ),
         CloudModeTip::new(
-            "Create an agent that responds to @mentions in Slack threads with full context.",
+            "Dispatch a PC that responds to @mentions in Slack threads with the full case file.",
             None,
         ),
         CloudModeTip::new(
-            "Use the Fuzz TypeScript SDK to build custom automation pipelines.",
+            "Use the Fuzz TypeScript SDK to build custom dispatch pipelines.",
             None,
         ),
         CloudModeTip::new(
-            "Use the Fuzz Python SDK to integrate agents into your data pipelines.",
+            "Use the Fuzz Python SDK to put PCs in your data pipelines.",
             None,
         ),
         CloudModeTip::new(
-            "Monitor agent success rates and runtimes using the Fuzz API.",
+            "Watch PC success rates and patrol times using the Fuzz API.",
             None,
         ),
         CloudModeTip::new(
-            "Build a dashboard that tracks all agent activity across your team.",
+            "Stand up a dashboard that watches every PC on the duty roster across your team.",
             None,
         ),
     ]

@@ -227,7 +227,7 @@ impl AgentManagementView {
         let all_filter_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("All", NakedTheme)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("View your agent tasks plus all shared team tasks")
+                .with_tooltip("Watch your case files plus every shared team case")
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(AgentManagementViewAction::SetOwnerFilter(
                         OwnerFilter::All,
@@ -238,7 +238,7 @@ impl AgentManagementView {
         let personal_filter_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Personal", NakedTheme)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("View agent tasks you created")
+                .with_tooltip("Watch case files you opened")
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(AgentManagementViewAction::SetOwnerFilter(
                         OwnerFilter::PersonalOnly,
@@ -257,7 +257,7 @@ impl AgentManagementView {
         );
 
         let view_agents_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("View Agents", NakedTheme)
+            ActionButton::new("View Roster", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .with_icon(Icon::ArrowLeft)
                 .on_click(|ctx| {
@@ -322,7 +322,7 @@ impl AgentManagementView {
         });
 
         let new_agent_button = CompactibleActionButton::new(
-            "New agent".to_string(),
+            "New PC".to_string(),
             None,
             ButtonSize::Small,
             AgentManagementViewAction::ShowAgentTypeSelector,
@@ -2003,7 +2003,7 @@ impl AgentManagementView {
             let mut stack = Stack::new().with_child(loading_icon);
             if mouse_state.is_hovered() {
                 let tooltip = ui_builder
-                    .tool_tip(String::from("Loading cloud agent runs"))
+                    .tool_tip(String::from("Calling in ambient officer patrols"))
                     .build()
                     .finish();
                 stack.add_positioned_overlay_child(
@@ -2048,7 +2048,7 @@ impl AgentManagementView {
             .with_child(Container::new(loading_icon).with_margin_right(10.).finish())
             .with_child(
                 Text::new_inline(
-                    "Loading agents...",
+                    "Calling in PCs...",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() + 2.,
                 )

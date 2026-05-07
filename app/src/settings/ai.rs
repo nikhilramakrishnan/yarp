@@ -295,9 +295,9 @@ pub enum DefaultSessionMode {
     /// New sessions start in the terminal mode (default).
     #[default]
     Terminal,
-    /// New sessions start in agent view.
+    /// New sessions start in PC view.
     Agent,
-    /// New sessions start in cloud (ambient) agent mode.
+    /// New sessions start in ambient officer mode.
     CloudAgent,
     /// New sessions open a user-defined tab config.
     /// The specific config is identified by the companion `default_tab_config_path` setting.
