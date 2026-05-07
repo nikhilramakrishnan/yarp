@@ -1039,19 +1039,31 @@ impl Input {
                     me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
                     me_call=\"${YARP_CALLSIGN:-}\"; \
                     me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
+                    me_av=''; \
+                    case \"$me_call_lc\" in \
+                      nicholas|angel) me_av='🎯' ;; \
+                      frank|butterman.snr) me_av='🦔' ;; \
+                      danny|butterman) me_av='🍦' ;; \
+                      andy|wainwright|cartwright) me_av='🤡' ;; \
+                      doris|thatcher) me_av='🚓' ;; \
+                      tony) me_av='📻' ;; \
+                    esac; \
+                    if [ -n \"$me_call\" ]; then \
+                      if [ -n \"$me_av\" ]; then me_hdr=\" $me_av @$me_call\"; else me_hdr=\" @$me_call\"; fi; \
+                    else me_hdr=''; fi; \
                     if [ ${#files[@]} -eq 0 ]; then \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
-                        printf '\\033[3;38;5;244m📻 INBOX  no traffic \\033[0m\\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$pruned\"; \
+                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244mno traffic\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$me_hdr\" \"$pruned\"; \
                       else \
-                        printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
+                        printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m no traffic\\033[0m\\n' \"$me_hdr\"; \
                       fi; \
                       flavors=(\"It's all gone a bit Pete Tong. — Andy\" \"Nothing happens here. — Nicholas\" \"Yarp. — Michael\" \"Pub? — Danny\" \"All quiet on Sandford. — Frank\" \"The greater good. — The NWA\" \"By the power of Greyskull. — Danny\"); \
                       printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"${flavors[$((RANDOM % ${#flavors[@]}))]}\"; \
                     else \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
-                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"${#files[@]}\" \"$pruned\"; \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\" \"$pruned\"; \
                       else \
-                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"${#files[@]}\"; \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"$me_hdr\" \"${#files[@]}\"; \
                       fi; \
                       direct_q=(); broadcast_q=(); relay_q=(); \
                       for f in \"${files[@]}\"; do \
