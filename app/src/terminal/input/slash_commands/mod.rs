@@ -483,10 +483,21 @@ impl Input {
                        printf '\\n'; \
                        printf '%s' {body}; \
                      }} > \"$file\"; \
+                     sender_lc=$(printf '%s' \"$sender\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
+                     av=''; \
+                     case \"$sender_lc\" in \
+                       nicholas|angel) av='🎯' ;; \
+                       frank|butterman.snr) av='🦔' ;; \
+                       danny|butterman) av='🍦' ;; \
+                       andy|wainwright|cartwright) av='🤡' ;; \
+                       doris|thatcher) av='🚓' ;; \
+                       tony) av='📻' ;; \
+                     esac; \
+                     if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"$sender\"; fi; \
                      if [ -n \"$target\" ]; then \
-                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → @%s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" \"$target\" {body}; \
+                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → @%s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" \"$target\" {body}; \
                      else \
-                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender\" {body}; \
+                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" {body}; \
                      fi; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
