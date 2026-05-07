@@ -865,7 +865,7 @@ impl Input {
                        fi; \
                        rm -f \"$duty_marker\"; \
                      fi; \
-                     printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' \"$when\"; \
+                     printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[1;38;5;179m%s\\033[0m\\n' \"$when\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;220m%s\\033[0m\\033[2;38;5;244m@\\033[0m\\033[1;38;5;220m%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
                      prev_av=''; \
