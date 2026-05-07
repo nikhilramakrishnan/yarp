@@ -1265,6 +1265,18 @@ impl Input {
                     if [ -n \"$me_call\" ]; then \
                       if [ -n \"$me_av\" ]; then me_hdr=\" $me_av @$me_call\"; else me_hdr=\" @$me_call\"; fi; \
                     else me_hdr=''; fi; \
+                    filtered=(); \
+                    for f in \"${files[@]}\"; do \
+                      fr=$(awk '/^from: /{sub(/^from: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
+                      fr_simple=$(printf '%s' \"$fr\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
+                      if [ -n \"$fr_simple\" ]; then \
+                        if { [ -n \"$me_call_lc\" ] && [ \"$fr_simple\" = \"$me_call_lc\" ]; } || [ \"$fr\" = \"$me_user\" ] || [ \"$fr\" = \"$me_full\" ]; then \
+                          continue; \
+                        fi; \
+                      fi; \
+                      filtered+=(\"$f\"); \
+                    done; \
+                    files=(\"${filtered[@]}\"); \
                     if [ ${#files[@]} -eq 0 ]; then \
                       if [ \"${pruned:-0}\" -gt 0 ]; then \
                         printf '\\033[3;38;5;244m📻 INBOX\\033[0m\\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mno traffic\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$me_hdr\" \"$pruned\"; \
