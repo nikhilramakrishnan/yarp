@@ -539,7 +539,7 @@ impl Input {
                 };
                 let count = team.members.len();
                 let header = format!(
-                    "shopt -s nullglob; \
+                    "if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      yarp_msgs=(/tmp/yarp-radio/*.msg); \
                      printf '\\033[1;38;5;220m👮 ROSTER\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179m— %d \
                      personas\\033[0m\\n\\n' {team} {count}; ",
@@ -865,7 +865,7 @@ impl Input {
                        esac; \
                        if [ -n \"$av\" ]; then unit_disp=\"$av @$YARP_CALLSIGN\"; else unit_disp=\"📛 @$YARP_CALLSIGN\"; fi; \
                        since_row=''; \
-                       shopt -s nullglob; \
+                       if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                        qfiles=(/tmp/yarp-radio/*.msg); \
                        qn=${#qfiles[@]}; \
                        duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
@@ -902,7 +902,7 @@ impl Input {
                        fi; \
                        printf '  \\033[2;3;38;5;%dm/duty <name> to change · /duty off to clear\\033[0m\\n' \"$color\"; \
                      else \
-                       shopt -s nullglob; \
+                       if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                        qfiles=(/tmp/yarp-radio/*.msg); \
                        qn=${#qfiles[@]}; \
                        printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[2;3;38;5;179mno callsign claimed\\033[0m\\n\\n'; \
@@ -964,7 +964,7 @@ impl Input {
                      when=\"$(date '+%a %H:%M' 2>/dev/null || date)\"; \
                      prev_call=\"${{YARP_CALLSIGN:-}}\"; \
                      unset YARP_CALLSIGN; \
-                     shopt -s nullglob; \
+                     if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      n=${{#queue[@]}}; \
                      if [ \"$n\" -gt 0 ]; then rm -f /tmp/yarp-radio/*.msg; fi; \
@@ -1096,7 +1096,7 @@ impl Input {
                      host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
                      cwd=\"$(pwd)\"; \
                      callsign=\"${{YARP_CALLSIGN:-}}\"; \
-                     shopt -s nullglob; \
+                     if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mstation\\033[0m\\n\\n' {team}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;220m%s\\033[0m\\033[2;38;5;244m@\\033[0m\\033[1;38;5;220m%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
@@ -1204,7 +1204,7 @@ impl Input {
             inbox if command.name == commands::INBOX.name => {
                 let sub = argument.map(|a| a.trim()).unwrap_or("");
                 if sub.eq_ignore_ascii_case("clear") {
-                    let clear_cmd = "shopt -s nullglob; \
+                    let clear_cmd = "if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                         mkdir -p /tmp/yarp-radio; \
                         files=(/tmp/yarp-radio/*.msg); \
                         me_user=\"${USER:-unknown}\"; \
@@ -1235,7 +1235,7 @@ impl Input {
                     self.try_execute_command(clear_cmd, ctx);
                     return true;
                 }
-                let cmd = "shopt -s nullglob; \
+                let cmd = "if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                     mkdir -p /tmp/yarp-radio; \
                     pruned=$(find /tmp/yarp-radio -maxdepth 1 -name '*.msg' -mmin +60 -print -delete 2>/dev/null | wc -l | tr -d ' '); \
                     files=(/tmp/yarp-radio/*.msg); \
