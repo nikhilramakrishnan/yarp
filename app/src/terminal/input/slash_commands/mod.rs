@@ -878,7 +878,7 @@ impl Input {
                        tony) prev_av='📻' ;; \
                      esac; \
                      if [ -n \"$prev_call\" ]; then \
-                       if [ -n \"$prev_av\" ]; then disp=\"$prev_av @$prev_call\"; else disp=\"@$prev_call\"; fi; \
+                       if [ -n \"$prev_av\" ]; then disp=\"$prev_av @$prev_call\"; else disp=\"📛 @$prev_call\"; fi; \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$disp\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
