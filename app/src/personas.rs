@@ -475,6 +475,28 @@ pub(crate) fn persona_crash_phrase(name: &str) -> &'static str {
     }
 }
 
+/// All lowercase callsign nicknames that map to this persona for /duty
+/// claiming and /roster "← you" matching. /duty stores the user's chosen
+/// callsign verbatim in `YARP_CALLSIGN`, so a user who runs `/duty angel`
+/// and then `/roster` would otherwise miss the highlight on Nicholas Angel's
+/// row — the row's name_lc is `nicholas angel`, not `angel`. Mirrors the
+/// alias keys recognised by `persona_on_duty_quote` so the same surnames /
+/// first-names line up everywhere callsigns are interpreted.
+pub(crate) fn persona_callsign_aliases(name: &str) -> &'static [&'static str] {
+    match name {
+        "Nicholas Angel" => &["nicholas", "angel", "nicholas angel"],
+        "Danny Butterman" => &["danny", "butterman", "danny butterman"],
+        "Doris Thatcher" => &["doris", "thatcher", "doris thatcher"],
+        "Frank Butterman" => &["frank", "butterman.snr", "frank butterman"],
+        // Tony / Andy aren't in the default roster but the aliases mirror
+        // persona_on_duty_quote so any future roster entry stays in sync.
+        "Tony" => &["tony"],
+        "Andy Wainwright" => &["andy", "wainwright", "andy wainwright"],
+        "Andy Cartwright" => &["andy", "cartwright", "andy cartwright"],
+        _ => &[],
+    }
+}
+
 /// One-line in-character framing the SIO speaks just under the verdict
 /// header, before the synth spinner kicks in. Without it the verdict block
 /// jumps from the `Sgt Nicholas Angel · SIO` header straight into the

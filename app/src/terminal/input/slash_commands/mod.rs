@@ -602,6 +602,24 @@ impl Input {
                         ""
                     };
                     let name_lc = p.name.to_ascii_lowercase();
+                    // Build a `case` alternation over name_lc plus every
+                    // recognised alias for this persona, so a /duty short-
+                    // form callsign (e.g. `angel`) matches the persona's
+                    // full name row (`nicholas angel`) on /roster. Without
+                    // this the indicator silently never fires for any short
+                    // callsign — which is the typical user input.
+                    let mut you_aliases: Vec<String> = vec![name_lc.clone()];
+                    for a in crate::personas::persona_callsign_aliases(&p.name) {
+                        let s = a.to_string();
+                        if !you_aliases.contains(&s) {
+                            you_aliases.push(s);
+                        }
+                    }
+                    let you_pattern = you_aliases
+                        .iter()
+                        .map(|a| crate::personas::shell_quote_one(a))
+                        .collect::<Vec<_>>()
+                        .join("|");
                     let line = format!(
                         "mail=0; \
                          if [ ${{#yarp_msgs[@]}} -gt 0 ]; then \
@@ -614,13 +632,20 @@ impl Input {
                          fi; \
                          mail_tag=''; \
                          [ \"$mail\" -gt 0 ] && mail_tag=$(printf ' \\033[1;38;5;35m📬 %d\\033[0m' \"$mail\"); \
-                         you=''; if [ \"${{YARP_CALLSIGN:-}}\" = {name_lc} ]; then you=' \\033[1;38;5;35m⭐ ← you\\033[0m'; fi; \
+                         you=''; \
+                         cs_row_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
+                         if [ -n \"$cs_row_lc\" ]; then \
+                           case \"$cs_row_lc\" in \
+                             {you_pattern}) you=$' \\033[1;38;5;35m⭐ ← you\\033[0m' ;; \
+                           esac; \
+                         fi; \
                          printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
                          \\033[2;3;{badge_color}m%s\\033[0m{lead_tag}%s%s\\n' {badge} {name} {role} \"$mail_tag\" \"$you\"; ",
                         badge_color = badge_color,
                         name_color = name_color,
                         lead_tag = lead_tag,
                         name_lc = crate::personas::shell_quote_one(&name_lc),
+                        you_pattern = you_pattern,
                         badge = crate::personas::shell_quote_one(&p.badge),
                         name = crate::personas::shell_quote_one(&p.name),
                         role = crate::personas::shell_quote_one(role),
