@@ -831,7 +831,7 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m\\n' 'beat' \"$cwd\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s\\033[0m \\033[3;38;5;244m(%s CLI-backed)\\033[0m\\n' 'roster' {size} {clis}; \
                      n=${{#queue[@]}}; \
-                     direct=0; broadcast=0; \
+                     direct=0; broadcast=0; for_others=0; others_buf=\"\"; \
                      if [ \"$n\" -gt 0 ]; then \
                        call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
                        full=\"${{user}}@${{host}}\"; \
@@ -843,6 +843,9 @@ impl Input {
                          t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
                          if [ \"$t\" = \"$user\" ] || [ \"$t\" = \"$full\" ] || {{ [ -n \"$call_lc\" ] && [ \"$t_lc\" = \"$call_lc\" ]; }}; then \
                            direct=$((direct+1)); \
+                         else \
+                           for_others=$((for_others+1)); \
+                           others_buf=\"$others_buf$t_lc\"$'\\n'; \
                          fi; \
                        done; \
                        if [ \"$direct\" -gt 0 ] && [ \"$broadcast\" -gt 0 ]; then \
@@ -853,6 +856,10 @@ impl Input {
                          printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d broadcast\\033[0m \\033[2;38;5;240m· %d total\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$broadcast\" \"$n\"; \
                        else \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%d transmission(s) pending\\033[0m \\033[3;38;5;244m— /inbox to read\\033[0m\\n' 'radio' \"$n\"; \
+                       fi; \
+                       if [ -z \"$callsign\" ] && [ \"$for_others\" -gt 0 ]; then \
+                         others_summary=$(printf '%b' \"$others_buf\" | sort | uniq -c | sort -rn | awk 'NR<=4 {{printf (NR==1?\"\":\" \") \"@%s:%d\", $2, $1}}'); \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[2;38;5;240m%s\\033[0m \\033[3;38;5;244m— /duty <name> to read\\033[0m\\n' 'for others' \"$others_summary\"; \
                        fi; \
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mall quiet on the air\\033[0m\\n' 'radio'; \
