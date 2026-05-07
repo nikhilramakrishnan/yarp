@@ -439,6 +439,50 @@ impl Input {
 
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(name.to_owned()));
             }
+            radio if command.name == commands::RADIO.name => {
+                let Some(message) = argument
+                    .map(|a| a.trim())
+                    .filter(|a| !a.is_empty())
+                else {
+                    show_error_toast(
+                        "Please provide a message: /radio <message>".to_owned(),
+                        ctx,
+                    );
+                    return true;
+                };
+                let cmd = format!(
+                    "mkdir -p /tmp/yarp-radio; \
+                     ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
+                     [ -z \"$ts\" ] && ts=$(date +%s)000; \
+                     file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
+                     printf '%s' {body} > \"$file\"; \
+                     printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244mdispatched to all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' {body}",
+                    body = crate::personas::shell_quote_one(message),
+                );
+                self.try_execute_command(&cmd, ctx);
+            }
+            inbox if command.name == commands::INBOX.name => {
+                let cmd = "shopt -s nullglob; \
+                    files=(/tmp/yarp-radio/*.msg); \
+                    if [ ${#files[@]} -eq 0 ]; then \
+                      printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
+                    else \
+                      printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"${#files[@]}\"; \
+                      for f in \"${files[@]}\"; do \
+                        base=$(basename \"$f\" .msg); \
+                        ts=${base%%-*}; \
+                        rest=${base#*-}; \
+                        pid=${rest%%-*}; \
+                        ts_s=$((ts / 1000)); \
+                        human=$(date -r \"$ts_s\" '+%H:%M:%S' 2>/dev/null || echo \"$ts\"); \
+                        printf '  \\033[2;38;5;244m[%s pid=%s]\\033[0m\\n' \"$human\" \"$pid\"; \
+                        while IFS= read -r line; do printf '    \\033[38;5;178m%s\\033[0m\\n' \"$line\"; done < \"$f\"; \
+                        rm -f \"$f\"; \
+                        echo; \
+                      done; \
+                    fi";
+                self.try_execute_command(cmd, ctx);
+            }
             create_env if command.name == commands::CREATE_ENVIRONMENT.name => {
                 // If the user included args after the slash command, treat them as repo paths/URLs.
                 let repos = argument
