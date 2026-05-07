@@ -301,7 +301,7 @@ impl<'a> UnsavedStateSummary<'a> {
 
         if self.total_long_running_commands > 0 {
             let mut process_info_text = format!(
-                "You have {} {} running",
+                "Got {} {} still on patrol",
                 self.total_long_running_commands,
                 pluralize(self.total_long_running_commands, "process", "processes")
             );
@@ -334,7 +334,7 @@ impl<'a> UnsavedStateSummary<'a> {
             if let QuitScope::EditorTab { ref file_name, .. } = self.scope {
                 info_text_lines.push(format!("Do you want to save the changes you made to {}? Your changes will be discarded if you don't save them.", file_name.clone().unwrap_or("this file".to_string())));
             } else {
-                info_text_lines.push(format!("You have unsaved file changes{scope_suffix}"));
+                info_text_lines.push(format!("Unfiled paperwork on the desk{scope_suffix}"));
             }
         }
 

@@ -433,7 +433,7 @@ impl ResourceCenterMainView {
 
                     appearance
                         .ui_builder()
-                        .wrappable_text("Mark all as read", false)
+                        .wrappable_text("Clear the dispatch log", false)
                         .with_style(style)
                         .build()
                         .finish()
