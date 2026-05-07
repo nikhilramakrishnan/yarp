@@ -494,6 +494,15 @@ pub const CASE: StaticCommand = StaticCommand {
     }),
 };
 
+pub const CLOCK_OUT: StaticCommand = StaticCommand {
+    name: "/clock-out",
+    description: "End of shift — clear pending radio traffic",
+    icon_path: "bundled/svg/log-out-01.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: None,
+};
+
 pub static COMMAND_REGISTRY: LazyLock<Registry> = LazyLock::new(Registry::new);
 
 /// A unique identifier for a static slash command.
@@ -588,6 +597,7 @@ fn all_commands() -> Vec<StaticCommand> {
         ROSTER,
         SITREP,
         CASE,
+        CLOCK_OUT,
     ];
 
     if FeatureFlag::LocalDockerSandbox.is_enabled() {

@@ -575,6 +575,43 @@ impl Input {
                 );
                 self.try_execute_command(&cmd, ctx);
             }
+            _clock_out if command.name == commands::CLOCK_OUT.name => {
+                const SIGN_OFFS: &[&str] = &[
+                    "Pub? — Danny",
+                    "By the power of Greyskull. — Danny",
+                    "Forget it, Nicholas, it's Sandford. — Frank",
+                    "Yarp. — Michael",
+                    "The greater good. — The NWA",
+                    "Have a nice evening. — Angel",
+                ];
+                let quote = {
+                    use std::time::{SystemTime, UNIX_EPOCH};
+                    let nanos = SystemTime::now()
+                        .duration_since(UNIX_EPOCH)
+                        .map(|d| d.subsec_nanos() as usize)
+                        .unwrap_or(0);
+                    SIGN_OFFS[nanos % SIGN_OFFS.len()]
+                };
+                let cmd = format!(
+                    "user=\"${{USER:-unknown}}\"; \
+                     host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     when=\"$(date '+%a %H:%M' 2>/dev/null || date)\"; \
+                     shopt -s nullglob; \
+                     queue=(/tmp/yarp-radio/*.msg); \
+                     n=${{#queue[@]}}; \
+                     if [ \"$n\" -gt 0 ]; then rm -f /tmp/yarp-radio/*.msg; fi; \
+                     printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' \"$when\"; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     if [ \"$n\" -gt 0 ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
+                     else \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
+                     fi; \
+                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' {quote}",
+                    quote = crate::personas::shell_quote_one(quote),
+                );
+                self.try_execute_command(&cmd, ctx);
+            }
             sitrep if command.name == commands::SITREP.name => {
                 let roster = crate::personas::Roster::load()
                     .unwrap_or_else(crate::personas::Roster::default_sandford);
