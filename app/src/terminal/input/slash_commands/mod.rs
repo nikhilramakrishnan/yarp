@@ -691,7 +691,8 @@ impl Input {
                     .filter(|a| !a.is_empty());
                 let cmd = if let Some(cs) = callsign {
                     if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
-                        "unset YARP_CALLSIGN; \
+                        "prev_call=\"${YARP_CALLSIGN:-}\"; \
+                         unset YARP_CALLSIGN; \
                          duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
                          shift_str=''; \
                          if [ -f \"$duty_marker\" ]; then \
@@ -706,7 +707,23 @@ impl Input {
                            fi; \
                            rm -f \"$duty_marker\"; \
                          fi; \
-                         printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[3;38;5;244mcallsign cleared\\033[0m\\n'; \
+                         printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m\\n'; \
+                         prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
+                         prev_av=''; \
+                         case \"$prev_lc\" in \
+                           nicholas|angel) prev_av='🎯' ;; \
+                           frank|butterman.snr) prev_av='🦔' ;; \
+                           danny|butterman) prev_av='🍦' ;; \
+                           andy|wainwright|cartwright) prev_av='🤡' ;; \
+                           doris|thatcher) prev_av='🚓' ;; \
+                           tony) prev_av='📻' ;; \
+                         esac; \
+                         if [ -n \"$prev_call\" ]; then \
+                           if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_call\"; \
+                         else \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mnone active\\033[0m\\n' 'callsign'; \
+                         fi; \
                          if [ -n \"$shift_str\" ]; then \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
                          fi".to_owned()
