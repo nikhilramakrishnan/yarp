@@ -11,6 +11,7 @@ use yarpui::{
 use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::blocklist::agent_view::orchestration_conversation_links::conversation_navigation_card_with_icon;
 use crate::ai::blocklist::agent_view::{AgentViewController, AgentViewControllerEvent};
+use crate::personas::persona_officer_label;
 use crate::ai::blocklist::BlocklistAIHistoryEvent;
 use crate::appearance::Appearance;
 use crate::terminal::view::TerminalAction;
@@ -194,8 +195,11 @@ impl View for ChildAgentStatusCard {
                 continue;
             }
 
-            let agent_name = child.agent_name().unwrap_or("Agent").to_string();
-            let title = child.title().unwrap_or_else(|| "Untitled".to_string());
+            let agent_name = child
+                .agent_name()
+                .map(persona_officer_label)
+                .unwrap_or_else(|| "PC on call".to_string());
+            let title = child.title().unwrap_or_else(|| "Untitled case".to_string());
             let status_icon = child.status().status_icon_and_color(appearance.theme());
 
             let Some(mouse_state) = self.mouse_states.get(&conversation_id).cloned() else {

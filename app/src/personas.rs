@@ -534,6 +534,20 @@ pub(crate) fn persona_display_name(name: &str) -> String {
     }
 }
 
+/// In-station officer label: prefixes the persona's display name with the
+/// rank tag the rest of the UI uses ("PC ..."). Sandford NWA register; used
+/// where a row would otherwise read like a raw CLI binary name (the child
+/// agent status card, etc.). Falls back to the bare display name for unknown
+/// personas so we don't tag third-party CLIs with a rank we don't own.
+pub(crate) fn persona_officer_label(name: &str) -> String {
+    match name {
+        "claude" | "codex" | "gemini" | "aider" | "cursor-agent" => {
+            format!("PC {}", persona_display_name(name))
+        }
+        _ => persona_display_name(name),
+    }
+}
+
 /// Short, in-character tag for a council header — the trailing italic
 /// descriptor next to the persona's badge and name. Prefers the first clause
 /// of `voice` (the in-character "how they report" sentence) over `role`,
