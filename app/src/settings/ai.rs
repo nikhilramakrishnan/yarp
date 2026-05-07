@@ -1368,7 +1368,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.orchestration_enabled",
-        description: "Whether multi-agent orchestration is enabled.",
+        description: "Whether the lead PC can call in backup units.",
         feature_flag: FeatureFlag::Orchestration,
     }
 
@@ -1382,7 +1382,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.mcp_servers.file_based_mcp_enabled",
-        description: "Whether third-party file-based MCP servers are automatically detected.",
+        description: "Whether outside MCP duty-kit configs are picked up automatically.",
     }
 
     // Controls how agent thinking/reasoning traces are displayed.
@@ -1398,7 +1398,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.input.include_agent_commands_in_history",
-        description: "Whether agent-executed commands are included in command history.",
+        description: "Whether commands the PC runs go into the radio log.",
     }
 
     // Controls whether the conversation history view appears in the tools panel.
