@@ -593,7 +593,7 @@ impl Input {
                          [ \"$mail\" -gt 0 ] && mail_tag=$(printf ' \\033[1;38;5;35m📬 %d\\033[0m' \"$mail\"); \
                          you=''; if [ \"${{YARP_CALLSIGN:-}}\" = {name_lc} ]; then you=' \\033[1;38;5;35m⭐ ← you\\033[0m'; fi; \
                          printf '  \\033[{badge_color}m%-4s\\033[0m \\033[{name_color}m%-18s\\033[0m \
-                         \\033[3;38;5;244m%s\\033[0m{lead_tag}%s%s\\n' {badge} {name} {role} \"$mail_tag\" \"$you\"; ",
+                         \\033[2;3;{badge_color}m%s\\033[0m{lead_tag}%s%s\\n' {badge} {name} {role} \"$mail_tag\" \"$you\"; ",
                         badge_color = badge_color,
                         name_color = name_color,
                         lead_tag = lead_tag,
