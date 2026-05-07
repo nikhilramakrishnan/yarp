@@ -121,14 +121,14 @@ use crate::view_components::ToastLink;
 #[cfg(not(target_family = "wasm"))]
 use crate::workspace::WorkspaceAction;
 
-const ENABLE_NLD_TOOLTIP: &str = "Enable terminal command autodetection";
-const DISABLE_NLD_TOOLTIP: &str = "Disable terminal command autodetection";
+const ENABLE_NLD_TOOLTIP: &str = "Pick up commands off the wire";
+const DISABLE_NLD_TOOLTIP: &str = "Stand down command sweep";
 
-const FAST_FORWARD_ON_TOOLTIP: &str = "Turn off auto-approve all agent actions";
-const FAST_FORWARD_OFF_TOOLTIP: &str = "Auto-approve all agent actions for this task";
+const FAST_FORWARD_ON_TOOLTIP: &str = "Stop rubber-stamping the agent's moves";
+const FAST_FORWARD_OFF_TOOLTIP: &str = "Sign off on every move this case";
 
-const START_REMOTE_CONTROL_TOOLTIP: &str = "Start remote control";
-const START_REMOTE_CONTROL_LOGIN_REQUIRED_TOOLTIP: &str = "Log in to use /remote-control";
+const START_REMOTE_CONTROL_TOOLTIP: &str = "Patch in remote unit";
+const START_REMOTE_CONTROL_LOGIN_REQUIRED_TOOLTIP: &str = "Sign in to call in remote unit";
 
 const CLOUD_MODE_V2_FOOTER_GAP: f32 = 4.;
 
@@ -289,7 +289,7 @@ impl AgentInputFooter {
         let mic_button = ctx.add_typed_action_view(|_ctx| {
             let button = ActionButton::new("", ActiveMicButtonTheme)
                 .with_icon(Icon::Microphone)
-                .with_tooltip("Voice input")
+                .with_tooltip("Radio it in")
                 .with_size(button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left);
             #[cfg(feature = "voice_input")]
@@ -325,7 +325,7 @@ impl AgentInputFooter {
         let file_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("", AgentInputButtonTheme)
                 .with_icon(Icon::Plus)
-                .with_tooltip("Attach file")
+                .with_tooltip("Bag a piece of evidence")
                 .with_size(button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
@@ -350,9 +350,9 @@ impl AgentInputFooter {
         // CLI agent-specific buttons (only rendered when a CLI agent session is active).
         let cli_button_size = ButtonSize::AgentInputButton;
         let file_explorer_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("File explorer", AgentInputButtonTheme)
+            ActionButton::new("Evidence locker", AgentInputButtonTheme)
                 .with_icon(Icon::FileCopy)
-                .with_tooltip("Open file explorer")
+                .with_tooltip("Open the evidence locker")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_keybinding(
@@ -382,7 +382,7 @@ impl AgentInputFooter {
         let settings_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("", AgentInputButtonTheme)
                 .with_icon(Icon::Settings)
-                .with_tooltip("Open coding agent settings")
+                .with_tooltip("Adjust the officer kit")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {

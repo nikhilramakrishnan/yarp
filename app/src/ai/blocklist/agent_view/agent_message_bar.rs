@@ -454,9 +454,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for BootstrappingMessageProducer {
     }
 }
 
-/// Produces the zero state message
-/// When a task is stopped, we also include "Cmd+Shift+R to resume conversation".
-/// When a plan exists for the active conversation, we also include "cmd-alt-p to view plan".
+/// Produces the zero-state shortcut hints under the input.
 struct ZeroStateMessageProducer;
 
 impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
