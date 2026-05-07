@@ -770,7 +770,7 @@ impl Input {
                          esac; \
                          if [ -n \"$prev_call\" ]; then \
                            if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
-                           printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\"; \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\" \"$prev_color\"; \
                          else \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mnone active\\033[0m\\n' 'callsign'; \
                          fi; \
@@ -988,7 +988,7 @@ impl Input {
                      esac; \
                      if [ -n \"$prev_call\" ]; then \
                        if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\" \"$prev_color\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$tier_icon\" \"$shift_str\"; \
