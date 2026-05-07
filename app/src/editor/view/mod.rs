@@ -1703,7 +1703,7 @@ impl ImageContextOptions {
             let total_images = *num_images_attached + *num_images_in_conversation;
             if total_images >= MAX_IMAGES_PER_CONVERSATION {
                 return format!(
-                    "Image attachment is disabled — limit is {MAX_IMAGES_PER_CONVERSATION} per conversation"
+                    "Photo evidence locked — limit is {MAX_IMAGES_PER_CONVERSATION} per case file"
                 );
             }
         }

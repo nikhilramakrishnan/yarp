@@ -836,7 +836,7 @@ impl View {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Cannot switch conversations while agent is monitoring a command."
+                                    "Can't switch case files while a PC is on a command."
                                         .to_string(),
                                 ),
                                 window_id,
@@ -977,7 +977,7 @@ impl View {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Cannot start a new conversation while agent is monitoring a command.".to_string(),
+                                "Can't open a new case file while a PC is on a command.".to_string(),
                             ),
                             window_id,
                             ctx,

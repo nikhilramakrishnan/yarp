@@ -1741,7 +1741,7 @@ impl SettingsWidget for CloudConversationStorageWidget {
 
         Flex::column()
             .with_child(render_body_item::<PrivacyPageAction>(
-                "Store AI conversations in the cloud".into(),
+                "Store case files in the cloud".into(),
                 None,
                 LocalOnlyIconState::Hidden,
                 toggle_state,
