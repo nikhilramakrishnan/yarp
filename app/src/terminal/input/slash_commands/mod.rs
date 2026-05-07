@@ -1304,7 +1304,6 @@ impl Input {
                           broadcast) badge='\\033[1;38;5;220m📻 ALL   \\033[0m '; sender_color='\\033[1;38;5;220m'; body_color='\\033[38;5;178m'; consume=1 ;; \
                           relay)     badge='\\033[2;38;5;240m▸ relay  \\033[0m '; sender_color='\\033[2;38;5;240m'; body_color='\\033[2;38;5;240m'; consume=0 ;; \
                         esac; \
-                        if [ -n \"$target\" ]; then tag=\" → @${target}\"; else tag=''; fi; \
                         sender_lc=$(printf '%s' \"$sender\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
                         case \"$sender_lc\" in \
                           nicholas|angel) avatar='🎯' ;; \
@@ -1316,7 +1315,21 @@ impl Input {
                           *) avatar='' ;; \
                         esac; \
                         if [ -n \"$avatar\" ]; then sender_disp=\"$avatar $sender\"; else sender_disp=\"$sender\"; fi; \
-                        printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag\"; \
+                        if [ -n \"$target\" ]; then \
+                          target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
+                          case \"$target_lc\" in \
+                            nicholas|angel) tcolor=39 ;; \
+                            frank|butterman.snr) tcolor=220 ;; \
+                            danny|butterman) tcolor=213 ;; \
+                            andy|wainwright|cartwright) tcolor=208 ;; \
+                            doris|thatcher) tcolor=165 ;; \
+                            tony) tcolor=226 ;; \
+                            *) tcolor=244 ;; \
+                          esac; \
+                          if [ \"$kind\" = relay ]; then tag_sgr='2;3;38;5;240'; else tag_sgr=\"3;38;5;${tcolor}\"; fi; \
+                          tag=\" → @${target}\"; \
+                        else tag=''; tag_sgr='3;38;5;244'; fi; \
+                        printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[%sm%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag_sgr\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
