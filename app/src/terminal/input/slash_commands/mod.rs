@@ -620,12 +620,17 @@ impl Input {
                     "user=\"${{USER:-unknown}}\"; \
                      host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
                      when=\"$(date '+%a %H:%M' 2>/dev/null || date)\"; \
+                     prev_call=\"${{YARP_CALLSIGN:-}}\"; \
+                     unset YARP_CALLSIGN; \
                      shopt -s nullglob; \
                      queue=(/tmp/yarp-radio/*.msg); \
                      n=${{#queue[@]}}; \
                      if [ \"$n\" -gt 0 ]; then rm -f /tmp/yarp-radio/*.msg; fi; \
                      printf '\\033[1;38;5;220m🌙 OFF DUTY\\033[0m \\033[3;38;5;244m%s\\033[0m\\n' \"$when\"; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%s@%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
+                     if [ -n \"$prev_call\" ]; then \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_call\"; \
+                     fi; \
                      if [ \"$n\" -gt 0 ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
                      else \
@@ -692,14 +697,24 @@ impl Input {
             }
             inbox if command.name == commands::INBOX.name => {
                 let cmd = "shopt -s nullglob; \
+                    mkdir -p /tmp/yarp-radio; \
+                    pruned=$(find /tmp/yarp-radio -maxdepth 1 -name '*.msg' -mmin +60 -print -delete 2>/dev/null | wc -l | tr -d ' '); \
                     files=(/tmp/yarp-radio/*.msg); \
                     me_user=\"${USER:-unknown}\"; \
                     me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
                     me_call=\"${YARP_CALLSIGN:-}\"; \
                     if [ ${#files[@]} -eq 0 ]; then \
-                      printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
+                      if [ \"${pruned:-0}\" -gt 0 ]; then \
+                        printf '\\033[3;38;5;244m📻 INBOX  no traffic \\033[0m\\033[2;38;5;240m· expired %s stale\\033[0m\\n' \"$pruned\"; \
+                      else \
+                        printf '\\033[3;38;5;244m📻 INBOX  no traffic\\033[0m\\n'; \
+                      fi; \
                     else \
-                      printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"${#files[@]}\"; \
+                      if [ \"${pruned:-0}\" -gt 0 ]; then \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m \\033[2;38;5;240m· expired %s stale\\033[0m\\n\\n' \"${#files[@]}\" \"$pruned\"; \
+                      else \
+                        printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[3;38;5;244m%d transmission(s)\\033[0m\\n\\n' \"${#files[@]}\"; \
+                      fi; \
                       for f in \"${files[@]}\"; do \
                         base=$(basename \"$f\" .msg); \
                         ts=${base%%-*}; \
