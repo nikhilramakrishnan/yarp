@@ -296,7 +296,7 @@ impl View for AgentViewEntryBlock {
         let subtext = if is_open_elsewhere {
             Some("Open on a different shift")
         } else if self.is_restored {
-            Some("Restored")
+            Some("Reopened")
         } else if !self.is_new
             && !matches!(
                 self.origin,
@@ -304,7 +304,7 @@ impl View for AgentViewEntryBlock {
                     | AgentViewEntryOrigin::AgentRequestedNewConversation
             )
         {
-            Some("Continued")
+            Some("Back on the case")
         } else {
             None
         };
