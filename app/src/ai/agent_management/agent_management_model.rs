@@ -309,7 +309,7 @@ impl AgentNotificationsModel {
             return;
         }
 
-        let title = latest_query.unwrap_or_else(|| "Agent task".to_owned());
+        let title = latest_query.unwrap_or_else(|| "Officer's case".to_owned());
 
         match status {
             // When the agent resumes its work, clear stale notifications.

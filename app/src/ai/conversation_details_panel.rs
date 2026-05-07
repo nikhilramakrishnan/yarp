@@ -511,8 +511,8 @@ impl ConversationDetailsPanel {
 
         #[cfg(not(target_family = "wasm"))]
         let continue_locally_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Continue locally", PrimaryTheme)
-                .with_tooltip("Fork this conversation locally")
+            ActionButton::new("Pick the case up here", PrimaryTheme)
+                .with_tooltip("Take this case file off the radio and work it locally")
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(ConversationDetailsPanelAction::ContinueLocally);

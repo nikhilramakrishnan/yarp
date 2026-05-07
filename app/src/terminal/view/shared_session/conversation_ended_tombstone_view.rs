@@ -207,8 +207,8 @@ impl ConversationEndedTombstoneView {
         #[cfg(not(target_family = "wasm"))]
         let continue_locally_button = conversation_id.map(|conv_id| {
             ctx.add_typed_action_view(move |_| {
-                ActionButton::new("Continue locally", PrimaryTheme)
-                    .with_tooltip("Fork this conversation locally")
+                ActionButton::new("Pick the case up here", PrimaryTheme)
+                    .with_tooltip("Take this case file off the radio and work it locally")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(
                             ConversationEndedTombstoneAction::ContinueLocally(conv_id),
@@ -222,8 +222,8 @@ impl ConversationEndedTombstoneView {
         #[cfg(target_family = "wasm")]
         let open_in_yarp_button = conversation_id.map(|conv_id| {
             ctx.add_typed_action_view(move |_| {
-                ActionButton::new("Open in Yarp", PrimaryTheme)
-                    .with_tooltip("Open this conversation in the Yarp desktop app")
+                ActionButton::new("Walk it into Yarp", PrimaryTheme)
+                    .with_tooltip("Open this case file in the Yarp desktop station")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(ConversationEndedTombstoneAction::OpenInYarp(
                             conv_id,
@@ -329,7 +329,7 @@ impl ConversationEndedTombstoneView {
 
         if is_transcript {
             return Text::new(
-                "You're viewing a snapshot",
+                "Logged report — case file is read-only",
                 appearance.overline_font_family(),
                 appearance.monospace_font_size(),
             )
@@ -361,7 +361,7 @@ impl ConversationEndedTombstoneView {
             .display_data
             .title
             .clone()
-            .unwrap_or_else(|| "Agent task".to_string());
+            .unwrap_or_else(|| "Officer's case".to_string());
         Flex::row()
             .with_main_axis_size(MainAxisSize::Min)
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
@@ -388,8 +388,8 @@ impl ConversationEndedTombstoneView {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "This shared conversation shows the state when you opened it. \
-                 If the agent is still running, refresh to see the latest progress.",
+                "This radio log shows the state at sign-in. \
+                 If the officer's still on shift, refresh to catch up.",
                 appearance.overline_font_family(),
                 appearance.monospace_font_size(),
             )
@@ -407,23 +407,23 @@ impl ConversationEndedTombstoneView {
 
         if let Some(dir) = &self.display_data.working_directory {
             let display_dir = home_relative_path(Path::new(dir));
-            parts.push(format!("Directory: {display_dir}"));
+            parts.push(format!("Beat: {display_dir}"));
         }
 
         if let Some(source) = &self.display_data.source {
-            parts.push(format!("Source: {source}"));
+            parts.push(format!("Caller: {source}"));
         }
 
         if let Some(skill) = &self.display_data.skill_name {
-            parts.push(format!("Skill: {skill}"));
+            parts.push(format!("Drill: {skill}"));
         }
 
         if let Some(run_time) = &self.display_data.run_time {
-            parts.push(format!("Run time: {run_time}"));
+            parts.push(format!("Shift time: {run_time}"));
         }
 
         if let Some(credits) = &self.display_data.credits {
-            parts.push(format!("Credits used: {credits}"));
+            parts.push(format!("Shifts used: {credits}"));
         }
 
         if parts.is_empty() {
