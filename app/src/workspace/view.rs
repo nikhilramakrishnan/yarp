@@ -11505,7 +11505,7 @@ impl Workspace {
                     log::error!("Conversation forking failed. {e}.");
                     WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         let toast =
-                            DismissibleToast::error("Conversation forking failed.".to_owned());
+                            DismissibleToast::error("Branching the case file failed.".to_owned());
                         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                     });
                     return;
@@ -11731,7 +11731,7 @@ impl Workspace {
             .conversation(&conversation_id)
             .and_then(|c| c.title())
             .map(|s| s.to_string())
-            .unwrap_or_else(|| "Conversation".to_string());
+            .unwrap_or_else(|| "Case file".to_string());
 
         let title = if source_title.chars().count() > MAX_FORK_TOAST_TITLE_LENGTH {
             let truncated: String = source_title
@@ -16631,7 +16631,7 @@ impl Workspace {
                 ToolPanelView::ProjectExplorer => "Project explorer",
                 ToolPanelView::GlobalSearch { .. } => "Global search",
                 ToolPanelView::YarpDrive => "Yarp Drive",
-                ToolPanelView::ConversationListView => "Agent conversations",
+                ToolPanelView::ConversationListView => "Case files",
             }
         } else {
             "Tools panel"
@@ -21540,7 +21540,7 @@ impl TypedActionView for Workspace {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Failed to delete conversation. Please exit the agent view and try again.".to_string(),
+                                    "Couldn't bin the case file. Step out of the agent view and have another go.".to_string(),
                                 ),
                                 window_id,
                                 ctx,
@@ -21555,7 +21555,7 @@ impl TypedActionView for Workspace {
                 send_telemetry_from_ctx!(TelemetryEvent::ConversationListItemDeleted, ctx);
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::success("Conversation deleted".to_string()),
+                        DismissibleToast::success("Case file binned".to_string()),
                         window_id,
                         ctx,
                     );

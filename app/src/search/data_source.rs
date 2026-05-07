@@ -239,8 +239,8 @@ impl QueryFilter {
             QueryFilter::NaturalLanguage => "e.g. replace string in file",
             QueryFilter::Actions => "Search actions",
             QueryFilter::Sessions => "Search sessions",
-            QueryFilter::Conversations => "Search conversations",
-            QueryFilter::HistoricalConversations => "Search historical conversations",
+            QueryFilter::Conversations => "Search case files",
+            QueryFilter::HistoricalConversations => "Search closed case files",
             QueryFilter::LaunchConfigurations => "Search launch configurations",
             QueryFilter::Drive => "Search objects in drive",
             QueryFilter::EnvironmentVariables => "Search environment variables",
@@ -257,7 +257,7 @@ impl QueryFilter {
             QueryFilter::BaseModels => "Search base models",
             QueryFilter::FullTerminalUseModels => "Search full terminal use models",
             QueryFilter::CurrentDirectoryConversations => {
-                "Search conversations in current directory"
+                "Search case files in current directory"
             }
         }
     }

@@ -277,7 +277,7 @@ impl SearchItem for InlineHistoryItem {
 
     fn accessibility_label(&self) -> String {
         match &self.item_type {
-            HistoryItemType::Conversation { title, .. } => format!("Conversation: {title}"),
+            HistoryItemType::Conversation { title, .. } => format!("Case file: {title}"),
             HistoryItemType::Command { command, .. } => format!("Command: {command}"),
             HistoryItemType::AIPrompt { query_text } => format!("AI prompt: {query_text}"),
         }

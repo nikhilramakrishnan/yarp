@@ -339,14 +339,14 @@ impl View for Body {
         } else if disabled_count > 1 {
             // Multiple options disabled - mention both reasons if agent conversations exist
             if self.has_agent_conversations {
-                Some("Some options are disabled due to sharing size limits and the presence of agent conversations in the session")
+                Some("Some options are off — the session is over the sharing limit and there are case files on the radio")
             } else {
                 Some("Some options are disabled due to sharing size limits")
             }
         } else {
             // Only one option disabled - use specific message if it's due to agent conversations
             if self.has_agent_conversations {
-                Some("Sharing without scrollback is disabled because this session has agent conversations")
+                Some("Can't broadcast without the scrollback — there are case files on this session")
             } else {
                 Some("Some options are disabled due to sharing size limits")
             }

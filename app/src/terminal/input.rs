@@ -776,7 +776,7 @@ impl InputSuggestionsMode {
                 action: UserQueryMenuAction::Rewind,
                 ..
             } => Some("Search queries to rewind to"),
-            InputSuggestionsMode::ConversationMenu => Some("Search conversations"),
+            InputSuggestionsMode::ConversationMenu => Some("Search case files"),
             InputSuggestionsMode::SkillMenu => Some("Search skills"),
             InputSuggestionsMode::ModelSelector => Some("Search models"),
             InputSuggestionsMode::ProfileSelector => Some("Search profiles"),
@@ -1884,7 +1884,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::AISearch),
         EditableBinding::new(
             START_NEW_CONVERSATION_KEYBINDING_NAME,
-            "New agent conversation",
+            "Open new case file",
             InputAction::StartNewAgentConversation,
         )
         .with_enabled(|| !FeatureFlag::AgentView.is_enabled())
@@ -4587,7 +4587,7 @@ impl Input {
             let timestamp = Local::now().format("%Y%m%d_%H%M%S");
             let title = conversation
                 .title()
-                .unwrap_or_else(|| "conversation".to_string())
+                .unwrap_or_else(|| "case_file".to_string())
                 .chars()
                 .map(|c| {
                     // Replace spaces with underscores, keep alphanumeric, underscores, and hyphens
@@ -4652,7 +4652,7 @@ impl Input {
                 let display_path = file_path.display().to_string();
                 ToastStack::handle(ctx).update(ctx, move |toast_stack, ctx| {
                     let toast = DismissibleToast::default(format!(
-                        "Conversation exported to {display_path}"
+                        "Case file filed at {display_path}"
                     ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
@@ -4731,9 +4731,9 @@ impl Input {
             let window_id = ctx.window_id();
 
             let message = if images_removed == 1 {
-                "1 image was removed - limit is 20 per conversation.".into()
+                "1 image was removed - cap is 20 per case file.".into()
             } else {
-                format!("{images_removed} images were removed - limit is 20 per conversation.")
+                format!("{images_removed} images were removed - cap is 20 per case file.")
             };
 
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
@@ -9992,7 +9992,7 @@ impl Input {
             let (limit_name, limit_value) = if available_per_query < available_per_conversation {
                 ("per query", MAX_IMAGE_COUNT_FOR_QUERY)
             } else {
-                ("per conversation", MAX_IMAGES_PER_CONVERSATION)
+                ("per case file", MAX_IMAGES_PER_CONVERSATION)
             };
 
             let message = if excess_images == 1 {
@@ -12737,7 +12737,7 @@ impl Input {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Too many attachments for this conversation.".to_string(),
+                                "Too many attachments on this case file.".to_string(),
                             ),
                             window_id,
                             ctx,

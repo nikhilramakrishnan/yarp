@@ -1753,13 +1753,13 @@ impl SettingsWidget for CloudConversationStorageWidget {
                 ui_builder
                     .paragraph(
                         if is_checked {
-                            "Agent conversations can be shared with others and are retained \
-                            when you log in on different devices. This data is only stored \
-                            for product functionality, and Yarp will not use it for analytics."
+                            "Case files can be passed to others and stay on the records when \
+                            you check in from another desk. Records are only kept for product \
+                            functionality — Yarp won't use them for analytics."
                         } else {
-                            "Agent conversations are only stored locally on your machine, are \
-                            lost upon logout, and cannot be shared. Note: conversation data \
-                            for ambient agents are still stored in the cloud."
+                            "Case files are kept locally at this desk only — gone on logout, \
+                            can't be shared. Note: ambient officer case files are still kept \
+                            in central records."
                         }
                         .to_owned(),
                     )

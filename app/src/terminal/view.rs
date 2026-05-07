@@ -25174,12 +25174,12 @@ impl TypedActionView for TerminalView {
                 YarpA11yRole::PopoverRole,
             )),
             RewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
-                "Show confirmation dialog to rewind to before this point in the AI conversation."
+                "Show confirmation dialog to rewind the case file to before this point."
                     .to_owned(),
                 YarpA11yRole::ButtonRole,
             )),
             ExecuteRewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
-                "Execute rewind to before this point in the AI conversation.".to_owned(),
+                "Rewind the case file to before this point.".to_owned(),
                 YarpA11yRole::ButtonRole,
             )),
             SelectAIAttachedBlock(_) => Custom(AccessibilityContent::new_without_help(

@@ -177,7 +177,7 @@ fn get_agent_modality_callout_options(
         }
         AgentModalityCalloutState::IntroducingAgentExperience => Some(CalloutOptions {
             title: "Introducing Yarp's new agent experience",
-            text: "Agent conversations are now their own scoped view outside of your terminal. Simply hit ESC to return to the terminal at any point.".to_string(),
+            text: "Case files now have their own desk outside the terminal. Hit ESC to head back to the terminal whenever.".to_string(),
             step: StepStatus::new(2, total_steps),
             left_button: None,
             right_button: ButtonOptions {

@@ -171,8 +171,8 @@ impl Slide for OzLaunchSlide {
 
     fn checkbox_config(&self) -> Option<CheckboxConfig> {
         Some(CheckboxConfig {
-            label: "Sync conversations to cloud",
-            description: "Agent conversations stored in the cloud can be shared with anyone with one click, and allow conversations to be continued across devices and on logout.",
+            label: "File case files in central records",
+            description: "Case files filed in central records can be passed to anyone with one click, and let you pick the case back up from another desk or after checking off duty.",
         })
     }
 

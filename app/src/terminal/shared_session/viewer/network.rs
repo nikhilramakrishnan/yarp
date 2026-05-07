@@ -1083,7 +1083,7 @@ pub fn agent_prompt_failure_reason_string(reason: &AgentPromptFailureReason) -> 
             "Insufficient permissions. Please request edit access.".to_owned()
         }
         AgentPromptFailureReason::InvalidConversation => {
-            "Invalid conversation. Please try again.".to_owned()
+            "Case file's no good. Have another go.".to_owned()
         }
         AgentPromptFailureReason::CommandInProgress => {
             "A long running command is currently in progress. Please wait for it to complete before sending an agent prompt.".to_owned()

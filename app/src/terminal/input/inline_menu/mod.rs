@@ -54,7 +54,7 @@ impl InlineMenuType {
         match self {
             InlineMenuType::SlashCommands => "/Commands",
             InlineMenuType::ModelSelector => "/Model",
-            InlineMenuType::ConversationMenu => "/Conversations",
+            InlineMenuType::ConversationMenu => "/CaseFiles",
             InlineMenuType::ProfileSelector => "/Profiles",
             InlineMenuType::PromptsMenu => "/Prompts",
             InlineMenuType::SkillMenu => "/Skills",

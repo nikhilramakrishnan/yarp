@@ -200,6 +200,6 @@ impl SearchItem for ConversationSearchItem {
     }
 
     fn accessibility_label(&self) -> String {
-        format!("Conversation: {}", self.navigation_data.title)
+        format!("Case file: {}", self.navigation_data.title)
     }
 }
