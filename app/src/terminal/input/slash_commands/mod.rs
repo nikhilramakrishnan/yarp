@@ -797,10 +797,18 @@ impl Input {
                         };
                         let roster = crate::personas::Roster::load()
                             .unwrap_or_else(crate::personas::Roster::default_sandford);
+                        let alias_to_name: &str = match cs {
+                            "nicholas" | "angel" => "Nicholas Angel",
+                            "frank" | "butterman.snr" => "Frank Butterman",
+                            "danny" | "butterman" => "Danny Butterman",
+                            "doris" | "thatcher" => "Doris Thatcher",
+                            _ => cs,
+                        };
                         let persona = roster
                             .default_team()
                             .and_then(|t| t.members.iter()
-                                .find(|p| p.name.eq_ignore_ascii_case(cs)));
+                                .find(|p| p.name.eq_ignore_ascii_case(alias_to_name)
+                                    || p.name.split_whitespace().any(|w| w.eq_ignore_ascii_case(alias_to_name))));
                         let persona_lines = if let Some(p) = persona {
                             let role = p.role.split('.').next().unwrap_or(&p.role).trim();
                             let lead_tag = if p.lead {
