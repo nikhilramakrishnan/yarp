@@ -637,7 +637,25 @@ impl Input {
                     .filter(|a| !a.is_empty());
                 let cmd = if let Some(cs) = callsign {
                     if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
-                        "unset YARP_CALLSIGN; printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'".to_owned()
+                        "unset YARP_CALLSIGN; \
+                         duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
+                         shift_str=''; \
+                         if [ -f \"$duty_marker\" ]; then \
+                           start=$(cat \"$duty_marker\" 2>/dev/null); \
+                           if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
+                             now=$(date +%s); \
+                             elapsed=$((now - start)); \
+                             h=$((elapsed / 3600)); m=$(((elapsed % 3600) / 60)); s=$((elapsed % 60)); \
+                             if [ $h -gt 0 ]; then shift_str=$(printf '%dh %02dm' $h $m); \
+                             elif [ $m -gt 0 ]; then shift_str=$(printf '%dm %02ds' $m $s); \
+                             else shift_str=$(printf '%ds' $s); fi; \
+                           fi; \
+                           rm -f \"$duty_marker\"; \
+                         fi; \
+                         printf '\\033[3;38;5;244m🎖  off duty — callsign cleared\\033[0m\\n'; \
+                         if [ -n \"$shift_str\" ]; then \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
+                         fi".to_owned()
                     } else {
                         let cs_lower = cs.to_ascii_lowercase();
                         let cs = cs_lower.as_str();
