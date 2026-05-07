@@ -20327,37 +20327,37 @@ impl TerminalView {
                                  {err_block}\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 60 ]; then\n\
-                                   text=$(printf '(timed out after %ss)' \"$elapsed\")\n\
+                                   text=$(printf '⏱ (timed out after %ss)' \"$elapsed\")\n\
                                  else\n\
-                                   text=$(printf '(timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                   text=$(printf '⏱ (timed out after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='179'\n\
                                elif [ \"$synth_rc\" -ne 0 ] && [ \"$synth_rc\" -lt 128 ]; then\n\
                                  {err_block}\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 60 ]; then\n\
-                                   text=$(printf '(crashed after %ss)' \"$elapsed\")\n\
+                                   text=$(printf '⚠ (crashed after %ss)' \"$elapsed\")\n\
                                  else\n\
-                                   text=$(printf '(crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                   text=$(printf '⚠ (crashed after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='179'\n\
                                elif [ -n \"$got_output\" ]; then\n\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 60 ]; then\n\
-                                   text=$(printf '(verdict in %ss)' \"$elapsed\")\n\
+                                   text=$(printf '✓ (verdict in %ss)' \"$elapsed\")\n\
                                  else\n\
-                                   text=$(printf '(verdict in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                   text=$(printf '✓ (verdict in %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='244'\n\
                                else\n\
                                  {err_block}\
                                  elapsed=$(( $(date +%s) - start ))\n\
                                  if [ $elapsed -lt 3 ]; then\n\
-                                   text='(no verdict)'\n\
+                                   text='⌀ (no verdict)'\n\
                                  elif [ $elapsed -lt 60 ]; then\n\
-                                   text=$(printf '(no verdict after %ss)' \"$elapsed\")\n\
+                                   text=$(printf '⌀ (no verdict after %ss)' \"$elapsed\")\n\
                                  else\n\
-                                   text=$(printf '(no verdict after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
+                                   text=$(printf '⌀ (no verdict after %dm%02ds)' $((elapsed/60)) $((elapsed%60)))\n\
                                  fi\n\
                                  stamp_color='179'\n\
                                fi\n\
