@@ -20045,7 +20045,7 @@ impl TerminalView {
                          printf '\\r\\033[K'\n\
                          elapsed=$(cat {took_q} 2>/dev/null)\n\
                          elapsed=${{elapsed:-$(( $(date +%s) - start ))}}\n\
-                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g')\"\n\
+                         take_content=\"$(cat {take_q} 2>/dev/null | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g; s/\\*(\\S[^*]*?\\S)\\*/\\e[3m$1\\e[23m/g')\"\n\
                          if [ -n \"$take_content\" ]; then\n\
                            printf '%s\\n' \"$take_content\"\n\
                          fi\n\
@@ -20308,7 +20308,7 @@ impl TerminalView {
                                  i=$((i+1))\n\
                                done ) &\n\
                              SPIN_PID=$!\n\
-                             cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g' | {{\n\
+                             cat {fifo_q} | sed '/[^[:space:]]/,$!d' | sed -e :a -e '/^[[:space:]]*$/{{$d;N;ba' -e '}}' | perl -pe 's/\\*\\*([^*]+)\\*\\*/\\e[1m$1\\e[22m/g; s/`([^`]+)`/\\e[2;3m$1\\e[22;23m/g; s/\\*(\\S[^*]*?\\S)\\*/\\e[3m$1\\e[23m/g' | {{\n\
                                IFS= read -r first\n\
                                read_rc=$?\n\
                                kill $SPIN_PID 2>/dev/null\n\
