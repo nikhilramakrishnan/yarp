@@ -956,17 +956,17 @@ impl Input {
                      if [ \"$n\" -gt 0 ]; then rm -f /tmp/yarp-radio/*.msg; fi; \
                      duty_marker=\"/tmp/yarp-radio/.duty-${{user}}\"; \
                      shift_str=\"\"; \
-                     tier_icon='⏱'; \
+                     tier_icon='⏱'; tier_color=220; \
                      if [ -f \"$duty_marker\" ]; then \
                        start=$(cat \"$duty_marker\" 2>/dev/null); \
                        now=$(date +%s); \
                        if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
                          elapsed=$((now - start)); \
                          h=$((elapsed / 3600)); m=$(((elapsed % 3600) / 60)); s=$((elapsed % 60)); \
-                         if [ $h -ge 8 ]; then tier_icon='🌙'; \
-                         elif [ $h -ge 4 ]; then tier_icon='🔴'; \
-                         elif [ $h -ge 1 ]; then tier_icon='🟡'; \
-                         else tier_icon='🟢'; \
+                         if [ $h -ge 8 ]; then tier_icon='🌙'; tier_color=165; \
+                         elif [ $h -ge 4 ]; then tier_icon='🔴'; tier_color=196; \
+                         elif [ $h -ge 1 ]; then tier_icon='🟡'; tier_color=220; \
+                         else tier_icon='🟢'; tier_color=82; \
                          fi; \
                          if [ $h -gt 0 ]; then shift_str=$(printf '%dh %02dm' $h $m); \
                          elif [ $m -gt 0 ]; then shift_str=$(printf '%dm %02ds' $m $s); \
@@ -991,7 +991,7 @@ impl Input {
                        printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\" \"$prev_color\"; \
                      fi; \
                      if [ -n \"$shift_str\" ]; then \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;%dmon the beat\\033[0m\\n' 'shift' \"$tier_icon\" \"$shift_str\" \"$prev_color\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;%dm%s\\033[0m \\033[2;3;38;5;%dmon the beat\\033[0m\\n' 'shift' \"$tier_icon\" \"$tier_color\" \"$shift_str\" \"$prev_color\"; \
                      fi; \
                      if [ \"$n\" -gt 0 ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s)\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'radio' \"$n\" \"$prev_color\"; \
