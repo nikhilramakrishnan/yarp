@@ -713,9 +713,9 @@ impl Input {
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📂 \\033[1;38;5;220m\"%s\"\\033[0m\\n' 'tab' {tab}; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
                        if [ -n \"$cs_avatar\" ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s \\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"$cs_avatar\" \"$cs_color\" \"${{YARP_CALLSIGN}}\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s \\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmon case\\033[0m\\n' 'filed by' \"$cs_avatar\" \"$cs_color\" \"${{YARP_CALLSIGN}}\" \"$cs_color\"; \
                        else \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️ \\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mon case\\033[0m\\n' 'filed by' \"$cs_color\" \"${{YARP_CALLSIGN}}\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️ \\033[1;38;5;%dm@%s\\033[0m \\033[2;3;38;5;%dmon case\\033[0m\\n' 'filed by' \"$cs_color\" \"${{YARP_CALLSIGN}}\" \"$cs_color\"; \
                        fi; \
                      fi; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[3;38;5;244mall units\\033[0m\\n' 'notified'; \
