@@ -969,15 +969,14 @@ impl Input {
                           fi; \
                         fi; \
                       done; \
-                      ordered=(\"${direct_q[@]}\" \"${broadcast_q[@]}\" \"${relay_q[@]}\"); \
-                      idx=0; \
-                      for f in \"${ordered[@]}\"; do \
-                        idx=$((idx+1)); \
+                      print_msg() { \
+                        local f=\"$1\" idx=\"$2\" kind=\"$3\"; \
+                        local base ts ts_s human sender target body_start line badge sender_color body_color tag consume; \
                         base=$(basename \"$f\" .msg); \
                         ts=${base%%-*}; \
                         ts_s=$((ts / 1000)); \
                         human=$(date -r \"$ts_s\" '+%H:%M:%S' 2>/dev/null || echo \"$ts\"); \
-                        sender=\"unknown\"; target=\"\"; body_start=1; \
+                        sender=unknown; target=\"\"; body_start=1; \
                         while IFS= read -r line; do \
                           case \"$line\" in \
                             from:*) sender=\"${line#from: }\"; body_start=$((body_start+1));; \
@@ -986,31 +985,30 @@ impl Input {
                             *)      break;; \
                           esac; \
                         done < \"$f\"; \
-                        consume=1; \
-                        if [ -n \"$target\" ]; then \
-                          target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
-                          if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$target_lc\" = \"$me_call_lc\" ]; }; then \
-                            badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; \
-                            sender_color='\\033[1;38;5;35m'; \
-                            body_color='\\033[38;5;179m'; \
-                          else \
-                            badge='\\033[2;38;5;240m▸ relay  \\033[0m '; \
-                            sender_color='\\033[2;38;5;240m'; \
-                            body_color='\\033[2;38;5;240m'; \
-                            consume=0; \
-                          fi; \
-                          tag=\" → @${target}\"; \
-                        else \
-                          badge='\\033[1;38;5;220m📻 ALL   \\033[0m '; \
-                          sender_color='\\033[1;38;5;220m'; \
-                          body_color='\\033[38;5;178m'; \
-                          tag=''; \
-                        fi; \
+                        case \"$kind\" in \
+                          direct)    badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; sender_color='\\033[1;38;5;35m'; body_color='\\033[38;5;179m'; consume=1 ;; \
+                          broadcast) badge='\\033[1;38;5;220m📻 ALL   \\033[0m '; sender_color='\\033[1;38;5;220m'; body_color='\\033[38;5;178m'; consume=1 ;; \
+                          relay)     badge='\\033[2;38;5;240m▸ relay  \\033[0m '; sender_color='\\033[2;38;5;240m'; body_color='\\033[2;38;5;240m'; consume=0 ;; \
+                        esac; \
+                        if [ -n \"$target\" ]; then tag=\" → @${target}\"; else tag=''; fi; \
                         printf '  \\033[2;38;5;240m%2d\\033[0m %b\\033[2;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
-                      done; \
+                      }; \
+                      idx=0; \
+                      if [ ${#direct_q[@]} -gt 0 ]; then \
+                        printf '\\033[1;38;5;35m  DIRECT\\033[0m \\033[2;38;5;240m(%d)\\033[0m\\n' \"${#direct_q[@]}\"; \
+                        for f in \"${direct_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" direct; done; \
+                      fi; \
+                      if [ ${#broadcast_q[@]} -gt 0 ]; then \
+                        printf '\\033[1;38;5;220m  BROADCASTS\\033[0m \\033[2;38;5;240m(%d)\\033[0m\\n' \"${#broadcast_q[@]}\"; \
+                        for f in \"${broadcast_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" broadcast; done; \
+                      fi; \
+                      if [ ${#relay_q[@]} -gt 0 ]; then \
+                        printf '\\033[2;38;5;240m  RELAY\\033[0m \\033[2;38;5;240m(%d not for you)\\033[0m\\n' \"${#relay_q[@]}\"; \
+                        for f in \"${relay_q[@]}\"; do idx=$((idx+1)); print_msg \"$f\" \"$idx\" relay; done; \
+                      fi; \
                     fi";
                 self.try_execute_command(cmd, ctx);
             }
