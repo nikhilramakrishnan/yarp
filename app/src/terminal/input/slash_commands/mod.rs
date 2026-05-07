@@ -494,8 +494,19 @@ impl Input {
                        tony) av='📻' ;; \
                      esac; \
                      if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"$sender\"; fi; \
+                     target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
+                     tav=''; \
+                     case \"$target_lc\" in \
+                       nicholas|angel) tav='🎯' ;; \
+                       frank|butterman.snr) tav='🦔' ;; \
+                       danny|butterman) tav='🍦' ;; \
+                       andy|wainwright|cartwright) tav='🤡' ;; \
+                       doris|thatcher) tav='🚓' ;; \
+                       tony) tav='📻' ;; \
+                     esac; \
+                     if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"@$target\"; fi; \
                      if [ -n \"$target\" ]; then \
-                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → @%s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" \"$target\" {body}; \
+                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → %s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" \"$target_disp\" {body}; \
                      else \
                        printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" {body}; \
                      fi; \
