@@ -884,9 +884,9 @@ impl Input {
                        fi; \
                      fi; \
                      if [ \"$n\" -gt 0 ]; then \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[38;5;178m%d transmission(s) cleared\\033[0m\\n' 'radio' \"$n\"; \
                      else \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
                      fi; \
                      case \"$prev_lc\" in \
                        nicholas|angel) signoff={q_angel} ;; \
