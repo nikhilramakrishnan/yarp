@@ -1436,7 +1436,7 @@ impl NotebookView {
         // Add "Copy Link" to menu
         if let Some(link) = self.notebook_link(ctx) {
             menu_items.push(
-                MenuItemFields::new("Copy link")
+                MenuItemFields::new("Copy frequency")
                     .with_on_select_action(NotebookAction::CopyLink(link))
                     .with_icon(icons::Icon::Link)
                     .into_item(),
@@ -2333,7 +2333,7 @@ impl TypedActionView for NotebookView {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::success("Link copied to clipboard".to_string()),
+                        DismissibleToast::success("Frequency copied to clipboard.".to_string()),
                         window_id,
                         ctx,
                     );

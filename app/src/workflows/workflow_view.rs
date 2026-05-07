@@ -3201,7 +3201,7 @@ impl BackingView for WorkflowView {
         // Add "Copy Link" to menu
         if let Some(link) = self.workflow_link(ctx) {
             menu_items.push(
-                MenuItemFields::new("Copy link")
+                MenuItemFields::new("Copy frequency")
                     .with_on_select_action(WorkflowAction::CopyLink(link))
                     .with_icon(Icon::Link)
                     .into_item(),

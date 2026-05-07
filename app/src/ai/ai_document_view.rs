@@ -1064,7 +1064,7 @@ impl TypedActionView for AIDocumentView {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::success("Link copied to clipboard".to_string()),
+                        DismissibleToast::success("Frequency copied to clipboard.".to_string()),
                         window_id,
                         ctx,
                     );
@@ -1227,7 +1227,7 @@ impl BackingView for AIDocumentView {
             AIDocumentModel::as_ref(ctx).get_document_yarp_drive_object_link(&self.document_id, ctx)
         {
             menu_items.push(
-                MenuItemFields::new("Copy link")
+                MenuItemFields::new("Copy frequency")
                     .with_on_select_action(AIDocumentAction::CopyLink(link))
                     .with_icon(Icon::Link)
                     .into_item(),

@@ -649,7 +649,7 @@ impl BackingView for TerminalView {
         if shared_session_status.is_sharer_or_viewer() {
             if !is_ambient_agent {
                 items.push(
-                    MenuItemFields::new("Copy link")
+                    MenuItemFields::new("Copy radio frequency")
                         .with_on_select_action(TerminalAction::CopySharedSessionLink { source })
                         .into_item(),
                 );

@@ -4448,7 +4448,7 @@ impl DriveIndex {
                 if let Some(object) = object {
                     if let Some(object_link) = object.object_link() {
                         menu_items.push(
-                            MenuItemFields::new("Copy link")
+                            MenuItemFields::new("Copy frequency")
                                 .with_on_select_action(DriveIndexAction::CopyObjectLinkToClipboard(
                                     object_link,
                                 ))
@@ -4676,7 +4676,7 @@ impl DriveIndex {
                     )) => {
                         if let Some(object_link) = object.object_link() {
                             menu_items.push(
-                                MenuItemFields::new("Copy link")
+                                MenuItemFields::new("Copy frequency")
                                     .with_on_select_action(
                                         DriveIndexAction::CopyObjectLinkToClipboard(object_link),
                                     )
