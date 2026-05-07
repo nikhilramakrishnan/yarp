@@ -855,7 +855,7 @@ impl Input {
                        qfiles=(/tmp/yarp-radio/*.msg); \
                        qn=${#qfiles[@]}; \
                        duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
-                       tier_icon='⏱'; \
+                       tier_icon='⏱'; tier_color=220; \
                        if [ -f \"$duty_marker\" ]; then \
                          start=$(cat \"$duty_marker\" 2>/dev/null); \
                          if [ -n \"$start\" ] && [ \"$start\" -gt 0 ] 2>/dev/null; then \
@@ -863,10 +863,10 @@ impl Input {
                            elapsed=$((now - start)); \
                            hh=$((elapsed / 3600)); mm=$(((elapsed % 3600) / 60)); \
                            when=$(date -r \"$start\" '+%H:%M' 2>/dev/null || echo '—'); \
-                           if [ $hh -ge 8 ]; then tier_icon='🌙'; \
-                           elif [ $hh -ge 4 ]; then tier_icon='🔴'; \
-                           elif [ $hh -ge 1 ]; then tier_icon='🟡'; \
-                           else tier_icon='🟢'; \
+                           if [ $hh -ge 8 ]; then tier_icon='🌙'; tier_color=165; \
+                           elif [ $hh -ge 4 ]; then tier_icon='🔴'; tier_color=196; \
+                           elif [ $hh -ge 1 ]; then tier_icon='🟡'; tier_color=220; \
+                           else tier_icon='🟢'; tier_color=82; \
                            fi; \
                            if [ $hh -gt 0 ]; then \
                              since_row=$(printf '%s \\033[2;38;5;240m(%dh %02dm)\\033[0m' \"$when\" $hh $mm); \
@@ -879,7 +879,7 @@ impl Input {
                        fi; \
                        printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;%dm%s\\033[0m\\n' 'unit' \"$color\" \"$unit_disp\"; \
                        if [ -n \"$since_row\" ]; then \
-                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$tier_icon\" \"$since_row\"; \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;%dm%b\\033[0m\\n' 'since' \"$tier_icon\" \"$tier_color\" \"$since_row\"; \
                        fi; \
                        if [ \"$qn\" -gt 0 ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[3;38;5;244mpending — /inbox to read\\033[0m\\n' 'queue' \"$qn\"; \
