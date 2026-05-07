@@ -1200,7 +1200,7 @@ impl Input {
                          18|19|20|21) radio_msg='down the Crown for one' ;; \
                          *) radio_msg='all quiet on the air' ;; \
                        esac; \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[2;3;38;5;220m%s\\033[0m\\n' 'radio' \"$radio_msg\"; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[2;3;38;5;220m%s\\033[0m\\n' 'radio' \"$radio_msg\"; \
                      fi; \
                      case {quote_av} in \
                        '🎯') q_color=39 ;; \
