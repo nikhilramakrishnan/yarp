@@ -1165,12 +1165,14 @@ impl Input {
                      direct=0; broadcast=0; for_others=0; others_buf=\"\"; \
                      call_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
                      full=\"${{user}}@${{host}}\"; \
+                     user_lc=$(printf '%s' \"$user\" | tr '[:upper:]' '[:lower:]'); \
+                     full_lc=$(printf '%s' \"$full\" | tr '[:upper:]' '[:lower:]'); \
                      if [ \"$n\" -gt 0 ]; then \
                        for f in \"${{queue[@]}}\"; do \
                          fr=$(awk '/^from: /{{sub(/^from: /,\"\"); print; exit}}' \"$f\" 2>/dev/null); \
                          fr_simple=$(printf '%s' \"$fr\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
                          if [ -n \"$fr_simple\" ]; then \
-                           if {{ [ -n \"$call_lc\" ] && [ \"$fr_simple\" = \"$call_lc\" ]; }} || [ \"$fr\" = \"$user\" ] || [ \"$fr\" = \"$full\" ]; then \
+                           if {{ [ -n \"$call_lc\" ] && [ \"$fr_simple\" = \"$call_lc\" ]; }} || [ \"$fr_simple\" = \"$user_lc\" ]; then \
                              n=$((n-1)); continue; \
                            fi; \
                          fi; \
@@ -1179,7 +1181,7 @@ impl Input {
                            broadcast=$((broadcast+1)); continue; \
                          fi; \
                          t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
-                         if [ \"$t\" = \"$user\" ] || [ \"$t\" = \"$full\" ] || {{ [ -n \"$call_lc\" ] && [ \"$t_lc\" = \"$call_lc\" ]; }}; then \
+                         if [ \"$t_lc\" = \"$user_lc\" ] || [ \"$t_lc\" = \"$full_lc\" ] || {{ [ -n \"$call_lc\" ] && [ \"$t_lc\" = \"$call_lc\" ]; }}; then \
                            direct=$((direct+1)); \
                          else \
                            for_others=$((for_others+1)); \
@@ -1239,6 +1241,8 @@ impl Input {
                         files=(/tmp/yarp-radio/*.msg); \
                         me_user=\"${USER:-unknown}\"; \
                         me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                        me_user_lc=$(printf '%s' \"$me_user\" | tr '[:upper:]' '[:lower:]'); \
+                        me_full_lc=$(printf '%s' \"$me_full\" | tr '[:upper:]' '[:lower:]'); \
                         me_call=\"${YARP_CALLSIGN:-}\"; \
                         me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
                         removed=0; \
@@ -1248,7 +1252,7 @@ impl Input {
                             rm -f \"$f\" && removed=$((removed+1)); \
                           else \
                             t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
-                            if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                            if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
                               rm -f \"$f\" && removed=$((removed+1)); \
                             fi; \
                           fi; \
@@ -1271,6 +1275,8 @@ impl Input {
                     files=(/tmp/yarp-radio/*.msg); \
                     me_user=\"${USER:-unknown}\"; \
                     me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                    me_user_lc=$(printf '%s' \"$me_user\" | tr '[:upper:]' '[:lower:]'); \
+                    me_full_lc=$(printf '%s' \"$me_full\" | tr '[:upper:]' '[:lower:]'); \
                     me_call=\"${YARP_CALLSIGN:-}\"; \
                     me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
                     me_av=''; \
@@ -1290,7 +1296,7 @@ impl Input {
                       fr=$(awk '/^from: /{sub(/^from: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
                       fr_simple=$(printf '%s' \"$fr\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
                       if [ -n \"$fr_simple\" ]; then \
-                        if { [ -n \"$me_call_lc\" ] && [ \"$fr_simple\" = \"$me_call_lc\" ]; } || [ \"$fr\" = \"$me_user\" ] || [ \"$fr\" = \"$me_full\" ]; then \
+                        if { [ -n \"$me_call_lc\" ] && [ \"$fr_simple\" = \"$me_call_lc\" ]; } || [ \"$fr_simple\" = \"$me_user_lc\" ]; then \
                           continue; \
                         fi; \
                       fi; \
@@ -1318,7 +1324,7 @@ impl Input {
                           broadcast_q+=(\"$f\"); \
                         else \
                           t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//'); \
-                          if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                          if [ \"$t_lc\" = \"$me_user_lc\" ] || [ \"$t_lc\" = \"$me_full_lc\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
                             direct_q+=(\"$f\"); \
                           else \
                             relay_q+=(\"$f\"); \
