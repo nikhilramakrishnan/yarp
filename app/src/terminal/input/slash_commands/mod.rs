@@ -656,6 +656,8 @@ impl Input {
                        frank|butterman.snr) quote={q_frank}; cs_avatar='🦔' ;; \
                        danny|butterman) quote={q_danny}; cs_avatar='🍦' ;; \
                        andy|wainwright|cartwright) quote={q_andy}; cs_avatar='🤡' ;; \
+                       doris|thatcher) quote={q_random}; cs_avatar='🚓' ;; \
+                       tony) quote={q_random}; cs_avatar='📻' ;; \
                        *) quote={q_random}; cs_avatar='' ;; \
                      esac; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ] && [ -n \"$cs_avatar\" ]; then filed_by=\"filed by $cs_avatar @${{YARP_CALLSIGN}} — \"; \
