@@ -695,7 +695,8 @@ impl Input {
                        *) quote={q_random}; cs_avatar=''; quote_av={q_random_av} ;; \
                      esac; \
                      if [ -n \"$quote_av\" ]; then quote_prefix=\"$quote_av  \"; else quote_prefix=''; fi; \
-                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n  📂 \\033[38;5;178mtab → \"%s\"\\033[0m\\n' {name} {tab}; \
+                     printf '\\033[1;38;5;220m📁 CASE OPENED\\033[0m \\033[1;38;5;179m%s\\033[0m\\n' {name}; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📂 \\033[1;38;5;220m\"%s\"\\033[0m\\n' 'tab' {tab}; \
                      if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
                        if [ -n \"$cs_avatar\" ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m@%s\\033[0m\\n' 'filed by' \"$cs_avatar\" \"${{YARP_CALLSIGN}}\"; \
@@ -703,7 +704,9 @@ impl Input {
                          printf '  \\033[2;38;5;244m%-10s\\033[0m ✍️  \\033[1;38;5;220m@%s\\033[0m\\n' 'filed by' \"${{YARP_CALLSIGN}}\"; \
                        fi; \
                      fi; \
-                     printf '  📣 \\033[3;38;5;244mall units notified\\033[0m\\n  📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244min queue\\033[0m\\n  %s\\033[3;38;5;240m“%s”\\033[0m\\n' \"$n\" \"$quote_prefix\" \"$quote\"",
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📣 \\033[3;38;5;244mall units\\033[0m\\n' 'notified'; \
+                     printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mpending\\033[0m\\n' 'queue' \"$n\"; \
+                     printf '\\n  %s\\033[3;38;5;240m“%s”\\033[0m\\n' \"$quote_prefix\" \"$quote\"",
                     name = crate::personas::shell_quote_one(name),
                     tab = crate::personas::shell_quote_one(&tab_name),
                     q_random = crate::personas::shell_quote_one(q_random),
