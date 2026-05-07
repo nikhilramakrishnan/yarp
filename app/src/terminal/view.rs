@@ -20379,20 +20379,21 @@ impl TerminalView {
                                else\n\
                                  dur=$(printf '%dm%02ds' $((chain_total/60)) $((chain_total%60)))\n\
                                fi\n\
+                               stamp_text=' CASE CLOSED '\n\
                                if [ \"$total\" -gt 0 ]; then\n\
-                               close_label=\" $dur · $reported/$total \"\n\
-                             else\n\
-                               close_label=\" $dur \"\n\
-                             fi\n\
-                               label_w=${{#close_label}}\n\
+                                 meta_text=\"· $dur · $reported/$total \"\n\
+                               else\n\
+                                 meta_text=\"· $dur \"\n\
+                               fi\n\
+                               label_w=$(( ${{#stamp_text}} + ${{#meta_text}} ))\n\
                                if [ $cols -ge $(( label_w + 6 )) ]; then\n\
                                  half_cl=$(( (cols - label_w) / 2 ))\n\
                                  half_cr=$(( cols - label_w - half_cl ))\n\
                                  close_l=$(printf '─%.0s' $(seq 1 $half_cl))\n\
                                  close_r=$(printf '─%.0s' $(seq 1 $half_cr))\n\
-                                 printf '\\033[38;5;240m%s\\033[3;38;5;244m%s\\033[23;38;5;240m%s\\033[0m\\n' \"$close_l\" \"$close_label\" \"$close_r\"\n\
+                                 printf '\\033[38;5;240m%s\\033[1;38;5;220m%s\\033[22;3;38;5;244m%s\\033[23;38;5;240m%s\\033[0m\\n' \"$close_l\" \"$stamp_text\" \"$meta_text\" \"$close_r\"\n\
                                else\n\
-                                 printf '\\033[3;38;5;244m%s\\033[0m\\n' \"$dur\"\n\
+                                 printf '\\033[1;38;5;220mCASE CLOSED\\033[22;3;38;5;244m %s\\033[0m\\n' \"$dur\"\n\
                                fi\n\
                              else\n\
                                close=$(printf '─%.0s' $(seq 1 $cols))\n\
