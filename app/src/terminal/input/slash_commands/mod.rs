@@ -691,6 +691,7 @@ impl Input {
                             *)      break;; \
                           esac; \
                         done < \"$f\"; \
+                        consume=1; \
                         if [ -n \"$target\" ]; then \
                           if [ \"$target\" = \"$me_user\" ] || [ \"$target\" = \"$me_full\" ]; then \
                             badge='\\033[1;38;5;35m▸ DIRECT\\033[0m '; \
@@ -700,6 +701,7 @@ impl Input {
                             badge='\\033[2;38;5;240m▸ relay  \\033[0m '; \
                             sender_color='\\033[2;38;5;240m'; \
                             body_color='\\033[2;38;5;240m'; \
+                            consume=0; \
                           fi; \
                           tag=\" → @${target}\"; \
                         else \
@@ -710,7 +712,7 @@ impl Input {
                         fi; \
                         printf '  %b\\033[2;38;5;244m[%s pid=%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$badge\" \"$human\" \"$pid\" \"$sender_color\" \"$sender\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
-                        rm -f \"$f\"; \
+                        if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
                       done; \
                     fi";
