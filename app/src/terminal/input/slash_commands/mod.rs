@@ -757,6 +757,35 @@ impl Input {
                 self.try_execute_command(&cmd, ctx);
             }
             inbox if command.name == commands::INBOX.name => {
+                let sub = argument.map(|a| a.trim()).unwrap_or("");
+                if sub.eq_ignore_ascii_case("clear") {
+                    let clear_cmd = "shopt -s nullglob; \
+                        mkdir -p /tmp/yarp-radio; \
+                        files=(/tmp/yarp-radio/*.msg); \
+                        me_user=\"${USER:-unknown}\"; \
+                        me_full=\"${me_user}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                        me_call=\"${YARP_CALLSIGN:-}\"; \
+                        me_call_lc=$(printf '%s' \"$me_call\" | tr '[:upper:]' '[:lower:]'); \
+                        removed=0; \
+                        for f in \"${files[@]}\"; do \
+                          t=$(awk '/^to: /{sub(/^to: /,\"\"); print; exit}' \"$f\" 2>/dev/null); \
+                          if [ -z \"$t\" ]; then \
+                            rm -f \"$f\" && removed=$((removed+1)); \
+                          else \
+                            t_lc=$(printf '%s' \"$t\" | tr '[:upper:]' '[:lower:]'); \
+                            if [ \"$t\" = \"$me_user\" ] || [ \"$t\" = \"$me_full\" ] || { [ -n \"$me_call_lc\" ] && [ \"$t_lc\" = \"$me_call_lc\" ]; }; then \
+                              rm -f \"$f\" && removed=$((removed+1)); \
+                            fi; \
+                          fi; \
+                        done; \
+                        if [ \"$removed\" -eq 0 ]; then \
+                          printf '\\033[3;38;5;244m📻 INBOX  nothing to clear\\033[0m\\n'; \
+                        else \
+                          printf '\\033[1;38;5;220m📻 INBOX\\033[0m \\033[38;5;179mqueue cleared\\033[0m \\033[2;38;5;240m· %d transmission(s) discarded\\033[0m\\n' \"$removed\"; \
+                        fi";
+                    self.try_execute_command(clear_cmd, ctx);
+                    return true;
+                }
                 let cmd = "shopt -s nullglob; \
                     mkdir -p /tmp/yarp-radio; \
                     pruned=$(find /tmp/yarp-radio -maxdepth 1 -name '*.msg' -mmin +60 -print -delete 2>/dev/null | wc -l | tr -d ' '); \
