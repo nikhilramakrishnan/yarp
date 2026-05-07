@@ -775,7 +775,7 @@ impl Input {
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mnone active\\033[0m\\n' 'callsign'; \
                          fi; \
                          if [ -n \"$shift_str\" ]; then \
-                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[3;38;5;244mon the beat\\033[0m\\n' 'shift' \"$shift_str\"; \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m \\033[2;3;38;5;%dmon the beat\\033[0m\\n' 'shift' \"$shift_str\" \"$prev_color\"; \
                          fi; \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%s\\033[0m\\n' 'ended' \"$ended_at\"".to_owned()
                     } else {
