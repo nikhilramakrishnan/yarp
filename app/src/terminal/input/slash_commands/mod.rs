@@ -608,10 +608,8 @@ impl Input {
                 const CASE_QUOTES: &[(&str, &str)] = &[
                     ("angel", "Murder, murder, murder. — Angel"),
                     ("angel", "I dare say there's a perfectly innocent explanation. — Angel"),
-                    ("angel", "Have a look at the evidence. — Angel"),
                     ("frank", "It's all there in black and white. — Frank"),
                     ("frank", "Forget it, Nicholas, it's Sandford. — Frank"),
-                    ("frank", "He's not a slasher. — Frank"),
                     ("danny", "By the power of Greyskull. — Danny"),
                     ("danny", "Skip to the end. — Danny"),
                     ("andy", "Crusty Jugglers. — Andy"),
