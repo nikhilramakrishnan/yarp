@@ -20372,7 +20372,11 @@ impl TerminalView {
                                else\n\
                                  dur=$(printf '%dm%02ds' $((chain_total/60)) $((chain_total%60)))\n\
                                fi\n\
+                               if [ \"$total\" -gt 0 ]; then\n\
+                               close_label=\" $dur · $reported/$total \"\n\
+                             else\n\
                                close_label=\" $dur \"\n\
+                             fi\n\
                                label_w=${{#close_label}}\n\
                                if [ $cols -ge $(( label_w + 6 )) ]; then\n\
                                  half_cl=$(( (cols - label_w) / 2 ))\n\
