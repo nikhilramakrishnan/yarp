@@ -506,7 +506,7 @@ impl Input {
                      if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"📛 $sender\"; fi; \
                      target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
                      tav=''; \
-                     tcolor=220; \
+                     tcolor=244; \
                      case \"$target_lc\" in \
                        nicholas|angel) tav='🎯'; tcolor=39 ;; \
                        frank|butterman.snr) tav='🦔'; tcolor=220 ;; \
@@ -1140,7 +1140,19 @@ impl Input {
                      callsign=\"${{YARP_CALLSIGN:-}}\"; \
                      if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
                      queue=(/tmp/yarp-radio/*.msg); \
-                     printf '\\033[1;38;5;220m🚓 SITREP\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mstation\\033[0m\\n\\n' {team}; \
+                     title_av='🚓'; \
+                     if [ -n \"$callsign\" ]; then \
+                       title_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
+                       case \"$title_lc\" in \
+                         nicholas|angel) title_av='🎯' ;; \
+                         frank|butterman.snr) title_av='🦔' ;; \
+                         danny|butterman) title_av='🍦' ;; \
+                         andy|wainwright|cartwright) title_av='🤡' ;; \
+                         doris|thatcher) title_av='🚓' ;; \
+                         tony) title_av='📻' ;; \
+                       esac; \
+                     fi; \
+                     printf '\\033[1;38;5;220m%s SITREP\\033[0m \\033[1;38;5;179m%s\\033[0m \\033[2;3;38;5;179mstation\\033[0m\\n\\n' \"$title_av\" {team}; \
                      printf '  \\033[2;38;5;244m%-10s\\033[0m 👮 \\033[1;38;5;220m%s\\033[0m\\033[2;38;5;244m@\\033[0m\\033[1;38;5;220m%s\\033[0m\\n' 'officer' \"$user\" \"$host\"; \
                      if [ -n \"$callsign\" ]; then \
                        cs_lc=$(printf '%s' \"$callsign\" | tr '[:upper:]' '[:lower:]'); \
