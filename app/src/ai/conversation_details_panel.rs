@@ -383,7 +383,7 @@ impl ConversationDetailsData {
                 environment_id: None,
                 conversation_id: None,
             },
-            title: "Cloud agent run".to_string(),
+            title: "Ambient officer on duty".to_string(),
             creator: None,
             created_at: None,
             credits: None,

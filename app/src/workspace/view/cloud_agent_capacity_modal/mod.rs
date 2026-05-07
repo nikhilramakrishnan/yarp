@@ -127,12 +127,12 @@ impl CloudAgentCapacityModal {
         let neutral_bg = blended_colors::neutral_1(theme);
         let (title_text, mut explanation_text) = match self.variant {
             CloudAgentCapacityModalVariant::ConcurrentLimit => (
-                "Concurrent cloud agent limit reached",
-                "This cloud run is queued because your team has reached the maximum number of concurrent cloud agents. It will start automatically when another cloud run finishes.".to_string(),
+                "All ambient officers on duty",
+                "This call's queued — the station's at full ambient-officer roster. It'll go out as soon as another call wraps.".to_string(),
             ),
             CloudAgentCapacityModalVariant::OutOfCredits => (
-                "You're out of AI credits",
-                "This cloud run stopped because your team has used all available AI credits for the current billing period.".to_string(),
+                "Out of AI credits",
+                "This call's been called off — the station's burned through its AI credits for the period.".to_string(),
             ),
         };
 

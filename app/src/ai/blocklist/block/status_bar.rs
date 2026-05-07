@@ -954,7 +954,7 @@ impl BlocklistAIStatusBar {
                     color: Some(color),
                 },
                 MessageItem::Text {
-                    content: "Cloud agent run cancelled".into(),
+                    content: "Ambient officer stood down".into(),
                     color: Some(color),
                 },
             ]));

@@ -688,7 +688,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             NEW_AGENT_TAB_BINDING_NAME,
-            BindingDescription::new("New Agent Tab"),
+            BindingDescription::new("New PC Tab"),
             WorkspaceAction::AddAgentTab,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -698,7 +698,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             NEW_AMBIENT_AGENT_TAB_BINDING_NAME,
-            BindingDescription::new("New Cloud Agent Tab"),
+            BindingDescription::new("New Ambient Officer Tab"),
             WorkspaceAction::AddAmbientAgentTab,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -1300,7 +1300,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "workspace:jump_to_latest_toast",
-        "Jump to latest agent task",
+        "Jump to latest PC dispatch",
         WorkspaceAction::JumpToLatestToast,
     )
     .with_enabled(|| FeatureFlag::AgentMode.is_enabled())
@@ -1325,7 +1325,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "workspace:toggle_agent_management_view",
-        "Toggle the agent management view",
+        "Toggle the duty roster view",
         WorkspaceAction::ToggleAgentManagementView,
     )
     .with_enabled(|| FeatureFlag::AgentManagementView.is_enabled())

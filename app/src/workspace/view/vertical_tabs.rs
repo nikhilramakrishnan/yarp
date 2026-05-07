@@ -4295,13 +4295,13 @@ fn subtitle_options_for_primary(
             (VerticalTabsCompactSubtitle::Branch, "Branch"),
             (
                 VerticalTabsCompactSubtitle::Command,
-                "Command / Conversation",
+                "Command / Case file",
             ),
         ],
         VerticalTabsPrimaryInfo::Branch => [
             (
                 VerticalTabsCompactSubtitle::Command,
-                "Command / Conversation",
+                "Command / Case file",
             ),
             (
                 VerticalTabsCompactSubtitle::WorkingDirectory,
@@ -4534,7 +4534,7 @@ pub(super) fn render_settings_popup(
     .finish();
 
     let command_option = render_primary_info_option(
-        "Command / Conversation",
+        "Command / Case file",
         matches!(current_primary_info, VerticalTabsPrimaryInfo::Command),
         state.command_option_mouse_state.clone(),
         VerticalTabsPrimaryInfo::Command,

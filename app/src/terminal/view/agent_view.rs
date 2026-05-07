@@ -64,7 +64,7 @@ impl TerminalView {
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 toast_stack.add_ephemeral_toast(
                     DismissibleToast::error(
-                        "Cannot start a new conversation while agent is monitoring a command."
+                        "Can't open a new case file — agent's still on a command."
                             .to_string(),
                     ),
                     window_id,

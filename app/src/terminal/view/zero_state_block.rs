@@ -190,7 +190,7 @@ impl View for TerminalViewZeroStateBlock {
                 Message::new(vec![MessageItem::clickable(
                     vec![
                         MessageItem::keystroke(ENTER_AGENT_VIEW_NEW_CONVERSATION_KEYSTROKE.clone()),
-                        MessageItem::text("start a new agent conversation"),
+                        MessageItem::text("open a new case file"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::StartNewAgentConversation);
@@ -205,7 +205,7 @@ impl View for TerminalViewZeroStateBlock {
                         MessageItem::keystroke(
                             ENTER_CLOUD_AGENT_VIEW_NEW_CONVERSATION_KEYSTROKE.clone(),
                         ),
-                        MessageItem::text("start a new cloud agent conversation"),
+                        MessageItem::text("open a new ambient officer case file"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::EnterCloudAgentView);
@@ -221,7 +221,7 @@ impl View for TerminalViewZeroStateBlock {
                             key: "up".to_owned(),
                             ..Default::default()
                         }),
-                        MessageItem::text("cycle past commands and conversations"),
+                        MessageItem::text("flip back through commands and case files"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::OpenInlineHistoryMenu);
