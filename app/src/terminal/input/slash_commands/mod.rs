@@ -811,6 +811,7 @@ impl Input {
                     ("frank", "Forget it, Nicholas, it's Sandford. — Frank"),
                     ("frank", "Right then, paperwork. — Frank"),
                     ("andy", "Crusty Jugglers. — Andy"),
+                    ("andy", "Cool. — Andy"),
                     ("doris", "Off home, then. — Doris"),
                     ("tony", "Yarp. — Tony"),
                     ("any", "Yarp. — Michael"),
