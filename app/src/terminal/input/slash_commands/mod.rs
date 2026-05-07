@@ -537,6 +537,113 @@ impl Input {
                 );
                 self.try_execute_command(&cmd, ctx);
             }
+            respond if command.name == commands::RESPOND.name => {
+                let Some(message) = argument
+                    .map(|a| a.trim())
+                    .filter(|a| !a.is_empty())
+                else {
+                    show_error_toast(
+                        "Please provide a reply body: /respond <message>".to_owned(),
+                        ctx,
+                    );
+                    return true;
+                };
+                let cmd = format!(
+                    "mkdir -p /tmp/yarp-radio; \
+                     if [ -n \"$ZSH_VERSION\" ]; then setopt KSH_ARRAYS NULL_GLOB 2>/dev/null; else shopt -s nullglob 2>/dev/null; fi; \
+                     my_cs=\"\"; \
+                     if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
+                       my_cs=$(printf '%s' \"${{YARP_CALLSIGN}}\" | tr '[:upper:]' '[:lower:]'); \
+                     elif [ -f \"/tmp/yarp-radio/.callsign-${{USER:-unknown}}\" ]; then \
+                       my_cs=$(cat \"/tmp/yarp-radio/.callsign-${{USER:-unknown}}\" 2>/dev/null | tr '[:upper:]' '[:lower:]'); \
+                     fi; \
+                     case \"$my_cs\" in \
+                       nicholas) my_cs=angel ;; \
+                       butterman) my_cs=danny ;; \
+                       thatcher) my_cs=doris ;; \
+                       butterman.snr) my_cs=frank ;; \
+                       wainwright|cartwright) my_cs=andy ;; \
+                     esac; \
+                     chosen=\"\"; target=\"\"; \
+                     for f in $(ls -t /tmp/yarp-radio/*.msg 2>/dev/null); do \
+                       to_line=$(awk '/^[Tt][Oo]:/ {{ sub(/^[Tt][Oo]: */, \"\"); print; exit }} /^$/ {{ exit }}' \"$f\" 2>/dev/null | tr -d '\\r' | tr '[:upper:]' '[:lower:]'); \
+                       case \"$to_line\" in \
+                         nicholas) to_line=angel ;; \
+                         butterman) to_line=danny ;; \
+                         thatcher) to_line=doris ;; \
+                         butterman.snr) to_line=frank ;; \
+                         wainwright|cartwright) to_line=andy ;; \
+                       esac; \
+                       if [ -n \"$my_cs\" ]; then \
+                         [ \"$to_line\" = \"$my_cs\" ] || continue; \
+                       fi; \
+                       from_line=$(awk '/^[Ff][Rr][Oo][Mm]:/ {{ sub(/^[Ff][Rr][Oo][Mm]: */, \"\"); print; exit }} /^$/ {{ exit }}' \"$f\" 2>/dev/null | tr -d '\\r'); \
+                       chosen=\"$f\"; target=\"$from_line\"; break; \
+                     done; \
+                     if [ -z \"$chosen\" ]; then \
+                       if [ -n \"$my_cs\" ]; then \
+                         printf '\\033[2;3;38;5;244m📻 nothing addressed to @%s — inbox quiet\\033[0m\\n' \"$my_cs\"; \
+                       else \
+                         printf '\\033[2;3;38;5;244m📻 nothing to respond to — inbox empty\\033[0m\\n'; \
+                       fi; \
+                       exit 0; \
+                     fi; \
+                     target=$(printf '%s' \"$target\" | sed 's/^@//' | sed 's/@.*$//' | tr '[:upper:]' '[:lower:]'); \
+                     if [ -z \"$target\" ]; then \
+                       printf '\\033[2;3;38;5;244m📻 sender of last message could not be parsed\\033[0m\\n'; \
+                       exit 0; \
+                     fi; \
+                     ts=$(date +%s%N 2>/dev/null | cut -c1-13); \
+                     [ -z \"$ts\" ] && ts=$(date +%s)000; \
+                     file=/tmp/yarp-radio/${{ts}}-$$-${{RANDOM}}${{RANDOM}}.msg; \
+                     if [ -n \"${{YARP_CALLSIGN:-}}\" ]; then \
+                       sender=\"@${{YARP_CALLSIGN}}\"; \
+                     else \
+                       sender=\"${{USER:-unknown}}@$(hostname -s 2>/dev/null || echo localhost)\"; \
+                     fi; \
+                     {{ \
+                       printf 'from: %s\\n' \"$sender\"; \
+                       printf 'to: %s\\n' \"$target\"; \
+                       printf '\\n'; \
+                       printf '%s' {body}; \
+                     }} > \"$file\"; \
+                     sender_lc=$(printf '%s' \"$sender\" | tr '[:upper:]' '[:lower:]' | sed 's/^@//' | sed 's/@.*$//'); \
+                     av=''; \
+                     case \"$sender_lc\" in \
+                       nicholas|angel) av='🎯' ;; \
+                       frank|butterman.snr) av='🦔' ;; \
+                       danny|butterman) av='🍦' ;; \
+                       andy|wainwright|cartwright) av='🤡' ;; \
+                       doris|thatcher) av='🚓' ;; \
+                       tony) av='📻' ;; \
+                     esac; \
+                     if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"📛 $sender\"; fi; \
+                     tav=''; tcolor=244; \
+                     case \"$target\" in \
+                       nicholas|angel) tav='🎯'; tcolor=39 ;; \
+                       frank|butterman.snr) tav='🦔'; tcolor=220 ;; \
+                       danny|butterman) tav='🍦'; tcolor=213 ;; \
+                       andy|wainwright|cartwright) tav='🤡'; tcolor=208 ;; \
+                       doris|thatcher) tav='🚓'; tcolor=165 ;; \
+                       tony) tav='📻'; tcolor=226 ;; \
+                     esac; \
+                     if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"📛 @$target\"; fi; \
+                     printf '\\033[1;38;5;220m📻 RESPOND\\033[0m \\033[2;3;38;5;%dm%s → %s\\033[0m\\n  \\033[38;5;178m“%s”\\033[0m\\n' \"$tcolor\" \"$sender_disp\" \"$target_disp\" {body}; \
+                     cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
+                     case \"$cs_lc\" in \
+                       nicholas|angel) signoff='Have a nice evening.' ;; \
+                       danny|butterman) signoff='Yarp.' ;; \
+                       doris|thatcher) signoff='Out.' ;; \
+                       frank|butterman.snr) signoff='The greater good.' ;; \
+                       andy|wainwright|cartwright) signoff='Crusty Jugglers.' ;; \
+                       tony) signoff='Yarp.' ;; \
+                       *) signoff='10-4.' ;; \
+                     esac; \
+                     printf '  \\033[3;38;5;240m“%s”\\033[0m\\n' \"$signoff\"",
+                    body = crate::personas::shell_quote_one(message),
+                );
+                self.try_execute_command(&cmd, ctx);
+            }
             roster if command.name == commands::ROSTER.name => {
                 let roster = crate::personas::Roster::load()
                     .unwrap_or_else(crate::personas::Roster::default_sandford);

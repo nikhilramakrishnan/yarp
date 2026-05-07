@@ -463,6 +463,19 @@ pub const INBOX: StaticCommand = StaticCommand {
     argument: None,
 };
 
+pub const RESPOND: StaticCommand = StaticCommand {
+    name: "/respond",
+    description: "Reply to the most recent inbound transmission",
+    icon_path: "bundled/svg/corner-down-left.svg",
+    availability: Availability::LOCAL,
+    auto_enter_ai_mode: false,
+    argument: Some(Argument {
+        hint_text: Some("<message>"),
+        is_optional: false,
+        should_execute_on_selection: false,
+    }),
+};
+
 pub const ROSTER: StaticCommand = StaticCommand {
     name: "/roster",
     description: "Show the precinct roster",
@@ -607,6 +620,7 @@ fn all_commands() -> Vec<StaticCommand> {
         MODEL.clone(),
         RADIO,
         INBOX,
+        RESPOND,
         ROSTER,
         SITREP,
         CASE,
