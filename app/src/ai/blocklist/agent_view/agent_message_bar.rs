@@ -500,7 +500,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
             items.push(MessageItem::clickable(
                 vec![
                     MessageItem::keystroke(resume_keystroke),
-                    MessageItem::text("to resume conversation"),
+                    MessageItem::text("to pick the case back up"),
                 ],
                 |ctx| {
                     ctx.dispatch_typed_action(TerminalAction::ResumeConversation);
@@ -584,7 +584,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
                 items.push(MessageItem::clickable(
                     vec![
                         MessageItem::keystroke(conversations_keystroke),
-                        MessageItem::text("open conversation"),
+                        MessageItem::text("open case file"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(InputAction::ToggleConversationsMenu);
@@ -631,11 +631,11 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
                         Keystroke::parse("cmdorctrl-alt-p").expect("keystroke should parse"),
                     ),
                     MessageItem::text(if is_plan_for_this_conversation_open {
-                        "to hide plan"
+                        "to hide briefing"
                     } else if plan_count > 1 {
-                        "to view plans"
+                        "to read the briefings"
                     } else {
-                        "to view plan"
+                        "to read the briefing"
                     }),
                 ],
                 |ctx| {
@@ -655,7 +655,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
             items.push(MessageItem::clickable(
                 vec![
                     MessageItem::keystroke(fork_keystroke),
-                    MessageItem::text("to fork and continue"),
+                    MessageItem::text("to fork the case"),
                 ],
                 |ctx| {
                     ctx.dispatch_typed_action(
@@ -822,12 +822,12 @@ impl MessageProvider<AgentMessageArgs<'_>> for AutodetectedBashModeMessageProduc
 
         let message = match keybinding_name_to_keystroke(SET_INPUT_MODE_AGENT_ACTION_NAME, app) {
             Some(keystroke) => Message::new(vec![
-                MessageItem::text("autodetected shell command, "),
+                MessageItem::text("command spotted on the wire, "),
                 MessageItem::keystroke(keystroke),
                 MessageItem::text(" to override"),
             ])
             .with_text_color(appearance.theme().ansi_fg_blue()),
-            None => Message::from_text("autodetected shell command"),
+            None => Message::from_text("command spotted on the wire"),
         };
 
         Some(message)
@@ -876,7 +876,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ExitBashModeMessageProducer {
                     color: keystroke_color_override,
                     background_color: keystroke_bg_color_override,
                 },
-                MessageItem::text("to exit shell mode"),
+                MessageItem::text("to stand down shell mode"),
             ])
             .with_text_color(text_color),
         )
