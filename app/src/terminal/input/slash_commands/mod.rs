@@ -496,19 +496,20 @@ impl Input {
                      if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"$sender\"; fi; \
                      target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
                      tav=''; \
+                     tcolor=220; \
                      case \"$target_lc\" in \
-                       nicholas|angel) tav='🎯' ;; \
-                       frank|butterman.snr) tav='🦔' ;; \
-                       danny|butterman) tav='🍦' ;; \
-                       andy|wainwright|cartwright) tav='🤡' ;; \
-                       doris|thatcher) tav='🚓' ;; \
-                       tony) tav='📻' ;; \
+                       nicholas|angel) tav='🎯'; tcolor=39 ;; \
+                       frank|butterman.snr) tav='🦔'; tcolor=220 ;; \
+                       danny|butterman) tav='🍦'; tcolor=213 ;; \
+                       andy|wainwright|cartwright) tav='🤡'; tcolor=208 ;; \
+                       doris|thatcher) tav='🚓'; tcolor=165 ;; \
+                       tony) tav='📻'; tcolor=226 ;; \
                      esac; \
                      if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"@$target\"; fi; \
                      if [ -n \"$target\" ]; then \
-                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[3;38;5;244m%s → %s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" \"$target_disp\" {body}; \
+                       printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[2;3;38;5;%dm%s → %s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$tcolor\" \"$sender_disp\" \"$target_disp\" {body}; \
                      else \
-                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[3;38;5;244m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" {body}; \
+                       printf '\\033[1;38;5;220m📻 RADIO\\033[0m \\033[2;3;38;5;179m%s → all units\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$sender_disp\" {body}; \
                      fi; \
                      cs_lc=$(printf '%s' \"${{YARP_CALLSIGN:-}}\" | tr '[:upper:]' '[:lower:]'); \
                      case \"$cs_lc\" in \
