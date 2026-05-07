@@ -1000,7 +1000,7 @@ impl Input {
                      if [ \"$n\" -gt 0 ]; then \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[1;38;5;220m%d transmission(s)\\033[0m \\033[2;3;38;5;%dmcleared\\033[0m\\n' 'radio' \"$n\" \"$prev_color\"; \
                      else \
-                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
+                       printf '  \\033[2;38;5;244m%-10s\\033[0m 📻 \\033[2;3;38;5;%dmqueue already empty\\033[0m\\n' 'radio' \"$prev_color\"; \
                      fi; \
                      case \"$prev_lc\" in \
                        nicholas|angel) signoff={q_angel} ;; \
