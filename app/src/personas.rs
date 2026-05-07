@@ -367,6 +367,24 @@ pub(crate) fn persona_spinner_color(name: &str) -> &'static str {
     }
 }
 
+/// In-character spinner phrase for each persona, replacing the generic
+/// "investigating…". Each Hot Fuzz constable's phrase mirrors their
+/// on-screen role (Danny is excitable about action, Doris reads the scene,
+/// Frank schemes); CLI fallbacks lean technical so the spinner row still
+/// reads as four distinct voices instead of four "investigating…"s.
+pub(crate) fn persona_spinner_phrase(name: &str) -> &'static str {
+    match name {
+        "claude" => "thinking it through…",
+        "codex" => "drafting code…",
+        "gemini" => "cross-referencing…",
+        "Nicholas Angel" => "by the book…",
+        "Danny Butterman" => "is it gunfights?…",
+        "Doris Thatcher" => "reading the scene…",
+        "Frank Butterman" => "for the greater good…",
+        _ => "investigating…",
+    }
+}
+
 /// Display-friendly persona name. CLI binaries are stored lowercase
 /// (`claude`, `codex`) because that's how they live on the user's PATH, but
 /// alongside title-cased badge labels like `PC (Anthropic)` the lowercase
