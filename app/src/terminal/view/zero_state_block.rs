@@ -166,7 +166,7 @@ impl View for TerminalViewZeroStateBlock {
             )
             .with_child(
                 Text::new(
-                    "New terminal session",
+                    "Sandford NWA · new shift",
                     appearance.ui_font_family(),
                     title_font_size,
                 )
