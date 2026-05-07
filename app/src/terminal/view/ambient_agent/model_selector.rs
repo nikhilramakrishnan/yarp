@@ -49,11 +49,11 @@ const SEARCH_VERTICAL_PADDING: f32 = 4.;
 // of total breathing room above the divider line.
 const SEARCH_FOOTER_TOP_MARGIN: f32 = 4.;
 
-const SEARCH_PLACEHOLDER_TEXT: &str = "Search models";
+const SEARCH_PLACEHOLDER_TEXT: &str = "Search the duty roster";
 
-const BUTTON_TOOLTIP: &str = "Choose PC model";
+const BUTTON_TOOLTIP: &str = "Pick the PC's model";
 
-const NO_RESULTS_LABEL: &str = "No results";
+const NO_RESULTS_LABEL: &str = "Nothing on the roster";
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ModelSelectorAction {

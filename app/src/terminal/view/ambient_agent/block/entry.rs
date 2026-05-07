@@ -122,8 +122,8 @@ impl AmbientAgentEntryBlock {
             Status::WaitingForSession { .. } => Some("Walking the beat..."),
             Status::AgentRunning => Some("PC working the case"),
             Status::Failed { .. } => Some("PC down"),
-            Status::NeedsGithubAuth { .. } => Some("Authentication required"),
-            Status::Cancelled { .. } => Some("Cancelled"),
+            Status::NeedsGithubAuth { .. } => Some("Sign on required"),
+            Status::Cancelled { .. } => Some("Called off"),
         }
     }
 
