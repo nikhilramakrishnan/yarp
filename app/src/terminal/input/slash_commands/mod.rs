@@ -735,22 +735,44 @@ impl Input {
                 self.try_execute_command(&cmd, ctx);
             }
             _clock_out if command.name == commands::CLOCK_OUT.name => {
-                const SIGN_OFFS: &[&str] = &[
-                    "Pub? — Danny",
-                    "By the power of Greyskull. — Danny",
-                    "Forget it, Nicholas, it's Sandford. — Frank",
-                    "Yarp. — Michael",
-                    "The greater good. — The NWA",
-                    "Have a nice evening. — Angel",
+                const SIGN_OFFS: &[(&str, &str)] = &[
+                    ("angel", "Have a nice evening. — Angel"),
+                    ("angel", "I'll be off home, then. — Angel"),
+                    ("danny", "Pub? — Danny"),
+                    ("danny", "By the power of Greyskull. — Danny"),
+                    ("frank", "Forget it, Nicholas, it's Sandford. — Frank"),
+                    ("frank", "Right then, paperwork. — Frank"),
+                    ("andy", "Crusty Jugglers. — Andy"),
+                    ("doris", "Off home, then. — Doris"),
+                    ("tony", "Yarp. — Tony"),
+                    ("any", "Yarp. — Michael"),
+                    ("any", "The greater good. — The NWA"),
                 ];
-                let quote = {
+                let nanos = {
                     use std::time::{SystemTime, UNIX_EPOCH};
-                    let nanos = SystemTime::now()
+                    SystemTime::now()
                         .duration_since(UNIX_EPOCH)
                         .map(|d| d.subsec_nanos() as usize)
-                        .unwrap_or(0);
-                    SIGN_OFFS[nanos % SIGN_OFFS.len()]
+                        .unwrap_or(0)
                 };
+                let pick_for = |key: &str| -> &'static str {
+                    let pool: Vec<&'static str> = SIGN_OFFS.iter()
+                        .filter(|(k, _)| *k == key)
+                        .map(|(_, q)| *q)
+                        .collect();
+                    if pool.is_empty() {
+                        SIGN_OFFS[nanos % SIGN_OFFS.len()].1
+                    } else {
+                        pool[nanos % pool.len()]
+                    }
+                };
+                let q_random = SIGN_OFFS[nanos % SIGN_OFFS.len()].1;
+                let q_angel = pick_for("angel");
+                let q_frank = pick_for("frank");
+                let q_danny = pick_for("danny");
+                let q_andy = pick_for("andy");
+                let q_doris = pick_for("doris");
+                let q_tony = pick_for("tony");
                 let cmd = format!(
                     "user=\"${{USER:-unknown}}\"; \
                      host=\"$(hostname -s 2>/dev/null || echo localhost)\"; \
@@ -788,8 +810,24 @@ impl Input {
                      else \
                        printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mqueue already empty\\033[0m\\n' 'radio'; \
                      fi; \
-                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' {quote}",
-                    quote = crate::personas::shell_quote_one(quote),
+                     prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
+                     case \"$prev_lc\" in \
+                       nicholas|angel) signoff={q_angel} ;; \
+                       frank|butterman.snr) signoff={q_frank} ;; \
+                       danny|butterman) signoff={q_danny} ;; \
+                       andy|wainwright|cartwright) signoff={q_andy} ;; \
+                       doris|thatcher) signoff={q_doris} ;; \
+                       tony) signoff={q_tony} ;; \
+                       *) signoff={q_random} ;; \
+                     esac; \
+                     printf '\\n  \\033[3;38;5;244m“%s”\\033[0m\\n' \"$signoff\"",
+                    q_random = crate::personas::shell_quote_one(q_random),
+                    q_angel = crate::personas::shell_quote_one(q_angel),
+                    q_frank = crate::personas::shell_quote_one(q_frank),
+                    q_danny = crate::personas::shell_quote_one(q_danny),
+                    q_andy = crate::personas::shell_quote_one(q_andy),
+                    q_doris = crate::personas::shell_quote_one(q_doris),
+                    q_tony = crate::personas::shell_quote_one(q_tony),
                 );
                 self.try_execute_command(&cmd, ctx);
             }
