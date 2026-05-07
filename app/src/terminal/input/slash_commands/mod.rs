@@ -757,7 +757,11 @@ impl Input {
                            fi; \
                            rm -f \"$duty_marker\"; \
                          fi; \
-                         printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m\\n'; \
+                         if [ -n \"$prev_call\" ]; then \
+                           printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[1;38;5;179m@%s\\033[0m \\033[2;3;38;5;179mcleared\\033[0m\\n\\n' \"$prev_call\"; \
+                         else \
+                           printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m \\033[2;3;38;5;179mclearing\\033[0m\\n\\n'; \
+                         fi; \
                          prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
                          prev_av=''; prev_color=220; \
                          case \"$prev_lc\" in \
