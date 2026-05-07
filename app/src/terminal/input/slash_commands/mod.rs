@@ -503,7 +503,7 @@ impl Input {
                        doris|thatcher) av='🚓' ;; \
                        tony) av='📻' ;; \
                      esac; \
-                     if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"$sender\"; fi; \
+                     if [ -n \"$av\" ]; then sender_disp=\"$av $sender\"; else sender_disp=\"📛 $sender\"; fi; \
                      target_lc=$(printf '%s' \"$target\" | tr '[:upper:]' '[:lower:]'); \
                      tav=''; \
                      tcolor=220; \
@@ -515,7 +515,7 @@ impl Input {
                        doris|thatcher) tav='🚓'; tcolor=165 ;; \
                        tony) tav='📻'; tcolor=226 ;; \
                      esac; \
-                     if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"@$target\"; fi; \
+                     if [ -n \"$tav\" ]; then target_disp=\"$tav @$target\"; else target_disp=\"📛 @$target\"; fi; \
                      if [ -n \"$target\" ]; then \
                        printf '\\033[1;38;5;220m📻 DISPATCH\\033[0m \\033[2;3;38;5;%dm%s → %s\\033[0m\\n  \\033[38;5;178m\"%s\"\\033[0m\\n' \"$tcolor\" \"$sender_disp\" \"$target_disp\" {body}; \
                      else \
