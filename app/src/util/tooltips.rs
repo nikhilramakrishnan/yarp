@@ -137,9 +137,9 @@ where
                 redaction,
                 TooltipRedaction::SecretNotSentToLLMMessaging { .. }
             ) {
-                "This wasn't included in the AI conversation."
+                "This was held back from the case file."
             } else {
-                "This won't be included in any AI conversations or shared blocks."
+                "This stays out of any case files or shared blocks."
             };
 
             // Generate the appropriate message based on secret level

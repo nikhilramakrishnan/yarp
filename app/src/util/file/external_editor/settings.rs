@@ -122,7 +122,7 @@ define_settings_group!(EditorSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.open_conversation_layout_preference",
-        description: "Whether to open agent conversations in a new tab or a split pane.",
+        description: "Whether to open case files in a new tab or a split pane.",
     },
 ]);
 
@@ -138,7 +138,7 @@ define_settings_group!(EditorSettings, settings: [
     settings_value::SettingsValue,
 )]
 #[schemars(
-    description = "How to open agent conversations.",
+    description = "How to open case files.",
     rename_all = "snake_case"
 )]
 pub enum OpenConversationPreference {

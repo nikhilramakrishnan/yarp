@@ -1891,7 +1891,7 @@ fn render_stopped_output(props: Props, app: &AppContext) -> Box<dyn Element> {
                         .map(|index| (item, index))
                 }) {
                     return Some(format!(
-                        "Stopped task {}/{}: \"{}\"",
+                        "Stood down on task {}/{}: \"{}\"",
                         item_index + 1,
                         todo_list.len(),
                         item.title
@@ -1901,9 +1901,9 @@ fn render_stopped_output(props: Props, app: &AppContext) -> Box<dyn Element> {
 
             conversation
                 .initial_query()
-                .map(|task_name| format!("Stopped task: \"{task_name}\""))
+                .map(|task_name| format!("Stood down on task: \"{task_name}\""))
         })
-        .unwrap_or_else(|| "Stopped task".to_string());
+        .unwrap_or_else(|| "Stood down".to_string());
 
     let stop_icon = Container::new(
         ConstrainedBox::new(gray_stop_icon(appearance).finish())
