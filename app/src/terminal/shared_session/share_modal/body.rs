@@ -161,15 +161,15 @@ impl Body {
             > max_session_size.as_u64();
 
         let scrollback_from_active_block_message = if model.is_alt_screen_active() {
-            "Share from current screen"
+            "Broadcast from current screen"
         } else if model
             .block_list()
             .active_block()
             .is_active_and_long_running()
         {
-            "Share from current block"
+            "Broadcast from current block"
         } else {
-            "Share without scrollback"
+            "Open channel — leave the case files behind"
         };
 
         let mut options = vec![
@@ -180,7 +180,7 @@ impl Body {
                 is_disabled: is_scrollback_from_active_block_disabled,
             },
             ScrollbackOption {
-                label: "Share from start of session",
+                label: "Broadcast from start of shift",
                 scrollback_type: SharedSessionScrollbackType::All,
                 mouse_state_handle: Default::default(),
                 is_disabled: is_all_scrollback_disabled,
@@ -213,7 +213,7 @@ impl Body {
             options.insert(
                 0,
                 ScrollbackOption {
-                    label: "Share from selected block and onwards",
+                    label: "Broadcast from selected block onwards",
                     scrollback_type,
                     mouse_state_handle: Default::default(),
                     is_disabled,
@@ -244,7 +244,7 @@ impl View for Body {
                 ButtonVariant::Accent,
                 self.button_mouse_states.start_sharing_button.clone(),
             )
-            .with_centered_text_label(String::from("Start sharing"))
+            .with_centered_text_label(String::from("Open channel"))
             .with_style(style::button_styles());
 
         // If none of the scrollback options are available, the start sharing
@@ -341,14 +341,14 @@ impl View for Body {
             if self.has_agent_conversations {
                 Some("Some options are off — the session is over the sharing limit and there are case files on the radio")
             } else {
-                Some("Some options are disabled due to sharing size limits")
+                Some("Some options are off — the session's over the channel quota")
             }
         } else {
             // Only one option disabled - use specific message if it's due to agent conversations
             if self.has_agent_conversations {
                 Some("Can't broadcast without the scrollback — there are case files on this session")
             } else {
-                Some("Some options are disabled due to sharing size limits")
+                Some("Some options are off — the session's over the channel quota")
             }
         };
 

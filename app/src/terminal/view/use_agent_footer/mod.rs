@@ -967,13 +967,13 @@ impl UseAgentToolbar {
 
         let button = ctx.add_typed_action_view(|ctx| {
             ActionButton::new(
-                "Use agent",
+                "Tag in PC",
                 AgentFooterButtonTheme::new(Some(terminal_model.clone())),
             )
             .with_icon(Icon::Fuzz)
             .with_keybinding(KeystrokeSource::Fixed(USE_AGENT_KEYSTROKE.clone()), ctx)
             .with_size(button_size)
-            .with_tooltip("Ask the Yarp agent to assist")
+            .with_tooltip("Wave the Yarp PC in for backup")
             .with_tooltip_alignment(TooltipAlignment::Left)
             .on_click(|ctx| {
                 ctx.dispatch_typed_action(TerminalAction::SetInputModeAgent);
@@ -981,13 +981,13 @@ impl UseAgentToolbar {
         });
         let give_control_back_button = ctx.add_typed_action_view(|ctx| {
             ActionButton::new(
-                "Give control back to agent",
+                "Hand the case back to the PC",
                 AgentFooterButtonTheme::new(Some(terminal_model.clone())),
             )
             .with_icon(Icon::Fuzz)
             .with_keybinding(KeystrokeSource::Fixed(USE_AGENT_KEYSTROKE.clone()), ctx)
             .with_size(button_size)
-            .with_tooltip("Ask the Yarp agent to resume")
+            .with_tooltip("Wave the Yarp PC back on the case")
             .with_tooltip_alignment(TooltipAlignment::Left)
             .on_click(|ctx| {
                 ctx.dispatch_typed_action(TerminalAction::SetInputModeAgent);
@@ -995,7 +995,7 @@ impl UseAgentToolbar {
         });
         let dismiss_button = ctx.add_typed_action_view(|_| {
             ActionButton::new(
-                "Dismiss",
+                "Stand down",
                 AgentFooterButtonTheme::new(Some(terminal_model.clone())),
             )
             .on_click(|ctx| {
@@ -1005,7 +1005,7 @@ impl UseAgentToolbar {
         });
         let dont_show_again_button = ctx.add_typed_action_view(|_| {
             ActionButton::new(
-                "Don't show again",
+                "Stand down for good",
                 AgentFooterButtonTheme::new(Some(terminal_model.clone())),
             )
             .on_click(|ctx| {

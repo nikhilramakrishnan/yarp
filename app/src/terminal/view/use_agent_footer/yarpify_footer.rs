@@ -36,7 +36,7 @@ impl YarpifyFooterView {
             ActionButton::new("Yarpify subshell", AgentFooterButtonTheme::new(None))
                 .with_icon(Icon::Yarp)
                 .with_size(button_size)
-                .with_tooltip("Enable Yarp shell integration in this session")
+                .with_tooltip("Wire Yarp shell integration into this session")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(YarpifyFooterViewAction::Yarpify);
@@ -44,11 +44,11 @@ impl YarpifyFooterView {
         });
 
         let use_agent_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("Use agent", AgentFooterButtonTheme::new(None))
+            ActionButton::new("Tag in PC", AgentFooterButtonTheme::new(None))
                 .with_icon(Icon::Fuzz)
                 .with_keybinding(KeystrokeSource::Fixed(USE_AGENT_KEYSTROKE.clone()), ctx)
                 .with_size(button_size)
-                .with_tooltip("Ask the Yarp agent to assist")
+                .with_tooltip("Wave the Yarp PC in for backup")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(YarpifyFooterViewAction::UseAgent);
@@ -56,7 +56,7 @@ impl YarpifyFooterView {
         });
 
         let dismiss_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Dismiss", AgentFooterButtonTheme::new(None))
+            ActionButton::new("Stand down", AgentFooterButtonTheme::new(None))
                 .with_size(button_size)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(YarpifyFooterViewAction::Dismiss);
