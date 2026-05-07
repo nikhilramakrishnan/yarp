@@ -367,6 +367,23 @@ pub(crate) fn persona_spinner_color(name: &str) -> &'static str {
     }
 }
 
+/// In-character welcome line shown when a callsign is claimed via /duty,
+/// keyed off the persona's lowercase name (matching the callsign argument).
+/// Each line is delivered first-person from the constable, so claiming a
+/// callsign feels like the officer reporting for duty rather than a generic
+/// "callsign claimed" stamp. Fallback is a generic Sandford greeting.
+pub(crate) fn persona_on_duty_quote(callsign_lc: &str) -> &'static str {
+    match callsign_lc {
+        "nicholas" | "angel" => "Reporting for duty. — Sgt Angel",
+        "danny" | "butterman" => "Have you ever fired two guns whilst jumping through the air? — PC Butterman",
+        "doris" | "thatcher" => "Right then, what's the story? — PC Thatcher",
+        "frank" | "butterman.snr" => "All for the greater good. — Insp Butterman",
+        "andy" | "wainwright" | "cartwright" => "Nothing like a bit of hustle and bustle. — DS",
+        "tony" => "Yarp. — Michael",
+        _ => "Reporting for duty.",
+    }
+}
+
 /// In-character spinner phrase for each persona, replacing the generic
 /// "investigating…". Each Hot Fuzz constable's phrase mirrors their
 /// on-screen role (Danny is excitable about action, Doris reads the scene,
