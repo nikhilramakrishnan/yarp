@@ -481,9 +481,9 @@ impl LoginSlideView {
             .finish();
 
         let subtitle_text = if is_terminal {
-            "Connect your account to save and share notebooks, workflows, and more across devices."
+            "Sign on to file your casebooks, workflows, and gear across every station you cover."
         } else {
-            "Connect your account to enable AI-powered planning, coding, and automation."
+            "Sign on to call in PCs for planning, coding, and the rest of the legwork."
         };
         let subtitle =
             FormattedTextElement::from_str(subtitle_text, appearance.ui_font_family(), 16.)
@@ -677,7 +677,7 @@ impl LoginSlideView {
                 Flex::row()
                     .with_child(
                         ui_builder
-                            .span("If your browser hasn't launched, ")
+                            .span("Browser didn't open? ")
                             .with_style(sub_text_styles)
                             .build()
                             .finish(),

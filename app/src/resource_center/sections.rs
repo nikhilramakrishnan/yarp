@@ -18,31 +18,31 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
         items: vec![
             FeatureItem::new(
                 "Log your first case file",
-                "Run a command to see your command and output bundled together.",
+                "Run a command — Yarp bundles the order and the response into one file.",
                 Tip::Hint(TipHint::CreateBlock),
                 ctx,
             ),
             FeatureItem::new(
                 "Walk the case files",
-                "Click to pick one and step through with arrow keys.",
+                "Click one and step through the rest with the arrow keys.",
                 Tip::Hint(TipHint::BlockSelect),
                 ctx,
             ),
             FeatureItem::new(
                 "Act on a case file",
-                "Right click on a case file for copy, paste, share, and more.",
+                "Right-click for copy, paste, share, and the rest of the kit.",
                 Tip::Hint(TipHint::BlockAction),
                 ctx,
             ),
             FeatureItem::new(
                 "Call up the command palette",
-                "Run any Yarp action from the keyboard.",
+                "Radio in any Yarp action from the keyboard.",
                 Tip::Action(TipAction::CommandPalette),
                 ctx,
             ),
             FeatureItem::new(
                 "Set your uniform",
-                "Pick a theme that suits your station.",
+                "Pick a theme that suits the station.",
                 Tip::Action(TipAction::ThemePicker),
                 ctx,
             ),
@@ -89,14 +89,14 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
 
     maximize_yarp_items.push(FeatureItem::new(
         "Search the records",
-        "Find and re-run previous commands, workflows, and more.",
+        "Pull up old commands, workflows, and the rest of the file.",
         Tip::Action(TipAction::CommandSearch),
         ctx,
     ));
 
     maximize_yarp_items.push(FeatureItem::new(
         "Radio for a command",
-        "Spell it out in plain English; the PC writes the shell command.",
+        "Spell it out in plain English — the PC writes the shell command.",
         Tip::Action(TipAction::AiCommandSearch),
         ctx,
     ));
@@ -104,7 +104,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
     if ContextFlag::CreateNewSession.is_enabled() {
         maximize_yarp_items.push(FeatureItem::new(
             "Split the beat",
-            "Split tabs into multiple panes to lay out your station.",
+            "Carve a tab into panes — patrol multiple sessions side by side.",
             Tip::Action(TipAction::SplitPane),
             ctx,
         ));
@@ -113,7 +113,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
     if ContextFlag::LaunchConfigurations.is_enabled() {
         maximize_yarp_items.push(FeatureItem::new(
             "Save the duty roster",
-            "Snapshot your current windows, tabs, and panes for next shift.",
+            "Snapshot your windows, tabs, and panes — pin them for the next shift.",
             Tip::Action(TipAction::SaveNewLaunchConfig),
             ctx,
         ));
