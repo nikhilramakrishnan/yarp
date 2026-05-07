@@ -901,7 +901,7 @@ impl Input {
                        if [ \"$qn\" -gt 0 ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[2;3;38;5;220mpending — claim a callsign first to read directs\\033[0m\\n' 'queue' \"$qn\"; \
                        fi; \
-                       printf '  \\033[3;38;5;244m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
+                       printf '  \\033[2;3;38;5;179m/duty <name> to claim one — direct radio routes by callsign\\033[0m\\n'; \
                      fi"
                         .to_owned()
                 };
