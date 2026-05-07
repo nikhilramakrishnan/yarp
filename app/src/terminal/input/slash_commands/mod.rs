@@ -1153,7 +1153,7 @@ impl Input {
                           *) avatar='' ;; \
                         esac; \
                         if [ -n \"$avatar\" ]; then sender_disp=\"$avatar $sender\"; else sender_disp=\"$sender\"; fi; \
-                        printf '  \\033[2;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag\"; \
+                        printf '  \\033[2;3;38;5;240m%2d\\033[0m %b\\033[2;3;38;5;244m[%s]\\033[0m %b%s\\033[0m\\033[3;38;5;244m%s\\033[0m\\n' \"$idx\" \"$badge\" \"$human\" \"$sender_color\" \"$sender_disp\" \"$tag\"; \
                         tail -n +$body_start \"$f\" 2>/dev/null | while IFS= read -r line; do printf '    %b%s\\033[0m\\n' \"$body_color\" \"$line\"; done; \
                         if [ \"$consume\" = 1 ]; then rm -f \"$f\"; fi; \
                         echo; \
