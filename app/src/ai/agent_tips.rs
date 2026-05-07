@@ -434,7 +434,7 @@ pub fn get_agent_tips(ctx: &AppContext) -> Vec<AgentTip> {
         && AISettings::as_ref(ctx).is_voice_input_enabled(ctx)
     {
         tips.push(AgentTip {
-            description: "Hold <keybinding> to speak your prompt directly to the agent."
+            description: "Hold <keybinding> to radio your orders straight through to the PC."
                 .to_string(),
             link: None,
             binding_name: Some("FN"),

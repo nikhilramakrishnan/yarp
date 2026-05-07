@@ -1658,13 +1658,13 @@ fn test_tab_context_menu_share_session_items() {
         });
 
         // When there's a single shared session in a tab (focused), the options
-        // for sharing are "Stop sharing" and "Stop sharing all".
+        // for sharing are "Close radio channel" and "Close all radio channels".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
             assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Stop sharing").into_item()));
+                .is_approximately_same_item_as(&MenuItemFields::new("Close radio channel").into_item()));
             assert!(items[1].is_approximately_same_item_as(
-                &MenuItemFields::new("Stop sharing all").into_item()
+                &MenuItemFields::new("Close all radio channels").into_item()
             ));
         });
 
@@ -1679,13 +1679,13 @@ fn test_tab_context_menu_share_session_items() {
         });
 
         // When there's a single shared session in a tab (unfocused), the options
-        // for sharing are "Share session" and "Stop sharing all".
+        // for sharing are "Open radio channel" and "Close all radio channels".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
             assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Share session").into_item()));
+                .is_approximately_same_item_as(&MenuItemFields::new("Open radio channel").into_item()));
             assert!(items[1].is_approximately_same_item_as(
-                &MenuItemFields::new("Stop sharing all").into_item()
+                &MenuItemFields::new("Close all radio channels").into_item()
             ));
         });
 
@@ -1695,11 +1695,11 @@ fn test_tab_context_menu_share_session_items() {
             workspace.stop_sharing_all_panes_in_tab(&tab, ctx);
         });
 
-        // When there's no shared sessions in a tab, the only option is "Share session".
+        // When there's no shared sessions in a tab, the only option is "Open radio channel".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
             assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Share session").into_item()));
+                .is_approximately_same_item_as(&MenuItemFields::new("Open radio channel").into_item()));
             assert!(items[1].is_approximately_same_item_as(&MenuItem::Separator));
         });
     });

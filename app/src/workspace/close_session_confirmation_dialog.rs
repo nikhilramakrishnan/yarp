@@ -133,7 +133,7 @@ impl View for CloseSessionConfirmationDialog {
             Dialog::new(
                 "Close session?".into(),
                 Some(
-                    "You are about to close a session that is currently being shared. Closing it will end sharing for everyone."
+                    "Heads up — this session is on the air. Closing it pulls every officer off the channel."
                         .into(),
                 ),
                 UiComponentStyles {

@@ -32,8 +32,8 @@ use self::body::BodyEvent;
 
 use super::{SharedSessionActionSource, SharedSessionScrollbackType};
 
-const MODAL_HEADER: &str = "Share session";
-const SESSION_LIMIT_REACHED_HEADER: &str = "Shared session limit reached";
+const MODAL_HEADER: &str = "Open radio channel";
+const SESSION_LIMIT_REACHED_HEADER: &str = "Channel quota reached";
 
 pub struct ShareSessionModal {
     modal: ViewHandle<Modal<Body>>,
