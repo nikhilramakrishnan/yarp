@@ -747,18 +747,18 @@ impl Input {
                          fi; \
                          printf '\\033[1;38;5;220m🎖  OFF DUTY\\033[0m\\n'; \
                          prev_lc=$(printf '%s' \"$prev_call\" | tr '[:upper:]' '[:lower:]'); \
-                         prev_av=''; \
+                         prev_av=''; prev_color=220; \
                          case \"$prev_lc\" in \
-                           nicholas|angel) prev_av='🎯' ;; \
-                           frank|butterman.snr) prev_av='🦔' ;; \
-                           danny|butterman) prev_av='🍦' ;; \
-                           andy|wainwright|cartwright) prev_av='🤡' ;; \
-                           doris|thatcher) prev_av='🚓' ;; \
-                           tony) prev_av='📻' ;; \
+                           nicholas|angel) prev_av='🎯'; prev_color=39 ;; \
+                           frank|butterman.snr) prev_av='🦔'; prev_color=220 ;; \
+                           danny|butterman) prev_av='🍦'; prev_color=213 ;; \
+                           andy|wainwright|cartwright) prev_av='🤡'; prev_color=208 ;; \
+                           doris|thatcher) prev_av='🚓'; prev_color=165 ;; \
+                           tony) prev_av='📻'; prev_color=226 ;; \
                          esac; \
                          if [ -n \"$prev_call\" ]; then \
                            if [ -n \"$prev_av\" ]; then prev_marker=\"$prev_av \"; else prev_marker=\"📛 \"; fi; \
-                           printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;220m@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_call\"; \
+                           printf '  \\033[2;38;5;244m%-10s\\033[0m %s\\033[1;38;5;%dm@%s\\033[0m \\033[3;38;5;244mcleared\\033[0m\\n' 'callsign' \"$prev_marker\" \"$prev_color\" \"$prev_call\"; \
                          else \
                            printf '  \\033[2;38;5;244m%-10s\\033[0m \\033[3;38;5;244mnone active\\033[0m\\n' 'callsign'; \
                          fi; \
@@ -818,14 +818,14 @@ impl Input {
                 } else {
                     "if [ -n \"$YARP_CALLSIGN\" ]; then \
                        cs_lc=$(printf '%s' \"$YARP_CALLSIGN\" | tr '[:upper:]' '[:lower:]'); \
-                       av=''; \
+                       av=''; color=220; \
                        case \"$cs_lc\" in \
-                         nicholas|angel) av='🎯' ;; \
-                         frank|butterman.snr) av='🦔' ;; \
-                         danny|butterman) av='🍦' ;; \
-                         andy|wainwright|cartwright) av='🤡' ;; \
-                         doris|thatcher) av='🚓' ;; \
-                         tony) av='📻' ;; \
+                         nicholas|angel) av='🎯'; color=39 ;; \
+                         frank|butterman.snr) av='🦔'; color=220 ;; \
+                         danny|butterman) av='🍦'; color=213 ;; \
+                         andy|wainwright|cartwright) av='🤡'; color=208 ;; \
+                         doris|thatcher) av='🚓'; color=165 ;; \
+                         tony) av='📻'; color=226 ;; \
                        esac; \
                        if [ -n \"$av\" ]; then unit_disp=\"$av @$YARP_CALLSIGN\"; else unit_disp=\"📛 @$YARP_CALLSIGN\"; fi; \
                        since_row=''; \
@@ -855,7 +855,7 @@ impl Input {
                            fi; \
                          fi; \
                        fi; \
-                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m\\n' 'unit' \"$unit_disp\"; \
+                       printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;%dm%s\\033[0m\\n' 'unit' \"$color\" \"$unit_disp\"; \
                        if [ -n \"$since_row\" ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m %s  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$tier_icon\" \"$since_row\"; \
                        fi; \
