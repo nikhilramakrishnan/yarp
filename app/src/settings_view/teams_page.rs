@@ -877,7 +877,7 @@ impl TeamsPageView {
             }
             UserWorkspacesEvent::EmailInviteRejected(err) => {
                 self.update_team_members_state(ctx);
-                self.show_error("Failed to send invite", Some(err), ctx)
+                self.show_error("Couldn't put out the call-in", Some(err), ctx)
             }
             UserWorkspacesEvent::TeamsChanged => {
                 self.update_team_members_state(ctx);
@@ -890,25 +890,25 @@ impl TeamsPageView {
                 ctx.emit(TeamsPageViewEvent::TeamsChanged);
             }
             UserWorkspacesEvent::ToggleInviteLinksSuccess => {
-                self.show_success("Toggled invite links", ctx);
+                self.show_success("Open-call line switched", ctx);
                 ctx.notify();
             }
             UserWorkspacesEvent::ToggleInviteLinksRejected(err) => {
-                self.show_error("Failed to toggle invite links", Some(err), ctx);
+                self.show_error("Couldn't switch the open-call line", Some(err), ctx);
             }
             UserWorkspacesEvent::ResetInviteLinks => {
-                self.show_success("Reset invite links", ctx);
+                self.show_success("Open-call line reissued", ctx);
                 ctx.notify();
             }
             UserWorkspacesEvent::ResetInviteLinksRejected(err) => {
-                self.show_error("Failed to reset invite links", Some(err), ctx);
+                self.show_error("Couldn't reissue the open-call line", Some(err), ctx);
             }
             UserWorkspacesEvent::DeleteTeamInvite => {
                 self.update_team_members_state(ctx);
-                self.show_success("Deleted invite", ctx);
+                self.show_success("Call-in pulled", ctx);
             }
             UserWorkspacesEvent::DeleteTeamInviteRejected(err) => {
-                self.show_error("Failed to delete invite", Some(err), ctx);
+                self.show_error("Couldn't pull the call-in", Some(err), ctx);
             }
             UserWorkspacesEvent::AddDomainRestrictionsSuccess => {
                 self.approve_domains_block_editor
@@ -943,11 +943,11 @@ impl TeamsPageView {
                 ctx,
             ),
             UserWorkspacesEvent::ToggleTeamDiscoverabilitySuccess => {
-                self.show_success("Toggled team discoverability", ctx);
+                self.show_success("Open-roster setting switched", ctx);
                 ctx.notify();
             }
             UserWorkspacesEvent::ToggleTeamDiscoverabilityRejected(err) => {
-                self.show_error("Failed to toggle team discoverability", Some(err), ctx);
+                self.show_error("Couldn't switch the open-roster setting", Some(err), ctx);
             }
             UserWorkspacesEvent::JoinTeamWithTeamDiscoverySuccess => {
                 // Force refresh of Yarp Drive objects after joining a team
@@ -1457,9 +1457,9 @@ impl TeamsPageView {
             .collect();
 
         let message = if unique_emails.len() == 1 {
-            "Your invite is on the way!".to_string()
+            "Call-in dispatched!".to_string()
         } else {
-            format!("Your {} invites are on the way!", unique_emails.len())
+            format!("{} call-ins dispatched!", unique_emails.len())
         };
         self.show_success(message, ctx);
         self.user_workspaces
@@ -1598,7 +1598,7 @@ impl TeamsPageView {
             let actions = if current_user_has_admin_permissions {
                 vec![ItemAction {
                     icon: Icon::X,
-                    label: "Cancel invite".to_string(),
+                    label: "Pull the call-in".to_string(),
                     action: TeamsPageAction::DeletePendingEmailInvitation {
                         team_uid: team.uid,
                         invitee_email: email_invite.invitee_email.clone(),
@@ -1809,7 +1809,7 @@ impl TeamsWidget {
         .finish();
 
         let member_pricing_header =
-            Container::new(self.render_subsection_header("Team members".to_owned(), appearance))
+            Container::new(self.render_subsection_header("On the roster".to_owned(), appearance))
                 .with_margin_bottom(8.)
                 .finish();
 
@@ -2333,9 +2333,9 @@ impl TeamsWidget {
             .with_main_axis_size(MainAxisSize::Max)
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween);
 
-        // 1) "Invite by Link" subsection header
+        // 1) "Open-call line" subsection header
         invite_by_link_header_row
-            .add_child(self.render_subsection_header("Invite by Link".to_owned(), appearance));
+            .add_child(self.render_subsection_header("Open-call line".to_owned(), appearance));
 
         // 1.1) Toggle to the right of header only renders if user is admin
         if has_admin_permissions {
@@ -2429,9 +2429,9 @@ impl TeamsWidget {
     ) -> Box<dyn Element> {
         let mut section = Flex::column();
 
-        // "Invite by Email" subsection header
+        // "Call in by name" subsection header
         section.add_child(
-            Container::new(self.render_subsection_header("Invite by Email".to_owned(), appearance))
+            Container::new(self.render_subsection_header("Call in by name".to_owned(), appearance))
                 .with_padding_top(CONTENT_SEPARATION_PADDING)
                 .with_padding_bottom(8.)
                 .finish(),
@@ -2943,7 +2943,7 @@ impl TeamsWidget {
             .with_main_axis_size(MainAxisSize::Max)
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween);
         discoverable_header_row.add_child(
-            Container::new(self.render_sub_header("Make team discoverable".to_owned(), appearance))
+            Container::new(self.render_sub_header("Open-roster the station".to_owned(), appearance))
                 .with_padding_top(CONTENT_SEPARATION_PADDING)
                 .finish(),
         );
@@ -2976,7 +2976,7 @@ impl TeamsWidget {
         // Instruction text for toggle
         let domain = current_user_email.split('@').nth(1).unwrap_or("");
         let team_discoverability_instructions =
-            format!("Allow Yarp users with an @{domain} email to find and join the team.");
+            format!("Let officers with an @{domain} badge find the station and sign on.");
         section.add_child(
             Container::new(self.render_sub_text(
                 team_discoverability_instructions,
@@ -3377,7 +3377,7 @@ impl TeamsWidget {
                 );
                 (link, true)
             }
-            None => ("Failed to load invite link.".into(), false),
+            None => ("Open-call line wouldn't load.".into(), false),
         };
         let theme = appearance.theme();
 
@@ -3682,9 +3682,9 @@ impl TeamsWidget {
             .with_margin_left(-4.)
             .finish();
             let checkbox_row_text = if let Some(domain) = view.auth_state.user_email_domain() {
-                format!("Allow Yarp users with an @{domain} email to find and join the team.")
+                format!("Let officers with an @{domain} badge find the station and sign on.")
             } else {
-                "Allow Yarp users with the same email domain as you to find and join the team."
+                "Let officers carrying your badge domain find the station and sign on."
                     .to_string()
             };
             let checkbox_row = Container::new(
