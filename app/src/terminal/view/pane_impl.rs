@@ -108,6 +108,23 @@ impl TerminalView {
         let selected_conversation_title = self.selected_conversation_display_title(ctx);
         let selected_cli_agent_title = self.selected_cli_agent_title_for_chrome(ctx);
 
+        // While a /agent council chain is in flight, the shell sets the
+        // window title to the underlying chain.sh tempfile path
+        // (`..yarp/<id>/chain.sh`), which leaks the implementation. Override
+        // it with a themed string so the tab reads as a Sandford NWA debrief.
+        if self.council_chain_in_flight {
+            self.is_using_conversation_for_pane_header_title = false;
+            self.pane_configuration.update(ctx, |pane_config, ctx| {
+                pane_config.set_title("Sandford NWA · Debrief".to_string(), ctx);
+                if FeatureFlag::AgentView.is_enabled() {
+                    pane_config.refresh_pane_header_overflow_menu_items(ctx);
+                }
+                pane_config.notify_header_content_changed(ctx);
+            });
+            self.update_agent_view_pane_header(ctx);
+            return;
+        }
+
         // Prefer CLI agent session text before the terminal title,
         // matching the vertical-tab behavior in terminal_primary_line_data().
         let new_pane_title = if let Some(cli_agent_title) = selected_cli_agent_title {

@@ -4463,8 +4463,12 @@ impl TerminalView {
             // Last command dispatched. Mark chain as done after the next
             // block-completion callback drains; until then, in-flight is
             // still true (we still have a block running).
-            self.on_next_block_completed(move |me, _ctx| {
+            self.on_next_block_completed(move |me, ctx| {
                 me.council_chain_in_flight = false;
+                // Refresh pane title now the council is done so the tab
+                // flips back from "Sandford NWA · Debrief" to whatever
+                // the shell's terminal_title is.
+                me.update_pane_configuration(ctx);
             });
             return;
         }
@@ -20508,6 +20512,10 @@ impl TerminalView {
                     chain.len()
                 );
                 self.council_chain_in_flight = true;
+                // Override the tab title before the shell sets it to the
+                // chain.sh tempfile path; pane_impl::update_pane_configuration
+                // returns the themed string while the chain is in flight.
+                self.update_pane_configuration(ctx);
                 self.dispatch_council_chain(chain, ctx);
             }
             InputEvent::EnterCloudAgentView { initial_prompt } => {
