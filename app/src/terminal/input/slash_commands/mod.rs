@@ -932,13 +932,19 @@ impl Input {
                     .unwrap_or(0);
                 const QUOTES: &[&str] = &[
                     "He's not Judge Judy and Executioner. — Andy",
+                    "Murder. Mur-der. — Andy",
                     "It's not Sunday, the gun shop's shut. — Angel",
+                    "It's all about the paperwork. — Angel",
                     "The greater good. — The NWA",
+                    "All for the good of Sandford. — The NWA",
                     "Yarp. — Tony",
                     "Narp. — Tony",
                     "Yeah, but he gets to ride the horse. — Doris",
+                    "Oh, give it some welly. — Doris",
                     "Forget it, Nicholas, it's Sandford. — Frank",
+                    "Welcome to Sandford. — Frank",
                     "Pub? — Danny",
+                    "Have you ever fired your gun in the air and yelled aaaaargh? — Danny",
                 ];
                 let quote = {
                     use std::time::{SystemTime, UNIX_EPOCH};
