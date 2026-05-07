@@ -15270,9 +15270,9 @@ impl TerminalView {
                 let share_block_label = if FeatureFlag::CreatingSharedSessions.is_enabled()
                     && ContextFlag::CreateSharedSession.is_enabled()
                 {
-                    "Share block..."
+                    "File case file..."
                 } else {
-                    "Share..."
+                    "File..."
                 };
 
                 let mut items = vec![
