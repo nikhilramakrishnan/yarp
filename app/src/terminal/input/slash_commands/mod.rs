@@ -794,6 +794,9 @@ impl Input {
                        esac; \
                        if [ -n \"$av\" ]; then unit_disp=\"$av @$YARP_CALLSIGN\"; else unit_disp=\"📛 @$YARP_CALLSIGN\"; fi; \
                        since_row=''; \
+                       shopt -s nullglob; \
+                       qfiles=(/tmp/yarp-radio/*.msg); \
+                       qn=${#qfiles[@]}; \
                        duty_marker=\"/tmp/yarp-radio/.duty-${USER:-unknown}\"; \
                        if [ -f \"$duty_marker\" ]; then \
                          start=$(cat \"$duty_marker\" 2>/dev/null); \
@@ -814,6 +817,11 @@ impl Input {
                        printf '\\033[1;38;5;220m🎖  ON DUTY\\033[0m \\033[3;38;5;244mcurrent callsign\\033[0m\\n  \\033[2;38;5;244m%-10s\\033[0m \\033[1;38;5;220m%s\\033[0m\\n' 'unit' \"$unit_disp\"; \
                        if [ -n \"$since_row\" ]; then \
                          printf '  \\033[2;38;5;244m%-10s\\033[0m ⏱  \\033[1;38;5;220m%b\\033[0m\\n' 'since' \"$since_row\"; \
+                       fi; \
+                       if [ \"$qn\" -gt 0 ]; then \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[1;38;5;220m%d\\033[0m \\033[3;38;5;244mpending — /inbox to read\\033[0m\\n' 'queue' \"$qn\"; \
+                       else \
+                         printf '  \\033[2;38;5;244m%-10s\\033[0m 📥 \\033[3;38;5;244minbox clear\\033[0m\\n' 'queue'; \
                        fi; \
                        printf '  \\033[3;38;5;244m/duty <name> to change · /duty off to clear\\033[0m\\n'; \
                      else \
