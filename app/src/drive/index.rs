@@ -4505,7 +4505,7 @@ impl DriveIndex {
             if let Some(object) = object {
                 if self.is_online(app) && object.metadata().is_errored() {
                     menu_items.push(
-                        MenuItemFields::new("Retry")
+                        MenuItemFields::new("Try the radio again")
                             .with_on_select_action(DriveIndexAction::RetryFailedObject(
                                 *cloud_object_type_and_id,
                             ))
@@ -4781,7 +4781,7 @@ impl DriveIndex {
         prefer_open: bool,
     ) -> MenuItemFields<DriveIndexAction> {
         if (FeatureFlag::SharedWithMe.is_enabled() && !editability.can_edit()) || prefer_open {
-            MenuItemFields::new("Open").with_icon(Icon::Eye)
+            MenuItemFields::new("Pull up the file").with_icon(Icon::Eye)
         } else {
             MenuItemFields::new("Edit").with_icon(Icon::Rename)
         }
@@ -4806,7 +4806,7 @@ impl DriveIndex {
         if let Some(object) = object {
             if self.is_online(app) && object.metadata().is_errored() {
                 menu_items.push(
-                    MenuItemFields::new("Retry")
+                    MenuItemFields::new("Try the radio again")
                         .with_on_select_action(DriveIndexAction::RetryFailedObject(
                             *cloud_object_type_and_id,
                         ))
