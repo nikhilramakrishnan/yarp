@@ -34,7 +34,7 @@ pub fn render_shell_process_terminated_banner(
             InlineBannerStyle::LowPriority,
             appearance,
             InlineBannerContent {
-                title: "Shell process exited".to_string(),
+                title: "Shell signed off shift".to_string(),
                 header_icon: Some(InlineBannerIcon {
                     asset_path: "bundled/svg/info.svg",
                     aspect_ratio: 1.,
