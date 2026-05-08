@@ -144,11 +144,38 @@ fn hostname() -> String {
 }
 
 fn radio_dir() -> Option<PathBuf> {
+    if let Some(root) = radio_root_override() {
+        return Some(root);
+    }
     yarp_core::paths::yarp_home_radio_dir()
 }
 
 fn beacon_path(pid: u32) -> Option<PathBuf> {
     radio_dir().map(|dir| dir.join(format!("{pid}.json")))
+}
+
+fn inbox_root() -> Option<PathBuf> {
+    radio_dir().map(|dir| dir.join("inbox"))
+}
+
+// In tests, point all radio IO at a tempdir instead of the user's real
+// `~/.yarp`. Thread-local so parallel tests don't collide. The override is
+// `None` in production builds so this collapses to a single `if-let-some`
+// branch with no overhead.
+#[cfg(test)]
+thread_local! {
+    static RADIO_ROOT_OVERRIDE: std::cell::RefCell<Option<PathBuf>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+#[cfg(test)]
+fn radio_root_override() -> Option<PathBuf> {
+    RADIO_ROOT_OVERRIDE.with(|cell| cell.borrow().clone())
+}
+
+#[cfg(not(test))]
+fn radio_root_override() -> Option<PathBuf> {
+    None
 }
 
 /// Drop a beacon for this process. Existing beacons for the same pid are
@@ -256,7 +283,7 @@ impl Message {
 }
 
 fn inbox_dir(pid: u32) -> Option<PathBuf> {
-    yarp_core::paths::yarp_home_radio_inbox_dir().map(|dir| dir.join(pid.to_string()))
+    inbox_root().map(|dir| dir.join(pid.to_string()))
 }
 
 /// Drop a message into `to_pid`'s inbox. Filename is the message's
@@ -379,7 +406,7 @@ pub fn latest_dispatch() -> Option<Message> {
 /// for every terminal that ever booted. Returns the number of inboxes
 /// reclaimed. Best-effort; IO failures are silently ignored.
 pub fn prune_dead_inboxes() -> usize {
-    let Some(root) = yarp_core::paths::yarp_home_radio_inbox_dir() else {
+    let Some(root) = inbox_root() else {
         return 0;
     };
     let entries = match fs::read_dir(&root) {
@@ -427,6 +454,29 @@ fn pid_is_alive(pid: u32) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// RAII helper: install a tempdir as the radio root and clear on Drop.
+    /// Wraps `tempfile::TempDir` so the directory is also wiped at end of
+    /// scope. Test-only.
+    struct RadioSandbox {
+        _dir: tempfile::TempDir,
+    }
+
+    impl RadioSandbox {
+        fn new() -> Self {
+            let dir = tempfile::tempdir().expect("tempdir");
+            RADIO_ROOT_OVERRIDE.with(|cell| {
+                *cell.borrow_mut() = Some(dir.path().to_path_buf());
+            });
+            Self { _dir: dir }
+        }
+    }
+
+    impl Drop for RadioSandbox {
+        fn drop(&mut self) {
+            RADIO_ROOT_OVERRIDE.with(|cell| *cell.borrow_mut() = None);
+        }
+    }
 
     #[test]
     fn beacon_round_trips_through_json() {
@@ -553,5 +603,83 @@ mod tests {
         // Pruning must not panic when the inbox root has not yet been
         // created on disk (e.g. fresh install where nobody's sent a message).
         let _ = prune_dead_inboxes();
+    }
+
+    #[test]
+    fn register_then_list_active_round_trips_in_sandbox() {
+        let _sandbox = RadioSandbox::new();
+        let beacon = Beacon::new("dev.yarp.Yarp", "Sandford")
+            .with_tab_title("Test patrol");
+        // Use the current pid so the alive-check doesn't filter us out.
+        let mut beacon = beacon;
+        beacon.pid = std::process::id();
+        register(&beacon).expect("register");
+
+        let active = list_active();
+        let mine = active.iter().find(|b| b.pid == beacon.pid).expect("self");
+        assert_eq!(mine.call_sign, "Sandford");
+        assert_eq!(mine.tab_title.as_deref(), Some("Test patrol"));
+    }
+
+    #[test]
+    fn list_active_drops_dead_pid_beacons() {
+        let _sandbox = RadioSandbox::new();
+        // Fabricate a beacon for a pid that's almost certainly not alive.
+        let mut beacon = Beacon::new("dev.yarp.Yarp", "Ghost");
+        beacon.pid = 0xDEAD_BEEF;
+        register(&beacon).expect("register dead");
+        let path = beacon_path(beacon.pid).expect("beacon path");
+        assert!(path.exists(), "dead beacon should land on disk first");
+
+        let active = list_active();
+        assert!(active.iter().all(|b| b.pid != beacon.pid));
+        assert!(!path.exists(), "list_active should reap the dead beacon");
+    }
+
+    #[test]
+    fn send_message_then_peek_returns_it_in_sandbox() {
+        let _sandbox = RadioSandbox::new();
+        let to = std::process::id();
+        let msg = Message::new("Sandford", "Hoggett's on the loose");
+        send_message(to, &msg).expect("send");
+
+        let pending = peek_inbox();
+        assert_eq!(pending.len(), 1);
+        assert_eq!(pending[0].body, "Hoggett's on the loose");
+        assert_eq!(pending[0].from_call_sign, "Sandford");
+    }
+
+    #[test]
+    fn read_inbox_drains_messages_in_sandbox() {
+        let _sandbox = RadioSandbox::new();
+        let to = std::process::id();
+        send_message(to, &Message::new("Sandford", "first")).expect("send 1");
+        // Different sender pid avoids the per-second nano-suffix collision.
+        let mut second = Message::new("Butterman", "second");
+        second.from_pid = std::process::id().wrapping_add(1);
+        send_message(to, &second).expect("send 2");
+
+        let drained = read_inbox();
+        assert_eq!(drained.len(), 2);
+        assert!(read_inbox().is_empty(), "second drain must be empty");
+    }
+
+    #[test]
+    fn prune_dead_inboxes_removes_dead_pid_dirs_in_sandbox() {
+        let _sandbox = RadioSandbox::new();
+        // Fabricate a dead-pid inbox dir with a stub message inside.
+        let dead_pid: u32 = 0xDEAD_BEEF;
+        let dead_dir = inbox_dir(dead_pid).expect("dead dir");
+        fs::create_dir_all(&dead_dir).expect("mkdir");
+        fs::write(dead_dir.join("0-0-000000000.json"), b"{}").expect("write stub");
+
+        // Live pid (current process) should survive the sweep.
+        let live_dir = inbox_dir(std::process::id()).expect("live dir");
+        fs::create_dir_all(&live_dir).expect("mkdir live");
+
+        let reclaimed = prune_dead_inboxes();
+        assert_eq!(reclaimed, 1);
+        assert!(!dead_dir.exists());
+        assert!(live_dir.exists());
     }
 }
