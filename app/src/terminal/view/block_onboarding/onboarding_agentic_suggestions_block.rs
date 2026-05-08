@@ -158,8 +158,8 @@ impl OnboardingAgenticSuggestionsBlock {
         let agent_suggestions = vec![
             (
                 AgenticSuggestionsContent {
-                    title: "Create a snake game in Python from scratch".to_string(),
-                    description: "Have Agent Mode walk you through filing a snake game from start to finish".to_string(),
+                    title: "Write up a snake game in Python from scratch".to_string(),
+                    description: "Have a PC walk you through filing a snake game from start to finish".to_string(),
                     prompt: "Make a snake game for playing in the terminal using python. Use the code tool and requested commands to do it for me. Before deciding on a solution, make sure I have all the prerequisites installed. At the end of our conversation, the app should run without any additional steps.".to_string(),
                     chip_type: OnboardingChipType::PythonSnakeGame,
                     icon: UIIcon::Icon::GamingPad,
@@ -169,7 +169,7 @@ impl OnboardingAgenticSuggestionsBlock {
             (
                 AgenticSuggestionsContent {
                     title: format!("Explore git history in {git_repo_trimmed}"),
-                    description: "Have Agent Mode walk through the recent activity in a git repo".to_string(),
+                    description: "Have a PC walk through the recent activity in a git repo".to_string(),
                     prompt: format!("Explore my git history in {git_repo_path} and provide me a summary."),
                     chip_type: OnboardingChipType::ExploreGitHistory,
                     icon: UIIcon::Icon::BookOpen,
@@ -189,7 +189,7 @@ impl OnboardingAgenticSuggestionsBlock {
             (
                 AgenticSuggestionsContent {
                     title: "Got a different lead?".to_string(),
-                    description: "Pair up with an Agent and work a different beat".to_string(),
+                    description: "Pair up with a PC and work a different beat".to_string(),
                     prompt: "What can you help with me on?".to_string(),
                     chip_type: OnboardingChipType::Other,
                     icon: UIIcon::Icon::Stars,
