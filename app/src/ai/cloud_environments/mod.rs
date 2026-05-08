@@ -150,7 +150,7 @@ impl StringModel for AmbientAgentEnvironment {
     type CloudObjectType = CloudAmbientAgentEnvironment;
 
     fn model_type_name(&self) -> &'static str {
-        "Cloud environment"
+        "Beat"
     }
 
     fn should_enforce_revisions() -> bool {

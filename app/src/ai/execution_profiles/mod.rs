@@ -395,7 +395,7 @@ impl StringModel for AIExecutionProfile {
     type CloudObjectType = CloudAIExecutionProfile;
 
     fn model_type_name(&self) -> &'static str {
-        "AIExecutionProfile"
+        "Loadout"
     }
 
     fn should_enforce_revisions() -> bool {
