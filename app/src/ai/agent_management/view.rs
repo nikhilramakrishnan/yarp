@@ -705,7 +705,7 @@ impl AgentManagementView {
         // Keep the button compact when a specific environment ID is selected by abbreviating the
         // displayed ID. (The dropdown menu still shows the full ID.)
         dropdown.set_menu_header_text_override(|text| {
-            if matches!(text, "All" | "None") {
+            if matches!(text, "All" | "Off the books") {
                 return format!("Beat: {text}");
             }
 
@@ -764,7 +764,7 @@ impl AgentManagementView {
 
         let selected_name = match &self.filters.environment {
             EnvironmentFilter::All => Some("All".to_string()),
-            EnvironmentFilter::NoEnvironment => Some("None".to_string()),
+            EnvironmentFilter::NoEnvironment => Some("Off the books".to_string()),
             EnvironmentFilter::Specific(id) => envs.get(id).cloned(),
         };
 
@@ -778,7 +778,7 @@ impl AgentManagementView {
             )];
 
             items.push(MenuItem::Item(
-                MenuItemFields::new("None").with_on_select_action(
+                MenuItemFields::new("Off the books").with_on_select_action(
                     DropdownAction::SelectActionAndClose(
                         AgentManagementViewAction::SetEnvironmentFilter(
                             EnvironmentFilter::NoEnvironment,
