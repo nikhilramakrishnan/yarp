@@ -1603,7 +1603,7 @@ impl WorkflowView {
         // Block saving if secrets are detected in the workflow when secret redaction is enabled.
         if self.workflow_contains_secrets(ctx) {
             self.display_error_toast(
-                "Can't file this workflow — there's classified info in it.".to_string(),
+                "Can't file this playbook — there's classified info in it.".to_string(),
                 ctx,
             );
             return;
