@@ -5081,7 +5081,7 @@ impl EditorView {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(
-                            "This model doesn't take evidence photos.".to_owned(),
+                            "This officer doesn't take photo evidence.".to_owned(),
                         ),
                         window_id,
                         ctx,
@@ -5196,7 +5196,7 @@ impl EditorView {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(
-                            "This model doesn't take evidence photos.".to_owned(),
+                            "This officer doesn't take photo evidence.".to_owned(),
                         ),
                         window_id,
                         ctx,
