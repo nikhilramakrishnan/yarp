@@ -109,7 +109,7 @@ impl EnableAutoReloadModalBody {
                         if me.update_workspace_settings_loading {
                             me.update_workspace_settings_loading = false;
                             ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
-                                message: "Failed to enable auto-reload. Please try updating your settings in Billing & usage.".to_string(),
+                                message: "Couldn't switch on auto-reload. Try again from Billing & usage.".to_string(),
                                 flavor: ToastFlavor::Error,
                             });
                             ctx.notify();
@@ -387,7 +387,7 @@ impl yarpui::TypedActionView for EnableAutoReloadModalBody {
                 let workspaces = UserWorkspaces::as_ref(ctx);
                 let Some(team_uid) = workspaces.current_team_uid() else {
                     ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
-                        message: "Oops, something went wrong; your team's data could not be found."
+                        message: "Something went sideways — couldn't pull the squad's file."
                             .to_string(),
                         flavor: ToastFlavor::Error,
                     });

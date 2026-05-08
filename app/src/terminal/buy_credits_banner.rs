@@ -208,7 +208,7 @@ impl BuyCreditsBanner {
                 if self.banner_auto_reload_update_in_flight {
                     self.banner_auto_reload_update_in_flight = false;
                     ctx.emit(BuyCreditsBannerEvent::ShowAutoReloadError {
-                        error_message: "Failed to enable auto-reload for your team. Please try again in Settings > Billing and Usage.",
+                        error_message: "Couldn't kit the squad with auto-reload. Have another go in Settings > Billing and Usage.",
                     });
                     ctx.notify();
                 }
@@ -253,7 +253,7 @@ impl BuyCreditsBanner {
             .unwrap_or(0);
 
         let tooltip_text = format!(
-            "When enabled, auto reload will purchase {} credits when your credit balance gets low",
+            "When on, auto-reload tops up {} rations whenever the kit runs low",
             selected_credits
         );
 
@@ -404,9 +404,9 @@ impl BuyCreditsBanner {
 
         // Banner text with title and description based on admin status
         let banner_description = if has_admin_permissions {
-            "Your monthly spend limit has been reached. Increase it to continue."
+            "Hit your monthly rations cap. Bump it to keep patrolling."
         } else {
-            "Contact a team admin to increase monthly limit."
+            "Flag a station admin to lift the monthly cap."
         };
 
         let banner_text = Flex::column()
@@ -562,7 +562,7 @@ impl BuyCreditsBanner {
                 // Create formatted text with clickable hyperlink
                 let warning_text_fragments = vec![
                     FormattedTextFragment::plain_text(
-                        "Purchasing these credits would take you over your monthly spend limit. ",
+                        "Topping up these rations would push you past your monthly cap. ",
                     ),
                     FormattedTextFragment::hyperlink_action("Increase it", Action::ManageBilling),
                     FormattedTextFragment::plain_text(" to continue."),
@@ -593,9 +593,9 @@ impl BuyCreditsBanner {
             } else {
                 // Default message when not at limit
                 let banner_description = if has_admin_permissions {
-                    "Add more credits to your account to continue using Fuzz agents."
+                    "Top up the rations on the books to keep Fuzz officers on patrol."
                 } else {
-                    "Contact a team admin to purchase more credits to continue."
+                    "Flag a station admin to top up the rations."
                 };
 
                 banner_text_children.push(
