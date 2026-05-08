@@ -123,7 +123,7 @@ pub fn init(app: &mut AppContext) {
     use yarpui::keymap::macros::id;
     app.register_editable_bindings([EditableBinding::new(
         "workflowview:save",
-        "Save workflow",
+        "Save playbook",
         WorkflowAction::Save,
     )
     .with_context_predicate(id!("WorkflowView"))
