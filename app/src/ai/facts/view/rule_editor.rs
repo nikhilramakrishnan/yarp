@@ -258,9 +258,9 @@ impl RuleEditorView {
 
     fn render_header(&self, appearance: &Appearance) -> Box<dyn Element> {
         let title = if self.ai_fact.is_none() {
-            "Add Rule"
+            "Issue Standing Order"
         } else {
-            "Edit Rule"
+            "Amend Standing Order"
         };
         Container::new(
             Flex::row()
