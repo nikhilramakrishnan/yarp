@@ -1519,7 +1519,7 @@ impl CodeFooterView {
                 .unwrap_or("this workspace");
             Some((
                 Some(format!(
-                    "Language support is not currently enabled for {root_name}"
+                    "Language officer hasn't clocked on for {root_name}"
                 )),
                 true,
             ))
@@ -1588,25 +1588,25 @@ impl CodeFooterView {
                 ..
             } => match PersistedWorkspace::as_ref(app).has_enabled_lsp_server_for_file_path(path) {
                 LSPEnablementResultForFile::UnsupportedLanguage => (
-                    Some("Language support is unavailable for this file type".to_string()),
+                    Some("No language officer covers this file type".to_string()),
                     false,
                 ),
                 LSPEnablementResultForFile::LSPNotEnabled { root_name } => match lsp_repo_status {
                     LspRepoStatus::CheckingForInstallation => (
                         Some(format!(
-                            "Language support is not currently enabled for {}",
+                            "Language officer hasn't clocked on for {}",
                             root_name.unwrap_or("this codebase".to_string())
                         )),
                         false,
                     ),
                     LspRepoStatus::Ready | LspRepoStatus::Enabled => (
-                        Some("Language server is unavailable for this codebase".to_string()),
+                        Some("No language officer assigned to this case".to_string()),
                         false,
                     ),
                     LspRepoStatus::DisabledAndNotInstalled { .. }
                     | LspRepoStatus::DisabledAndInstalled { .. } => (
                         Some(format!(
-                            "Language support is not currently enabled for {}",
+                            "Language officer hasn't clocked on for {}",
                             root_name.unwrap_or("this codebase".to_string())
                         )),
                         true,
@@ -1658,7 +1658,7 @@ impl CodeFooterView {
 
                 // All servers are enabled/ready but no live servers — unavailable
                 (
-                    Some(format!("Language support is unavailable for {root_name}")),
+                    Some(format!("No language officer covers {root_name}")),
                     false,
                 )
             }

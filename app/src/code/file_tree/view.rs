@@ -72,9 +72,9 @@ use yarpui::ui_components::components::UiComponent;
 mod editing;
 mod render;
 
-const REMOTE_TEXT: &str = "The Project Explorer requires access to your local workspace, which isn’t supported in remote sessions.";
-const DISABLED_TEXT: &str = "The Project Explorer requires access to your local workspace. Open a new session or navigate to an active session to view.";
-const WSL_TEXT: &str = "The Project Explorer doesn't currently work in WSL.";
+const REMOTE_TEXT: &str = "The case cabinet works the local desk only — out-of-station patrols can't open it.";
+const DISABLED_TEXT: &str = "The case cabinet works the local desk only. Clock on at a fresh patrol or hop to an active one to flip through it.";
+const WSL_TEXT: &str = "The case cabinet doesn't run on WSL just yet.";
 
 /// Stable identifier for an item in the file tree.
 /// Includes both the root directory and the index within that root's flattened list.
@@ -1966,7 +1966,7 @@ impl FileTreeView {
 
             if is_remote_file && mouse_state.is_hovered() {
                 let tooltip = ui_builder
-                    .tool_tip("Opening files is unavailable for remote sessions".to_string())
+                    .tool_tip("Out-of-station patrols can't crack open case files".to_string())
                     .build()
                     .finish();
                 let offset = OffsetPositioning::offset_from_parent(
