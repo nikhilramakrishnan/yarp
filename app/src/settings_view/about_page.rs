@@ -53,6 +53,7 @@ impl View for AboutPageView {
 struct AboutPageWidget {
     copy_version_button_mouse_state: MouseStateHandle,
     ack_dispatch_button_mouse_state: MouseStateHandle,
+    mic_check_button_mouse_state: MouseStateHandle,
 }
 
 impl SettingsWidget for AboutPageWidget {
@@ -150,6 +151,7 @@ impl SettingsWidget for AboutPageWidget {
                         .finish(),
                 )
                 .with_child(self.precinct_latest_dispatch_row(appearance))
+                .with_child(self.mic_check_row(appearance))
                 .with_child(
                     ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
@@ -221,6 +223,40 @@ fn precinct_latest_dispatch_text() -> Option<String> {
 }
 
 impl AboutPageWidget {
+    fn mic_check_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        // No peers on the channel — nothing to broadcast at.
+        if radio::peers().is_empty() {
+            return Empty::new().finish();
+        }
+        let ui_builder = appearance.ui_builder();
+        let button = ui_builder
+            .button(
+                ButtonVariant::Secondary,
+                self.mic_check_button_mouse_state.clone(),
+            )
+            .with_style(UiComponentStyles {
+                font_size: Some(12.),
+                font_weight: Some(Weight::Semibold),
+                border_radius: Some(yarpui::elements::CornerRadius::with_all(
+                    yarpui::elements::Radius::Pixels(4.),
+                )),
+                padding: Some(Coords {
+                    top: 4.,
+                    bottom: 4.,
+                    left: 12.,
+                    right: 12.,
+                }),
+                ..Default::default()
+            })
+            .with_text_label("Mic check".to_owned())
+            .build()
+            .on_click(|ctx, _, _| {
+                ctx.dispatch_typed_action(WorkspaceAction::MicCheckBroadcast);
+            })
+            .finish();
+        Container::new(button).with_margin_top(8.).finish()
+    }
+
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         let Some(line) = precinct_latest_dispatch_text() else {
             return Empty::new().finish();

@@ -162,6 +162,7 @@ pub enum WorkspaceAction {
     LogOut,
     CopyVersion(&'static str),
     AckInboxDispatch,
+    MicCheckBroadcast,
     DownloadNewVersion,
     ConfigureKeybindingSettings {
         keybinding_name: Option<String>,
@@ -761,6 +762,7 @@ impl WorkspaceAction {
             | ApplyUpdate
             | CopyVersion(_)
             | AckInboxDispatch
+            | MicCheckBroadcast
             | DownloadNewVersion
             | ConfigureKeybindingSettings { .. }
             | ExportAllYarpDriveObjects
