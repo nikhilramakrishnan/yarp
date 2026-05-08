@@ -955,7 +955,7 @@ impl BackingView for FileNotebookView {
                 // The markdown rendered/raw toggle is always visible in the pane header, so we don't
                 // duplicate it in the overflow menu. Keep "Open in editor" available for local files.
                 actions.push(
-                    MenuItemFields::new("Open in editor")
+                    MenuItemFields::new("Crack open")
                         .with_on_select_action(FileNotebookAction::OpenInEditor)
                         .into_item(),
                 );
