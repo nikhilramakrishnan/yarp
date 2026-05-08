@@ -453,7 +453,7 @@ impl CreateApiKeyModal {
                 ButtonVariant::Accent,
                 self.cancel_button_mouse_state.clone(),
             )
-            .with_text_label("Done".to_string())
+            .with_text_label("Squared away".to_string())
             .with_style(button_style)
             .build()
             .on_click(|ctx, _, _| ctx.dispatch_typed_action(CreateApiKeyModalAction::Cancel))

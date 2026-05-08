@@ -707,7 +707,7 @@ impl ShowBlocksWidget {
                                                         .confirm_dialog_handle
                                                         .clone(),
                                                 )
-                                                .with_text_label("Pull".into())
+                                                .with_text_label("Take it down".into())
                                                 .build()
                                                 .on_click(|ctx, _, _| {
                                                     ctx.dispatch_typed_action(
