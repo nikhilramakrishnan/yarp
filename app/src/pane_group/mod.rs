@@ -2912,7 +2912,7 @@ impl PaneGroup {
             Banner::<PaneGroupAction>::new_permanently_dismissible(
                 BannerTextContent::formatted_text(vec![
                     FormattedTextFragment::plain_text(
-                        "Yarp doesn't currently support your default shell, falling back to zsh.  ",
+                        "Yarp's not cleared for your default shell — patrolling on zsh instead.  ",
                     ),
                     FormattedTextFragment::hyperlink("Pull the dossier", YARP_SHELL_COMPATIBILITY_DOCS),
                 ]),

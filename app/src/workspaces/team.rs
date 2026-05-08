@@ -62,13 +62,13 @@ impl TeamDeleteDisabledReason {
     pub fn user_facing_message(&self) -> &str {
         match self {
             TeamDeleteDisabledReason::ActivePaidSubscription => {
-                "Your team cannot be deleted with an active subscription."
+                "Can't disband the unit while a paid subscription is still on the books."
             }
             TeamDeleteDisabledReason::RemainingBonusCredits => {
-                "Your team cannot be deleted with unused add-on credits."
+                "Can't disband the unit with add-on rations still in the locker."
             }
             TeamDeleteDisabledReason::OtherMembers => {
-                "Your team cannot be deleted with other team members."
+                "Can't disband the unit with other officers still on the roster."
             }
         }
     }
