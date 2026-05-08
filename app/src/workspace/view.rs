@@ -6014,6 +6014,11 @@ impl Workspace {
             .write(ClipboardContent::plain_text(version.to_string()));
     }
 
+    fn ack_inbox_dispatch(&mut self, ctx: &mut ViewContext<Self>) {
+        let _ = radio::read_inbox();
+        ctx.notify();
+    }
+
     fn export_all_yarp_drive_objects(&mut self, ctx: &mut ViewContext<Self>) {
         let window_id = ctx.window_id();
         let cloud_model = CloudModel::as_ref(ctx);
@@ -19935,6 +19940,7 @@ impl TypedActionView for Workspace {
                 self.export_all_yarp_drive_objects(ctx);
             }
             CopyVersion(version) => self.copy_version(version, ctx),
+            AckInboxDispatch => self.ack_inbox_dispatch(ctx),
             DownloadNewVersion => self.download_new_version(ctx),
             ConfigureKeybindingSettings { keybinding_name } => {
                 self.show_keyboard_settings(keybinding_name.as_deref(), ctx)

@@ -12,10 +12,14 @@ use crate::{
 use yarpui::{
     assets::asset_cache::AssetSource,
     elements::{
-        Align, CacheOption, ConstrainedBox, Container, CrossAxisAlignment, Element, Flex, Image,
-        MainAxisAlignment, MouseStateHandle, ParentElement, Wrap,
+        Align, CacheOption, ConstrainedBox, Container, CrossAxisAlignment, Element, Empty, Flex,
+        Image, MainAxisAlignment, MouseStateHandle, ParentElement, Wrap,
     },
-    ui_components::components::UiComponent,
+    fonts::Weight,
+    ui_components::{
+        button::ButtonVariant,
+        components::{Coords, UiComponent, UiComponentStyles},
+    },
     AppContext, Entity, View, ViewContext, ViewHandle,
 };
 
@@ -48,6 +52,7 @@ impl View for AboutPageView {
 #[derive(Default)]
 struct AboutPageWidget {
     copy_version_button_mouse_state: MouseStateHandle,
+    ack_dispatch_button_mouse_state: MouseStateHandle,
 }
 
 impl SettingsWidget for AboutPageWidget {
@@ -144,13 +149,7 @@ impl SettingsWidget for AboutPageWidget {
                         .with_margin_top(4.)
                         .finish(),
                 )
-                .with_child(
-                    ui_builder
-                        .span(precinct_latest_dispatch_line())
-                        .build()
-                        .with_margin_top(4.)
-                        .finish(),
-                )
+                .with_child(self.precinct_latest_dispatch_row(appearance))
                 .with_child(
                     ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
@@ -205,10 +204,8 @@ fn precinct_inbox_line() -> String {
     }
 }
 
-fn precinct_latest_dispatch_line() -> String {
-    let Some(msg) = radio::latest_dispatch() else {
-        return String::new();
-    };
+fn precinct_latest_dispatch_text() -> Option<String> {
+    let msg = radio::latest_dispatch()?;
     // Cap body length so a chatty officer can't blow out the layout.
     const MAX_BODY: usize = 80;
     let body = if msg.body.chars().count() > MAX_BODY {
@@ -217,7 +214,59 @@ fn precinct_latest_dispatch_line() -> String {
     } else {
         msg.body.clone()
     };
-    format!("Latest from {}: \u{201C}{body}\u{201D}", msg.from_call_sign)
+    Some(format!(
+        "Latest from {}: \u{201C}{body}\u{201D}",
+        msg.from_call_sign
+    ))
+}
+
+impl AboutPageWidget {
+    fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let Some(line) = precinct_latest_dispatch_text() else {
+            return Empty::new().finish();
+        };
+        let ui_builder = appearance.ui_builder();
+
+        let dispatch_span = ui_builder.span(line).with_soft_wrap().build().finish();
+
+        let ack_button = ui_builder
+            .button(
+                ButtonVariant::Secondary,
+                self.ack_dispatch_button_mouse_state.clone(),
+            )
+            .with_style(UiComponentStyles {
+                font_size: Some(12.),
+                font_weight: Some(Weight::Semibold),
+                border_radius: Some(yarpui::elements::CornerRadius::with_all(
+                    yarpui::elements::Radius::Pixels(4.),
+                )),
+                padding: Some(Coords {
+                    top: 4.,
+                    bottom: 4.,
+                    left: 10.,
+                    right: 10.,
+                }),
+                ..Default::default()
+            })
+            .with_text_label("10-4, copy".to_owned())
+            .build()
+            .on_click(|ctx, _, _| {
+                ctx.dispatch_typed_action(WorkspaceAction::AckInboxDispatch);
+            })
+            .finish();
+
+        Container::new(
+            Wrap::row()
+                .with_main_axis_alignment(MainAxisAlignment::Center)
+                .with_children([
+                    dispatch_span,
+                    Container::new(ack_button).with_padding_left(8.).finish(),
+                ])
+                .finish(),
+        )
+        .with_margin_top(4.)
+        .finish()
+    }
 }
 
 impl SettingsPageMeta for AboutPageView {
