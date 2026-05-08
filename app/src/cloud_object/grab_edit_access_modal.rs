@@ -10,7 +10,7 @@ use crate::ui_components::dialog::{dialog_styles, Dialog};
 use yarpui::elements::{Container, MouseStateHandle, Text};
 use yarpui::ui_components::components::UiComponent;
 
-const EDIT_ANYWAY_CTA_LABEL: &str = "Edit anyway";
+const EDIT_ANYWAY_CTA_LABEL: &str = "Amend anyway";
 const CANCEL_CTA_LABEL: &str = "Stand down";
 const EDIT_ANYWAY_TEXT: &str =
     "If you take edit controls, the current editor will be forced into view mode";

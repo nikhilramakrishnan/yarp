@@ -29,7 +29,7 @@ const SUBTITLE_RECEIVED_REFERRAL: &str =
 const SUBTITLE_FONT_SIZE: f32 = 14.;
 const SUBTITLE_MARGIN_BOTTOM: f32 = 40.;
 // Constants for the button
-const BUTTON_CTA: &str = "Try it out!";
+const BUTTON_CTA: &str = "Take it for a beat!";
 const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_HEIGHT: f32 = 45.;
 const BUTTON_WIDTH: f32 = 240.;

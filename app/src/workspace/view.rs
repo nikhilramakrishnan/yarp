@@ -545,7 +545,7 @@ const TAB_BAR_PILL_WIDTH: f32 = 100.;
 const PILL_FONT_SIZE: f32 = 12.;
 // We use the word "Yarp" in the Update Ready button to make it obvious that the terminal is Yarp.
 // This can lead to free advertising when users screen-share Yarp when an update is available.
-const UPDATE_READY_TEXT: &str = "Update Yarp";
+const UPDATE_READY_TEXT: &str = "Re-issue Yarp";
 
 const TAB_BAR_OVERFLOW_MENU_WIDTH: f32 = 300.;
 

@@ -14,7 +14,7 @@ use crate::search::{ItemHighlightState, SearchItem};
 use crate::terminal::input::inline_menu::styles as inline_styles;
 use crate::terminal::input::profiles::data_source::SelectProfileMenuItem;
 
-const MANAGE_PROFILES_LABEL: &str = "Manage profiles";
+const MANAGE_PROFILES_LABEL: &str = "Inspect the roster";
 
 #[derive(Debug, Clone)]
 enum ProfileSearchItemKind {
