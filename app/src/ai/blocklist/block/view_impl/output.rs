@@ -142,7 +142,7 @@ use yarpui::{
     Action, AppContext, Element, ModelHandle, SingletonEntity, View, ViewHandle,
 };
 
-const BLOCKED_ACTION_MESSAGE_FOR_UPLOADING_ARTIFACT: &str = "Grant access to upload this artifact?";
+const BLOCKED_ACTION_MESSAGE_FOR_UPLOADING_ARTIFACT: &str = "Wave this piece of evidence through?";
 
 /// Data required to render the AI block output component.
 #[derive(Copy, Clone)]
@@ -2051,7 +2051,7 @@ fn render_requested_edits_output_message(
             .view
             .as_ref(app)
             .title()
-            .unwrap_or("Could not apply changes to file.");
+            .unwrap_or("Couldn't book the amendments into the file.");
         RenderableAction::new(title, app)
             .with_icon(inline_action_icons::cancelled_icon(appearance).finish())
             .render(app)
