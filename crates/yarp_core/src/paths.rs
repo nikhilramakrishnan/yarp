@@ -77,6 +77,13 @@ pub fn yarp_home_radio_dir() -> Option<PathBuf> {
     yarp_home_config_dir().map(|yarp_config_dir| yarp_config_dir.join("radio"))
 }
 
+/// Per-pid inbox directory for inter-terminal radio messages: peers drop
+/// JSON message files at `~/.yarp/radio/inbox/<recipient_pid>/<msg_id>.json`
+/// and the recipient drains them on read.
+pub fn yarp_home_radio_inbox_dir() -> Option<PathBuf> {
+    yarp_home_radio_dir().map(|radio_dir| radio_dir.join("inbox"))
+}
+
 /// Returns the macOS config directory name for the current channel.
 ///
 /// `Oss` uses `.yarp`, integration tests use `.yarp-integration`.

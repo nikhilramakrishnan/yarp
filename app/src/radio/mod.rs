@@ -231,6 +231,92 @@ pub fn list_active() -> Vec<Beacon> {
     out
 }
 
+/// A radio message dropped into a peer's inbox. The recipient drains
+/// these in `read_inbox` and removes them from disk after reading.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Message {
+    pub from_pid: u32,
+    pub from_call_sign: String,
+    pub sent_at_unix: u64,
+    pub body: String,
+}
+
+impl Message {
+    pub fn new(from_call_sign: impl Into<String>, body: impl Into<String>) -> Self {
+        Self {
+            from_pid: std::process::id(),
+            from_call_sign: from_call_sign.into(),
+            sent_at_unix: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .map(|d| d.as_secs())
+                .unwrap_or_default(),
+            body: body.into(),
+        }
+    }
+}
+
+fn inbox_dir(pid: u32) -> Option<PathBuf> {
+    yarp_core::paths::yarp_home_radio_inbox_dir().map(|dir| dir.join(pid.to_string()))
+}
+
+/// Drop a message into `to_pid`'s inbox. Filename is the message's
+/// `sent_at_unix` plus a nano-suffix to avoid collisions when a sender
+/// fires multiple messages within the same second.
+pub fn send_message(to_pid: u32, msg: &Message) -> io::Result<()> {
+    let Some(dir) = inbox_dir(to_pid) else {
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "no home dir for radio inbox",
+        ));
+    };
+    fs::create_dir_all(&dir)?;
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.subsec_nanos())
+        .unwrap_or(0);
+    let filename = format!("{}-{}-{:09}.json", msg.sent_at_unix, msg.from_pid, nanos);
+    let path = dir.join(filename);
+    let json =
+        serde_json::to_vec_pretty(msg).map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+    fs::write(&path, json)
+}
+
+/// Drain this process's inbox: returns all pending messages in send order
+/// and removes them from disk. Corrupt files are silently dropped.
+pub fn read_inbox() -> Vec<Message> {
+    let Some(dir) = inbox_dir(std::process::id()) else {
+        return Vec::new();
+    };
+    let entries = match fs::read_dir(&dir) {
+        Ok(entries) => entries,
+        Err(_) => return Vec::new(),
+    };
+    let mut paths_and_msgs: Vec<(PathBuf, Message)> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("json") {
+            continue;
+        }
+        let bytes = match fs::read(&path) {
+            Ok(b) => b,
+            Err(_) => continue,
+        };
+        match serde_json::from_slice::<Message>(&bytes) {
+            Ok(msg) => paths_and_msgs.push((path, msg)),
+            Err(_) => {
+                let _ = fs::remove_file(&path);
+            }
+        }
+    }
+    paths_and_msgs.sort_by_key(|(p, _)| p.file_name().map(|s| s.to_os_string()));
+    let mut out = Vec::with_capacity(paths_and_msgs.len());
+    for (path, msg) in paths_and_msgs {
+        let _ = fs::remove_file(&path);
+        out.push(msg);
+    }
+    out
+}
+
 #[cfg(unix)]
 fn pid_is_alive(pid: u32) -> bool {
     // signal 0 = existence/permission probe without delivery.
@@ -326,6 +412,22 @@ mod tests {
         };
         let summary = PeerSummary::from_beacon(beacon, 500);
         assert_eq!(summary.uptime_secs, 0);
+    }
+
+    #[test]
+    fn message_round_trips_through_json() {
+        let msg = Message::new("Sandford", "10-4");
+        let json = serde_json::to_string(&msg).unwrap();
+        let back: Message = serde_json::from_str(&json).unwrap();
+        assert_eq!(msg, back);
+    }
+
+    #[test]
+    fn message_constructor_sets_sender_pid_and_body() {
+        let msg = Message::new("Sandford", "Need backup at the supermarket");
+        assert_eq!(msg.from_pid, std::process::id());
+        assert_eq!(msg.from_call_sign, "Sandford");
+        assert_eq!(msg.body, "Need backup at the supermarket");
     }
 
     #[test]
