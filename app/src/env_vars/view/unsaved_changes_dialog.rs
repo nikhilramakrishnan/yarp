@@ -16,7 +16,7 @@ use super::env_var_collection::{EnvVarCollectionAction, EnvVarCollectionView};
 
 const UNSAVED_CHANGES_TEXT: &str = "You have unsaved changes.";
 const KEEP_EDITING_TEXT: &str = "Keep editing";
-const DISCARD_CHANGES_TEXT: &str = "Discard changes";
+const DISCARD_CHANGES_TEXT: &str = "Burn the draft";
 const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_PADDING: f32 = 12.;
 const MODAL_HORIZONTAL_MARGIN: f32 = 28.;
