@@ -165,7 +165,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(self.mic_check_row(appearance))
                 .with_child(
                     ui_builder
-                        .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
+                        .span(sandford_population_line())
                         .with_soft_wrap()
                         .build()
                         .with_margin_top(16.)
@@ -181,6 +181,13 @@ impl SettingsWidget for AboutPageWidget {
 // Real-world police shorthand mapped onto the radio domain — the banner gives
 // the whole precinct stack a unifying status pulse above the per-row detail,
 // folding officer count into the same line so the stack stays tight.
+// "Sandford. Population: N." — live peer count + self. Single Yarp running
+// reads as the original Hot Fuzz line ("Population: 1"); adding peers grows it.
+fn sandford_population_line() -> String {
+    let population = radio::peers().len() + 1;
+    format!("Copyright 2026 Yarp contributors. Sandford. Population: {population}.")
+}
+
 // Sign-on line — "Officer Cooper \u{00B7} on patrol." The fallback call sign
 // already starts with "Officer-" (process-id form), so we don't double-prefix.
 fn self_signon_line() -> String {
