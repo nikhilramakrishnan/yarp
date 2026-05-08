@@ -572,9 +572,9 @@ const ELLIPSE_SVG_PATH: &str = "bundled/svg/ellipse.svg";
 
 const AI_ASSISTANT_BUTTON_ID: &str = "workspace_view:ai_assistant_button";
 
-const VERSION_DEPRECATION_BANNER_TEXT: &str = "Your app is out of date and some features may not work as expected. Please update immediately.";
+const VERSION_DEPRECATION_BANNER_TEXT: &str = "Your kit's gone stale and some duties may not run. Sign on to fresh issue immediately.";
 
-const VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT: &str = "Some Yarp features may not work as expected without updating immediately, but Yarp is unable to perform the update.";
+const VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT: &str = "Some Yarp duties may go down without a fresh issue, but Yarp can't reissue the kit on its own.";
 
 const ASK_AI_ASSISTANT_KEYBINDING_NAME: &str = "workspace:toggle_ai_assistant";
 const TOGGLE_RESOURCE_CENTER_KEYBINDING_NAME: &str = "workspace:toggle_resource_center";
@@ -18255,7 +18255,7 @@ impl Workspace {
             description,
             secondary_button,
             button: Some(WorkspaceBannerButtonDetails {
-                text: "Open file".to_owned(),
+                text: "Pull the file".to_owned(),
                 action: WorkspaceAction::OpenSettingsFile,
                 variant: BannerButtonVariant::Outlined,
                 icon: None,
@@ -18358,7 +18358,7 @@ impl Workspace {
                             description: VERSION_DEPRECATION_BANNER_TEXT.to_string(),
                             secondary_button: None,
                             button: Some(WorkspaceBannerButtonDetails {
-                                text: "Update now".to_string(),
+                                text: "Re-issue now".to_string(),
                                 action: WorkspaceAction::ApplyUpdate,
                                 variant: BannerButtonVariant::Outlined,
                                 icon: None,
@@ -18484,7 +18484,7 @@ impl Workspace {
 
             if let Some(more_info_button_action) = more_info_button_action {
                 let more_info_details = WorkspaceBannerButtonDetails {
-                    text: "More info".to_owned(),
+                    text: "Pull the dossier".to_owned(),
                     action: more_info_button_action,
                     variant: BannerButtonVariant::Outlined,
                     icon: None,
