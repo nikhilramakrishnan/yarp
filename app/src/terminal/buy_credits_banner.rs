@@ -413,7 +413,7 @@ impl BuyCreditsBanner {
             .with_children([
                 appearance
                     .ui_builder()
-                    .paragraph("Monthly limit reached")
+                    .paragraph("Monthly cap hit")
                     .with_style(UiComponentStyles {
                         font_size: Some(14.),
                         ..Default::default()
