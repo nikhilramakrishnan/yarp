@@ -177,7 +177,7 @@ const INDEX_ENV_VAR_COLLECTION_LABEL: &str = "New environment variables";
 
 const IMPORT_LABEL: &str = "Import";
 const REMOVE_LABEL: &str = "Remove";
-const OFFLINE_BANNER_TEXT: &str = "You are offline. Some files will be read only.";
+const OFFLINE_BANNER_TEXT: &str = "Off the radio. Some case files are read-only until you're back on the air.";
 
 pub const DRIVE_INDEX_VIEW_POSITION_ID: &str = "drive_index_view_id";
 
@@ -194,18 +194,18 @@ const SORTING_BUTTON_TOOLTIP_LABEL: &str = "Sort by";
 const RETRY_BUTTON_TOOLTIP_LABEL: &str = "Retry sync";
 
 const SHARED_OBJECT_LIMIT_HIT_BANNER_LINE: &str =
-    "Upgrade for more notebooks, workflows, channels on the air, and AI credits.";
+    "Top up the kit for more casebooks, workflows, channels on the air, and AI credits.";
 
 const PAYMENT_ISSUE_BANNER_LINE_1: &str =
     "Case files locked down — subscription payment's gone south.";
 
 const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN: &str =
-    "Please update your payment information to restore access.";
+    "Square up the payment to lift the lockdown.";
 
 const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN_ENTERPRISE: &str =
-    "Please contact support@yarp.dev to restore access.";
+    "Radio support@yarp.dev to lift the lockdown.";
 
-const PAYMENT_ISSUE_BANNER_LINE_2_NONADMIN: &str = "Please contact a team admin to restore access.";
+const PAYMENT_ISSUE_BANNER_LINE_2_NONADMIN: &str = "Get the team admin to lift the lockdown.";
 
 /// Struct to hold different state-related information on per-space basis.
 /// Currently, we only have 1 space (1 Team), but as we're working on personal space, and add
@@ -1728,7 +1728,7 @@ impl DriveIndex {
             (DriveIndexVariant::MainIndex, DriveIndexSection::JoinTeam) => {
                 if self.is_online(app) {
                     let join_teams_text = format!(
-                        "Collaborate with {} of your teammates already on Yarp.",
+                        "{} of your fellow officers are already on the force.",
                         UserWorkspaces::handle(app)
                             .as_ref(app)
                             .total_teammates_in_joinable_teams()
@@ -2976,7 +2976,7 @@ impl DriveIndex {
                 if mouse_state.is_hovered() {
                     let tooltip = appearance
                         .ui_builder()
-                        .tool_tip(String::from("Syncing Yarp Drive"));
+                        .tool_tip(String::from("Filing the latest with Yarp Drive"));
 
                     stack.add_positioned_overlay_child(
                         tooltip.build().finish(),
@@ -3971,7 +3971,7 @@ impl DriveIndex {
             .finish();
 
         let personal_object_limit_description =
-            "Sign up for free to increase your storage limit and unlock more features.";
+            "Sign on for free — bigger evidence locker, full kit unlocked.";
 
         let body_text = appearance
             .ui_builder()
@@ -4176,7 +4176,7 @@ impl DriveIndex {
         let highlight =
             Highlight::new().with_properties(Properties::default().weight(Weight::Bold));
 
-        let banner_line_1 = format!("You've run out of {object_type}s on your plan.");
+        let banner_line_1 = format!("Your {object_type} ration's run dry on this plan.");
         let body = Container::new(
             appearance
                 .ui_builder()

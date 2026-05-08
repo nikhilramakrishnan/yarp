@@ -57,7 +57,7 @@ impl LinkTarget {
         match self {
             LinkTarget::LocalDirectory { .. } => Some(SecondaryAction {
                 label: "New session".into(),
-                tooltip: Some("Open a new terminal session in this directory".into()),
+                tooltip: Some("Open a fresh beat in this directory".into()),
                 accessibility_content: "Open in terminal session".into(),
             }),
             LinkTarget::LocalFile {
@@ -396,8 +396,8 @@ impl fmt::Display for ResolveError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ResolveError::FileNotFound => f.write_str("File not found"),
-            ResolveError::MissingContext => f.write_str("No base directory"),
-            ResolveError::Unknown => f.write_str("Broken file link"),
+            ResolveError::MissingContext => f.write_str("No base beat to work from"),
+            ResolveError::Unknown => f.write_str("Lead's gone cold"),
         }
     }
 }
