@@ -635,7 +635,7 @@ impl EnvironmentsPageView {
 
             if should_handle {
                 self.pending_save_env_id = None;
-                self.show_success_toast("Environment's been amended.".to_string(), ctx);
+                self.show_success_toast("Post's been amended.".to_string(), ctx);
 
                 // No need to force a global cloud-object refresh here: on update success the
                 // sync pipeline updates this environment's `revision_ts` (used for "Last edited")
@@ -653,7 +653,7 @@ impl EnvironmentsPageView {
                 if let Some(result_client_id) = &result.client_id {
                     if *result_client_id == pending_client_id {
                         self.show_success_toast(
-                            "Environment's on the books.".to_string(),
+                            "Post's on the books.".to_string(),
                             ctx,
                         );
                     }
@@ -670,7 +670,7 @@ impl EnvironmentsPageView {
                 if let Some(server_id) = &result.server_id {
                     if server_id.uid() == pending_env_id.uid() {
                         self.show_success_toast(
-                            "Environment's been struck from the record.".to_string(),
+                            "Post's been struck from the record.".to_string(),
                             ctx,
                         );
                     }
@@ -693,9 +693,9 @@ impl EnvironmentsPageView {
             self.pending_share_server_id = None;
 
             if matches!(result.success_type, OperationSuccessType::Success) {
-                self.show_success_toast("Environment's been handed off to the squad.".to_string(), ctx);
+                self.show_success_toast("Post's been handed off to the squad.".to_string(), ctx);
             } else {
-                self.show_error_toast("Couldn't hand the environment to the squad.".to_string(), ctx);
+                self.show_error_toast("Couldn't hand the post to the squad.".to_string(), ctx);
             }
 
             ctx.notify();
@@ -1465,7 +1465,7 @@ impl EnvironmentsPageWidget {
                 title: "Tag in the PC",
                 badge: None,
                 subtitle:
-                    "Choose a locally set up project and we’ll help you set up an environment based on it",
+                    "Pick a locally posted beat and we’ll help you stand a post based on it",
                 action_button: local_repos_button,
                 compact_action_button: local_repos_button_compact,
                 icon_size,
@@ -1493,7 +1493,7 @@ impl EnvironmentsPageWidget {
         .finish();
 
         let subheader = Text::new(
-            "Choose how you’d like to set up your environment:",
+            "Pick how you’d like to stand up your post:",
             appearance.ui_font_family(),
             appearance.ui_font_size() * 0.95,
         )
