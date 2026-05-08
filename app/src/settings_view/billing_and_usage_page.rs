@@ -85,9 +85,9 @@ const OVERAGE_USAGE_LINK_TEXT: &str = "Pull the usage report";
 const OVERAGE_TOGGLE_ADMIN_HEADER: &str = "Enable premium model usage overages";
 const OVERAGE_TOGGLE_USER_HEADER_ENABLED: &str = "Premium model usage overages are enabled";
 const OVERAGE_TOGGLE_USER_HEADER_DISABLED: &str = "Premium model usage overages are not enabled";
-const OVERAGE_TOGGLE_DESCRIPTION: &str = "Continue using premium models beyond your plan's limits. Usage is charged in $20 increments up to your spending limit, with any remaining balance charged on your scheduled billing date.";
+const OVERAGE_TOGGLE_DESCRIPTION: &str = "Keep working premium models past your playbook quotas. Tour is logged in $20 increments up to your spending cap, with any remaining balance billed on your scheduled billing date.";
 const OVERAGE_TOGGLE_USER_DESCRIPTION: &str =
-    "Ask a team admin to enable overages for more AI usage.";
+    "Ask the chief to wave through overages for more AI tour.";
 
 const SORT_MENU_ITEM_DISPLAY_NAME_A_Z_LABEL: &str = "A to Z";
 const SORT_MENU_ITEM_DISPLAY_NAME_Z_A_LABEL: &str = "Z to A";
@@ -95,11 +95,11 @@ const SORT_MENU_ITEM_REQUEST_USAGE_ASCENDING_LABEL: &str = "Usage ascending";
 const SORT_MENU_ITEM_REQUEST_USAGE_DESCENDING_LABEL: &str = "Usage descending";
 
 const AUTO_RELOAD_EXCEED_LIMIT_WARNING_STRING: &str =
-    "Auto reload is disabled, as the next reload would exceed your monthly spend limit. Increase your limit to use auto reload.";
+    "Auto reload is off duty — the next reload would blow past your monthly spend cap. Raise the cap to put auto reload back on shift.";
 const AUTO_RELOAD_DELINQUENT_WARNING_STRING: &str =
-    "Restricted due to billing issue. Update your payment method to purchase add-on credits.";
+    "Held at the desk over a billing issue. Update your payment method to pick up add-on credits.";
 const RESTRICTED_BILLING_USAGE_WARNING_STRING: &str =
-    "Auto reload is disabled due to recent failed reload. Please update your payment method and try again.";
+    "Auto reload is off duty after a recent failed reload. Update your payment method and radio it in again.";
 
 const OVERVIEW_TAB_TEXT: &str = "Overview";
 const USAGE_HISTORY_TAB_TEXT: &str = "Usage History";
@@ -112,9 +112,9 @@ const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_SUFFIX: &str = ".";
 const ENTERPRISE_USAGE_CALLOUT_BODY_NON_ADMIN: &str =
     "Enterprise credit usage isn't fully available in this view yet. Contact a team admin for detailed usage reporting.";
 
-const ADDON_CREDITS_DESCRIPTION: &str = "Add-on credits are purchased in prepaid packages that roll over each billing cycle and expire after one year. The more you purchase, the better the per-credit rate. Once your base plan credits are used, add-on credits will be consumed.";
+const ADDON_CREDITS_DESCRIPTION: &str = "Add-on credits ship in prepaid packages that roll over each billing cycle and expire after one year. The more you stock the locker, the better the per-credit rate. Once your base playbook quota is spent, add-on credits get drawn down.";
 const ADDITIONAL_ADDON_CREDITS_DESCRIPTION_FOR_TEAM: &str =
-    "Purchased add-on credits are shared across your team.";
+    "Add-on credits in the squad locker are shared across the unit.";
 
 // Cloud agent trial widget constants.
 const AMBIENT_AGENT_TRIAL_TITLE: &str = "Cloud agent trial";
