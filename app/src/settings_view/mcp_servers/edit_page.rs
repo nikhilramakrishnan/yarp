@@ -140,13 +140,13 @@ impl MCPServersEditPageView {
         });
 
         let reinstall_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Edit Variables", PrimaryTheme).on_click(|ctx| {
+            ActionButton::new("Amend variables", PrimaryTheme).on_click(|ctx| {
                 ctx.dispatch_typed_action(MCPServersEditPageViewAction::Reinstall);
             })
         });
 
         let delete_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Delete MCP", DangerSecondaryTheme)
+            ActionButton::new("Strike MCP from the record", DangerSecondaryTheme)
                 .with_icon(Icon::Trash)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(MCPServersEditPageViewAction::Delete);
@@ -154,7 +154,7 @@ impl MCPServersEditPageView {
         });
 
         let unshare_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Remove from team", DangerNakedTheme)
+            ActionButton::new("Pull from the squad", DangerNakedTheme)
                 .with_icon(Icon::MinusCircle)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(MCPServersEditPageViewAction::Unshare);

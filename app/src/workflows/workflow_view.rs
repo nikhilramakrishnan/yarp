@@ -1748,9 +1748,9 @@ impl WorkflowView {
         crate::workspace::ToastStack::handle(ctx).update(ctx, |stack, ctx| {
             stack.add_ephemeral_toast(
                 DismissibleToast::success(if self.is_for_agent_mode {
-                    "Prompt copied.".to_string()
+                    "Tip-off copied.".to_string()
                 } else {
-                    "Command copied.".to_string()
+                    "Order copied.".to_string()
                 }),
                 window_id,
                 ctx,

@@ -1286,7 +1286,7 @@ impl EnvironmentsPageWidget {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "No environments match your search.",
+                "No environments match the APB.",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
@@ -1429,7 +1429,7 @@ impl EnvironmentsPageWidget {
 
         let local_repos_button = Self::render_empty_state_button(
             appearance,
-            "Launch agent",
+            "Tag in PC",
             ButtonVariant::Secondary,
             view.empty_state_local_repos_button_mouse_state.clone(),
             true,
@@ -1437,7 +1437,7 @@ impl EnvironmentsPageWidget {
         );
         let local_repos_button_compact = Self::render_empty_state_button(
             appearance,
-            "Launch agent",
+            "Tag in PC",
             ButtonVariant::Secondary,
             view.empty_state_local_repos_button_mouse_state.clone(),
             true,
@@ -1448,7 +1448,7 @@ impl EnvironmentsPageWidget {
             appearance,
             EmptyStateRowConfig {
                 icon: Icon::Github,
-                title: "Quick setup",
+                title: "Quick briefing",
                 badge: Some("Suggested"),
                 subtitle:
                     "Select the GitHub repositories you’d like to work with and we’ll suggest a base image and config",
@@ -1462,7 +1462,7 @@ impl EnvironmentsPageWidget {
             appearance,
             EmptyStateRowConfig {
                 icon: Icon::Terminal,
-                title: "Use the agent",
+                title: "Tag in the PC",
                 badge: None,
                 subtitle:
                     "Choose a locally set up project and we’ll help you set up an environment based on it",
@@ -1858,7 +1858,7 @@ impl EnvironmentsPageWidget {
             let view_runs_link = appearance
                 .ui_builder()
                 .link(
-                    "View my runs".to_string(),
+                    "View my beats".to_string(),
                     None,
                     Some(Box::new(move |ctx| {
                         ctx.dispatch_typed_action(WorkspaceAction::ViewAgentRunsForEnvironment {
