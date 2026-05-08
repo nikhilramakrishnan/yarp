@@ -3395,7 +3395,7 @@ impl SettingsWidget for UsageWidget {
         .finish();
 
         let request_limit_description = format!(
-            "This is the {} limit of AI credits for your account.",
+            "This is the {} ration cap for your account.",
             ai_request_usage_model.refresh_duration_to_string()
         );
 

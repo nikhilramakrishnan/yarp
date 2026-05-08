@@ -208,7 +208,7 @@ impl View for SpendingLimitModal {
         .finish();
 
         let additional_note_text = Text::new(
-            "AI credits clocked right by the cap may run a few quid past.",
+            "Rations clocked right by the cap may run a few quid past.",
             appearance.ui_font_family(),
             12.,
         )

@@ -2393,7 +2393,7 @@ impl UsageWidget {
         } else {
             let header = "Credits";
             let description =
-                format!("This is the {refresh_duration} limit of AI credits for your account.");
+                format!("This is the {refresh_duration} ration cap for your account.");
 
             let request_usage_description = FormattedTextElement::from_str(
                 description,
@@ -3175,7 +3175,7 @@ impl UsageWidget {
                         "Upgrade to Max",
                         UserWorkspaces::upgrade_link_for_team(team.uid),
                     ),
-                    FormattedTextFragment::plain_text(" for more AI credits."),
+                    FormattedTextFragment::plain_text(" for more rations."),
                 ]
             } else if team.billing_metadata.is_on_build_max_plan() {
                 vec![
