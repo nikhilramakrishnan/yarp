@@ -11761,7 +11761,7 @@ impl Workspace {
         };
 
         WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-            let toast = DismissibleToast::default(format!("Forked \"{title}\""));
+            let toast = DismissibleToast::default(format!("Spun off \"{title}\""));
             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
         });
     }
