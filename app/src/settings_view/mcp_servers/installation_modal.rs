@@ -612,7 +612,7 @@ impl View for InstallationModalBody {
                 .finish()
         } else {
             Text::new(
-                "No MCP server selected",
+                "No MCP server on the call sheet.",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
