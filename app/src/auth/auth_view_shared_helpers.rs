@@ -61,7 +61,7 @@ where
         ..Default::default()
     };
 
-    let text = "You are currently offline. An internet connection is required to use Yarp for the first time.";
+    let text = "Radio's down right now. Need a working line for your first shift on Yarp.";
 
     let (button_color, button_variant) = action_button_color_and_variant(appearance);
     let button_styles = UiComponentStyles {
@@ -175,9 +175,9 @@ where
         ..Default::default()
     };
 
-    let paragraph_1 = "All of Yarp’s non-cloud features work offline.";
-    let paragraph_2 = "However, we require users to be online when using Yarp for the first time in order to enable Yarp's AI and cloud features.";
-    let paragraph_3 = "We offer cloud features to all users, and so we need an internet connection to meter AI usage, prevent abuse, and associate cloud objects with users. If you opt to use Yarp logged-out, a unique ID will be attached to an anonymous user account in order to support these features.";
+    let paragraph_1 = "All of Yarp's local kit works without the radio.";
+    let paragraph_2 = "But your first shift needs the line up, so the AI desk and cloud officers can clock on.";
+    let paragraph_3 = "Cloud kit is on offer to every officer, so the line has to be live to meter AI usage, keep troublemakers out, and pin cloud case files to a badge. If you stay off-the-books, an anonymous badge number is filed to keep that kit running.";
 
     Container::new(
         Flex::column()
@@ -475,7 +475,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let telemetry_description = render_description(
         appearance,
-        "High-level feature usage data helps Yarp's product team prioritize the roadmap.".into(),
+        "Beat reports help Yarp's product team work out which calls to take next.".into(),
     );
 
     let telemetry_link = Flex::row()
@@ -520,7 +520,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let crash_reporting_description = render_description(
         appearance,
-        "Crash reporting helps Yarp's engineering team understand stability and improve performance.".into(),
+        "Incident reports help Yarp's engineering team keep the station upright and running smooth.".into(),
     );
 
     let toggle_cloud = actions.toggle_cloud_conversation_storage.clone();
