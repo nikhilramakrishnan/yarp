@@ -89,7 +89,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
 
     maximize_yarp_items.push(FeatureItem::new(
         "Search the records",
-        "Pull up old commands, workflows, and the rest of the file.",
+        "Pull up old commands, playbooks, and the rest of the case file.",
         Tip::Action(TipAction::CommandSearch),
         ctx,
     ));

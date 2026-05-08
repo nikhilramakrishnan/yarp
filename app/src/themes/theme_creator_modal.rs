@@ -16,7 +16,7 @@ use yarpui::ViewHandle;
 use yarpui::{AppContext, SingletonEntity as _};
 use yarpui::{Element, Entity, TypedActionView, View, ViewContext};
 
-const THEME_CREATOR_MODAL_HEADER: &str = "Create new theme from image";
+const THEME_CREATOR_MODAL_HEADER: &str = "Lift a new theme from photo evidence";
 
 pub struct ThemeCreatorModal {
     theme_creator_modal: ViewHandle<Modal<ThemeCreatorBody>>,
