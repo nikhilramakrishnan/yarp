@@ -358,7 +358,7 @@ impl AgentAssistedEnvironmentModal {
             let name = repo_path
                 .file_name()
                 .and_then(|s| s.to_str())
-                .unwrap_or("(unknown)")
+                .unwrap_or("Unmarked beat")
                 .to_string();
 
             let path_text = home_relative_path(repo_path);

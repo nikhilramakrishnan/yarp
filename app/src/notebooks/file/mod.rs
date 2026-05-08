@@ -1083,7 +1083,7 @@ impl FileLocation {
         let name = path
             .file_name()
             .map(|name| name.to_string_lossy().into_owned())
-            .unwrap_or_else(|| "Unnamed".to_string());
+            .unwrap_or_else(|| "Unfiled file".to_string());
 
         Self { breadcrumbs, name }
     }
