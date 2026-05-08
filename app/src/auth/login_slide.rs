@@ -924,9 +924,9 @@ impl LoginSlideView {
             .finish();
 
         let body_text_str = if is_terminal {
-            "Yarp Drive lets you save workflows and knowledge across devices and share them with your team. By continuing, you won't have access to the following features:"
+            "Yarp Drive lets you file playbooks and case notes across every station and share them with your squad. By continuing, you won't have access to the following features:"
         } else {
-            "Yarp is better with AI. By continuing, you won't have access to any of the following features:"
+            "Yarp runs better with the AI desk. By continuing, you won't have access to any of the following features:"
         };
         let body_text =
             FormattedTextElement::from_str(body_text_str, appearance.ui_font_family(), 14.)

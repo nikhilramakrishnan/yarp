@@ -265,7 +265,7 @@ impl View for PasteAuthTokenModalView {
 
         let subtitle_color = internal_colors::text_sub(theme, dialog_surface_solid);
         let subtitle = FormattedTextElement::from_str(
-            "Paste your auth token from the browser to get complete login.",
+            "Drop your auth token in from the browser to wrap up sign-on.",
             appearance.ui_font_family(),
             14.,
         )

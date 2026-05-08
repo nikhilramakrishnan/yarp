@@ -41,26 +41,26 @@ impl LoginFailureReason {
         let fragments = match self {
             LoginFailureReason::InvalidRedirectUrl { was_pasted } => {
                 let text = if *was_pasted {
-                    "An invalid auth token was entered into the modal."
+                    "That auth token won't badge in."
                 } else {
-                    "Failed to log in. Try manually copying the auth token from the \
-                        authentication web page and pasting into the modal."
+                    "Sign-on failed. Lift the auth token from the sign-on page yourself \
+                        and drop it in the modal."
                 };
                 with_troubleshooting_text(vec![FormattedTextFragment::plain_text(text)])
             }
             LoginFailureReason::FailedUserAuthentication => {
                 with_troubleshooting_text(vec![FormattedTextFragment::plain_text(
-                    "Request to log in failed.",
+                    "Sign-on radio call failed.",
                 )])
             }
             LoginFailureReason::FailedMintCustomToken => {
                 with_troubleshooting_text(vec![FormattedTextFragment::plain_text(
-                    "Request to sign up failed.",
+                    "Couldn't badge you in.",
                 )])
             }
             LoginFailureReason::InvalidStateParameter | LoginFailureReason::MissingStateParameter => {
                 with_troubleshooting_text(vec![FormattedTextFragment::plain_text(
-                    "The redirect URL pasted did not originate from this app. Please click the button below to try again.",
+                    "That redirect URL didn't come from this station. Press the button below to take it from the top.",
                 )])
             }
         };
