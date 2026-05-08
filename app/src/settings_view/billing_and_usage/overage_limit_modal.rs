@@ -268,7 +268,7 @@ impl View for SpendingLimitModal {
                 ButtonVariant::Accent,
                 self.update_button_mouse_state.clone(),
             )
-            .with_text_label("Update".to_string())
+            .with_text_label("Amend".to_string())
             .with_style(button_style);
 
         if self.input_error_state.is_some() {

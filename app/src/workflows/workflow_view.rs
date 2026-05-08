@@ -1953,7 +1953,7 @@ impl WorkflowView {
             WorkflowViewMode::View => {
                 let mode_text = appearance
                     .ui_builder()
-                    .span("Viewing")
+                    .span("Reading")
                     .with_style(base_text_styles)
                     .build();
                 let edit_button = icon_button(
