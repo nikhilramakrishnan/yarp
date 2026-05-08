@@ -2009,9 +2009,9 @@ impl UsageWidget {
         };
 
         let button_text = if purchase_addon_credits_loading {
-            "Buying…".to_string()
+            "Topping up…".to_string()
         } else {
-            "Buy".to_string()
+            "Top up".to_string()
         };
 
         let would_exceed_limit = selected_option.is_some_and(|option| {

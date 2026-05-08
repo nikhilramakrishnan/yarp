@@ -634,9 +634,9 @@ impl BuyCreditsBanner {
                 || would_purchase_exceed_limit;
 
             let button_text = if self.purchase_addon_credits_loading {
-                "Buying…".to_string()
+                "Topping up…".to_string()
             } else {
-                "Buy".to_string()
+                "Top up".to_string()
             };
 
             let button_font_color = buy_button_disabled.then_some(
