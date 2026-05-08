@@ -104,13 +104,13 @@ const RESTRICTED_BILLING_USAGE_WARNING_STRING: &str =
 const OVERVIEW_TAB_TEXT: &str = "Overview";
 const USAGE_HISTORY_TAB_TEXT: &str = "Usage History";
 
-const ENTERPRISE_USAGE_CALLOUT_HEADER: &str = "Usage reporting is currently limited";
+const ENTERPRISE_USAGE_CALLOUT_HEADER: &str = "Patrol log only goes so far in this view";
 const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_PREFIX: &str =
-    "Enterprise credit usage isn't fully available in this view yet. For the most accurate spend tracking, ";
-const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_LINK: &str = "visit the admin panel";
+    "Enterprise rations don't show up in full here yet. For the cleanest tally, ";
+const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_LINK: &str = "head to the station admin panel";
 const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_SUFFIX: &str = ".";
 const ENTERPRISE_USAGE_CALLOUT_BODY_NON_ADMIN: &str =
-    "Enterprise credit usage isn't fully available in this view yet. Contact a team admin for detailed usage reporting.";
+    "Enterprise rations don't show up in full here yet. Flag a station admin for the detailed tally.";
 
 const ADDON_CREDITS_DESCRIPTION: &str = "Add-on credits ship in prepaid packages that roll over each billing cycle and expire after one year. The more you stock the locker, the better the per-credit rate. Once your base playbook quota is spent, add-on credits get drawn down.";
 const ADDITIONAL_ADDON_CREDITS_DESCRIPTION_FOR_TEAM: &str =
@@ -1406,7 +1406,7 @@ impl UsageWidget {
                 on_click_action: None,
                 secondary_text: None,
                 tooltip_override_text: Some(
-                    "Sets the monthly overage spending cap past the playbook quota.".to_string(),
+                    "Sets the monthly overage cap past your playbook quota.".to_string(),
                 ),
             },
         );
@@ -1811,7 +1811,7 @@ impl UsageWidget {
                 on_click_action: None,
                 secondary_text: None,
                 tooltip_override_text: Some(
-                    "Sets the monthly limit spent on add-on credits".to_string(),
+                    "Sets the monthly cap on add-on rations.".to_string(),
                 ),
             },
         );
@@ -2304,7 +2304,7 @@ impl UsageWidget {
         }
 
         let request_count_label = if workspace_is_delinquent_due_to_payment_issue {
-            "Restricted due to billing issue".to_string()
+            "Held at the desk over a billing issue".to_string()
         } else {
             match divisor {
                 Some(Divisor::Unlimited) => {
