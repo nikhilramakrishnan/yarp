@@ -1193,7 +1193,7 @@ impl ExecutionProfileEditorView {
     ) {
         profile_name_editor.update(ctx, |editor, ctx| {
             let display_name = if profile_data.is_default_profile {
-                "Default".to_string()
+                "By the book".to_string()
             } else {
                 profile_data.name.clone()
             };
