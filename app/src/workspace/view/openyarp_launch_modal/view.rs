@@ -44,7 +44,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::HeartHand,
         title: "Contribute",
-        description: "Yarp's client code is now open source. Get started by using the /feedback skill to open an issue, and follow the contribution guidelines here.",
+        description: "Yarp's client code is now on the public record. File a complaint with the /feedback skill to open an issue, and follow the contribution standing orders here.",
         inline_link: Some(InlineLink {
             text: "here",
             url: CONTRIBUTING_URL,
@@ -59,7 +59,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::MessageChatSquare,
         title: "Introducing 'auto (open-weights)'",
-        description: "We've added a new auto model that picks the best open weight model for a task, like Kimi or MiniMax.",
+        description: "Added a new auto model that picks the right open-weight officer for the call, like Kimi or MiniMax.",
         inline_link: None,
     },
 ];

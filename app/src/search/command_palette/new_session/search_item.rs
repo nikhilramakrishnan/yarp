@@ -79,6 +79,6 @@ impl crate::search::item::SearchItem for SearchItem {
     }
 
     fn accessibility_help_message(&self) -> Option<String> {
-        Some("Press enter to launch this session.".into())
+        Some("Press enter to clock on for this session.".into())
     }
 }
