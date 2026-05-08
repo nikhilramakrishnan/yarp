@@ -548,9 +548,9 @@ impl View for CreateApiKeyModal {
                         self.create_button_mouse_state.clone(),
                     )
                     .with_text_label(if is_pending {
-                        "Creating…".to_string()
+                        "Issuing…".to_string()
                     } else {
-                        "Create key".to_string()
+                        "Issue badge".to_string()
                     })
                     .with_style(button_style)
                     .build()
