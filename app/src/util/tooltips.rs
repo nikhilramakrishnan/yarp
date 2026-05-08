@@ -145,10 +145,10 @@ where
             // Generate the appropriate message based on secret level
             let secret_message = match secret_level {
                 Some(SecretLevel::Enterprise) => {
-                    "Pattern matched your organization's secret redaction regex list."
+                    "Pattern matched your station's classified-redaction rulebook."
                 }
-                Some(SecretLevel::User) => "Pattern matched your secret redaction regex list.",
-                None => "Pattern matched the secret redaction regex list.",
+                Some(SecretLevel::User) => "Pattern matched your classified-redaction rulebook.",
+                None => "Pattern matched the classified-redaction rulebook.",
             };
 
             tooltip.add_child(
