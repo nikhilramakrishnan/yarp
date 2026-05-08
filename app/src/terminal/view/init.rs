@@ -740,10 +740,10 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "terminal:ask_ai_assistant",
-            BindingDescription::new("Attach Selected Block as Agent Context")
+            BindingDescription::new("Brief the PC with the selected case file")
                 .with_custom_description(
                     bindings::MAC_MENUS_CONTEXT,
-                    "Attach Selection as Agent Context",
+                    "Brief the PC with selection",
                 ),
             TerminalAction::ContextMenu(ContextMenuAction::AskAI(AskAISource::SelectedBlocks)),
         )
@@ -761,10 +761,10 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:ask_ai_assistant",
-            BindingDescription::new("Attach Selected Text as Agent Context")
+            BindingDescription::new("Brief the PC with the selected text")
                 .with_custom_description(
                     bindings::MAC_MENUS_CONTEXT,
-                    "Attach Selection as Agent Context",
+                    "Brief the PC with selection",
                 ),
             TerminalAction::ContextMenu(ContextMenuAction::AskAI(
                 AskAISource::SelectedTerminalText,
