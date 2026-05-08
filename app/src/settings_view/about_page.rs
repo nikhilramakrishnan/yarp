@@ -154,14 +154,6 @@ impl SettingsWidget for AboutPageWidget {
                         .with_margin_top(4.)
                         .finish(),
                 )
-                .with_child(
-                    ui_builder
-                        .span(precinct_population_line())
-                        .with_soft_wrap()
-                        .build()
-                        .with_margin_top(4.)
-                        .finish(),
-                )
                 .with_child(self.precinct_roster_row(appearance))
                 .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
@@ -182,33 +174,36 @@ impl SettingsWidget for AboutPageWidget {
 
 // Precinct-state banner. Code 4 = all clear; Code 3 = emergency response.
 // Real-world police shorthand mapped onto the radio domain — the banner gives
-// the whole precinct stack a unifying status pulse above the per-row detail.
+// the whole precinct stack a unifying status pulse above the per-row detail,
+// folding officer count into the same line so the stack stays tight.
 fn precinct_status_line() -> (String, bool) {
     let emergency_count = radio::peek_inbox()
         .iter()
         .filter(|m| dispatch_is_emergency(&m.body))
         .count();
+    let peer_count = radio::peers().len();
+    let officer_phrase = match peer_count {
+        0 => None,
+        1 => Some("1 other officer on channel".to_string()),
+        n => Some(format!("{n} other officers on channel")),
+    };
     if emergency_count > 0 {
         let phrase = if emergency_count == 1 {
             "1 emergency pending".to_string()
         } else {
             format!("{emergency_count} emergencies pending")
         };
-        return (format!("Code 3 \u{00B7} {phrase}"), true);
+        let line = match officer_phrase {
+            Some(p) => format!("Code 3 \u{00B7} {phrase} \u{00B7} {p}"),
+            None => format!("Code 3 \u{00B7} {phrase}"),
+        };
+        return (line, true);
     }
-    if radio::peers().is_empty() {
-        return ("Code 4 \u{00B7} sole patrol".to_string(), false);
-    }
-    ("Code 4 \u{00B7} all clear".to_string(), false)
-}
-
-fn precinct_population_line() -> String {
-    let peer_count = radio::peers().len();
-    match peer_count {
-        0 => "Sole officer on the channel.".to_string(),
-        1 => "1 other officer on the channel.".to_string(),
-        n => format!("{n} other officers on the channel."),
-    }
+    let line = match officer_phrase {
+        Some(p) => format!("Code 4 \u{00B7} all clear \u{00B7} {p}"),
+        None => "Code 4 \u{00B7} sole patrol".to_string(),
+    };
+    (line, false)
 }
 
 fn precinct_roster_line() -> Option<(String, bool)> {
