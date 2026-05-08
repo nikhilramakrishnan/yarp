@@ -131,32 +131,35 @@ impl TipsView {
         let tip_items = vec![
             TipItem::new(
                 "Command Palette".to_string(),
-                "Easily discover everything you can do in Yarp without your hands leaving the keyboard.".to_string(),
+                "Radio in any Yarp action without your hands leaving the keyboard.".to_string(),
                 TipAction::CommandPalette,
                 ctx,
             ),
             TipItem::new(
-                "Split Pane".to_string(),
-                "Split tabs into multiple panes to make your ideal layout."
+                "Split the Beat".to_string(),
+                "Carve a tab into panes — patrol multiple sessions side by side."
                     .to_string(),
                 TipAction::SplitPane,
                 ctx,
             ),
             TipItem::new(
                 "History Search".to_string(),
-                "Find, edit and re-run previously executed commands.".to_string(),
+                "Pull old commands off the record, edit them, and re-run."
+                    .to_string(),
                 TipAction::HistorySearch,
                 ctx,
             ),
             TipItem::new(
-                "AI Command Search".to_string(),
-                "Generate shell commands with natural language.".to_string(),
+                "Radio for a Command".to_string(),
+                "Spell it out in plain English — the PC writes the shell command."
+                    .to_string(),
                 TipAction::AiCommandSearch,
                 ctx,
             ),
             TipItem::new(
-                "Theme Picker".to_string(),
-                "Make Yarp your own by choosing a built-in theme. Or create your own.".to_string(),
+                "Set Your Uniform".to_string(),
+                "Pick a theme that suits the station — or stitch your own."
+                    .to_string(),
                 TipAction::ThemePicker,
                 ctx,
             ),
@@ -400,7 +403,7 @@ impl TipsView {
                         Align::new(
                             appearance
                                 .ui_builder()
-                                .paragraph("Skip Welcome Tips".to_string())
+                                .paragraph("Skip the briefing".to_string())
                                 .build()
                                 .finish(),
                         )
@@ -453,7 +456,7 @@ impl TipsView {
             .finish();
 
         let title = ui_builder
-            .span("Complete!")
+            .span("Briefing complete!")
             .with_style(UiComponentStyles {
                 font_weight: Some(Weight::Bold),
                 // Set to white here as the background has 85% black overlay.
@@ -465,7 +468,7 @@ impl TipsView {
             .finish();
 
         let sub_text = ui_builder
-            .paragraph("Nice work on finishing the welcome tips!")
+            .paragraph("Nice work — you've cleared the briefing.")
             .with_style(UiComponentStyles {
                 font_size: Some(12.),
                 font_color: Some(Fill::white().into()),
@@ -485,7 +488,7 @@ impl TipsView {
                     .set_width(152.)
                     .set_height(34.),
             )
-            .with_centered_text_label("Close Welcome Tips".to_string())
+            .with_centered_text_label("Dismiss the briefing".to_string())
             .build()
             .on_click(|ctx, _, _| ctx.dispatch_typed_action(TipsAction::DismissTips))
             .finish();

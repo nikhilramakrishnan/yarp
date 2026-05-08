@@ -109,7 +109,7 @@ const STATUS_ICON_SIZE: f32 = 12.;
 const BUTTON_SIZE: f32 = 20.;
 const CREATOR_AVATAR_FONT_SIZE: f32 = 10.;
 
-const SESSION_EXPIRED_TEXT: &str = "Sessions expire after one week and cannot be opened.";
+const SESSION_EXPIRED_TEXT: &str = "Case file's gone cold — sessions close out after a week.";
 
 pub fn init(app: &mut AppContext) {
     use crate::util::bindings::cmd_or_ctrl_shift;
@@ -1506,8 +1506,8 @@ impl AgentManagementView {
 
         // Early return if session is available - no status label rendered
         let (label_text, tooltip_text_opt) = match session_status {
-            SessionStatus::Expired => ("Session expired", Some(SESSION_EXPIRED_TEXT)),
-            SessionStatus::Unavailable => ("No session available", None),
+            SessionStatus::Expired => ("Case gone cold", Some(SESSION_EXPIRED_TEXT)),
+            SessionStatus::Unavailable => ("No session on file", None),
             SessionStatus::Available => return Empty::new().finish(),
         };
 
@@ -2104,7 +2104,7 @@ impl AgentManagementView {
         .finish();
 
         let text = Text::new_inline(
-            "No results matched your filters",
+            "No case files match those filters.",
             appearance.ui_font_family(),
             appearance.ui_font_size(),
         )
