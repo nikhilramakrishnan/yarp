@@ -123,43 +123,43 @@ use yarpui::elements::{Highlight, HighlightedRange};
 
 pub const STATUS_ICON_SIZE_DELTA: f32 = 4.;
 pub const STATUS_FOOTER_VERTICAL_PADDING: f32 = 4.;
-pub const WAITING_FOR_USER_INPUT_MESSAGE: &str = "Agent waiting for instructions...";
+pub const WAITING_FOR_USER_INPUT_MESSAGE: &str = "PC's standing by for orders...";
 const IMAGE_SOURCE_LINK_LINE_INDEX: usize = 1;
 
-const ERROR_APOLOGY_TEXT: &str = "I'm sorry, I couldn't complete that request.";
-const INTERNAL_YARP_ERROR: &str = "Internal Yarp error.";
+const ERROR_APOLOGY_TEXT: &str = "Beg pardon — couldn't see that one through.";
+const INTERNAL_YARP_ERROR: &str = "Internal station error.";
 
 pub const LOAD_OUTPUT_MESSAGE: &str = "Yarping...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_ADJUSTING: &str = "Adjusting tasks...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_PASSIVE_CODE_GEN: &str = "Generating fix...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_CREATING_DIFF: &str = "Creating diff...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_PREPARING_QUESTION: &str = "Preparing question...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_GENERATING_PLAN: &str = "Generating plan...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_UPDATING_PLAN: &str = "Updating plan...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_SUMMARIZING_CONVERSATION: &str = "Summarizing conversation...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_ADJUSTING: &str = "Amending the duty roster...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_PASSIVE_CODE_GEN: &str = "Drawing up the patch...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_CREATING_DIFF: &str = "Drawing up the amendments...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_PREPARING_QUESTION: &str = "Drafting the questioning...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_GENERATING_PLAN: &str = "Drawing up the call-out...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_UPDATING_PLAN: &str = "Amending the call-out...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_SUMMARIZING_CONVERSATION: &str = "Filing the report...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_SUMMARIZING_TOOL_CALL_RESULT: &str =
-    "Summarizing command output...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_SEARCH_CODEBASE: &str = "Searching codebase...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_READING_FILES: &str = "Reading files...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_GREP: &str = "Grepping...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_FILE_GLOB: &str = "Finding files...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_RUNNING_COMMAND: &str = "Executing command...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_WRITING_TO_COMMAND: &str = "Writing command input...";
+    "Filing the call-out report...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_SEARCH_CODEBASE: &str = "Combing the casebook...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_READING_FILES: &str = "Reviewing case files...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_GREP: &str = "Sweeping the records...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_FILE_GLOB: &str = "Hunting for case files...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_RUNNING_COMMAND: &str = "On the call-out...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_WRITING_TO_COMMAND: &str = "Radioing the call-out...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_WAITING_FOR_COMMAND_COMPLETION: &str =
-    "Waiting for command to exit...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_WEB_SEARCH: &str = "Searching the web...";
-pub const LOAD_OUTPUT_MESSAGE_FOR_FETCHING_REVIEW_COMMENTS: &str = "Fetching PR comments...";
+    "Standing by for the call-out to wrap...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_WEB_SEARCH: &str = "Knocking on doors...";
+pub const LOAD_OUTPUT_MESSAGE_FOR_FETCHING_REVIEW_COMMENTS: &str = "Picking up review notes...";
 
 #[cfg(feature = "local_fs")]
 pub(crate) type ResolvedBlocklistImageSources = HashMap<String, Option<AssetSource>>;
 
 pub const BLOCKED_ACTION_MESSAGE_FOR_WRITE_TO_LONG_RUNNING_SHELL_COMMAND: &str =
-    "Can I write the following to this running command?";
-pub const BLOCKED_ACTION_MESSAGE_FOR_READING_FILES: &str = "Grant access to the following files?";
+    "OK to radio this in to the call-out in progress?";
+pub const BLOCKED_ACTION_MESSAGE_FOR_READING_FILES: &str = "Clearance for these case files?";
 pub const BLOCKED_ACTION_MESSAGE_FOR_SEARCHING_CODEBASE: &str =
-    "Grant access to the following repository?";
+    "Clearance for this casebook?";
 pub const BLOCKED_ACTION_MESSAGE_FOR_GREP_OR_FILE_GLOB: &str =
-    "OK if I search the files in this directory?";
+    "OK to sweep the files on this beat?";
 
 const BLOCKLIST_VISUAL_SECTION_HEIGHT_LINE_MULTIPLIER: f32 = 10.0;
 const INLINE_IMAGE_HEIGHT: f32 = 164.;

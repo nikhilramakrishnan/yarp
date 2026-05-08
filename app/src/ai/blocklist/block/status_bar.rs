@@ -1065,9 +1065,9 @@ fn render_fallback_explanation<V: View>(
         .map(|info| info.base_model_name.as_str());
     let text = match primary_name {
         Some(primary) => {
-            format!("The primary model ({primary}) failed. Retrying with the fallback model.")
+            format!("Lead officer ({primary}) went off the air. Calling in the backup.")
         }
-        None => "The primary model failed. Retrying with the fallback model.".to_owned(),
+        None => "Lead officer went off the air. Calling in the backup.".to_owned(),
     };
     let appearance = Appearance::as_ref(app);
     Text::new_inline(
@@ -1152,7 +1152,7 @@ impl View for BlocklistAIStatusBar {
                     YarpingIndicatorProps {
                         icon: None,
                         yarping_indicator_text: MaybeShimmeringText::Shimmering {
-                            text: "Setting up environment".into(),
+                            text: "Setting up the station".into(),
                             shimmering_text_handle: self.shimmering_text_handle.clone(),
                         },
                         non_shimmering_text: None,
@@ -1184,8 +1184,8 @@ impl View for BlocklistAIStatusBar {
                         non_shimmering_text: None,
                         non_shimmering_suffix: None,
                         buttons: Some(render_switch_control_to_user_button(
-                            "Exit",
-                            "Exit agent input",
+                            "Stand down",
+                            "Stand the PC down from input",
                             ButtonProps {
                                 button_handle: &self.state_handles.take_over_button,
                                 keystroke: self.set_terminal_input_keystroke.as_ref(),
