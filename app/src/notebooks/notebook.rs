@@ -1996,7 +1996,7 @@ impl NotebookView {
                                     .build()
                                     .finish()
                             })
-                            .with_text_label("Restore".to_string())
+                            .with_text_label("Reinstate".to_string())
                             .build()
                             .on_click(|ctx, _, _| {
                                 ctx.dispatch_typed_action(NotebookAction::Untrash)
@@ -2111,7 +2111,7 @@ impl NotebookView {
                                 .build()
                                 .finish()
                         })
-                        .with_text_label("Copy All".to_string())
+                        .with_text_label("Lift everything".to_string())
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(NotebookAction::CopyToClipboard)
