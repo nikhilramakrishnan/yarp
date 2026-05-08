@@ -148,7 +148,7 @@ const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
 const TITLE_PLACEHOLDER_TEXT: &str = "File a title";
 const DESCRIPTION_PLACEHOLDER_TEXT: &str = "File a brief";
 const COMMAND_PLACEHOLDER_TEXT: &str = "echo \"Hello {{your_name}}\" # insert arguments with curly braces\n# enter a single-line command or an entire shell script";
-const AGENT_MODE_QUERY_PLACEHOLDER_TEXT: &str = "Enter your prompt here... (e.g., 'Create a function to sort an array of objects by date' or 'Help me debug this React component').";
+const AGENT_MODE_QUERY_PLACEHOLDER_TEXT: &str = "Radio in your lead… (e.g., 'Sort the dossier by date' or 'Help me crack this React component').";
 const DESCRIPTION_MARGIN_TOP: f32 = 10.;
 
 const CORE_HORIZONATAL_MARGIN: f32 = 24.;

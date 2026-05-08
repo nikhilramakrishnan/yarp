@@ -102,7 +102,7 @@ impl AliasBar {
                 },
                 ctx,
             );
-            view.set_placeholder_text("alias name", ctx);
+            view.set_placeholder_text("Code name", ctx);
 
             view
         });

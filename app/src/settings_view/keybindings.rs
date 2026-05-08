@@ -57,7 +57,7 @@ const ROW_LEFT_MARGIN: f32 = 20.0;
 const ROW_HEIGHT: f32 = 28.;
 const EDIT_BUTTONS_BORDER_RADIUS: f32 = 4.0;
 
-pub const SEARCH_PLACEHOLDER: &str = "Search by name or by keys (ex. \"cmd d\")";
+pub const SEARCH_PLACEHOLDER: &str = "Look up by name or by keys (ex. \"cmd d\")";
 const SHORTCUT_CONFLICT_WARNING_TEXT: &str = "This shortcut clashes with another on the playbook";
 const KEYBINDINGS_PAGE_SHORTCUT: &str = "workspace:toggle_keybindings_page";
 const RESET_BUTTON_TEXT: &str = "Default";
