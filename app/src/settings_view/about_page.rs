@@ -201,9 +201,11 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .filter(|m| dispatch_is_emergency(&m.body))
         .map(|m| m.from_call_sign.clone())
         .collect();
-    let any_in_distress = peer_list
+    let distress_count = peer_list
         .iter()
-        .any(|p| emergency_signs.contains(&p.call_sign));
+        .filter(|p| emergency_signs.contains(&p.call_sign))
+        .count();
+    let any_in_distress = distress_count > 0;
     let mut names: Vec<String> = peer_list
         .iter()
         .map(|p| {
@@ -221,10 +223,18 @@ fn precinct_roster_line() -> Option<(String, bool)> {
     const MAX: usize = 5;
     let overflow = names.len().saturating_sub(MAX);
     names.truncate(MAX);
-    let line = if overflow > 0 {
-        format!("Roster: {} (+{overflow} more)", names.join(", "))
+    // Multi-peer 10-13 gets a count tag in the label — at-a-glance distress
+    // total above the per-peer (10-13) markers. Single-peer skips the tag;
+    // the inline marker carries the signal alone.
+    let label = if distress_count >= 2 {
+        format!("Roster ({distress_count} in distress)")
     } else {
-        format!("Roster: {}", names.join(", "))
+        "Roster".to_string()
+    };
+    let line = if overflow > 0 {
+        format!("{label}: {} (+{overflow} more)", names.join(", "))
+    } else {
+        format!("{label}: {}", names.join(", "))
     };
     Some((line, any_in_distress))
 }
