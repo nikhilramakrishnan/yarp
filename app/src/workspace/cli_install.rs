@@ -29,7 +29,7 @@ fn create_symlink_with_admin(source: &Path, target: &Path) -> Result<()> {
 
     // Use osascript to run the ln command with admin privileges, with a custom prompt
     let script = format!(
-        "do shell script \"ln -sf {escaped_source} {escaped_target}\" with prompt \"Yarp needs administrator privileges to install the command in /usr/local/bin.\" with administrator privileges"
+        "do shell script \"ln -sf {escaped_source} {escaped_target}\" with prompt \"Yarp needs the station chief's badge to file the command in /usr/local/bin.\" with administrator privileges"
     );
 
     log::debug!("Creating symlink with admin privileges");
@@ -43,7 +43,7 @@ fn create_symlink_with_admin(source: &Path, target: &Path) -> Result<()> {
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
         if stderr.contains("User canceled") || stderr.contains("cancelled") {
-            return Err(anyhow!("Installation cancelled by user."));
+            return Err(anyhow!("Filing called off by the officer."));
         }
         return Err(anyhow!(
             "Failed to create symlink with admin privileges: {stderr}"
@@ -65,7 +65,7 @@ fn remove_file_with_admin(target: &Path) -> Result<()> {
     let escaped_target = ShellFamily::Posix.shell_escape(target_str);
 
     let script = format!(
-        "do shell script \"rm {escaped_target}\" with prompt \"Yarp needs administrator privileges to uninstall the command from /usr/local/bin.\" with administrator privileges"
+        "do shell script \"rm {escaped_target}\" with prompt \"Yarp needs the station chief's badge to pull the command from /usr/local/bin.\" with administrator privileges"
     );
 
     log::debug!("Removing file with admin privileges");
@@ -79,7 +79,7 @@ fn remove_file_with_admin(target: &Path) -> Result<()> {
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
         if stderr.contains("User canceled") || stderr.contains("cancelled") {
-            return Err(anyhow!("Uninstallation cancelled by user."));
+            return Err(anyhow!("Pulling called off by the officer."));
         }
         return Err(anyhow!(
             "Failed to remove file with admin privileges: {stderr}"
@@ -104,7 +104,7 @@ pub fn install_cli() -> Result<()> {
     // Check if target file exists and handle conflicts
     if cli_path.exists() && !cli_path.is_symlink() {
         return Err(anyhow!(
-            "Cannot install: {:?} exists but is not a symlink. Please remove it manually first.",
+            "Can't file: {:?} is on the books but not a symlink. Strike it manually first.",
             cli_path
         ));
     }
@@ -149,7 +149,7 @@ pub fn uninstall_cli() -> Result<()> {
     // Safety check: verify it's actually a symlink before removing
     if !cli_path.is_symlink() {
         return Err(anyhow!(
-            "Cannot uninstall: {:?} exists but is not a symlink. Please remove it manually.",
+            "Can't pull: {:?} is on the books but not a symlink. Strike it manually.",
             cli_path
         ));
     }
