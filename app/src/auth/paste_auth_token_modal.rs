@@ -340,7 +340,7 @@ impl View for PasteAuthTokenModalView {
         let continue_button = self.continue_button.render(
             appearance,
             button::Params {
-                content: button::Content::Label("Continue".into()),
+                content: button::Content::Label("Carry on".into()),
                 theme: &button::themes::Primary,
                 options: button::Options {
                     keystroke: Some(enter),

@@ -83,7 +83,7 @@ const FILES_ZERO_STATE_PROMPT: &str = "How do I find all files containing specif
 // The placeholder texts are prepended with a space to give them cushion from the cursor.
 const INIT_PLACEHOLDER_TEXT: &str = " Ask a question...";
 const FOLLOWUP_PLACEHOLDER_TEXT: &str = " Type a response or click one above...";
-const RESTART_BUTTON_TEXT: &str = "Restart";
+const RESTART_BUTTON_TEXT: &str = "Restart the shift";
 
 const ASK_AI_BLOCK_INPUT_LIMIT: usize = 100;
 
