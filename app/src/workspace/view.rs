@@ -7609,7 +7609,7 @@ impl Workspace {
             match result {
                 Ok(_) => {
                     let command_name = ChannelState::channel().cli_command_name();
-                    let message = format!("Successfully installed the Fuzz CLI! You can now run '{command_name}' from the command line.");
+                    let message = format!("Fuzz CLI's signed on. Run '{command_name}' from the command line whenever.");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::success(message.to_string())
                             .with_link(
@@ -7639,7 +7639,7 @@ impl Workspace {
             async { cli_install::uninstall_cli() },
             |view, result, ctx| match result {
                 Ok(_) => {
-                    let message = "Successfully uninstalled the Fuzz command.";
+                    let message = "Fuzz command stood down.";
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::success(message.to_string());
                         toast_stack.add_ephemeral_toast(toast, ctx);
@@ -21317,7 +21317,7 @@ impl TypedActionView for Workspace {
                         let entry = format!("file://{}", plugin_path.display());
                         set_opencode_yarp_plugin(&entry)
                     }
-                    None => "Failed to determine home directory".to_string(),
+                    None => "Couldn't pin down the home beat.".to_string(),
                 };
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(DismissibleToast::default(message), ctx);
@@ -21403,15 +21403,15 @@ impl TypedActionView for Workspace {
                             Ok(Ok(output)) => {
                                 let stderr = String::from_utf8_lossy(&output.stderr);
                                 log::error!("sample command failed ({}): {stderr}", output.status);
-                                "Failed to sample process (check logs)".to_string()
+                                "Couldn't sample the suspect — check the logbook.".to_string()
                             }
                             Ok(Err(io_err)) => {
                                 log::error!("Failed to run sample command: {io_err}");
-                                "Failed to sample process (check logs)".to_string()
+                                "Couldn't sample the suspect — check the logbook.".to_string()
                             }
                             Err(join_err) => {
                                 log::error!("Sample task panicked: {join_err}");
-                                "Failed to sample process (check logs)".to_string()
+                                "Couldn't sample the suspect — check the logbook.".to_string()
                             }
                         };
                         me.toast_stack.update(ctx, |view, ctx| {
