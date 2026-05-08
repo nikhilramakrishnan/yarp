@@ -2069,7 +2069,7 @@ impl View for GlobalSearchView {
         let message = if self.is_search_in_progress && self.total_match_count == 0 {
             "".to_string()
         } else if !self.is_search_in_progress && self.total_match_count == 0 {
-            "No results found. Review your gitignore files.".to_string()
+            "Sweep came up empty. Check your gitignore files.".to_string()
         } else {
             match self.total_match_count {
                 1 => format!("1 result in {files} {file_word}"),
@@ -2095,7 +2095,7 @@ impl View for GlobalSearchView {
             font_color: Some(blended_colors::text_sub(theme, theme.background())),
             ..Default::default()
         };
-        let capped_message = "The result set only contains a subset of all matches. Be more specific in your search to narrow down results.".to_string();
+        let capped_message = "Only showing part of the haul. Tighten the sweep to narrow it down.".to_string();
         let capped_text = Span::new(capped_message, capped_text_styles)
             .with_soft_wrap()
             .build()
@@ -2246,8 +2246,8 @@ impl GlobalSearchView {
     fn render_pre_search_state(&self, app: &AppContext) -> Box<dyn Element> {
         self.render_zero_state(
             Icon::Search,
-            "Global search",
-            "Search in files across your current directories.",
+            "Stationhouse sweep",
+            "Sweep case files across the current beats.",
             app,
         )
     }
@@ -2255,8 +2255,8 @@ impl GlobalSearchView {
     fn render_unavailable_state(&self, app: &AppContext) -> Box<dyn Element> {
         self.render_zero_state(
             Icon::AlertTriangle,
-            "Global search unavailable",
-            "Global search requries access to your local workspace. Open a new session or navigate to an active session to view.",
+            "Stationhouse sweep unavailable",
+            "Sweep needs your local desk. Clock on at a fresh patrol or hop to an active one to run it.",
             app,
         )
     }
@@ -2264,8 +2264,8 @@ impl GlobalSearchView {
     fn render_remote_state(&self, app: &AppContext) -> Box<dyn Element> {
         self.render_zero_state(
             Icon::AlertTriangle,
-            "Global search unavailable",
-            "Global search requires access to your local workspace, which isn't supported in remote sessions",
+            "Stationhouse sweep unavailable",
+            "Sweep needs your local desk — out-of-station patrols can't run it.",
             app,
         )
     }
@@ -2273,8 +2273,8 @@ impl GlobalSearchView {
     fn render_unsupported_session_state(&self, app: &AppContext) -> Box<dyn Element> {
         self.render_zero_state(
             Icon::AlertTriangle,
-            "Global search unavailable",
-            "Global search doesn't currently work in Git Bash or WSL.",
+            "Stationhouse sweep unavailable",
+            "Sweep doesn't run on Git Bash or WSL just yet.",
             app,
         )
     }
