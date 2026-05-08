@@ -617,7 +617,7 @@ impl AISettingsPageView {
             };
             let mut editor = EditorView::new(options, ctx);
 
-            editor.set_placeholder_text("Commands, comma separated", ctx);
+            editor.set_placeholder_text("Commands on the no-fly list, comma separated", ctx);
 
             let current_value = AISettings::as_ref(ctx)
                 .autodetection_command_denylist
