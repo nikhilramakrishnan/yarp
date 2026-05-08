@@ -143,7 +143,7 @@ impl From<PaneEvent> for AIDocumentEvent {
     }
 }
 
-pub const DEFAULT_PLANNING_DOCUMENT_TITLE: &str = "Planning document";
+pub const DEFAULT_PLANNING_DOCUMENT_TITLE: &str = "Case file";
 
 /// Entry for the version history dropdown menu.
 struct VersionMenuEntry {
@@ -350,7 +350,7 @@ impl AIDocumentView {
             ActionButton::new("", NakedTheme)
                 .with_icon(icons::Icon::History)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("Show version history")
+                .with_tooltip("Pull the case history")
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(
                         PaneHeaderAction::<AIDocumentAction, AIDocumentAction>::CustomAction(
@@ -374,7 +374,7 @@ impl AIDocumentView {
         let save_action = keybinding_name_to_keystroke(SAVE_FILE_BINDING_NAME, ctx)
             .map(|k| k.displayed())
             .unwrap_or("Click".to_string());
-        let tooltip_text = format!("This plan has changes the agent isn't aware of. {save_action} to stop the agent's current task and send the updated plan");
+        let tooltip_text = format!("Case file's been amended without the PC. {save_action} to call them off the current task and radio over the new file.");
         let update_plan_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Update Agent", PrimaryTheme)
                 .with_size(ButtonSize::Small)
@@ -610,7 +610,7 @@ impl AIDocumentView {
                 let appearance = Appearance::as_ref(app);
                 let ui_builder = appearance.ui_builder().clone();
                 let tooltip = ui_builder
-                    .tool_tip("Save and auto-sync this plan to your Yarp Drive".to_string())
+                    .tool_tip("File the case to Yarp Drive — auto-syncs every edit".to_string())
                     .build()
                     .finish();
                 let sync_button_mouse_state = self.sync_button_mouse_state.clone();
@@ -663,7 +663,7 @@ impl AIDocumentView {
                 let color = theme.nonactive_ui_detail().into_solid();
                 let ui_builder = appearance.ui_builder().clone();
                 let tooltip_text =
-                    "This plan is synced to your Yarp Drive and will auto save any edits you make."
+                    "Case file's filed to Yarp Drive — your edits get logged automatically."
                         .to_string();
                 let synced_status_mouse_state = self.synced_status_mouse_state.clone();
                 Container::new(
@@ -1064,7 +1064,7 @@ impl TypedActionView for AIDocumentView {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::success("Frequency copied to clipboard.".to_string()),
+                        DismissibleToast::success("Frequency on the clipboard.".to_string()),
                         window_id,
                         ctx,
                     );
@@ -1158,7 +1158,7 @@ impl TypedActionView for AIDocumentView {
                         .ai_controller()
                         .update(ctx, |controller, ctx| {
                             controller.send_user_query_in_conversation(
-                                "I've updated the plan.".to_string(),
+                                "Updated the case file.".to_string(),
                                 conversation_id,
                                 None,
                                 ctx,
@@ -1252,7 +1252,7 @@ impl BackingView for AIDocumentView {
 
         // Add "Attach to active session" menu item
         menu_items.push(
-            MenuItemFields::new("Attach to active session")
+            MenuItemFields::new("Hand off to the open case")
                 .with_on_select_action(AIDocumentAction::AttachToActiveSession)
                 .with_icon(Icon::Paperclip)
                 .into_item(),

@@ -317,10 +317,10 @@ const CODE_REVIEW_EDITOR_LINE_HEIGHT_RATIO: f32 = 1.4;
 /// Extra scroll buffer (in pixels) added when scrolling to a line that has a comment editor below it.
 const COMMENT_EDITOR_SCROLL_BUFFER: f32 = 200.0;
 
-pub const CODE_REVIEW_TOOLTIP_TEXT: &str = "View changes";
-const REMOTE_TEXT: &str = "Diffs only work for local workspaces.";
-const DISABLED_TEXT: &str = "Diffs only work for git repositories.";
-const WSL_TEXT: &str = "Diffs don't currently work in WSL.";
+pub const CODE_REVIEW_TOOLTIP_TEXT: &str = "Review the case file";
+const REMOTE_TEXT: &str = "Diffs only work on the local beat.";
+const DISABLED_TEXT: &str = "Diffs only work on git repos.";
+const WSL_TEXT: &str = "Diffs aren't on duty in WSL just yet.";
 
 #[cfg(not(target_family = "wasm"))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -333,10 +333,10 @@ enum InitButtons {
 
 pub fn get_discard_button_disabled_tooltip(git_operation_blocked: bool) -> String {
     if git_operation_blocked {
-        "Cannot discard changes while a git operation (merge, rebase, etc.) is in progress"
+        "Can't toss the changes — there's a git op (merge, rebase, etc.) still on the desk."
             .to_string()
     } else {
-        "No changes to discard".to_string()
+        "No changes on the desk to toss.".to_string()
     }
 }
 
