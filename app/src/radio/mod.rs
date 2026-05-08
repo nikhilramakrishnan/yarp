@@ -281,6 +281,24 @@ pub fn send_message(to_pid: u32, msg: &Message) -> io::Result<()> {
     fs::write(&path, json)
 }
 
+/// All-cars dispatch: send `body` to every other live officer on the
+/// channel. Returns (delivered, failed) — the two counts always sum to the
+/// peer count at call time. Senders never appear in their own delivery list.
+pub fn broadcast(body: impl Into<String>) -> (usize, usize) {
+    let body: String = body.into();
+    let msg = Message::new(self_call_sign(), body);
+    let peer_list = peers();
+    let mut delivered = 0usize;
+    let mut failed = 0usize;
+    for peer in peer_list {
+        match send_message(peer.pid, &msg) {
+            Ok(()) => delivered += 1,
+            Err(_) => failed += 1,
+        }
+    }
+    (delivered, failed)
+}
+
 /// Read this process's inbox without draining it — useful for UI surfaces
 /// that want to show "N pending dispatches" without consuming the messages.
 /// Corrupt files are silently dropped.
@@ -347,6 +365,41 @@ pub fn read_inbox() -> Vec<Message> {
         out.push(msg);
     }
     out
+}
+
+/// Sweep `~/.yarp/radio/inbox/<pid>/` directories whose owning pid is no
+/// longer alive — without it, a long-running install accumulates inbox dirs
+/// for every terminal that ever booted. Returns the number of inboxes
+/// reclaimed. Best-effort; IO failures are silently ignored.
+pub fn prune_dead_inboxes() -> usize {
+    let Some(root) = yarp_core::paths::yarp_home_radio_inbox_dir() else {
+        return 0;
+    };
+    let entries = match fs::read_dir(&root) {
+        Ok(entries) => entries,
+        Err(_) => return 0,
+    };
+    let mut reclaimed = 0usize;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if !path.is_dir() {
+            continue;
+        }
+        let Some(pid) = path
+            .file_name()
+            .and_then(|s| s.to_str())
+            .and_then(|s| s.parse::<u32>().ok())
+        else {
+            continue;
+        };
+        if pid_is_alive(pid) {
+            continue;
+        }
+        if fs::remove_dir_all(&path).is_ok() {
+            reclaimed += 1;
+        }
+    }
+    reclaimed
 }
 
 #[cfg(unix)]
@@ -471,5 +524,20 @@ mod tests {
             pid: 0xDEAD_BEEF,
         };
         drop(guard);
+    }
+
+    #[test]
+    fn broadcast_with_no_peers_returns_zero_zero() {
+        // Self is filtered out of peers(), so on a one-officer channel a
+        // broadcast must report zero attempts — never one self-delivery.
+        let (delivered, failed) = broadcast("All-cars test ping");
+        assert_eq!(delivered + failed, peers().len());
+    }
+
+    #[test]
+    fn prune_dead_inboxes_is_safe_when_root_missing() {
+        // Pruning must not panic when the inbox root has not yet been
+        // created on disk (e.g. fresh install where nobody's sent a message).
+        let _ = prune_dead_inboxes();
     }
 }

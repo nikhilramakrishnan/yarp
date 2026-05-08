@@ -81,6 +81,7 @@ fn main() -> Result<()> {
     ChannelState::set(state);
 
     write_default_llm_config_if_missing();
+    let _ = radio::prune_dead_inboxes();
     let _radio_guard = write_radio_beacon();
 
     yarp::run()
