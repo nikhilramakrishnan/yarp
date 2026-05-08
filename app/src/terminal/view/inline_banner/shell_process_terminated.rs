@@ -15,14 +15,14 @@ pub fn render_shell_process_terminated_banner(
             InlineBannerStyle::CallToAction,
             appearance,
             InlineBannerContent {
-                title: "Shell process exited prematurely!".to_string(),
+                title: "Shell clocked off early!".to_string(),
                 header_icon: Some(InlineBannerIcon {
                     asset_path: "bundled/svg/warning.svg",
                     aspect_ratio: 1.,
                     color_override: Some(appearance.theme().foreground().into_solid()),
                 }),
                 content: Some(vec![Text::new(
-                    "The output from Yarp's initialization script is visible above to assist with debugging.",
+                    "Yarp's roll-call script left its statement up above — handy for tracking the cause.",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )]),

@@ -66,7 +66,7 @@ pub fn render_aws_cli_not_installed_banner(
     });
 
     let description_text = yarpui::elements::Text::new(
-        "The AWS CLI is required to authenticate with your organization's AWS Bedrock. Install it to continue.",
+        "Need the AWS CLI on the books to clear the AWS Bedrock check. Kit it out to carry on.",
         appearance.ui_font_family(),
         appearance.monospace_font_size() - 2.,
     )
@@ -77,7 +77,7 @@ pub fn render_aws_cli_not_installed_banner(
         InlineBannerStyle::Recommendation,
         appearance,
         InlineBannerContent {
-            title: "AWS CLI Not Installed".to_string(),
+            title: "AWS CLI off the books".to_string(),
             content: Some(vec![description_text]),
             buttons,
             close_button: Some(close_button),
