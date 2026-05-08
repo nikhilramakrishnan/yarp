@@ -15327,7 +15327,7 @@ impl TerminalView {
                 if YarpDriveSettings::is_yarp_drive_enabled(ctx) {
                     items.push(MenuItem::Separator);
                     items.push(
-                        MenuItemFields::new("Save as workflow")
+                        MenuItemFields::new("File as playbook")
                             .with_on_select_action(TerminalAction::ContextMenu(
                                 ContextMenuAction::OpenWorkflowModal,
                             ))
@@ -15995,7 +15995,7 @@ impl TerminalView {
         if !all_current_input_text.is_empty() && YarpDriveSettings::is_yarp_drive_enabled(ctx) {
             items.extend([
                 MenuItem::Separator,
-                MenuItemFields::new("Save as workflow")
+                MenuItemFields::new("File as playbook")
                     .with_on_select_action(TerminalAction::InputContextMenuItem(
                         InputContextMenuAction::SaveAsWorkflow,
                     ))
@@ -16444,7 +16444,7 @@ impl TerminalView {
         }
         items.push(MenuItem::Separator);
         items.push(
-            MenuItemFields::new("Save as prompt")
+            MenuItemFields::new("File as briefing")
                 .with_on_select_action(TerminalAction::ContextMenu(
                     ContextMenuAction::SavePromptAsAgentModeWorkflow { ai_block_view_id },
                 ))
