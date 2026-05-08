@@ -65,11 +65,11 @@ const EDITOR_FONT_SIZE: f32 = 12.;
 const EDITOR_MIN_HEIGHT: f32 = 72.;
 /// Placeholder shown while the open-time AI commit-message autogen is in
 /// flight.
-const GENERATING_PLACEHOLDER_TEXT: &str = "Generating commit message\u{2026}";
+const GENERATING_PLACEHOLDER_TEXT: &str = "Drafting the report\u{2026}";
 /// Placeholder shown once the open-time autogen resolves — either as a
 /// nudge if the user later clears the generated draft, or as guidance when
 /// autogen failed and the editor is blank. Also used when autogen is off.
-const FALLBACK_PLACEHOLDER_TEXT: &str = "Type a commit message";
+const FALLBACK_PLACEHOLDER_TEXT: &str = "Type up the report";
 /// Loading-state label while the commit / chain runs. Static regardless of
 /// which chain is in flight — the success toast communicates what actually
 /// ran.
@@ -617,7 +617,7 @@ fn render_message_editor(
     app: &AppContext,
 ) -> Box<dyn Element> {
     let label = Text::new(
-        "Commit message",
+        "Report",
         appearance.ui_font_family(),
         appearance.ui_font_size(),
     )
