@@ -31,7 +31,7 @@ use crate::{
 
 use super::model::find::{FindConfig, RegexDFAs};
 
-const FILTER_BLOCK_PLACEHOLDER_TEXT: &str = "Filter block output";
+const FILTER_BLOCK_PLACEHOLDER_TEXT: &str = "Sift the block output";
 
 const BLOCK_FILTER_BAR_WIDTH: f32 = 380.;
 const BLOCK_FILTER_BAR_PADDING: f32 = 4.;

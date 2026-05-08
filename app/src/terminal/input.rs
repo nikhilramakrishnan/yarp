@@ -384,7 +384,7 @@ pub(super) const CLI_AGENT_RICH_INPUT_EDITOR_TOP_PADDING: f32 = 10.;
 pub(super) const CLI_AGENT_RICH_INPUT_EDITOR_BOTTOM_PADDING: f32 = 8.;
 pub(super) const CLI_AGENT_RICH_INPUT_HINT_TEXT: &str = "Tell the agent what to build...";
 
-const CLOUD_MODE_V2_HINT_TEXT: &str = "Kick off a cloud agent";
+const CLOUD_MODE_V2_HINT_TEXT: &str = "Dispatch a cloud unit";
 const SHORT_CIRCUIT_HIGHLIGHTING_ACTIONS: [Option<PlainTextEditorViewAction>; 7] = [
     Some(PlainTextEditorViewAction::Space),
     Some(PlainTextEditorViewAction::NonExpandingSpace),
