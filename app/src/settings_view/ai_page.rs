@@ -4330,7 +4330,7 @@ impl AgentsWidget {
             appearance,
             "Base model",
             Some(
-                "This model serves as the primary engine behind the Yarp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Yarp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
+                "This model is the duty officer behind the Yarp Agent. It works most calls and pulls in other models for tasks like planning or code generation when needed. Yarp may swap in backup officers based on model availability or for auxiliary work like wrapping up the case file.",
             ),
             Some(show_in_prompt_checkbox),
             LocalOnlyIconState::Hidden,
@@ -4361,7 +4361,7 @@ impl AgentsWidget {
 
         let codebase_context_description = vec![
             FormattedTextFragment::plain_text(
-                "Allow the Yarp Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. ",
+                "Let the Yarp Agent draft a beat map of your codebase to use as context. No code is ever stored on our servers. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Pull the dossier",
@@ -4434,7 +4434,7 @@ impl AgentsWidget {
         let subtext = {
             let subtext_fragments = vec![
                 FormattedTextFragment::plain_text(
-                    "You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Yarp Agent has when interacting with them. ",
+                    "No MCP servers on your roster yet. Once you swear one in, you can set how far the Yarp Agent can patrol on its own when working with them. ",
                 ),
                 FormattedTextFragment::hyperlink_action(
                     "Add a server",
@@ -4515,7 +4515,7 @@ impl AgentsWidget {
         {
             let allowlist = self.render_mcp_list(
                 "MCP allowlist",
-                "Allow the Yarp Agent to call these MCP servers.",
+                "The Yarp Agent has clearance to radio these MCP servers.",
                 &view.mcp_allowlist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_allowlist(app, None),
                 view.mcp_allowlist_mouse_state_handles.clone(),
@@ -4532,7 +4532,7 @@ impl AgentsWidget {
         {
             let denylist = self.render_mcp_list(
                 "MCP denylist",
-                "The Yarp Agent will always ask for permission before calling any MCP servers on this list.",
+                "The Yarp Agent will always radio dispatch for clearance before calling any MCP servers on this list.",
                 &view.mcp_denylist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_denylist(app, None),
                 view.mcp_denylist_mouse_state_handles.clone(),
