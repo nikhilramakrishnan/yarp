@@ -490,11 +490,19 @@ impl AboutPageWidget {
         }
         let dispatch_span = dispatch_builder.build().finish();
 
+        // Mirror the 10-13 broadcast button's red tint when acknowledging an
+        // emergency — the broadcast side already uses Error to flag "officer
+        // needs assistance"; the response side should carry the same urgency
+        // so the dispatch row reads red-on-red instead of red dispatch + grey
+        // ack. Routine dispatches stay Secondary so a copy/all-clear ack
+        // doesn't look as loud as a 10-13 response.
+        let ack_variant = if emergency {
+            ButtonVariant::Error
+        } else {
+            ButtonVariant::Secondary
+        };
         let ack_button = ui_builder
-            .button(
-                ButtonVariant::Secondary,
-                self.ack_dispatch_button_mouse_state.clone(),
-            )
+            .button(ack_variant, self.ack_dispatch_button_mouse_state.clone())
             .with_style(UiComponentStyles {
                 font_size: Some(12.),
                 font_weight: Some(Weight::Semibold),
