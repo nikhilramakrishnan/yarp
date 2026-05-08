@@ -184,7 +184,7 @@ impl AgentNotificationsModel {
                         title,
                         message
                             .clone()
-                            .unwrap_or_else(|| "Waiting for input.".to_owned()),
+                            .unwrap_or_else(|| "Standing by for orders.".to_owned()),
                         NotificationCategory::Request,
                         NotificationSourceAgent::CLI(*agent),
                         NotificationOrigin::CLISession(*terminal_view_id),
@@ -333,7 +333,7 @@ impl AgentNotificationsModel {
                 let artifacts = self.flush_pending_artifacts(conversation_id);
                 self.add_notification(
                     title,
-                    "Task was cancelled.".to_owned(),
+                    "Case dropped.".to_owned(),
                     NotificationCategory::Complete,
                     NotificationSourceAgent::Fuzz,
                     origin,
@@ -358,7 +358,7 @@ impl AgentNotificationsModel {
                 let artifacts = self.flush_pending_artifacts(conversation_id);
                 self.add_notification(
                     title,
-                    "Something went wrong.".to_owned(),
+                    "We've got trouble.".to_owned(),
                     NotificationCategory::Error,
                     NotificationSourceAgent::Fuzz,
                     origin,

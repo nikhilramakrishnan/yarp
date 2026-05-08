@@ -324,7 +324,7 @@ impl CloudSetupGuideView {
             .with_child(Self::render_step_number(1, appearance))
             .with_child(
                 Text::new(
-                    "Create an environment",
+                    "Open up the beat",
                     appearance.ui_font_family(),
                     step_title_font_size,
                 )
@@ -406,7 +406,7 @@ impl CloudSetupGuideView {
             .with_child(Self::render_step_number(2, appearance))
             .with_child(
                 Text::new(
-                    "Create an integration",
+                    "Patch in the integration",
                     appearance.ui_font_family(),
                     step_title_font_size,
                 )

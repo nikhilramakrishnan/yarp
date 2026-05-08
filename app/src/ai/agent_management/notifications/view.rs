@@ -128,7 +128,7 @@ impl NotificationMailboxView {
         });
 
         let mark_all_read_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Mark all as read", NakedTheme)
+            ActionButton::new("Clear the briefing board", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(NotificationMailboxViewAction::MarkAllRead);
