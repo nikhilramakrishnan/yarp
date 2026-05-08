@@ -376,7 +376,7 @@ impl AIDocumentView {
             .unwrap_or("Click".to_string());
         let tooltip_text = format!("Case file's been amended without the PC. {save_action} to call them off the current task and radio over the new file.");
         let update_plan_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Update Agent", PrimaryTheme)
+            ActionButton::new("Radio over update", PrimaryTheme)
                 .with_size(ButtonSize::Small)
                 .with_tooltip(tooltip_text)
                 .with_tooltip_alignment(TooltipAlignment::Right)
@@ -392,7 +392,7 @@ impl AIDocumentView {
 
         // Create restore button
         let restore_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Restore", SecondaryTheme)
+            ActionButton::new("Roll back", SecondaryTheme)
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(
@@ -1233,7 +1233,7 @@ impl BackingView for AIDocumentView {
                     .into_item(),
             );
             menu_items.push(
-                MenuItemFields::new("Show in Yarp Drive")
+                MenuItemFields::new("Pull up in Yarp Drive")
                     .with_on_select_action(AIDocumentAction::ShowInYarpDrive)
                     .with_icon(Icon::YarpDrive)
                     .into_item(),
@@ -1243,7 +1243,7 @@ impl BackingView for AIDocumentView {
         #[cfg(feature = "local_fs")]
         {
             menu_items.push(
-                crate::menu::MenuItemFields::new("Save as markdown file")
+                crate::menu::MenuItemFields::new("Bag the case file as markdown")
                     .with_on_select_action(AIDocumentAction::Export)
                     .with_icon(Icon::Download)
                     .into_item(),
@@ -1260,7 +1260,7 @@ impl BackingView for AIDocumentView {
 
         // Add "Copy plan ID" menu item
         menu_items.push(
-            MenuItemFields::new("Copy plan ID")
+            MenuItemFields::new("File a copy of the case ID")
                 .with_on_select_action(AIDocumentAction::CopyPlanId)
                 .with_icon(Icon::Copy)
                 .into_item(),

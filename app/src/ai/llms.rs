@@ -65,13 +65,13 @@ impl DisableReason {
     /// Returns a user-facing tooltip explaining why the model is disabled.
     pub fn tooltip_text(&self) -> &'static str {
         match self {
-            DisableReason::AdminDisabled => "This model has been disabled by your team admin.",
-            DisableReason::OutOfRequests => "Please upgrade your plan to make more requests.",
+            DisableReason::AdminDisabled => "Sarge has yanked this PC from the duty roster.",
+            DisableReason::OutOfRequests => "Top up your rations to call out more.",
             DisableReason::ProviderOutage => {
-                "This model is temporarily unavailable due to a provider outage."
+                "This PC is off the air — provider's gone dark."
             }
-            DisableReason::RequiresUpgrade => "Please upgrade your plan to access this model.",
-            DisableReason::Unavailable => "This model is unavailable.",
+            DisableReason::RequiresUpgrade => "Top up your rations to sign on this PC.",
+            DisableReason::Unavailable => "This PC is off the air.",
         }
     }
 }
