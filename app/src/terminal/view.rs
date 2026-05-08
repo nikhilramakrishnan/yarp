@@ -15148,7 +15148,7 @@ impl TerminalView {
                                 // Because the default for cmd-click is to open in Yarp, we also
                                 // have an open-in-editor option.
                                 items.push(
-                                    MenuItemFields::new("Open in editor")
+                                    MenuItemFields::new("Crack open")
                                         .with_on_select_action(TerminalAction::OpenGridLink(
                                             highlighted_link.clone(),
                                         ))
