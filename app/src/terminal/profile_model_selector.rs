@@ -1471,9 +1471,9 @@ impl ProfileModelSelector {
                     .finish();
 
                 let tooltip_text = if !has_edit_access {
-                    "Request edit access to change model".to_owned()
+                    "Get the pen to swap the officer".to_owned()
                 } else {
-                    "Choose an agent model".to_owned()
+                    "Pick an officer model".to_owned()
                 };
 
                 let tooltip = appearance.ui_builder().tool_tip(tooltip_text);
