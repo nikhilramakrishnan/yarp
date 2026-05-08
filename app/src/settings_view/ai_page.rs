@@ -146,15 +146,15 @@ const PRIMARY_HEADER_FONT_SIZE: f32 = 24.;
 
 const AI_SETTINGS_DROPDOWN_WIDTH: f32 = 250.;
 const AI_SETTINGS_DROPDOWN_MAX_HEIGHT: f32 = 250.;
-const NEXT_COMMAND_DESCRIPTION: &str = "Let AI suggest the next command to run based on your command history, outputs, and common workflows.";
-const PROMPT_SUGGESTIONS_DESCRIPTION: &str = "Let AI suggest natural language prompts, as inline banners in the input, based on recent commands and their outputs.";
-const SUGGESTED_CODE_BANNERS_DESCRIPTION: &str = "Let AI suggest code diffs and queries as inline banners in the blocklist, based on recent commands and their outputs.";
+const NEXT_COMMAND_DESCRIPTION: &str = "Let AI flag the next command to run based on your command history, outputs, and common workflows.";
+const PROMPT_SUGGESTIONS_DESCRIPTION: &str = "Let AI flag natural language prompts as inline banners in the input, based on recent commands and outputs on the wire.";
+const SUGGESTED_CODE_BANNERS_DESCRIPTION: &str = "Let AI flag code diffs and queries as inline banners in the blocklist, based on recent commands and outputs on the wire.";
 const NATURAL_LANGUAGE_AUTOSUGGESTIONS: &str =
-    "Let AI suggest natural language autosuggestions, based on recent commands and their outputs.";
+    "Let AI flag natural language autosuggestions based on recent commands and outputs on the wire.";
 const SHARED_BLOCK_TITLE_GENERATION_DESCRIPTION: &str =
-    "Let AI generate a title for your shared block based on the command and output.";
+    "Let AI file a title for your shared block based on the command and output.";
 const GIT_OPERATIONS_AUTOGEN_DESCRIPTION: &str =
-    "Let AI generate commit messages and pull request titles and descriptions.";
+    "Let AI file commit messages and pull request titles and descriptions.";
 const WISPR_FLOW_URL: &str = "https://wisprflow.ai/";
 
 pub fn init_actions_from_parent_view<T: Action + Clone>(
@@ -4791,7 +4791,7 @@ impl AIInputWidget {
             > = LazyLock::new(|| {
                 vec![
                     FormattedTextFragment::plain_text(
-                        "Enabling natural language detection will detect when natural language is written in the terminal input, and then automatically switch to Agent Mode for AI queries.",
+                        "Switch the radio on to detect when natural language hits the terminal input — Yarp drops into Agent Mode for AI queries automatically.",
                     ),
                     FormattedTextFragment::plain_text(
                         " Encountered an incorrect input detection? ",
@@ -4845,7 +4845,7 @@ impl AIInputWidget {
                 app,
             ))
             .with_child(render_ai_setting_description(
-                "Commands listed here will never trigger natural language detection.",
+                "Commands on this list never trip natural language detection.",
                 is_toggleable,
                 app,
             ))
@@ -5395,7 +5395,7 @@ impl SettingsWidget for OtherAIWidget {
         column.add_child(render_dropdown_item(
             appearance,
             "Agent thinking display",
-            Some("Controls how reasoning/thinking traces are displayed."),
+            Some("Sets how the agent's thinking traces show on the wire."),
             None,
             LocalOnlyIconState::for_setting(
                 ThinkingDisplayMode::storage_key(),
@@ -5833,7 +5833,7 @@ impl SettingsWidget for AgentAttributionWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Fuzz can add attribution to commit messages and pull requests it creates",
+                "Fuzz can sign commit messages and pull requests it files",
                 !state.is_disabled,
                 app,
             ))
