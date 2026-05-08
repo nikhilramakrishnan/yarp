@@ -192,7 +192,7 @@ impl BuildPlanMigrationModal {
             UserWorkspacesEvent::UpdateWorkspaceSettingsRejected(_err) => {
                 self.is_updating = false;
                 ctx.emit(BuildPlanMigrationModalEvent::ShowToast {
-                    message: "Failed to enable auto-reload. Please try updating your settings in Billing & usage.".to_string(),
+                    message: "Couldn't sign on auto-reload. Amend the rations setting in Billing & usage.".to_string(),
                     flavor: ToastFlavor::Error,
                 });
                 ctx.notify();
@@ -361,7 +361,7 @@ impl BuildPlanMigrationModal {
         );
 
         let description = Self::create_text(
-            "Auto-reload will automatically purchase credits at your selected rate when your account balance reaches 100 credits. Your monthly spend limit is set at your legacy plan's monthly cost and can be updated in Settings > Billing & usage.".to_string(),
+            "Auto-reload tops up your rations at the rate you set when the locker drops to 100. Your monthly ration cap is set at your old beat's cost and can be amended in Settings > Billing & usage.".to_string(),
             appearance.ui_font_family(),
             14.,
             blended_colors::text_sub(theme, blended_colors::neutral_4(theme)),
@@ -513,9 +513,9 @@ impl BuildPlanMigrationModal {
             .unwrap_or((2000, 1800));
 
         let title_text = if is_business {
-            "Welcome to the New Business Plan"
+            "Sworn in to the new Business beat"
         } else {
-            "Welcome to Sandford Build"
+            "Sworn in to the Sandford Build beat"
         };
 
         let title = Self::create_text(
@@ -527,18 +527,18 @@ impl BuildPlanMigrationModal {
         );
 
         let intro_text = if is_business {
-            "Your workspace has been updated to the new Yarp Business Plan as the legacy Business plan is sunset."
+            "Your station's been amended onto the new Yarp Business beat — the old Business beat is off the books."
         } else {
-            "Your workspace has been updated to the Yarp Build Plan as the legacy Pro, Turbo, and Lightspeed plans are sunset."
+            "Your station's been amended onto the Yarp Build beat — the old Pro, Turbo, and Lightspeed beats are off the books."
         };
 
         let intro = Self::create_text(intro_text.to_string(), font_family, 14., text_color, None);
 
         let pricing_header = Self::create_text(
             if is_business {
-                "The new Business plan is a primarily usage-based plan, starting at:"
+                "The new Business beat runs mostly on usage rations, starting at:"
             } else {
-                "Yarp Build is a primarily usage-based plan, starting at:"
+                "Sandford Build runs mostly on usage rations, starting at:"
             }
             .to_string(),
             font_family,
