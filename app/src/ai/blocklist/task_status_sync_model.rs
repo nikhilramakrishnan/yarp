@@ -261,42 +261,42 @@ pub(crate) fn classify_renderable_error(
         RenderableAIError::QuotaLimit => (
             AgentTaskState::Failed,
             Some(TaskStatusUpdate::with_error_code(
-                "Your team has run out of credits. Purchase more credits to continue.",
+                "Squad's burned through its rations. Top up to stay on the case.",
                 PlatformErrorCode::InsufficientCredits,
             )),
         ),
         RenderableAIError::ServerOverloaded => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
-                "There has been an inneraction. Please try again shortly.",
+                "We've got static on the line. Try the radio again in a bit.",
                 PlatformErrorCode::ResourceUnavailable,
             )),
         ),
         RenderableAIError::InternalYarpError => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
-                "An internal error occurred during the conversation. Please try again.",
+                "Trouble on the case. Have another go.",
                 PlatformErrorCode::InternalError,
             )),
         ),
         RenderableAIError::ContextWindowExceeded(msg) => (
             AgentTaskState::Failed,
             Some(TaskStatusUpdate::with_error_code(
-                format!("Context window exceeded: {msg}"),
+                format!("Casebook's full: {msg}"),
                 PlatformErrorCode::InternalError,
             )),
         ),
         RenderableAIError::InvalidApiKey { provider, .. } => (
             AgentTaskState::Failed,
             Some(TaskStatusUpdate::with_error_code(
-                format!("Invalid API key for {provider}. Update your API key in settings."),
+                format!("Bad warrant for {provider}. Amend the warrant in settings."),
                 PlatformErrorCode::AuthenticationRequired,
             )),
         ),
         RenderableAIError::AwsBedrockCredentialsExpiredOrInvalid { model_name } => (
             AgentTaskState::Failed,
             Some(TaskStatusUpdate::with_error_code(
-                format!("AWS Bedrock credentials expired or invalid for {model_name}."),
+                format!("AWS Bedrock warrant expired or struck for {model_name}."),
                 PlatformErrorCode::AuthenticationRequired,
             )),
         ),
