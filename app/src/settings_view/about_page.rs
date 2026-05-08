@@ -228,8 +228,9 @@ fn precinct_inbox_line() -> String {
     }
 }
 
-fn precinct_latest_dispatch_text() -> Option<String> {
+fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     let msg = radio::latest_dispatch()?;
+    let emergency = dispatch_is_emergency(&msg.body);
     // Cap body length so a chatty officer can't blow out the layout.
     const MAX_BODY: usize = 80;
     let body = if msg.body.chars().count() > MAX_BODY {
@@ -239,10 +240,17 @@ fn precinct_latest_dispatch_text() -> Option<String> {
         msg.body.clone()
     };
     let age = radio::format_dispatch_age(msg.sent_at_unix);
-    Some(format!(
+    let line = format!(
         "Latest from {} ({age}): \u{201C}{body}\u{201D}",
         msg.from_call_sign
-    ))
+    );
+    Some((line, emergency))
+}
+
+// 10-13 = officer needs assistance. Detected on the raw body so the latest-dispatch
+// row can paint itself red and read as an emergency at a glance.
+fn dispatch_is_emergency(body: &str) -> bool {
+    body.trim_start().starts_with("10-13")
 }
 
 impl AboutPageWidget {
@@ -308,7 +316,7 @@ impl AboutPageWidget {
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
-        let Some(line) = precinct_latest_dispatch_text() else {
+        let Some((line, emergency)) = precinct_latest_dispatch_text() else {
             return Empty::new().finish();
         };
         // read_inbox drains every queued message, not just the displayed one,
@@ -319,9 +327,18 @@ impl AboutPageWidget {
         } else {
             "10-4, copy".to_string()
         };
+        let theme = appearance.theme();
         let ui_builder = appearance.ui_builder();
 
-        let dispatch_span = ui_builder.span(line).with_soft_wrap().build().finish();
+        let mut dispatch_builder = ui_builder.span(line).with_soft_wrap();
+        if emergency {
+            dispatch_builder = dispatch_builder.with_style(UiComponentStyles {
+                font_color: Some(theme.terminal_colors().normal.red.into()),
+                font_weight: Some(Weight::Semibold),
+                ..Default::default()
+            });
+        }
+        let dispatch_span = dispatch_builder.build().finish();
 
         let ack_button = ui_builder
             .button(
