@@ -428,16 +428,16 @@ impl AmbientAgentTaskState {
 impl std::fmt::Display for AmbientAgentTaskState {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AmbientAgentTaskState::Queued => write!(f, "Queued"),
-            AmbientAgentTaskState::Pending => write!(f, "Pending"),
-            AmbientAgentTaskState::Claimed => write!(f, "Claimed"),
-            AmbientAgentTaskState::InProgress => write!(f, "In progress"),
-            AmbientAgentTaskState::Succeeded => write!(f, "Done"),
-            AmbientAgentTaskState::Failed => write!(f, "Failed"),
-            AmbientAgentTaskState::Error => write!(f, "Error"),
-            AmbientAgentTaskState::Blocked => write!(f, "Blocked"),
-            AmbientAgentTaskState::Cancelled => write!(f, "Cancelled"),
-            AmbientAgentTaskState::Unknown => write!(f, "Failed"),
+            AmbientAgentTaskState::Queued => write!(f, "On the duty roster"),
+            AmbientAgentTaskState::Pending => write!(f, "Awaiting orders"),
+            AmbientAgentTaskState::Claimed => write!(f, "Picked up"),
+            AmbientAgentTaskState::InProgress => write!(f, "On the beat"),
+            AmbientAgentTaskState::Succeeded => write!(f, "Wrapped up"),
+            AmbientAgentTaskState::Failed => write!(f, "Botched"),
+            AmbientAgentTaskState::Error => write!(f, "Went sideways"),
+            AmbientAgentTaskState::Blocked => write!(f, "Stuck"),
+            AmbientAgentTaskState::Cancelled => write!(f, "Stood down"),
+            AmbientAgentTaskState::Unknown => write!(f, "Botched"),
         }
     }
 }
@@ -469,10 +469,10 @@ pub fn cancel_task_with_toast<V: View>(task_id: AmbientAgentTaskId, ctx: &mut Vi
         async move { ai_client.cancel_ambient_agent_task(&task_id).await },
         move |_view, result, ctx| {
             let message = match result {
-                Ok(()) => "Task cancelled".to_string(),
+                Ok(()) => "Patrol stood down".to_string(),
                 Err(e) => {
                     log::error!("Failed to cancel task: {e}");
-                    format!("Failed to cancel task: {e}")
+                    format!("Couldn't stand down patrol: {e}")
                 }
             };
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {

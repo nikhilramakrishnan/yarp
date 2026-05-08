@@ -18,9 +18,9 @@ pub use task::{
     AmbientAgentTaskState, TaskStatusMessage,
 };
 pub const OUT_OF_CREDITS_TASK_FAILURE_MESSAGE: &str =
-    "Out of credits. Upgrade your Yarp plan to continue running cloud agents.";
+    "Rations spent. Top up your Yarp plan to keep ambient PCs on the beat.";
 pub const SERVER_OVERLOADED_TASK_FAILURE_MESSAGE: &str =
-    "There has been an inneraction. Please try again shortly.";
+    "HQ's lines are jammed. Try the radio again in a moment.";
 
 #[derive(Debug, thiserror::Error)]
 #[error("Invalid task ID: {0}")]
