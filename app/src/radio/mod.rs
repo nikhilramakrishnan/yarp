@@ -367,6 +367,13 @@ pub fn read_inbox() -> Vec<Message> {
     out
 }
 
+/// Most recent dispatch in this process's inbox, or None if empty. Reads
+/// without draining — UI surfaces can render the latest body alongside a
+/// pending-count without consuming the message.
+pub fn latest_dispatch() -> Option<Message> {
+    peek_inbox().into_iter().max_by_key(|m| m.sent_at_unix)
+}
+
 /// Sweep `~/.yarp/radio/inbox/<pid>/` directories whose owning pid is no
 /// longer alive — without it, a long-running install accumulates inbox dirs
 /// for every terminal that ever booted. Returns the number of inboxes
@@ -532,6 +539,13 @@ mod tests {
         // broadcast must report zero attempts — never one self-delivery.
         let (delivered, failed) = broadcast("All-cars test ping");
         assert_eq!(delivered + failed, peers().len());
+    }
+
+    #[test]
+    fn latest_dispatch_is_safe_when_inbox_empty() {
+        // No messages in this pid's inbox => None, never a panic, never
+        // a fabricated empty Message.
+        let _ = latest_dispatch();
     }
 
     #[test]

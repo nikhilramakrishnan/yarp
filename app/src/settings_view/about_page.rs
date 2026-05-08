@@ -146,6 +146,13 @@ impl SettingsWidget for AboutPageWidget {
                 )
                 .with_child(
                     ui_builder
+                        .span(precinct_latest_dispatch_line())
+                        .build()
+                        .with_margin_top(4.)
+                        .finish(),
+                )
+                .with_child(
+                    ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
                         .build()
                         .with_margin_top(16.)
@@ -196,6 +203,21 @@ fn precinct_inbox_line() -> String {
         1 => "1 pending dispatch in the inbox.".to_string(),
         n => format!("{n} pending dispatches in the inbox."),
     }
+}
+
+fn precinct_latest_dispatch_line() -> String {
+    let Some(msg) = radio::latest_dispatch() else {
+        return String::new();
+    };
+    // Cap body length so a chatty officer can't blow out the layout.
+    const MAX_BODY: usize = 80;
+    let body = if msg.body.chars().count() > MAX_BODY {
+        let truncated: String = msg.body.chars().take(MAX_BODY).collect();
+        format!("{truncated}…")
+    } else {
+        msg.body.clone()
+    };
+    format!("Latest from {}: \u{201C}{body}\u{201D}", msg.from_call_sign)
 }
 
 impl SettingsPageMeta for AboutPageView {
