@@ -1751,7 +1751,7 @@ impl AgentManagementView {
 
         let creator_name = card_data
             .creator_name(app)
-            .unwrap_or_else(|| "Unknown".to_string());
+            .unwrap_or_else(|| "John Doe".to_string());
         let avatar = Self::render_avatar_with_tooltip(
             &creator_name,
             appearance,
@@ -1893,7 +1893,7 @@ impl AgentManagementView {
 
         let build_header = |use_expanded: bool| {
             let title = Text::new_inline(
-                "Runs",
+                "Patrols",
                 appearance.ui_font_family(),
                 appearance.ui_font_size() + 4.,
             )
@@ -2026,7 +2026,7 @@ impl AgentManagementView {
         let theme = appearance.theme();
 
         let title = Text::new_inline(
-            "Runs",
+            "Patrols",
             appearance.ui_font_family(),
             appearance.ui_font_size() + 4.,
         )
