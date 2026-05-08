@@ -359,7 +359,7 @@ where
             if state.is_hovered() {
                 let tooltip = Container::new(
                     Text::new_inline(
-                        "Select a git repository to enable worktree support".to_string(),
+                        "File a git repo first to deputize worktree support".to_string(),
                         font_family,
                         12.,
                     )
@@ -403,7 +403,7 @@ where
         blended_colors::text_sub(theme, theme.background())
     };
     let label = Text::new(
-        "Automatically create a worktree when opening a new tab",
+        "Spin up a fresh worktree every time a new tab clocks on",
         appearance.ui_font_family(),
         12.,
     )
