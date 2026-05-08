@@ -236,7 +236,7 @@ impl AgentManagementView {
         });
 
         let personal_filter_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Personal", NakedTheme)
+            ActionButton::new("Mine", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .with_tooltip("Watch case files you opened")
                 .on_click(|ctx| {
@@ -1751,7 +1751,7 @@ impl AgentManagementView {
 
         let creator_name = card_data
             .creator_name(app)
-            .unwrap_or_else(|| "John Doe".to_string());
+            .unwrap_or_else(|| "Officer Doe".to_string());
         let avatar = Self::render_avatar_with_tooltip(
             &creator_name,
             appearance,
