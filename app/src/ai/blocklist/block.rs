@@ -1249,7 +1249,7 @@ impl AIBlock {
         let exchange_id = client_ids.client_exchange_id;
         let conversation_id = client_ids.conversation_id;
         let rewind_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Rewind", RewindButtonTheme)
+            ActionButton::new("Roll back", RewindButtonTheme)
                 .with_size(ButtonSize::XSmall)
                 .with_tooltip("Roll the case file back before this entry")
                 .on_click(move |ctx| {

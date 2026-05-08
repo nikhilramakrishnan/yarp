@@ -240,21 +240,21 @@ impl CloudSetupGuideView {
         let Some((workflow, setup_step)) = (match code {
             CREATE_ENV_SLASH_CMD => Some((
                 WorkflowType::Local(
-                    Workflow::new("Create Environment", CREATE_ENV_SLASH_CMD).with_arguments(vec![
+                    Workflow::new("Open up a Beat", CREATE_ENV_SLASH_CMD).with_arguments(vec![
                         Argument::new("github link or local filepath", ArgumentType::Text)
-                            .with_description("GitHub link or local filepath to the repository"),
+                            .with_description("GitHub link or local filepath to the case file"),
                     ]),
                 ),
                 SetupGuideStep::CreateEnvironment,
             )),
             CREATE_ENV_CLI_CMD => Some((
                 WorkflowType::Local(
-                    Workflow::new("Create Environment (CLI)", CREATE_ENV_CLI_CMD).with_arguments(
+                    Workflow::new("Open up a Beat (CLI)", CREATE_ENV_CLI_CMD).with_arguments(
                         vec![
                             Argument::new("NAME", ArgumentType::Text)
-                                .with_description("Name for the environment"),
+                                .with_description("Name for the beat"),
                             Argument::new("DOCKER_IMAGE", ArgumentType::Text)
-                                .with_description("Docker image to use for the environment"),
+                                .with_description("Docker image to kit out the beat with"),
                         ],
                     ),
                 ),

@@ -45,7 +45,7 @@ use yarpui::{
     ViewHandle,
 };
 
-const HEADER_TEXT: &str = "Suggested rule";
+const HEADER_TEXT: &str = "Proposed Standing Order";
 const MAX_EDITOR_HEIGHT: f32 = 240.;
 
 pub fn init(app: &mut AppContext) {
@@ -255,7 +255,7 @@ impl SuggestedRuleView {
         ctx.subscribe_to_model(&network_status, |me, _, _event, ctx| {
             let is_edit_allowed = me.is_edit_allowed(ctx);
             let tooltip = if !is_edit_allowed {
-                Some("Editing is disabled while offline.".to_string())
+                Some("Off the air — can't amend.".to_string())
             } else {
                 None
             };

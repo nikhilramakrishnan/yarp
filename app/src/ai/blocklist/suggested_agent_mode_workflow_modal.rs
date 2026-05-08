@@ -26,7 +26,7 @@ use yarpui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
-const SUGGESTED_PROMPT_MODAL_HEADER: &str = "Prompt";
+const SUGGESTED_PROMPT_MODAL_HEADER: &str = "Call-out";
 
 /// A modal component for displaying and managing suggested agent mode workflows.
 /// This component wraps a WorkflowView in a modal dialog with proper styling and

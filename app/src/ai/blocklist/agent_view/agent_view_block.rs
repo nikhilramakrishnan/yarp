@@ -180,7 +180,7 @@ fn render_deleted_state(
             })
             .finish(),
         )
-        .with_child(render_subtext("Closed".to_string(), appearance))
+        .with_child(render_subtext("Case closed".to_string(), appearance))
         .finish();
 
     render_block_container(
@@ -396,7 +396,7 @@ impl TypedActionView for AgentViewEntryBlock {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Couldn't navigate to that case file.".to_string(),
+                                    "Couldn't pull up that case file.".to_string(),
                                 ),
                                 window_id,
                                 ctx,
