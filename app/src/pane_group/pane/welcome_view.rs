@@ -159,7 +159,7 @@ impl WelcomeView {
                 Err(err) => {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
-                            DismissibleToast::error(format!("{err}")),
+                            DismissibleToast::error(format!("Couldn't pull the case file: {err}")),
                             window_id,
                             ctx,
                         );

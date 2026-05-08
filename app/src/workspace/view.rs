@@ -22978,7 +22978,7 @@ fn compute_default_panel_widths(
 #[cfg(debug_assertions)]
 fn set_opencode_yarp_plugin(new_entry: &str) -> String {
     let Some(home) = dirs::home_dir() else {
-        return "Failed to determine home directory".to_string();
+        return "Couldn't pin down the home beat.".to_string();
     };
 
     let config_dir = home.join(".config/opencode");
@@ -22988,9 +22988,9 @@ fn set_opencode_yarp_plugin(new_entry: &str) -> String {
         match std::fs::read_to_string(&config_path) {
             Ok(contents) => match serde_json::from_str(&contents) {
                 Ok(val) => val,
-                Err(e) => return format!("Failed to parse opencode.json: {e}"),
+                Err(e) => return format!("Couldn't read the opencode.json playbook: {e}"),
             },
-            Err(e) => return format!("Failed to read opencode.json: {e}"),
+            Err(e) => return format!("Couldn't pull the opencode.json playbook: {e}"),
         }
     } else {
         serde_json::json!({
