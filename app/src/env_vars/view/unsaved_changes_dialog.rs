@@ -14,8 +14,8 @@ use crate::ui_components::dialog::{dialog_styles, Dialog};
 
 use super::env_var_collection::{EnvVarCollectionAction, EnvVarCollectionView};
 
-const UNSAVED_CHANGES_TEXT: &str = "You have unsaved changes.";
-const KEEP_EDITING_TEXT: &str = "Keep editing";
+const UNSAVED_CHANGES_TEXT: &str = "Got unfiled amendments.";
+const KEEP_EDITING_TEXT: &str = "Carry on";
 const DISCARD_CHANGES_TEXT: &str = "Burn the draft";
 const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_PADDING: f32 = 12.;
