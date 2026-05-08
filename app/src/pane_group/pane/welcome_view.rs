@@ -35,7 +35,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "workspace:new_tab",
-            "Terminal session",
+            "Fresh patrol",
             WelcomeViewAction::CreateTerminalSession,
         )
         .with_context_predicate(id!("WelcomeView"))
