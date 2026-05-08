@@ -80,7 +80,7 @@ const SECTION_SPACING: f32 = 16.;
 
 // Variable rows
 pub(super) const ROW_SPACING: f32 = 8.;
-pub const EDUCATION_TEXT: &str = "Add secret or command. Yarp never stores external secrets";
+pub const EDUCATION_TEXT: &str = "File a secret or command. Yarp never holds outside secrets in evidence";
 const VARIABLE_FONT_SIZE: f32 = 13.;
 const DESCRIPTION_EDITOR_CUTOFF: f32 = 30.;
 const DESCRIPTION_BOTTOM_MARGIN: f32 = 12.;
@@ -359,8 +359,8 @@ impl ValidationError {
     /// Create validation error from detected secret level
     fn from_secret_level(secret_level: SecretLevel) -> Self {
         let message = match secret_level {
-            SecretLevel::Enterprise => "This environment variable cannot be created due to conflicts with your enterprise's secret redaction settings. Contact a team admin for details.".to_string(),
-            SecretLevel::User => "This environment variable cannot be created due to conflicts with your secret redaction settings. Save the secret as an environment variable (in your shell config or a .env file), or update your secret redaction settings in Settings > Privacy.".to_string(),
+            SecretLevel::Enterprise => "Can't file this environment variable - your enterprise's redaction rulebook says no. Talk to a team admin.".to_string(),
+            SecretLevel::User => "Can't file this environment variable - your redaction rulebook says no. Save the secret as an env var (in your shell config or a .env file), or amend the rulebook in Settings > Privacy.".to_string(),
         };
         Self {
             secret_level,

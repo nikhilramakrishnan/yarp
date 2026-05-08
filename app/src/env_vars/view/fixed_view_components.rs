@@ -63,9 +63,9 @@ impl EnvVarCollectionView {
         let mut stack = Stack::new();
 
         let text = if deleted {
-            "You no longer have access to these environment variables"
+            "These environment variables are off your beat"
         } else {
-            "Environment variables were moved to trash"
+            "Environment variables sent to the bin"
         };
         stack.add_child(
             Align::new(
