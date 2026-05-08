@@ -12814,7 +12814,7 @@ impl TerminalView {
         let (button_label, use_current_dir) = if !repos.is_empty() {
             (
                 format!(
-                    "Create environment using the supplied repos: {}",
+                    "Stand up a beat with the supplied case files: {}",
                     repos.join(", ")
                 ),
                 false,
@@ -12839,11 +12839,11 @@ impl TerminalView {
 
             if is_repo {
                 (
-                    "Create environment using the current working dir as repo".to_string(),
+                    "Stand up a beat using the current working dir as the case file".to_string(),
                     true,
                 )
             } else {
-                ("Create environment without any repos".to_string(), false)
+                ("Stand up a beat with no case files attached".to_string(), false)
             }
         };
 
@@ -19782,7 +19782,7 @@ impl TerminalView {
                     let password_trigger = NotificationsTrigger::NeedsAttention;
                     let notification_content = password_trigger.create_notification_content(
                         active_block.command_to_string(),
-                        "Command is waiting for a password".to_string(),
+                        "PC's holding for the password".to_string(),
                     );
                     ctx.emit(Event::SendNotification(notification_content));
                     send_telemetry_from_ctx!(
@@ -22355,7 +22355,7 @@ impl TerminalView {
         render_hoverable_block_button(
             icon,
             Some(ToolbeltButtonTooltip {
-                label: "Bookmark this block to quickly scroll to it".to_string(),
+                label: "Pin this block — quick jump back to the spot".to_string(),
                 tool_tip_below_button,
             }),
             false,
