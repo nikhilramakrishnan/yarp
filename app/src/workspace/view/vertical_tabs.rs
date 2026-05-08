@@ -2992,7 +2992,7 @@ fn terminal_primary_line_data(
     }
 
     TerminalPrimaryLineData::Text {
-        text: "New session".to_string(),
+        text: "Fresh beat".to_string(),
         font: TerminalPrimaryLineFont::Ui,
     }
 }
