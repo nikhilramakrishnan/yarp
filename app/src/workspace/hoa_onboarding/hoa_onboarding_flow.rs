@@ -448,7 +448,7 @@ impl HoaOnboardingFlow {
         };
 
         self.render_callout_content(
-            "Vertical tabs — the new default",
+            "Vertical tabs — the new station standard",
             "Vertical tabs lay out every open PC and terminal pane, grouped by tab. Pick what shows on the docket so the desk reads the way you work.",
             Some(checkbox_row),
             button,
