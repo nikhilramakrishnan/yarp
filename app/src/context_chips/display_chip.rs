@@ -717,10 +717,10 @@ impl DisplayChip {
                             // nvm-windows has documented issues when installed alongside an existing Node.js installation.
                             // https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#star-star-uninstall-any-pre-existing-node-installations-star-star
                             // Prompt the agent to remove this first.
-                            "Uninstall existing Node.js installation and install nvm for me"
+                            "Strike the current Node.js off the roster and put nvm on patrol for me"
                                 .to_string()
                         } else {
-                            "Install nvm for me".to_string()
+                            "Put nvm on patrol for me".to_string()
                         }));
                         me.close_node_version_popup(ctx);
                     }
