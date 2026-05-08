@@ -527,7 +527,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
                         background_color: bg_color_override_for_shortcuts_and_commands,
                     },
                     MessageItem::Text {
-                        content: "for help".into(),
+                        content: "for the playbook".into(),
                         color: color_override_for_shortcuts_and_commands,
                     },
                 ],
@@ -551,7 +551,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
                         background_color: bg_color_override_for_shortcuts_and_commands,
                     },
                     MessageItem::Text {
-                        content: "for commands".into(),
+                        content: "for radio codes".into(),
                         color: color_override_for_shortcuts_and_commands,
                     },
                 ],
@@ -603,7 +603,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
             items.push(MessageItem::clickable(
                 vec![
                     MessageItem::keystroke(code_review_keystroke),
-                    MessageItem::text("for code review"),
+                    MessageItem::text("for inspection"),
                 ],
                 |ctx| {
                     ctx.dispatch_typed_action(WorkspaceAction::ToggleRightPanel);
@@ -788,7 +788,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for HideShortcutsMessageProducer {
                     key: "?".to_owned(),
                     ..Default::default()
                 }),
-                MessageItem::text("to hide help"),
+                MessageItem::text("to stash the playbook"),
             ],
             |ctx| {
                 ctx.dispatch_typed_action(InputAction::ToggleAgentViewShortcuts);

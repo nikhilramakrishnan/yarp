@@ -1812,7 +1812,7 @@ impl AgentInputFooter {
             let usage = conversation.context_window_usage();
             let icon = icon_for_context_window_usage(usage);
             let remaining_pct = ((1.0 - usage) * 100.0).round() as i32;
-            let tooltip = format!("{remaining_pct}% context remaining");
+            let tooltip = format!("Briefing room \u{00B7} {remaining_pct}% headroom");
 
             self.context_window_button.update(ctx, |button, ctx| {
                 button.set_icon(Some(icon), ctx);
