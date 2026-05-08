@@ -925,14 +925,14 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                                 });
 
                             let done = is_finished || is_cancelled;
-                            let verb = if done { "Searched" } else { "Searching" };
+                            let verb = if done { "Swept" } else { "Sweeping" };
 
                             let mut fragments: Vec<FormattedTextFragment> =
                                 vec![FormattedTextFragment::plain_text(format!("{verb} "))];
                             match &conversation_label {
                                 Some(name) => {
                                     fragments
-                                        .push(FormattedTextFragment::plain_text("conversation "));
+                                        .push(FormattedTextFragment::plain_text("case file "));
                                     fragments.push(FormattedTextFragment::weighted(
                                         name.as_str(),
                                         Some(markdown_parser::weight::CustomWeight::Bold),
@@ -940,7 +940,7 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                                 }
                                 None => {
                                     fragments.push(FormattedTextFragment::plain_text(
-                                        "this conversation",
+                                        "this case file",
                                     ));
                                 }
                             };
