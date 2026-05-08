@@ -15055,7 +15055,7 @@ impl Workspace {
                                         || result.operation == ObjectOperation::Update
                                     {
                                         new_toast = new_toast.with_link(
-                                            ToastLink::new("View".to_string()).with_onclick_action(
+                                            ToastLink::new("Pull it up".to_string()).with_onclick_action(
                                                 WorkspaceAction::ViewObjectInYarpDrive(
                                                     YarpDriveItemId::Object(
                                                         CloudObjectTypeAndId::Workflow(workflow.id),
@@ -15106,7 +15106,7 @@ impl Workspace {
                                     DismissibleToast::error(message)
                                         .with_link(
                                             ToastLink::new(
-                                                "Check out the latest version and try again."
+                                                "Pull the latest and try again."
                                                     .to_string(),
                                             )
                                             .with_onclick_action(
@@ -15120,7 +15120,7 @@ impl Workspace {
                                     DismissibleToast::error(message)
                                         .with_link(
                                             ToastLink::new(
-                                                "Check out the latest version and try again."
+                                                "Pull the latest and try again."
                                                     .to_string(),
                                             )
                                             .with_onclick_action(

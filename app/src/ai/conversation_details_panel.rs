@@ -519,7 +519,7 @@ impl ConversationDetailsPanel {
                 })
         });
         let open_in_oz_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("View in Fuzz", SecondaryTheme)
+            ActionButton::new("Pull up in Fuzz", SecondaryTheme)
                 .with_tooltip("View this beat at the Fuzz web station")
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
