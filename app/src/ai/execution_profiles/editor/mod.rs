@@ -64,7 +64,7 @@ fn render_upgrade_footer(
     .with_height(16.)
     .finish();
 
-    let label = "Frontier models are unavailable on free plans. Upgrade";
+    let label = "Frontier models aren't on the rota for free plans. Upgrade";
     let upgrade_start = label.len() - "Upgrade".len();
     let info_text = Text::new(
         label,
