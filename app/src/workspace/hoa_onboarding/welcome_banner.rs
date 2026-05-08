@@ -29,22 +29,22 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::LayoutAlt01,
         title: "Vertical tabs",
-        description: "Rich tab titles and metadata like git branch, worktree, and PR. Fully customizable.",
+        description: "Tab titles read like a duty roster — git branch, worktree, PR, fully customisable.",
     },
     FeatureItem {
         icon: Icon::Sliders,
         title: "Tab configs",
-        description: "Tab-level schema to set your directory, startup commands, theme, and worktree with one click",
+        description: "Per-tab Standing Orders for working directory, startup commands, theme, and worktree — one click and you're on the beat.",
     },
     FeatureItem {
         icon: Icon::Inbox,
         title: "PC pigeonhole",
-        description: "Radio chatter from any PC that needs your eyes, all routed to one central pigeonhole",
+        description: "Radio chatter from any PC that needs your eyes, all routed to one central pigeonhole.",
     },
     FeatureItem {
         icon: Icon::MessageCheckSquare,
         title: "Native code review",
-        description: "Send inline comments from Yarp's code review directly to Claude Code, Codex, or OpenCode",
+        description: "Hand inline comments from Yarp's code review straight to Claude Code, Codex, or OpenCode.",
     },
 ];
 

@@ -268,7 +268,7 @@ impl WelcomePalette {
             SearchBar::new(
                 mixer.clone(),
                 search_bar_state.clone(),
-                "Code, build, or search for anything...",
+                "What's the call? Code, build, or look something up...",
                 Self::create_query_result_renderer,
                 ctx,
             )
