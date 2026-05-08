@@ -1426,7 +1426,7 @@ impl NotebookView {
 
         if let Some(ai_document_id) = self.active_notebook_data.as_ref(ctx).ai_document_id(ctx) {
             menu_items.push(
-                MenuItemFields::new("Attach to active session")
+                MenuItemFields::new("Sign on to active beat")
                     .with_on_select_action(NotebookAction::AttachPlanAsContext(ai_document_id))
                     .with_icon(icons::Icon::Paperclip)
                     .into_item(),

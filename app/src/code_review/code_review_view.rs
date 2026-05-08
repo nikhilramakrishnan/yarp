@@ -1291,7 +1291,7 @@ impl CodeReviewView {
 
         let undo_action_button = ctx.add_typed_action_view(move |ctx| {
             let keybinding = custom_tag_to_keystroke(CustomAction::Undo.into());
-            let mut action_button = ActionButton::new("Undo", NakedTheme)
+            let mut action_button = ActionButton::new("Take it back", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .on_click(move |ctx| {
                     ctx.dispatch_typed_action(WorkspaceAction::UndoRevertInCodeReviewPane {
@@ -7053,7 +7053,7 @@ impl CodeReviewView {
 
         if FeatureFlag::DiscardPerFileAndAllChanges.is_enabled() && has_changes {
             items.push(
-                MenuItemFields::new("Discard all")
+                MenuItemFields::new("Burn the lot")
                     .with_icon(Icon::ReverseLeft)
                     .with_on_select_action(CodeReviewAction::ShowDiscardConfirmDialog(None))
                     .into_item(),
