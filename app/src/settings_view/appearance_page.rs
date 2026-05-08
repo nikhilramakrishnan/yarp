@@ -2764,7 +2764,7 @@ impl SettingsWidget for ThemeSelectWidget {
                 appearance
                     .ui_builder()
                     .span(
-                        "Automatically switch between light and dark themes when your system does."
+                        "Flip between light and dark uniforms when your system does."
                             .to_string(),
                     )
                     .with_style(

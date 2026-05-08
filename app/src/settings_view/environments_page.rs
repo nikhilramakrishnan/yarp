@@ -1451,7 +1451,7 @@ impl EnvironmentsPageWidget {
                 title: "Quick briefing",
                 badge: Some("Suggested"),
                 subtitle:
-                    "Select the GitHub repositories you’d like to work with and we’ll suggest a base image and config",
+                    "Pick the GitHub repos you want on patrol and we’ll suggest a base image and config",
                 action_button: github_button,
                 compact_action_button: github_button_compact,
                 icon_size,
@@ -1465,7 +1465,7 @@ impl EnvironmentsPageWidget {
                 title: "Tag in the PC",
                 badge: None,
                 subtitle:
-                    "Pick a locally posted beat and we’ll help you stand a post based on it",
+                    "Pick a locally posted beat and we’ll help you stand up a post based on it",
                 action_button: local_repos_button,
                 compact_action_button: local_repos_button_compact,
                 icon_size,

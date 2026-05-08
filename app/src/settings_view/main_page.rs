@@ -888,7 +888,7 @@ impl VersionInfoWidget {
                     ),
                     AutoupdateStage::UnableToUpdateToNewVersion { .. } => (
                         Some(StatusContent {
-                            text: "A new version of Yarp is available but can't be installed",
+                            text: "A new version of Yarp signed in but can't take the floor",
                             color: ansi_red,
                         }),
                         Some(CallToActionContent {
@@ -899,7 +899,7 @@ impl VersionInfoWidget {
                     ),
                     AutoupdateStage::UnableToLaunchNewVersion { .. } => (
                         Some(StatusContent {
-                            text: "A new version of Yarp is installed but can't be launched.",
+                            text: "A new version of Yarp is on the books but won't take the floor.",
                             color: ansi_red,
                         }),
                         Some(CallToActionContent {
