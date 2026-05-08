@@ -57,25 +57,25 @@ fn aws_profile_reference_for_message(profile: &str, capitalize_first_word: bool)
 fn user_facing_aws_credentials_error_message(err: &CredentialsError, profile: &str) -> String {
     match err {
         CredentialsError::CredentialsNotLoaded(_) => format!(
-            "AWS credentials were not found for {}. Log in with the AWS CLI or update your AWS credentials configuration, then refresh.",
+            "AWS badge wasn't on file for {}. Sign in with the AWS CLI or update your AWS credentials, then radio in again.",
             aws_profile_reference_for_message(profile, false)
         ),
         CredentialsError::ProviderTimedOut(_) => {
-            "Timed out while loading AWS credentials. Refresh and try again.".to_string()
+            "AWS dispatch went silent loading the badge. Radio in again.".to_string()
         }
         CredentialsError::InvalidConfiguration(_) => format!(
-            "{} is invalid or incomplete in your local AWS configuration. Update your AWS profile settings and credentials, then refresh.",
+            "{} didn't check out in your local AWS file. Patch up the profile + credentials, then radio in again.",
             aws_profile_reference_for_message(profile, true)
         ),
         CredentialsError::ProviderError(_) => {
-            "Unable to load AWS credentials from your configured provider. Refresh your AWS login and try again."
+            "AWS provider wouldn't hand over the badge. Sign in to AWS and radio in again."
                 .to_string()
         }
         CredentialsError::Unhandled(_) => {
-            "Unexpected error while loading AWS credentials. Refresh your AWS login and try again."
+            "AWS badge load went sideways. Sign in to AWS and radio in again."
                 .to_string()
         }
-        _ => "Unable to load AWS credentials. Refresh your AWS login and try again."
+        _ => "Couldn't pick up the AWS badge. Sign in to AWS and radio in again."
             .to_string(),
     }
 }

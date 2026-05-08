@@ -23,9 +23,9 @@ const TITLE_FONT_SIZE: f32 = 20.;
 const TITLE_MARGIN_BOTTOM: f32 = 25.;
 // Constants for the subtitle
 const SUBTITLE_SENT_REFERRAL: &str =
-    "You earned an exclusive Yarp theme for referring someone to Yarp.";
+    "Force commendation — exclusive Yarp theme for bringing a recruit onto the beat.";
 const SUBTITLE_RECEIVED_REFERRAL: &str =
-    "You earned an exclusive Yarp theme for being referred to Yarp.";
+    "Force commendation — exclusive Yarp theme for being deputized onto the beat.";
 const SUBTITLE_FONT_SIZE: f32 = 14.;
 const SUBTITLE_MARGIN_BOTTOM: f32 = 40.;
 // Constants for the button
