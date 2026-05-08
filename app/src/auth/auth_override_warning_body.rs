@@ -28,13 +28,13 @@ const ACTION_BUTTON_BORDER_WIDTH: f32 = 2.;
 const ACTION_BUTTON_HORIZONTAL_PADDING: f32 = 8.;
 const ACTION_BUTTON_FONT_SIZE: f32 = 14.;
 
-const AUTH_OVERRIDE_DESCRIPTION: &str = "It looks like you logged into a Yarp account through a web browser. If you continue, any personal Yarp drive objects and preferences from this anonymous session with be permanently deleted.";
-const AUTH_OVERRIDE_CONFIRMATION_WARNING: &str = "This cannot be undone.";
-const AUTH_OVERRIDE_INITIAL_STEP_HEADER: &str = "New login detected";
+const AUTH_OVERRIDE_DESCRIPTION: &str = "Looks like you signed on through a web browser. Carry on and every personal Yarp Drive item and preference from this off-the-books session goes in the bin.";
+const AUTH_OVERRIDE_CONFIRMATION_WARNING: &str = "No way back from this one.";
+const AUTH_OVERRIDE_INITIAL_STEP_HEADER: &str = "New officer signing on";
 const AUTH_OVERRIDE_CONFIRM_CONFIRMATION_STEP_HEADER: &str =
-    "Delete personal Yarp Drive objects and preferences?";
-const AUTH_OVERRIDE_BULK_EXPORT_BUTTON_LABEL: &str = "Export your data";
-const AUTH_OVERRIDE_BULK_EXPORT_DESCRIPTION: &str = " to import later.";
+    "Strike personal Yarp Drive items and preferences off the books?";
+const AUTH_OVERRIDE_BULK_EXPORT_BUTTON_LABEL: &str = "Photocopy your records";
+const AUTH_OVERRIDE_BULK_EXPORT_DESCRIPTION: &str = " for the dossier.";
 const AUTH_OVERRIDE_CANCEL_BUTTON_LABEL: &str = "Stand down";
 const AUTH_OVERRIDE_CONTINUE_BUTTON_LABEL: &str = "Carry on";
 

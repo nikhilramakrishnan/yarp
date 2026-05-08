@@ -572,8 +572,8 @@ impl LaunchConfigSaveModal {
                 .finish(),
             ),
             SaveState::NotSaved => {
-                let mut text = "This will save your current configuration of windows, tabs \
-                and panes to a file so you can easily open it again".to_string();
+                let mut text = "Files the current windows, tabs and panes as a duty roster — \
+                pull it up again any time".to_string();
                 if self.open_modal_keybinding_str.is_empty() {
                     text.push('.');
                 } else {

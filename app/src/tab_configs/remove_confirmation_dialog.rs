@@ -109,12 +109,12 @@ impl View for RemoveTabConfigConfirmationDialog {
             .with_margin_right(12.)
             .finish();
 
-        let title = format!("Remove '{}'?", self.config_name);
+        let title = format!("Strike '{}' off the books?", self.config_name);
 
         let dialog = Dialog::new(
             title,
             Some(
-                "This tab config will be permanently deleted. This action cannot be undone.".into(),
+                "Tab config gets struck for good — no way back from this one.".into(),
             ),
             UiComponentStyles {
                 width: Some(DIALOG_WIDTH),
