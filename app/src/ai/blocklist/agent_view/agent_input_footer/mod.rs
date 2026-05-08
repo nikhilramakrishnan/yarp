@@ -367,7 +367,7 @@ impl AgentInputFooter {
         let rich_input_button = ctx.add_typed_action_view(|ctx| {
             ActionButton::new("Notebook", AgentInputButtonTheme)
                 .with_icon(Icon::TextInput)
-                .with_tooltip("Open notebook")
+                .with_tooltip("Crack the notebook")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_keybinding(
@@ -448,7 +448,7 @@ impl AgentInputFooter {
             ActionButton::new("", InstallPluginButtonTheme)
                 .with_icon(Icon::X)
                 .with_size(cli_button_size)
-                .with_tooltip("Dismiss")
+                .with_tooltip("Stand down")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_adjoined_side(AdjoinedSide::Left)
                 .on_click(|ctx| {
