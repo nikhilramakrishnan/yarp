@@ -143,7 +143,7 @@ impl TipsView {
                 ctx,
             ),
             TipItem::new(
-                "History Search".to_string(),
+                "Sweep the archive".to_string(),
                 "Pull old commands off the record, edit them, and re-run."
                     .to_string(),
                 TipAction::HistorySearch,

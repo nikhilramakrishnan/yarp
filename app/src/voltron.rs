@@ -92,7 +92,7 @@ impl VoltronItem {
         match self {
             VoltronItem::AiCommands => "A.I. Command Search",
             VoltronItem::Workflows => "Playbooks",
-            VoltronItem::History => "History Search",
+            VoltronItem::History => "Sweep the archive",
         }
     }
 }
