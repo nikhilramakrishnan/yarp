@@ -626,8 +626,8 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:create_team_workflow",
-            BindingDescription::new("Create a new team workflow")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Team Workflow"),
+            BindingDescription::new("File a new squad playbook")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Squad Playbook"),
             WorkspaceAction::CreateTeamWorkflow,
         )
         .with_custom_action(CustomAction::NewTeamWorkflow)
@@ -640,8 +640,8 @@ pub fn init(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::Workflow.as_str()),
         EditableBinding::new(
             "workspace:create_personal_workflow",
-            BindingDescription::new("Create a new personal workflow")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Personal Workflow"),
+            BindingDescription::new("File a new personal playbook")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Personal Playbook"),
             WorkspaceAction::CreatePersonalWorkflow,
         )
         .with_group(bindings::BindingGroup::Workflow.as_str())
