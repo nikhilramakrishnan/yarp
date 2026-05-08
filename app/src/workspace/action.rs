@@ -680,7 +680,7 @@ impl From<&WorkspaceAction> for LoginGatedFeature {
             CreateTeamEnvVarCollection => "Filing squad environment variables",
             CreateTeamAIPrompt => "Filing a squad briefing",
             OpenShareSessionModal(_) => "Opening a channel",
-            _ => "Unknown reason",
+            _ => "Off the record",
         }
     }
 }

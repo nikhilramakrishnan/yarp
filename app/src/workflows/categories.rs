@@ -755,7 +755,7 @@ impl CategoriesView {
 
     fn render_empty_list_placeholder(&self, appearance: &Appearance) -> Box<dyn Element> {
         let no_workflows_text =
-            CategoriesView::text_label("No matching playbooks found.", appearance);
+            CategoriesView::text_label("No playbooks match the lead.", appearance);
 
         let mut workflow_documentation_link_text =
             Flex::row().with_child(CategoriesView::text_label("Try ", appearance));
