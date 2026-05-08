@@ -131,7 +131,7 @@ impl AIContextMenuCategory {
             AIContextMenuCategory::Diffs => "Diffs",
             AIContextMenuCategory::Docs => "Docs",
             AIContextMenuCategory::Tasks => "Closed cases",
-            AIContextMenuCategory::Rules => "Rules",
+            AIContextMenuCategory::Rules => "House rules",
             AIContextMenuCategory::Servers => "Servers and integrations",
             AIContextMenuCategory::Terminal => "Terminal",
             AIContextMenuCategory::Web => "Web",
