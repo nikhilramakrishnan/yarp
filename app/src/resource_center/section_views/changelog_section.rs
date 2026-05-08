@@ -365,7 +365,7 @@ impl SectionView for ChangelogSectionView {
             appearance
                 .ui_builder()
                 .link(
-                    "Read all changelogs".into(),
+                    "Pull all patrol logs".into(),
                     Some("https://github.com/hotfuzz/yarp/changelog".into()),
                     None,
                     self.changelog_button_mouse_states
