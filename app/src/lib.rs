@@ -63,6 +63,7 @@ mod profiling;
 mod projects;
 mod prompt;
 mod quit_warning;
+pub mod radio;
 mod referral_theme_status;
 #[allow(dead_code)]
 mod remote_server;

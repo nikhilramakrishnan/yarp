@@ -71,6 +71,12 @@ pub fn yarp_home_mcp_config_file_path() -> Option<PathBuf> {
     yarp_home_config_dir().map(|yarp_config_dir| yarp_config_dir.join(".mcp.json"))
 }
 
+/// Directory where running Yarp instances drop a JSON beacon describing themselves
+/// so other instances can radio them. One file per pid.
+pub fn yarp_home_radio_dir() -> Option<PathBuf> {
+    yarp_home_config_dir().map(|yarp_config_dir| yarp_config_dir.join("radio"))
+}
+
 /// Returns the macOS config directory name for the current channel.
 ///
 /// `Oss` uses `.yarp`, integration tests use `.yarp-integration`.

@@ -3,6 +3,7 @@
 #![cfg_attr(feature = "release_bundle", windows_subsystem = "windows")]
 
 use anyhow::Result;
+use yarp::radio;
 use yarp_core::{
     channel::{Channel, ChannelConfig, ChannelState, OzConfig, YarpServerConfig},
     features::FeatureFlag,
@@ -80,8 +81,23 @@ fn main() -> Result<()> {
     ChannelState::set(state);
 
     write_default_llm_config_if_missing();
+    write_radio_beacon();
 
     yarp::run()
+}
+
+/// Drop a JSON beacon at `~/.yarp/radio/<pid>.json` so other Yarp
+/// instances can radio us. Best-effort; silently swallows IO errors.
+/// Stale beacons are pruned by readers via `radio::list_active()`.
+fn write_radio_beacon() {
+    let beacon = radio::Beacon::new("dev.yarp.Yarp", default_call_sign());
+    let _ = radio::register(&beacon);
+}
+
+fn default_call_sign() -> String {
+    std::env::var("USER")
+        .or_else(|_| std::env::var("USERNAME"))
+        .unwrap_or_else(|_| format!("Officer-{}", std::process::id()))
 }
 
 /// On first launch, drop a commented template at `~/.yarp/llm_provider.json`
