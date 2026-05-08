@@ -5561,7 +5561,7 @@ impl CodeReviewView {
         if diff_size == DiffSize::Unrenderable {
             return Self::styled_file_content_container(
                 Text::new(
-                    "Diff is too large to render",
+                    "Diff is too thick to render",
                     appearance.monospace_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -5585,7 +5585,7 @@ impl CodeReviewView {
         } else if file.file_diff.status.is_renamed() && file.file_diff.is_empty() {
             Self::styled_file_content_container(
                 Text::new(
-                    "File renamed without changes",
+                    "File renamed, no amendments",
                     appearance.monospace_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -5626,7 +5626,7 @@ impl CodeReviewView {
         } else {
             Self::styled_file_content_container(
                 Text::new(
-                    "Unable to load file content",
+                    "Couldn't pull the file content",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )
@@ -5718,7 +5718,7 @@ impl CodeReviewView {
 
         if self.discard_dialog_state.discard_file_paths.is_empty() {
             return Text::new(
-                "No file selected",
+                "No file pulled",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
