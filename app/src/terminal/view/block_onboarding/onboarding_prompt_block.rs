@@ -63,9 +63,9 @@ impl OnboardingPromptBlock {
         let font_color = current_theme.main_text_color(current_theme.background());
 
         // Copy - https://docs.google.com/document/d/1zttBLI5Mw07kUupvrMQoC5aTwTXSHIUOIFFnxZ8GQEU/edit
-        const LINE_ONE: &str = "Next, let’s set up your prompt. Yarp has a custom prompt builder or you can select PS1 to honor your pre-existing prompt configuration.";
+        const LINE_ONE: &str = "Right then — pick your prompt. Yarp's got a custom prompt builder, or load your standing PS1 if you've already kitted one out.";
         const LINE_TWO: &str =
-            "Yarp works with many custom prompts like oh-my-zsh, Starship, Powerlevel10K. ";
+            "Yarp plays nice with the regulars — oh-my-zsh, Starship, Powerlevel10K. ";
         const LINK_TEXT: &str = "Learn more";
         const LINK_DESTINATION: &str =
             "https://github.com/hotfuzz/yarp/terminal/appearance/prompt#custom-prompt-compatibility-table";
@@ -390,7 +390,7 @@ impl OnboardingPromptBlock {
                     1.,
                     Align::new(
                         Text::new_inline(
-                            "Customizable in appearance settings.",
+                            "Amend it in appearance settings.",
                             font_family,
                             ui_font_size,
                         )

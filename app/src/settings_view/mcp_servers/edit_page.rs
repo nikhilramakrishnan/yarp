@@ -314,9 +314,9 @@ impl MCPServersEditPageView {
         let title = if self.server_card_item_id.is_none() {
             "Sign on a new MCP server".to_string()
         } else if let Some(name) = self.server_model.name() {
-            format!("Edit {name} MCP Server")
+            format!("Amend {name} MCP server")
         } else {
-            "Edit MCP Server".to_string()
+            "Amend MCP server".to_string()
         };
 
         let ui_builder = appearance.ui_builder().clone();
