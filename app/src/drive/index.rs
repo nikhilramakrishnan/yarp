@@ -191,7 +191,7 @@ const ZERO_STATE_NOTEBOOK_LABEL: &str = "Notebook";
 
 const SORTING_BUTTON_TOOLTIP_LABEL: &str = "Sort by";
 
-const RETRY_BUTTON_TOOLTIP_LABEL: &str = "Retry sync";
+const RETRY_BUTTON_TOOLTIP_LABEL: &str = "Retry filing";
 
 const SHARED_OBJECT_LIMIT_HIT_BANNER_LINE: &str =
     "Top up the kit for more casebooks, workflows, channels on the air, and AI credits.";
