@@ -1392,9 +1392,9 @@ impl CodeReviewView {
 
         #[cfg(not(target_family = "wasm"))]
         let open_repository_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Walk to a repo", NakedTheme)
+            ActionButton::new("Walk onto a beat", NakedTheme)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("Walk to a repo and sign it on for coding")
+                .with_tooltip("Walk onto a beat and sign it on for coding")
                 .with_tooltip_alignment(TooltipAlignment::Center)
                 .on_click(|ctx| ctx.dispatch_typed_action(CodeReviewAction::OpenRepository))
         });
