@@ -29,7 +29,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "project_buttons:open_repository",
-            "Open repository",
+            "Crack open a case",
             ProjectButtonsAction::OpenRepository,
         )
         .with_context_predicate(id!("ProjectButons"))
@@ -37,7 +37,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::OpenRepository),
         EditableBinding::new(
             "project_buttons:create_new_project",
-            "Create new project",
+            "File a new case",
             ProjectButtonsAction::CreateProject,
         )
         .with_context_predicate(id!("ProjectButons"))
@@ -222,7 +222,7 @@ impl View for ProjectButtons {
         if FeatureFlag::CreateProjectFlow.is_enabled() {
             row.add_children([
                 Container::new(self.glowing_button(
-                    "Create new project",
+                    "File a new case",
                     Icon::Plus,
                     ProjectButtonsAction::CreateProject,
                     TooltipData {
@@ -238,7 +238,7 @@ impl View for ProjectButtons {
                 .with_margin_right(16.)
                 .finish(),
                 Container::new(self.glowing_button(
-                    "Open repository",
+                    "Crack open a case",
                     Icon::Folder,
                     ProjectButtonsAction::OpenRepository,
                     TooltipData {
@@ -254,7 +254,7 @@ impl View for ProjectButtons {
                 .with_margin_right(16.)
                 .finish(),
                 self.glowing_button(
-                    "Clone repository",
+                    "Pull a case file",
                     Icon::Duplicate,
                     ProjectButtonsAction::CloneRepository,
                     TooltipData {
@@ -270,7 +270,7 @@ impl View for ProjectButtons {
                 Expanded::new(
                     1.,
                     self.glowing_button(
-                        "Open repository",
+                        "Crack open a case",
                         Icon::Plus,
                         ProjectButtonsAction::CreateProject,
                         TooltipData {
