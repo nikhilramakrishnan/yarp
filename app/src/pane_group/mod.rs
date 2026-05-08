@@ -2914,7 +2914,7 @@ impl PaneGroup {
                     FormattedTextFragment::plain_text(
                         "Yarp doesn't currently support your default shell, falling back to zsh.  ",
                     ),
-                    FormattedTextFragment::hyperlink("Learn more", YARP_SHELL_COMPATIBILITY_DOCS),
+                    FormattedTextFragment::hyperlink("Pull the dossier", YARP_SHELL_COMPATIBILITY_DOCS),
                 ]),
             )
         });

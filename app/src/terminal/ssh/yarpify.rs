@@ -82,7 +82,7 @@ pub fn yarpify_description(
         FormattedTextFragment::plain_text(
             "Bring Yarp's features to your remote session. Blocks, full text editing, auto-complete, Fuzz, and more. "
         ),
-        FormattedTextFragment::hyperlink("Learn more", SSH_DOCS_URL),
+        FormattedTextFragment::hyperlink("Pull the dossier", SSH_DOCS_URL),
     ])]);
     yarpify::render::build_description_row(description, theme, appearance, hyperlink_index.clone())
         .with_hyperlink_font_color(appearance.theme().accent().into_solid())

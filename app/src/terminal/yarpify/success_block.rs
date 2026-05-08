@@ -194,7 +194,7 @@ impl YarpifySuccessBlock {
         appearance
             .ui_builder()
             .link(
-                "Learn more".into(),
+                "Pull the dossier".into(),
                 None,
                 Some(Box::new({
                     move |ctx| {

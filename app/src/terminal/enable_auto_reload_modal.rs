@@ -218,7 +218,7 @@ impl EnableAutoReloadModalBody {
                 " will automatically purchase your selected package when you run out. ",
             ),
             FormattedTextFragment::hyperlink(
-                "Learn more",
+                "Pull the dossier",
                 "https://github.com/hotfuzz/yarp/support-and-community/plans-and-billing/add-on-credits#id-2.-enable-auto-reload",
             ),
         ];

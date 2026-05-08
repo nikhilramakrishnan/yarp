@@ -21383,7 +21383,7 @@ impl TerminalView {
                         "Pure is not yet supported in Yarp. You might consider one of the \
                         supported prompts as an alternative.  ",
                     ),
-                    FormattedTextFragment::hyperlink("Learn more", PROMPT_COMPATIBILITY_URL),
+                    FormattedTextFragment::hyperlink("Pull the dossier", PROMPT_COMPATIBILITY_URL),
                 ]))
             } else {
                 None

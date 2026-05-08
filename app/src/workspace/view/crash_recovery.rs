@@ -22,7 +22,7 @@ pub fn banner_metadata(ctx: &AppContext) -> Option<WorkspaceBannerFields> {
                 .to_owned(),
             secondary_button: None,
             button: Some(super::WorkspaceBannerButtonDetails {
-                text: "Learn More".to_owned(),
+                text: "Pull the dossier".to_owned(),
                 action: super::WorkspaceAction::DismissWaylandCrashRecoveryBannerAndOpenLink,
                 variant: super::BannerButtonVariant::Outlined,
                 icon: None,

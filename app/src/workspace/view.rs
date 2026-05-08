@@ -7613,7 +7613,7 @@ impl Workspace {
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::success(message.to_string())
                             .with_link(
-                                ToastLink::new("Learn more".to_string()).with_href(
+                                ToastLink::new("Pull the dossier".to_string()).with_href(
                                     "https://github.com/hotfuzz/yarp/reference/cli".to_string(),
                                 ),
                             );

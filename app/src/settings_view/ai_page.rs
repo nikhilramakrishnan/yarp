@@ -4364,7 +4364,7 @@ impl AgentsWidget {
                 "Allow the Yarp Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. ",
             ),
             FormattedTextFragment::hyperlink(
-                "Learn more",
+                "Pull the dossier",
                 "https://github.com/hotfuzz/yarp/agent-platform/capabilities/codebase-context",
             ),
         ];
@@ -4906,7 +4906,7 @@ impl SettingsWidget for MCPServersWidget {
             MCP servers expose data sources or tools to agents through a standardized interface, essentially acting like plugins. ",
             ),
             FormattedTextFragment::hyperlink(
-                "Learn more",
+                "Pull the dossier",
                 "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp",
             ),
         ];
@@ -5037,7 +5037,7 @@ impl AIFactWidget {
                 "Rules help the Yarp Agent follow your conventions, whether for codebases or specific workflows. ",
             ),
             FormattedTextFragment::hyperlink(
-                "Learn more",
+                "Pull the dossier",
                 "https://github.com/hotfuzz/yarp/agent-platform/capabilities/rules",
             ),
         ];
