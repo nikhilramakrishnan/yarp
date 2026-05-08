@@ -146,8 +146,8 @@ impl MCPServersSettingsPageView {
         ctx: &mut ViewContext<Self>,
     ) {
         let message = match server_name {
-            Some(name) => format!("Successfully logged out of {name} MCP server"),
-            None => "Successfully logged out of MCP server".to_string(),
+            Some(name) => format!("Signed off the {name} MCP wire"),
+            None => "Signed off the MCP wire".to_string(),
         };
         match item_id {
             ServerCardItemId::TemplatableMCP(_) => {

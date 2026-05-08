@@ -4638,7 +4638,7 @@ impl Input {
             let display_path = file_path.display().to_string();
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 let toast = DismissibleToast::default(format!(
-                    "File {display_path} already exists and will be overwritten"
+                    "Dossier {display_path} already on file — will be overwritten"
                 ));
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
