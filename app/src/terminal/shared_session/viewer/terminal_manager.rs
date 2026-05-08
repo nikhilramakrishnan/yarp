@@ -1037,7 +1037,7 @@ impl TerminalManager {
                     }
                     LinkAccessLevelUpdateResponse::Error => {
                         terminal_view.show_persistent_toast(
-                            "Failed to update permissions for shared session".to_owned(),
+                            "Couldn't redo the channel permissions. Call it in again.".to_owned(),
                             ToastFlavor::Error,
                             ctx,
                         );
@@ -1081,10 +1081,10 @@ impl TerminalManager {
                     view.update(ctx, |terminal_view, ctx| {
                         let reason_string = match reason {
                             session_sharing_protocol::common::FailedToAddGuestsReason::NotWarpUsers => {
-                                "One or more of the emails are not Yarp users.".to_owned()
+                                "One or more of those badge numbers aren't on Yarp's roster.".to_owned()
                             }
                             session_sharing_protocol::common::FailedToAddGuestsReason::GuestAlreadyAdded => {
-                                "One or more of the guests has already been added.".to_owned()
+                                "One or more of those guests are already clocked in.".to_owned()
                             }
                             _ => "Something went wrong. Please try again.".to_owned(),
                         };
