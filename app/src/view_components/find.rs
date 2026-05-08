@@ -47,8 +47,8 @@ pub const REGEX_TOGGLE_TOOLTIP: &str = "Match the pattern on the lead";
 pub const CASE_SENSITIVE_LABEL: &str = "Aa";
 pub const CASE_SENSITIVE_TOOLTIP: &str = "Match the casing on the lead";
 
-pub const FIND_WITHIN_BLOCK_TOOLTIP: &str = "Find in selected block";
-pub const FIND_PLACEHOLDER_TEXT: &str = "Find";
+pub const FIND_WITHIN_BLOCK_TOOLTIP: &str = "Sweep the marked block";
+pub const FIND_PLACEHOLDER_TEXT: &str = "Look up";
 
 // Moving FindEvent, FindModel implementations away from terminal/.
 pub enum FindEvent {
