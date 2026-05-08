@@ -1778,18 +1778,18 @@ impl TeamsWidget {
         has_admin_permissions: bool,
     ) -> Box<dyn Element> {
         let prorated_message = if has_admin_permissions {
-            "You'll be charged for a portion of the team member's usage of Yarp."
+            "You'll cover a portion of the officer's tour on Yarp."
         } else {
-            "Your admin will be charged for a portion of the team member's usage of Yarp."
+            "The chief will cover a portion of the officer's tour on Yarp."
         };
 
         let additional_members_cost_money_msg = if let Some((monthly_cost, yearly_cost)) =
             self.get_per_seat_costs(team_metadata, pricing_info_model)
         {
-            format!("Additional members are billed at your plan's per-user rate: ${monthly_cost:.0}/month or ${yearly_cost:.0}/year, depending on your billing interval. {prorated_message}")
+            format!("Extra officers are billed at your plan's per-badge rate: ${monthly_cost:.0}/month or ${yearly_cost:.0}/year, depending on your billing interval. {prorated_message}")
         } else {
             format!(
-                "Additional members are billed at your plan's per-user rate. {prorated_message}"
+                "Extra officers are billed at your plan's per-badge rate. {prorated_message}"
             )
         };
 
