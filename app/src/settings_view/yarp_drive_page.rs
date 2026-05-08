@@ -248,7 +248,7 @@ impl SettingsWidget for YarpDriveToggleWidget {
                     }
                 })
                 .finish(),
-            Some("Yarp Drive is a workspace in your terminal where you can save Workflows, Notebooks, Prompts, and Environment Variables for personal use or to share with a team.".into()),
+            Some("Yarp Drive is the squad locker in your terminal — stash Workflows, Notebooks, Prompts, and Environment Variables for solo use or to share with the unit.".into()),
         )
     }
 }

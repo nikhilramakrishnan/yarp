@@ -1041,7 +1041,7 @@ impl SettingsWidget for EnvironmentsPageWidget {
     type View = EnvironmentsPageView;
 
     fn search_terms(&self) -> &str {
-        "environments environment ambient agents github yarp assisted manual configuration"
+        "environments environment ambient agents github yarp assisted manual configuration patrol posts beat post station unit"
     }
 
     fn render(

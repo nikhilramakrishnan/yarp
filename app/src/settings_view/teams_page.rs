@@ -4021,7 +4021,7 @@ impl SettingsWidget for TeamsWidget {
     type View = TeamsPageView;
 
     fn search_terms(&self) -> &str {
-        "invites teams team members"
+        "invites teams team members squad units station roster"
     }
 
     fn render(
