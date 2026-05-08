@@ -38,17 +38,17 @@ pub fn render_inline_ssh_wrapper_banner(
     let (style, title) = if state.wrapper_enabled {
         (
             InlineBannerStyle::LowPriority,
-            "Yarp SSH wrapper enabled".to_string(),
+            "Yarp SSH wrapper on shift".to_string(),
         )
     } else {
         (
             InlineBannerStyle::VeryLowPriority,
-            "Yarp SSH wrapper disabled".to_string(),
+            "Yarp SSH wrapper off shift".to_string(),
         )
     };
     let buttons = vec![
         InlineBannerTextButton {
-            text: "Learn more".to_string(),
+            text: "Pull the dossier".to_string(),
             text_color: label_text_color,
             button_state: InlineBannerButtonState {
                 on_click_event: TerminalAction::LegacySSHBanner(SSHBannerAction::LearnMore),
@@ -59,7 +59,7 @@ pub fn render_inline_ssh_wrapper_banner(
             variant: InlineBannerTextButtonVariant::Secondary,
         },
         InlineBannerTextButton {
-            text: "Settings".to_string(),
+            text: "Standing Orders".to_string(),
             text_color: label_text_color,
             button_state: InlineBannerButtonState {
                 on_click_event: TerminalAction::LegacySSHBanner(SSHBannerAction::Settings),

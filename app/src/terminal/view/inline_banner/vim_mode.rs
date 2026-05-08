@@ -46,7 +46,7 @@ pub fn render_vim_mode_banner(
         InlineBannerStyle::LowPriority,
         appearance,
         InlineBannerContent {
-            title: "Enable Yarp's Vim keybindings?".to_string(),
+            title: "Bring Yarp's Vim keybindings on shift?".to_string(),
             buttons,
             close_button: Some(close_button),
             ..Default::default()
