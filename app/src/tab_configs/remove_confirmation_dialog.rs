@@ -68,7 +68,7 @@ impl RemoveTabConfigConfirmationDialog {
 
         let enter_keystroke = Keystroke::parse("enter").expect("Valid keystroke");
         let confirm_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("Remove", DangerPrimaryTheme)
+            ActionButton::new("Strike off", DangerPrimaryTheme)
                 .with_keybinding(KeystrokeSource::Fixed(enter_keystroke), ctx)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(RemoveTabConfigConfirmationAction::Confirm);
