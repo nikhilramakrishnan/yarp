@@ -2818,7 +2818,7 @@ impl UsageWidget {
             .with_child(
                 appearance
                     .ui_builder()
-                    .paragraph(format!("Resets {formatted_next_refresh_time}"))
+                    .paragraph(format!("Rations restock {formatted_next_refresh_time}"))
                     .with_style(UiComponentStyles {
                         font_color: Some(blended_colors::text_sub(
                             appearance.theme(),
