@@ -166,12 +166,12 @@ const OFFLINE_BANNER_PADDING_VERTICAL: f32 = 4.;
 
 const FOLDER_LABEL: &str = "Folder";
 const NOTEBOOK_LABEL: &str = "Notebook";
-const WORKFLOW_LABEL: &str = "Workflow";
+const WORKFLOW_LABEL: &str = "Playbook";
 const AGENT_MODE_WORKFLOW_LABEL: &str = "Prompt";
 const ENV_VAR_COLLECTION_LABEL: &str = "Environment variables";
 const INDEX_FOLDER_LABEL: &str = "New folder";
 const INDEX_NOTEBOOK_LABEL: &str = "New notebook";
-const INDEX_WORKFLOW_LABEL: &str = "New workflow";
+const INDEX_WORKFLOW_LABEL: &str = "New playbook";
 const INDEX_AGENT_MODE_WORKFLOW_LABEL: &str = "New prompt";
 const INDEX_ENV_VAR_COLLECTION_LABEL: &str = "New environment variables";
 
@@ -186,7 +186,7 @@ pub const AUTOSCROLL_SPEED_MULTIPLIER: f32 = 10.;
 // Sets the distance from a border at which scroll events start to occur.
 pub const AUTOSCROLL_DETECTION_DISTANCE: f32 = 30.0;
 
-const ZERO_STATE_WORKFLOW_LABEL: &str = "Workflow";
+const ZERO_STATE_WORKFLOW_LABEL: &str = "Playbook";
 const ZERO_STATE_NOTEBOOK_LABEL: &str = "Notebook";
 
 const SORTING_BUTTON_TOOLTIP_LABEL: &str = "Sort by";
