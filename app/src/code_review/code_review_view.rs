@@ -1246,7 +1246,7 @@ impl CodeReviewView {
         let file_nav_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("", NakedTheme)
                 .with_icon(Icon::FileCopy)
-                .with_tooltip("Show file navigation")
+                .with_tooltip("Show the case file ledger")
                 .on_click(|ctx| ctx.dispatch_typed_action(CodeReviewAction::ToggleFileSidebar))
         });
 
@@ -1381,9 +1381,9 @@ impl CodeReviewView {
         let header = CodeReviewHeader::new();
 
         let init_project_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Initialize codebase", NakedTheme)
+            ActionButton::new("Sign on the codebase", NakedTheme)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("Enables codebase indexing and YARP.md")
+                .with_tooltip("Sign on the codebase indexer and YARP.md")
                 .with_tooltip_alignment(TooltipAlignment::Center)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(CodeReviewAction::InitProjectForCurrentDirectory)
@@ -1392,9 +1392,9 @@ impl CodeReviewView {
 
         #[cfg(not(target_family = "wasm"))]
         let open_repository_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Open repository", NakedTheme)
+            ActionButton::new("Walk to a repo", NakedTheme)
                 .with_size(ButtonSize::Small)
-                .with_tooltip("Navigate to a repo and initialize it for coding")
+                .with_tooltip("Walk to a repo and sign it on for coding")
                 .with_tooltip_alignment(TooltipAlignment::Center)
                 .on_click(|ctx| ctx.dispatch_typed_action(CodeReviewAction::OpenRepository))
         });
@@ -2947,7 +2947,7 @@ impl CodeReviewView {
                 ActionButton::new("", NakedTheme)
                     .with_icon(Icon::LinkExternal)
                     .with_size(ButtonSize::InlineActionHeader)
-                    .with_tooltip("Open file")
+                    .with_tooltip("Open the case file")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(CodeReviewAction::OpenInNewTab {
                             path: open_tab_path.clone(),
@@ -2984,7 +2984,7 @@ impl CodeReviewView {
                 ActionButton::new("", NakedTheme)
                     .with_icon(Icon::Paperclip)
                     .with_size(ButtonSize::InlineActionHeader)
-                    .with_tooltip("Add file diff as context")
+                    .with_tooltip("Pin this diff to the case")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(CodeReviewAction::AddDiffSetAsContext(
                             DiffSetScope::File(context_path.clone()),
@@ -2997,7 +2997,7 @@ impl CodeReviewView {
                 ActionButton::new("", NakedTheme)
                     .with_icon(Icon::Copy)
                     .with_size(ButtonSize::InlineActionHeader)
-                    .with_tooltip("Copy file path")
+                    .with_tooltip("Copy the case file path")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(CodeReviewAction::CopyFilePath(copy_path.clone()))
                     })
