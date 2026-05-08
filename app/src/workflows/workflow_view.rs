@@ -182,7 +182,7 @@ const AI_ASSIST_BUTTON_SIZE: f32 = 92.;
 const AI_ASSIST_BUTTON_TEXT: &str = "Autofill";
 const AI_ASSIST_LOADING_TEXT: &str = "On the wire";
 
-const ALIAS_HELP_TEXT: &str = "Aliases allow you to create short strings to execute workflows. Each alias can have different argument values and environment variables, and aliases are personal to you.";
+const ALIAS_HELP_TEXT: &str = "Aliases are short call signs that fire off a playbook. Each one can carry its own argument values and environment variables, and they stay on your personal radio.";
 
 const RUN_ON_DESKTOP_BUTTON_TEXT: &str = "Run in Yarp";
 const RUN_ON_DESKTOP_BUTTON_WIDTH: f32 = 108.;

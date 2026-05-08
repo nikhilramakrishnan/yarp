@@ -602,7 +602,7 @@ impl WorkflowView {
                     Container::new(
                         appearance
                         .ui_builder()
-                        .span("Fill out the arguments in this workflow and copy it to run in your terminal session")
+                        .span("Fill in the playbook's arguments, then copy it across to run on your patrol")
                         .with_soft_wrap()
                         .with_style(UiComponentStyles {
                             font_size: Some(EDITOR_FONT_SIZE),
