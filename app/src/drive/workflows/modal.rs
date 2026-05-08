@@ -1740,7 +1740,7 @@ impl WorkflowModal {
                 .finish();
 
             let button_with_tool_tip = appearance.ui_builder().tool_tip_on_element(
-                "Have Yarp AI write up the title, procedure, or parameters".to_string(),
+                "Have a PC write up the case title, procedure, or parameters".to_string(),
                 self.button_mouse_states.ai_assist_tool_tip.clone(),
                 rendered_button,
                 ParentAnchor::BottomMiddle,
