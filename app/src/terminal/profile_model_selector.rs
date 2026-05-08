@@ -506,7 +506,7 @@ impl ProfileModelSelector {
         );
 
         let manage_api_key_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Manage", SecondaryTheme)
+            ActionButton::new("Amend", SecondaryTheme)
                 .with_tooltip("Manage badge numbers")
                 .with_size(ButtonSize::XSmall)
                 .on_click(|ctx| {
@@ -751,7 +751,7 @@ impl ProfileModelSelector {
 
         menu_items.push(MenuItem::Separator);
         menu_items.push(MenuItem::Item(
-            MenuItemFields::new("Manage profiles")
+            MenuItemFields::new("Amend profiles")
                 .with_icon(Icon::Gear)
                 .with_on_select_action(ProfileModelSelectorAction::ManageProfiles),
         ));
