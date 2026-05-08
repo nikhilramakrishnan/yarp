@@ -63,7 +63,7 @@ impl LinkTarget {
             LinkTarget::LocalFile {
                 is_markdown: true, ..
             } => Some(SecondaryAction {
-                label: "Open in editor".into(),
+                label: "Crack open".into(),
                 tooltip: None,
                 accessibility_content: "Edit Markdown file".into(),
             }),
