@@ -8320,7 +8320,7 @@ impl Workspace {
         }
 
         items.extend([
-            MenuItemFields::new("Today.s bulletin")
+            MenuItemFields::new("Today's bulletin")
                 .with_on_select_action(WorkspaceAction::ViewLatestChangelog)
                 .into_item(),
             MenuItemFields::new("Settings")
