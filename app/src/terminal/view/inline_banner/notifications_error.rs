@@ -46,7 +46,7 @@ pub fn render_inline_notifications_error_banner(
     // If permissions haven't been granted or denied, add a button to set the permissions.
     if matches!(error, Some(NotificationSendError::PermissionsNotYetGranted)) {
         buttons.push(InlineBannerTextButton {
-            text: "Set permissions".to_string(),
+            text: "Sort the clearance".to_string(),
             text_color: active_ui_text_color,
             button_state: InlineBannerButtonState {
                 on_click_event: TerminalAction::NotificationsErrorBanner(
@@ -61,7 +61,7 @@ pub fn render_inline_notifications_error_banner(
     }
 
     buttons.push(InlineBannerTextButton {
-        text: "Troubleshoot".to_string(),
+        text: "Sniff it out".to_string(),
         text_color: active_ui_text_color,
         button_state: InlineBannerButtonState {
             on_click_event: TerminalAction::NotificationsErrorBanner(
