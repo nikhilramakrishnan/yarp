@@ -142,7 +142,7 @@ lazy_static! {
 const HAS_PENDING_CLI_ACTION_CONTEXT_KEY: &str = "HasPendingCLIAgentAction";
 const HAS_PENDING_NON_TRANSFER_CONTROL_ACTION_CONTEXT_KEY: &str =
     "HasPendingNonTransferControlCLIAgentAction";
-const BLOCKED_ACTION_MESSAGE_FOR_TRANSFER_CONTROL: &str = "Agent is asking you to take control.";
+const BLOCKED_ACTION_MESSAGE_FOR_TRANSFER_CONTROL: &str = "PC's signalling for the wheel.";
 
 pub fn init(app: &mut AppContext) {
     use yarpui::keymap::{macros::*, FixedBinding};
@@ -177,7 +177,7 @@ pub fn init(app: &mut AppContext) {
     ]);
     app.register_editable_bindings([EditableBinding::new(
         SET_INPUT_MODE_TERMINAL_ACTION_NAME,
-        "Take control of running command",
+        "Take the wheel of the call-out",
         CLISubagentAction::TakeControlOfRunningCommand,
     )
     .with_mac_key_binding("cmd-i")
@@ -277,7 +277,7 @@ impl CLISubagentView {
         );
 
         let take_over_button = CompactibleActionButton::new(
-            "Take over".to_string(),
+            "Take the wheel".to_string(),
             Some(KeystrokeSource::Binding(
                 SET_INPUT_MODE_TERMINAL_ACTION_NAME,
             )),
@@ -290,7 +290,7 @@ impl CLISubagentView {
             ctx,
         );
         let transfer_control_button = CompactibleActionButton::new(
-            "Take control".to_string(),
+            "Take the wheel".to_string(),
             Some(KeystrokeSource::Binding(
                 SET_INPUT_MODE_TERMINAL_ACTION_NAME,
             )),
@@ -312,11 +312,11 @@ impl CLISubagentView {
         allow_menu.update(ctx, |menu, ctx| {
             menu.set_items(
                 vec![
-                    MenuItemFields::new("Accept".to_string())
+                    MenuItemFields::new("Sign off".to_string())
                         .with_key_shortcut_label(Some(ACCEPT_KEYSTROKE.displayed()))
                         .with_on_select_action(CLISubagentAction::ExecuteBlockedAction)
                         .into_item(),
-                    MenuItemFields::new("Auto-approve".to_string())
+                    MenuItemFields::new("Rubber-stamp".to_string())
                         .with_key_shortcut_label(Some(AUTO_APPROVE_KEYSTROKE.displayed()))
                         .with_on_select_action(CLISubagentAction::ExecuteAndAutoApprove)
                         .into_item(),
@@ -1208,7 +1208,7 @@ impl View for CLISubagentView {
                 output_items.add_child(
                     Container::new(render_informational_footer(
                         app,
-                        "This response won't count towards your usage. \"Take over\" to continue."
+                        "This call's off the books. \"Take the wheel\" to carry on."
                             .to_string(),
                     ))
                     .with_margin_top(8.)
@@ -1444,7 +1444,7 @@ impl TypedActionView for CLISubagentView {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::success(String::from("Copied to clipboard")),
+                        DismissibleToast::success(String::from("Filed to the clipboard")),
                         window_id,
                         ctx,
                     );
@@ -1604,7 +1604,7 @@ fn render_web_search(query: Option<String>, app: &AppContext) -> Box<dyn Element
     let theme = appearance.theme();
 
     let text = if let Some(q) = query {
-        format!("Searching the web for \"{q}\"")
+        format!("Knocking on doors for \"{q}\"")
     } else {
         LOAD_OUTPUT_MESSAGE_FOR_WEB_SEARCH.to_string()
     };
@@ -1818,7 +1818,7 @@ fn render_permissions_speedbump(
 
     let checkbox_text = appearance
         .ui_builder()
-        .span("Always allow")
+        .span("Standing clearance")
         .with_style(UiComponentStyles {
             font_color: Some(font_color),
             font_size: Some(font_size),
@@ -1831,7 +1831,7 @@ fn render_permissions_speedbump(
 
     let formatted_text = FormattedTextElement::new(
         FormattedText::new([FormattedTextLine::Line(vec![
-            FormattedTextFragment::hyperlink("Manage Agent permissions", "Settings > AI"),
+            FormattedTextFragment::hyperlink("Amend PC clearances", "Settings > AI"),
         ])]),
         font_size,
         font_family,
@@ -2006,14 +2006,14 @@ fn render_search_action_input(
             };
 
             if queries.len() == 1 {
-                format!("Grep for `{}` in {}", queries[0], display_path)
+                format!("Sweeping the records for `{}` in {}", queries[0], display_path)
             } else {
                 let patterns_list = queries
                     .iter()
                     .map(|q| format!(" - `{q}`"))
                     .collect::<Vec<_>>()
                     .join("\n");
-                format!("Grep for the following patterns in {display_path}:\n{patterns_list}")
+                format!("Sweeping the records for these patterns in {display_path}:\n{patterns_list}")
             }
         }
         AIAgentActionType::FileGlobV2 {
@@ -2024,7 +2024,7 @@ fn render_search_action_input(
 
             if patterns.len() == 1 {
                 format!(
-                    "Search for files that match `{}` in {}",
+                    "Hunting for case files matching `{}` in {}",
                     patterns[0], display_path
                 )
             } else {
@@ -2034,7 +2034,7 @@ fn render_search_action_input(
                     .collect::<Vec<_>>()
                     .join("\n");
                 format!(
-                    "Find files that match the following patterns in {display_path}:\n{patterns_list}"
+                    "Hunting for case files matching these patterns in {display_path}:\n{patterns_list}"
                 )
             }
         }

@@ -66,7 +66,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "GIT_CHECKOUT_NEW_BRANCH",
         pattern: r"^git\s+checkout\s+-b\s+(\S+)\s*$",
-        label_template: Some("Code a feature or fix a bug in {1}"),
+        label_template: Some("Crack a case or patch a fault in {1}"),
         query_template:
             "Implement a feature or fix a bug in {1}. Ask me for all the details you need.",
     },
@@ -74,7 +74,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "GIT_CLONE",
         pattern: r"^git\s+clone\s+(\S+)\s*$",
-        label_template: Some("Help me code a feature or fix a bug in {1}"),
+        label_template: Some("Crack a case or patch a fault in {1}"),
         query_template:
             "Implement a feature or fix a bug in {1}. Ask me for all the details you need.",
     },
@@ -82,7 +82,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "GIT_SWITCH_NEW_BRANCH",
         pattern: r"^git\s+switch\s+-c\s+(\S+)\s*$",
-        label_template: Some("Code a feature or fix a bug in {1}"),
+        label_template: Some("Crack a case or patch a fault in {1}"),
         query_template:
             "Implement a feature or fix a bug in {1}. Ask me for all the details you need.",
     },
@@ -97,21 +97,21 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "GIT_INIT",
         pattern: r"^git\s+init\s*$",
-        label_template: Some("Help me start a new project"),
+        label_template: Some("Open a new case file"),
         query_template: "Help me start a new project. Ask me for all the details you need.",
     },
     // npm init / yarn init / pnpm init: Initializes a Node.js project.
     StaticPromptSuggestion {
         name: "NODE_PACKAGE_INIT",
         pattern: r"^(npm|yarn|pnpm)\s+init\s*$",
-        label_template: Some("Help me start a Node.js project"),
+        label_template: Some("Open a Node.js case file"),
         query_template: "Help me start a Node.js project. Ask me for all the details you need.",
     },
     // npx create-react-app <project>: Creates a new React app called <project>.
     StaticPromptSuggestion {
         name: "NPX_CREATE_REACT_APP",
         pattern: r"^npx\s+create-react-app\s+(\S+)\s*$",
-        label_template: Some("Help me create a new React app"),
+        label_template: Some("Kit out a new React app"),
         query_template:
             "Help me create a new React app called {1}. Ask me for all the details you need.",
     },
@@ -119,7 +119,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "NPX_CREATE_NEXT_APP",
         pattern: r"^npx\s+create-next-app\s+(\S+)\s*$",
-        label_template: Some("Help me create a new Next.js app"),
+        label_template: Some("Kit out a new Next.js app"),
         query_template:
             "Help me create a new Next.js app called {1}. Ask me for all the details you need.",
     },
@@ -127,7 +127,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "CARGO_NEW_PROJECT",
         pattern: r"^cargo\s+new\s+(\S+)\s*$",
-        label_template: Some("Help me start a Rust project for {1}"),
+        label_template: Some("Open a Rust case file for {1}"),
         query_template:
             "Help me start a Rust project for {1}. Ask me for all the details you need.",
     },
@@ -135,7 +135,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "POETRY_NEW_PROJECT",
         pattern: r"^poetry\s+new\s+(\S+)\s*$",
-        label_template: Some("Help me start a Poetry project for {1}"),
+        label_template: Some("Open a Poetry case file for {1}"),
         query_template:
             "Help me start a Poetry project for {1}. Ask me for all the details you need.",
     },
@@ -143,7 +143,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "DJANGO_START_PROJECT",
         pattern: r"^django-admin\s+startproject\s+(\S+)\s*$",
-        label_template: Some("Help me start a Django project for {1}"),
+        label_template: Some("Open a Django case file for {1}"),
         query_template:
             "Help me start a Django project for {1}. Ask me for all the details you need.",
     },
@@ -151,14 +151,14 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "RAILS_NEW_APP",
         pattern: r"^rails\s+new\s+(\S+)\s*$",
-        label_template: Some("Help me start a Rails app for {1}"),
+        label_template: Some("Kit out a Rails app for {1}"),
         query_template: "Help me start a Rails app for {1}. Ask me for all the details you need.",
     },
     // gradle init / mvn archetype:generate: Initializes a Gradle or Maven project.
     StaticPromptSuggestion {
         name: "JAVA_PROJECT_INIT",
         pattern: r"^(gradle\s+init|mvn\s+archetype:generate)\s*$",
-        label_template: Some("Help me start a Gradle/Maven project"),
+        label_template: Some("Open a Gradle/Maven case file"),
         query_template:
             "Help me start a Gradle/Maven project. Ask me for all the details you need.",
     },
@@ -166,21 +166,21 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "GO_MOD_INIT",
         pattern: r"^go\s+mod\s+init\s+(\S+)\s*$",
-        label_template: Some("Help me start a Go project for {1}"),
+        label_template: Some("Open a Go case file for {1}"),
         query_template: "Help me start a Go project for {1}. Ask me for all the details you need.",
     },
     // swift package init: Initializes a new Swift package.
     StaticPromptSuggestion {
         name: "SWIFT_PACKAGE_INIT",
         pattern: r"^swift\s+package\s+init\s*$",
-        label_template: Some("Help me start a Swift project"),
+        label_template: Some("Open a Swift case file"),
         query_template: "Help me start a Swift project. Ask me for all the details you need.",
     },
     // terraform init: Initializes Terraform in the current directory.
     StaticPromptSuggestion {
         name: "TERRAFORM_INIT",
         pattern: r"^terraform\s+init\s*$",
-        label_template: Some("Help me start a Terraform configuration"),
+        label_template: Some("Draft a Terraform configuration"),
         query_template:
             "Help me start a Terraform configuration. Ask me for all the details you need.",
     },
@@ -188,7 +188,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "PRISMA_INIT",
         pattern: r"^prisma\s+init\s*$",
-        label_template: Some("Help me set up Prisma in this project"),
+        label_template: Some("Wire up Prisma in this case file"),
         query_template: "Help me set up Prisma in this project.",
     },
     // python -m venv <env_name>: Creates a new Python virtual environment named <env_name>.
@@ -202,7 +202,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "BUNDLE_INIT",
         pattern: r"^bundle\s+init\s*$",
-        label_template: Some("Help me set up a new Ruby project"),
+        label_template: Some("Open a new Ruby case file"),
         query_template: "Help me set up a new Ruby project. Ask me for all the details you need.",
     },
     // ollama pull <model>: Pulls an Ollama model named <model>.
@@ -251,7 +251,7 @@ static STATIC_RULES: &[StaticPromptSuggestion] = &[
     StaticPromptSuggestion {
         name: "DOCKER_COMPOSE_UP_SERVICE",
         pattern: r"^docker-compose\s+up\s+-d\s+(\S+)\s*$",
-        label_template: Some("Help me manage or troubleshoot {1} with Docker Compose"),
+        label_template: Some("Run point on {1} with Docker Compose"),
         query_template: "Help me manage or troubleshoot {1} with Docker Compose.",
     },
     // docker network create <network>: Creates a Docker network named <network>.
