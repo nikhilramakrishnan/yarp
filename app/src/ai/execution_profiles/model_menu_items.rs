@@ -36,7 +36,7 @@ fn with_cost_and_profile_info<A: Action + Clone>(
     let mut label = String::new();
 
     if Some(&llm.id) == profile_default_model {
-        label.push_str("Profile default");
+        label.push_str("Loadout default");
     }
 
     match llm.usage_metadata.credit_multiplier {
