@@ -120,7 +120,7 @@ impl PasteAuthTokenModalView {
                 },
                 ctx,
             );
-            editor.set_placeholder_text("File the auth token", ctx);
+            editor.set_placeholder_text("File the badge token", ctx);
             editor
         });
 
