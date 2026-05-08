@@ -1465,7 +1465,7 @@ impl NotebookView {
         // Add "Duplicate" to menu
         if active_notebook_data.space(ctx) != Some(Space::Shared) {
             menu_items.push(
-                MenuItemFields::new("Duplicate")
+                MenuItemFields::new("Copy the file")
                     .with_on_select_action(NotebookAction::Duplicate)
                     .with_icon(icons::Icon::Duplicate)
                     .into_item(),
@@ -1475,7 +1475,7 @@ impl NotebookView {
         #[cfg(feature = "local_fs")]
         {
             menu_items.push(
-                MenuItemFields::new("Export")
+                MenuItemFields::new("Print the dossier")
                     .with_on_select_action(NotebookAction::Export)
                     .with_icon(icons::Icon::Download)
                     .into_item(),
@@ -1487,7 +1487,7 @@ impl NotebookView {
             && (!FeatureFlag::SharedWithMe.is_enabled() || access_level.can_trash())
         {
             menu_items.push(
-                MenuItemFields::new("Trash")
+                MenuItemFields::new("Bin it")
                     .with_on_select_action(NotebookAction::Trash)
                     .with_icon(icons::Icon::Trash)
                     .into_item(),

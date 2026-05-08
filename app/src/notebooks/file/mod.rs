@@ -945,7 +945,7 @@ impl BackingView for FileNotebookView {
         }) = self.file_state.source()
         {
             actions.push(
-                MenuItemFields::new("Refresh file")
+                MenuItemFields::new("Re-sweep the file")
                     .with_on_select_action(FileNotebookAction::ReloadFile)
                     .into_item(),
             );

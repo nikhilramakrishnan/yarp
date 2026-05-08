@@ -985,7 +985,7 @@ impl SharingDialog {
                 if !is_team_guest || !is_session {
                     items.push(MenuItem::Separator);
                     items.push(
-                        MenuItemFields::new("Remove")
+                        MenuItemFields::new("Strike off")
                             .with_on_select_action(SharingDialogAction::RemoveGuest)
                             .with_disabled(inherited_access)
                             .into_item(),

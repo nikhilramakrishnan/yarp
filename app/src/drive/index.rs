@@ -4430,7 +4430,7 @@ impl DriveIndex {
                     }
                     if !FeatureFlag::SharedWithMe.is_enabled() || editability.can_edit() {
                         menu_items.push(
-                            MenuItemFields::new("Rename")
+                            MenuItemFields::new("Re-badge")
                                 .with_on_select_action(
                                     DriveIndexAction::OpenCloudObjectNamingDialog {
                                         space: *space,
@@ -4515,7 +4515,7 @@ impl DriveIndex {
 
                     if let Some(server_id) = cloud_object_type_and_id.server_id() {
                         menu_items.push(
-                            MenuItemFields::new("Revert to server")
+                            MenuItemFields::new("Pull from station")
                                 .with_on_select_action(DriveIndexAction::RevertFailedObject(
                                     server_id,
                                 ))
@@ -4719,7 +4719,7 @@ impl DriveIndex {
                             || (self.is_online(app) && matches!(space, Space::Team { .. }))
                         {
                             menu_items.push(
-                                MenuItemFields::new("Duplicate")
+                                MenuItemFields::new("Copy the file")
                                     .with_on_select_action(DriveIndexAction::DuplicateObject(
                                         *cloud_object_type_and_id,
                                     ))
@@ -4734,7 +4734,7 @@ impl DriveIndex {
                 #[cfg(feature = "local_fs")]
                 if object.can_export() {
                     menu_items.push(
-                        MenuItemFields::new("Export")
+                        MenuItemFields::new("Print the dossier")
                             .with_on_select_action(DriveIndexAction::ExportObject(
                                 *cloud_object_type_and_id,
                             ))
@@ -4760,7 +4760,7 @@ impl DriveIndex {
             && (!FeatureFlag::SharedWithMe.is_enabled() || access_level.can_trash())
         {
             menu_items.push(
-                MenuItemFields::new("Trash")
+                MenuItemFields::new("Bin it")
                     .with_on_select_action(DriveIndexAction::TrashObject {
                         cloud_object_type_and_id: *cloud_object_type_and_id,
                     })
@@ -4816,7 +4816,7 @@ impl DriveIndex {
 
                 if let Some(server_id) = cloud_object_type_and_id.server_id() {
                     menu_items.push(
-                        MenuItemFields::new("Revert to server")
+                        MenuItemFields::new("Pull from station")
                             .with_on_select_action(DriveIndexAction::RevertFailedObject(server_id))
                             .with_icon(Icon::ReverseLeft)
                             .into_item(),

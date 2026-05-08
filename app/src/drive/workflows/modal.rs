@@ -700,7 +700,7 @@ impl WorkflowModal {
         // Add "Trash" to menu
         if self.is_online(app) {
             menu_items.push(
-                MenuItemFields::new("Trash")
+                MenuItemFields::new("Bin it")
                     .with_on_select_action(WorkflowModalAction::TrashObject)
                     .with_icon(Icon::Trash)
                     .into_item(),
