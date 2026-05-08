@@ -174,7 +174,7 @@ impl YarpifyPageView {
         let mut categories = vec![
             Category::new("", vec![Box::new(TitleWidget::default())]),
             Category::new("Subshells", vec![Box::new(SubshellsWidget::default())])
-                .with_subtitle("Subshells supported: bash, zsh, and fish."),
+                .with_subtitle("Subshells on the roster: bash, zsh, and fish."),
         ];
 
         let yarpify_settings = YarpifySettings::as_ref(ctx);
