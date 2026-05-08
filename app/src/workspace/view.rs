@@ -8333,7 +8333,7 @@ impl Workspace {
 
         #[cfg(not(target_family = "wasm"))]
         items.push(
-            MenuItemFields::new("View Yarp logs")
+            MenuItemFields::new("View duty log")
                 .with_on_select_action(WorkspaceAction::ViewLogs)
                 .into_item(),
         );

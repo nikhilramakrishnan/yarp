@@ -226,7 +226,7 @@ impl HoaOnboardingFlow {
         });
 
         let dismiss_vtabs_button = ctx.add_view(|ctx| {
-            ActionButton::new("Dismiss", HoaPrimaryButtonTheme)
+            ActionButton::new("Stand down", HoaPrimaryButtonTheme)
                 .with_keybinding(KeystrokeSource::Fixed(enter.clone()), ctx)
                 .on_click(|ctx| ctx.dispatch_typed_action(HoaOnboardingAction::Dismiss))
         });

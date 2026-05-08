@@ -899,7 +899,7 @@ impl TypedActionView for ConversationListView {
                     let is_ambient_agent_conversation =
                         matches!(conversation_id, ConversationOrTaskId::TaskId(_));
 
-                    let mut delete_item = MenuItemFields::new("Delete")
+                    let mut delete_item = MenuItemFields::new("Strike off")
                         .with_override_text_color(Appearance::as_ref(ctx).theme().ansi_fg_red())
                         .with_on_select_action(ConversationListViewAction::DeleteFromOverflowMenu {
                             conversation_id,
