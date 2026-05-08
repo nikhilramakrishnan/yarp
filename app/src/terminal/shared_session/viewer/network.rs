@@ -1072,7 +1072,7 @@ pub fn write_to_pty_failure_reason_string(reason: &WriteToPtyFailureReason) -> S
         WriteToPtyFailureReason::InsufficientPermissions => {
             "Radio's read-only — wave for edit access.".to_owned()
         }
-        _ => "Edit didn't take. Try again.".to_owned(),
+        _ => "Amendment didn't take. Try again.".to_owned(),
     }
 }
 

@@ -704,8 +704,8 @@ impl UpdateEnvironmentForm {
         // Update button text based on mode when header is hidden
         if !show_header {
             let button_text = match &self.mode {
-                EnvironmentFormMode::Create => "Create environment",
-                EnvironmentFormMode::Edit { .. } => "Save environment",
+                EnvironmentFormMode::Create => "Open the beat",
+                EnvironmentFormMode::Edit { .. } => "File the beat",
             };
             self.submit_button.update(ctx, |button, ctx| {
                 button.set_label(button_text, ctx);
@@ -1614,8 +1614,8 @@ impl UpdateEnvironmentForm {
 
     fn render_header(&self, appearance: &Appearance, app: &AppContext) -> Box<dyn Element> {
         let (title, button_handle) = match &self.mode {
-            EnvironmentFormMode::Create => ("Create environment", &self.submit_button),
-            EnvironmentFormMode::Edit { .. } => ("Edit environment", &self.submit_button),
+            EnvironmentFormMode::Create => ("Open a new beat", &self.submit_button),
+            EnvironmentFormMode::Edit { .. } => ("Amend the beat", &self.submit_button),
         };
 
         let submit_actions = || self.render_submit_actions(appearance, app, button_handle);
