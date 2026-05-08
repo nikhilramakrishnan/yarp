@@ -8536,7 +8536,7 @@ impl Workspace {
                 .with_height(NEW_SESSION_SIDECAR_SEARCH_BOX_HEIGHT)
                 .finish()
             }),
-            Some("Search repos".to_string()),
+            Some("Look up beats".to_string()),
         )
         .with_no_interaction_on_hover()
         .no_highlight_on_hover()
@@ -12162,7 +12162,7 @@ impl Workspace {
         self.palette.update(ctx, |view, ctx| {
             view.reset(ctx);
             view.set_fixed_query_filters(
-                "Search recent repos and case files".to_string(),
+                "Sweep recent beats and case files".to_string(),
                 vec![QueryFilter::HistoricalConversations, QueryFilter::Repos],
                 ctx,
             );
@@ -16878,7 +16878,7 @@ impl Workspace {
                         Shrinkable::new(
                             1.,
                             Text::new_inline(
-                                "Search sessions, PCs, files...",
+                                "Sweep sessions, PCs, files…",
                                 appearance.ui_font_family(),
                                 14.,
                             )
