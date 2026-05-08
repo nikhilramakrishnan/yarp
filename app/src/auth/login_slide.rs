@@ -283,7 +283,7 @@ impl LoginSlideView {
                 },
                 ctx,
             );
-            editor.set_placeholder_text("Auth Token", ctx);
+            editor.set_placeholder_text("Badge token", ctx);
             editor
         });
 

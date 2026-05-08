@@ -547,7 +547,7 @@ impl ExecutionProfileEditorView {
                 },
                 ctx,
             );
-            editor.set_placeholder_text("e.g. \"YOLO code\"", ctx);
+            editor.set_placeholder_text("e.g. \"By the book patrol\"", ctx);
             editor
         });
 
