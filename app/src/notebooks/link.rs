@@ -56,7 +56,7 @@ impl LinkTarget {
     pub fn secondary_action(&self) -> Option<SecondaryAction> {
         match self {
             LinkTarget::LocalDirectory { .. } => Some(SecondaryAction {
-                label: "New session".into(),
+                label: "Fresh beat".into(),
                 tooltip: Some("Open a fresh beat in this directory".into()),
                 accessibility_content: "Open in terminal session".into(),
             }),
