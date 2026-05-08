@@ -247,7 +247,7 @@ impl AgentManagementView {
         });
 
         let setup_guide_button = CompactibleActionButton::new(
-            "Get started".to_string(),
+            "Sign on".to_string(),
             None,
             ButtonSize::Small,
             AgentManagementViewAction::ToggleSetupGuide,
@@ -314,7 +314,7 @@ impl AgentManagementView {
                 },
                 ctx,
             );
-            editor.set_placeholder_text("Search", ctx);
+            editor.set_placeholder_text("Sweep the records", ctx);
             editor
         });
         ctx.subscribe_to_view(&search_editor, |me, _handle, event, ctx| {
@@ -510,17 +510,17 @@ impl AgentManagementView {
                 None,
             ),
             make_status_option(
-                "Working",
+                "On the beat",
                 AgentManagementViewAction::SetStatusFilter(StatusFilter::Working),
                 Some((Icon::ClockLoader, Fill::from(magenta))),
             ),
             make_status_option(
-                "Done",
+                "Wrapped up",
                 AgentManagementViewAction::SetStatusFilter(StatusFilter::Done),
                 Some((Icon::Check, Fill::from(green))),
             ),
             make_status_option(
-                "Failed",
+                "Botched",
                 AgentManagementViewAction::SetStatusFilter(StatusFilter::Failed),
                 Some((Icon::X, Fill::from(red))),
             ),
@@ -706,14 +706,14 @@ impl AgentManagementView {
         // displayed ID. (The dropdown menu still shows the full ID.)
         dropdown.set_menu_header_text_override(|text| {
             if matches!(text, "All" | "None") {
-                return format!("Environment: {text}");
+                return format!("Beat: {text}");
             }
 
             let abbreviated = text.chars().take(6).collect::<String>();
             if abbreviated == text {
-                format!("Environment: {text}")
+                format!("Beat: {text}")
             } else {
-                format!("Environment: {abbreviated}…")
+                format!("Beat: {abbreviated}…")
             }
         });
 
@@ -1804,24 +1804,24 @@ impl AgentManagementView {
         let mut metadata_parts = Vec::new();
 
         if let Some(source) = card_data.source() {
-            metadata_parts.push(format!("Source: {}", source.display_name()));
+            metadata_parts.push(format!("Tip-off: {}", source.display_name()));
         }
 
         if FeatureFlag::AgentHarness.is_enabled() {
             if let Some(harness) = card_data.harness() {
                 metadata_parts.push(format!(
-                    "Harness: {}",
+                    "Kit: {}",
                     harness_display::display_name(harness)
                 ));
             }
         }
 
         if let Some(run_time) = card_data.run_time() {
-            metadata_parts.push(format!("Run time: {run_time}"));
+            metadata_parts.push(format!("Patrol time: {run_time}"));
         }
 
         if let Some(usage) = card_data.display_request_usage(app) {
-            metadata_parts.push(format!("Credits used: {usage}"));
+            metadata_parts.push(format!("Rations spent: {usage}"));
         }
 
         let metadata_text = metadata_parts.join(" • ");

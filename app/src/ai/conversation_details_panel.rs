@@ -842,7 +842,7 @@ impl ConversationDetailsPanel {
 
         let created_text = Text::new(
             format!(
-                "Created by {} • {}",
+                "Filed by {} • {}",
                 creator.display_name,
                 format_approx_duration_from_now(created_at)
             ),
@@ -919,7 +919,7 @@ impl ConversationDetailsPanel {
 
         // Section header
         let header = Text::new(
-            "Status".to_string(),
+            "Duty status".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -984,7 +984,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
 
         let label_text = Text::new(
-            "Harness".to_string(),
+            "Kit".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -1061,7 +1061,7 @@ impl ConversationDetailsPanel {
         let fuzz_link = appearance
             .ui_builder()
             .link(
-                "Open in Fuzz".to_string(),
+                "Pull up at HQ".to_string(),
                 Some(skill_url),
                 None,
                 self.mouse_states.skill_link.clone(),
@@ -1097,7 +1097,7 @@ impl ConversationDetailsPanel {
                 let source_link = appearance
                     .ui_builder()
                     .link(
-                        "Open in GitHub".to_string(),
+                        "Pull up on GitHub".to_string(),
                         Some(github_url),
                         None,
                         self.mouse_states.skill_source_link.clone(),
@@ -1118,7 +1118,7 @@ impl ConversationDetailsPanel {
         if trimmed.is_empty() {
             return None;
         }
-        Some(self.render_simple_field("Initial query", trimmed, appearance))
+        Some(self.render_simple_field("Opening call-out", trimmed, appearance))
     }
 
     fn render_artifacts_section(&self, appearance: &Appearance) -> Option<Box<dyn Element>> {
@@ -1129,7 +1129,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
 
         let label_text = Text::new(
-            "Artifacts".to_string(),
+            "Evidence".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -1168,7 +1168,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
 
         let header_text = Text::new(
-            "Environment setup commands".to_string(),
+            "Beat setup orders".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -1233,7 +1233,7 @@ impl ConversationDetailsPanel {
 
         // Section header
         let header = Text::new(
-            "Environment details".to_string(),
+            "Beat details".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -1268,7 +1268,7 @@ impl ConversationDetailsPanel {
             };
 
         let name_text = Text::new(
-            format!("Name: {environment_name}"),
+            format!("Beat name: {environment_name}"),
             appearance.ui_font_family(),
             ui_font_size,
         )
@@ -1389,7 +1389,7 @@ impl ConversationDetailsPanel {
         let theme = appearance.theme();
 
         let label_text = Text::new(
-            "Credits used".to_string(),
+            "Rations spent".to_string(),
             appearance.ui_font_family(),
             appearance.ui_font_size(),
         )
@@ -1404,9 +1404,9 @@ impl ConversationDetailsPanel {
         );
 
         let inference_row = self.render_cost_sub_row(
-            "Inference",
+            "Briefings",
             inference,
-            "Credits spent on AI model requests",
+            "Rations spent on PC briefings",
             self.mouse_states.inference_info_tooltip.clone(),
             appearance,
         );
@@ -1417,9 +1417,9 @@ impl ConversationDetailsPanel {
         );
 
         let compute_row = self.render_cost_sub_row(
-            "Compute",
+            "Patrol",
             compute,
-            "Credits spent on sandbox compute time",
+            "Rations spent on time on patrol",
             self.mouse_states.compute_info_tooltip.clone(),
             appearance,
         );
@@ -1679,7 +1679,7 @@ impl View for ConversationDetailsPanel {
                 if let Some(directory) = directory {
                     content.add_child(
                         Container::new(self.render_field_with_copy(
-                            "Directory",
+                            "Patrol route",
                             directory,
                             ConversationDetailsPanelAction::CopyDirectory,
                             CopyButtonKind::Directory,
@@ -1694,7 +1694,7 @@ impl View for ConversationDetailsPanel {
                 if let Some(id) = conversation_id {
                     content.add_child(
                         Container::new(self.render_field_with_copy(
-                            "Conversation ID",
+                            "Case ID",
                             id,
                             ConversationDetailsPanelAction::CopyConversationId,
                             CopyButtonKind::ConversationId,
@@ -1712,7 +1712,7 @@ impl View for ConversationDetailsPanel {
                 if let Some(directory) = directory {
                     content.add_child(
                         Container::new(self.render_field_with_copy(
-                            "Directory",
+                            "Patrol route",
                             directory,
                             ConversationDetailsPanelAction::CopyDirectory,
                             CopyButtonKind::Directory,
@@ -1726,7 +1726,7 @@ impl View for ConversationDetailsPanel {
                 if let Some(task_id) = task_id {
                     content.add_child(
                         Container::new(self.render_field_with_copy(
-                            "Run ID",
+                            "Patrol ID",
                             &task_id.to_string(),
                             ConversationDetailsPanelAction::CopyRunId,
                             CopyButtonKind::RunId,
@@ -1754,7 +1754,7 @@ impl View for ConversationDetailsPanel {
                 let formatted = format!("{credits:.1}");
                 content.add_child(
                     Container::new(self.render_simple_field(
-                        "Credits used",
+                        "Rations spent",
                         &formatted,
                         appearance,
                     ))
