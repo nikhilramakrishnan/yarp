@@ -131,7 +131,7 @@ struct TooltipMouseStateHandles {
 pub mod manager;
 pub use manager::*;
 
-pub const HEADER_TEXT: &str = "Profile Editor";
+pub const HEADER_TEXT: &str = "Loadout Editor";
 
 #[derive(Debug, Clone)]
 pub enum ExecutionProfileEditorViewEvent {
