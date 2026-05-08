@@ -218,7 +218,7 @@ impl View for CommandSearchZeroStateView {
             .with_child(
                 Container::new(
                     Text::new_inline(
-                        "I'm looking for...",
+                        "Pull a lead on...",
                         appearance.ui_font_family(),
                         styles::subheader_text_font_size(appearance),
                     )

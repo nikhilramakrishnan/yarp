@@ -1422,7 +1422,7 @@ impl AIContextMenu {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "Code symbols indexing...",
+                "Cataloguing case symbols...",
                 appearance.ui_font_family(),
                 appearance.monospace_font_size(),
             )
