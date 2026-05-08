@@ -1089,7 +1089,7 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                 output_items.add_child(
                     render_informational_footer(
                         app,
-                        "This response won't count towards your usage.".to_string(),
+                        "This call won't bill against your rations.".to_string(),
                     )
                     .with_agent_output_item_spacing(app)
                     .finish(),
@@ -2060,7 +2060,7 @@ fn render_requested_edits_output_message(
         match requested_edit.view.as_ref(app).display_mode() {
             DisplayMode::FullPane => Align::new(
                 Text::new_inline(
-                    "This suggestion is being edited in another tab.",
+                    "This lead's being amended in another tab.",
                     appearance.ui_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -2220,7 +2220,7 @@ fn render_suggest_new_conversation(
     let mut content = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
     let new_conversation_header_text =
-        "It seems like the topic changed. Would you like to make a new conversation?";
+        "Looks like the case changed. Want to file a fresh one?";
     let new_conversation_header_element = HeaderConfig::new(new_conversation_header_text, app)
         .with_icon(yellow_stop_icon(appearance))
         .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(8.)))
