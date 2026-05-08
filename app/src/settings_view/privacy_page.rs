@@ -242,7 +242,7 @@ impl PrivacyPageView {
         if ContextFlag::NetworkLogConsole.is_enabled() {
             widgets.push(Box::new(NetworkLogWidget::default()));
         }
-        PageType::new_uncategorized(widgets, Some("Privacy"))
+        PageType::new_uncategorized(widgets, Some("Standing Orders"))
     }
 
     fn update_button_states(
@@ -1404,7 +1404,7 @@ impl AppAnalyticsWidget {
             let mut stack = Stack::new().with_child(badge);
             if is_hovered {
                 let tooltip = ui_builder.tool_tip(
-                    "Your administrator has enabled zero data retention for your team. User generated content will never be collected."
+                    "Your sergeant has put your squad on zero data retention. None of your dispatches will be filed."
                         .to_string(),
                 );
                 stack.add_positioned_child(
@@ -1643,7 +1643,7 @@ impl SettingsWidget for CrashReportsWidget {
             .with_child(
                 ui_builder
                     .paragraph(
-                        "Crash reports assist with debugging and stability improvements."
+                        "Crash reports help patch faults and keep the station upright."
                             .to_owned(),
                     )
                     .with_style(UiComponentStyles {
