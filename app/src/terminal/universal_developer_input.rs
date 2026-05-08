@@ -100,14 +100,14 @@ impl AtContextMenuDisabledReason {
         match self {
             #[cfg(not(target_family = "wasm"))]
             AtContextMenuDisabledReason::NoObjectsAvailable => {
-                "No available objects in the current context.".to_string()
+                "No leads in the current context.".to_string()
             }
             #[cfg(not(target_family = "wasm"))]
-            AtContextMenuDisabledReason::SshSession => "Not supported in SSH sessions".to_string(),
+            AtContextMenuDisabledReason::SshSession => "Off-limits in SSH sessions".to_string(),
             #[cfg(not(target_family = "wasm"))]
-            AtContextMenuDisabledReason::Subshell => "Not supported in subshells".to_string(),
+            AtContextMenuDisabledReason::Subshell => "Off-limits in subshells".to_string(),
             #[cfg(target_family = "wasm")]
-            AtContextMenuDisabledReason::Wasm => "Requires a filesystem".to_string(),
+            AtContextMenuDisabledReason::Wasm => "Need a case cabinet for this".to_string(),
             #[cfg(not(target_family = "wasm"))]
             AtContextMenuDisabledReason::DisabledInTerminalMode => {
                 "Off-duty in terminal mode — switch it back on in settings".to_string()
