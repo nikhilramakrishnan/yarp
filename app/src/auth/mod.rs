@@ -102,15 +102,15 @@ pub fn maybe_log_out(app: &mut AppContext) {
         let mut info_text_vec: Vec<String> = vec![];
         if num_long_running_commands > 0 {
             let plural = if num_long_running_commands > 1 {
-                "processes"
+                "patrols"
             } else {
-                "process"
+                "patrol"
             };
             info_text_vec.push(format!(
-                "You have {num_long_running_commands} {plural} running."
+                "You've got {num_long_running_commands} {plural} on the beat."
             ));
 
-            button_data.push(ModalButton::for_app("Show running processes", move |ctx| {
+            button_data.push(ModalButton::for_app("Show active patrols", move |ctx| {
                 send_telemetry_sync_from_app_ctx!(
                     TelemetryEvent::LogOutModalCancel { nav_palette: true },
                     ctx
