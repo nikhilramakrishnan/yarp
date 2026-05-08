@@ -294,7 +294,7 @@ impl ConversationDetailsData {
             },
             title: conversation
                 .title()
-                .unwrap_or_else(|| "Conversation".to_string()),
+                .unwrap_or_else(|| "Case file".to_string()),
             creator,
             created_at,
             credits: Some(CreditsInfo::LocalConversation(conversation.credits_spent())),
@@ -879,7 +879,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
 
         let label_text = Text::new(
-            "Error".to_string(),
+            "Went sideways".to_string(),
             appearance.ui_font_family(),
             ui_font_size,
         )
