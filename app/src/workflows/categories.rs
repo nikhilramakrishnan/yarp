@@ -943,7 +943,7 @@ impl CategoriesView {
         let theme = appearance.theme();
         workflow_types_list.add_child(
             Container::new(Self::workflow_types_label(
-                "Categories",
+                "Beats",
                 Some(theme.sub_text_color(theme.surface_2()).into_solid()),
                 appearance.ui_builder(),
             ))
