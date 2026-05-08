@@ -5782,7 +5782,7 @@ impl SettingsWidget for AgentAttributionWidget {
                 .switch(self.toggle.clone())
                 .check(state.is_enabled)
                 .with_tooltip(TooltipConfig {
-                    text: "This option is enforced by your organization's settings and cannot be customized.".to_string(),
+                    text: "Standing Orders from the station — can't be amended.".to_string(),
                     styles: ui_builder.default_tool_tip_styles(),
                 })
                 .disable()
@@ -5884,7 +5884,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
                 .switch(self.toggle.clone())
                 .check(is_checked)
                 .with_tooltip(TooltipConfig {
-                    text: "This option is enforced by your organization's settings and cannot be customized.".to_string(),
+                    text: "Standing Orders from the station — can't be amended.".to_string(),
                     styles: ui_builder.default_tool_tip_styles(),
                 })
                 .disable()
