@@ -1411,7 +1411,7 @@ fn render_search_codebase(
                                 renderable_action(
                                     props,
                                     id,
-                                    "No relevant files found.",
+                                    "No relevant case files in the cabinet.",
                                     app,
                                     footer,
                                     appearance,

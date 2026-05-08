@@ -18306,7 +18306,7 @@ impl Workspace {
                         if is_incoming_version_past_current(new_version.soft_cutoff.as_deref()) {
                             VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT.to_owned()
                         } else {
-                            "A new version is available but Yarp is unable to perform the update."
+                            "Fresh kit's available but Yarp can't sign on to it."
                                 .to_owned()
                         };
 
@@ -18332,7 +18332,7 @@ impl Workspace {
                         if is_incoming_version_past_current(new_version.soft_cutoff.as_deref()) {
                             VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT.to_owned()
                         } else {
-                            "Yarp was unable to launch the new installed version.".to_owned()
+                            "Yarp couldn't sign on to the freshly installed kit.".to_owned()
                         };
 
                     Some(WorkspaceBannerFields {
