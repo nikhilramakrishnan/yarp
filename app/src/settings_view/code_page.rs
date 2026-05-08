@@ -1185,7 +1185,7 @@ impl CodePageWidget {
                 Container::new(
                     appearance
                         .ui_builder()
-                        .paragraph("No folders have been initialized yet.")
+                        .paragraph("No folders signed on yet.")
                         .build()
                         .finish(),
                 )

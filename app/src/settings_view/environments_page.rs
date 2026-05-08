@@ -1317,7 +1317,7 @@ impl EnvironmentsPageWidget {
                 let shared_by_text = UserWorkspaces::as_ref(app)
                     .current_team()
                     .map(|team| format!("Shared by Yarp and {}", team.name))
-                    .unwrap_or_else(|| "Shared by Yarp and your team".to_string());
+                    .unwrap_or_else(|| "Shared by Yarp and your squad".to_string());
                 Self::render_overline_header(&shared_by_text, appearance)
             }
         };
@@ -1484,7 +1484,7 @@ impl EnvironmentsPageWidget {
         .finish();
 
         let header = Text::new(
-            "You haven’t set up any environments yet.",
+            "No environments filed yet.",
             appearance.ui_font_family(),
             appearance.ui_font_size() * 1.1,
         )

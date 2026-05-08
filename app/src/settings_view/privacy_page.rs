@@ -165,7 +165,7 @@ impl PrivacyPageView {
         });
 
         let add_regex_modal_view = ctx.add_typed_action_view(|ctx| {
-            Modal::new(Some("Add regex pattern".to_string()), add_regex_body, ctx)
+            Modal::new(Some("File a redaction pattern".to_string()), add_regex_body, ctx)
                 .with_modal_style(UiComponentStyles {
                     width: Some(600.),
                     height: Some(400.),
