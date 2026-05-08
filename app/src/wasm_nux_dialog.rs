@@ -154,18 +154,18 @@ impl View for WasmNUXDialog {
 
         let dialog = if self.requested_download {
             Dialog::new(
-                "Open in Yarp Desktop?".to_string(),
-                Some("Future links will automatically open on desktop.".to_string()),
+                "Sign on at the desktop station?".to_string(),
+                Some("Subsequent leads route straight to the desktop station.".to_string()),
                 dialog_styles,
             )
             .with_bottom_row_child(Self::render_dialog_button(
-                "Open in Yarp",
+                "Sign on",
                 WasmNUXDialogAction::OpenNativeAndClose,
                 &self.confirm_mouse_state,
                 appearance,
             ))
         } else if app_install_detected == &UserAppInstallStatus::NotDetected {
-            Dialog::new("Download Yarp Desktop?".to_string(), None, dialog_styles)
+            Dialog::new("Kit out the desktop station?".to_string(), None, dialog_styles)
                 .with_child(
                     Flex::column()
                         .with_cross_axis_alignment(CrossAxisAlignment::Stretch)
@@ -193,7 +193,7 @@ impl View for WasmNUXDialog {
                                 appearance
                                     .ui_builder()
                                     .link(
-                                        "Learn more".to_string(),
+                                        "Read the file".to_string(),
                                         None,
                                         Some(Box::new(|ctx| {
                                             ctx.dispatch_typed_action(
@@ -211,7 +211,7 @@ impl View for WasmNUXDialog {
                         .finish(),
                 )
                 .with_bottom_row_child(Self::render_dialog_button(
-                    "Download",
+                    "Kit out",
                     WasmNUXDialogAction::OpenDownloadDesktopAppLink,
                     &self.download_yarp_mouse_state,
                     appearance,
@@ -224,12 +224,12 @@ impl View for WasmNUXDialog {
             };
 
             Dialog::new(
-                format!("Always open {object_kind} on the web?"),
-                Some("You can change this at any time in settings.".to_string()),
+                format!("Route {object_kind} to the web from now on?"),
+                Some("Amend this anytime in settings.".to_string()),
                 dialog_styles,
             )
             .with_bottom_row_child(Self::render_dialog_button(
-                "Yes",
+                "Aye",
                 WasmNUXDialogAction::SetWebAndClose,
                 &self.confirm_mouse_state,
                 appearance,

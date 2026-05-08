@@ -589,9 +589,9 @@ impl OnboardingAgenticSuggestionsBlock {
         let font_size = appearance.monospace_font_size();
         let font_color = current_theme.main_text_color(current_theme.background());
 
-        const WELCOME_TEXT_LINE_ONE: &str = "Welcome to Sandford!";
+        const WELCOME_TEXT_LINE_ONE: &str = "Sworn in to Sandford. Right then, Constable.";
         const WELCOME_TEXT_LINE_TWO_PART_ONE: &str =
-            "A few sample call-outs you can hand to AI right in the terminal — radio";
+            "Sample call-outs you can radio to the squad straight from the beat — patch in";
         const WELCOME_TEXT_LINE_TWO_PART_TWO: &str = " Agent Mode";
 
         Flex::column()
