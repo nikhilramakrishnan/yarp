@@ -2616,7 +2616,7 @@ impl DriveIndex {
                         appearance
                             .ui_builder()
                             .wrappable_text(
-                                "Items in the trash will be deleted forever after 30 days."
+                                "Evidence in the locker gets incinerated after 30 days."
                                     .to_string(),
                                 true,
                             )

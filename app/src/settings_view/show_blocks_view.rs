@@ -300,7 +300,7 @@ impl GetBlocksForUserRequestState {
         let ui_builder = appearance.ui_builder();
         match self {
             GetBlocksForUserRequestState::NotStarted => pad(ui_builder
-                .label("You don't have any shared blocks yet.")
+                .label("No shared case files on the books yet.")
                 .build()
                 .finish()),
             GetBlocksForUserRequestState::InFlight => {

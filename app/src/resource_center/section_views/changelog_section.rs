@@ -29,7 +29,7 @@ struct ChangelogMouseStateHandles {
     view_changelogs_mouse_state: MouseStateHandle,
 }
 
-const CHANGELOG_FETCH_ERROR_MSG: &str = "Unable to fetch the latest changelog.";
+const CHANGELOG_FETCH_ERROR_MSG: &str = "Couldn't pull the latest patrol log.";
 const CHANGELOG_LOADING_MSG: &str = "On the case...";
 
 pub struct ChangelogSectionView {
