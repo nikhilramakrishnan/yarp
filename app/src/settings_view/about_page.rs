@@ -450,6 +450,12 @@ impl AboutPageWidget {
             ..Default::default()
         };
 
+        // Tooltips spell out what each broadcast actually says, so a first-time
+        // user knows the difference between a routine roll-call ping and the
+        // emergency channel before they hit either button.
+        let mic_check_tooltip_builder = ui_builder.clone();
+        let ten_thirteen_tooltip_builder = ui_builder.clone();
+
         let mic_check = ui_builder
             .button(
                 ButtonVariant::Secondary,
@@ -457,6 +463,12 @@ impl AboutPageWidget {
             )
             .with_style(radio_button_style.clone())
             .with_text_label("Mic check".to_owned())
+            .with_tooltip(move || {
+                mic_check_tooltip_builder
+                    .tool_tip("Roll-call ping to every Yarp on the channel.".to_owned())
+                    .build()
+                    .finish()
+            })
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(WorkspaceAction::MicCheckBroadcast);
@@ -471,6 +483,12 @@ impl AboutPageWidget {
             )
             .with_style(radio_button_style)
             .with_text_label("10-13".to_owned())
+            .with_tooltip(move || {
+                ten_thirteen_tooltip_builder
+                    .tool_tip("10-13 \u{2014} officer needs assistance. Reddens the channel.".to_owned())
+                    .build()
+                    .finish()
+            })
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(WorkspaceAction::TenThirteenBroadcast);
