@@ -517,7 +517,7 @@ impl InitStepBlock {
         let mut button = appearance
             .ui_builder()
             .button(ButtonVariant::Outlined, mouse_state.clone())
-            .with_text_label("Re-generate AGENTS.md file".to_string());
+            .with_text_label("Re-issue AGENTS.md file".to_string());
         if disabled {
             button = button.disabled();
         }

@@ -2029,7 +2029,7 @@ impl NotebookView {
                                         .build()
                                         .finish()
                                 })
-                                .with_text_label("Copy to Personal".to_string())
+                                .with_text_label("Lift to your dossier".to_string())
                                 .build()
                                 .on_click(|ctx, _, _| {
                                     ctx.dispatch_typed_action(NotebookAction::CopyToPersonal)
