@@ -107,7 +107,7 @@ impl View for RewindConfirmationDialog {
         let rewind_button_label = Flex::row()
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
-                Text::new_inline("Rewind", appearance.ui_font_family(), 14.)
+                Text::new_inline("Roll back the case", appearance.ui_font_family(), 14.)
                     .with_color(text_color)
                     .finish(),
             )

@@ -3968,7 +3968,7 @@ impl FeaturesPageView {
                 }
 
                 Container::new(
-                    Text::new_inline("Change keybinding", appearance.ui_font_family(), 12.)
+                    Text::new_inline("Reassign the shortcut", appearance.ui_font_family(), 12.)
                         .with_color(button_color)
                         .finish(),
                 )

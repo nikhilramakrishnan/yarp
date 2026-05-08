@@ -1497,7 +1497,7 @@ fn render_groups(
 
     if workspace.tabs.is_empty() {
         return Container::new(
-            Text::new_inline("No tabs open", appearance.ui_font_family(), 12.)
+            Text::new_inline("No cases on the desk", appearance.ui_font_family(), 12.)
                 .with_color(theme.sub_text_color(theme.background()).into())
                 .finish(),
         )

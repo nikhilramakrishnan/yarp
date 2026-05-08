@@ -399,7 +399,7 @@ impl RightPanelView {
         let maximize_button = ctx.add_typed_action_view(|ctx| {
             let mut button = ActionButton::new("", PaneHeaderTheme)
                 .with_icon(Icon::Maximize)
-                .with_tooltip("Maximize")
+                .with_tooltip("Pull up the case")
                 .with_tooltip_positioning_provider(Arc::new(MenuPositioning::BelowInputBox))
                 .on_click(|ctx| ctx.dispatch_typed_action(RightPanelAction::ToggleMaximize));
 
