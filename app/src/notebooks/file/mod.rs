@@ -766,7 +766,7 @@ impl FileNotebookView {
         Align::new(
             appearance
                 .ui_builder()
-                .paragraph(format!("Loading {}...", source.display_name()))
+                .paragraph(format!("Pulling {}...", source.display_name()))
                 .with_style(self.state_style(appearance))
                 .build()
                 .finish(),
