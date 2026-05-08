@@ -18,7 +18,7 @@ const TADA_FONT_SIZE: f32 = 60.;
 const TADA_MARGIN_TOP: f32 = 0.;
 const TADA_MARGIN_BOTTOM: f32 = 50.;
 // Constants for the main title
-const TITLE: &str = "Congrats!";
+const TITLE: &str = "Cracking work!";
 const TITLE_FONT_SIZE: f32 = 20.;
 const TITLE_MARGIN_BOTTOM: f32 = 25.;
 // Constants for the subtitle
@@ -34,7 +34,7 @@ const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_HEIGHT: f32 = 45.;
 const BUTTON_WIDTH: f32 = 240.;
 const BUTTON_MARGIN_BOTTOM: f32 = 14.;
-const ACCESSIBILITY_HELP: &str = "Press enter to open the theme chooser or escape to dismiss.";
+const ACCESSIBILITY_HELP: &str = "Hit enter to crack open the theme chooser, escape to wave it off.";
 
 pub fn init(app: &mut AppContext) {
     use yarpui::keymap::macros::*;
