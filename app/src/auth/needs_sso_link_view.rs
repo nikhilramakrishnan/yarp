@@ -75,8 +75,8 @@ impl View for NeedsSsoLinkView {
         .finish();
 
         LoginErrorModal::new(app)
-            .with_header("Your organization has enabled SSO for your account")
-            .with_detail("Click the button below to link your Yarp account to your SSO provider.")
+            .with_header("Your station has SSO turned on for your badge")
+            .with_detail("Tap below to wire your Yarp badge to your SSO provider.")
             .with_action(link_sso_button)
             .build()
             .finish()

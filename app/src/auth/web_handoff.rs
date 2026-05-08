@@ -126,7 +126,7 @@ impl View for WebHandoffView {
     fn render(&self, app: &AppContext) -> Box<dyn Element> {
         let label = match &self.state {
             HandoffState::LoadingFromHost | HandoffState::LoadingFromSessionCookie => "On the case...",
-            HandoffState::Failed => "Error authenticating - please refresh the page",
+            HandoffState::Failed => "Sign-on hit a snag — refresh the page and try again",
         };
 
         LoginErrorModal::new(app)
