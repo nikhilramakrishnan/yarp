@@ -81,8 +81,8 @@ use {
     yarp_graphql::queries::user_github_info::UserGithubInfoResult,
 };
 
-const PAGE_TITLE_TEXT: &str = "Environments";
-const PAGE_DESCRIPTION_TEXT: &str = "Environments define where your ambient agents run. Set one up in minutes via GitHub (recommended), Yarp-assisted setup, or manual configuration.";
+const PAGE_TITLE_TEXT: &str = "Patrol Posts";
+const PAGE_DESCRIPTION_TEXT: &str = "Patrol Posts mark where your off-duty units run. Stand one up in minutes via GitHub (recommended), Yarp-assisted setup, or manual configuration.";
 const CARD_BORDER_WIDTH: f32 = 1.;
 const CARD_PADDING: f32 = 16.;
 const CARD_SPACING: f32 = 12.;
@@ -2077,7 +2077,7 @@ impl BackingView for EnvironmentsPageView {
         _ctx: &HeaderRenderContext<'_>,
         _app: &AppContext,
     ) -> HeaderContent {
-        HeaderContent::simple("Environments")
+        HeaderContent::simple("Patrol Posts")
     }
 
     fn set_focus_handle(&mut self, focus_handle: PaneFocusHandle, _ctx: &mut ViewContext<Self>) {
