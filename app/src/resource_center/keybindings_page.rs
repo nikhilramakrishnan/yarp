@@ -423,7 +423,7 @@ impl KeybindingsView {
 
         let title = match section {
             KeybindingSection::Essentials => "Essentials",
-            KeybindingSection::Blocks => "Blocks",
+            KeybindingSection::Blocks => "Case files",
             KeybindingSection::InputEditor => "Input Editor",
             KeybindingSection::Terminal => "Terminal",
             KeybindingSection::Fundamentals => "Fundamentals",
