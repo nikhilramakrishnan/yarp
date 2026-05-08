@@ -1706,7 +1706,7 @@ impl ProfileModelSelector {
         let theme = appearance.theme();
         let header = self.render_model_spec_header(
             "Model Specs".to_string(),
-            "Yarp's benchmarks for how well a model performs in our harness, the rate at which it consumes credits, and task speed.".to_string(),
+            "Sandford's benchmarks: how the officer performs on the beat, how fast it burns rations, and how quick it closes the case.".to_string(),
             app,
         );
         let spec = self.render_all_model_spec_values(
@@ -1746,11 +1746,11 @@ impl ProfileModelSelector {
         let (title, description) = match kind {
             ModelSpecSidecarKind::Auto => (
                 "Auto mode",
-                "Auto will select the best model for the task. Cost-efficiency optimizes for cost, Responsiveness optimizes for response speed.",
+                "Auto pulls the right officer for the case. Cost-efficiency saves rations, Responsiveness gets the radio call out fastest.",
             ),
             ModelSpecSidecarKind::Reasoning => (
                 "Reasoning level",
-                "Increased reasoning levels consume more credits and have higher latency, but higher performance for complicated tasks.",
+                "Higher reasoning burns more rations and takes longer over the radio, but it cracks tougher cases.",
             ),
         };
 
