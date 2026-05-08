@@ -164,7 +164,9 @@ impl ExportManager {
                 if let Some(export) = ids.first().and_then(|id| self.exports.get(id)) {
                     let window_id = export.window_id;
                     ToastStack::handle(ctx).update(ctx, move |toast_stack, ctx| {
-                        let toast = DismissibleToast::error(format!("{err}"));
+                        let toast = DismissibleToast::error(format!(
+                            "Couldn't ship the export: {err}"
+                        ));
                         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                     });
                 }

@@ -108,8 +108,9 @@ impl PlatformPageView {
                     Err(err) => {
                         let window_id = ctx.window_id();
                         crate::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                            let toast =
-                                crate::view_components::DismissibleToast::error(format!("{err}"));
+                            let toast = crate::view_components::DismissibleToast::error(
+                                format!("Couldn't pull the credential ledger: {err}"),
+                            );
                             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                         });
                         ctx.notify();
