@@ -145,7 +145,11 @@ impl SettingsWidget for AboutPageWidget {
                     .finish(),
                 )
                 .with_child(version_row.finish())
-                .with_child(self.precinct_status_row(appearance))
+                // "On the air as" sits with the version line as an identity
+                // fact. Hoisting it above the precinct status banner keeps
+                // the four precinct rows (banner / roster / inbox / dispatch)
+                // rendering as one contiguous urgent stack on emergency
+                // instead of being split by a neutral identity row.
                 .with_child(
                     ui_builder
                         .span(format!("On the air as: {}", radio::self_call_sign()))
@@ -154,6 +158,7 @@ impl SettingsWidget for AboutPageWidget {
                         .with_margin_top(4.)
                         .finish(),
                 )
+                .with_child(self.precinct_status_row(appearance))
                 .with_child(self.precinct_roster_row(appearance))
                 .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
