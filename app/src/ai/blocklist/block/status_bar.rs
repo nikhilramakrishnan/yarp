@@ -883,11 +883,11 @@ impl BlocklistAIStatusBar {
 
         let progress = ambient_agent_model.agent_progress()?;
         let progress_text = if progress.harness_started_at.is_some() {
-            "Starting Environment (Step 3/3)"
+            "Opening up the beat (Step 3/3)"
         } else if progress.claimed_at.is_some() {
-            "Creating Environment (Step 2/3)"
+            "Kitting out the beat (Step 2/3)"
         } else {
-            "Connecting to Host (Step 1/3)"
+            "Patching in to HQ (Step 1/3)"
         };
         Some(render_yarping_indicator_base(
             YarpingIndicatorProps {
@@ -922,11 +922,11 @@ impl BlocklistAIStatusBar {
                     color: Some(error_color),
                 },
                 MessageItem::Text {
-                    content: "Missing GitHub authentication. ".into(),
+                    content: "GitHub warrant not in hand. ".into(),
                     color: Some(error_color),
                 },
                 MessageItem::hyperlink(
-                    "Authenticate GitHub",
+                    "Sign GitHub warrant",
                     auth_url.to_owned(),
                     self.state_handles.github_auth_link.clone(),
                 ),
@@ -1120,8 +1120,8 @@ fn resolve_fallback_yarping_message<V: View>(
         return None;
     }
     Some(match display_name.as_deref() {
-        Some(name) => format!("Working with {name}."),
-        None => "Working with another model.".to_owned(),
+        Some(name) => format!("On the case with {name}."),
+        None => "On the case with a backup officer.".to_owned(),
     })
 }
 
