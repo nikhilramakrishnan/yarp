@@ -1856,7 +1856,7 @@ impl UsageWidget {
                 let cost_dollars = cost_cents as f64 / 100.0;
 
                 let label =
-                    Text::new_inline("Purchased this month", appearance.ui_font_family(), 12.)
+                    Text::new_inline("Restocked this month", appearance.ui_font_family(), 12.)
                         .with_color(appearance.theme().active_ui_text_color().into())
                         .finish();
 
