@@ -73,7 +73,7 @@ impl ExpireApiKeyButton {
                 | Err(_) => {
                     me.request_state = RequestState::Idle;
                     ctx.emit(ExpireApiKeyButtonEvent::ExpireApiKeyFailed {
-                        message: "Failed to delete API key. Please try again.".to_string(),
+                        message: "Couldn't strike that badge. Try again.".to_string(),
                     });
                     ctx.notify();
                 }
