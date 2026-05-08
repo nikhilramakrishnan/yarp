@@ -76,7 +76,7 @@ const CLOSE_ICON_SIZE: f32 = 14.;
 const ERROR_FONT_SIZE: f32 = 12.;
 /// Error shown when the user-entered worktree branch name contains invalid characters.
 const INVALID_BRANCH_NAME_ERROR: &str =
-    "Name can only contain letters, numbers, hyphens, and underscores";
+    "Badge numbers only — letters, numbers, hyphens, underscores.";
 
 /// Returns `true` if `name` is a valid worktree branch name.
 ///

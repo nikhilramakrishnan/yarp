@@ -36,7 +36,7 @@ const BUTTON_BORDER_RADIUS: f32 = 4.;
 const BORDER_WIDTH: f32 = 1.;
 
 const MODAL_SUBHEADER: &str =
-    "Automatically generate a theme based on extracted colors from an image (.png, .jpg).";
+    "Lift a theme straight off photo evidence — drop a .png or .jpg and we'll match the colors.";
 const IMAGE_PICKER_BUTTON_PRE_SELECT_TEXT: &str = "Select an image";
 const IMAGE_PICKER_BUTTON_SELECTING_TEXT: &str = "Selecting image...";
 const IMAGE_PICKER_BUTTON_POST_SELECT_TEXT: &str = "Select a new image";
@@ -175,7 +175,7 @@ impl ThemeCreatorBody {
 
             let Some(image_extension) = image_extension else {
                 self.send_error_toast(
-                    "Failed to process selected image. Please try again with a different image."
+                    "This evidence won't process — try filing a different photo."
                         .to_string(),
                     ctx,
                 );
