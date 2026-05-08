@@ -25,14 +25,14 @@ const BORDER_WIDTH: f32 = 1.;
 const DIALOG_WIDTH: f32 = 450.;
 const CANCEL_TEXT: &str = "Stand down";
 
-const DELETE_TEAM_TITLE_TEXT: &str = "Are you sure you want to delete this team?";
-const LEAVE_TEAM_TITLE_TEXT: &str = "Are you sure you want to leave this team?";
+const DELETE_TEAM_TITLE_TEXT: &str = "Disband this squad?";
+const LEAVE_TEAM_TITLE_TEXT: &str = "Hand in your badge for this squad?";
 
-const DELETE_TEAM_BODY_TEXT: &str = "Deleting this team will permanently delete it and all of its related content, including billing information or credits. You will not be able to restore them.";
-const LEAVE_TEAM_BODY_TEXT: &str = "You will need to be reinvited in order to rejoin.";
+const DELETE_TEAM_BODY_TEXT: &str = "Disbanding strikes the squad and every case it ran — billing and credits along with it. There's no putting it back together.";
+const LEAVE_TEAM_BODY_TEXT: &str = "You'll need a fresh invite to sign back on.";
 
-const DELETE_TEAM_CONFIRM_TEXT: &str = "Yes, delete";
-const LEAVE_TEAM_CONFIRM_TEXT: &str = "Yes, leave";
+const DELETE_TEAM_CONFIRM_TEXT: &str = "Disband";
+const LEAVE_TEAM_CONFIRM_TEXT: &str = "Hand in badge";
 
 pub enum CloudActionConfirmationDialogEvent {
     Cancel,

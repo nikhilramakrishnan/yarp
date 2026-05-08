@@ -16,9 +16,9 @@ use crate::{
 
 const CANCEL_TEXT: &str = "Stand down";
 
-const EMPTY_TRASH_TITLE_TEXT: &str = "Are you sure you want to empty the trash?";
-const EMPTY_TRASH_BODY_TEXT: &str = "This action cannot be undone.";
-const EMPTY_TRASH_CONFIRM_TEXT: &str = "Yes, empty trash";
+const EMPTY_TRASH_TITLE_TEXT: &str = "Incinerate the evidence locker?";
+const EMPTY_TRASH_BODY_TEXT: &str = "Once it's burned, it's gone. No bringing it back.";
+const EMPTY_TRASH_CONFIRM_TEXT: &str = "Incinerate";
 
 // This follows our new design standard for confirmation dialogs (e.g. used in the session sharing dialog)
 // Design team has discouraged us from continuing to use CloudActionConfirmationDialog's current design
