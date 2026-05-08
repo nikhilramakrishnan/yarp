@@ -28,7 +28,7 @@ const BORDER_WIDTH: f32 = 1.;
 
 const MODAL_SUBHEADER: &str = "This will permanently delete the theme.";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
-const DELETE_BUTTON_TEXT: &str = "Delete theme";
+const DELETE_BUTTON_TEXT: &str = "Strike theme off file";
 
 #[derive(Default)]
 struct MouseStateHandles {

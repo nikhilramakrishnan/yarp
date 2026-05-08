@@ -86,7 +86,7 @@ impl SshRemoteServerChoiceView {
                     SshRemoteServerChoiceViewAction::Install,
                 ),
                 rich_navigation_button(
-                    "Continue without installing".to_string(),
+                    "Carry on without it".to_string(),
                     Some(
                         "You'll still get a Yarpified experience just without the coding \
                          features."

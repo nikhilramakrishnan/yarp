@@ -41,7 +41,7 @@ const IMAGE_PICKER_BUTTON_PRE_SELECT_TEXT: &str = "Select an image";
 const IMAGE_PICKER_BUTTON_SELECTING_TEXT: &str = "Selecting image...";
 const IMAGE_PICKER_BUTTON_POST_SELECT_TEXT: &str = "Select a new image";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
-const CREATE_BUTTON_TEXT: &str = "Create theme";
+const CREATE_BUTTON_TEXT: &str = "Open theme file";
 
 #[derive(Default)]
 struct MouseStateHandles {
