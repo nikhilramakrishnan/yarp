@@ -8323,7 +8323,7 @@ impl Workspace {
             MenuItemFields::new("Today's bulletin")
                 .with_on_select_action(WorkspaceAction::ViewLatestChangelog)
                 .into_item(),
-            MenuItemFields::new("Settings")
+            MenuItemFields::new("Standing Orders")
                 .with_on_select_action(WorkspaceAction::ShowSettings)
                 .into_item(),
             MenuItemFields::new("Radio codes")
