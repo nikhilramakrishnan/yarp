@@ -412,7 +412,7 @@ impl<'a> QuitWarningDialog<'a> {
         }
 
         if let Some(callback) = on_discard_changes {
-            buttons.push(ModalButton::for_app("Don't Save".to_string(), callback));
+            buttons.push(ModalButton::for_app("Burn the draft".to_string(), callback));
         }
 
         if let Some(callback) = on_show_processes {
@@ -435,8 +435,8 @@ impl<'a> QuitWarningDialog<'a> {
             QuitScope::Tabs(tabs) if tabs.len() == 1 => "Close tab?",
             QuitScope::Tabs(_) => "Close tabs?",
             QuitScope::Window(_) => "Close window?",
-            QuitScope::App => "Quit Yarp?",
-            QuitScope::EditorTab { .. } => "Save changes?",
+            QuitScope::App => "End the shift?",
+            QuitScope::EditorTab { .. } => "File these changes?",
         };
 
         AlertDialogWithCallbacks::for_app(
