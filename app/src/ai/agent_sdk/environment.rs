@@ -220,13 +220,13 @@ impl EnvironmentCommandRunner {
                                 .profile_for_uid(UserUid::new(uid))
                                 .map(|profile| profile.email.clone())
                         })
-                        .unwrap_or_else(|| "Unknown".to_string());
+                        .unwrap_or_else(|| "John Doe".to_string());
 
                     let last_edited_utc = environment.metadata().revision.as_ref().map(|r| r.utc());
 
                     let last_edited = last_edited_utc
                         .map(format_approx_duration_from_now_utc)
-                        .unwrap_or_else(|| "Unknown".to_string());
+                        .unwrap_or_else(|| "Off the books".to_string());
 
                     let scope_display =
                         super::common::format_owner(&environment.permissions().owner);

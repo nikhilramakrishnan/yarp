@@ -419,7 +419,7 @@ impl StringModel for AIExecutionProfile {
         if self.is_default_profile {
             "Default".to_string()
         } else if self.name.trim().is_empty() {
-            "Untitled".to_string()
+            "Unfiled loadout".to_string()
         } else {
             self.name.clone()
         }

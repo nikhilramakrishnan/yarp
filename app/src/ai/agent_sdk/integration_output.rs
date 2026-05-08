@@ -310,11 +310,11 @@ impl IntegrationInfo {
 
         let created_at_formatted = created_at
             .map(format_approx_duration_from_now_utc)
-            .unwrap_or_else(|| "Unknown".to_string());
+            .unwrap_or_else(|| "Off the books".to_string());
 
         let updated_at_formatted = updated_at
             .map(format_approx_duration_from_now_utc)
-            .unwrap_or_else(|| "Unknown".to_string());
+            .unwrap_or_else(|| "Off the books".to_string());
 
         Self {
             provider,
