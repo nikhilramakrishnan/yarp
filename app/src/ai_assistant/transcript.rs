@@ -64,7 +64,7 @@ const HOW_DO_I_FIX_PROMPT: &str = "How do I fix this?";
 const SHOW_EXAMPLES_PROMPT: &str = "Show examples.";
 const WHAT_TO_DO_NEXT_PROMPT: &str = "What should I do next?";
 const IN_FLIGHT_REQUEST_TEXT: &str = "On the case...";
-const ACCURACY_NOTICE_TEXT: &str = "AI responses can be inaccurate.";
+const ACCURACY_NOTICE_TEXT: &str = "AI dispatch can call it wrong. Double-check its work.";
 const MISSING_CONTEXT_NOTICE_TEXT: &str =
     "Yarp AI may lose earlier intel as a case file runs long.";
 

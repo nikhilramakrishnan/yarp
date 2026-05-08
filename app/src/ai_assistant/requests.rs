@@ -294,7 +294,7 @@ impl Requests {
                             );
                         }
                         _ => {
-                            let response = "We're experiencing technical difficulties right now. Please try again later.".to_owned();
+                            let response = "Radio's down at the AI desk right now. Take it from the top in a minute.".to_owned();
                             let response_in_markdown = markdown_segments_from_text(
                                 transcript_part_index,
                                 TranscriptPartSubType::Answer,
