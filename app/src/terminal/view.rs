@@ -714,7 +714,7 @@ const MOVE_LINE_END_BINDING_NAME: &str = "editor_view:move_to_line_end";
 
 const DEFAULT_AI_BLOCK_HEIGHT: f32 = 96.;
 
-pub const DEFAULT_ASK_AI_AUTOSUGGESTION_TEXT: &str = "What happened here?";
+pub const DEFAULT_ASK_AI_AUTOSUGGESTION_TEXT: &str = "Walk me through this beat.";
 
 const YARP_MD_PATH: &str = "YARP.md";
 
