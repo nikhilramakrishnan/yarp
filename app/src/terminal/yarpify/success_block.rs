@@ -116,9 +116,9 @@ impl YarpifySuccessBlock {
         let auto_yarpify_snippet = auto_yarpify_snippet.map(|(output_grid, can_write_to_rc)| {
             AutoYarpifySnippet {
                 description: (if !output_grid.is_empty() {
-                    "Run the following to automatically Yarpify in the future:"
+                    "Run the following to auto-Yarpify on every future patrol:"
                 } else {
-                    "In remote subshells, Yarp runs commands in the background to power completions, syntax highlighting, and other features."
+                    "In remote subshells, Yarp works the background to power completions, syntax highlighting, and other kit."
                 }).into(),
                 output_grid: output_grid.into(),
                 selection_handle: Default::default(),

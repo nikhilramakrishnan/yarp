@@ -30,16 +30,16 @@ use yarpui::{
 };
 
 const TMUX_NOT_INSTALLED_ERROR: &str =
-    "tmux is not installed on the remote machine. Please install tmux and try again.";
+    "tmux isn't on the books at the remote desk. File it and call in again.";
 const UNSUPPORTED_TMUX_VERSION_ERROR: &str =
-    "The tmux version available on the remote machine is below 3.0. Please install tmux 3.0 or greater using a different method and try again.";
+    "The tmux on the remote desk is older than 3.0. File 3.0 or newer through a different channel and call in again.";
 const TMUX_FAILED_ERROR: &str =
-    "tmux failed to execute on the remote machine. Please re-install tmux and try again.";
+    "tmux flaked at the remote desk. Re-file it and call in again.";
 const YARPIFY_TIMEOUT_ERROR: &str = "Yarpifying the session hit a timeout.";
 const UNSUPPORTED_SHELL_ERROR: &str =
-    "Unsupported shell. Please set bash, zsh, or fish as your default shell and try again.";
+    "Shell isn't on the rota. Set bash, zsh, or fish as your default and call in again.";
 const TMUX_INSTALL_FAILED_ERROR: &str =
-    "The tmux install hit an unexpected error. Please install tmux manually and try again.";
+    "The tmux file-in hit a snag. File it manually and call in again.";
 
 const SSH_GITHUB_ISSUE_URL: &str = "https://github.com/hotfuzz/yarp/issues/new?assignees=&labels=Bugs,SSH-tmux&projects=&template=03_ssh_tmux.yml";
 
@@ -237,9 +237,9 @@ impl View for SshErrorBlock {
 
         if self.should_show_report_to_yarp_button() {
             let report_issue_text = build_description_row(FormattedText::new([FormattedTextLine::Line(vec![
-                    FormattedTextFragment::plain_text("We are actively working on improving the stability of SSH in Yarp. Please consider "),
+                    FormattedTextFragment::plain_text("We're tightening up SSH at the station. Consider "),
                     FormattedTextFragment::hyperlink("filing an issue", get_ssh_github_issue_url(self.error_reason.error_title())),
-                    FormattedTextFragment::plain_text(" on GitHub so we can better identify the problem."),
+                    FormattedTextFragment::plain_text(" on GitHub so we can pin the case."),
                 ])]),
                 theme, appearance, self.report_link_highlight_index.clone())
                 .with_hyperlink_font_color(theme.accent().into())
