@@ -2107,7 +2107,7 @@ impl NotebookView {
                         )
                         .with_tooltip(move || {
                             ui_builder
-                                .tool_tip("Copy the casebook to the clipboard".to_string())
+                                .tool_tip("Bag the casebook for the clipboard".to_string())
                                 .build()
                                 .finish()
                         })

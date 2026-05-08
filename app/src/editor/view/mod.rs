@@ -5139,11 +5139,11 @@ impl EditorView {
             move |this, (images, num_unsupported_images, num_read_errors), ctx| {
                 if num_unsupported_images > 0 {
                     let message = if num_unsupported_images == 1 && num_images_user_attached == 1 {
-                        "Image cannot be attached - supported types are PNG, JPG, GIF, WEBP.".into()
+                        "Photo evidence rejected — only PNG, JPG, GIF, or WEBP files clear.".into()
                     } else if num_unsupported_images == 1 {
-                        "1 image wasn't attached - supported types are PNG, JPG, GIF, WEBP.".into()
+                        "1 photo wasn't filed — only PNG, JPG, GIF, or WEBP files clear.".into()
                     } else {
-                        format!("{num_unsupported_images} images weren't attached - supported types are PNG, JPG, GIF, WEBP.")
+                        format!("{num_unsupported_images} photos weren't filed — only PNG, JPG, GIF, or WEBP files clear.")
                     };
 
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
@@ -5157,11 +5157,11 @@ impl EditorView {
 
                 if num_read_errors > 0 {
                     let message = if num_read_errors == 1 && num_images_user_attached == 1 {
-                        "Image cannot be attached - failed to read file.".into()
+                        "Photo evidence rejected — couldn't read the file.".into()
                     } else if num_read_errors == 1 {
-                        "1 image wasn't attached - failed to read file.".into()
+                        "1 photo wasn't filed — couldn't read the file.".into()
                     } else {
-                        format!("{num_read_errors} images weren't attached - failed to read files.")
+                        format!("{num_read_errors} photos weren't filed — couldn't read the files.")
                     };
 
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
@@ -5265,12 +5265,12 @@ impl EditorView {
 
                 if num_oversized_images > 0 {
                     let message = if num_oversized_images == 1 && num_images_user_attached == 1 {
-                        "Image cannot be attached - file is too large.".into()
+                        "Photo evidence rejected — file's too heavy for the locker.".into()
                     } else if num_oversized_images == 1 {
-                        "1 image wasn't attached — file is too large.".into()
+                        "1 photo wasn't filed — file's too heavy for the locker.".into()
                     } else {
                         format!(
-                            "{num_oversized_images} images weren't attached — files are too large."
+                            "{num_oversized_images} photos weren't filed — files are too heavy for the locker."
                         )
                     };
 
@@ -5285,12 +5285,12 @@ impl EditorView {
 
                 if num_unprocessed_images > 0 {
                     let message = if num_unprocessed_images == 1 && num_images_user_attached == 1 {
-                        "Image cannot be attached - error processing.".into()
+                        "Photo evidence rejected — couldn't process it.".into()
                     } else if num_unprocessed_images == 1 {
-                        "1 image wasn't attached - error processing.".into()
+                        "1 photo wasn't filed — couldn't process it.".into()
                     } else {
                         format!(
-                            "{num_unprocessed_images} images weren't attached - error processing."
+                            "{num_unprocessed_images} photos weren't filed — couldn't process them."
                         )
                     };
 
