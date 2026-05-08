@@ -24350,7 +24350,7 @@ impl TerminalView {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             toast_stack.add_ephemeral_toast(
                 DismissibleToast::error(
-                    "Can not invoke environment variable subshell in a non-local session"
+                    "Can't run an env-var subshell off the local beat."
                         .to_owned(),
                 ),
                 window_id,
@@ -26170,7 +26170,7 @@ impl TypedActionView for TerminalView {
                             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                 toast_stack.add_ephemeral_toast(
                                     DismissibleToast::error(
-                                        "Bundled skills cannot be edited".to_string(),
+                                        "Standing Orders skills are read-only.".to_string(),
                                     ),
                                     window_id,
                                     ctx,
@@ -26187,7 +26187,7 @@ impl TypedActionView for TerminalView {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Editing skills is not supported in this build".to_string(),
+                                "Skill editing's not on duty in this build.".to_string(),
                             ),
                             window_id,
                             ctx,

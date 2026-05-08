@@ -1698,7 +1698,7 @@ impl Input {
                             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                 toast_stack.add_ephemeral_toast(
                                     DismissibleToast::error(
-                                        "The /open-file command is only available for local sessions"
+                                        "/open-file's only on call for local beats."
                                             .to_owned(),
                                     ),
                                     window_id,

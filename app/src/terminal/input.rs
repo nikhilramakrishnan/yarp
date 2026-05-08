@@ -2913,7 +2913,7 @@ impl Input {
                     ToastStack::handle(ctx).update(ctx, |ts, ctx| {
                         ts.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Attached images were removed — the selected model does not support images.".to_string(),
+                                "Photos pulled — this model doesn't take evidence photos.".to_string(),
                             ),
                             window_id,
                             ctx,
