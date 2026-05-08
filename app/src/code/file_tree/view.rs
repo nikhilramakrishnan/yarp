@@ -1574,7 +1574,7 @@ impl FileTreeView {
         let window_id = ctx.window_id();
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             let toast = DismissibleToast::error(String::from(
-                "Folder has too many files to display in the file explorer.",
+                "Too many case files in this folder for the cabinet to lay out.",
             ))
             .with_object_id("file_tree_exceeded_file_limit".to_string());
             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
