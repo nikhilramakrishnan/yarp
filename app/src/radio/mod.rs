@@ -87,6 +87,39 @@ impl PeerSummary {
     }
 }
 
+/// Render the active peer list as a human-readable multi-line string —
+/// what a `/radio` slash command, status-bar tooltip, or debug pane wants
+/// to dump. Empty roster gets a Sandford-flavored placeholder.
+pub fn format_peer_list(peer_list: &[PeerSummary]) -> String {
+    if peer_list.is_empty() {
+        return "No other officers on the channel — sole patrol.".to_string();
+    }
+    let mut out = String::new();
+    for peer in peer_list {
+        let label = peer.tab_title.as_deref().unwrap_or("Unfiled patrol");
+        let uptime = format_uptime(peer.uptime_secs);
+        out.push_str(&format!(
+            "{call_sign} · {label} · pid {pid} · on the air for {uptime}\n",
+            call_sign = peer.call_sign,
+            pid = peer.pid,
+        ));
+    }
+    out
+}
+
+fn format_uptime(secs: u64) -> String {
+    let h = secs / 3600;
+    let m = (secs % 3600) / 60;
+    let s = secs % 60;
+    if h > 0 {
+        format!("{h}h{m:02}m")
+    } else if m > 0 {
+        format!("{m}m{s:02}s")
+    } else {
+        format!("{s}s")
+    }
+}
+
 /// Active peers on the radio, excluding this process. Sorted by call sign
 /// for stable picker rendering.
 pub fn peers() -> Vec<PeerSummary> {
@@ -245,6 +278,38 @@ mod tests {
     fn with_tab_title_sets_the_field() {
         let beacon = Beacon::new("dev.yarp.Yarp", "Sandford").with_tab_title("Sandford Precinct");
         assert_eq!(beacon.tab_title.as_deref(), Some("Sandford Precinct"));
+    }
+
+    #[test]
+    fn format_uptime_buckets() {
+        assert_eq!(format_uptime(0), "0s");
+        assert_eq!(format_uptime(45), "45s");
+        assert_eq!(format_uptime(125), "2m05s");
+        assert_eq!(format_uptime(3700), "1h01m");
+    }
+
+    #[test]
+    fn format_peer_list_empty() {
+        assert_eq!(
+            format_peer_list(&[]),
+            "No other officers on the channel — sole patrol."
+        );
+    }
+
+    #[test]
+    fn format_peer_list_uses_unfiled_patrol_when_no_tab_title() {
+        let summary = PeerSummary {
+            pid: 7,
+            call_sign: "Sandford".into(),
+            tab_title: None,
+            hostname: "h".into(),
+            uptime_secs: 65,
+        };
+        let rendered = format_peer_list(std::slice::from_ref(&summary));
+        assert!(rendered.contains("Sandford"));
+        assert!(rendered.contains("Unfiled patrol"));
+        assert!(rendered.contains("pid 7"));
+        assert!(rendered.contains("1m05s"));
     }
 
     #[test]
