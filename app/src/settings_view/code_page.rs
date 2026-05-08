@@ -1160,7 +1160,7 @@ impl CodePageWidget {
                     .with_cross_axis_alignment(CrossAxisAlignment::Center)
                     .with_child(
                         ui_builder
-                            .span("Initialized / indexed folders")
+                            .span("Beats on patrol")
                             .with_style(UiComponentStyles {
                                 font_size: Some(16.0),
                                 font_weight: Some(Weight::Semibold),
@@ -2239,7 +2239,7 @@ impl SettingsWidget for AutoOpenCodeReviewPaneCodeWidget {
     ) -> Box<dyn Element> {
         let general_settings = GeneralSettings::as_ref(app);
         render_body_item::<CodeSettingsPageAction>(
-            "Auto open code review panel".into(),
+            "Auto-open the casebook review panel".into(),
             None,
             LocalOnlyIconState::Hidden,
             ToggleState::Enabled,
@@ -2253,7 +2253,7 @@ impl SettingsWidget for AutoOpenCodeReviewPaneCodeWidget {
                     ctx.dispatch_typed_action(CodeSettingsPageAction::ToggleAutoOpenCodeReviewPane);
                 })
                 .finish(),
-            Some("When this setting is on, the code review panel will open on the first accepted diff of a conversation".into()),
+            Some("With this on, the casebook review panel pops open on the first accepted diff of a chat.".into()),
         )
     }
 }
@@ -2316,7 +2316,7 @@ impl SettingsWidget for CodeReviewPanelToggleWidget {
         let tab_settings = TabSettings::as_ref(app);
 
         render_body_item::<CodeSettingsPageAction>(
-            "Show code review button".into(),
+            "Show the casebook review button".into(),
             None,
             LocalOnlyIconState::Hidden,
             ToggleState::Enabled,
@@ -2331,7 +2331,7 @@ impl SettingsWidget for CodeReviewPanelToggleWidget {
                 })
                 .finish(),
             Some(
-                "Show a button in the top right of the window to toggle the code review panel."
+                "Pin a button to the top-right of the window to flip the casebook review panel on or off."
                     .into(),
             ),
         )
@@ -2359,7 +2359,7 @@ impl SettingsWidget for CodeReviewDiffStatsToggleWidget {
         let tab_settings = TabSettings::as_ref(app);
 
         render_body_item::<CodeSettingsPageAction>(
-            "Show diff stats on code review button".into(),
+            "Show diff stats on the casebook review button".into(),
             None,
             LocalOnlyIconState::Hidden,
             ToggleState::Enabled,
@@ -2375,7 +2375,7 @@ impl SettingsWidget for CodeReviewDiffStatsToggleWidget {
                     );
                 })
                 .finish(),
-            Some("Show lines added and removed counts on the code review button.".into()),
+            Some("Mark lines added and removed counts on the casebook review button.".into()),
         )
     }
 }
@@ -2416,7 +2416,7 @@ impl SettingsWidget for ProjectExplorerToggleWidget {
                 })
                 .finish(),
             Some(
-                "Adds an IDE-style project explorer / file tree to the left side tools panel."
+                "Pins a beat map / file tree to the left side tools panel."
                     .into(),
             ),
         )
@@ -2458,7 +2458,7 @@ impl SettingsWidget for GlobalSearchToggleWidget {
                     ctx.dispatch_typed_action(CodeSettingsPageAction::ToggleGlobalSearch);
                 })
                 .finish(),
-            Some("Adds global file search to the left side tools panel.".into()),
+            Some("Pins station-wide file search to the left side tools panel.".into()),
         )
     }
 }
