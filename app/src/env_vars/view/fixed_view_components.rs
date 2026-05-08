@@ -119,12 +119,12 @@ impl EnvVarCollectionView {
                             .with_tooltip(move || {
                                 ui_builder
                                     .tool_tip(
-                                        "Restore environment variables from trash".to_string(),
+                                        "Pull env vars back out of the bin".to_string(),
                                     )
                                     .build()
                                     .finish()
                             })
-                            .with_text_label("Restore".to_string())
+                            .with_text_label("Reinstate".to_string())
                             .build()
                             .on_click(|ctx, _, _| {
                                 ctx.dispatch_typed_action(EnvVarCollectionAction::Untrash)

@@ -204,7 +204,7 @@ impl NavBar {
                     ButtonVariant::Outlined,
                     self.mouse_state_handles.revert_mouse_state.clone(),
                 )
-                .with_text_label("Reject".to_string())
+                .with_text_label("Toss it".to_string())
                 .build()
                 .on_click(|ctx, _, _| ctx.dispatch_typed_action(NavBarAction::Revert))
                 .finish(),
