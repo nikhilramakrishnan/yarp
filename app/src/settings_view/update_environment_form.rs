@@ -915,7 +915,7 @@ impl UpdateEnvironmentForm {
             };
             let mut editor = EditorView::new(options, ctx);
             editor.set_placeholder_text(
-                "e.g., this environment is for all front end focused agents",
+                "e.g., this post is for all front-end-focused units",
                 ctx,
             );
             editor

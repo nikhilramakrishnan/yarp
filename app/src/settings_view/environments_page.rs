@@ -509,7 +509,7 @@ impl EnvironmentsPageView {
 
         // Create pane configuration for BackingView support
         let pane_configuration =
-            ctx.add_model(|_| crate::pane_group::pane::PaneConfiguration::new("Environments"));
+            ctx.add_model(|_| crate::pane_group::pane::PaneConfiguration::new("Patrol Posts"));
 
         let mut view = Self {
             page: PageType::new_monolith(
@@ -1286,7 +1286,7 @@ impl EnvironmentsPageWidget {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "No environments match the APB.",
+                "No posts match the APB.",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
@@ -1484,7 +1484,7 @@ impl EnvironmentsPageWidget {
         .finish();
 
         let header = Text::new(
-            "No environments filed yet.",
+            "No posts filed yet.",
             appearance.ui_font_family(),
             appearance.ui_font_size() * 1.1,
         )
