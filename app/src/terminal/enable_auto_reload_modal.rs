@@ -280,7 +280,7 @@ impl EnableAutoReloadModalBody {
         let button_text = if self.update_workspace_settings_loading {
             "Filing...".to_string()
         } else {
-            "Enable".to_string()
+            "Wire it in".to_string()
         };
 
         let mut enable_button = appearance
