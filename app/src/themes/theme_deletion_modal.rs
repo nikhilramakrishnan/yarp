@@ -10,7 +10,7 @@ use yarpui::AppContext;
 use yarpui::ViewHandle;
 use yarpui::{Element, Entity, TypedActionView, View, ViewContext};
 
-const THEME_DELETION_MODAL_HEADER: &str = "Are you sure you want to delete this theme?";
+const THEME_DELETION_MODAL_HEADER: &str = "Strike this theme off the books?";
 
 pub struct ThemeDeletionModal {
     theme_deletion_modal: ViewHandle<Modal<ThemeDeletionBody>>,

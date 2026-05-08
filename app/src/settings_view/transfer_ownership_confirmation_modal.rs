@@ -54,7 +54,7 @@ impl View for TransferOwnershipConfirmationModal {
 
         let description_text = Text::new(
             format!(
-                "Are you sure you want to transfer team ownership to {}? You will no longer be the owner and will not be able to take any administrative actions for this team.",
+                "Hand the squad badge over to {}? You'll be back to ranks — no more giving the orders.",
                 email
             ),
             appearance.ui_font_family(),

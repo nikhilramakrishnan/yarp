@@ -888,9 +888,9 @@ impl LoginSlideView {
 
         let is_terminal = matches!(self.intention, OnboardingIntention::Terminal);
         let title_text = if is_terminal {
-            "Are you sure you want to disable Yarp Drive?"
+            "Sign Yarp Drive off the duty roster?"
         } else {
-            "Are you sure you want to disable AI features?"
+            "Sign AI off the duty roster?"
         };
         let title = FormattedTextElement::from_str(title_text, appearance.ui_font_family(), 16.)
             .with_color(internal_colors::text_main(theme, dialog_surface_solid))
