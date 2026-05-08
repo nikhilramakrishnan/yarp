@@ -1207,7 +1207,7 @@ impl AskUserQuestionView {
                 .finish(),
         );
         content.add_child(
-            HeaderConfig::new("Agent questions", app)
+            HeaderConfig::new("PC's got questions", app)
                 .with_icon(yellow_stop_icon(appearance))
                 .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(8.)))
                 .render_header(app, Some(header_right.finish())),
@@ -1240,7 +1240,7 @@ impl AskUserQuestionView {
 
     fn render_unavailable(&self, appearance: &Appearance, app: &AppContext) -> Box<dyn Element> {
         wrap_with_agent_output_item_spacing(
-            HeaderConfig::new("Questions unavailable".to_string(), app)
+            HeaderConfig::new("Questions off the air".to_string(), app)
                 .with_icon(inline_action_icons::reverted_icon(appearance))
                 .render(app),
             app,
@@ -1280,12 +1280,12 @@ impl AskUserQuestionView {
             }
             AskUserQuestionResult::Error(_) | AskUserQuestionResult::Cancelled => (
                 None,
-                "Questions skipped".to_string(),
+                "Questions waved off".to_string(),
                 inline_action_icons::reverted_icon(appearance),
             ),
             AskUserQuestionResult::SkippedByAutoApprove { .. } => (
                 None,
-                "Questions skipped due to auto-approve".to_string(),
+                "Questions waved off — rubber-stamped".to_string(),
                 inline_action_icons::reverted_icon(appearance),
             ),
         };
@@ -1589,19 +1589,19 @@ fn ask_user_question_completion_state(
 
     if answered_count == 0 {
         AskUserQuestionCompletionState {
-            label: "Questions skipped".to_string(),
+            label: "Questions waved off".to_string(),
             status_icon: inline_action_icons::reverted_icon(appearance),
         }
     } else {
         let label = if answered_count == total {
             if total == 1 {
-                "Answered question".to_string()
+                "Statement taken".to_string()
             } else {
-                format!("Answered all {total} questions")
+                format!("All {total} statements taken")
             }
         } else {
             format!(
-                "Answered {answered_count} of {total} question{}",
+                "{answered_count} of {total} statement{} taken",
                 if total == 1 { "" } else { "s" }
             )
         };
