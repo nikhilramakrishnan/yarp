@@ -788,7 +788,7 @@ impl AIAssistantPanelView {
                 ..Default::default()
             };
             ui_builder
-                .tool_tip("Copy the transcript to the clipboard".to_owned())
+                .tool_tip("Bag the transcript for the clipboard".to_owned())
                 .with_style(tool_tip_style)
                 .build()
                 .finish()

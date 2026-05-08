@@ -3003,7 +3003,7 @@ fn render_response_footer(props: Props, app: &AppContext) -> Option<Box<dyn Elem
         )
         .with_tooltip(move || {
             ui_builder
-                .tool_tip("Good response".to_string())
+                .tool_tip("Solid intel".to_string())
                 .build()
                 .finish()
         })
@@ -3024,7 +3024,7 @@ fn render_response_footer(props: Props, app: &AppContext) -> Option<Box<dyn Elem
         .with_tooltip(move || {
             ui_builder
                 .clone()
-                .tool_tip("Bad response".to_string())
+                .tool_tip("Bad lead".to_string())
                 .build()
                 .finish()
         })
@@ -3120,7 +3120,7 @@ fn render_response_footer(props: Props, app: &AppContext) -> Option<Box<dyn Elem
         )
         .with_tooltip(move || {
             ui_builder
-                .tool_tip("Fork conversation".to_string())
+                .tool_tip("Branch the case file".to_string())
                 .build()
                 .finish()
         })
@@ -3281,7 +3281,7 @@ fn render_usage_button(props: Props, app: &AppContext) -> Box<dyn Element> {
                 // Show tooltip on hover or while clicked
                 let mut stack = Stack::new().with_child(content.finish());
                 let tooltip = ui_builder
-                    .tool_tip("Show credit usage details".to_string())
+                    .tool_tip("Open the credit ledger".to_string())
                     .build()
                     .finish();
                 stack.add_positioned_overlay_child(
