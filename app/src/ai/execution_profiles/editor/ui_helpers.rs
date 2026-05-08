@@ -512,7 +512,7 @@ fn render_directory_allowlist_section(
 
     render_list_section(
         "Directory allowlist",
-        "Give the agent file access to certain directories.",
+        "Give the PC file access to certain directories.",
         &profile_data.directory_allowlist,
         &view.directory_allowlist_mouse_state_handles,
         Some(&view.directory_allowlist_editor),
@@ -664,7 +664,7 @@ pub fn render_plan_auto_sync_toggle(
     .finish();
 
     let desc_elem = Text::new(
-        "The plans this agent creates will be automatically added and synced to Yarp Drive."
+        "The plans this PC writes up will be automatically added and synced to Yarp Drive."
             .to_string(),
         appearance.ui_font_family(),
         11.,
@@ -738,7 +738,7 @@ pub fn render_web_search_toggle(
     .finish();
 
     let desc_elem = Text::new(
-        "The agent may use web search when helpful for completing tasks.".to_string(),
+        "The PC may use web search when helpful for working a case.".to_string(),
         appearance.ui_font_family(),
         11.,
     )
