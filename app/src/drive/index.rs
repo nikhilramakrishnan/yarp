@@ -4828,7 +4828,7 @@ impl DriveIndex {
         if self.online_only_operation_allowed(cloud_object_type_and_id, app) {
             if !FeatureFlag::SharedWithMe.is_enabled() || access_level.can_trash() {
                 menu_items.push(
-                    MenuItemFields::new("Restore")
+                    MenuItemFields::new("Pull from incinerator")
                         .with_on_select_action(DriveIndexAction::UntrashObject {
                             cloud_object_type_and_id: *cloud_object_type_and_id,
                         })
