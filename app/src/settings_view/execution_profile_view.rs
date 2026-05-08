@@ -689,7 +689,7 @@ fn render_action_permission_line_with_icon(
         ActionPermission::AgentDecides => "Agent decides",
         ActionPermission::AlwaysAllow => "Always allow",
         ActionPermission::AlwaysAsk => "Always ask",
-        ActionPermission::Unknown => "Unknown",
+        ActionPermission::Unknown => "Unmarked",
     };
     render_permission_line_with_icon(icon, label, permission_text, appearance, is_ai_enabled)
 }
@@ -705,7 +705,7 @@ fn render_write_to_pty_permission_line_with_icon(
         WriteToPtyPermission::AlwaysAllow => "Always allow",
         WriteToPtyPermission::AlwaysAsk => "Always ask",
         WriteToPtyPermission::AskOnFirstWrite => "Ask on first write",
-        WriteToPtyPermission::Unknown => "Unknown",
+        WriteToPtyPermission::Unknown => "Unmarked",
     };
     render_permission_line_with_icon(icon, label, permission_text, appearance, is_ai_enabled)
 }
