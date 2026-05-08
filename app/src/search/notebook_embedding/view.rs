@@ -26,7 +26,7 @@ use yarpui::{
 
 use super::searcher::{EmbeddingSearchItemAction, EmbeddingSearchMixer};
 
-const DEFAULT_PLACEHOLDER_TEXT: &str = "Search for a reference";
+const DEFAULT_PLACEHOLDER_TEXT: &str = "Sniff out a reference";
 
 lazy_static! {
     static ref QUERY_RESULT_RENDERER_STYLES: QueryResultRendererStyles =

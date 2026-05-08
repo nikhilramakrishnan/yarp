@@ -237,7 +237,7 @@ impl View for CommandSearchZeroStateView {
             .with_child(
                 Container::new(
                     Text::new_inline(
-                        "Example queries",
+                        "Example sweeps",
                         appearance.ui_font_family(),
                         styles::subheader_text_font_size(appearance),
                     )
