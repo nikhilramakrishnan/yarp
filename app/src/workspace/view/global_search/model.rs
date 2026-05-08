@@ -106,7 +106,7 @@ impl GlobalSearch {
                     log::error!("GlobalSearch: yarp_ripgrep CLI search failed or aborted: {err}");
                     ctx.emit(GlobalSearchEvent::Failed {
                         search_id,
-                        error: "Global search failed.".to_string(),
+                        error: "Stationhouse sweep failed.".to_string(),
                     });
                 }
             },
