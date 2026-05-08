@@ -1066,7 +1066,7 @@ impl TerminalManager {
                     }
                     TeamAccessLevelUpdateResponse::Error(_) => {
                         terminal_view.show_persistent_toast(
-                            "Something went wrong. Please try again.".to_owned(),
+                            "Something's gone sideways. Call it in again.".to_owned(),
                             ToastFlavor::Error,
                             ctx,
                         );
@@ -1086,7 +1086,7 @@ impl TerminalManager {
                             session_sharing_protocol::common::FailedToAddGuestsReason::GuestAlreadyAdded => {
                                 "One or more of those guests are already clocked in.".to_owned()
                             }
-                            _ => "Something went wrong. Please try again.".to_owned(),
+                            _ => "Something's gone sideways. Call it in again.".to_owned(),
                         };
                         terminal_view.show_persistent_toast(reason_string, ToastFlavor::Error, ctx);
                     });
@@ -1099,7 +1099,7 @@ impl TerminalManager {
                     };
                     view.update(ctx, |terminal_view, ctx| {
                         terminal_view.show_persistent_toast(
-                            "Something went wrong. Please try again.".to_owned(),
+                            "Something's gone sideways. Call it in again.".to_owned(),
                             ToastFlavor::Error,
                             ctx,
                         );
@@ -1113,7 +1113,7 @@ impl TerminalManager {
                     };
                     view.update(ctx, |terminal_view, ctx| {
                         terminal_view.show_persistent_toast(
-                            "Something went wrong. Please try again.".to_owned(),
+                            "Something's gone sideways. Call it in again.".to_owned(),
                             ToastFlavor::Error,
                             ctx,
                         );
