@@ -36,8 +36,8 @@ use yarpui::{
     AppContext, Element, SingletonEntity,
 };
 
-const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Get a command tip from Yarp AI";
-const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into a shell command via Yarp AI";
+const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Call in for a command tip from Yarp AI";
+const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into a shell order via Yarp AI";
 
 #[derive(Clone, Debug)]
 pub enum YarpAISearchItem {
@@ -242,10 +242,10 @@ impl AsyncDataSource for YarpAIDataSource {
 impl DataSourceRunError for GenerateCommandsFromNaturalLanguageError {
     fn user_facing_error(&self) -> String {
         match self {
-            Self::BadPrompt => "No results found. Please try again with a more specific query.",
-            Self::AiProviderError => "Something went wrong. Please try again.",
-            Self::RateLimited => "Looks like you're out of AI credits. Please try again later.",
-            Self::Other => "Something went wrong. Please try again.",
+            Self::BadPrompt => "Couldn't pin a hit. Try a more specific query.",
+            Self::AiProviderError => "Wires got crossed. Try again.",
+            Self::RateLimited => "You've hit your AI rations cap. Try again later.",
+            Self::Other => "Wires got crossed. Try again.",
         }
         .to_string()
     }

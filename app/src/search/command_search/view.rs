@@ -63,7 +63,7 @@ use super::{
     zero_state::{CommandSearchZeroStateEvent, CommandSearchZeroStateView},
 };
 
-const DEFAULT_PLACEHOLDER_TEXT: &str = "Search your history, workflows, and more";
+const DEFAULT_PLACEHOLDER_TEXT: &str = "Search your case files, playbooks, and more";
 const PANEL_POSITION_ID: &str = "CommandSearchViewPanel";
 const DETAILS_PANEL_MARGIN: f32 = 4.;
 const MIN_WIDTH_RATIO: f32 = 0.25;
@@ -620,7 +620,7 @@ impl CommandSearchView {
                             current_user_id,
                         )
                     } else {
-                        self.render_error_header_text("Looks like you're out of credits. Contact a team admin to upgrade for more credits.".to_string(), appearance)
+                        self.render_error_header_text("You've hit your rations cap. Talk to a team admin for an upgrade.".to_string(), appearance)
                     }
                 } else {
                     self.render_error_header_text(message, appearance)
@@ -712,7 +712,7 @@ impl CommandSearchView {
         row.add_child(
             appearance
                 .ui_builder()
-                .span("Looks like you're out of credits. ")
+                .span("You've hit your rations cap. ")
                 .with_style(UiComponentStyles {
                     font_size: Some(appearance.monospace_font_size()),
                     font_family_id: Some(appearance.ui_font_family()),
