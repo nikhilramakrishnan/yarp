@@ -226,7 +226,7 @@ impl View for ProjectButtons {
                     Icon::Plus,
                     ProjectButtonsAction::CreateProject,
                     TooltipData {
-                        text: "Create and initialize a brand new project".to_string(),
+                        text: "File a fresh case from scratch".to_string(),
                         keybinding: keybinding_name_to_display_string(
                             "project_buttons:create_new_project",
                             app,
@@ -242,7 +242,7 @@ impl View for ProjectButtons {
                     Icon::Folder,
                     ProjectButtonsAction::OpenRepository,
                     TooltipData {
-                        text: "Open an existing local folder or repository".to_string(),
+                        text: "Crack open a case file already on the desk".to_string(),
                         keybinding: keybinding_name_to_display_string(
                             "project_buttons:open_repository",
                             app,
@@ -258,7 +258,7 @@ impl View for ProjectButtons {
                     Icon::Duplicate,
                     ProjectButtonsAction::CloneRepository,
                     TooltipData {
-                        text: "Clone a repo from GitHub or another source".to_string(),
+                        text: "Pull a case file in from GitHub or another precinct".to_string(),
                         keybinding: None,
                     },
                     self.state_handles.clone_repo_button.clone(),
@@ -274,7 +274,7 @@ impl View for ProjectButtons {
                         Icon::Plus,
                         ProjectButtonsAction::CreateProject,
                         TooltipData {
-                            text: "Open an existing local folder or repository".to_string(),
+                            text: "Crack open a case file already on the desk".to_string(),
                             keybinding: keybinding_name_to_display_string(
                                 "project_buttons:open_repository",
                                 app,
