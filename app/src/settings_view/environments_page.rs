@@ -1407,7 +1407,7 @@ impl EnvironmentsPageWidget {
         } else if dropdown_state.auth_url.is_some() {
             ("Authorize", true)
         } else {
-            ("Get started", true)
+            ("Step up", true)
         };
 
         let github_button = Self::render_empty_state_button(

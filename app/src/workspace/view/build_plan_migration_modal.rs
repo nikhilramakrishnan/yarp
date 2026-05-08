@@ -305,7 +305,7 @@ impl BuildPlanMigrationModal {
         let button_text = if self.is_updating {
             "Filing...".to_string()
         } else {
-            "Get Started".to_string()
+            "Step up".to_string()
         };
 
         let button_font_color = self.is_updating.then_some(
