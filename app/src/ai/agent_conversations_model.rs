@@ -556,7 +556,7 @@ impl ConversationOrTask<'_> {
             // TODO this should really be done server-side
             ConversationOrTask::Task(task) => {
                 let Some(duration) = task.run_time() else {
-                    return Some("Not started".to_string());
+                    return Some("Hasn't clocked in".to_string());
                 };
                 if duration.num_minutes() < 1 {
                     Some(format!("{} seconds", duration.num_seconds()))

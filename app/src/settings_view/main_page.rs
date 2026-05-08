@@ -148,10 +148,10 @@ impl From<&MainPageAction> for LoginGatedFeature {
     fn from(val: &MainPageAction) -> LoginGatedFeature {
         use MainPageAction::*;
         match val {
-            Upgrade { .. } => "Upgrade Plan",
-            GenerateStripeBillingPortalLink { .. } => "Generate Stripe Billing Portal Link",
-            ToggleSettingsSync => "Toggle Settings Sync",
-            _ => "Unknown reason",
+            Upgrade { .. } => "Top up duty roster",
+            GenerateStripeBillingPortalLink { .. } => "Pull up the billing books",
+            ToggleSettingsSync => "Toggle Standing Orders sync",
+            _ => "No reason on file",
         }
     }
 }
