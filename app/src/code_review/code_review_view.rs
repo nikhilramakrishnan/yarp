@@ -1222,7 +1222,7 @@ impl CodeReviewView {
         let maximize_button = ctx.add_typed_action_view(move |_| {
             // Since the view isn't part of a pane group yet, default to not-maximized. The button will be updated
             //when focus state changes.
-            let (icon, tooltip_text) = (Icon::Maximize, "Maximize");
+            let (icon, tooltip_text) = (Icon::Maximize, "Pull up the case");
 
             ActionButton::new("", NakedTheme)
                 .with_icon(icon)
@@ -1509,7 +1509,7 @@ impl CodeReviewView {
         let (icon, tooltip) = if is_maximized {
             (Icon::Minimize, "Restore")
         } else {
-            (Icon::Maximize, "Maximize")
+            (Icon::Maximize, "Pull up the case")
         };
 
         self.maximize_button.update(ctx, |button, ctx| {

@@ -1024,9 +1024,9 @@ impl RightPanelView {
 
     pub fn set_maximized(&mut self, is_maximized: bool, ctx: &mut ViewContext<Self>) {
         let (icon, tooltip) = if is_maximized {
-            (Icon::Minimize, "Minimize")
+            (Icon::Minimize, "Lay the case down")
         } else {
-            (Icon::Maximize, "Maximize")
+            (Icon::Maximize, "Pull up the case")
         };
 
         self.maximize_button.update(ctx, |button, ctx| {
