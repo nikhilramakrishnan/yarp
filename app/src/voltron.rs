@@ -91,7 +91,7 @@ impl VoltronItem {
     pub fn as_str(&self) -> &'static str {
         match self {
             VoltronItem::AiCommands => "A.I. Command Search",
-            VoltronItem::Workflows => "Workflows",
+            VoltronItem::Workflows => "Playbooks",
             VoltronItem::History => "History Search",
         }
     }
