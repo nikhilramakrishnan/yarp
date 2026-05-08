@@ -169,7 +169,7 @@ impl GetFilesExecutor {
             // current working directory is, which is never the case.
             return ActionExecution::Sync(AIAgentActionResultType::GetFiles(
                 GetFilesResult::Error(
-                    "The search failed. Try another way to locate the relevant files.".to_string(),
+                    "The sweep came up empty. Try a different angle to track those files down.".to_string(),
                 ),
             ));
         };
@@ -246,7 +246,7 @@ impl GetFilesExecutor {
                         ),
                     Some(GetRelevantFilesStatus::Failed { .. }) => ActionExecution::Sync(
                         AIAgentActionResultType::GetFiles(GetFilesResult::Error(
-                            "The search failed. Try another way to locate the relevant files."
+                            "The sweep came up empty. Try a different angle to track those files down."
                                 .to_owned(),
                         )),
                     ),

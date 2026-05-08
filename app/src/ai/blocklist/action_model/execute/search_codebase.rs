@@ -115,7 +115,7 @@ impl SearchCodebaseExecutor {
                         return;
                     };
                     if let Err(e) = result_tx.send(SearchCodebaseResult::Failed {
-                        message: "The search failed. Try another way to locate the relevant files."
+                        message: "The sweep came up empty. Try a different angle to track those files down."
                             .to_owned(),
                         reason: SearchCodebaseFailureReason::GetRelevantFilesError,
                     }) {
@@ -201,7 +201,7 @@ impl SearchCodebaseExecutor {
             return ActionExecution::Sync(AIAgentActionResultType::SearchCodebase(
                 SearchCodebaseResult::Failed {
                     reason: SearchCodebaseFailureReason::MissingCurrentWorkingDirectory,
-                    message: "The search failed. Try another way to locate the relevant files."
+                    message: "The sweep came up empty. Try a different angle to track those files down."
                         .to_string(),
                 },
             ));
@@ -245,7 +245,7 @@ impl SearchCodebaseExecutor {
                 );
             });
             return ActionExecution::Sync(AIAgentActionResultType::SearchCodebase(SearchCodebaseResult::Failed {
-                message: "The search failed because the codebase is not available. Try another way to locate the relevant files.".to_owned(),
+                message: "The sweep stalled — the codebase isn't on the air. Try a different angle to track those files down.".to_owned(),
                 reason: SearchCodebaseFailureReason::CodebaseNotIndexed
             }));
         };
