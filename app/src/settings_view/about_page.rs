@@ -244,18 +244,26 @@ fn precinct_roster_line() -> Option<(String, bool)> {
     const MAX: usize = 5;
     let overflow = names.len().saturating_sub(MAX);
     names.truncate(MAX);
-    // Multi-peer 10-13 gets a count tag in the label — at-a-glance distress
-    // total above the per-peer (10-13) markers. Single-peer skips the tag;
-    // the inline marker carries the signal alone.
-    let label = if distress_count >= 2 {
-        format!("Roster ({distress_count} in distress)")
+    // Roster row picks up the same rhythm-shift the inbox/dispatch rows make
+    // when emergency is active. Routine keeps the colon-led 'Roster: …'
+    // shape; emergency leads with a middle-dot ('Roster · …') and lifts the
+    // distress count out of a parenthetical into its own dot-segment so the
+    // four precinct rows scan as one rhythm-pair (parenthetical/colon =
+    // routine, dot-rhythm = urgent).
+    let names_joined = names.join(", ");
+    let body = if overflow > 0 {
+        format!("{names_joined} (+{overflow} more)")
     } else {
-        "Roster".to_string()
+        names_joined
     };
-    let line = if overflow > 0 {
-        format!("{label}: {} (+{overflow} more)", names.join(", "))
+    let line = if any_in_distress {
+        if distress_count >= 2 {
+            format!("Roster \u{00B7} {distress_count} in distress \u{00B7} {body}")
+        } else {
+            format!("Roster \u{00B7} {body}")
+        }
     } else {
-        format!("{label}: {}", names.join(", "))
+        format!("Roster: {body}")
     };
     Some((line, any_in_distress))
 }
