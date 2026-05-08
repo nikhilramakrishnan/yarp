@@ -2696,7 +2696,7 @@ impl FileTreeView {
             )
             .with_child(
                 Text::new(
-                    "Project explorer unavailable",
+                    "Case cabinet's offline",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() + 2.,
                 )

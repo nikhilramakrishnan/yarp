@@ -72,9 +72,9 @@ impl GeneratedCommandMetadataError {
             Self::BadCommand => {
                 "Couldn't write up the case. Try again with a different command."
             }
-            Self::AiProviderError => "Something went sideways. Try again.",
+            Self::AiProviderError => "Wires got crossed. Try again.",
             Self::RateLimited => "AI credits have run dry. Top up the kit and have another go.",
-            Self::Other => "Something went sideways. Try again.",
+            Self::Other => "Wires got crossed. Try again.",
         }
         .to_string()
     }
