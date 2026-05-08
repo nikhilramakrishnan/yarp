@@ -431,7 +431,7 @@ impl Input {
                     .filter(|name| !name.is_empty())
                 else {
                     show_error_toast(
-                        "Please provide a tab name after /rename-tab".to_owned(),
+                        "Need a tab name on the docket — /rename-tab <name>.".to_owned(),
                         ctx,
                     );
                     return true;
@@ -445,7 +445,7 @@ impl Input {
                     .filter(|a| !a.is_empty())
                 else {
                     show_error_toast(
-                        "Please provide a message: /radio [@unit] <message>".to_owned(),
+                        "Radio's quiet — /radio [@unit] <message> to call it in.".to_owned(),
                         ctx,
                     );
                     return true;
@@ -471,7 +471,7 @@ impl Input {
                 let target = target_lc.as_str();
                 if message.is_empty() {
                     show_error_toast(
-                        "Please provide a message body: /radio @unit <message>".to_owned(),
+                        "Empty radio call — /radio @unit <message> to put something on the air.".to_owned(),
                         ctx,
                     );
                     return true;
@@ -543,7 +543,7 @@ impl Input {
                     .filter(|a| !a.is_empty())
                 else {
                     show_error_toast(
-                        "Please provide a reply body: /respond <message>".to_owned(),
+                        "Need something to say back — /respond <message>.".to_owned(),
                         ctx,
                     );
                     return true;
@@ -650,7 +650,7 @@ impl Input {
                 let team = match roster.default_team() {
                     Some(team) => team,
                     None => {
-                        show_error_toast("No team configured in personas.json".to_owned(), ctx);
+                        show_error_toast("No team on the roster — set one in personas.json.".to_owned(), ctx);
                         return true;
                     }
                 };
@@ -788,7 +788,7 @@ impl Input {
                     .filter(|n| !n.is_empty())
                 else {
                     show_error_toast(
-                        "Please name the case: /case <name>".to_owned(),
+                        "Case needs a name on the file — /case <name>.".to_owned(),
                         ctx,
                     );
                     return true;
