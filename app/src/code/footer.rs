@@ -314,9 +314,9 @@ impl CodeFooterView {
             button.set_disabled(!is_ai_enabled, ctx);
             button.set_tooltip(
                 Some(if is_ai_enabled {
-                    "Open agent input with the /update-tab-config skill"
+                    "Brief the PC with the /update-tab-config skill"
                 } else {
-                    "Enable AI to use the /update-tab-config skill"
+                    "Sign on AI to use the /update-tab-config skill"
                 }),
                 ctx,
             );

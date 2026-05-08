@@ -3579,7 +3579,7 @@ fn cli_agent_rich_input_hint_text_mentions_active_cli_agent() {
             (CLIAgent::Claude, "Enter prompt for Claude Code..."),
             (CLIAgent::Gemini, "Enter prompt for Gemini..."),
             (CLIAgent::Codex, "Enter prompt for Codex..."),
-            (CLIAgent::Unknown, "Tell the agent what to build..."),
+            (CLIAgent::Unknown, "Brief the PC on the case..."),
         ] {
             let terminal = open_cli_agent_rich_input_for_agent(&mut app, agent);
             terminal.read(&app, |view, ctx| {
