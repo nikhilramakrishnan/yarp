@@ -341,7 +341,7 @@ pub fn render_yarping_indicator<V: View>(
             .as_ref()
             .is_none_or(|output| output.get().messages.is_empty())
     {
-        // Only "Adjusting..." if nothing from the current exchange has streamed yet.
+        // Only "Amending the duty roster..." if nothing from the current exchange has streamed yet.
         LOAD_OUTPUT_MESSAGE_FOR_ADJUSTING.to_string()
     } else {
         match props
