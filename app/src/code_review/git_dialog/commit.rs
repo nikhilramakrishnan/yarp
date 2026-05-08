@@ -245,7 +245,7 @@ pub(super) fn is_ready_to_confirm(state: &CommitState, app: &AppContext) -> bool
 /// user needs to take action, or `None` when no tooltip is needed.
 pub(super) fn confirm_tooltip(state: &CommitState, app: &AppContext) -> Option<&'static str> {
     if !state.file_changes.is_empty() && commit_message(state, app).is_none() {
-        Some("Enter a commit message")
+        Some("Type up the brief first")
     } else {
         None
     }
