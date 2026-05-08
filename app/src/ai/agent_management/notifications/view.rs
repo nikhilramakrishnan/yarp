@@ -120,7 +120,7 @@ impl NotificationMailboxView {
             ActionButton::new("", NakedTheme)
                 .with_icon(Icon::X)
                 .with_size(ButtonSize::XSmall)
-                .with_tooltip("Close")
+                .with_tooltip("Stand down")
                 .with_tooltip_sublabel("Esc")
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(NotificationMailboxViewAction::Dismiss);
