@@ -391,7 +391,7 @@ impl InitStepBlock {
                 false,
             ),
             simple_navigation_button(
-                "Skip for now.".to_string(),
+                "Pass for now".to_string(),
                 mouse_states.skip_button.clone(),
                 InitProjectBlockAction::SkipLanguageServers,
                 false,
@@ -405,13 +405,13 @@ impl InitStepBlock {
     ) -> Vec<KeyboardNavigableButtonBuilder> {
         vec![
             simple_navigation_button(
-                "Yes, index this codebase.".to_string(),
+                "Yes, sweep the casebook.".to_string(),
                 mouse_states.index_button.clone(),
                 InitProjectBlockAction::IndexCodebase(pwd_path.to_path_buf()),
                 false,
             ),
             simple_navigation_button(
-                "Skip for now.".to_string(),
+                "Pass for now".to_string(),
                 mouse_states.skip_button.clone(),
                 InitProjectBlockAction::SkipIndex,
                 false,
@@ -437,13 +437,13 @@ impl InitStepBlock {
         }
 
         buttons.push(simple_navigation_button(
-            "Generate AGENTS.md file".to_string(),
+            "Issue AGENTS.md file".to_string(),
             mouse_states.generate_button.clone(),
             InitProjectBlockAction::GenerateRules,
             false,
         ));
         buttons.push(simple_navigation_button(
-            "Skip AGENTS.md generation for now".to_string(),
+            "Pass on AGENTS.md for now".to_string(),
             mouse_states.skip_button.clone(),
             InitProjectBlockAction::SkipRules,
             false,
@@ -463,7 +463,7 @@ impl InitStepBlock {
                 false,
             ),
             simple_navigation_button(
-                "Skip for now".to_string(),
+                "Pass for now".to_string(),
                 mouse_states.skip_button.clone(),
                 InitProjectBlockAction::SkipCreateEnvironment,
                 false,
@@ -668,7 +668,7 @@ impl InitStepBlock {
 
         match indexing_result {
             CodebaseIndexingResult::Accepted => {
-                RenderableAction::new("Codebase index started", app)
+                RenderableAction::new("Sweep on the casebook started", app)
                     .with_icon(Icon::Check.to_yarpui_icon(Fill::success()).finish())
                     .with_action_button(
                         Appearance::as_ref(app)
