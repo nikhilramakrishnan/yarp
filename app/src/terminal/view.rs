@@ -24488,7 +24488,7 @@ impl TerminalView {
         if shell_type == ShellType::PowerShell {
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                 let toast =
-                    DismissibleToast::error("Can't dispatch a PowerShell subshell from here.".to_owned());
+                    DismissibleToast::error("Can't dispatch a PowerShell unit from this beat.".to_owned());
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
             return;
