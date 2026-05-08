@@ -651,7 +651,7 @@ impl GlobalSearchView {
             };
 
             let mut editor = EditorView::new(options, ctx);
-            editor.set_placeholder_text("Search the records", ctx);
+            editor.set_placeholder_text("Sweep the records", ctx);
             editor
         });
 

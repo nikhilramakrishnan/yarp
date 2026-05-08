@@ -1174,7 +1174,7 @@ impl Workspace {
                 },
                 ctx,
             );
-            editor.set_placeholder_text("Search casebooks", ctx);
+            editor.set_placeholder_text("Look up casebooks", ctx);
             editor
         });
         ctx.subscribe_to_view(&editor, |me, editor_view, event, ctx| match event {
@@ -1210,7 +1210,7 @@ impl Workspace {
             EditorView::single_line(options, ctx)
         });
         editor.update(ctx, |editor, ctx| {
-            editor.set_placeholder_text("Search beats...", ctx);
+            editor.set_placeholder_text("Look up beats…", ctx);
         });
         ctx.subscribe_to_view(&editor, |me, editor_view, event, ctx| match event {
             EditorEvent::Edited(_) => {
