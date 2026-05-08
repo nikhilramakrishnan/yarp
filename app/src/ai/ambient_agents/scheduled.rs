@@ -92,7 +92,7 @@ impl StringModel for ScheduledAmbientAgent {
     type CloudObjectType = CloudScheduledAmbientAgent;
 
     fn model_type_name(&self) -> &'static str {
-        "Scheduled ambient agent"
+        "Scheduled patrol"
     }
 
     fn should_enforce_revisions() -> bool {
@@ -244,20 +244,20 @@ impl ScheduledAgentManager {
                             }
                             OperationSuccessType::Failure => {
                                 let _ = tx.send(Err(anyhow::anyhow!(
-                                    "Failed to delete scheduled ambient agent"
+                                    "Couldn't bag the scheduled patrol"
                                 )));
                             }
                             OperationSuccessType::Denied(ref message) => {
                                 let _ =
-                                    tx.send(Err(anyhow::anyhow!("Deletion denied: {}", message)));
+                                    tx.send(Err(anyhow::anyhow!("Bagging denied: {}", message)));
                             }
                             OperationSuccessType::Rejection => {
                                 let _ =
-                                    tx.send(Err(anyhow::anyhow!("Deletion rejected by server")));
+                                    tx.send(Err(anyhow::anyhow!("HQ refused the bagging")));
                             }
                             OperationSuccessType::FeatureNotAvailable => {
                                 let _ = tx.send(Err(anyhow::anyhow!(
-                                    "Scheduled ambient agents not available"
+                                    "Scheduled patrols not available"
                                 )));
                             }
                         }
@@ -318,7 +318,7 @@ impl ScheduledAgentManager {
                 }
                 .boxed()
             }
-            None => async move { Err(anyhow::anyhow!("Schedule not found")) }.boxed(),
+            None => async move { Err(anyhow::anyhow!("Patrol not on the roster")) }.boxed(),
         }
     }
 
@@ -330,7 +330,7 @@ impl ScheduledAgentManager {
     ) -> impl Future<Output = anyhow::Result<()>> + Send + 'static {
         self.modify_schedule(
             schedule_id,
-            "Failed to pause schedule",
+            "Couldn't stand down the patrol",
             |config| config.enabled = false,
             ctx,
         )
@@ -344,7 +344,7 @@ impl ScheduledAgentManager {
     ) -> impl Future<Output = anyhow::Result<()>> + Send + 'static {
         self.modify_schedule(
             schedule_id,
-            "Failed to unpause schedule",
+            "Couldn't sign the patrol back on",
             |config| config.enabled = true,
             ctx,
         )
@@ -359,7 +359,7 @@ impl ScheduledAgentManager {
     ) -> impl Future<Output = anyhow::Result<()>> + Send + 'static {
         self.modify_schedule(
             schedule_id,
-            "Failed to update schedule",
+            "Couldn't amend the patrol",
             move |config| {
                 if let Some(new_name) = params.name {
                     config.name = new_name;
@@ -438,14 +438,14 @@ impl ScheduledAgentManager {
 
         match CloudModel::as_ref(ctx).get_by_uid(&schedule_id.uid()) {
             None => {
-                let _ = tx.send(Err(anyhow::anyhow!("Schedule {schedule_id} not found")));
+                let _ = tx.send(Err(anyhow::anyhow!("Patrol {schedule_id} not on the roster")));
             }
             Some(schedule) => {
                 if schedule.metadata().has_pending_online_only_change()
                     || schedule.metadata().pending_changes_statuses.pending_delete
                 {
                     let _ = tx.send(Err(anyhow::anyhow!(
-                        "Cannot delete schedule with pending changes"
+                        "Can't bag a patrol with pending changes"
                     )));
                 } else {
                     self.pending_deletes.insert(schedule_id, tx);
@@ -458,7 +458,7 @@ impl ScheduledAgentManager {
 
         async move {
             rx.await
-                .map_err(|e| anyhow::anyhow!("Failed to delete schedule: {}", e))?
+                .map_err(|e| anyhow::anyhow!("Couldn't bag the patrol: {}", e))?
         }
     }
 }

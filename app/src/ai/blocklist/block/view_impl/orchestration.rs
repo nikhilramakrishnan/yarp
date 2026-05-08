@@ -600,7 +600,7 @@ fn child_conversation_card_data_for_result(
             let conversation_id = conversation_id_for_agent_id(agent_id, app)?;
             let conversation =
                 BlocklistAIHistoryModel::as_ref(app).conversation(&conversation_id)?;
-            let agent_name = conversation.agent_name().unwrap_or("Agent").to_string();
+            let agent_name = conversation.agent_name().unwrap_or("PC").to_string();
             let status = conversation.status().clone();
             let title = available_conversation_title_for_id(conversation_id, app)?;
             Some(ChildConversationCardData {
