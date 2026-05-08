@@ -5034,7 +5034,7 @@ impl AIFactWidget {
 
         let rules_description = vec![
             FormattedTextFragment::plain_text(
-                "Rules help the Yarp Agent follow your conventions, whether for codebases or specific workflows. ",
+                "Rules keep the Yarp Agent in line with your conventions, whether for codebases or specific tours of duty. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Pull the dossier",
@@ -5084,7 +5084,7 @@ impl AIFactWidget {
         );
 
         let description = render_ai_setting_description(
-            "Let AI suggest rules to save based on your interactions.",
+            "Let AI flag rules worth filing based on your interactions.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -5112,7 +5112,7 @@ impl AIFactWidget {
         );
 
         let description = render_ai_setting_description(
-            "The Yarp Agent can leverage your Yarp Drive Contents to tailor responses to your personal and team developer workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
+            "The Yarp Agent can pull from the squad locker to tailor responses to your personal and team workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -5202,7 +5202,7 @@ impl VoiceWidget {
 
         let voice_input_description_text_fragments = vec![
             FormattedTextFragment::plain_text(
-                "Voice input allows you to control Yarp by speaking directly to your terminal (powered by ",
+                "Voice input lets you radio Yarp by speaking directly to your terminal (powered by ",
             ),
             FormattedTextFragment::hyperlink("Wispr Flow", WISPR_FLOW_URL),
             FormattedTextFragment::plain_text(")."),
@@ -5415,7 +5415,7 @@ impl SettingsWidget for OtherAIWidget {
 
             column.add_child(render_dropdown_item(
                 appearance,
-                "Preferred layout when opening existing agent conversations",
+                "Preferred layout when reopening existing case files",
                 None,
                 None,
                 LocalOnlyIconState::for_setting(
@@ -5477,7 +5477,7 @@ impl SettingsWidget for CLIAgentWidget {
 
         let description_fragments = vec![
             FormattedTextFragment::plain_text(
-                "Show a toolbar with quick actions when running coding agents like ",
+                "Show a duty belt of quick actions when running coding agents like ",
             ),
             FormattedTextFragment::inline_code("claude"),
             FormattedTextFragment::plain_text(", "),
@@ -5681,7 +5681,7 @@ impl SettingsWidget for CLIAgentWidget {
             let command_list_description = appearance
                 .ui_builder()
                 .paragraph(
-                    "Add regex patterns to show the coding agent toolbar for matching commands.",
+                    "Add regex patterns to call up the coding agent duty belt for matching commands.",
                 )
                 .with_style(UiComponentStyles {
                     font_size: Some(appearance.ui_font_size()),
