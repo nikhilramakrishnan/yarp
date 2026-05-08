@@ -3854,7 +3854,7 @@ impl TerminalFontWidget {
                     font_size: Some(appearance.ui_font_size() * 0.8),
                     ..Default::default()
                 })
-                .with_text_label("Reset to default".to_string());
+                .with_text_label("Restore standard issue".to_string());
 
             button
                 .build()

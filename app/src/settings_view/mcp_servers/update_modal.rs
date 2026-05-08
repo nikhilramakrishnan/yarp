@@ -113,7 +113,7 @@ impl UpdateModalBody {
 
         // Renders MCP title text
         let title = Text::new(
-            format!("Update {name}"),
+            format!("Re-issue {name}"),
             appearance.ui_font_family(),
             appearance.header_font_size(),
         )
@@ -227,14 +227,14 @@ impl UpdateModalBody {
                     .unwrap_or_else(Local::now);
                 let formatted_time = format_approx_duration_from_now(datetime);
                 (
-                    format!("Update from {publisher_string}"),
+                    format!("Re-issue from {publisher_string}"),
                     formatted_time.to_string(),
                 )
             }
             MCPServerUpdate::Gallery {
                 name, new_version, ..
             } => (
-                format!("Update from {name}"),
+                format!("Re-issue from {name}"),
                 format!("Version {new_version}"),
             ),
         };
@@ -339,7 +339,7 @@ impl UpdateModalBody {
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
                 Text::new_inline(
-                    "Update",
+                    "Re-issue",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )
