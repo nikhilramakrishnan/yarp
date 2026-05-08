@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use super::{
     settings_page::{
         MatchData, PageType, SettingsPageEvent, SettingsPageMeta, SettingsPageViewHandle,
@@ -28,10 +30,30 @@ pub struct AboutPageView {
 }
 
 impl AboutPageView {
-    pub fn new(_ctx: &mut ViewContext<AboutPageView>) -> Self {
-        AboutPageView {
+    pub fn new(ctx: &mut ViewContext<AboutPageView>) -> Self {
+        let view = AboutPageView {
             page: PageType::new_monolith(AboutPageWidget::default(), None, false),
-        }
+        };
+        Self::schedule_radio_poll(ctx);
+        view
+    }
+
+    // Re-renders the page on a 5s heartbeat so dispatch ages tick and new
+    // arrivals from other officers surface without re-navigating to About.
+    // Skips the notify when no peers and no inbox — sole-officer instances
+    // don't need to repaint.
+    fn schedule_radio_poll(ctx: &mut ViewContext<AboutPageView>) {
+        ctx.spawn(
+            async move {
+                yarpui::r#async::Timer::after(Duration::from_secs(5)).await;
+            },
+            |_me, _, ctx| {
+                if !radio::peers().is_empty() || !radio::peek_inbox().is_empty() {
+                    ctx.notify();
+                }
+                Self::schedule_radio_poll(ctx);
+            },
+        );
     }
 }
 
