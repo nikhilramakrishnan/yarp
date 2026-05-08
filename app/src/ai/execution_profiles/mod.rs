@@ -47,9 +47,9 @@ pub enum ActionPermission {
 impl ActionPermission {
     pub fn description(&self) -> &'static str {
         match self {
-            ActionPermission::AgentDecides | ActionPermission::Unknown => "The Agent chooses the safest path: acting on its own when confident, and asking for approval when uncertain.",
-            ActionPermission::AlwaysAllow => "Give the Agent full autonomy  — no manual approval ever required.",
-            ActionPermission::AlwaysAsk => "Require explicit approval before the Agent takes any action.",
+            ActionPermission::AgentDecides | ActionPermission::Unknown => "The PC chooses the safest path: acting on its own when confident, and asking for approval when uncertain.",
+            ActionPermission::AlwaysAllow => "Give the PC full autonomy  — no manual approval ever required.",
+            ActionPermission::AlwaysAsk => "Require explicit approval before the PC makes a move.",
         }
     }
 
@@ -81,9 +81,9 @@ impl WriteToPtyPermission {
         match self {
             WriteToPtyPermission::AlwaysAllow => ActionPermission::AlwaysAllow.description(),
             WriteToPtyPermission::AskOnFirstWrite => {
-                "The agent will ask for permission the first time it needs to interact with a running command. After that, it will continue automatically for the rest of that command."
+                "The PC will ask for permission the first time it needs to interact with a running command. After that, it will continue automatically for the rest of that command."
             }
-            WriteToPtyPermission::AlwaysAsk => "The agent will always ask for permission to interact with a running command.",
+            WriteToPtyPermission::AlwaysAsk => "The PC will always ask for permission to interact with a running command.",
             WriteToPtyPermission::Unknown => ActionPermission::Unknown.description(),
         }
     }
@@ -118,13 +118,13 @@ impl ComputerUsePermission {
     pub fn description(&self) -> &'static str {
         match self {
             ComputerUsePermission::Never => {
-                "Computer use tools are disabled and will not be available to the Agent."
+                "Computer use kit's locked away — the PC won't see it."
             }
             ComputerUsePermission::AlwaysAsk => {
-                "Require explicit approval before the Agent uses computer use tools."
+                "Require explicit approval before the PC uses computer use kit."
             }
             ComputerUsePermission::AlwaysAllow => {
-                "Give the Agent full autonomy to use computer use tools without approval."
+                "Give the PC full autonomy to use computer use kit without approval."
             }
             ComputerUsePermission::Unknown => "Unknown setting.",
         }
@@ -198,13 +198,13 @@ impl AskUserQuestionPermission {
         match self {
             AskUserQuestionPermission::AskExceptInAutoApprove
             | AskUserQuestionPermission::Unknown => {
-                "The Agent may ask a question and pause for your response, but will continue automatically when auto-approve is on."
+                "The PC may radio a question and hold for your response, but will continue automatically when auto-approve is on."
             }
             AskUserQuestionPermission::Never => {
-                "The Agent will not ask questions and will continue with its best judgment."
+                "The PC won't radio questions and will keep working off its own judgment."
             }
             AskUserQuestionPermission::AlwaysAsk => {
-                "The Agent may ask a question and will pause for your response even when auto-approve is on."
+                "The PC may radio a question and will hold for your response even when auto-approve is on."
             }
         }
     }
