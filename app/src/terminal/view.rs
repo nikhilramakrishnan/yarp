@@ -3707,12 +3707,12 @@ impl TerminalView {
             Banner::<TerminalAction>::new_with_buttons(
                 BannerTextContent::formatted_text(vec![
                     FormattedTextFragment::plain_text(
-                        "Seems like your shell is taking a while to start...  ",
+                        "Shell's slow signing on...  ",
                     ),
                     FormattedTextFragment::hyperlink("More info", KNOWN_ISSUES_URL),
                 ]),
                 vec![BannerTextButton::new(
-                    "Show initialization block".to_string(),
+                    "Show the briefing block".to_string(),
                     Rc::new(|event_ctx, _ctx, _position| {
                         event_ctx.dispatch_typed_action(BannerAction::<TerminalAction>::Action(
                             TerminalAction::ShowInitializationBlock,
@@ -3732,14 +3732,14 @@ impl TerminalView {
 
         let control_master_error_banner = ctx.add_typed_action_view(|_| {
             Banner::new(BannerTextContent::formatted_text(vec![
-                FormattedTextFragment::plain_text("Seems like your completions are not working ("),
+                FormattedTextFragment::plain_text("Completions aren't on duty ("),
                 FormattedTextFragment::hyperlink("more info", CONTROLMASTER_ISSUES_URL),
                 FormattedTextFragment::plain_text("). Enabling tmux yarpification in "),
                 FormattedTextFragment::hyperlink_action(
                     "settings",
                     TerminalAction::ShowYarpifySettings,
                 ),
-                FormattedTextFragment::plain_text(" may resolve this issue."),
+                FormattedTextFragment::plain_text(" may sort it."),
             ]))
         });
 
@@ -3750,7 +3750,7 @@ impl TerminalView {
         let incompatible_configuration_banner = ctx.add_typed_action_view(|_| {
             Banner::new(BannerTextContent::formatted_text(vec![
                 FormattedTextFragment::plain_text(
-                    "Your shell configuration is incompatible with Yarp...  ",
+                    "Your shell config doesn't sit right with Yarp...  ",
                 ),
                 FormattedTextFragment::hyperlink("More info", KNOWN_ISSUES_URL),
             ]))
@@ -8816,7 +8816,7 @@ impl TerminalView {
 
         let a11y_content = AccessibilityContent::new(
             trigger.discovery_banner_copy(),
-            "You can enable notifications through the command palette.",
+            "Switch on radio alerts from the command palette.",
             YarpA11yRole::TextRole,
         );
         ctx.emit_a11y_content(a11y_content);
@@ -8855,7 +8855,7 @@ impl TerminalView {
 
         let a11y_content = AccessibilityContent::new(
             banner_title,
-            "Make sure you have enabled access for Yarp notifications in System Preferences.",
+            "Open System Preferences and clear Yarp for radio alerts.",
             YarpA11yRole::TextRole,
         );
         ctx.emit_a11y_content(a11y_content);
