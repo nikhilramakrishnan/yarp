@@ -48,9 +48,9 @@ const FIND_EDITOR_BORDER_WIDTH: f32 = 1.;
 const FIND_EDITOR_FONT_SIZE: f32 = 12.;
 const FIND_EDITOR_ROW_SPACING: f32 = 4.;
 
-pub const REGEX_TOGGLE_TOOLTIP: &str = "Regex toggle";
-pub const CASE_SENSITIVE_TOOLTIP: &str = "Case sensitive search";
-pub const PRESERVE_CASE_TOOLTIP: &str = "Preserve case";
+pub const REGEX_TOGGLE_TOOLTIP: &str = "Match the pattern on the lead";
+pub const CASE_SENSITIVE_TOOLTIP: &str = "Match the casing on the lead";
+pub const PRESERVE_CASE_TOOLTIP: &str = "Mind the casing";
 pub const FIND_PLACEHOLDER_TEXT: &str = "Look up";
 pub const REPLACE_PLACEHOLDER_TEXT: &str = "Swap in";
 
