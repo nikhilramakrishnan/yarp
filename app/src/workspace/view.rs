@@ -5222,7 +5222,7 @@ impl Workspace {
                     .unwrap_or_else(|| {
                         let title = configuration.title().trim();
                         if title.is_empty() {
-                            "Untitled pane".to_string()
+                            "Unfiled pane".to_string()
                         } else {
                             title.to_string()
                         }
