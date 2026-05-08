@@ -2447,7 +2447,7 @@ impl Workspace {
                         let toast = DismissibleToast::error(message)
                             .with_object_id(object_id.clone())
                             .with_link(
-                                ToastLink::new("Open file".to_string()).with_onclick_action(
+                                ToastLink::new("Pull the file".to_string()).with_onclick_action(
                                     WorkspaceAction::OpenTabConfigErrorFile {
                                         path,
                                         toast_object_id: object_id,
@@ -10903,7 +10903,7 @@ impl Workspace {
         self.add_tab_with_pane_layout(
             Default::default(),
             Arc::new(HashMap::new()),
-            Some("Install Update".to_owned()),
+            Some("Re-issue kit".to_owned()),
             ctx,
         );
 
@@ -15029,11 +15029,11 @@ impl Workspace {
                                             },
                                         ) {
                                             new_toast = DismissibleToast::success(
-                                                "Plan synced to your Yarp Drive".to_string(),
+                                                "Playbook filed to your Yarp Drive".to_string(),
                                             )
                                             .with_object_id(object_id_clone)
                                             .with_link(
-                                                ToastLink::new("View".to_string())
+                                                ToastLink::new("Pull the file".to_string())
                                                     .with_onclick_action(
                                                         WorkspaceAction::ViewObjectInYarpDrive(
                                                             YarpDriveItemId::Object(
