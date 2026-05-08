@@ -3281,7 +3281,7 @@ fn render_usage_button(props: Props, app: &AppContext) -> Box<dyn Element> {
                 // Show tooltip on hover or while clicked
                 let mut stack = Stack::new().with_child(content.finish());
                 let tooltip = ui_builder
-                    .tool_tip("Open the credit ledger".to_string())
+                    .tool_tip("Open the rations ledger".to_string())
                     .build()
                     .finish();
                 stack.add_positioned_overlay_child(
