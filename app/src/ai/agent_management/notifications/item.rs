@@ -37,7 +37,7 @@ impl NotificationFilter {
         match self {
             NotificationFilter::All => "All beats",
             NotificationFilter::Unread => "Unread",
-            NotificationFilter::Errors => "Errors",
+            NotificationFilter::Errors => "Snags",
         }
     }
 }
