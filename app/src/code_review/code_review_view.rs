@@ -547,26 +547,26 @@ impl DiscardOperationType {
     pub fn title(&self) -> String {
         match self {
             DiscardOperationType::AllUncommittedChanges => {
-                "Discard uncommitted changes?".to_string()
+                "Burn the uncommitted evidence?".to_string()
             }
             DiscardOperationType::FileUncommittedChanges => {
-                "Discard all uncommitted changes to file?".to_string()
+                "Burn the uncommitted evidence on this case file?".to_string()
             }
-            DiscardOperationType::AllChangesAgainstBranch(_) => "Discard all changes?".to_string(),
+            DiscardOperationType::AllChangesAgainstBranch(_) => "Burn all the evidence?".to_string(),
             DiscardOperationType::FileChangesAgainstBranch(_) => {
-                "Discard all changes to file?".to_string()
+                "Burn all the evidence on this case file?".to_string()
             }
         }
     }
 
     pub fn description(&self) -> Option<String> {
         match self {
-            DiscardOperationType::AllUncommittedChanges => Some("You're about to discard all local changes that haven't been committed.".to_string()),
-            DiscardOperationType::FileUncommittedChanges => Some("This will restore this file to the last committed version and discard local edits.".to_string()),
-            DiscardOperationType::AllChangesAgainstBranch(None) => Some("You're about to discard all committed and uncommitted changes.".to_string()),
-            DiscardOperationType::FileChangesAgainstBranch(None) => Some("This will restore this file to the main branch version and discard all committed and uncommitted edits.".to_string()),
-            DiscardOperationType::AllChangesAgainstBranch(Some(_)) => Some("You're about to discard all committed and uncommitted changes.".to_string()),
-            DiscardOperationType::FileChangesAgainstBranch(Some(branch)) => Some(format!("This will reset this file to the {branch} branch version and discard all committed and uncommitted edits.")),
+            DiscardOperationType::AllUncommittedChanges => Some("Every local edit that hasn't been logged into the books goes up in smoke.".to_string()),
+            DiscardOperationType::FileUncommittedChanges => Some("This case file gets re-issued from the last filed copy — your unfiled edits go in the bin.".to_string()),
+            DiscardOperationType::AllChangesAgainstBranch(None) => Some("Every edit, filed or not, goes up in smoke.".to_string()),
+            DiscardOperationType::FileChangesAgainstBranch(None) => Some("This case file gets re-issued from the main beat copy — every edit, filed or not, goes in the bin.".to_string()),
+            DiscardOperationType::AllChangesAgainstBranch(Some(_)) => Some("Every edit, filed or not, goes up in smoke.".to_string()),
+            DiscardOperationType::FileChangesAgainstBranch(Some(branch)) => Some(format!("This case file gets re-issued from the {branch} beat copy — every edit, filed or not, goes in the bin.")),
         }
     }
 

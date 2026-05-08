@@ -332,7 +332,7 @@ impl<'a> UnsavedStateSummary<'a> {
 
         if self.unsaved_code_changes {
             if let QuitScope::EditorTab { ref file_name, .. } = self.scope {
-                info_text_lines.push(format!("Do you want to save the changes you made to {}? Your changes will be discarded if you don't save them.", file_name.clone().unwrap_or("this file".to_string())));
+                info_text_lines.push(format!("File the amendments to {}? Skip and they go in the bin.", file_name.clone().unwrap_or("this case file".to_string())));
             } else {
                 info_text_lines.push(format!("Unfiled paperwork on the desk{scope_suffix}"));
             }
