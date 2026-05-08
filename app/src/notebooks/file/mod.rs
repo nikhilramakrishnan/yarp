@@ -727,7 +727,7 @@ impl FileNotebookView {
             .with_child(
                 appearance
                     .ui_builder()
-                    .paragraph(format!("Could not read {}", source.display_name()))
+                    .paragraph(format!("Couldn't crack open {}", source.display_name()))
                     .with_style(self.state_style(appearance))
                     .build()
                     .finish(),

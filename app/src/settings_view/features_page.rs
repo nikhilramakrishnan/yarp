@@ -3826,7 +3826,7 @@ impl FeaturesPageView {
                         } else {
                             appearance
                                 .ui_builder()
-                                .paragraph("Click to set global hotkey".to_string())
+                                .paragraph("Click to wire a global radio code".to_string())
                                 .build()
                                 .finish()
                         })
