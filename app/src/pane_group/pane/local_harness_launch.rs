@@ -78,7 +78,7 @@ pub(super) async fn prepare_local_harness_child_launch(
     let Some(harness) = normalize_local_child_harness(&harness_type) else {
         let harness_name = harness_type.trim();
         return Err(if harness_name.is_empty() {
-            "Local child harness type is missing.".to_string()
+            "No harness on the local recruit — kit's missing.".to_string()
         } else {
             format!("Unsupported local child harness '{harness_name}'.")
         });
@@ -91,7 +91,7 @@ pub(super) async fn prepare_local_harness_child_launch(
             let working_dir = startup_directory
                 .or_else(|| std::env::current_dir().ok())
                 .ok_or_else(|| {
-                    "Could not resolve a working directory for the local Claude child.".to_string()
+                    "Couldn't pin down a working directory for the local Claude recruit.".to_string()
                 })?;
             let claude_harness = ClaudeHarness;
             claude_harness
