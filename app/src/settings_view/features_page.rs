@@ -4193,7 +4193,7 @@ impl SettingsWidget for NativeRedirectWidget {
                 on_click_action: None,
                 secondary_text: None,
                 tooltip_override_text: Some(
-                    "Automatically open links in desktop app whenever possible.".into(),
+                    "Route links to the desktop app whenever possible.".into(),
                 ),
             }),
             LocalOnlyIconState::for_setting(
@@ -4257,7 +4257,7 @@ impl SettingsWidget for SessionRestorationWidget {
             .finish();
 
         let labeled_switch = render_body_item::<FeaturesPageAction>(
-            "Restore windows, tabs, and panes on startup".into(),
+            "Resume the watch — restore windows, tabs, and panes on startup".into(),
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
@@ -4283,7 +4283,7 @@ impl SettingsWidget for SessionRestorationWidget {
 
         if app.is_wayland() {
             let message = Text::new_inline(
-                "Window positions won't be restored on Wayland. ",
+                "Window posts won't be restored on Wayland. ",
                 appearance.ui_font_family(),
                 CONTENT_FONT_SIZE,
             )
@@ -4763,7 +4763,7 @@ impl SettingsWidget for AutoOpenCodeReviewPaneWidget {
                     ctx.dispatch_typed_action(FeaturesPageAction::ToggleAutoOpenCodeReviewPane);
                 })
                 .finish(),
-            Some("When this setting is on, the code review panel will open on the first accepted diff of a conversation".into()),
+            Some("With this on, the casebook review panel pops open on the first accepted diff of a chat.".into()),
         )
     }
 }
@@ -4901,7 +4901,7 @@ impl SettingsWidget for SSHWrapperWidget {
                     "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation".into(),
                 )),
                 secondary_text: if view.ssh_wrapper_toggled {
-                    Some("This change will take effect in new sessions".to_string())
+                    Some("This change kicks in on the next tour".to_string())
                 } else {
                     None
                 },
@@ -5009,7 +5009,7 @@ impl SettingsWidget for DesktopNotificationsWidget {
                 ),
                 view.render_notification_toggle(
                     session_settings.notifications.is_needs_attention_enabled,
-                    "Notify when a command or agent needs your attention to continue",
+                    "Radio in when a command or agent needs your attention to keep moving",
                     FeaturesPageAction::ToggleNeedsAttentionNotifications,
                     view.button_mouse_states
                         .agent_needs_attention_notifications_checkbox
