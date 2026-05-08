@@ -137,7 +137,7 @@ impl SettingsWidget for CouncilPageWidget {
             },
         );
         let reload_button = pill_button(
-            "Reload from disk",
+            "Re-sweep the roster",
             self.reload_button_mouse.clone(),
             appearance,
             |ctx| ctx.notify(),
@@ -214,7 +214,7 @@ impl SettingsWidget for CouncilPageWidget {
                 col.finish()
             }
             None => ui_builder
-                .paragraph("No personas.json found. Click Reload after creating the file, or restart Yarp to drop the default Sandford roster.")
+                .paragraph("No personas.json found. Click Re-sweep after creating the file, or restart Yarp to drop the default Sandford roster.")
                 .build()
                 .with_margin_top(16.)
                 .finish(),
