@@ -127,7 +127,7 @@ impl PlatformPageView {
 
         // Create the modal wrapper
         let create_api_key_modal_view = ctx.add_typed_action_view(|ctx| {
-            Modal::new(Some("New API key".to_string()), create_api_key_body, ctx)
+            Modal::new(Some("Issue a new warrant".to_string()), create_api_key_body, ctx)
                 .with_modal_style(UiComponentStyles {
                     width: Some(MODAL_WIDTH),
                     height: Some(MODAL_HEIGHT),
@@ -173,9 +173,9 @@ impl PlatformPageView {
     }
 
     fn show_create_api_key_modal(&mut self, ctx: &mut ViewContext<Self>) {
-        // Ensure header reads "New API key" when opening the form
+        // Ensure header reads "Issue a new warrant" when opening the form
         self.create_api_key_modal_state
-            .set_title(Some("New API key".to_string()), ctx);
+            .set_title(Some("Issue a new warrant".to_string()), ctx);
         self.create_api_key_modal_state.open(ctx);
         ctx.emit(PlatformPageViewEvent::ShowCreateApiKeyModal);
     }
@@ -205,7 +205,7 @@ impl PlatformPageView {
             CreateApiKeyModalEvent::Created { api_key } => {
                 // Switch modal header off for success screen
                 self.create_api_key_modal_state
-                    .set_title(Some("Save your key".to_string()), ctx);
+                    .set_title(Some("Stash the warrant".to_string()), ctx);
                 // Append to list locally
                 // Ensure the per-key expire button exists
                 let uid = api_key.uid.clone().into_inner();
@@ -259,7 +259,7 @@ impl PlatformPageView {
                 let window_id = ctx.window_id();
                 crate::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = crate::view_components::DismissibleToast::success(
-                        "API key deleted".to_string(),
+                        "Warrant struck from the record".to_string(),
                     );
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
@@ -413,7 +413,7 @@ impl PlatformPageWidget {
             Flex::row()
                 .with_cross_axis_alignment(CrossAxisAlignment::Center)
                 .with_child(
-                    Text::new_inline("Fuzz Cloud API Keys", appearance.ui_font_family(), 16.)
+                    Text::new_inline("Fuzz Cloud warrants", appearance.ui_font_family(), 16.)
                         .with_style(Properties::default().weight(Weight::Bold))
                         .with_color(appearance.theme().active_ui_text_color().into())
                         .finish(),
@@ -425,7 +425,7 @@ impl PlatformPageWidget {
                             ButtonVariant::Outlined,
                             self.create_api_key_button_mouse_state.clone(),
                         )
-                        .with_text_label("+ Create API Key".to_string())
+                        .with_text_label("+ Issue warrant".to_string())
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(PlatformPageAction::ShowCreateApiKeyModal);
@@ -469,12 +469,12 @@ impl PlatformPageWidget {
             );
         }
         header_row
-            .add_child(Expanded::new(1., self.render_header_cell(appearance, "Created")).finish());
+            .add_child(Expanded::new(1., self.render_header_cell(appearance, "Issued")).finish());
         header_row.add_child(
-            Expanded::new(1., self.render_header_cell(appearance, "Last used")).finish(),
+            Expanded::new(1., self.render_header_cell(appearance, "Last drawn")).finish(),
         );
         header_row.add_child(
-            Expanded::new(1., self.render_header_cell(appearance, "Expires at")).finish(),
+            Expanded::new(1., self.render_header_cell(appearance, "Expires")).finish(),
         );
         header_row.add_child(Expanded::new(0.5, self.render_header_cell(appearance, "")).finish());
 
@@ -566,8 +566,8 @@ impl PlatformPageWidget {
         );
         if FeatureFlag::TeamApiKeys.is_enabled() {
             let scope_display = match key.scope {
-                ApiKeyScope::Personal => "Personal",
-                ApiKeyScope::Team => "Team",
+                ApiKeyScope::Personal => "Officer",
+                ApiKeyScope::Team => "Squad",
             };
             row.add_child(
                 Expanded::new(
@@ -655,7 +655,7 @@ impl PlatformPageWidget {
                     .with_child(
                         Container::new(
                             Text::new(
-                                "No API Keys",
+                                "No warrants on file",
                                 appearance.ui_font_family(),
                                 SUBHEADER_FONT_SIZE,
                             )
@@ -669,7 +669,7 @@ impl PlatformPageWidget {
                     .with_child(
                         Container::new(
                             Text::new(
-                                "Create a key to manage external access to Yarp",
+                                "Issue a warrant to gate outside access to Yarp.",
                                 appearance.ui_font_family(),
                                 CONTENT_FONT_SIZE,
                             )
