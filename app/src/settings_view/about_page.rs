@@ -199,11 +199,32 @@ fn precinct_roster_line() -> String {
 }
 
 fn precinct_inbox_line() -> String {
-    let pending = radio::peek_inbox().len();
-    match pending {
-        0 => String::new(),
-        1 => "1 pending dispatch in the inbox.".to_string(),
-        n => format!("{n} pending dispatches in the inbox."),
+    let inbox = radio::peek_inbox();
+    if inbox.is_empty() {
+        return String::new();
+    }
+    // Count repeats per sender so a chatty officer doesn't crowd the line,
+    // and preserve arrival order for predictable rendering.
+    let mut order: Vec<String> = Vec::new();
+    let mut seen: std::collections::HashSet<&str> = std::collections::HashSet::new();
+    for msg in &inbox {
+        if seen.insert(msg.from_call_sign.as_str()) {
+            order.push(msg.from_call_sign.clone());
+        }
+    }
+    const MAX: usize = 4;
+    let overflow = order.len().saturating_sub(MAX);
+    order.truncate(MAX);
+    let roster = if overflow > 0 {
+        format!("{} (+{overflow} more)", order.join(", "))
+    } else {
+        order.join(", ")
+    };
+    let total = inbox.len();
+    if total == 1 {
+        format!("1 pending dispatch from {roster}.")
+    } else {
+        format!("{total} pending dispatches from {roster}.")
     }
 }
 
