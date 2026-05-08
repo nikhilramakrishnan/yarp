@@ -152,9 +152,9 @@ pub(super) fn start_confirm(me: &mut GitDialog, ctx: &mut ViewContext<GitDialog>
             match result {
                 Ok(_) => {
                     let toast_msg = if publish {
-                        "Branch successfully published."
+                        "Branch on the wire."
                     } else {
-                        "Changes successfully pushed."
+                        "Report on the wire."
                     };
                     show_toast(toast_msg, ctx);
                 }
