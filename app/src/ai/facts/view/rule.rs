@@ -49,18 +49,18 @@ use yarpui::{
 use super::{is_edit_allowed, is_syncing, style, AIFact, CloudAIFact, CloudAIFactModel};
 use crate::ai::facts::AIMemory;
 
-pub const HEADER_TEXT: &str = "Rules";
-const DESCRIPTION_TEXT: &str = "Rules enhance the agent by providing structured guidelines that help maintain consistency, enforce best practices, and adapt to specific workflows, including codebases or broader tasks.";
+pub const HEADER_TEXT: &str = "Standing Orders";
+const DESCRIPTION_TEXT: &str = "Standing Orders sharpen the PC by laying down the patrol routine — keeping things consistent, enforcing best practice, and adapting to specific beats, including codebases or broader cases.";
 
-const SEARCH_PLACEHOLDER_TEXT: &str = "Search rules";
-const ZERO_STATE_TEXT: &str = "Once you add a rule, it will be shown here.";
+const SEARCH_PLACEHOLDER_TEXT: &str = "Sweep the Standing Orders";
+const ZERO_STATE_TEXT: &str = "Once you file a Standing Order, it'll show up here.";
 const ZERO_STATE_TEXT_PROJECT: &str =
-    "Once you generate a YARP.md rules file for a project, it will appear here.";
+    "Once you draft a YARP.md briefing for a beat, it'll show up here.";
 
 const DISABLED_BANNER_TEXT: &str =
-    "Your rules are disabled and won't be used as context in sessions. You can ";
-const DISABLED_BANNER_LINK_TEXT: &str = "turn it back on";
-const DISABLED_BANNER_TEXT_2: &str = " anytime.";
+    "Your Standing Orders are off-duty and won't carry into the briefing. You can ";
+const DISABLED_BANNER_LINK_TEXT: &str = "sign them on again";
+const DISABLED_BANNER_TEXT_2: &str = " any time.";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RuleScope {
