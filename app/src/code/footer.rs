@@ -1286,9 +1286,9 @@ impl CodeFooterView {
                     .finish()
             },
             if is_plural {
-                "Restart all servers"
+                "Restart language officers"
             } else {
-                "Restart server"
+                "Restart language officer"
             },
             CodeFooterViewAction::RestartAllServers,
         )
@@ -1314,9 +1314,9 @@ impl CodeFooterView {
                     .finish()
             },
             if is_plural {
-                "Stop all servers"
+                "Stand down language officers"
             } else {
-                "Stop server"
+                "Stand down language officer"
             },
             CodeFooterViewAction::StopAllServers,
         )
@@ -1342,11 +1342,11 @@ impl CodeFooterView {
                     .finish()
             },
             if !is_plural {
-                "Start server"
+                "Send language officer on shift"
             } else if has_running {
-                "Start all stopped servers"
+                "Send idle language officers on shift"
             } else {
-                "Start all servers"
+                "Send language officers on shift"
             },
             CodeFooterViewAction::StartAllServers,
         )
