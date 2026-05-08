@@ -481,7 +481,7 @@ impl InstallationModalBody {
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
                 Text::new_inline(
-                    "Install",
+                    "Sign on",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )
