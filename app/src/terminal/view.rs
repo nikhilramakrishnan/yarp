@@ -15178,7 +15178,7 @@ impl TerminalView {
                             ctx,
                         ))
                         .into_item(),
-                    MenuItemFields::new("Insert into input")
+                    MenuItemFields::new("Slap into input")
                         .with_on_select_action(TerminalAction::ContextMenu(
                             ContextMenuAction::InsertSelectedText,
                         ))
