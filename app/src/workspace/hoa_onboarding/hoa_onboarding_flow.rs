@@ -218,7 +218,7 @@ impl HoaOnboardingFlow {
         let enter = Keystroke::parse("enter").unwrap_or_default();
 
         let next_vtabs_button = ctx.add_view(|ctx| {
-            ActionButton::new("Next", HoaPrimaryButtonTheme)
+            ActionButton::new("Carry on", HoaPrimaryButtonTheme)
                 .with_keybinding(KeystrokeSource::Fixed(enter.clone()), ctx)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(HoaOnboardingAction::AdvanceFromVerticalTabs)
@@ -232,7 +232,7 @@ impl HoaOnboardingFlow {
         });
 
         let next_inbox_button = ctx.add_view(|ctx| {
-            ActionButton::new("Next", HoaPrimaryButtonTheme)
+            ActionButton::new("Carry on", HoaPrimaryButtonTheme)
                 .with_keybinding(KeystrokeSource::Fixed(enter.clone()), ctx)
                 .on_click(|ctx| ctx.dispatch_typed_action(HoaOnboardingAction::AdvanceFromInbox))
         });
