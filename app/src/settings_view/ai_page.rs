@@ -3827,12 +3827,12 @@ impl SettingsWidget for AgentsWidget {
                     .finish(),
             );
         } else {
-            // Legacy layout: show Agents header + Models + Permissions
+            // Legacy layout: show Officers header + Models + Permissions
             let mut agents_header = Flex::column();
             agents_header.add_child(
                 build_sub_header(
                     appearance,
-                    "Agents",
+                    "Officers",
                     Some(styles::header_font_color(is_any_ai_enabled, app)),
                 )
                 .with_padding_bottom(HEADER_PADDING)
@@ -5502,7 +5502,7 @@ impl SettingsWidget for CLIAgentWidget {
             .with_child(
                 build_sub_header(
                     appearance,
-                    "Third party CLI agents",
+                    "Outside CLI officers",
                     Some(styles::header_font_color(true, app)),
                 )
                 .with_padding_bottom(HEADER_PADDING)
@@ -5825,7 +5825,7 @@ impl SettingsWidget for AgentAttributionWidget {
             .with_child(
                 build_sub_header(
                     appearance,
-                    "Agent Attribution",
+                    "Officer attribution",
                     Some(styles::header_font_color(is_any_ai_enabled, app)),
                 )
                 .with_padding_bottom(HEADER_PADDING)
