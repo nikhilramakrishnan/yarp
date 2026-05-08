@@ -4215,7 +4215,7 @@ impl CodeReviewView {
             )
             .with_child(
                 Text::new(
-                    "Cannot detect diffs for this folder",
+                    "Can't pick up the diff trail in this folder",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() + 2.,
                 )
@@ -4295,7 +4295,7 @@ impl CodeReviewView {
             )
             .with_child(
                 Text::new(
-                    "Cannot detect diffs for this folder",
+                    "Can't pick up the diff trail in this folder",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() + 2.,
                 )
@@ -4471,7 +4471,7 @@ impl CodeReviewView {
             .with_child(
                 Container::new(
                     Text::new(
-                        "As you or the Agent make changes, you'll be able to track them here.",
+                        "As you or the Agent edit the case file, the diffs land on this desk.",
                         appearance.ui_font_family(),
                         14.,
                     )
@@ -5574,7 +5574,7 @@ impl CodeReviewView {
         if file.file_diff.is_binary {
             Self::styled_file_content_container(
                 Text::new(
-                    "Binary file - no diff available",
+                    "Binary evidence — no diff to pull",
                     appearance.monospace_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -6197,7 +6197,7 @@ impl CodeReviewView {
                 let toast_id = self.attach_diff_not_allowed_toast_id(ctx);
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::default(
-                        "Cannot attach diff while input is not available".to_string(),
+                        "Can't clip the diff to the report — no input pad open.".to_string(),
                     )
                     .with_object_id(toast_id);
                     toast_stack.add_ephemeral_toast(toast, self.window_id, ctx);
