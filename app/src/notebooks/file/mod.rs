@@ -311,7 +311,7 @@ impl FileNotebookView {
             .as_ref()
             .map(|location| location.name.clone())
             .or_else(|| self.file_state.display_name())
-            .unwrap_or_else(|| "Unfiled notebook".to_string())
+            .unwrap_or_else(|| "Unfiled casebook".to_string())
     }
 
     pub fn focus(&self, ctx: &mut ViewContext<Self>) {
@@ -1083,7 +1083,7 @@ impl FileLocation {
         let name = path
             .file_name()
             .map(|name| name.to_string_lossy().into_owned())
-            .unwrap_or_else(|| "Unfiled file".to_string());
+            .unwrap_or_else(|| "Unfiled case file".to_string());
 
         Self { breadcrumbs, name }
     }
