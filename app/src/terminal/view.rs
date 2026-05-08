@@ -3750,7 +3750,7 @@ impl TerminalView {
         let incompatible_configuration_banner = ctx.add_typed_action_view(|_| {
             Banner::new(BannerTextContent::formatted_text(vec![
                 FormattedTextFragment::plain_text(
-                    "Your shell config doesn't sit right with Yarp...  ",
+                    "Your shell config's not sitting right with the station...  ",
                 ),
                 FormattedTextFragment::hyperlink("More info", KNOWN_ISSUES_URL),
             ]))
@@ -13657,7 +13657,7 @@ impl TerminalView {
 
             let a11y_content = AccessibilityContent::new(
                 format!("Suggested corrected command: {}", correction.command),
-                "Press right arrow to insert or keep editing to ignore",
+                "Hit right arrow to slot it in, keep typing to wave it off",
                 YarpA11yRole::HelpRole,
             );
             ctx.emit_a11y_content(a11y_content);
