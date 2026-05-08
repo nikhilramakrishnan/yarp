@@ -3709,7 +3709,7 @@ impl TerminalView {
                     FormattedTextFragment::plain_text(
                         "Shell's slow signing on...  ",
                     ),
-                    FormattedTextFragment::hyperlink("More info", KNOWN_ISSUES_URL),
+                    FormattedTextFragment::hyperlink("Read the file", KNOWN_ISSUES_URL),
                 ]),
                 vec![BannerTextButton::new(
                     "Show the briefing block".to_string(),
