@@ -2202,8 +2202,8 @@ impl TeamsWidget {
     ) -> Box<dyn Element> {
         let mut section = Flex::column();
         let sub_header_text = match team.billing_metadata.customer_type {
-            CustomerType::Free => "Free plan usage limits",
-            _ => "Plan usage limits",
+            CustomerType::Free => "Free playbook quotas",
+            _ => "Playbook quotas",
         };
         section.add_child(self.render_subsection_header(sub_header_text.into(), appearance));
 
