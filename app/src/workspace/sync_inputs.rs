@@ -12,7 +12,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings(vec![
         EditableBinding::new(
             "workspace:disable_terminal_input_syncing",
-            "Stop Synchronizing Any Panes",
+            "Stand down pane sync",
             WorkspaceAction::DisableTerminalInputSync,
         )
         .with_context_predicate(id!("Workspace"))
@@ -21,7 +21,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::DisableSyncTerminalInputs),
         EditableBinding::new(
             "workspace:toggle_sync_terminal_inputs_in_tab",
-            "Toggle Synchronizing All Panes in Current Tab",
+            "Toggle pane sync on this beat",
             WorkspaceAction::ToggleSyncTerminalInputsInTab,
         )
         .with_context_predicate(id!("Workspace"))
@@ -29,7 +29,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::ToggleSyncTerminalInputsInCurrentTab),
         EditableBinding::new(
             "workspace:toggle_sync_all_terminal_inputs_in_all_tabs",
-            "Toggle Synchronizing All Panes in All Tabs",
+            "Toggle pane sync across all beats",
             WorkspaceAction::ToggleSyncAllTerminalInputsInAllTabs,
         )
         .with_context_predicate(id!("Workspace"))
