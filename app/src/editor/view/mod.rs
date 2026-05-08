@@ -144,8 +144,8 @@ const CURSOR_BLINK_INTERVAL: Duration = Duration::from_millis(500);
 const DEFAULT_TAB_SIZE: usize = 4;
 
 pub const ACCEPT_AUTOSUGGESTION_KEYBINDING_NAME: &str = "editor_view:insert_autosuggestion";
-pub const VOICE_LIMIT_HIT_TOAST_TEXT: &str = "You have hit the limit for Voice requests. Your limit will be refreshed as a part of your next cycle.";
-pub const VOICE_ERROR_TOAST_TEXT: &str = "An error occurred while processing your voice input.";
+pub const VOICE_LIMIT_HIT_TOAST_TEXT: &str = "Radio chatter quota's tapped out. Your allowance comes back next billing cycle.";
+pub const VOICE_ERROR_TOAST_TEXT: &str = "Radio chatter went sideways while we processed it.";
 
 pub const MAX_IMAGES_PER_CONVERSATION: usize = 200;
 
@@ -1687,7 +1687,7 @@ impl ImageContextOptions {
         } = self
         {
             if *unsupported_model {
-                return "Image attachment isn't supported by this model".into();
+                return "This officer doesn't take photo evidence".into();
             }
 
             if *is_processing_attached_images {
@@ -1696,7 +1696,7 @@ impl ImageContextOptions {
 
             if *num_images_attached >= MAX_IMAGE_COUNT_FOR_QUERY {
                 return format!(
-                    "Image attachment is disabled — limit is {MAX_IMAGE_COUNT_FOR_QUERY} per query"
+                    "Photo evidence locker's full — limit is {MAX_IMAGE_COUNT_FOR_QUERY} per call"
                 );
             }
 
