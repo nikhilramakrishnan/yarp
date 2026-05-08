@@ -910,22 +910,22 @@ impl CommentListView {
     ) -> Cow<'static, str> {
         if let ReviewDestination::Cli(agent) = destination {
             if !has_sendable_comments {
-                Cow::Borrowed("No non-outdated comments to send")
+                Cow::Borrowed("No fresh notes on the file to send up")
             } else {
                 let cmd = agent.command_prefix();
                 let label = if cmd.is_empty() { "CLI agent" } else { cmd };
                 Cow::Owned(format!("Send diff comments to {label}"))
             }
         } else if !ai_enabled {
-            Cow::Borrowed("AI must be enabled to send comments to Agent")
+            Cow::Borrowed("AI desk has to be on the air to radio notes to Agent")
         } else if !ai_available {
-            Cow::Borrowed("Agent code review requires AI credits")
+            Cow::Borrowed("Agent review needs AI rations on the books")
         } else if matches!(destination, ReviewDestination::None) {
             Cow::Borrowed("All units are tied up")
         } else if !has_sendable_comments {
-            Cow::Borrowed("No non-outdated comments to send")
+            Cow::Borrowed("No fresh notes on the file to send up")
         } else {
-            Cow::Borrowed("Send diff comments to Agent")
+            Cow::Borrowed("Radio diff notes over to Agent")
         }
     }
 
@@ -1079,9 +1079,9 @@ impl CommentListView {
             .with_on_select_action(CommentListAction::EditComment);
         if is_file_level || is_outdated {
             let tooltip_text = if is_file_level {
-                "File-level comments currently can't be edited."
+                "File-level notes are sealed — can't amend them."
             } else {
-                "Outdated comments can't be edited."
+                "Stale notes are off the books — can't amend them."
             };
             edit_item = edit_item.with_disabled(true).with_tooltip(tooltip_text);
         }
