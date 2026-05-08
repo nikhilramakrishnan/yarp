@@ -5937,7 +5937,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Enable computer use in cloud agent conversations started from the Yarp app.",
+                "Let cloud officers drive the screen during agent conversations started from the Yarp app.",
                 !is_disabled,
                 app,
             ));
@@ -5954,7 +5954,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
                 app,
             ));
             column.add_child(render_ai_setting_description(
-                "Enable multi-agent orchestration, allowing the agent to spawn and coordinate parallel sub-agents.",
+                "Let the agent call in and coordinate parallel backup officers as a multi-agent orchestration.",
                 is_any_ai_enabled,
                 app,
             ));
@@ -6097,7 +6097,7 @@ impl ApiKeysWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Use your own API keys from model providers for the Yarp Agent to use. API keys are stored locally and never synced to the cloud. Using auto models or models from providers you have not provided API keys for will consume Yarp credits.",
+                        "Run the Yarp Agent on your own API keys from model providers. Keys stay at the station and never head up to the cloud. Auto models, or models from providers you haven't filed a key for, run on Yarp credits.",
                         is_enabled,
                         app,
                     ))
@@ -6245,7 +6245,7 @@ impl ApiKeysWidget {
         );
 
         let description = render_ai_setting_description(
-            "When enabled, agent requests may be routed to one of Yarp's provided models in the event of an error. Yarp will prioritize using your API keys over your Yarp credits.",
+            "When on, agent requests can swap to one of Yarp's house models if yours go off the air. Yarp keeps using your API keys before it dips into your Yarp credits.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -6683,7 +6683,7 @@ impl AwsBedrockWidget {
             app,
         );
         let description = render_ai_setting_description(
-            "When enabled, the login command will run automatically when AWS Bedrock credentials expire.",
+            "When on, the login command runs automatically the moment AWS Bedrock credentials lapse.",
             is_usage_enabled,
             app,
         );
