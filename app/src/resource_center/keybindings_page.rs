@@ -394,7 +394,7 @@ impl KeybindingsView {
         Container::new(
             column
                 .with_child(self.render_text(
-                    "Go to settings > keyboard shortcuts to configure custom keybindings".into(),
+                    "Head to settings > keyboard shortcuts to set your own signal codes.".into(),
                     None,
                     appearance,
                 ))

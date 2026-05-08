@@ -4973,7 +4973,7 @@ impl EditorView {
                             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                 toast_stack.add_ephemeral_toast(
                                     DismissibleToast::error(
-                                        "This model doesn't take evidence photos."
+                                        "This officer doesn't take photo evidence."
                                             .to_string(),
                                     ),
                                     window_id,

@@ -188,7 +188,7 @@ impl View for RewindConfirmationDialog {
             )
             .with_child(
                 Text::new_inline(
-                    "Rewinding does not affect files edited manually or via shell commands.",
+                    "Winding back leaves alone any case files edited by hand or via shell orders.",
                     appearance.ui_font_family(),
                     12.,
                 )
