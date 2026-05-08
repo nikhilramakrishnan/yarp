@@ -892,7 +892,7 @@ impl CodeView {
 
     fn display_load_failure(window_id: WindowId, ctx: &mut ViewContext<Self>) {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-            let toast = DismissibleToast::error(String::from("Failed to load file."))
+            let toast = DismissibleToast::error(String::from("Couldn't pull the case file."))
                 .with_object_id("failed_to_load_file".to_string());
             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
         });
@@ -900,7 +900,7 @@ impl CodeView {
 
     fn display_save_failure(window_id: WindowId, ctx: &mut ViewContext<Self>) {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-            let toast = DismissibleToast::error(String::from("Failed to save file."))
+            let toast = DismissibleToast::error(String::from("Couldn't file the case file."))
                 .with_object_id("failed_to_save_file".to_string());
             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
         });
