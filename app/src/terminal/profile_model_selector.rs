@@ -1333,7 +1333,7 @@ impl ProfileModelSelector {
                     )))
                     .finish();
 
-                let tooltip_text = "Choose an AI execution profile".to_owned();
+                let tooltip_text = "Pick the playbook".to_owned();
 
                 let tooltip = appearance.ui_builder().tool_tip(tooltip_text);
                 let mut stack = Stack::new();
