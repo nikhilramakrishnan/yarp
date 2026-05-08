@@ -4117,8 +4117,8 @@ impl DriveIndex {
         };
 
         let name = match object_type {
-            DriveObjectType::Notebook { .. } => "Notebooks",
-            DriveObjectType::Workflow => "Workflows",
+            DriveObjectType::Notebook { .. } => "Casebooks",
+            DriveObjectType::Workflow => "Playbooks",
             DriveObjectType::EnvVarCollection => "Environment Variables",
             DriveObjectType::Folder => "Folders",
             DriveObjectType::AgentModeWorkflow => "Agent Workflows",

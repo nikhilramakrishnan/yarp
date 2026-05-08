@@ -365,9 +365,9 @@ impl AgentInputFooter {
                 })
         });
         let rich_input_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("Notebook", AgentInputButtonTheme)
+            ActionButton::new("Casebook", AgentInputButtonTheme)
                 .with_icon(Icon::TextInput)
-                .with_tooltip("Crack the notebook")
+                .with_tooltip("Crack the casebook")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_keybinding(
@@ -525,7 +525,7 @@ impl AgentInputFooter {
                 me.rich_input_button.update(ctx, |button, ctx| {
                     if is_open {
                         button.set_label("Stash notebook", ctx);
-                        button.set_tooltip(Some("Stash notebook"), ctx);
+                        button.set_tooltip(Some("Stash casebook"), ctx);
                         button.set_keybinding(
                             Some(KeystrokeSource::Binding(
                                 OPEN_CLI_AGENT_RICH_INPUT_KEYBINDING,
@@ -533,8 +533,8 @@ impl AgentInputFooter {
                             ctx,
                         );
                     } else {
-                        button.set_label("Notebook", ctx);
-                        button.set_tooltip(Some("Open notebook"), ctx);
+                        button.set_label("Casebook", ctx);
+                        button.set_tooltip(Some("Crack the casebook"), ctx);
                         button.set_keybinding(
                             Some(KeystrokeSource::Binding(
                                 OPEN_CLI_AGENT_RICH_INPUT_KEYBINDING,

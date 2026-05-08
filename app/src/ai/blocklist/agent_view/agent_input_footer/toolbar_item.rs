@@ -116,7 +116,7 @@ impl AgentToolbarItemKind {
             Self::FileAttach => "Clip Evidence",
             Self::ContextWindowUsage => "Case Load",
             Self::FileExplorer => "Evidence Locker",
-            Self::RichInput => "Notebook",
+            Self::RichInput => "Casebook",
             Self::ShareSession => "/remote-control",
             Self::Settings => "Standing Orders",
             Self::FastForwardToggle => "On the Double",
