@@ -101,7 +101,7 @@ pub enum MCPServersListPageViewAction {
     ToggleFileBasedMcp,
 }
 
-const EMPTY_STATE_TEXT: &str = "Once you add a MCP server, it will be shown here.";
+const EMPTY_STATE_TEXT: &str = "Sign on a MCP server and it'll show up on the books here.";
 const NO_SEARCH_RESULTS_TEXT: &str = "No leads.";
 
 pub struct MCPServersListPageView {
@@ -373,7 +373,7 @@ impl MCPServersListPageView {
             template
                 .description
                 .clone()
-                .or_else(|| Some("Available to install".to_string())),
+                .or_else(|| Some("Available to sign on".to_string())),
             None, // Templates can never have tools
             None, // Templates cannot have an error
             title_chip_text.into_iter().collect(),
@@ -1143,7 +1143,7 @@ impl MCPServersListPageView {
         > = std::sync::LazyLock::new(|| {
             vec![
                 FormattedTextFragment::plain_text(
-                    "Automatically detect and spawn MCP servers from globally-scoped third-party AI agent configuration files (e.g. in your home directory). Servers detected inside a repository are never spawned automatically and must be enabled individually in the \"Detected from\" sections below. ",
+                    "Sniffs out MCP servers from your station-wide third-party AI agent configs (e.g. in your home directory) and dispatches them automatically. Servers spotted inside a casebook never go on patrol on their own — sign them on individually in the \"Detected from\" sections below. ",
                 ),
                 FormattedTextFragment::hyperlink(
                     "See supported providers.",
@@ -1638,7 +1638,7 @@ impl MCPServersListPageView {
                     .templatable_mcp_server()
                     .description
                     .clone()
-                    .or_else(|| Some("Detected from config file".to_string())),
+                    .or_else(|| Some("Spotted in a config file".to_string())),
                 None, // tools only available when running
                 None, // no error when not yet started
                 title_chips,

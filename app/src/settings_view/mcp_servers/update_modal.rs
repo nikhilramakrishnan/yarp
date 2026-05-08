@@ -181,7 +181,7 @@ impl UpdateModalBody {
     fn render_description(&self, appearance: &Appearance) -> Box<dyn Element> {
         // Modal appears only when multiple updates are available
         let description = format!(
-            "This server has {} updates available, which would you like to proceed with?",
+            "{} amendments are on the wire for this server — which one are we running with?",
             self.update_options.len()
         );
 
@@ -428,7 +428,7 @@ impl View for UpdateModalBody {
         // Add update options
         if self.update_options.is_empty() {
             let no_updates_text = Text::new(
-                "No updates available",
+                "Nothing on the wire.",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )

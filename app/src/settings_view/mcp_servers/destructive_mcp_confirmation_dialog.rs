@@ -59,21 +59,21 @@ impl From<&DestructiveMCPConfirmationDialogVariant>
     fn from(variant: &DestructiveMCPConfirmationDialogVariant) -> Self {
         match *variant {
             DestructiveMCPConfirmationDialogVariant::DeleteLocal => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Delete MCP server?".to_string(),
-                "This will uninstall and remove this MCP server from all your devices.".to_string(),
-                "Delete MCP".to_string(),
+                "Strike this MCP server from the books?".to_string(),
+                "Pulls the server off every one of your stations.".to_string(),
+                "Strike from books".to_string(),
                 "Stand down".to_string(),
             ),
             DestructiveMCPConfirmationDialogVariant::DeleteShared => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Delete shared MCP server?".to_string(),
-                "This will not only delete this MCP server for yourself, but also uninstall and remove this MCP server from Yarp and across all of your teammates' devices.".to_string(),
-                "Delete MCP".to_string(),
+                "Strike this shared MCP server from the books?".to_string(),
+                "Pulls the server off your kit and off every officer on the squad.".to_string(),
+                "Strike from books".to_string(),
                 "Stand down".to_string(),
             ),
             DestructiveMCPConfirmationDialogVariant::Unshare => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Remove shared MCP server from team?".to_string(),
-                "This will uninstall and remove this MCP server from Yarp and across all of your teammates' devices.".to_string(),
-                "Remove from team".to_string(),
+                "Pull this MCP server off the squad?".to_string(),
+                "Pulls the server off every officer on the squad.".to_string(),
+                "Pull from squad".to_string(),
                 "Stand down".to_string(),
             ),
         }
