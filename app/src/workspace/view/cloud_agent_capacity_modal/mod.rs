@@ -131,8 +131,8 @@ impl CloudAgentCapacityModal {
                 "This call's queued — the station's at full ambient-officer roster. It'll go out as soon as another call wraps.".to_string(),
             ),
             CloudAgentCapacityModalVariant::OutOfCredits => (
-                "Out of AI credits",
-                "This call's been called off — the station's burned through its AI credits for the period.".to_string(),
+                "AI rations gone",
+                "This call's been called off — the station's burned through its AI rations for the period.".to_string(),
             ),
         };
 
