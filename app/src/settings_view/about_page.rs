@@ -145,14 +145,14 @@ impl SettingsWidget for AboutPageWidget {
                     .finish(),
                 )
                 .with_child(version_row.finish())
-                // "On the air as" sits with the version line as an identity
-                // fact. Hoisting it above the precinct status banner keeps
-                // the four precinct rows (banner / roster / inbox / dispatch)
-                // rendering as one contiguous urgent stack on emergency
-                // instead of being split by a neutral identity row.
+                // Identity row. Reads as a radio sign-on ("Officer X · on patrol")
+                // rather than a label-value pair so it pairs with the dot-rhythm
+                // of the precinct stack below. Sits above the status banner so the
+                // four precinct rows (banner / roster / inbox / dispatch) render
+                // as one contiguous urgent stack on emergency.
                 .with_child(
                     ui_builder
-                        .span(format!("On the air as: {}", radio::self_call_sign()))
+                        .span(self_signon_line())
                         .with_soft_wrap()
                         .build()
                         .with_margin_top(4.)
@@ -181,6 +181,17 @@ impl SettingsWidget for AboutPageWidget {
 // Real-world police shorthand mapped onto the radio domain — the banner gives
 // the whole precinct stack a unifying status pulse above the per-row detail,
 // folding officer count into the same line so the stack stays tight.
+// Sign-on line — "Officer Cooper \u{00B7} on patrol." The fallback call sign
+// already starts with "Officer-" (process-id form), so we don't double-prefix.
+fn self_signon_line() -> String {
+    let sign = radio::self_call_sign();
+    if sign.starts_with("Officer-") {
+        format!("{sign} \u{00B7} on patrol.")
+    } else {
+        format!("Officer {sign} \u{00B7} on patrol.")
+    }
+}
+
 fn styled_precinct_text_row(
     appearance: &Appearance,
     line: String,
