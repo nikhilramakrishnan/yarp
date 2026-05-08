@@ -127,10 +127,10 @@ const HEADER_MARGIN: f32 = 15.;
 const BANNER_VERTICAL_MARGIN: f32 = 10.;
 
 const CONFLICT_RESOLUTION_MESSAGE: &str =
-    "This notebook could not be saved because changes were made while you were editing. Please copy your work and refresh.";
+    "Couldn't file the casebook — someone else amended it while you were working. Bag your edits and refresh.";
 const REFRESH_BUTTON_TEXT: &str = "Refresh";
 
-const FEATURE_NOT_AVAILABLE_MESSAGE: &str = "This notebook could not be saved to the server because the feature is temporarily unavailable. The changes are saved locally. Please retry later.";
+const FEATURE_NOT_AVAILABLE_MESSAGE: &str = "Station's down — couldn't sync the casebook. Edits are filed locally. Try again in a bit.";
 
 /// The frequency at which we check for modifications and save the notebook to the server. This
 /// lets us trade off how quickly edits appear on other clients with the load on the server for RTC
@@ -1933,9 +1933,9 @@ impl NotebookView {
         let mut stack = Stack::new();
 
         let text = if deleted {
-            "You no longer have access to this notebook"
+            "Casebook's off your beat now."
         } else {
-            "Notebook was moved to trash"
+            "Casebook's been bagged for the trash."
         };
         stack.add_child(
             Align::new(
@@ -1992,7 +1992,7 @@ impl NotebookView {
                             )
                             .with_tooltip(move || {
                                 ui_builder
-                                    .tool_tip("Restore notebook from trash".to_string())
+                                    .tool_tip("Pull the casebook back out of the trash".to_string())
                                     .build()
                                     .finish()
                             })
@@ -2023,7 +2023,7 @@ impl NotebookView {
                                 .with_tooltip(move || {
                                     ui_builder
                                         .tool_tip(
-                                            "Copy notebook contents into your personal workspace"
+                                            "Copy the casebook over to your personal station"
                                                 .to_string(),
                                         )
                                         .build()
@@ -2107,7 +2107,7 @@ impl NotebookView {
                         )
                         .with_tooltip(move || {
                             ui_builder
-                                .tool_tip("Copy notebook contents to your clipboard".to_string())
+                                .tool_tip("Copy the casebook to the clipboard".to_string())
                                 .build()
                                 .finish()
                         })
@@ -2141,7 +2141,7 @@ impl NotebookView {
                             )
                             .with_tooltip(move || {
                                 ui_builder
-                                    .tool_tip("Refresh notebook".to_string())
+                                    .tool_tip("Pull the latest casebook".to_string())
                                     .build()
                                     .finish()
                             })
