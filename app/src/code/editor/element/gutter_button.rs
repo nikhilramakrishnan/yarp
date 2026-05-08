@@ -71,9 +71,9 @@ impl GutterButton for AddAsContextButton {
 
     fn tooltip_text(&self) -> Option<&'static str> {
         if self.is_enabled {
-            Some("Add diff hunk as context")
+            Some("Pin this diff hunk to the case file")
         } else {
-            Some("Save changes to attach as context.")
+            Some("Save the changes before pinning to the case file.")
         }
     }
 
