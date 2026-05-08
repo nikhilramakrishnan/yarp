@@ -54,7 +54,7 @@ use crate::{
 };
 
 const CLOUD_AGENT_DOCS_URL: &str = "https://github.com/hotfuzz/yarp/agent-platform/cloud-agents/overview";
-const FUZZ_UPDATES_SECTION_HEADER: &str = "What's new in Fuzz";
+const FUZZ_UPDATES_SECTION_HEADER: &str = "Fresh off the wire from Fuzz";
 
 // The maximum number of Fuzz updates from the changelog rendered in-line in the 'What's new in Fuzz section'.
 const MAX_OZ_UPDATE_COUNT: usize = 4;

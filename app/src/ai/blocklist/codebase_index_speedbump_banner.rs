@@ -17,17 +17,17 @@ use yarpui::{
     Element,
 };
 
-const SPEEDBUMP_HEADER: &str = "Index Codebase?";
-const SPEEDBUMP_TEXT: &str = "Indexing helps agents quickly understand context and provide targeted solutions. Code is never stored on the server.";
+const SPEEDBUMP_HEADER: &str = "Patrol the beat?";
+const SPEEDBUMP_TEXT: &str = "Patrolling lets the squad pick up the lay of the land fast and bring back targeted leads. The code itself never gets filed at HQ.";
 /// Uniform padding around the banner
 const PADDING: f32 = 12.;
 /// Text for the button that allows execution
-const ALLOW_BUTTON_TEXT: &str = "Index codebase";
-const ALLOW_SETTINGS_TEXT: &str = "Allow automatic indexing";
-const DISMISS_FOREVER_BUTTON_TEXT: &str = "Don't show again";
+const ALLOW_BUTTON_TEXT: &str = "Patrol the beat";
+const ALLOW_SETTINGS_TEXT: &str = "Patrol new beats automatically";
+const DISMISS_FOREVER_BUTTON_TEXT: &str = "Stand down for good";
 
-const INDEXING_HEADER: &str = "Indexing codebase";
-const VIEW_STATUS_BUTTON_TEXT: &str = "View status";
+const INDEXING_HEADER: &str = "On patrol";
+const VIEW_STATUS_BUTTON_TEXT: &str = "Check the dispatch log";
 
 #[derive(PartialEq, Clone)]
 pub enum VisibilityState {
