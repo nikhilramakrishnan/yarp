@@ -182,26 +182,29 @@ fn precinct_status_line() -> (String, bool) {
         .filter(|m| dispatch_is_emergency(&m.body))
         .count();
     let peer_count = radio::peers().len();
-    let officer_phrase = match peer_count {
-        0 => None,
-        1 => Some("1 other officer on channel".to_string()),
-        n => Some(format!("{n} other officers on channel")),
-    };
     if emergency_count > 0 {
+        // Code 3 fragments collapse to terse counts — banner context already
+        // implies "pending" and the channel audience, so dropping the nouns
+        // keeps the emergency line scannable instead of running long.
         let phrase = if emergency_count == 1 {
-            "1 emergency pending".to_string()
+            "1 emergency".to_string()
         } else {
-            format!("{emergency_count} emergencies pending")
+            format!("{emergency_count} emergencies")
         };
-        let line = match officer_phrase {
-            Some(p) => format!("Code 3 \u{00B7} {phrase} \u{00B7} {p}"),
-            None => format!("Code 3 \u{00B7} {phrase}"),
+        let line = if peer_count > 0 {
+            format!("Code 3 \u{00B7} {phrase} \u{00B7} {peer_count} on channel")
+        } else {
+            format!("Code 3 \u{00B7} {phrase}")
         };
         return (line, true);
     }
-    let line = match officer_phrase {
-        Some(p) => format!("Code 4 \u{00B7} all clear \u{00B7} {p}"),
-        None => "Code 4 \u{00B7} sole patrol".to_string(),
+    // Code 4 keeps the longer noun phrase — without an emergency fragment to
+    // anchor the line, "Code 4 · 4" alone reads cryptic; the full phrasing
+    // earns its width.
+    let line = match peer_count {
+        0 => "Code 4 \u{00B7} sole patrol".to_string(),
+        1 => "Code 4 \u{00B7} all clear \u{00B7} 1 other officer on channel".to_string(),
+        n => format!("Code 4 \u{00B7} all clear \u{00B7} {n} other officers on channel"),
     };
     (line, false)
 }
