@@ -47,7 +47,7 @@ impl OpenInYarpBannerState {
 fn file_title_text(openable_path: &OpenablePath) -> String {
     match openable_path.file_type {
         OpenableFileType::Markdown => {
-            "Did you know that Yarp can directly display Markdown files?".to_string()
+            "Tip from the desk: Yarp pins up Markdown files for a proper read.".to_string()
         }
         OpenableFileType::Code | OpenableFileType::Text => {
             cfg_if::cfg_if! {
@@ -58,13 +58,13 @@ fn file_title_text(openable_path: &OpenablePath) -> String {
 
                     match language.as_ref().map(|language| language.display_name()) {
                         Some(display_name) => {
-                            format!("Did you know that Yarp can directly edit {display_name} files?")
+                            format!("Tip from the desk: Yarp can mark up {display_name} files itself.")
                         }
-                        None => "Did you know that Yarp can directly edit code?".to_string(),
+                        None => "Tip from the desk: Yarp can mark up the case files itself.".to_string(),
                     }
                 } else {
                     // The `languages` crate is not available on WASM, so use a fallback message.
-                    "Did you know that Yarp can directly edit code?".to_string()
+                    "Tip from the desk: Yarp can mark up the case files itself.".to_string()
                 }
             }
         }

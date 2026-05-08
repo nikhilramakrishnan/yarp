@@ -16,10 +16,10 @@ use super::{
     InlineBannerTextButtonVariant,
 };
 
-const SPEEDBUMP_HEADER: &str = "Optimize Yarp for this codebase?";
-const SPEEDBUMP_TEXT: &str = "Unlock smarter, more consistent responses by letting the Agent understand your codebase and generate rules for it. You can also do this at any point by running /init";
+const SPEEDBUMP_HEADER: &str = "Brief the constable on this case?";
+const SPEEDBUMP_TEXT: &str = "Sharpen up your PC's responses by letting it cast an eye over the case files and pin down the standing orders. You can call it in later by running /init.";
 /// Text for the button that allows execution
-const ALLOW_BUTTON_TEXT: &str = "Optimize";
+const ALLOW_BUTTON_TEXT: &str = "Brief 'em";
 
 #[derive(Clone, Copy, Debug)]
 pub enum AgentModeSetupSpeedbumpBannerAction {
