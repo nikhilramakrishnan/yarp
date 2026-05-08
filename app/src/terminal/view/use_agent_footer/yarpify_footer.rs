@@ -36,7 +36,7 @@ impl YarpifyFooterView {
             ActionButton::new("Yarpify subshell", AgentFooterButtonTheme::new(None))
                 .with_icon(Icon::Yarp)
                 .with_size(button_size)
-                .with_tooltip("Wire Yarp shell integration into this session")
+                .with_tooltip("Sign Yarp on for this beat")
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(YarpifyFooterViewAction::Yarpify);
