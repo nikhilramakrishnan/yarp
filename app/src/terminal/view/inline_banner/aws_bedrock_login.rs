@@ -63,7 +63,7 @@ pub fn render_aws_bedrock_login_banner(
 
     // Use sub_text_color for description to differentiate from title
     let description_text = yarpui::elements::Text::new(
-        "Your Yarp admin has enabled AWS Bedrock for your team.",
+        "Your station chief has put AWS Bedrock on the rota for the squad.",
         appearance.ui_font_family(),
         appearance.monospace_font_size() - 2.,
     )
@@ -74,7 +74,7 @@ pub fn render_aws_bedrock_login_banner(
         InlineBannerStyle::Recommendation,
         appearance,
         InlineBannerContent {
-            title: "Use AWS Bedrock?".to_string(),
+            title: "Sign on through AWS Bedrock?".to_string(),
             content: Some(vec![description_text]),
             buttons,
             close_button: Some(close_button),
