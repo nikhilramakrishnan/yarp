@@ -337,9 +337,9 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                             && props.thinking_display_mode.should_render() =>
                         {
                             let header_text = if let Some(dur) = finished_duration {
-                                format!("Thought for {}", format_elapsed_seconds(*dur))
+                                format!("Worked the angle for {}", format_elapsed_seconds(*dur))
                             } else {
-                                "Thinking".to_string()
+                                "Working the angle".to_string()
                             };
                             if let Some(element) = render_collapsible_block(
                                 output_message,
