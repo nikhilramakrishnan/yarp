@@ -419,7 +419,7 @@ impl WorkspaceAction {
         match self {
             WorkspaceAction::OpenPalette { .. } => Some("Open palette".to_string()),
             WorkspaceAction::OpenYarpDrive => Some("Yarp Drive.".to_string()),
-            WorkspaceAction::ToggleRightPanel => Some("Show diff view".to_string()),
+            WorkspaceAction::ToggleRightPanel => Some("Pull up the case file diff".to_string()),
             _ => None,
         }
     }
