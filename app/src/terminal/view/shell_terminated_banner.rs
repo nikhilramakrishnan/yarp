@@ -183,9 +183,9 @@ impl TerminationType {
                 format!("{pty_spawn_error:#}").into()
             }
             TerminationType::Premature { shell_detail, .. } => format!(
-                "Something went wrong while starting {shell_detail} and Yarpifying it, causing the \
-                process to terminate. Yarpify script output is displayed here, which may point at \
-                a cause."
+                "Something's gone sideways while signing on {shell_detail} and Yarpifying it — \
+                the process didn't make it past roll call. Yarpify script output is logged here, \
+                which may point at the trouble."
             )
             .into(),
         };

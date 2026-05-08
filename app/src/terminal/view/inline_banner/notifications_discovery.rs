@@ -116,7 +116,7 @@ pub fn render_inline_notifications_discovery_banner(
                         troubleshoot_button,
                     ),
                     RequestPermissionsOutcome::OtherError { .. } => (
-                        "Something went wrong while requesting permissions.",
+                        "Something's gone sideways while waving for radio permissions.",
                         troubleshoot_button,
                     ),
                 },
