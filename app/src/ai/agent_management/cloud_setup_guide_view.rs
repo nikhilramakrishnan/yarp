@@ -136,7 +136,7 @@ impl CloudSetupGuideView {
         let font_size = 16.;
 
         let text = Text::new_inline(
-            "Quick start: use the commands below for a local setup experience.",
+            "Quick start: run the orders below to sign on local kit.",
             appearance.ui_font_family(),
             font_size,
         )
@@ -169,7 +169,7 @@ impl CloudSetupGuideView {
         let font_size = 16.;
 
         Text::new(
-            "Manual setup: Create a Slack or Linear integration with the Fuzz CLI",
+            "Manual sign-on: patch in a Slack or Linear integration with the Fuzz CLI",
             appearance.ui_font_family(),
             font_size,
         )
@@ -336,7 +336,7 @@ impl CloudSetupGuideView {
 
         let description = Container::new(
             Text::new(
-                "First, set up an environment to create an integration.",
+                "First, open up a beat to wire an integration into.",
                 appearance.ui_font_family(),
                 step_desc_font_size,
             )
@@ -364,7 +364,7 @@ impl CloudSetupGuideView {
 
         let or_text = Container::new(
             Text::new(
-                "Or, supply your own existing docker image.",
+                "Or, kit out the beat with your own docker image.",
                 appearance.ui_font_family(),
                 step_desc_font_size,
             )
