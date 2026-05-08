@@ -181,6 +181,31 @@ impl SettingsWidget for AboutPageWidget {
 // Real-world police shorthand mapped onto the radio domain — the banner gives
 // the whole precinct stack a unifying status pulse above the per-row detail,
 // folding officer count into the same line so the stack stays tight.
+fn styled_precinct_text_row(
+    appearance: &Appearance,
+    line: String,
+    emergency: bool,
+    semibold_when_routine: bool,
+    margin_top: f32,
+) -> Box<dyn Element> {
+    let theme = appearance.theme();
+    let ui_builder = appearance.ui_builder();
+    let mut span = ui_builder.span(line).with_soft_wrap();
+    if emergency {
+        span = span.with_style(UiComponentStyles {
+            font_color: Some(theme.terminal_colors().normal.red.into()),
+            font_weight: Some(Weight::Semibold),
+            ..Default::default()
+        });
+    } else if semibold_when_routine {
+        span = span.with_style(UiComponentStyles {
+            font_weight: Some(Weight::Semibold),
+            ..Default::default()
+        });
+    }
+    span.build().with_margin_top(margin_top).finish()
+}
+
 fn precinct_status_line() -> (String, bool) {
     let emergency_count = radio::peek_inbox()
         .iter()
@@ -449,56 +474,21 @@ impl AboutPageWidget {
 
     fn precinct_status_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         let (line, emergency) = precinct_status_line();
-        let theme = appearance.theme();
-        let ui_builder = appearance.ui_builder();
-        let mut span = ui_builder.span(line).with_soft_wrap();
-        if emergency {
-            span = span.with_style(UiComponentStyles {
-                font_color: Some(theme.terminal_colors().normal.red.into()),
-                font_weight: Some(Weight::Semibold),
-                ..Default::default()
-            });
-        } else {
-            span = span.with_style(UiComponentStyles {
-                font_weight: Some(Weight::Semibold),
-                ..Default::default()
-            });
-        }
-        span.build().with_margin_top(16.).finish()
+        styled_precinct_text_row(appearance, line, emergency, true, 16.)
     }
 
     fn precinct_roster_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         let Some((line, any_in_distress)) = precinct_roster_line() else {
             return Empty::new().finish();
         };
-        let theme = appearance.theme();
-        let ui_builder = appearance.ui_builder();
-        let mut span = ui_builder.span(line).with_soft_wrap();
-        if any_in_distress {
-            span = span.with_style(UiComponentStyles {
-                font_color: Some(theme.terminal_colors().normal.red.into()),
-                font_weight: Some(Weight::Semibold),
-                ..Default::default()
-            });
-        }
-        span.build().with_margin_top(4.).finish()
+        styled_precinct_text_row(appearance, line, any_in_distress, false, 4.)
     }
 
     fn precinct_inbox_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         let Some((line, emergency)) = precinct_inbox_line() else {
             return Empty::new().finish();
         };
-        let theme = appearance.theme();
-        let ui_builder = appearance.ui_builder();
-        let mut span = ui_builder.span(line).with_soft_wrap();
-        if emergency {
-            span = span.with_style(UiComponentStyles {
-                font_color: Some(theme.terminal_colors().normal.red.into()),
-                font_weight: Some(Weight::Semibold),
-                ..Default::default()
-            });
-        }
-        span.build().with_margin_top(4.).finish()
+        styled_precinct_text_row(appearance, line, emergency, false, 4.)
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
