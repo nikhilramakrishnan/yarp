@@ -312,7 +312,7 @@ impl Input {
         if command.availability.contains(Availability::AI_ENABLED)
             && !AISettings::as_ref(ctx).is_any_ai_enabled(ctx)
         {
-            show_error_toast(format!("{} requires AI to be enabled", command.name), ctx);
+            show_error_toast(format!("{} needs AI on the air", command.name), ctx);
             return true;
         }
 
@@ -1739,7 +1739,7 @@ impl Input {
                             }
                             Ok(_) => {
                                 show_error_toast(
-                                    "The /open-file command only works for files, not directories"
+                                    "/open-file is for case files, not directories"
                                         .to_owned(),
                                     ctx,
                                 );
@@ -1747,7 +1747,7 @@ impl Input {
                             }
                             Err(_) => {
                                 show_error_toast(
-                                    format!("File not found: {}", file_path.display()),
+                                    format!("Lead's gone cold: no case file at {}", file_path.display()),
                                     ctx,
                                 );
                                 return true;
@@ -1765,7 +1765,7 @@ impl Input {
                 #[cfg(not(feature = "local_fs"))]
                 {
                     show_error_toast(
-                        "The /open-file command is not supported in this build".to_owned(),
+                        "/open-file isn't on the duty roster in this build".to_owned(),
                         ctx,
                     );
                     return true;
