@@ -15,8 +15,8 @@ use yarpui::{
 
 use crate::{terminal::model::terminal_model::ExitReason, ui_components};
 
-const FILE_ISSUE_TEXT: &str = "File issue";
-const MORE_INFO_TEXT: &str = "More on file";
+const FILE_ISSUE_TEXT: &str = "Radio it in";
+const MORE_INFO_TEXT: &str = "Pull the case file";
 
 /// A banner to display when the shell process terminates.
 ///
