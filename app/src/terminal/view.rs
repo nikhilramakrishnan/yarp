@@ -3752,7 +3752,7 @@ impl TerminalView {
                 FormattedTextFragment::plain_text(
                     "Your shell config's not sitting right with the station...  ",
                 ),
-                FormattedTextFragment::hyperlink("More info", KNOWN_ISSUES_URL),
+                FormattedTextFragment::hyperlink("Pull the dossier", KNOWN_ISSUES_URL),
             ]))
         });
 
