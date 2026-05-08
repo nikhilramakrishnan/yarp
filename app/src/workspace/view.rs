@@ -9398,8 +9398,8 @@ impl Workspace {
 
                 self.toast_stack.update(ctx, |view, ctx| {
                     let new_toast =
-                        DismissibleToast::error("Meter's run out on credits.".into()).with_link(
-                            ToastLink::new("Top up to keep going.".into()).with_href(upgrade_link),
+                        DismissibleToast::error("Meter's run out on rations.".into()).with_link(
+                            ToastLink::new("Top up the kit to keep going.".into()).with_href(upgrade_link),
                         );
                     view.add_ephemeral_toast(new_toast, ctx);
                 });

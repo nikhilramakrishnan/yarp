@@ -205,9 +205,9 @@ impl FreeTierLimitHitModal {
                             Container::new({
                                 let credits_text = if let Some(plan) = Self::get_build_plan_details(app) {
                                     let limit = plan.request_limit.unwrap_or(1500);
-                                    format!("{} Credits per month", limit.separate_with_commas())
+                                    format!("{} rations per month", limit.separate_with_commas())
                                 } else {
-                                    "Extended Credits per month".to_string()
+                                    "Extended rations per month".to_string()
                                 };
                                 Self::render_checklist_item_dynamic(credits_text, appearance, theme)
                             })
