@@ -673,12 +673,12 @@ impl From<&WorkspaceAction> for LoginGatedFeature {
     fn from(val: &WorkspaceAction) -> LoginGatedFeature {
         use WorkspaceAction::*;
         match val {
-            ImportToTeamDrive => "Importing to a team drive",
-            CreateTeamNotebook => "Creating a team notebook",
-            CreateTeamWorkflow => "Creating a team workflow",
-            CreateTeamFolder => "Creating a team folder",
-            CreateTeamEnvVarCollection => "Creating a team environment variable collection",
-            CreateTeamAIPrompt => "Creating a team prompt",
+            ImportToTeamDrive => "Importing to the squad drive",
+            CreateTeamNotebook => "Filing a squad casebook",
+            CreateTeamWorkflow => "Filing a squad playbook",
+            CreateTeamFolder => "Filing a squad case folder",
+            CreateTeamEnvVarCollection => "Filing squad environment variables",
+            CreateTeamAIPrompt => "Filing a squad briefing",
             OpenShareSessionModal(_) => "Opening a channel",
             _ => "Unknown reason",
         }
