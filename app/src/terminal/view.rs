@@ -22415,9 +22415,9 @@ impl TerminalView {
                         && input_mode.is_inverted_blocklist()
                         && is_long_running_command
                     {
-                        "Lock scrolling at bottom of block".to_string()
+                        "Pin the scroll to the bottom of the block".to_string()
                     } else {
-                        "Jump to the bottom of this block".to_string()
+                        "Jump down to the bottom of this block".to_string()
                     };
 
                     let tool_tip = appearance
