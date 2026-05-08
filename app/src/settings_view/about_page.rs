@@ -234,20 +234,26 @@ fn precinct_inbox_line() -> String {
             order.push(msg.from_call_sign.clone());
         }
     }
+    let distinct = order.len();
     const MAX: usize = 4;
     let overflow = order.len().saturating_sub(MAX);
     order.truncate(MAX);
     let roster = if overflow > 0 {
-        format!("{} (+{overflow} more)", order.join(", "))
+        format!("{} +{overflow} more", order.join(", "))
     } else {
         order.join(", ")
     };
     let total = inbox.len();
-    if total == 1 {
-        format!("1 pending dispatch from {roster}.")
+    let dispatches = if total == 1 {
+        "1 pending dispatch".to_string()
     } else {
-        format!("{total} pending dispatches from {roster}.")
+        format!("{total} pending dispatches")
+    };
+    // One officer (chatty or solo) reads cleaner without the redundant count.
+    if distinct == 1 {
+        return format!("{dispatches} from {roster}.");
     }
+    format!("{dispatches} from {distinct} officers ({roster}).")
 }
 
 fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
