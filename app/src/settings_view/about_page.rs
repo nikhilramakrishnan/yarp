@@ -220,7 +220,8 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
         return None;
     }
     // Any pending 10-13 turns the whole inbox line red — emergency dominates routine.
-    let emergency = inbox.iter().any(|m| dispatch_is_emergency(&m.body));
+    let emergency_count = inbox.iter().filter(|m| dispatch_is_emergency(&m.body)).count();
+    let emergency = emergency_count > 0;
     // Count repeats per sender so a chatty officer doesn't crowd the line,
     // and preserve arrival order for predictable rendering.
     let mut order: Vec<String> = Vec::new();
@@ -246,10 +247,21 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
         format!("{total} pending dispatches")
     };
     // One officer (chatty or solo) reads cleaner without the redundant count.
-    let line = if distinct == 1 {
+    let body = if distinct == 1 {
         format!("{dispatches} from {roster}.")
     } else {
         format!("{dispatches} from {distinct} officers ({roster}).")
+    };
+    // Lead with the emergency count when any 10-13 is pending — urgency before volume.
+    let line = if emergency_count > 0 {
+        let prefix = if emergency_count == 1 {
+            "1 emergency".to_string()
+        } else {
+            format!("{emergency_count} emergencies")
+        };
+        format!("{prefix} \u{00B7} {body}")
+    } else {
+        body
     };
     Some((line, emergency))
 }
