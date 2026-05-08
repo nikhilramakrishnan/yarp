@@ -131,7 +131,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "Close Workflow",
-        "Close",
+        "Stand down",
         WorkflowAction::Close,
     )
     .with_custom_action(CustomAction::CloseCurrentSession)

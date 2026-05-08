@@ -383,7 +383,7 @@ impl EnvVarCollectionView {
         // Add "Duplicate" to menu
         if space != Some(Space::Shared) {
             menu_items.push(
-                MenuItemFields::new("Duplicate")
+                MenuItemFields::new("Photocopy")
                     .with_on_select_action(EnvVarCollectionAction::Duplicate)
                     .with_icon(Icon::Duplicate)
                     .into_item(),

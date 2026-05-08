@@ -284,7 +284,7 @@ impl ImportModal {
 
     fn render_footer(&self, appearance: &Appearance, app: &AppContext) -> Box<dyn Element> {
         let button_text = if !self.import_modal.as_ref(app).upload_in_progress(app) {
-            "Close".to_string()
+            "Squared away".to_string()
         } else {
             "Stand down".to_string()
         };
