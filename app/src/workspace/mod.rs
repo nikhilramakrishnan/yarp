@@ -649,8 +649,8 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:create_team_folder",
-            BindingDescription::new("Create a new team folder")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Team Folder"),
+            BindingDescription::new("File a new squad case folder")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Squad Case Folder"),
             WorkspaceAction::CreateTeamFolder,
         )
         .with_context_predicate(
@@ -662,8 +662,8 @@ pub fn init(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::Folders.as_str()),
         EditableBinding::new(
             "workspace:create_personal_folder",
-            BindingDescription::new("Create a new personal folder")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Personal Folder"),
+            BindingDescription::new("File a new personal case folder")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "New Personal Case Folder"),
             WorkspaceAction::CreatePersonalFolder,
         )
         .with_group(bindings::BindingGroup::Folders.as_str())
