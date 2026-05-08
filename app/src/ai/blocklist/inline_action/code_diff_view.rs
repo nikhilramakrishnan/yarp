@@ -123,15 +123,15 @@ use ai::diff_validation::{
 };
 
 const REQUESTED_EDIT_CANCEL_LABEL: &str = "Stand down";
-const REQUESTED_EDIT_REFINE_LABEL: &str = "Refine";
-const REQUESTED_EDIT_ACCEPT_LABEL: &str = "Accept";
-const REQUESTED_EDIT_ACCEPT_AND_AUTOEXECUTE_LABEL: &str = "Auto-approve";
-const REQUESTED_EDIT_EDIT_LABEL: &str = "Edit";
-const REQUESTED_EDIT_MINIMIZE_LABEL: &str = "Done";
-const SUGGESTED_EDIT_ACCEPT_LABEL: &str = "Accept";
-const SUGGESTED_EDIT_ACCEPT_AND_CONTINUE_LABEL: &str = "Accept and continue with agent";
-const SUGGESTED_EDIT_ITERATE_WITH_AGENT_LABEL: &str = "Iterate with agent";
-const SUGGESTED_EDIT_DISMISS_LABEL: &str = "Dismiss";
+const REQUESTED_EDIT_REFINE_LABEL: &str = "Amend";
+const REQUESTED_EDIT_ACCEPT_LABEL: &str = "Sign off";
+const REQUESTED_EDIT_ACCEPT_AND_AUTOEXECUTE_LABEL: &str = "Rubber-stamp";
+const REQUESTED_EDIT_EDIT_LABEL: &str = "Amend";
+const REQUESTED_EDIT_MINIMIZE_LABEL: &str = "Filed";
+const SUGGESTED_EDIT_ACCEPT_LABEL: &str = "Sign off";
+const SUGGESTED_EDIT_ACCEPT_AND_CONTINUE_LABEL: &str = "Sign off and stay on the beat";
+const SUGGESTED_EDIT_ITERATE_WITH_AGENT_LABEL: &str = "Stay on the beat with PC";
+const SUGGESTED_EDIT_DISMISS_LABEL: &str = "Stand down";
 const MAX_EDITOR_HEIGHT: f32 = 500.;
 const INLINE_EDITOR_HEIGHT: f32 = 94.;
 const INLINE_EDITOR_HEIGHT_EXPANDED: f32 = 400.;
@@ -211,7 +211,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         EDIT_REQUESTED_EDIT_NAME,
-        "Edit Code Diff",
+        "Amend the case file diff",
         CodeDiffViewAction::Edit,
     )
     .with_context_predicate(id!(CodeDiffView::ui_name()) & !id!(DISPATCHED_REQUESTED_EDIT_EXPANDED))
@@ -889,7 +889,7 @@ impl CodeDiffView {
         let code_review_button = ctx.add_typed_action_view(|ctx| {
             ActionButton::new("", NakedTheme)
                 .with_icon(Icon::Diff)
-                .with_tooltip("Review changes")
+                .with_tooltip("Review the amendments")
                 .with_width(icon_size(ctx))
                 .with_height(icon_size(ctx))
                 .on_click(|ctx| {
@@ -901,7 +901,7 @@ impl CodeDiffView {
         let expansion_button_collapsed = ctx.add_typed_action_view(|ctx| {
             ActionButton::new("", NakedTheme)
                 .with_icon(Icon::ChevronRight)
-                .with_tooltip("Expand")
+                .with_tooltip("Pull open")
                 .with_width(icon_size(ctx))
                 .with_height(icon_size(ctx))
                 .on_click(|ctx| {
@@ -912,7 +912,7 @@ impl CodeDiffView {
         let expansion_button_expanded = ctx.add_typed_action_view(|ctx| {
             ActionButton::new("", NakedTheme)
                 .with_icon(Icon::ChevronDown)
-                .with_tooltip("Collapse")
+                .with_tooltip("Stash")
                 .with_width(icon_size(ctx))
                 .with_height(icon_size(ctx))
                 .on_click(|ctx| {
@@ -1665,7 +1665,7 @@ impl CodeDiffView {
                 fg_overlay_6(appearance.theme())
             };
             let mcp_config_button = render_provider_icon_button(
-                "Open config",
+                "Open Standing Orders",
                 mcp_button_handle.clone(),
                 appearance,
                 icon,
@@ -2001,7 +2001,7 @@ impl CodeDiffView {
         if Self::is_rename_without_changes(diff_type) {
             let placeholder = Container::new(
                 Text::new(
-                    "File renamed without changes",
+                    "Case file reassigned, no amendments",
                     appearance.monospace_font_family(),
                     appearance.monospace_font_size(),
                 )
@@ -2541,7 +2541,7 @@ impl CodeDiffView {
 
         let checkbox_text = appearance
             .ui_builder()
-            .span("Don't show me suggested code banners again")
+            .span("Strike code suggestions off the noticeboard")
             .with_style(UiComponentStyles {
                 font_color: Some(font_color),
                 font_size: Some(font_size),
@@ -2554,7 +2554,7 @@ impl CodeDiffView {
         let formatted_text = FormattedTextElement::new(
             FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::hyperlink(
-                    "Manage suggested code banner settings",
+                    "Amend noticeboard Standing Orders",
                     "Settings > AI",
                 ),
             ])]),
@@ -3146,7 +3146,7 @@ impl BackingView for CodeDiffView {
         // Code diffs should show "Requested Edit" as the title and hide the close button
         // since they are closed via accept/reject actions.
         view::HeaderContent::Standard(view::StandardHeader {
-            title: "Requested Edit".to_string(),
+            title: "Amendment requested".to_string(),
             title_secondary: None,
             title_style: None,
             title_clip_config: yarpui::text_layout::ClipConfig::start(),
