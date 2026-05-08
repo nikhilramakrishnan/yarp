@@ -188,16 +188,33 @@ fn precinct_population_line() -> String {
     }
 }
 
-fn precinct_roster_line() -> Option<String> {
+fn precinct_roster_line() -> Option<(String, bool)> {
     let peer_list = radio::peers();
     if peer_list.is_empty() {
         return None;
     }
+    // Solidarity surface: tag any peer with a pending 10-13 in the inbox.
+    // The (10-13) marker replaces their tab title — urgency dominates context —
+    // and the bool tints the whole row red so the signal reads at a glance.
+    let emergency_signs: std::collections::HashSet<String> = radio::peek_inbox()
+        .iter()
+        .filter(|m| dispatch_is_emergency(&m.body))
+        .map(|m| m.from_call_sign.clone())
+        .collect();
+    let any_in_distress = peer_list
+        .iter()
+        .any(|p| emergency_signs.contains(&p.call_sign));
     let mut names: Vec<String> = peer_list
         .iter()
-        .map(|p| match &p.tab_title {
-            Some(title) => format!("{} ({})", p.call_sign, title),
-            None => p.call_sign.clone(),
+        .map(|p| {
+            if emergency_signs.contains(&p.call_sign) {
+                format!("{} (10-13)", p.call_sign)
+            } else {
+                match &p.tab_title {
+                    Some(title) => format!("{} ({})", p.call_sign, title),
+                    None => p.call_sign.clone(),
+                }
+            }
         })
         .collect();
     // Cap rendered names; trailing "+N more" if oversized.
@@ -209,7 +226,7 @@ fn precinct_roster_line() -> Option<String> {
     } else {
         format!("Roster: {}", names.join(", "))
     };
-    Some(line)
+    Some((line, any_in_distress))
 }
 
 fn precinct_inbox_line() -> Option<(String, bool)> {
@@ -352,16 +369,20 @@ impl AboutPageWidget {
     }
 
     fn precinct_roster_row(&self, appearance: &Appearance) -> Box<dyn Element> {
-        let Some(line) = precinct_roster_line() else {
+        let Some((line, any_in_distress)) = precinct_roster_line() else {
             return Empty::new().finish();
         };
-        appearance
-            .ui_builder()
-            .span(line)
-            .with_soft_wrap()
-            .build()
-            .with_margin_top(4.)
-            .finish()
+        let theme = appearance.theme();
+        let ui_builder = appearance.ui_builder();
+        let mut span = ui_builder.span(line).with_soft_wrap();
+        if any_in_distress {
+            span = span.with_style(UiComponentStyles {
+                font_color: Some(theme.terminal_colors().normal.red.into()),
+                font_weight: Some(Weight::Semibold),
+                ..Default::default()
+            });
+        }
+        span.build().with_margin_top(4.).finish()
     }
 
     fn precinct_inbox_row(&self, appearance: &Appearance) -> Box<dyn Element> {
