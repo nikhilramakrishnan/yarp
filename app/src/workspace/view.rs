@@ -16593,8 +16593,8 @@ impl Workspace {
                         .copied()
                         .unwrap_or(ToolPanelView::YarpDrive)
                     {
-                        ToolPanelView::ProjectExplorer => "Project explorer",
-                        ToolPanelView::GlobalSearch { .. } => "Global search",
+                        ToolPanelView::ProjectExplorer => "Beat directory",
+                        ToolPanelView::GlobalSearch { .. } => "Stationhouse sweep",
                         ToolPanelView::YarpDrive => "Yarp Drive",
                         ToolPanelView::ConversationListView => "Case files",
                     }
@@ -16647,8 +16647,8 @@ impl Workspace {
                 .copied()
                 .unwrap_or(ToolPanelView::YarpDrive)
             {
-                ToolPanelView::ProjectExplorer => "Project explorer",
-                ToolPanelView::GlobalSearch { .. } => "Global search",
+                ToolPanelView::ProjectExplorer => "Beat directory",
+                ToolPanelView::GlobalSearch { .. } => "Stationhouse sweep",
                 ToolPanelView::YarpDrive => "Yarp Drive",
                 ToolPanelView::ConversationListView => "Case files",
             }
