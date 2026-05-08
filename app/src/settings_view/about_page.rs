@@ -6,7 +6,7 @@ use super::{
     SettingsSection,
 };
 use crate::{
-    appearance::Appearance, channel::ChannelState, themes::theme::ColorScheme,
+    appearance::Appearance, channel::ChannelState, radio, themes::theme::ColorScheme,
     workspace::WorkspaceAction,
 };
 use yarpui::{
@@ -118,6 +118,20 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(version_row.finish())
                 .with_child(
                     ui_builder
+                        .span(format!("On the air as: {}", radio::self_call_sign()))
+                        .build()
+                        .with_margin_top(16.)
+                        .finish(),
+                )
+                .with_child(
+                    ui_builder
+                        .span(precinct_population_line())
+                        .build()
+                        .with_margin_top(4.)
+                        .finish(),
+                )
+                .with_child(
+                    ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
                         .build()
                         .with_margin_top(16.)
@@ -126,6 +140,15 @@ impl SettingsWidget for AboutPageWidget {
                 .finish(),
         )
         .finish()
+    }
+}
+
+fn precinct_population_line() -> String {
+    let peer_count = radio::peers().len();
+    match peer_count {
+        0 => "Sole officer on the channel.".to_string(),
+        1 => "1 other officer on the channel.".to_string(),
+        n => format!("{n} other officers on the channel."),
     }
 }
 
