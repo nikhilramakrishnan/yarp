@@ -8326,7 +8326,7 @@ impl Workspace {
             MenuItemFields::new("Settings")
                 .with_on_select_action(WorkspaceAction::ShowSettings)
                 .into_item(),
-            MenuItemFields::new("Keyboard shortcuts")
+            MenuItemFields::new("Radio codes")
                 .with_on_select_action(WorkspaceAction::ToggleKeybindingsPage)
                 .into_item(),
         ]);

@@ -210,7 +210,7 @@ impl HoaOnboardingFlow {
         });
 
         let cta_button = ctx.add_view(|_ctx| {
-            ActionButton::new("See what's new", HoaWelcomeModalButtonTheme)
+            ActionButton::new("Today's bulletin", HoaWelcomeModalButtonTheme)
                 .with_full_width(true)
                 .on_click(|ctx| ctx.dispatch_typed_action(HoaOnboardingAction::AdvanceFromWelcome))
         });
@@ -238,7 +238,7 @@ impl HoaOnboardingFlow {
         });
 
         let finish_button = ctx.add_view(|ctx| {
-            ActionButton::new("Finish", HoaPrimaryButtonTheme)
+            ActionButton::new("Sign off the briefing", HoaPrimaryButtonTheme)
                 .with_keybinding(KeystrokeSource::Fixed(enter), ctx)
                 .on_click(|ctx| ctx.dispatch_typed_action(HoaOnboardingAction::Finish))
         });
