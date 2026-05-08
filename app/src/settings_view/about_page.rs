@@ -148,6 +148,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(
                     ui_builder
                         .span(format!("On the air as: {}", radio::self_call_sign()))
+                        .with_soft_wrap()
                         .build()
                         .with_margin_top(16.)
                         .finish(),
@@ -155,6 +156,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(
                     ui_builder
                         .span(precinct_population_line())
+                        .with_soft_wrap()
                         .build()
                         .with_margin_top(4.)
                         .finish(),
@@ -166,6 +168,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(
                     ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
+                        .with_soft_wrap()
                         .build()
                         .with_margin_top(16.)
                         .finish(),
