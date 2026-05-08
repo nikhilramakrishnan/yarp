@@ -147,7 +147,7 @@ impl FreeTierLimitHitModal {
                         .with_child(
                             Container::new(
                                 FormattedTextElement::from_str(
-                                    "You’re out of credits",
+                                    "Rations have run out",
                                     appearance.ui_font_family(),
                                     24.,
                                 )
