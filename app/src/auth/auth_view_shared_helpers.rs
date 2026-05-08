@@ -238,7 +238,7 @@ where
             .with_child(render_close_overlay_button(
                 appearance,
                 appearance.ui_builder(),
-                "Dismiss".into(),
+                "Wave it off".into(),
                 mouse_state_handle,
                 action,
             ))
