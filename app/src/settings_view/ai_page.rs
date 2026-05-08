@@ -1299,7 +1299,7 @@ impl AISettingsPageView {
         let profile_views = Self::create_profile_views(ctx);
 
         let add_profile_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Add Profile", SecondaryTheme)
+            ActionButton::new("New loadout", SecondaryTheme)
                 .with_icon(Icon::Plus)
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
@@ -3878,7 +3878,7 @@ impl AgentsWidget {
             .with_child(
                 build_sub_header(
                     appearance,
-                    "Profiles",
+                    "Loadouts",
                     Some(styles::header_font_color(is_any_ai_enabled, app)),
                 )
                 .finish(),
