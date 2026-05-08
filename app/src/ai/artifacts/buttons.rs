@@ -143,7 +143,7 @@ fn collect_buttons(
             } => {
                 // Only show plan button if synced to Yarp Drive (has notebook_uid)
                 if let Some(notebook_uid) = notebook_uid {
-                    let button_text = title.clone().unwrap_or("Untitled Plan".to_string());
+                    let button_text = title.clone().unwrap_or("Unfiled plan".to_string());
                     let theme = theme.clone();
                     buttons.push(ctx.add_typed_action_view(move |_| {
                         make_plan_button(button_text, *notebook_uid, theme)
