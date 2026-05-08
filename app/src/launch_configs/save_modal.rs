@@ -37,7 +37,7 @@ const MODAL_WIDTH: f32 = 660.;
 const SIDE_PADDING: f32 = 16.;
 const BUTTON_SIZE: f32 = 24.;
 const DOC_LINK_WIDTH: f32 = 120.;
-const SAVE_CONFIG_BUTTON_LABEL: &str = "Save Configuration";
+const SAVE_CONFIG_BUTTON_LABEL: &str = "Lodge duty roster";
 const OPEN_FILE_BUTTON_LABEL: &str = "Open YAML File";
 
 pub fn init(app: &mut AppContext) {
@@ -439,7 +439,7 @@ impl LaunchConfigSaveModal {
                     1.0,
                     Align::new(
                         Text::new_inline(
-                            "Save Current Configuration",
+                            "Lodge the current duty roster",
                             appearance.header_font_family(),
                             appearance.header_font_size(),
                         )
@@ -528,7 +528,7 @@ impl LaunchConfigSaveModal {
                 appearance
                     .ui_builder()
                     .link(
-                        "Link to Documentation".to_string(),
+                        "Standing Orders".to_string(),
                         Some(
                             "https://github.com/hotfuzz/yarp/terminal/sessions/launch-configurations"
                                 .to_string(),
@@ -550,7 +550,7 @@ impl LaunchConfigSaveModal {
             SaveState::Success => header
                 .with_child(
                     self.render_formatted_text_line(appearance, vec![
-                        FormattedTextFragment::plain_text("Saved successfully to "),
+                        FormattedTextFragment::plain_text("Logged on the books at "),
                         FormattedTextFragment::inline_code(self.file_name.clone().unwrap_or_default()),
                         FormattedTextFragment::plain_text(".")
                     ])
@@ -563,9 +563,9 @@ impl LaunchConfigSaveModal {
                     appearance,
                     match failure_type {
                         FailureType::FileAlreadyExists => {
-                            "Failed to save. A launch configuration with the same name already exists.".to_string()
+                            "Couldn't file it. A duty roster with that name is already on the books.".to_string()
                         }
-                        FailureType::Other => "An issue was encountered while saving.".to_string(),
+                        FailureType::Other => "We've got trouble filing this one.".to_string(),
                     },
                 )
                 .with_padding_bottom(24.)
