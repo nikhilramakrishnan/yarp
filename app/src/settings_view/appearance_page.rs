@@ -2580,7 +2580,7 @@ impl SettingsWidget for CreateCustomThemeWidget {
             appearance
                 .ui_builder()
                 .link(
-                    "Create your own custom theme".to_string(),
+                    "Stand up your own custom theme".to_string(),
                     Some("https://github.com/hotfuzz/yarp/terminal/appearance/custom-themes".to_string()),
                     None,
                     self.mouse_state.clone(),
@@ -2820,8 +2820,8 @@ impl SettingsWidget for CustomAppIconWidget {
 
         let dropdown = render_dropdown_item(
             appearance,
-            "Customize your app icon",
-            show_bundle_warning.then_some("Changing the app icon requires the app to be bundled."),
+            "Pick the station's badge",
+            show_bundle_warning.then_some("Swapping the badge needs the app bundled."),
             None,
             LocalOnlyIconState::Hidden,
             None,
@@ -2842,7 +2842,7 @@ impl SettingsWidget for CustomAppIconWidget {
                         appearance
                             .ui_builder()
                             .wrappable_text(
-                                "You may need to restart Yarp for MacOS to apply the preferred icon style.",
+                                "You may need to sign Yarp off and back on for MacOS to pin the preferred badge.",
                                 true,
                             )
                             .with_style(UiComponentStyles {
