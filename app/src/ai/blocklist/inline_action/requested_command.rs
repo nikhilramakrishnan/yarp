@@ -78,7 +78,7 @@ pub const REQUESTED_COMMAND_BODY_VERTICAL_PADDING: f32 = 16.;
 
 const REQUESTED_COMMAND_REJECT_LABEL: &str = "Reject";
 const REQUESTED_COMMAND_ACCEPT_LABEL: &str = "Run";
-const REQUESTED_COMMAND_EDIT_LABEL: &str = "Edit";
+const REQUESTED_COMMAND_EDIT_LABEL: &str = "Amend";
 const REQUESTED_COMMAND_MINIMIZE_LABEL: &str = "Done";
 
 const LOADING_MESSAGE: &str = "Drawing up the call-out...";

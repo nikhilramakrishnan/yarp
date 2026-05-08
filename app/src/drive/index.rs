@@ -4783,7 +4783,7 @@ impl DriveIndex {
         if (FeatureFlag::SharedWithMe.is_enabled() && !editability.can_edit()) || prefer_open {
             MenuItemFields::new("Pull up the file").with_icon(Icon::Eye)
         } else {
-            MenuItemFields::new("Edit").with_icon(Icon::Rename)
+            MenuItemFields::new("Amend").with_icon(Icon::Rename)
         }
     }
 
