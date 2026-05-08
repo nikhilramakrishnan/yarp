@@ -21369,19 +21369,19 @@ impl TerminalView {
                 Some(BannerTextContent::formatted_text(vec![
                     FormattedTextFragment::bold("Powerlevel10k now supports Yarp!  "),
                     FormattedTextFragment::plain_text(
-                        "You seem to be running an older (unsupported) version, please follow ",
+                        "You're carrying an older (unsupported) badge — follow ",
                     ),
                     FormattedTextFragment::hyperlink(
-                        "these instructions",
+                        "these standing orders",
                         P10K_UPDATE_INSTRUCTIONS_URL,
                     ),
-                    FormattedTextFragment::plain_text(" to update to the latest version."),
+                    FormattedTextFragment::plain_text(" to swap in the latest kit."),
                 ]))
             } else if shell_plugins.contains("pure") {
                 Some(BannerTextContent::formatted_text(vec![
                     FormattedTextFragment::plain_text(
-                        "Pure is not yet supported in Yarp. You might consider one of the \
-                        supported prompts as an alternative.  ",
+                        "Pure isn't on the rota in Yarp yet. Consider one of the \
+                        supported prompts as a stand-in.  ",
                     ),
                     FormattedTextFragment::hyperlink("Pull the dossier", PROMPT_COMPATIBILITY_URL),
                 ]))
