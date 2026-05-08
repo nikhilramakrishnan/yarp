@@ -369,7 +369,7 @@ pub fn render_privacy_settings_overlay_body<A: Action + Clone + 'static>(
             .with_child(
                 Container::new(
                     ui_builder
-                        .span("Privacy Settings")
+                        .span("Privacy Brief")
                         .with_style(header_styles)
                         .build()
                         .finish(),
