@@ -133,7 +133,7 @@ impl View for TelemetryBanner {
                             ButtonVariant::Outlined,
                             self.privacy_settings_mouse_state.clone(),
                         )
-                        .with_text_label("Amend privacy settings".into())
+                        .with_text_label("Amend privacy Standing Orders".into())
                         .with_style(UiComponentStyles {
                             ..Default::default()
                         })
