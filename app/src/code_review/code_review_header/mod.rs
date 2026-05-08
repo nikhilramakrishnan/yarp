@@ -441,7 +441,7 @@ impl CodeReviewHeader {
             }))
             .with_tooltip(move || {
                 ui_builder
-                    .tool_tip("Add diff set as context".to_owned())
+                    .tool_tip("Pin the diff set to the case".to_owned())
                     .build()
                     .finish()
             })
