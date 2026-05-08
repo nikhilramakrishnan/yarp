@@ -524,7 +524,7 @@ impl AgentInputFooter {
                 let is_open = matches!(new_input_state, CLIAgentInputState::Open { .. });
                 me.rich_input_button.update(ctx, |button, ctx| {
                     if is_open {
-                        button.set_label("Stash notebook", ctx);
+                        button.set_label("Stash casebook", ctx);
                         button.set_tooltip(Some("Stash casebook"), ctx);
                         button.set_keybinding(
                             Some(KeystrokeSource::Binding(
