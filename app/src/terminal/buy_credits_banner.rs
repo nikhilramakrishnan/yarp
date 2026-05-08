@@ -464,7 +464,7 @@ impl BuyCreditsBanner {
                     }),
                     ..Default::default()
                 })
-                .with_text_label("Manage billing".to_string())
+                .with_text_label("Manage the ledger".to_string())
                 .build()
                 .on_click(|ctx, _, _| {
                     ctx.dispatch_typed_action(Action::ManageBilling);

@@ -693,7 +693,7 @@ impl RuleView {
             appearance
                 .ui_builder()
                 .button(ButtonVariant::Outlined, project_row.mouse_state.clone())
-                .with_text_label("Open file".to_string())
+                .with_text_label("Pull the file".to_string())
                 .build()
                 .on_click(move |ctx, _, _| {
                     ctx.dispatch_typed_action(RuleViewAction::OpenFile(file_path.clone()));
