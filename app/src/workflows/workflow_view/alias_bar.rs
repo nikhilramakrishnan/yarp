@@ -471,7 +471,7 @@ impl View for AliasBar {
             .with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
-                    "Add alias",
+                    "Add a call sign",
                     Icon::Plus.to_yarpui_icon(
                         appearance
                             .theme()

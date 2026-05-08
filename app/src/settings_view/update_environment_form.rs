@@ -2113,7 +2113,7 @@ impl UpdateEnvironmentForm {
                             )
                             .with_child(
                                 Text::new(
-                                    "Retry",
+                                    "Have another go",
                                     appearance.ui_font_family(),
                                     appearance.ui_font_size(),
                                 )
