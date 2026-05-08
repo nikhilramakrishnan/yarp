@@ -291,15 +291,24 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     } else {
         format!("{total} pending dispatches")
     };
-    // One officer (chatty or solo) reads cleaner without the redundant count.
     // Inbox row owns volume (count + senders); the dispatch row beneath it
     // owns urgency (10-13 lead) and the row's red tint already flags the
-    // emergency, so the textual "1 emergency · " prefix would duplicate the
-    // signal that's already visible above and below.
-    // "Inbox:" prefix mirrors the "Roster:" label on the row above so the
-    // stack's section labels read in parallel — both sections answer
-    // "what's in <X>?" with the same grammar.
-    let line = if distinct == 1 {
+    // emergency, so a textual emergency count here would duplicate signals
+    // already present at the banner above and the dispatch row below.
+    // "Inbox:" prefix mirrors the "Roster:" label so the stack's section
+    // labels read in parallel — both answer "what's in <X>?".
+    //
+    // On emergency the row picks up the same dot-rhythm shift the dispatch
+    // row makes — routine stays parenthetical/conversational, emergency
+    // collapses to terse middle-dot fragments. Same shape signal as the
+    // dispatch line: different rhythm before different words.
+    let line = if emergency {
+        if distinct == 1 {
+            format!("Inbox: {dispatches} \u{00B7} {roster}")
+        } else {
+            format!("Inbox: {dispatches} \u{00B7} {distinct} officers \u{00B7} {roster}")
+        }
+    } else if distinct == 1 {
         format!("Inbox: {dispatches} from {roster}.")
     } else {
         format!("Inbox: {dispatches} from {distinct} officers ({roster}).")
