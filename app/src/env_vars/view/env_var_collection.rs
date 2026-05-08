@@ -91,8 +91,8 @@ const VARIABLE_DESCRIPTION_PLACEHOLDER_TEXT: &str = "Description";
 const VARIABLE_NAME_PLACEHOLDER_TEXT: &str = "Variable";
 
 // Text input fields
-const TITLE_PLACEHOLDER_TEXT: &str = "Add a title";
-const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Add a description";
+const TITLE_PLACEHOLDER_TEXT: &str = "Tag the file";
+const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Note the brief";
 
 // Button spacing
 const BUTTON_CONTAINER_HORIZONTAL_MARGIN: f32 = 36.;
