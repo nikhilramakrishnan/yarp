@@ -159,13 +159,7 @@ impl SettingsWidget for AboutPageWidget {
                         .with_margin_top(4.)
                         .finish(),
                 )
-                .with_child(
-                    ui_builder
-                        .span(precinct_roster_line())
-                        .build()
-                        .with_margin_top(4.)
-                        .finish(),
-                )
+                .with_child(self.precinct_roster_row(appearance))
                 .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
                 .with_child(self.mic_check_row(appearance))
@@ -191,10 +185,10 @@ fn precinct_population_line() -> String {
     }
 }
 
-fn precinct_roster_line() -> String {
+fn precinct_roster_line() -> Option<String> {
     let peer_list = radio::peers();
     if peer_list.is_empty() {
-        return String::new();
+        return None;
     }
     let mut names: Vec<String> = peer_list
         .iter()
@@ -207,11 +201,12 @@ fn precinct_roster_line() -> String {
     const MAX: usize = 5;
     let overflow = names.len().saturating_sub(MAX);
     names.truncate(MAX);
-    if overflow > 0 {
+    let line = if overflow > 0 {
         format!("Roster: {} (+{overflow} more)", names.join(", "))
     } else {
         format!("Roster: {}", names.join(", "))
-    }
+    };
+    Some(line)
 }
 
 fn precinct_inbox_line() -> Option<(String, bool)> {
@@ -351,6 +346,19 @@ impl AboutPageWidget {
         )
         .with_margin_top(8.)
         .finish()
+    }
+
+    fn precinct_roster_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let Some(line) = precinct_roster_line() else {
+            return Empty::new().finish();
+        };
+        appearance
+            .ui_builder()
+            .span(line)
+            .with_soft_wrap()
+            .build()
+            .with_margin_top(4.)
+            .finish()
     }
 
     fn precinct_inbox_row(&self, appearance: &Appearance) -> Box<dyn Element> {
