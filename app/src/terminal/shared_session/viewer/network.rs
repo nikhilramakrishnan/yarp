@@ -314,7 +314,7 @@ impl Network {
         auth_state: Arc<AuthState>,
     ) -> anyhow::Result<((impl Sink, impl Stream), UserID)> {
         let Some(join_endpoint) = connect_endpoint(format!("/sessions/join/{session_id}")) else {
-            bail!("This channel does not support session-sharing.");
+            bail!("This channel doesn't carry shared sessions.");
         };
         let user_id = Self::get_user_id(auth_client, &auth_state).await?;
         let socket = websocket::WebSocket::connect(join_endpoint, None /* protocols */).await?;
