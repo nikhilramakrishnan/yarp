@@ -5553,7 +5553,7 @@ impl Workspace {
         if !FeatureFlag::ConfigurableToolbar.is_enabled() {
             return;
         }
-        let items = vec![MenuItemFields::new("Re-arrange toolbar items")
+        let items = vec![MenuItemFields::new("Re-arrange the kit")
             .with_on_select_action(WorkspaceAction::OpenHeaderToolbarEditor)
             .into_item()];
         self.header_toolbar_context_menu
@@ -8320,7 +8320,7 @@ impl Workspace {
         }
 
         items.extend([
-            MenuItemFields::new("What's new")
+            MenuItemFields::new("Today.s bulletin")
                 .with_on_select_action(WorkspaceAction::ViewLatestChangelog)
                 .into_item(),
             MenuItemFields::new("Settings")
