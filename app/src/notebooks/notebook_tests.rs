@@ -690,7 +690,7 @@ fn test_untitled_notebook() {
         });
 
         notebook.read(&app, |notebook, ctx| {
-            assert_eq!(notebook.title(ctx), "Untitled");
+            assert_eq!(notebook.title(ctx), "Unfiled notebook");
         });
 
         notebook.update(&mut app, |notebook, ctx| {
