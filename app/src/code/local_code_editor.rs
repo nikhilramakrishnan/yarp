@@ -2298,7 +2298,7 @@ pub fn render_unsaved_changes_banner(
             Shrinkable::new(
                 1.,
                 Text::new(
-                    "This file has saved changes that are not reflected here.",
+                    "This case file has fresh edits on the books that aren't shown here.",
                     appearance.ui_font_family(),
                     appearance.ui_font_size(),
                 )
