@@ -42,30 +42,30 @@ use yarpui::{
 
 const HEADER_FONT_SIZE: f32 = 18.;
 const HEADER_MARGIN_BOTTOM: f32 = 32.;
-const HEADER_TEXT: &str = "Invite a friend to Yarp";
-const ANONYMOUS_USER_HEADER_TEXT: &str = "Sign up to participate in Yarp's referral program";
+const HEADER_TEXT: &str = "Recruit a regular to Sandford";
+const ANONYMOUS_USER_HEADER_TEXT: &str = "Swear in to recruit for the squad";
 
 const INVITE_FIELD_LABEL_BOTTOM_MARGIN: f32 = 8.;
 
 const LINK_BOTTOM_MARGIN: f32 = 12.;
 const LINK_TEXT_PADDING: f32 = 10.;
 const LINK_CORNER_RADIUS: Radius = Radius::Pixels(4.);
-const LINK_ERROR_TEXT: &str = "Failed to load referral code.";
+const LINK_ERROR_TEXT: &str = "Couldn't pull the recruitment warrant.";
 
 const BUTTON_WIDTH: f32 = 98.;
 const BUTTON_HEIGHT: f32 = 36.;
 const BUTTON_LEFT_MARGIN: f32 = 8.;
 const BUTTON_FONT_SIZE: f32 = 12.;
-const LINK_BUTTON_TEXT: &str = "Copy link";
-const EMAIL_BUTTON_TEXT: &str = "Send";
-const EMAIL_BUTTON_SENDING_TEXT: &str = "Sending...";
+const LINK_BUTTON_TEXT: &str = "Copy frequency";
+const EMAIL_BUTTON_TEXT: &str = "Radio";
+const EMAIL_BUTTON_SENDING_TEXT: &str = "Radioing...";
 const LOADING_TEXT: &str = "On the case...";
 
-const LINK_COPIED_TOAST: &str = "Link copied.";
-const EMAIL_SUCCESS_TOAST: &str = "Successfully sent emails.";
-const EMAIL_FAILURE_TOAST: &str = "Failed to send emails. Please try again.";
+const LINK_COPIED_TOAST: &str = "Frequency copied.";
+const EMAIL_SUCCESS_TOAST: &str = "Tip-offs radioed out.";
+const EMAIL_FAILURE_TOAST: &str = "Couldn't get the tip-offs out. Try again.";
 
-const REWARD_INTRO: &str = "Get exclusive Yarp goodies when you refer someone*";
+const REWARD_INTRO: &str = "Bag exclusive Sandford kit when you recruit a regular*";
 const REWARD_INTRO_FONT_SIZE: f32 = 14.;
 const REWARD_SECTION_VERTICAL_SPACING: f32 = 24.;
 
@@ -87,8 +87,8 @@ const METER_TOP_MARGIN: f32 = 16.;
 const METER_RIGHT_MARGIN: f32 = 12.;
 
 const CLAIMED_REFERRALS_LABEL_HORIZONTAL_SPACING: f32 = 4.;
-const CLAIMED_REFERRALS_COUNT_LABEL_SINGULAR: &str = "Current referral";
-const CLAIMED_REFERRALS_COUNT_LABEL_PLURAL: &str = "Current referrals";
+const CLAIMED_REFERRALS_COUNT_LABEL_SINGULAR: &str = "Recruit on the books";
+const CLAIMED_REFERRALS_COUNT_LABEL_PLURAL: &str = "Recruits on the books";
 const CLAIMED_REFERRALS_LABEL_WIDTH: f32 = 52.;
 const CLAIMED_REFERRALS_LABEL_FONT_SIZE: f32 = 14.;
 const CLAIMED_REFERRALS_COUNT_FONT_SIZE: f32 = 48.;
@@ -96,11 +96,11 @@ const CLAIMED_REFERRAL_COUNT_LEFT_MARGIN: f32 = 40.;
 
 const CLAIMED_REFERRAL_CLIP: usize = 999;
 
-const TERMS_LINK_TEXT: &str = "Certain restrictions apply.";
+const TERMS_LINK_TEXT: &str = "Standing Orders apply.";
 const TERMS_URL: &str =
     "https://github.com/hotfuzz/yarp/support-and-community/community/refer-a-friend#referral-program-terms-and-conditions";
 const TERMS_CONTACT_TEXT: &str =
-    " If you have any questions about the referral program, please contact referrals@yarp.dev.";
+    " Questions on the recruitment programme — radio referrals@yarp.dev.";
 
 enum ApiState {
     Loading,

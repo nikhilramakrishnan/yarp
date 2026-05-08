@@ -80,17 +80,17 @@ const SUB_SECTION_MARGIN: f32 = 8.;
 const STATUS_ICON_SIZE: f32 = 16.;
 const LSP_STATUS_INDICATOR_SIZE: f32 = 8.;
 const CODE_FEATURE_NAME: &str = "Code";
-const INITIALIZATION_SETTINGS_HEADER: &str = "Initialization Settings";
-const CODEBASE_INDEXING_LABEL: &str = "Codebase indexing";
-const CODEBASE_INDEX_DESCRIPTION: &str = "Yarp can automatically index code repositories as you navigate them, helping agents quickly understand context and provide solutions. Code is never stored on the server. If a codebase is unable to be indexed, Yarp can still navigate your codebase and gain insights via grep and find tool calling.";
-const YARP_INDEXING_IGNORE_DESCRIPTION: &str = "To exclude specific files or directories from indexing, add them to the .yarpindexingignore file in your repository directory. These files will still be accessible to AI features, but they won't be included in codebase embeddings.";
-const AUTO_INDEX_FEATURE_NAME: &str = "Index new folders by default";
-const AUTO_INDEX_DESCRIPTION: &str = "When set to true, Yarp will automatically index code repositories as you navigate them - helping agents quickly understand context and provide targeted solutions.";
-const INDEXING_DISABLED_ADMIN_TEXT: &str = "Team admins have disabled codebase indexing.";
-const INDEXING_WORKSPACE_ENABLED_ADMIN_TEXT: &str = "Team admins have enabled codebase indexing.";
+const INITIALIZATION_SETTINGS_HEADER: &str = "Sign-on Standing Orders";
+const CODEBASE_INDEXING_LABEL: &str = "Beat indexing";
+const CODEBASE_INDEX_DESCRIPTION: &str = "Yarp can patrol and index your beats as you walk them, so the squad picks up the lay of the land fast and brings back targeted leads. The code itself never gets filed at HQ. If a beat won't index, Yarp still walks it and pulls leads via grep and find calls.";
+const YARP_INDEXING_IGNORE_DESCRIPTION: &str = "To keep specific files or districts off the patrol, list them in .yarpindexingignore at the beat root. The AI radio still has access — they just won't end up in beat embeddings.";
+const AUTO_INDEX_FEATURE_NAME: &str = "Patrol new beats automatically";
+const AUTO_INDEX_DESCRIPTION: &str = "With this on, Yarp patrols and indexes beats as you walk them — the squad picks up context fast and comes back with targeted leads.";
+const INDEXING_DISABLED_ADMIN_TEXT: &str = "Squad admins have stood down beat indexing.";
+const INDEXING_WORKSPACE_ENABLED_ADMIN_TEXT: &str = "Squad admins have called for beat indexing.";
 const INDEXING_DISABLED_GLOBAL_AI_TEXT: &str =
-    "AI Features must be enabled to use codebase indexing.";
-const CODEBASE_INDEX_LIMIT_REACHED: &str = "You have reached the maximum number of codebase indices for your plan. Delete existing indices to auto-index new codebases.";
+    "Sign on the AI radio first to run beat indexing.";
+const CODEBASE_INDEX_LIMIT_REACHED: &str = "Out of beat slots on your duty roster. Strike old beats from the record to open up new patrols.";
 
 /// Identifies which subpage of the Code settings the user is viewing.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -112,8 +112,8 @@ impl CodeSubpage {
 
     pub fn title(&self) -> &'static str {
         match self {
-            Self::Indexing => "Codebase Indexing",
-            Self::EditorAndCodeReview => "Editor and Code Review",
+            Self::Indexing => "Beat indexing",
+            Self::EditorAndCodeReview => "Casebook editor & review",
         }
     }
 }
@@ -266,7 +266,7 @@ impl CodeSettingsPageView {
         });
 
         let manual_add_directory_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Index new folder", SecondaryTheme)
+            ActionButton::new("Patrol a new beat", SecondaryTheme)
                 .with_icon(Icon::FindAll)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(CodeSettingsPageAction::ManualAddDirectory);
@@ -310,8 +310,8 @@ impl CodeSettingsPageView {
                 Box::new(GlobalSearchToggleWidget::default()),
             ]);
             let categories = vec![
-                Category::new("Codebase Indexing", codebase_indexing_widgets),
-                Category::new("Code Editor and Review", code_editor_review_widgets),
+                Category::new("Beat indexing", codebase_indexing_widgets),
+                Category::new("Casebook editor & review", code_editor_review_widgets),
             ];
             PageType::new_categorized(categories, None)
         } else {
@@ -353,7 +353,7 @@ impl CodeSettingsPageView {
             // or the full categorized page when subpage is None.
             if let Some(subpage) = subpage {
                 let manual_add_directory_button = ctx.add_typed_action_view(|_| {
-                    ActionButton::new("Index new folder", SecondaryTheme)
+                    ActionButton::new("Patrol a new beat", SecondaryTheme)
                         .with_icon(Icon::FindAll)
                         .on_click(|ctx| {
                             ctx.dispatch_typed_action(CodeSettingsPageAction::ManualAddDirectory);
@@ -402,7 +402,7 @@ impl CodeSettingsPageView {
     fn build_full_page(ctx: &mut ViewContext<Self>) -> PageType<Self> {
         if FeatureFlag::OpenYarpNewSettingsModes.is_enabled() {
             let manual_add_directory_button = ctx.add_typed_action_view(|_| {
-                ActionButton::new("Index new folder", SecondaryTheme)
+                ActionButton::new("Patrol a new beat", SecondaryTheme)
                     .with_icon(Icon::FindAll)
                     .on_click(|ctx| {
                         ctx.dispatch_typed_action(CodeSettingsPageAction::ManualAddDirectory);
@@ -434,13 +434,13 @@ impl CodeSettingsPageView {
                 Box::new(GlobalSearchToggleWidget::default()),
             ]);
             let categories = vec![
-                Category::new("Codebase Indexing", codebase_indexing_widgets),
-                Category::new("Code Editor and Review", code_editor_review_widgets),
+                Category::new("Beat indexing", codebase_indexing_widgets),
+                Category::new("Casebook editor & review", code_editor_review_widgets),
             ];
             PageType::new_categorized(categories, None)
         } else {
             let manual_add_directory_button = ctx.add_typed_action_view(|_| {
-                ActionButton::new("Index new folder", SecondaryTheme)
+                ActionButton::new("Patrol a new beat", SecondaryTheme)
                     .with_icon(Icon::FindAll)
                     .on_click(|ctx| {
                         ctx.dispatch_typed_action(CodeSettingsPageAction::ManualAddDirectory);
