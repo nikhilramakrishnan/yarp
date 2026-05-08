@@ -184,7 +184,7 @@ impl AgentSource {
             AgentSource::AgentWebhook => "API",
             AgentSource::Slack => "Slack",
             AgentSource::Cli => "CLI",
-            AgentSource::ScheduledAgent => "Scheduled",
+            AgentSource::ScheduledAgent => "Scheduled patrol",
             AgentSource::Interactive => "Yarp (local agent)",
             AgentSource::WebApp => "Fuzz Web",
             AgentSource::GitHubAction => "GitHub Action",
