@@ -2353,7 +2353,7 @@ impl FileTreeView {
                         .into_item(),
                 );
                 items.push(
-                    MenuItemFields::new("Delete")
+                    MenuItemFields::new("Strike off")
                         .with_on_select_action(FileTreeAction::Delete { id: id.clone() })
                         .into_item(),
                 );

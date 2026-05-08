@@ -50,7 +50,7 @@ const SECTION_FONT_SIZE: f32 = 16.;
 const SPAN_FONT_SIZE: f32 = 16.;
 const VARIANT_FONT_SIZE: f32 = 13.;
 
-const CANCEL_BUTTON_LABEL: &str = "Close";
+const CANCEL_BUTTON_LABEL: &str = "Stand down";
 const NEW_ENUM_SPAN: &str = "New enum";
 const EXISTING_ENUM_SPAN: &str = "Amend enum";
 const NAME_PLACEHOLDER_TEXT: &str = "Name";
