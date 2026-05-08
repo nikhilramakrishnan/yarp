@@ -34,7 +34,7 @@ struct BuildSuggestion {
 impl CreateProjectView {
     pub fn new(is_ftux: bool, ctx: &mut ViewContext<Self>) -> Self {
         let editor =
-            ctx.add_typed_action_view(|ctx| GlowingEditor::new("What do you want to build?", ctx));
+            ctx.add_typed_action_view(|ctx| GlowingEditor::new("What's the case, officer?", ctx));
 
         ctx.subscribe_to_view(&editor, move |me, _, event, ctx| {
             me.handle_editor_event(event, ctx);
