@@ -1240,7 +1240,7 @@ fn handle_terminal_view_event(
                                             parent_pane_id,
                                             request_name,
                                             parent_conversation_id,
-                                            "Failed to create a hidden pane for the local child harness."
+                                            "Couldn't carve out a hidden pane for the local recruit."
                                                 .to_string(),
                                             ctx,
                                         );
@@ -1266,7 +1266,7 @@ fn handle_terminal_view_event(
                             pane_id,
                             request.name,
                             request.parent_conversation_id,
-                            "Local harness child agents are not supported in WASM builds."
+                            "Local recruits don't patrol the WASM beat."
                                 .to_string(),
                             ctx,
                         );

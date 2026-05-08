@@ -32,11 +32,11 @@ pub(super) fn validate_local_harness_shell(shell_type: Option<ShellType>) -> Res
     match shell_type {
         Some(ShellType::Bash) | Some(ShellType::Zsh) | Some(ShellType::Fish) => Ok(()),
         Some(ShellType::PowerShell) => Err(
-            "Local child harnesses currently require bash, zsh, or fish; PowerShell is not supported."
+            "Local recruits patrol with bash, zsh, or fish — PowerShell isn't on the rota."
                 .to_string(),
         ),
         None => Err(
-            "Local child harnesses currently require a detected bash, zsh, or fish session."
+            "No bash, zsh, or fish session on the books — local recruit can't clock on."
                 .to_string(),
         ),
     }
@@ -80,7 +80,7 @@ pub(super) async fn prepare_local_harness_child_launch(
         return Err(if harness_name.is_empty() {
             "No harness on the local recruit — kit's missing.".to_string()
         } else {
-            format!("Unsupported local child harness '{harness_name}'.")
+            format!("Local recruit '{harness_name}' didn't badge in here.")
         });
     };
     validate_local_harness_shell(shell_type)?;
