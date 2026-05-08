@@ -197,9 +197,9 @@ impl SearchItem for NotebookSearchItem {
     fn render_details(&self, ctx: &AppContext) -> Option<Box<dyn Element>> {
         let appearance = Appearance::as_ref(ctx);
 
-        // Use notebook name, or "Untitled" if empty
+        // Use notebook name, or "Unfiled notebook" if empty
         let display_name = if self.notebook_name.is_empty() {
-            "Untitled".to_string()
+            "Unfiled notebook".to_string()
         } else {
             self.notebook_name.clone()
         };

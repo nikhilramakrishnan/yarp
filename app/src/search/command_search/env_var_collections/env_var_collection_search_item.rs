@@ -39,7 +39,7 @@ impl EnvVarCollectionSearchItem {
                 env_var_collection
                     .title
                     .clone()
-                    .unwrap_or("Untitled".to_owned()),
+                    .unwrap_or("Unfiled env vars".to_owned()),
                 true,
             )
             .with_style(UiComponentStyles {
@@ -97,7 +97,7 @@ impl SearchItem for EnvVarCollectionSearchItem {
             env_var_collection
                 .title
                 .clone()
-                .unwrap_or("Untitled".to_owned()),
+                .unwrap_or("Unfiled env vars".to_owned()),
             appearance.ui_font_family(),
             appearance.monospace_font_size(),
         )
@@ -225,7 +225,7 @@ impl SearchItem for EnvVarCollectionSearchItem {
             env_var_collection
                 .title
                 .clone()
-                .unwrap_or("Untitled".to_owned())
+                .unwrap_or("Unfiled env vars".to_owned())
         )
     }
 }
