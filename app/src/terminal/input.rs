@@ -5582,7 +5582,7 @@ impl Input {
             .map(|session| match session.agent {
                 CLIAgent::Unknown => Cow::Borrowed(CLI_AGENT_RICH_INPUT_HINT_TEXT),
                 _ => Cow::Owned(format!(
-                    "Enter prompt for {}...",
+                    "Brief {} on the case...",
                     session.agent.display_name()
                 )),
             })
