@@ -131,7 +131,7 @@ pub fn render_inline_notifications_discovery_banner(
                 vec![
                     docs_button,
                     InlineBannerTextButton {
-                        text: "Configure notifications".to_string(),
+                        text: "Tune the radio chatter".to_string(),
                         text_color: active_ui_text_color,
                         button_state: InlineBannerButtonState {
                             on_click_event: TerminalAction::NotificationsDiscoveryBanner(

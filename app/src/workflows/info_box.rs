@@ -255,7 +255,7 @@ impl WorkflowsMoreInfoView {
         let label = if cloud_workflow.model().data.is_agent_mode_workflow() {
             "Reissue the prompt"
         } else {
-            "Reissue the workflow"
+            "Reissue the playbook"
         };
         let workflow = cloud_workflow.clone();
         render_hoverable_card_button(
