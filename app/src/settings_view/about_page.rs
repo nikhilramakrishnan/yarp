@@ -216,8 +216,9 @@ fn precinct_latest_dispatch_text() -> Option<String> {
     } else {
         msg.body.clone()
     };
+    let age = radio::format_dispatch_age(msg.sent_at_unix);
     Some(format!(
-        "Latest from {}: \u{201C}{body}\u{201D}",
+        "Latest from {} ({age}): \u{201C}{body}\u{201D}",
         msg.from_call_sign
     ))
 }

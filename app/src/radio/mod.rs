@@ -120,6 +120,32 @@ fn format_uptime(secs: u64) -> String {
     }
 }
 
+/// Coarse "Nm ago" / "Nh ago" / "Nd ago" age string for a unix timestamp,
+/// computed against the wall clock. Caps at "now" if the timestamp is in
+/// the future (e.g. minor clock skew between sender and receiver).
+pub fn format_dispatch_age(sent_at_unix: u64) -> String {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    format_dispatch_age_at(sent_at_unix, now)
+}
+
+fn format_dispatch_age_at(sent_at_unix: u64, now_unix: u64) -> String {
+    let secs = now_unix.saturating_sub(sent_at_unix);
+    if secs < 5 {
+        "just now".to_string()
+    } else if secs < 60 {
+        format!("{secs}s ago")
+    } else if secs < 3600 {
+        format!("{}m ago", secs / 60)
+    } else if secs < 86_400 {
+        format!("{}h ago", secs / 3600)
+    } else {
+        format!("{}d ago", secs / 86_400)
+    }
+}
+
 /// Active peers on the radio, excluding this process. Sorted by call sign
 /// for stable picker rendering.
 pub fn peers() -> Vec<PeerSummary> {
@@ -514,6 +540,18 @@ mod tests {
         assert_eq!(format_uptime(45), "45s");
         assert_eq!(format_uptime(125), "2m05s");
         assert_eq!(format_uptime(3700), "1h01m");
+    }
+
+    #[test]
+    fn format_dispatch_age_buckets() {
+        assert_eq!(format_dispatch_age_at(100, 100), "just now");
+        assert_eq!(format_dispatch_age_at(100, 104), "just now");
+        assert_eq!(format_dispatch_age_at(100, 110), "10s ago");
+        assert_eq!(format_dispatch_age_at(0, 125), "2m ago");
+        assert_eq!(format_dispatch_age_at(0, 3700), "1h ago");
+        assert_eq!(format_dispatch_age_at(0, 90_000), "1d ago");
+        // Future-dated message (clock skew) caps at "just now".
+        assert_eq!(format_dispatch_age_at(200, 100), "just now");
     }
 
     #[test]
