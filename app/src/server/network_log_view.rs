@@ -37,7 +37,7 @@ use crate::ui_components::icons;
 pub const NETWORK_LOG_HEADER_TEXT: &str = "Network log";
 
 /// Tooltip shown on hover over the refresh button in the pane header.
-const REFRESH_TOOLTIP: &str = "Refresh";
+const REFRESH_TOOLTIP: &str = "Re-sweep";
 
 /// Event emitted by the [`NetworkLogView`].
 #[derive(Debug, Clone, PartialEq, Eq)]

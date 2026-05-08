@@ -128,7 +128,7 @@ const BANNER_VERTICAL_MARGIN: f32 = 10.;
 
 const CONFLICT_RESOLUTION_MESSAGE: &str =
     "Couldn't file the casebook — someone else amended it while you were working. Bag your edits and refresh.";
-const REFRESH_BUTTON_TEXT: &str = "Refresh";
+const REFRESH_BUTTON_TEXT: &str = "Re-sweep";
 
 const FEATURE_NOT_AVAILABLE_MESSAGE: &str = "Station's down — couldn't sync the casebook. Edits are filed locally. Try again in a bit.";
 
