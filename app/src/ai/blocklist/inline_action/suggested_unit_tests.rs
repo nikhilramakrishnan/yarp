@@ -35,8 +35,8 @@ use crate::{
     TelemetryEvent,
 };
 
-const ACCEPT_LABEL: &str = "Generate tests";
-const CANCEL_LABEL: &str = "Dismiss";
+const ACCEPT_LABEL: &str = "Run the drills";
+const CANCEL_LABEL: &str = "Stand down";
 
 #[derive(Debug, Clone)]
 pub enum SuggestedUnitTestsEvent {
@@ -315,7 +315,7 @@ impl SuggestedUnitTestsView {
 
         let checkbox_text = appearance
             .ui_builder()
-            .span("Don't show me suggested code banners again")
+            .span("Strike drill suggestions off the noticeboard")
             .with_style(UiComponentStyles {
                 font_color: Some(font_color),
                 font_size: Some(font_size),
@@ -328,7 +328,7 @@ impl SuggestedUnitTestsView {
         let formatted_text = FormattedTextElement::new(
             FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::hyperlink(
-                    "Manage suggested code banner settings",
+                    "Amend noticeboard Standing Orders",
                     "Settings > AI",
                 ),
             ])]),
