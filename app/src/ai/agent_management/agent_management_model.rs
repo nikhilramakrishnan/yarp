@@ -163,7 +163,7 @@ impl AgentNotificationsModel {
                         .unwrap_or_else(|| format!("{} completed", agent.display_name()));
                     let message = match agent {
                         CLIAgent::Codex => "Notification from Codex",
-                        _ => "Task completed.",
+                        _ => "Case wrapped up.",
                     };
                     self.add_notification(
                         title,
@@ -320,7 +320,7 @@ impl AgentNotificationsModel {
                 let artifacts = self.flush_pending_artifacts(conversation_id);
                 self.add_notification(
                     title,
-                    "Task completed.".to_owned(),
+                    "Case wrapped up.".to_owned(),
                     NotificationCategory::Complete,
                     NotificationSourceAgent::Fuzz,
                     origin,
