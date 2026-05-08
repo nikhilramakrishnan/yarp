@@ -1097,7 +1097,7 @@ pub fn control_action_failure_reason_string(reason: &ControlActionFailureReason)
         ControlActionFailureReason::InsufficientPermissions => {
             "Radio's read-only — wave for edit access.".to_owned()
         }
-        _ => "That didn't go through. Try again.".to_owned(),
+        _ => "Call didn't connect — try again.".to_owned(),
     }
 }
 
