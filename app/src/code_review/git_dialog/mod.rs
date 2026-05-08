@@ -150,32 +150,32 @@ fn should_send_git_ops_ai_request(app: &AppContext) -> bool {
 fn user_facing_git_error(raw: &str) -> &'static str {
     let lower = raw.to_lowercase();
     if lower.contains("nothing to commit") {
-        "No changes to commit."
+        "Nothing on the docket to commit."
     } else if lower.contains("please tell me who you are")
         || lower.contains("author identity unknown")
     {
-        "Git identity not configured. Set user.name and user.email."
+        "Git identity hasn't clocked on. Set user.name and user.email."
     } else if lower.contains("updates were rejected")
         || lower.contains("non-fast-forward")
         || lower.contains("fetch first")
     {
-        "Remote has new changes \u{2014} pull before pushing."
+        "Dispatch has fresh updates \u{2014} pull before you push."
     } else if lower.contains("does not appear to be a git repository")
         || lower.contains("no configured push destination")
         || lower.contains("no such remote")
     {
-        "No remote configured for this branch."
+        "No dispatch on file for this branch."
     } else if lower.contains("authentication failed")
         || lower.contains("permission denied (publickey)")
     {
-        "Authentication failed. Check your Git credentials."
+        "Badge didn't check out. Check your Git credentials."
     } else if lower.contains("could not resolve host")
         || lower.contains("network is unreachable")
         || lower.contains("connection timed out")
     {
-        "Network error. Check your connection."
+        "Radio's down. Check your connection."
     } else if lower.contains("repository not found") {
-        "Remote repository not found."
+        "Dispatch's repo isn't on file."
     } else if lower.contains("failed to execute gh command") {
         // `run_gh_command` wraps spawn failures with this prefix, which is
         // the reliable "gh binary missing" signal.
@@ -186,9 +186,9 @@ fn user_facing_git_error(raw: &str) -> &'static str {
     {
         // Phrases mirror `context_chips::current_prompt::is_gh_auth_error`,
         // which has been vetted against real `gh` failure output.
-        "GitHub CLI not authenticated. Run `gh auth login`."
+        "GitHub CLI hasn't clocked on. Run `gh auth login`."
     } else {
-        "Git operation failed."
+        "Git went off the rails."
     }
 }
 
