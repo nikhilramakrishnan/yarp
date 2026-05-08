@@ -44,7 +44,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             "welcome_view:open_project",
-            "Add repository",
+            "Pick up a beat",
             WelcomeViewAction::OpenProject,
         )
         .with_context_predicate(id!("WelcomeView"))
