@@ -19,6 +19,10 @@ pub struct Beacon {
     pub hostname: String,
     pub app_id: String,
     pub call_sign: String,
+    /// Visible window/tab label, used by peer pickers so officers can tell
+    /// each other apart at a glance. `None` until the GUI publishes one.
+    #[serde(default)]
+    pub tab_title: Option<String>,
 }
 
 impl Beacon {
@@ -32,8 +36,22 @@ impl Beacon {
             hostname: hostname(),
             app_id: app_id.into(),
             call_sign: call_sign.into(),
+            tab_title: None,
         }
     }
+
+    /// Builder-style setter for the visible tab label.
+    pub fn with_tab_title(mut self, tab_title: impl Into<String>) -> Self {
+        self.tab_title = Some(tab_title.into());
+        self
+    }
+}
+
+/// Republish a fresh beacon for the current process — used when the visible
+/// tab label changes and we want peers to see the new one. Best-effort.
+pub fn update_tab_title(call_sign: impl Into<String>, tab_title: impl Into<String>) {
+    let beacon = Beacon::new("dev.yarp.Yarp", call_sign).with_tab_title(tab_title);
+    let _ = register(&beacon);
 }
 
 fn hostname() -> String {
@@ -70,6 +88,25 @@ pub fn register(beacon: &Beacon) -> io::Result<()> {
 pub fn deregister(pid: u32) {
     if let Some(path) = beacon_path(pid) {
         let _ = fs::remove_file(path);
+    }
+}
+
+/// Hold this for the lifetime of the process. On Drop the beacon is removed,
+/// so peers don't have to wait for prune-on-read to forget us.
+pub struct BeaconGuard {
+    pid: u32,
+}
+
+impl BeaconGuard {
+    pub fn register(beacon: &Beacon) -> io::Result<Self> {
+        register(beacon)?;
+        Ok(Self { pid: beacon.pid })
+    }
+}
+
+impl Drop for BeaconGuard {
+    fn drop(&mut self) {
+        deregister(self.pid);
     }
 }
 
@@ -136,5 +173,38 @@ mod tests {
         let json = serde_json::to_string(&beacon).unwrap();
         let back: Beacon = serde_json::from_str(&json).unwrap();
         assert_eq!(beacon, back);
+    }
+
+    #[test]
+    fn beacon_without_tab_title_round_trips_legacy_json() {
+        // Older beacons on disk won't have the tab_title field. Make sure
+        // they still deserialize cleanly via the serde(default).
+        let legacy = r#"{
+            "pid": 1234,
+            "started_at_unix": 0,
+            "hostname": "h",
+            "app_id": "dev.yarp.Yarp",
+            "call_sign": "Sandford"
+        }"#;
+        let parsed: Beacon = serde_json::from_str(legacy).unwrap();
+        assert_eq!(parsed.tab_title, None);
+        assert_eq!(parsed.call_sign, "Sandford");
+    }
+
+    #[test]
+    fn with_tab_title_sets_the_field() {
+        let beacon = Beacon::new("dev.yarp.Yarp", "Sandford").with_tab_title("Sandford Precinct");
+        assert_eq!(beacon.tab_title.as_deref(), Some("Sandford Precinct"));
+    }
+
+    #[test]
+    fn guard_drop_calls_deregister() {
+        // The guard's Drop should not panic even if the beacon was never
+        // written to disk. Use a beacon for a fake pid so we don't disturb
+        // a real one if the test runs while the GUI is up.
+        let guard = BeaconGuard {
+            pid: 0xDEAD_BEEF,
+        };
+        drop(guard);
     }
 }

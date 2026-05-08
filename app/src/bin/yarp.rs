@@ -81,17 +81,18 @@ fn main() -> Result<()> {
     ChannelState::set(state);
 
     write_default_llm_config_if_missing();
-    write_radio_beacon();
+    let _radio_guard = write_radio_beacon();
 
     yarp::run()
 }
 
 /// Drop a JSON beacon at `~/.yarp/radio/<pid>.json` so other Yarp
-/// instances can radio us. Best-effort; silently swallows IO errors.
-/// Stale beacons are pruned by readers via `radio::list_active()`.
-fn write_radio_beacon() {
+/// instances can radio us. The returned guard removes the beacon on Drop
+/// so peers don't have to wait for prune-on-read to forget us. Best-effort;
+/// silently swallows IO errors.
+fn write_radio_beacon() -> Option<radio::BeaconGuard> {
     let beacon = radio::Beacon::new("dev.yarp.Yarp", default_call_sign());
-    let _ = radio::register(&beacon);
+    radio::BeaconGuard::register(&beacon).ok()
 }
 
 fn default_call_sign() -> String {
