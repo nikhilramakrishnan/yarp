@@ -3715,7 +3715,7 @@ impl TeamsWidget {
             page.add_child(render_separator(appearance));
             page.add_child(self.render_sub_header_with_subtext_color(
                 appearance,
-                "Or, join an existing team within your company".to_string(),
+                "Or, sign on to a squad already on the books at your station".to_string(),
             ));
 
             // Team discovery
@@ -3803,7 +3803,7 @@ impl TeamsWidget {
         single_team.add_child(
             Container::new(
                 self.render_sub_text(
-                    "Join this team and start collaborating on workflows, notebooks, and more."
+                    "Sign on with this squad and start working cases — workflows, casebooks, and more."
                         .to_string(),
                     appearance,
                     None,

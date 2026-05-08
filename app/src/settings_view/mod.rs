@@ -2243,7 +2243,7 @@ impl SettingsView {
                 .with_cross_axis_alignment(CrossAxisAlignment::Center)
                     .with_children([
                         Text::new(
-                            "No settings match your search.",
+                            "No standing orders match your APB.",
                             appearance.ui_font_family(),
                             appearance.ui_font_size(),
                         )
@@ -2251,7 +2251,7 @@ impl SettingsView {
                         .with_color(theme.sub_text_color(theme.background()).into_solid())
                         .finish(),
                         Text::new(
-                            "You may want to try using different keywords or checking for any possible typos.",
+                            "Try a different APB or check the spelling on the report.",
                             appearance.ui_font_family(),
                             appearance.ui_font_size(),
                         )
