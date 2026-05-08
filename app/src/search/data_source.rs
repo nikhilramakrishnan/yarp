@@ -232,7 +232,7 @@ impl QueryFilter {
     pub fn placeholder_text(&self) -> &'static str {
         match self {
             QueryFilter::History => "Search history",
-            QueryFilter::Workflows => "Search workflows",
+            QueryFilter::Workflows => "Search playbooks",
             QueryFilter::AgentModeWorkflows => "Search prompts",
             QueryFilter::Notebooks => "Search notebooks",
             QueryFilter::Plans => "Search plans",
