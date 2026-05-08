@@ -2009,7 +2009,7 @@ async fn determine_transport(
         StatusCode::UNAUTHORIZED => {
             if !FeatureFlag::McpOauth.is_enabled() {
                 return Err(rmcp::RmcpError::transport_creation::<ReqwestHttpTransport>(
-                    "Server requires authentication, which is not yet supported.".to_string(),
+                    "MCP server's locked behind credentials we can't issue just yet.".to_string(),
                 ));
             }
 
@@ -2034,7 +2034,7 @@ async fn determine_transport(
                             ToastStack::handle(ctx).update(ctx, |stack, ctx| {
                                 stack.add_ephemeral_toast(
                                     DismissibleToast::default(format!(
-                                        "Successfully authenticated {server_name} MCP server"
+                                        "{server_name} MCP server cleared the credentials check."
                                     )),
                                     active_window_id,
                                     ctx,
