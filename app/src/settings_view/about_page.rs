@@ -296,10 +296,13 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // owns urgency (10-13 lead) and the row's red tint already flags the
     // emergency, so the textual "1 emergency · " prefix would duplicate the
     // signal that's already visible above and below.
+    // "Inbox:" prefix mirrors the "Roster:" label on the row above so the
+    // stack's section labels read in parallel — both sections answer
+    // "what's in <X>?" with the same grammar.
     let line = if distinct == 1 {
-        format!("{dispatches} from {roster}.")
+        format!("Inbox: {dispatches} from {roster}.")
     } else {
-        format!("{dispatches} from {distinct} officers ({roster}).")
+        format!("Inbox: {dispatches} from {distinct} officers ({roster}).")
     };
     Some((line, emergency))
 }
