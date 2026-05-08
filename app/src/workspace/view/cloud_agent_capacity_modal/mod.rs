@@ -213,9 +213,9 @@ impl CloudAgentCapacityModal {
             // Credits text from plan pricing
             let credits_text = if let Some(limit) = plan_pricing.and_then(|plan| plan.request_limit)
             {
-                format!("{} AI credits per month", limit.separate_with_commas())
+                format!("{} rations per month", limit.separate_with_commas())
             } else {
-                "Extended AI credits per month".to_string()
+                "Extended rations per month".to_string()
             };
 
             // Benefits list based on plan type

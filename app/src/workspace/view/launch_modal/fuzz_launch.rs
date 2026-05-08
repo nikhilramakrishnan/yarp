@@ -81,7 +81,7 @@ impl Slide for OzLaunchSlide {
             }
             OzLaunchSlide::AgentManagement => "Track every PC on the duty roster, desk and ambient",
             OzLaunchSlide::LaunchCredits => {
-                "1,000 free ambient officer credits when you upgrade to Yarp Build"
+                "1,000 free ambient officer rations when you top up the kit to Yarp Build"
             }
         }
     }
