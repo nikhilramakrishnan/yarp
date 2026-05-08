@@ -2441,7 +2441,7 @@ impl BlocklistAIController {
                         "generate_multi_agent_output stream ended without emitting StreamFinished event."
                     );
 
-                    let error_message = "Request did not successfully complete";
+                    let error_message = "Call didn't go through to the end";
                     history_model.update(ctx, |history_model, ctx| {
                         history_model.mark_response_stream_completed_with_error(
                             RenderableAIError::Other {
@@ -2611,7 +2611,7 @@ impl BlocklistAIController {
                 });
             }
             Some(yarp_multi_agent_api::response_event::stream_finished::Reason::Other(_)) => {
-                let error_message = "Response stream finished unexpectedly (with finish reason `Other`).";
+                let error_message = "Radio cut out mid-call (reason `Other`).";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
                         RenderableAIError::Other {
@@ -2627,7 +2627,7 @@ impl BlocklistAIController {
                 });
             }
             Some(yarp_multi_agent_api::response_event::stream_finished::Reason::ContextWindowExceeded(_)) => {
-                let error_message = "Input exceeded context window limit.";
+                let error_message = "Casebook ran past the brief.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
                         RenderableAIError::ContextWindowExceeded(error_message.to_owned()),
@@ -2650,7 +2650,7 @@ impl BlocklistAIController {
                 });
             }
             Some(yarp_multi_agent_api::response_event::stream_finished::Reason::LlmUnavailable(_)) => {
-                let error_message = "The LLM is currently unavailable.";
+                let error_message = "The officer's off the air right now.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
                         RenderableAIError::Other {
@@ -2722,7 +2722,7 @@ impl BlocklistAIController {
                 });
             }
             Some(yarp_multi_agent_api::response_event::stream_finished::Reason::MaxTokenLimit(_)) => {
-                let error_message = "Input exceeded context window limit.";
+                let error_message = "Casebook ran past the brief.";
                 history_model.update(ctx, |history_model, ctx| {
                     history_model.mark_response_stream_completed_with_error(
                         RenderableAIError::ContextWindowExceeded(error_message.to_owned()),
