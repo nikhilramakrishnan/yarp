@@ -675,21 +675,21 @@ impl From<&AIApiError> for RenderableAIError {
 impl Display for RenderableAIError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::QuotaLimit => write!(f, "Quota limit reached."),
+            Self::QuotaLimit => write!(f, "Hit your rations cap."),
             Self::ServerOverloaded => {
-                write!(f, "There has been an inneraction. Please try again later.")
+                write!(f, "Dispatch is jammed up. Radio it in again in a bit.")
             }
-            Self::InternalYarpError => write!(f, "Internal Yarp error."),
+            Self::InternalYarpError => write!(f, "Station's wires got crossed."),
             Self::ContextWindowExceeded(message) => {
-                write!(f, "Context window exceeded: {message}")
+                write!(f, "Casebook's full: {message}")
             }
             Self::InvalidApiKey { provider, .. } => {
-                write!(f, "Invalid API key for {provider}")
+                write!(f, "The {provider} badge didn't check out")
             }
             Self::AwsBedrockCredentialsExpiredOrInvalid { model_name } => {
                 write!(
                     f,
-                    "AWS Bedrock credentials expired or invalid for {model_name}"
+                    "AWS Bedrock badge for {model_name} is expired or off the books"
                 )
             }
             Self::Other { error_message, .. } => write!(f, "{error_message}"),
