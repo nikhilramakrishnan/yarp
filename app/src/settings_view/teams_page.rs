@@ -3803,7 +3803,7 @@ impl TeamsWidget {
         single_team.add_child(
             Container::new(
                 self.render_sub_text(
-                    "Sign on with this squad and start working cases — workflows, casebooks, and more."
+                    "Sign on with this squad and start working cases — playbooks, casebooks, and more."
                         .to_string(),
                     appearance,
                     None,

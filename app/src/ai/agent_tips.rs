@@ -115,7 +115,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "File reusable workflows, notebooks, and briefings on your".to_string(),
+            description: "File reusable playbooks, notebooks, and briefings on your".to_string(),
             link: None,
             binding_name: None,
             action: Some(WorkspaceAction::OpenYarpDrive),
