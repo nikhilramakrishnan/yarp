@@ -2539,7 +2539,7 @@ impl TypedPane<'_> {
                 .file_view(app)
                 .as_ref(app)
                 .contains_unsaved_changes(app)
-                .then(|| "Unsaved".to_string()),
+                .then(|| "Unfiled".to_string()),
             TypedPane::Terminal(_)
             | TypedPane::CodeDiff
             | TypedPane::File
