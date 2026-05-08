@@ -1625,7 +1625,7 @@ fn render_groups(
         } else {
             return Container::new(
                 Text::new_inline(
-                    "No tabs match your search.",
+                    "No beats match the lead.",
                     appearance.ui_font_family(),
                     12.,
                 )

@@ -238,7 +238,7 @@ impl View for PasteAuthTokenModalView {
         let ui_builder = appearance.ui_builder();
 
         let title = FormattedTextElement::from_str(
-            "Paste your auth token below",
+            "Slap the badge token down below",
             appearance.ui_font_family(),
             16.,
         )
