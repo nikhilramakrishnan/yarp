@@ -1569,7 +1569,7 @@ impl UpdateEnvironmentForm {
 
         Some(render_warning_box(
             WarningBoxConfig::new(
-                "Personal environments cannot be used with external integrations or team API keys. For the best experience, use shared environments.",
+                "Personal beats can't ride along with external integrations or team API keys. For the best mileage, run shared beats.",
             )
             .with_width(DROPDOWN_MAX_WIDTH),
             appearance,
@@ -3063,7 +3063,7 @@ impl UpdateEnvironmentForm {
             "Suggest image"
         };
 
-        let tooltip_text = "Yarp will suggest a Docker image based on your selected repositories.";
+        let tooltip_text = "Yarp will pitch a Docker image based on the repos you've called in.";
 
         let button = Hoverable::new(
             self.suggest_image_button_mouse_state.clone(),
@@ -3225,7 +3225,7 @@ impl UpdateEnvironmentForm {
 
         render_warning_box(
             WarningBoxConfig::new(
-                "We couldn't find a good match. We recommend using a custom Docker image for these repos.",
+                "Couldn't pin a good match. Best to roll with a custom Docker image for these repos.",
             )
             .with_description(reason)
             .with_icon(Icon::AlertTriangle)
