@@ -490,8 +490,7 @@ where
             if state.is_hovered() {
                 let tooltip = Container::new(
                     Text::new_inline(
-                        "You must select that you want to automatically create a \
-                         worktree in order to select this"
+                        "Flip on auto-spin-up of a worktree to clock this on."
                             .to_string(),
                         font_family,
                         12.,
