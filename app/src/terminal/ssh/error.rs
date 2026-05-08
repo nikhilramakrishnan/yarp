@@ -279,7 +279,7 @@ impl View for SshErrorBlock {
                         ButtonVariant::Secondary,
                         self.continue_button_mouse_state.clone(),
                     )
-                    .with_centered_text_label("Continue without Yarpification".into())
+                    .with_centered_text_label("Carry on without Yarpification".into())
                     .with_style(UiComponentStyles {
                         font_size: Some(appearance.monospace_font_size()),
                         ..Default::default()

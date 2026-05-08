@@ -106,7 +106,7 @@ impl View for CloseSessionConfirmationDialog {
         let close_session_button = appearance
             .ui_builder()
             .button(ButtonVariant::Accent, self.confirm_mouse_state.clone())
-            .with_centered_text_label("Close session".into())
+            .with_centered_text_label("Sign off the shift".into())
             .with_style(button_style)
             .build()
             .with_cursor(Cursor::PointingHand)

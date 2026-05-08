@@ -101,7 +101,7 @@ where
             Some(click_button_style),
             None,
         )
-        .with_centered_text_label("Learn more".into())
+        .with_centered_text_label("Pull the file".into())
         .build()
         .on_click(move |ctx, _, _| {
             ctx.dispatch_typed_action(action.clone());
