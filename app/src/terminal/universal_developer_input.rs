@@ -110,7 +110,7 @@ impl AtContextMenuDisabledReason {
             AtContextMenuDisabledReason::Wasm => "Requires a filesystem".to_string(),
             #[cfg(not(target_family = "wasm"))]
             AtContextMenuDisabledReason::DisabledInTerminalMode => {
-                "Disabled in terminal mode, re-enable in settings".to_string()
+                "Off-duty in terminal mode — switch it back on in settings".to_string()
             }
         }
     }
@@ -673,9 +673,9 @@ impl UniversalDeveloperInputButtonBar {
         };
 
         let tooltip = if is_reader {
-            Some("Request edit access to change input mode".to_string())
+            Some("Take the pen to switch input mode".to_string())
         } else if is_agent_in_control {
-            Some("Input mode locked while agent is monitoring a command".to_string())
+            Some("Input mode's locked while the officer's tailing a command".to_string())
         } else {
             None
         };
