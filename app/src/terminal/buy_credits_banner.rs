@@ -549,7 +549,7 @@ impl BuyCreditsBanner {
         let make_banner_text = || {
             let mut banner_text_children = vec![appearance
                 .ui_builder()
-                .paragraph("Out of credits")
+                .paragraph("Out of rations")
                 .with_style(UiComponentStyles {
                     font_size: Some(14.),
                     ..Default::default()
