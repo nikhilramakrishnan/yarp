@@ -5932,7 +5932,7 @@ impl Workspace {
                                 // cleared on submit alongside any other placeholder text.
                                 editor.set_placeholder_text_with_prefix(
                                     "/feedback ",
-                                    "Describe what's broken, confusing, or missing...",
+                                    "Tell the chief what's broken, confusing, or off-beat...",
                                     editor_ctx,
                                 );
                             });
