@@ -54,6 +54,7 @@ struct AboutPageWidget {
     copy_version_button_mouse_state: MouseStateHandle,
     ack_dispatch_button_mouse_state: MouseStateHandle,
     mic_check_button_mouse_state: MouseStateHandle,
+    ten_thirteen_button_mouse_state: MouseStateHandle,
 }
 
 impl SettingsWidget for AboutPageWidget {
@@ -230,32 +231,59 @@ impl AboutPageWidget {
             return Empty::new().finish();
         }
         let ui_builder = appearance.ui_builder();
-        let button = ui_builder
+        let radio_button_style = UiComponentStyles {
+            font_size: Some(12.),
+            font_weight: Some(Weight::Semibold),
+            border_radius: Some(yarpui::elements::CornerRadius::with_all(
+                yarpui::elements::Radius::Pixels(4.),
+            )),
+            padding: Some(Coords {
+                top: 4.,
+                bottom: 4.,
+                left: 12.,
+                right: 12.,
+            }),
+            ..Default::default()
+        };
+
+        let mic_check = ui_builder
             .button(
                 ButtonVariant::Secondary,
                 self.mic_check_button_mouse_state.clone(),
             )
-            .with_style(UiComponentStyles {
-                font_size: Some(12.),
-                font_weight: Some(Weight::Semibold),
-                border_radius: Some(yarpui::elements::CornerRadius::with_all(
-                    yarpui::elements::Radius::Pixels(4.),
-                )),
-                padding: Some(Coords {
-                    top: 4.,
-                    bottom: 4.,
-                    left: 12.,
-                    right: 12.,
-                }),
-                ..Default::default()
-            })
+            .with_style(radio_button_style.clone())
             .with_text_label("Mic check".to_owned())
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(WorkspaceAction::MicCheckBroadcast);
             })
             .finish();
-        Container::new(button).with_margin_top(8.).finish()
+
+        // 10-13 = officer needs assistance. Red so it reads at a glance.
+        let ten_thirteen = ui_builder
+            .button(
+                ButtonVariant::Error,
+                self.ten_thirteen_button_mouse_state.clone(),
+            )
+            .with_style(radio_button_style)
+            .with_text_label("10-13".to_owned())
+            .build()
+            .on_click(|ctx, _, _| {
+                ctx.dispatch_typed_action(WorkspaceAction::TenThirteenBroadcast);
+            })
+            .finish();
+
+        Container::new(
+            Wrap::row()
+                .with_main_axis_alignment(MainAxisAlignment::Center)
+                .with_children([
+                    mic_check,
+                    Container::new(ten_thirteen).with_padding_left(8.).finish(),
+                ])
+                .finish(),
+        )
+        .with_margin_top(8.)
+        .finish()
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {

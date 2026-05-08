@@ -6024,6 +6024,11 @@ impl Workspace {
         ctx.notify();
     }
 
+    fn ten_thirteen_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
+        let _ = radio::broadcast("10-13! Officer needs assistance — copy and respond.");
+        ctx.notify();
+    }
+
     fn export_all_yarp_drive_objects(&mut self, ctx: &mut ViewContext<Self>) {
         let window_id = ctx.window_id();
         let cloud_model = CloudModel::as_ref(ctx);
@@ -19947,6 +19952,7 @@ impl TypedActionView for Workspace {
             CopyVersion(version) => self.copy_version(version, ctx),
             AckInboxDispatch => self.ack_inbox_dispatch(ctx),
             MicCheckBroadcast => self.mic_check_broadcast(ctx),
+            TenThirteenBroadcast => self.ten_thirteen_broadcast(ctx),
             DownloadNewVersion => self.download_new_version(ctx),
             ConfigureKeybindingSettings { keybinding_name } => {
                 self.show_keyboard_settings(keybinding_name.as_deref(), ctx)
