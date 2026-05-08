@@ -379,7 +379,7 @@ impl PlatformPageWidget {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let text = vec![
-            FormattedTextFragment::plain_text("Create and manage API keys to allow other Fuzz cloud agents to access your Yarp account.\nFor more information, visit the "),
+            FormattedTextFragment::plain_text("Issue and manage API keys so outside Fuzz cloud officers can radio your Yarp account.\nFor more details, hit the "),
             FormattedTextFragment::hyperlink("Documentation.", API_KEY_DOCS_URL),
         ];
 

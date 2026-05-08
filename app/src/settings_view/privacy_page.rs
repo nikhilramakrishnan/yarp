@@ -1255,7 +1255,7 @@ impl SettingsWidget for SecretRedactionWidget {
                     Container::new(
                         ui_builder
                             .paragraph(
-                                "Choose how secrets are visually presented in the block list while keeping them searchable. This setting only affects what you see in the block list.",
+                                "Choose how classified intel reads in the block list while staying searchable. This only changes what you see in the block list.",
                             )
                             .with_style(UiComponentStyles {
                                 font_color: Some(description_text_color),
