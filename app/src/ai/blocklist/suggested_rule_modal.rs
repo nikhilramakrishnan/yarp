@@ -503,7 +503,7 @@ impl SuggestedRuleView {
         {
             let AIFact::Memory(AIMemory { name, content, .. }) = rule.model().string_model.clone();
             self.name_editor.update(ctx, |name_editor, ctx| {
-                name_editor.set_buffer_text(&name.unwrap_or("Untitled".to_string()), ctx);
+                name_editor.set_buffer_text(&name.unwrap_or("Unfiled rule".to_string()), ctx);
             });
             self.content_editor.update(ctx, |content_editor, ctx| {
                 content_editor.set_buffer_text(&content, ctx);

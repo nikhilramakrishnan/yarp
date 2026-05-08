@@ -727,12 +727,12 @@ impl RuleView {
         let formatted_name = match name {
             Some(name) => {
                 if name.is_empty() {
-                    "Untitled".to_string()
+                    "Unfiled rule".to_string()
                 } else {
                     name
                 }
             }
-            None => "Untitled".to_string(),
+            None => "Unfiled rule".to_string(),
         };
         // Truncate content to 3 lines
         let formatted_content = if content.split("\n").count() > 3 {

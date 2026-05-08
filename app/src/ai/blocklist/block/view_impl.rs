@@ -689,7 +689,7 @@ pub fn render_citation(
                 .to_yarp_drive_item(appearance)?;
             (
                 item.icon(appearance, Some(theme.active_ui_text_color())),
-                item.display_name().unwrap_or(String::from("Untitled")),
+                item.display_name().unwrap_or(String::from("Unfiled item")),
             )
         }
         AIAgentCitation::YarpDocumentation { .. } => {
