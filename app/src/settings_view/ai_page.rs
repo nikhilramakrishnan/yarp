@@ -4065,7 +4065,7 @@ impl AgentsWidget {
         {
             widget_children.push(
                 Container::new(render_settings_info_banner(
-                    "Some of your permissions are managed by your workspace.",
+                    "Standing orders on some of your clearances come down from the station.",
                     None,
                     appearance,
                 ))
@@ -6195,7 +6195,7 @@ impl ApiKeysWidget {
                         ]
                     } else {
                         vec![FormattedTextFragment::plain_text(
-                            "Ask your team's admin to upgrade to the Build plan to use your own API keys.",
+                            "Flag the station chief to upgrade to the Build plan if you want to use your own API keys.",
                         )]
                     }
                 }
