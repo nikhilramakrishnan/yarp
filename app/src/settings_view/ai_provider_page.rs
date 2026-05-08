@@ -110,10 +110,10 @@ impl SettingsWidget for AIProviderWidget {
 
         let intro = ui
             .span(
-                "Yarp's built-in AI surfaces (command suggestions, commit messages, the AI \
-                 assistant panel) call the LLM provider configured below. Third-party CLI \
-                 harnesses (Claude Code, OpenCode, Gemini) use their own credentials and are \
-                 unaffected."
+                "Yarp's in-house AI desk (command suggestions, commit messages, the AI \
+                 assistant panel) radios the LLM provider wired up below. Third-party CLI \
+                 harnesses (Claude Code, OpenCode, Gemini) carry their own credentials and \
+                 don't ride this channel."
                     .to_string(),
             )
             .with_soft_wrap()
@@ -145,7 +145,7 @@ impl SettingsWidget for AIProviderWidget {
         };
 
         let on_disk_header = ui
-            .span("On-disk config".to_string())
+            .span("Records on file".to_string())
             .build()
             .with_margin_top(20.)
             .finish();
@@ -163,7 +163,7 @@ impl SettingsWidget for AIProviderWidget {
         }
 
         let env_header = ui
-            .span("Env-var overrides (set in your shell to override the file)".to_string())
+            .span("Shell overrides (set these in your shell to override the file on patrol)".to_string())
             .build()
             .with_margin_top(20.)
             .finish();
@@ -194,7 +194,7 @@ impl SettingsWidget for AIProviderWidget {
 
         let hint_row = ui
             .span(
-                "Tip: edit the file in any editor, then restart Yarp to pick up changes."
+                "Tip: edit the file in any editor, then sign Yarp off and back on to pick up changes."
                     .to_string(),
             )
             .with_soft_wrap()
