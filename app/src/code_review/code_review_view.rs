@@ -1520,9 +1520,9 @@ impl CodeReviewView {
 
     fn update_file_nav_button_tooltip(&self, ctx: &mut ViewContext<Self>) {
         let tooltip = if self.file_sidebar_expanded {
-            "Hide file navigation"
+            "Stash the file roster"
         } else {
-            "Show file navigation"
+            "Open the file roster"
         };
         self.file_nav_button.update(ctx, |button, ctx| {
             button.set_tooltip(Some(tooltip), ctx);
