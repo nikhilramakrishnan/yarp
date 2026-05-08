@@ -2869,7 +2869,7 @@ impl UsageWidget {
                         Hoverable::new(self.sort_icon_mouse_state.clone(), |mouse_state| {
                             if mouse_state.is_hovered() {
                                 let tooltip =
-                                    appearance.ui_builder().tool_tip("Sort by".to_string());
+                                    appearance.ui_builder().tool_tip("Sort the ledger by".to_string());
 
                                 button.add_positioned_overlay_child(
                                     tooltip.build().finish(),

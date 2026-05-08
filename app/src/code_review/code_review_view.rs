@@ -257,9 +257,9 @@ where
     .with_tooltip(move || {
         ui_builder
             .tool_tip(if is_sidebar_expanded {
-                "Hide file navigation".to_owned()
+                "Stash the file roster".to_owned()
             } else {
-                "Show file navigation".to_owned()
+                "Open the file roster".to_owned()
             })
             .build()
             .finish()
