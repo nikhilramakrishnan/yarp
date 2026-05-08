@@ -9526,9 +9526,9 @@ impl Input {
                     // Show voice status as placeholder when the buffer is empty.
                     if self.editor.as_ref(ctx).is_empty(ctx) {
                         let placeholder = if *is_listening {
-                            "Listening..."
+                            "On the wire..."
                         } else {
-                            "Transcribing..."
+                            "Filing the audio..."
                         };
                         self.editor.update(ctx, |editor, ctx| {
                             editor.set_placeholder_text(placeholder, ctx);

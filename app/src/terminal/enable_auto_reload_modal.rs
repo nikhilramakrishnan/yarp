@@ -278,7 +278,7 @@ impl EnableAutoReloadModalBody {
             .finish();
 
         let button_text = if self.update_workspace_settings_loading {
-            "Saving...".to_string()
+            "Filing...".to_string()
         } else {
             "Enable".to_string()
         };
