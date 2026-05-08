@@ -6803,7 +6803,7 @@ impl CodeReviewView {
                     button.set_label("Commit", ctx);
                     button.set_icon(Some(Icon::GitCommit), ctx);
                     button.set_disabled(disabled, ctx);
-                    button.set_tooltip(disabled.then_some("No changes to commit"), ctx);
+                    button.set_tooltip(disabled.then_some("Nothing to file"), ctx);
                     button.set_on_click(
                         |ctx| ctx.dispatch_typed_action(CodeReviewAction::OpenCommitDialog),
                         ctx,
