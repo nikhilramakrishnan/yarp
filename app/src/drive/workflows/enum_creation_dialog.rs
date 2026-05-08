@@ -52,7 +52,7 @@ const VARIANT_FONT_SIZE: f32 = 13.;
 
 const CANCEL_BUTTON_LABEL: &str = "Close";
 const NEW_ENUM_SPAN: &str = "New enum";
-const EXISTING_ENUM_SPAN: &str = "Edit enum";
+const EXISTING_ENUM_SPAN: &str = "Amend enum";
 const NAME_PLACEHOLDER_TEXT: &str = "Name";
 const CREATE_BUTTON_LABEL: &str = "Create";
 const SAVE_BUTTON_LABEL: &str = "Save";

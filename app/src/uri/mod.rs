@@ -968,7 +968,7 @@ pub fn handle_incoming_uri(url: &Url, ctx: &mut AppContext) {
         Err(e) => {
             if let Some(window_id) = primary_window_id {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast = DismissibleToast::error(format!("Custom URI is invalid: {e:?}"));
+                    let toast = DismissibleToast::error(format!("That custom URI isn't on the books: {e:?}"));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
             }

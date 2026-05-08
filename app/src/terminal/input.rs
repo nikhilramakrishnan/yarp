@@ -4510,7 +4510,7 @@ impl Input {
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::error(format!("Skill not found: {}", reference)),
+                        DismissibleToast::error(format!("No skill on the books: {}", reference)),
                         window_id,
                         ctx,
                     );
