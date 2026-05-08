@@ -1116,7 +1116,7 @@ impl TypedActionView for ConversationListView {
                 self.view_all = !self.view_all;
 
                 let label = if self.view_all {
-                    "Show less"
+                    "Stash the rest"
                 } else {
                     VIEW_ALL_LABEL
                 };
