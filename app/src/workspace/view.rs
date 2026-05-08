@@ -11055,7 +11055,9 @@ impl Workspace {
                         let window_id = ctx.window_id();
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
-                                DismissibleToast::error(format!("{err}")),
+                                DismissibleToast::error(format!(
+                                    "Couldn't pull the case file: {err}"
+                                )),
                                 window_id,
                                 ctx,
                             );
@@ -23017,14 +23019,14 @@ fn set_opencode_yarp_plugin(new_entry: &str) -> String {
     plugins.push(serde_json::Value::String(new_entry.to_string()));
 
     if let Err(e) = std::fs::create_dir_all(&config_dir) {
-        return format!("Failed to create config directory: {e}");
+        return format!("Couldn't set up the cabinet: {e}");
     }
 
     match serde_json::to_string_pretty(&config) {
         Ok(json_str) => match std::fs::write(&config_path, format!("{json_str}\n")) {
-            Ok(()) => format!("OpenCode plugin set to: {new_entry}"),
-            Err(e) => format!("Failed to write opencode.json: {e}"),
+            Ok(()) => format!("OpenCode plugin signed on as: {new_entry}"),
+            Err(e) => format!("Couldn't file the opencode.json playbook: {e}"),
         },
-        Err(e) => format!("Failed to serialize opencode.json: {e}"),
+        Err(e) => format!("Couldn't draft the opencode.json playbook: {e}"),
     }
 }
