@@ -161,7 +161,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "notebookview:increase_font_size",
-            "Increase notebook font size",
+            "Increase casebook font size",
             NotebookAction::IncreaseFontSize,
         )
         .with_context_predicate(id!("NotebookView") & id!("NotMatchNotebookToMonospaceSize"))
@@ -169,7 +169,7 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding("cmdorctrl-="),
         EditableBinding::new(
             "notebookview:decrease_font_size",
-            "Decrease notebook font size",
+            "Decrease casebook font size",
             NotebookAction::DecreaseFontSize,
         )
         .with_context_predicate(id!("NotebookView") & id!("NotMatchNotebookToMonospaceSize"))
@@ -177,7 +177,7 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding("cmdorctrl--"),
         EditableBinding::new(
             "notebookview:reset_font_size",
-            "Reset notebook font size",
+            "Reset casebook font size",
             NotebookAction::ResetFontSize,
         )
         .with_context_predicate(id!("NotebookView") & id!("NotMatchNotebookToMonospaceSize"))
@@ -185,7 +185,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::ResetFontSize),
         EditableBinding::new(
             "notebookview:focus_terminal_input",
-            "Focus Terminal Input from Notebook",
+            "Focus Terminal Input from Casebook",
             NotebookAction::FocusTerminalInput,
         )
         .with_context_predicate(id!("NotebookView"))
@@ -379,7 +379,7 @@ impl NotebookView {
                 ..Default::default()
             };
             let mut editor = EditorView::single_line(options, ctx);
-            editor.set_placeholder_text("Unfiled notebook", ctx);
+            editor.set_placeholder_text("Unfiled casebook", ctx);
             editor
         });
         ctx.subscribe_to_view(&title, |notebook, _, event, ctx| {
@@ -499,7 +499,7 @@ impl NotebookView {
     fn title_from_editor(title_editor: &ViewHandle<EditorView>, app: &AppContext) -> String {
         let mut title = title_editor.as_ref(app).buffer_text(app);
         if title.is_empty() {
-            title.push_str("Unfiled notebook");
+            title.push_str("Unfiled casebook");
         }
         title
     }
