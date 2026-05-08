@@ -354,9 +354,9 @@ impl CommandRenderInfo {
                 },
                 command_text: Some(last_run_command),
                 hint_text: match mins_since_completion {
-                    Some(mins) if mins >= 60 => "Completed over 1 hour ago".to_string(),
-                    Some(mins) if mins == 1 => format!("Completed {mins} minute ago"),
-                    Some(mins) => format!("Completed {mins} minutes ago"),
+                    Some(mins) if mins >= 60 => "Closed over 1 hour ago".to_string(),
+                    Some(mins) if mins == 1 => format!("Closed {mins} minute ago"),
+                    Some(mins) => format!("Closed {mins} minutes ago"),
                     None => "No timestamp on file".to_string(),
                 },
             },
@@ -368,7 +368,7 @@ impl CommandRenderInfo {
             },
             CommandContext::LastRunAIBlock { prompt } => CommandRenderInfo {
                 command_text: Some(prompt),
-                hint_text: "Completed".to_string(),
+                hint_text: "Closed".to_string(),
                 row_spacing: styles::NAVIGATION_PALETTE_COMMAND_ROW_SPACING,
                 hint_margin: styles::NAVIGATION_PALETTE_COMMAND_HINT_MARGIN,
             },
