@@ -200,7 +200,7 @@ impl View for SpendingLimitModal {
         let theme = appearance.theme();
 
         let description_text = Text::new(
-            "Yarp will prevent use of premium models when this dollar limit is reached. Resets on a monthly basis.",
+            "Yarp benches premium models once the cap's hit. Books reset every month.",
             appearance.ui_font_family(),
             14.,
         )
@@ -208,7 +208,7 @@ impl View for SpendingLimitModal {
         .finish();
 
         let additional_note_text = Text::new(
-            "Note that AI credits made near your chosen limit may exceed it by a few dollars.",
+            "AI credits clocked right by the cap may run a few quid past.",
             appearance.ui_font_family(),
             12.,
         )
