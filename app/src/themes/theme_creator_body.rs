@@ -274,7 +274,7 @@ impl ThemeCreatorBody {
                     },
                     Err(e) => {
                         theme_creator_body.send_error_toast(
-                            format!("Failed to process selected image due to error: {e}. Please try again with a different image."),
+                            format!("Couldn't develop that photo evidence: {e}. Pick a different image and try again."),
                             ctx,
                         );
                     }
