@@ -802,7 +802,7 @@ impl CodeView {
         let title = if let Some(file) = file {
             file.display().to_string()
         } else {
-            "Untitled".to_string()
+            "Unfiled file".to_string()
         };
 
         self.pane_configuration.update(ctx, |pane_config, ctx| {
@@ -1469,7 +1469,7 @@ impl CodeView {
             .path
             .as_ref()
             .and_then(|p| p.file_name().map(|f| f.to_string_lossy().to_string()))
-            .unwrap_or_else(|| "Untitled".to_string());
+            .unwrap_or_else(|| "Unfiled file".to_string());
         let language_icon =
             icon_from_file_path(&file_name, appearance, ItemHighlightState::Default);
         row.add_child(
@@ -1844,7 +1844,7 @@ impl CodeView {
             .and_then(|tab| tab.path.as_ref())
             .and_then(|path| path.file_name())
             .map(|name| name.to_string_lossy().to_string())
-            .unwrap_or_else(|| "Untitled".to_string());
+            .unwrap_or_else(|| "Unfiled file".to_string());
 
         let appearance = Appearance::as_ref(app);
         let is_pane_dragging = header_ctx.draggable_state.is_dragging();

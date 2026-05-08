@@ -204,7 +204,7 @@ impl ControlItemRenderer {
         } else if let Some(kind) = &self.kind {
             kind.display_label()
         } else {
-            "Unknown"
+            "Unmarked"
         }
     }
 
