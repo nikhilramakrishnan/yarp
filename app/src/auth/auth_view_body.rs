@@ -497,7 +497,7 @@ impl AuthViewBody {
             .with_child(
                 ui_builder
                     .link(
-                        "Sign in".into(),
+                        "Sign on".into(),
                         None,
                         Some(Box::new(|ctx| {
                             ctx.dispatch_typed_action(AuthViewBodyAction::Login);
