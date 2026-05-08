@@ -2440,7 +2440,7 @@ impl Workspace {
                             home_dir.as_ref().and_then(|h| h.to_str()),
                         );
                         let message = format!(
-                            "Failed to load tab config {friendly_path}: {}",
+                            "Couldn't pull the Standing Orders for {friendly_path}: {}",
                             error.error_message
                         );
                         let path = error.file_path.clone();
@@ -5990,7 +5990,7 @@ impl Workspace {
                     ctx.open_file_path_in_explorer(&path);
                 }
                 Ok(Err(err)) => {
-                    let error_message = format!("Failed to create log bundle: {err}");
+                    let error_message = format!("Couldn't pack the log dossier: {err}");
                     log::error!("{error_message}");
                     me.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
@@ -5998,7 +5998,7 @@ impl Workspace {
                     });
                 }
                 Err(err) => {
-                    let error_message = format!("Failed to create log bundle: {err}");
+                    let error_message = format!("Couldn't pack the log dossier: {err}");
                     log::error!("{error_message}");
                     me.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
@@ -7621,7 +7621,7 @@ impl Workspace {
                     });
                 }
                 Err(error) => {
-                    let error_message = format!("Failed to install Fuzz command: {error}");
+                    let error_message = format!("Couldn't sign on the Fuzz command: {error}");
                     log::error!("{error_message}");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
@@ -7646,7 +7646,7 @@ impl Workspace {
                     });
                 }
                 Err(error) => {
-                    let error_message = format!("Failed to uninstall Fuzz command: {error}");
+                    let error_message = format!("Couldn't strike the Fuzz command: {error}");
                     log::error!("{error_message}");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
