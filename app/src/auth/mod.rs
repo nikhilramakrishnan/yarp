@@ -158,8 +158,8 @@ pub fn maybe_log_out(app: &mut AppContext) {
                 "object"
             };
             info_text_vec.push(format!(
-                "You have {num_unsaved_objects} unsynced Yarp Drive {plural}. \
-            Logging out will cause you to lose the {plural}."
+                "You've got {num_unsaved_objects} unfiled Yarp Drive {plural}. \
+            Sign off and the {plural} go with the wind."
             ));
         }
 
@@ -170,8 +170,8 @@ pub fn maybe_log_out(app: &mut AppContext) {
                 "file"
             };
             info_text_vec.push(format!(
-                "You have {num_unsaved_files} unsaved {plural}. \
-            Logging out will cause you to lose the {plural}."
+                "You've got {num_unsaved_files} unsaved {plural}. \
+            Sign off and the {plural} go with the wind."
             ));
         }
 

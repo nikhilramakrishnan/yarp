@@ -142,7 +142,7 @@ impl Slide for OzLaunchSlide {
                 let next = self.next().expect("Non-final slides should have a next");
                 CTAButton::next_slide(next, format!("Next: {}", next.short_label()))
             }
-            OzLaunchSlide::LaunchCredits => CTAButton::custom("Try it out", |ctx| {
+            OzLaunchSlide::LaunchCredits => CTAButton::custom("Roll out", |ctx| {
                 send_telemetry_from_ctx!(
                     CloudAgentTelemetryEvent::EnteredCloudMode {
                         entry_point: CloudModeEntryPoint::OzLaunchModal,
