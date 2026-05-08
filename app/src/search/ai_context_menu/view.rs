@@ -1405,7 +1405,7 @@ impl AIContextMenu {
         let theme = appearance.theme();
         Container::new(
             Text::new(
-                "Loading results...",
+                "Pulling case files...",
                 appearance.ui_font_family(),
                 appearance.monospace_font_size(),
             )
