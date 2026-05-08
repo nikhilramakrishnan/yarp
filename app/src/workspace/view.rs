@@ -14602,7 +14602,7 @@ impl Workspace {
         if !ContextFlag::CreateNewSession.is_enabled() {
             self.toast_stack.update(ctx, |toast_stack, ctx| {
                 let toast =
-                    DismissibleToast::error("Couldn't kick off a new session.".to_string());
+                    DismissibleToast::error("Couldn't sign on a new beat.".to_string());
                 toast_stack.add_ephemeral_toast(toast, ctx);
             });
             return None;
