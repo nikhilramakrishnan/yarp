@@ -100,9 +100,9 @@ impl GutterButton for RevertHunkButton {
 
     fn tooltip_text(&self) -> Option<&'static str> {
         if self.is_enabled {
-            Some("Revert diff hunk")
+            Some("Walk back this hunk")
         } else {
-            Some("Save the changes before reverting this diff hunk.")
+            Some("File the amendments before walking back this hunk.")
         }
     }
 
@@ -153,9 +153,9 @@ impl GutterButton for CommentButton {
 
     fn tooltip_text(&self) -> Option<&'static str> {
         match self {
-            CommentButton::CreateNewComment => Some("Add comment on line"),
-            CommentButton::Disabled => Some("Save the changes before adding a comment."),
-            CommentButton::AddedComment => Some("Show saved comment"),
+            CommentButton::CreateNewComment => Some("File a lead on this line"),
+            CommentButton::Disabled => Some("File the amendments before noting a lead."),
+            CommentButton::AddedComment => Some("Open the pinned note"),
             CommentButton::EditorOpenedToCreateNewComment
             | CommentButton::EditorOpenedToUpdateComment => None,
         }
