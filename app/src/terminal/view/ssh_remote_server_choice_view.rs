@@ -121,7 +121,7 @@ impl SshRemoteServerChoiceView {
         // Match the Figma design: a plain title row, no icon / chevron /
         // action buttons. `HeaderConfig` without an `interaction_mode` set
         // renders exactly that.
-        HeaderConfig::new("Choose your experience for this remote session:", app)
+        HeaderConfig::new("Pick your kit for this remote session:", app)
             .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(
                 PROMPT_BORDER_RADIUS,
             )))
