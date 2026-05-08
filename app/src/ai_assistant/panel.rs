@@ -81,8 +81,8 @@ const GIT_ZERO_STATE_PROMPT: &str = "How do I undo the most recent commits in gi
 const FILES_ZERO_STATE_PROMPT: &str = "How do I find all files containing specific text?";
 
 // The placeholder texts are prepended with a space to give them cushion from the cursor.
-const INIT_PLACEHOLDER_TEXT: &str = " Ask a question...";
-const FOLLOWUP_PLACEHOLDER_TEXT: &str = " Type a response or click one above...";
+const INIT_PLACEHOLDER_TEXT: &str = " Radio in your lead...";
+const FOLLOWUP_PLACEHOLDER_TEXT: &str = " Type your reply or pick a lead above...";
 const RESTART_BUTTON_TEXT: &str = "Restart the shift";
 
 const ASK_AI_BLOCK_INPUT_LIMIT: usize = 100;
