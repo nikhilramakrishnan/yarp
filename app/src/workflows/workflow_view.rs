@@ -2669,7 +2669,7 @@ impl WorkflowView {
                                         pane.display_upgrade_error(Some(team.uid), current_user_id, ctx);
                                     } else {
                                         pane.display_error_toast(
-                                            "Meter's run out on credits. Get the team admin to top up the kit.".to_string(),
+                                            "Meter's run out on rations. Get the team admin to top up the kit.".to_string(),
                                             ctx,
                                         );
                                     }

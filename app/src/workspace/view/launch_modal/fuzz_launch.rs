@@ -102,7 +102,7 @@ impl Slide for OzLaunchSlide {
                 "Read the whole roster — desk PCs and ambient officers — from inside Yarp. Listen in on a live shift, take the call back to your desk, or steer a PC with one click."
             }
             OzLaunchSlide::LaunchCredits => {
-                "Upgrade to Build this month and you'll get 1,000 extra credits to put Fuzz on patrol. Credits only count toward Fuzz shifts in Yarp-hosted environments."
+                "Top up the kit to Build this month and you'll get 1,000 extra rations to put Fuzz on patrol. Rations only count toward Fuzz shifts in Yarp-hosted environments."
             }
         }
     }
