@@ -342,7 +342,7 @@ fn script_status(
     let label = match (is_executing, is_collapsed) {
         (true, _) => "On the move...",
         (false, true) => "Pull the script open",
-        (false, false) => "Stash",
+        (false, false) => "Stash the script",
     };
     let is_expanded = (is_executing && is_viewing_detail) || (!is_executing && !is_collapsed);
     let icon = ConstrainedBox::new(

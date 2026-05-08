@@ -757,7 +757,7 @@ fn render_hide_responses_button(
     let button_text = if should_hide_responses {
         "Pull the file open"
     } else {
-        "Stash"
+        "Stash the file"
     };
     let text = Container::new(
         Text::new(
