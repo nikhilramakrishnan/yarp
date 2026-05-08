@@ -330,7 +330,7 @@ impl ResourceCenterView {
                 if FeatureFlag::AvatarInTabBar.is_enabled() {
                     String::new()
                 } else {
-                    "Yarp Essentials".to_string()
+                    "Sandford Essentials".to_string()
                 }
             }
         };
