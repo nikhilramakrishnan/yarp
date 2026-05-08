@@ -433,12 +433,12 @@ impl AgentAssistedEnvironmentModal {
         if self.available_repos.is_empty() {
             let text = if cfg!(all(feature = "local_fs", not(target_family = "wasm"))) {
                 if self.available_repos_loading {
-                    "Loading locally indexed repos…"
+                    "Sweeping the local index…"
                 } else {
-                    "No locally indexed repos found yet. Index a repo, then try again."
+                    "No locally indexed repos on file. Index a repo, then radio back."
                 }
             } else {
-                "Local repo selection is unavailable in this build."
+                "Local repo selection is off-duty in this build."
             };
 
             col.add_child(
@@ -508,7 +508,7 @@ impl AgentAssistedEnvironmentModal {
         if !has_any_available {
             col.add_child(
                 Text::new(
-                    "All locally indexed repos are already selected.",
+                    "Every indexed repo is already on the call sheet.",
                     appearance.ui_font_family(),
                     appearance.ui_font_size() * 0.95,
                 )
@@ -613,9 +613,9 @@ impl AgentAssistedEnvironmentModal {
 
     fn render_dialog(&self, appearance: &Appearance, app: &AppContext) -> Box<dyn Element> {
         let description = if FeatureFlag::FullSourceCodeEmbedding.is_enabled() {
-            "Select locally indexed repos to provide context for the environment creation agent."
+            "Pick locally indexed repos to brief the post-setup unit."
         } else {
-            "Select repos to provide context for the environment creation agent."
+            "Pick repos to brief the post-setup unit."
         }
         .to_string();
 
