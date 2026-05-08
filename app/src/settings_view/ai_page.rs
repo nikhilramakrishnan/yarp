@@ -3839,7 +3839,7 @@ impl SettingsWidget for AgentsWidget {
                 .finish(),
             );
             agents_header.add_child(render_ai_setting_description(
-                "Set the boundaries for how your Agent operates. Choose what it can access, how much autonomy it has, and when it must ask for your approval. You can also fine-tune behavior around natural language input, codebase awareness, and more.",
+                "Lay down the standing orders for how your Agent works the beat. Pick what it can access, how far it can patrol on its own, and when it has to radio dispatch for the green light. You can also tune behavior around natural language input, codebase awareness, and more.",
                 ai_settings.is_any_ai_enabled(app),
                 app,
             ));
@@ -3886,7 +3886,7 @@ impl AgentsWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Profiles let you define how your Agent operates — from the actions it can take and when it needs approval, to the models it uses for tasks like coding and planning. You can also scope them to individual projects.",
+                        "Duty profiles let you spell out how your Agent works the beat — from the moves it can make and when it has to radio in for the go-ahead, to the models it pulls for tasks like coding and planning. You can also scope them to individual stations.",
                         is_any_ai_enabled,
                         app,
                     )
@@ -4197,7 +4197,7 @@ impl AgentsWidget {
         );
         render_ai_list(
             "Command denylist",
-            "Regular expressions to match commands that the Yarp Agent should always ask permission to execute.",
+            "Regex patterns for commands the Yarp Agent must always radio dispatch for clearance before running.",
             list,
             view,
             ai_settings,
@@ -4230,7 +4230,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Command allowlist",
-            "Regular expressions to match commands that can be automatically executed by the Yarp Agent.",
+            "Regex patterns for commands the Yarp Agent can run on its own beat without calling in.",
             list,
             view,
             ai_settings,
@@ -4266,7 +4266,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Directory allowlist",
-            "Give the agent file access to certain directories.",
+            "Cleared beats — the agent has file access to these directories.",
             list,
             view,
             ai_settings,

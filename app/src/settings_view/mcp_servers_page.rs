@@ -314,7 +314,7 @@ impl MCPServersSettingsPageView {
                 "Ignoring MCP deeplink autoinstall for '{autoinstall_param}': installation modal already open"
             );
             self.add_error_toast(
-                "Finish the current MCP install before opening another install link.".to_string(),
+                "Wrap the current MCP intake before working another install link.".to_string(),
                 ctx,
             );
             return;
@@ -357,7 +357,7 @@ impl MCPServersSettingsPageView {
             // gallery entry cannot be turned into a valid template. Surface the
             // failure to the user rather than silently returning.
             self.add_error_toast(
-                format!("MCP server '{gallery_title}' cannot be installed from this link."),
+                format!("MCP server '{gallery_title}' won't sign in from this link."),
                 ctx,
             );
             return;
