@@ -701,8 +701,8 @@ impl WelcomePalette {
             .with_text_and_icon_label(TextAndIcon::new(
                 TextAndIconAlignment::IconFirst,
                 match &self.open_project_keybinding {
-                    Some(keystroke) => format!("Add repository {keystroke}"),
-                    None => "Add repository".to_string(),
+                    Some(keystroke) => format!("Pick up a beat {keystroke}"),
+                    None => "Pick up a beat".to_string(),
                 },
                 Icon::Plus.to_yarpui_icon(theme.foreground()),
                 MainAxisSize::Max,
@@ -724,8 +724,8 @@ impl WelcomePalette {
             .with_text_and_icon_label(TextAndIcon::new(
                 TextAndIconAlignment::IconFirst,
                 match &self.terminal_session_keybinding {
-                    Some(keystroke) => format!("Terminal session {keystroke}"),
-                    None => "Terminal session".to_string(),
+                    Some(keystroke) => format!("Sign on {keystroke}"),
+                    None => "Sign on".to_string(),
                 },
                 Icon::Terminal.to_yarpui_icon(theme.foreground()),
                 MainAxisSize::Max,
