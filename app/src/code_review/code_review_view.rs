@@ -4463,7 +4463,7 @@ impl CodeReviewView {
                 .finish(),
             )
             .with_child(
-                Text::new("No open changes", appearance.ui_font_family(), 16.)
+                Text::new("Nothing open on the desk", appearance.ui_font_family(), 16.)
                     .with_style(Properties::default().weight(Weight::Semibold))
                     .with_color(theme.main_text_color(theme.surface_2()).into())
                     .finish(),
