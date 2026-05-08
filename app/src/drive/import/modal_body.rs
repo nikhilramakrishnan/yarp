@@ -126,7 +126,7 @@ impl ImportModalBody {
                 ImportQueueEvent::FileCompleted { file_id, server_id } => {
                     let result = match server_id {
                         Some(id) => UploadResult::Success(id.clone()),
-                        None => UploadResult::Error("Failed to upload file to server".to_string()),
+                        None => UploadResult::Error("Couldn't lodge the file with HQ".to_string()),
                     };
 
                     // Update the upstream folder status with the upload success state.
@@ -141,7 +141,7 @@ impl ImportModalBody {
                     let result = match server_id {
                         Some(id) => UploadResult::Success(id.clone()),
                         None => {
-                            UploadResult::Error("Failed to upload folder to server".to_string())
+                            UploadResult::Error("Couldn't lodge the folder with HQ".to_string())
                         }
                     };
 
@@ -393,7 +393,7 @@ impl ImportModalBody {
             base_button.with_text_and_icon_label(
                 TextAndIcon::new(
                     TextAndIconAlignment::TextFirst,
-                    "Choose files...".to_string(),
+                    "Pick the files...".to_string(),
                     Icon::Import.to_yarpui_icon(
                         appearance
                             .theme()
@@ -433,7 +433,7 @@ impl ImportModalBody {
         let link_to_document = appearance
             .ui_builder()
             .link(
-                "Learn about file support and formatting".to_string(),
+                "Read the regs on file support and formatting".to_string(),
                 Some(FILE_TYPE_DOCS_URL.to_string()),
                 None,
                 self.link_mouse_state.clone(),

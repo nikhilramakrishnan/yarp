@@ -99,20 +99,20 @@ const DIALOG_WIDTH: f32 = 460.;
 const AI_ASSIST_BUTTON_SIZE: f32 = 96.;
 const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
 
-const TITLE_PLACEHOLDER_TEXT: &str = "Untitled workflow";
-const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Add a description";
+const TITLE_PLACEHOLDER_TEXT: &str = "Unnamed beat";
+const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Note the procedure";
 const COMMAND_EDITOR_PLACEHOLDER_TEXT: &str =
     "echo \"Hello {{your_name}}\" # insert arguments with curly braces\n# enter a single-line command or an entire shell script";
 const ARGUMENT_BUTTON_TEXT: &str = "New argument";
 const ARGUMENT_DESCRIPTION_PLACEHOLDER_TEXT: &str = "Description";
 const ARGUMENT_DEFAULT_VALUE_PLACEHOLDER_TEXT: &str = "Default value (optional)";
-const SAVE_BUTTON_TEXT: &str = "Save workflow";
+const SAVE_BUTTON_TEXT: &str = "File the beat";
 const AI_ASSIST_BUTTON_TEXT: &str = "Autofill";
 const AI_ASSIST_LOADING_TEXT: &str = "Loading";
 const DEFAULT_ARGUMENT_PREFIX: &str = "argument";
-const UNSAVED_CHANGES_TEXT: &str = "You have unsaved changes.";
-const KEEP_EDITING_TEXT: &str = "Keep editing";
-const DISCARD_CHANGES_TEXT: &str = "Discard changes";
+const UNSAVED_CHANGES_TEXT: &str = "You've got unfiled amendments.";
+const KEEP_EDITING_TEXT: &str = "Keep at it";
+const DISCARD_CHANGES_TEXT: &str = "Bin the amendments";
 
 #[derive(Default)]
 struct MouseStateHandles {
@@ -691,7 +691,7 @@ impl WorkflowModal {
 
         // Add "Copy workflow text" to menu
         menu_items.push(
-            MenuItemFields::new("Copy workflow text")
+            MenuItemFields::new("Copy the beat as text")
                 .with_on_select_action(WorkflowModalAction::CopyObjectToClipboard)
                 .with_icon(Icon::CopyMenuItem)
                 .into_item(),
@@ -1740,7 +1740,7 @@ impl WorkflowModal {
                 .finish();
 
             let button_with_tool_tip = appearance.ui_builder().tool_tip_on_element(
-                "Generate a title, descriptions, or parameters with Yarp AI".to_string(),
+                "Have Yarp AI write up the title, procedure, or parameters".to_string(),
                 self.button_mouse_states.ai_assist_tool_tip.clone(),
                 rendered_button,
                 ParentAnchor::BottomMiddle,
