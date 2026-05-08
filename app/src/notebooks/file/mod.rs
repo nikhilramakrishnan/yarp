@@ -779,7 +779,7 @@ impl FileNotebookView {
         Align::new(
             appearance
                 .ui_builder()
-                .paragraph("Missing source file".to_string())
+                .paragraph("Source file off the books".to_string())
                 .with_style(self.state_style(appearance))
                 .build()
                 .finish(),
