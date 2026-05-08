@@ -468,11 +468,14 @@ impl AboutPageWidget {
         };
         // read_inbox drains every queued message, not just the displayed one,
         // so the label tells officers when they're clearing more than the latest.
+        // On a 10-13 the ack reads as 'en route' instead of 'copy/all clear' —
+        // acknowledging an emergency is responding to it, not just receiving it.
         let pending = radio::peek_inbox().len();
-        let label = if pending > 1 {
-            format!("10-4, all clear ({pending})")
-        } else {
-            "10-4, copy".to_string()
+        let label = match (emergency, pending) {
+            (true, 0..=1) => "10-4, en route".to_string(),
+            (true, n) => format!("10-4, en route ({n})"),
+            (false, 0..=1) => "10-4, copy".to_string(),
+            (false, n) => format!("10-4, all clear ({n})"),
         };
         let theme = appearance.theme();
         let ui_builder = appearance.ui_builder();
