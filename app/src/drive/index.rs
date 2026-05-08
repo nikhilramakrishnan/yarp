@@ -4838,7 +4838,7 @@ impl DriveIndex {
             }
             if !FeatureFlag::SharedWithMe.is_enabled() || access_level.can_delete() {
                 menu_items.push(
-                    MenuItemFields::new("Delete forever")
+                    MenuItemFields::new("Burn the file")
                         .with_on_select_action(DriveIndexAction::DeleteObject {
                             cloud_object_type_and_id: *cloud_object_type_and_id,
                         })

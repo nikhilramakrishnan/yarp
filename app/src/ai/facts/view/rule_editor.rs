@@ -145,7 +145,7 @@ impl RuleEditorView {
         });
 
         let delete_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Delete rule", DangerSecondaryTheme)
+            ActionButton::new("Strike rule off", DangerSecondaryTheme)
                 .with_icon(Icon::Trash)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(RuleEditorViewAction::Delete);

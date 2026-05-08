@@ -1262,7 +1262,7 @@ impl CodeFooterView {
                     .to_yarpui_icon(ThemeFill::Solid(text_color))
                     .finish()
             },
-            "Remove server",
+            "Strike server off",
             CodeFooterViewAction::RemoveServer,
         )
     }
