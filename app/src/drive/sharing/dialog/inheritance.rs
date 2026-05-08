@@ -76,14 +76,14 @@ impl InheritanceState {
                         .with_children([prefix, folder_link])
                         .with_cross_axis_alignment(CrossAxisAlignment::Center)
                         .finish(),
-                    tooltip_text: "Edit inherited permissions on the parent folder",
+                    tooltip_text: "Amend the clearances on the parent folder",
                 }
             }
             None => InheritanceDetails {
                 source_label: style::detail_text("Inherited permission", appearance)
                     .build()
                     .finish(),
-                tooltip_text: "Cannot edit inherited permissions",
+                tooltip_text: "Inherited clearances — handled at the parent",
             },
         }
     }

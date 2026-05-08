@@ -1790,7 +1790,7 @@ impl SharingDialog {
             .ui_builder()
             .wrappable_text(
                 format!(
-                    "Live session started at {} on {}",
+                    "On the air since {} on {}",
                     started_at.format("%l:%M%P"),
                     started_at.format("%m/%d"),
                 ),

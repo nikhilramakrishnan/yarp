@@ -4537,7 +4537,7 @@ impl DriveIndex {
                     {
                         if let Some(ai_document_id) = notebook.model().ai_document_id {
                             menu_items.push(
-                                MenuItemFields::new("Attach to active session")
+                                MenuItemFields::new("Hand off to the open case")
                                     .with_on_select_action(DriveIndexAction::AttachPlanAsContext(
                                         ai_document_id,
                                     ))
