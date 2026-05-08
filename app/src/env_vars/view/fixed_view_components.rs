@@ -28,7 +28,7 @@ const VARIABLE_DIVIDER_HEIGHT: f32 = 2.;
 const SECTION_FONT_SIZE: f32 = 16.;
 const BUTTON_HEIGHT: f32 = 32.;
 
-const SAVE_BUTTON_TEXT: &str = "Save";
+const SAVE_BUTTON_TEXT: &str = "File it";
 const VARIABLES_LABEL_TEXT: &str = "Variables";
 
 /// This file contains components that fixed in the view,

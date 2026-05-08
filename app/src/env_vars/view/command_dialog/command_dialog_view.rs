@@ -31,7 +31,7 @@ const ELEMENT_SPACING: f32 = 10.;
 const EDITOR_DIVIDE: f32 = 6.;
 
 const SECRET_SPAN: &str = "Secret command";
-const SAVE_BUTTON_LABEL: &str = "Save";
+const SAVE_BUTTON_LABEL: &str = "File it";
 const CANCEL_BUTTON_LABEL: &str = "Stand down";
 const NAME_PLACEHOLDER_TEXT: &str = "Name";
 const COMMAND_PLACEHOLDER_TEXT: &str = "Command";

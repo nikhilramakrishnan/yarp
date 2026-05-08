@@ -63,7 +63,7 @@ const KEYBINDINGS_PAGE_SHORTCUT: &str = "workspace:toggle_keybindings_page";
 const RESET_BUTTON_TEXT: &str = "Default";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const CLEAR_BUTTON_TEXT: &str = "Clear";
-const SAVE_BUTTON_TEXT: &str = "Save";
+const SAVE_BUTTON_TEXT: &str = "File it";
 
 /// Notifier for custom keybinding changed. Views could subscribe to this for
 /// KeybindingChangedEvent.
