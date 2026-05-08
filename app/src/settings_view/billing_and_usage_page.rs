@@ -1406,7 +1406,7 @@ impl UsageWidget {
                 on_click_action: None,
                 secondary_text: None,
                 tooltip_override_text: Some(
-                    "Sets the monthly overage spending limit beyond the plan amount".to_string(),
+                    "Sets the monthly overage spending cap past the playbook quota.".to_string(),
                 ),
             },
         );
@@ -1739,7 +1739,7 @@ impl UsageWidget {
             // they're on an Enterprise-like plan. For admins, we show them a message to contact their
             // Account Executive.
             (false, false, true) => {
-                let paragraph_text = "Contact your Account Executive for more add-on credits.";
+                let paragraph_text = "Radio your Account Executive to stock more add-on credits.";
                 Some(
                     ui_builder
                         .paragraph(paragraph_text)
@@ -1754,7 +1754,7 @@ impl UsageWidget {
             // Every other case relates to not being a team admin. If you aren't an admin, we show
             // a generic message telling you to talk to them.
             (_, _, false) => {
-                let paragraph_text = "Contact a team admin to purchase add-on credits.";
+                let paragraph_text = "Radio the chief to pick up add-on credits for the squad.";
                 Some(
                     ui_builder
                         .paragraph(paragraph_text)
@@ -2122,7 +2122,7 @@ impl UsageWidget {
             } else if would_exceed_limit {
                 let warning_fragments = vec![
                     FormattedTextFragment::plain_text(
-                        "Reloading would exceed your monthly limit. ",
+                        "Reloading would blow past your monthly cap. ",
                     ),
                     FormattedTextFragment::hyperlink_action(
                         "Increase your limit",
@@ -2282,8 +2282,8 @@ impl UsageWidget {
                     on_click_action: None,
                     secondary_text: None,
                     tooltip_override_text: match info.is_current_user {
-                        true => Some("Your credit limit is prorated because you joined midway through the billing cycle.".to_string()),
-                        false => Some("This credit limit is prorated because this user joined midway through the billing cycle.".to_string()),
+                        true => Some("Your credit cap is prorated — you signed on midway through the billing cycle.".to_string()),
+                        false => Some("This credit cap is prorated — this officer signed on midway through the billing cycle.".to_string()),
                     },
                 },
             ))
@@ -2672,7 +2672,7 @@ impl UsageWidget {
                 )
                 .with_child(
                     Text::new(
-                        "Kick off an agent task to view usage history here.",
+                        "Send an agent on patrol to fill the logbook here.",
                         appearance.ui_font_family(),
                         14.,
                     )
@@ -3121,7 +3121,7 @@ impl UsageWidget {
                 } else {
                     // Non-admin team member - show message to contact admin
                     vec![FormattedTextFragment::plain_text(
-                        "Contact your team admin to resolve billing issues.",
+                        "Radio the chief to clear the billing issue.",
                     )]
                 }
             } else if team.billing_metadata.can_upgrade_to_higher_tier_plan() {
