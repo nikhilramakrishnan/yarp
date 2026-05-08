@@ -261,6 +261,14 @@ impl AboutPageWidget {
         let Some(line) = precinct_latest_dispatch_text() else {
             return Empty::new().finish();
         };
+        // read_inbox drains every queued message, not just the displayed one,
+        // so the label tells officers when they're clearing more than the latest.
+        let pending = radio::peek_inbox().len();
+        let label = if pending > 1 {
+            format!("10-4, all clear ({pending})")
+        } else {
+            "10-4, copy".to_string()
+        };
         let ui_builder = appearance.ui_builder();
 
         let dispatch_span = ui_builder.span(line).with_soft_wrap().build().finish();
@@ -284,7 +292,7 @@ impl AboutPageWidget {
                 }),
                 ..Default::default()
             })
-            .with_text_label("10-4, copy".to_owned())
+            .with_text_label(label)
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(WorkspaceAction::AckInboxDispatch);
