@@ -262,7 +262,7 @@ impl CloudSetupGuideView {
             )),
             CREATE_SLACK_INTEGRATION_CMD => Some((
                 WorkflowType::Local(
-                    Workflow::new("Create Slack Integration", CREATE_SLACK_INTEGRATION_CMD)
+                    Workflow::new("Patch in Slack", CREATE_SLACK_INTEGRATION_CMD)
                         .with_arguments(vec![Argument::new("environment_id", ArgumentType::Text)
                             .with_description("ID of the environment to integrate with")]),
                 ),
@@ -270,7 +270,7 @@ impl CloudSetupGuideView {
             )),
             CREATE_LINEAR_INTEGRATION_CMD => Some((
                 WorkflowType::Local(
-                    Workflow::new("Create Linear Integration", CREATE_LINEAR_INTEGRATION_CMD)
+                    Workflow::new("Patch in Linear", CREATE_LINEAR_INTEGRATION_CMD)
                         .with_arguments(vec![Argument::new("environment_id", ArgumentType::Text)
                             .with_description("ID of the environment to integrate with")]),
                 ),
