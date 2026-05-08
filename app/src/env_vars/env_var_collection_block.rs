@@ -45,7 +45,7 @@ use crate::{
 const ENV_VAR_COLLECTION_BODY_VERTICAL_PADDING: f32 = 16.;
 
 const ENV_VAR_COLLECTION_CANCEL_LABEL: &str = "Stand down";
-const ENV_VAR_COLLECTION_ACCEPT_LABEL: &str = "Run";
+const ENV_VAR_COLLECTION_ACCEPT_LABEL: &str = "Move out";
 
 lazy_static! {
     static ref CANCEL_ENV_VAR_COLLECTION_KEYSTROKE: Keystroke = Keystroke {
