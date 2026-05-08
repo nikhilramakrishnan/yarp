@@ -136,7 +136,7 @@ pub fn render_agent_shortcuts_view(
                 key: "/".to_owned(),
                 ..Default::default()
             },
-            text: "for slash commands".into(),
+            text: "for radio codes".into(),
             ..Default::default()
         },
         app,
@@ -216,7 +216,7 @@ pub fn render_agent_shortcuts_view(
             shortcuts.push(render_shortcut(
                 ShortcutProps {
                     keystroke,
-                    text: "toggle auto-accept".into(),
+                    text: "toggle on-the-double".into(),
                     ..Default::default()
                 },
                 app,
