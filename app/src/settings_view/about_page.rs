@@ -145,12 +145,13 @@ impl SettingsWidget for AboutPageWidget {
                     .finish(),
                 )
                 .with_child(version_row.finish())
+                .with_child(self.precinct_status_row(appearance))
                 .with_child(
                     ui_builder
                         .span(format!("On the air as: {}", radio::self_call_sign()))
                         .with_soft_wrap()
                         .build()
-                        .with_margin_top(16.)
+                        .with_margin_top(4.)
                         .finish(),
                 )
                 .with_child(
@@ -177,6 +178,28 @@ impl SettingsWidget for AboutPageWidget {
         )
         .finish()
     }
+}
+
+// Precinct-state banner. Code 4 = all clear; Code 3 = emergency response.
+// Real-world police shorthand mapped onto the radio domain — the banner gives
+// the whole precinct stack a unifying status pulse above the per-row detail.
+fn precinct_status_line() -> (String, bool) {
+    let emergency_count = radio::peek_inbox()
+        .iter()
+        .filter(|m| dispatch_is_emergency(&m.body))
+        .count();
+    if emergency_count > 0 {
+        let phrase = if emergency_count == 1 {
+            "1 emergency pending".to_string()
+        } else {
+            format!("{emergency_count} emergencies pending")
+        };
+        return (format!("Code 3 \u{00B7} {phrase}"), true);
+    }
+    if radio::peers().is_empty() {
+        return ("Code 4 \u{00B7} sole patrol".to_string(), false);
+    }
+    ("Code 4 \u{00B7} all clear".to_string(), false)
 }
 
 fn precinct_population_line() -> String {
@@ -376,6 +399,26 @@ impl AboutPageWidget {
         )
         .with_margin_top(8.)
         .finish()
+    }
+
+    fn precinct_status_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let (line, emergency) = precinct_status_line();
+        let theme = appearance.theme();
+        let ui_builder = appearance.ui_builder();
+        let mut span = ui_builder.span(line).with_soft_wrap();
+        if emergency {
+            span = span.with_style(UiComponentStyles {
+                font_color: Some(theme.terminal_colors().normal.red.into()),
+                font_weight: Some(Weight::Semibold),
+                ..Default::default()
+            });
+        } else {
+            span = span.with_style(UiComponentStyles {
+                font_weight: Some(Weight::Semibold),
+                ..Default::default()
+            });
+        }
+        span.build().with_margin_top(16.).finish()
     }
 
     fn precinct_roster_row(&self, appearance: &Appearance) -> Box<dyn Element> {
