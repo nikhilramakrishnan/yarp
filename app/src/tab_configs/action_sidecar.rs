@@ -139,7 +139,7 @@ pub(crate) fn render_action_sidecar(
                 let ui_builder = appearance.ui_builder().clone();
                 move || {
                     ui_builder
-                        .tool_tip("Already the default".into())
+                        .tool_tip("Already on the playbook".into())
                         .build()
                         .finish()
                 }
