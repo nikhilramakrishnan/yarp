@@ -13,8 +13,8 @@ use yarpui::ui_components::components::UiComponent;
 const EDIT_ANYWAY_CTA_LABEL: &str = "Amend anyway";
 const CANCEL_CTA_LABEL: &str = "Stand down";
 const EDIT_ANYWAY_TEXT: &str =
-    "If you take edit controls, the current editor will be forced into view mode";
-const CURRENTLY_EDITED_LABEL: &str = "This notebook is currently being edited";
+    "If you take the pen, the officer holding it gets bumped to read-only.";
+const CURRENTLY_EDITED_LABEL: &str = "Another officer's already on this casebook";
 
 #[derive(Default)]
 struct MouseStateHandles {
