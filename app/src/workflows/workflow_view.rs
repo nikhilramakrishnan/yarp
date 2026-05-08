@@ -1637,7 +1637,7 @@ impl WorkflowView {
                     id
                 } else {
                     log::error!("No client_id obtained for creating workflow");
-                    self.display_error_toast(String::from("Couldn't open the workflow."), ctx);
+                    self.display_error_toast(String::from("Couldn't open the playbook."), ctx);
                     return;
                 };
 
