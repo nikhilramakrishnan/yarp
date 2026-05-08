@@ -315,19 +315,33 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
 fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     let msg = radio::latest_dispatch()?;
     let emergency = dispatch_is_emergency(&msg.body);
-    // Cap body length so a chatty officer can't blow out the layout.
-    const MAX_BODY: usize = 80;
-    let body = if msg.body.chars().count() > MAX_BODY {
-        let truncated: String = msg.body.chars().take(MAX_BODY).collect();
-        format!("{truncated}…")
+    // Hoist the 10-13 prefix out of the quoted body when present — burying
+    // urgency inside quotes ("Latest from … : \"10-13 …\"") makes the eye
+    // work twice. Lifted form ("10-13 from …") puts the code where it lands.
+    let display_body = if emergency {
+        let stripped = msg.body.trim_start().strip_prefix("10-13").unwrap_or(&msg.body);
+        stripped.trim_start_matches([' ', '\t', ':', '-', '\u{00B7}', ',']).to_string()
     } else {
         msg.body.clone()
     };
+    // Cap body length so a chatty officer can't blow out the layout.
+    const MAX_BODY: usize = 80;
+    let body = if display_body.chars().count() > MAX_BODY {
+        let truncated: String = display_body.chars().take(MAX_BODY).collect();
+        format!("{truncated}…")
+    } else {
+        display_body
+    };
     let age = radio::format_dispatch_age(msg.sent_at_unix);
-    let line = format!(
-        "Latest from {} ({age}): \u{201C}{body}\u{201D}",
-        msg.from_call_sign
-    );
+    let lead = if emergency { "10-13" } else { "Latest" };
+    let line = if body.is_empty() {
+        format!("{lead} from {} ({age})", msg.from_call_sign)
+    } else {
+        format!(
+            "{lead} from {} ({age}): \u{201C}{body}\u{201D}",
+            msg.from_call_sign
+        )
+    };
     Some((line, emergency))
 }
 
