@@ -260,7 +260,7 @@ impl RuleView {
         let search_bar = ctx.add_typed_action_view(|_| SearchBar::new(search_editor.clone()));
 
         let add_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("File a rule", NakedTheme)
+            ActionButton::new("File a Standing Order", NakedTheme)
                 .with_icon(Icon::Plus)
                 .on_click(|ctx| ctx.dispatch_typed_action(RuleViewAction::AddRule))
         });
@@ -465,7 +465,7 @@ impl RuleView {
 
     fn render_scope_tabs(&self, appearance: &Appearance) -> Box<dyn Element> {
         let global_tab = Container::new(self.render_scope_tab(
-            "Global",
+            "Station-wide",
             RuleScope::Global,
             appearance,
             self.global_tab_mouse_state.clone(),
@@ -473,7 +473,7 @@ impl RuleView {
         .with_padding_right(4.)
         .finish();
         let project_tab = self.render_scope_tab(
-            "Project based",
+            "By beat",
             RuleScope::ProjectBased,
             appearance,
             self.project_tab_mouse_state.clone(),
@@ -727,12 +727,12 @@ impl RuleView {
         let formatted_name = match name {
             Some(name) => {
                 if name.is_empty() {
-                    "Unfiled rule".to_string()
+                    "Unfiled Standing Order".to_string()
                 } else {
                     name
                 }
             }
-            None => "Unfiled rule".to_string(),
+            None => "Unfiled Standing Order".to_string(),
         };
         // Truncate content to 3 lines
         let formatted_content = if content.split("\n").count() > 3 {
