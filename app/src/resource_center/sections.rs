@@ -60,22 +60,22 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
         section_name: FeatureSection::AdvancedSetup,
         items: vec![
             ContentItem {
-                title: "Use your custom prompt",
-                description: "Set up Yarp to honor your PS1 setting",
+                title: "Bring your own prompt",
+                description: "Sign Yarp on to honor your PS1 setting.",
                 url: "https://github.com/hotfuzz/yarp/terminal/appearance/prompt",
-                button_label: "View documentation",
+                button_label: "Standing Orders",
             },
             ContentItem {
-                title: "Integrate Yarp with your IDE",
-                description: "Configure Yarp to launch from your most used development tools",
+                title: "Patch Yarp into your IDE",
+                description: "Wire Yarp up to launch straight from your kit of choice.",
                 url: "https://github.com/hotfuzz/yarp/terminal/integrations-and-plugins",
-                button_label: "View documentation",
+                button_label: "Standing Orders",
             },
             ContentItem {
-                title: "How Yarp uses Yarp",
-                description: "Learn how Yarp's engineering team uses their favorite features",
+                title: "How the force runs Yarp",
+                description: "How Yarp's own squad runs the kit.",
                 url: "https://github.com/hotfuzz/yarp/blog/how-yarp-uses-yarp",
-                button_label: "Read article",
+                button_label: "Read the file",
             },
         ],
     };
