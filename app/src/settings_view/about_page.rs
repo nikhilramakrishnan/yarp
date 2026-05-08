@@ -166,13 +166,7 @@ impl SettingsWidget for AboutPageWidget {
                         .with_margin_top(4.)
                         .finish(),
                 )
-                .with_child(
-                    ui_builder
-                        .span(precinct_inbox_line())
-                        .build()
-                        .with_margin_top(4.)
-                        .finish(),
-                )
+                .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
                 .with_child(self.mic_check_row(appearance))
                 .with_child(
@@ -220,11 +214,13 @@ fn precinct_roster_line() -> String {
     }
 }
 
-fn precinct_inbox_line() -> String {
+fn precinct_inbox_line() -> Option<(String, bool)> {
     let inbox = radio::peek_inbox();
     if inbox.is_empty() {
-        return String::new();
+        return None;
     }
+    // Any pending 10-13 turns the whole inbox line red — emergency dominates routine.
+    let emergency = inbox.iter().any(|m| dispatch_is_emergency(&m.body));
     // Count repeats per sender so a chatty officer doesn't crowd the line,
     // and preserve arrival order for predictable rendering.
     let mut order: Vec<String> = Vec::new();
@@ -250,10 +246,12 @@ fn precinct_inbox_line() -> String {
         format!("{total} pending dispatches")
     };
     // One officer (chatty or solo) reads cleaner without the redundant count.
-    if distinct == 1 {
-        return format!("{dispatches} from {roster}.");
-    }
-    format!("{dispatches} from {distinct} officers ({roster}).")
+    let line = if distinct == 1 {
+        format!("{dispatches} from {roster}.")
+    } else {
+        format!("{dispatches} from {distinct} officers ({roster}).")
+    };
+    Some((line, emergency))
 }
 
 fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
@@ -341,6 +339,23 @@ impl AboutPageWidget {
         )
         .with_margin_top(8.)
         .finish()
+    }
+
+    fn precinct_inbox_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let Some((line, emergency)) = precinct_inbox_line() else {
+            return Empty::new().finish();
+        };
+        let theme = appearance.theme();
+        let ui_builder = appearance.ui_builder();
+        let mut span = ui_builder.span(line).with_soft_wrap();
+        if emergency {
+            span = span.with_style(UiComponentStyles {
+                font_color: Some(theme.terminal_colors().normal.red.into()),
+                font_weight: Some(Weight::Semibold),
+                ..Default::default()
+            });
+        }
+        span.build().with_margin_top(4.).finish()
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
