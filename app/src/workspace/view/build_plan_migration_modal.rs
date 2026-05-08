@@ -566,9 +566,9 @@ impl BuildPlanMigrationModal {
 
         let features_header = Self::create_text(
             if is_business {
-                "The new Business plan comes with:"
+                "On the Business beat you get:"
             } else {
-                "Build comes with:"
+                "On the Build beat you get:"
             }
             .to_string(),
             font_family,
@@ -579,7 +579,7 @@ impl BuildPlanMigrationModal {
 
         let base_credits = Self::create_bullet_item(
             format!(
-                "{} base credits per month",
+                "{} base rations per month",
                 base_credits_limit.separate_with_commas()
             ),
             font_family,
@@ -588,14 +588,14 @@ impl BuildPlanMigrationModal {
         );
 
         let reload_credits = Self::create_bullet_item(
-            "Access to Reload credits and volume-based discounts".to_string(),
+            "Reload rations and volume-based clearances".to_string(),
             font_family,
             14.,
             text_color,
         );
 
         let byok = Self::create_bullet_item(
-            "Bring your own API key".to_string(),
+            "Bring your own warrant".to_string(),
             font_family,
             14.,
             text_color,
@@ -617,7 +617,7 @@ impl BuildPlanMigrationModal {
             features_list.add_child(sso);
 
             let zdr = Self::create_bullet_item(
-                "Automatically enforced team-wide Zero Data Retention".to_string(),
+                "Squad-wide Zero Data Retention enforced on every beat".to_string(),
                 font_family,
                 14.,
                 text_color,
@@ -630,7 +630,7 @@ impl BuildPlanMigrationModal {
         features_list.add_child(and_more);
 
         let learn_more_fragments = vec![
-            FormattedTextFragment::plain_text("Learn more on our "),
+            FormattedTextFragment::plain_text("Read the file on our "),
             FormattedTextFragment::hyperlink("pricing page", "https://github.com/hotfuzz/yarp/pricing"),
             FormattedTextFragment::plain_text("."),
         ];
@@ -789,7 +789,7 @@ impl TypedActionView for BuildPlanMigrationModal {
                 let workspaces = UserWorkspaces::as_ref(ctx);
                 let Some(team_uid) = workspaces.current_team_uid() else {
                     ctx.emit(BuildPlanMigrationModalEvent::ShowToast {
-                        message: "Oops, something went wrong; your team data could not be found."
+                        message: "We've got trouble — couldn't pull the squad's records."
                             .to_string(),
                         flavor: ToastFlavor::Error,
                     });
