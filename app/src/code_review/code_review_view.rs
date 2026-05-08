@@ -7038,9 +7038,9 @@ impl CodeReviewView {
         if FeatureFlag::FileAndDiffSetComments.is_enabled() && has_changes {
             let (comment_label, comment_icon) = if self.get_existing_diffset_comment(ctx).is_some()
             {
-                ("Show saved comment", Icon::MessageText)
+                ("Open the pinned note", Icon::MessageText)
             } else {
-                ("Add comment", Icon::MessagePlusSquare)
+                ("Pin a note", Icon::MessagePlusSquare)
             };
 
             items.push(
