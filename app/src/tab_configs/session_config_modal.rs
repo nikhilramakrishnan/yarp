@@ -175,13 +175,13 @@ impl SessionConfigModal {
         .finish();
 
         let subtitle_text = if self.show_session_type_row {
-            "Set up a reusable starting point for your tabs. \
-             Pick a repo, choose a session type, and optionally attach a worktree. \
-             Use it whenever you want to open a new tab with this setup."
+            "File a reusable starting point for your tabs. \
+             Pick a repo, pick a session type, and optionally pin a worktree. \
+             Call it in whenever you want to clock on a new tab with this setup."
         } else {
-            "Set up a reusable starting point for your tabs. \
-             Pick a repo, optionally attach a worktree, and \
-             use it whenever you want to open a new tab with this setup."
+            "File a reusable starting point for your tabs. \
+             Pick a repo, optionally pin a worktree, and \
+             call it in whenever you want to clock on a new tab with this setup."
         };
         let subtitle =
             FormattedTextElement::from_str(subtitle_text, appearance.ui_font_family(), 14.)
