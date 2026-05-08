@@ -70,7 +70,7 @@ pub struct CodexModal {
 impl CodexModal {
     pub fn new(ctx: &mut ViewContext<Self>) -> Self {
         let cta_button = ctx.add_view(|_| {
-            ActionButton::new("Use latest codex model", WhiteButtonTheme)
+            ActionButton::new("Enlist latest Codex", WhiteButtonTheme)
                 .with_icon(Icon::OpenAILogo)
                 .with_full_width(true)
                 .on_click(|ctx| {
@@ -109,7 +109,7 @@ impl CodexModal {
 
         // Title
         let title = FormattedTextElement::from_str(
-            "Use Codex models in Yarp",
+            "Enlist Codex models in Yarp",
             appearance.ui_font_family(),
             24.,
         )
@@ -134,8 +134,8 @@ impl CodexModal {
 
         // Description - second paragraph
         let description_2 = FormattedTextElement::from_str(
-            "Use Codex directly in Fuzz and leverage \
-            features like in-app code review, agent session sharing and file editing.",
+            "Sign Codex on directly in Fuzz and use station kit \
+            like in-app code review, briefing sharing and file editing.",
             appearance.ui_font_family(),
             14.,
         )
