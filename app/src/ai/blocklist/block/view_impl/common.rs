@@ -446,8 +446,8 @@ pub fn render_yarping_indicator<V: View>(
     if let Some(take_over_button_props) = props.take_over_lrc_control_button {
         has_buttons = true;
         buttons_row.add_child(render_switch_control_to_user_button(
-            "Take over",
-            "Take over control of the command",
+            "Take the wheel",
+            "Take the wheel from the PC",
             take_over_button_props,
             appearance,
         ));
@@ -755,9 +755,9 @@ fn render_hide_responses_button(
 ) -> Box<dyn Element> {
     let theme = appearance.theme();
     let button_text = if should_hide_responses {
-        "Show responses"
+        "Pull the file open"
     } else {
-        "Hide responses"
+        "Stash"
     };
     let text = Container::new(
         Text::new(
@@ -771,9 +771,9 @@ fn render_hide_responses_button(
     .finish();
 
     let tooltip_text = if should_hide_responses {
-        "Show agent responses"
+        "Pull the PC's file open"
     } else {
-        "Hide agent responses"
+        "Stash the PC's file"
     };
 
     render_yarping_indicator_button(
@@ -835,7 +835,7 @@ fn render_stop_button(props: ButtonProps, appearance: &Appearance) -> Box<dyn El
         appearance,
         stop_icon,
         props.keystroke,
-        "Stop agent task".to_string(),
+        "Stand the PC down".to_string(),
         props.is_active,
         |ctx: &mut EventContext<'_>| {
             ctx.dispatch_typed_action(BlocklistAIStatusBarAction::Stop);
@@ -862,9 +862,9 @@ fn render_queue_next_prompt_button(
     .finish();
 
     let tooltip_text = if props.is_active {
-        "Auto-queue is on: your next prompt will be queued"
+        "Queue's open: next orders will line up"
     } else {
-        "Auto-queue next prompt while agent is responding"
+        "Queue next orders while PC's on the radio"
     };
 
     render_yarping_indicator_button(
@@ -899,9 +899,9 @@ fn render_auto_approve_button(props: ButtonProps, appearance: &Appearance) -> Bo
     .finish();
 
     let tooltip_text = if props.is_active {
-        "Turn off auto-approve all agent actions"
+        "Stop rubber-stamping the PC's call-outs"
     } else {
-        "Auto-approve all agent actions for this task"
+        "Rubber-stamp every PC call-out for this beat"
     };
 
     render_yarping_indicator_button(
@@ -965,7 +965,7 @@ fn render_force_refresh_inline(
         let mut stack = Stack::new().with_child(text_with_margin);
         if state.is_hovered() {
             let tool_tip = ui_builder
-                .tool_tip("Ask the agent to check this command now, skipping its timer.".to_owned())
+                .tool_tip("Have the PC look in on this call-out now, skip the timer.".to_owned())
                 .build()
                 .finish();
             stack.add_positioned_overlay_child(
@@ -2954,11 +2954,11 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
                 .to_string();
 
             format!(
-                "{ERROR_APOLOGY_TEXT}\n\nYou've reached your credit limit. Your credit limit resets on {formatted_next_refresh_time}.",
+                "{ERROR_APOLOGY_TEXT}\n\nRations are out. Top up on {formatted_next_refresh_time}.",
             )
         }
         RenderableAIError::ServerOverloaded => {
-            "There has been an inneraction. Please try again later.".to_string()
+            "Dispatch is jammed up. Try again in a tick.".to_string()
         }
         RenderableAIError::InternalYarpError => {
             format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_YARP_ERROR}")
@@ -2971,10 +2971,10 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
             if *will_attempt_resume {
                 if *waiting_for_network {
                     format!(
-                        "{error_message}\n\nWill resume conversation when network connectivity is restored..."
+                        "{error_message}\n\nResuming the call once the radio's back up..."
                     )
                 } else {
-                    format!("{error_message}\n\nAttempting to resume conversation...")
+                    format!("{error_message}\n\nResuming the call...")
                 }
             } else {
                 format!("{ERROR_APOLOGY_TEXT}\n\n{error_message}")
