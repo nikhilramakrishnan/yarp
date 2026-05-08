@@ -182,7 +182,7 @@ impl AtContextMenuDisabledReason {
     }
 }
 
-const AT_CONTEXT_TOOLTIP: &str = "Attach context";
+const AT_CONTEXT_TOOLTIP: &str = "Pin context to the case";
 
 const BLURRED_OPACITY: Opacity = 50;
 
