@@ -4863,7 +4863,7 @@ impl TerminalView {
                     let block_id = BlockId::from(block.id().to_string());
                     let suggestion = AgentModePromptSuggestion::Success(PromptSuggestion {
                         id: Uuid::new_v4().to_string(),
-                        label: Some("Execute this plan".to_string()),
+                        label: Some("Move out on this call-out".to_string()),
                         prompt: "Execute this plan".to_string(),
                         coding_query_context: None,
                         static_prompt_suggestion_name: Some("EXECUTE_CREATED_PLAN".to_string()),
