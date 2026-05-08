@@ -91,14 +91,8 @@ fn main() -> Result<()> {
 /// so peers don't have to wait for prune-on-read to forget us. Best-effort;
 /// silently swallows IO errors.
 fn write_radio_beacon() -> Option<radio::BeaconGuard> {
-    let beacon = radio::Beacon::new("dev.yarp.Yarp", default_call_sign());
+    let beacon = radio::Beacon::new("dev.yarp.Yarp", radio::self_call_sign());
     radio::BeaconGuard::register(&beacon).ok()
-}
-
-fn default_call_sign() -> String {
-    std::env::var("USER")
-        .or_else(|_| std::env::var("USERNAME"))
-        .unwrap_or_else(|_| format!("Officer-{}", std::process::id()))
 }
 
 /// On first launch, drop a commented template at `~/.yarp/llm_provider.json`

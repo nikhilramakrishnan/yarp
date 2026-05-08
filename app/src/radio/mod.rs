@@ -54,6 +54,56 @@ pub fn update_tab_title(call_sign: impl Into<String>, tab_title: impl Into<Strin
     let _ = register(&beacon);
 }
 
+/// The call sign this process would broadcast on registration. Mirrors
+/// `bin/yarp.rs::default_call_sign` so other modules (status bar, about
+/// page) can render "you are X on the air" without re-deriving it.
+pub fn self_call_sign() -> String {
+    std::env::var("USER")
+        .or_else(|_| std::env::var("USERNAME"))
+        .unwrap_or_else(|_| format!("Officer-{}", std::process::id()))
+}
+
+/// View-friendly summary of a peer on the channel — what a picker UI or
+/// `/radio` listing wants to render. Uptime is computed at read time.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PeerSummary {
+    pub pid: u32,
+    pub call_sign: String,
+    pub tab_title: Option<String>,
+    pub hostname: String,
+    pub uptime_secs: u64,
+}
+
+impl PeerSummary {
+    fn from_beacon(beacon: Beacon, now_unix: u64) -> Self {
+        let uptime_secs = now_unix.saturating_sub(beacon.started_at_unix);
+        Self {
+            pid: beacon.pid,
+            call_sign: beacon.call_sign,
+            tab_title: beacon.tab_title,
+            hostname: beacon.hostname,
+            uptime_secs,
+        }
+    }
+}
+
+/// Active peers on the radio, excluding this process. Sorted by call sign
+/// for stable picker rendering.
+pub fn peers() -> Vec<PeerSummary> {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let self_pid = std::process::id();
+    let mut out: Vec<PeerSummary> = list_active()
+        .into_iter()
+        .filter(|b| b.pid != self_pid)
+        .map(|b| PeerSummary::from_beacon(b, now))
+        .collect();
+    out.sort_by(|a, b| a.call_sign.cmp(&b.call_sign).then(a.pid.cmp(&b.pid)));
+    out
+}
+
 fn hostname() -> String {
     std::env::var("HOSTNAME")
         .or_else(|_| std::env::var("COMPUTERNAME"))
@@ -195,6 +245,22 @@ mod tests {
     fn with_tab_title_sets_the_field() {
         let beacon = Beacon::new("dev.yarp.Yarp", "Sandford").with_tab_title("Sandford Precinct");
         assert_eq!(beacon.tab_title.as_deref(), Some("Sandford Precinct"));
+    }
+
+    #[test]
+    fn peer_summary_uptime_handles_clock_skew() {
+        // started_at in the future => saturating sub clamps to 0 instead of
+        // panicking on the underflow.
+        let beacon = Beacon {
+            pid: 1,
+            started_at_unix: 1000,
+            hostname: "h".into(),
+            app_id: "dev.yarp.Yarp".into(),
+            call_sign: "Sandford".into(),
+            tab_title: None,
+        };
+        let summary = PeerSummary::from_beacon(beacon, 500);
+        assert_eq!(summary.uptime_secs, 0);
     }
 
     #[test]
