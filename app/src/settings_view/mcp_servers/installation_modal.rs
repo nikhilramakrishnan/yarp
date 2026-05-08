@@ -421,7 +421,7 @@ impl InstallationModalBody {
         let source_text = if is_shared {
             "Shared from team"
         } else {
-            "From another device"
+            "From another station"
         };
 
         let label_text = Text::new_inline(

@@ -254,7 +254,7 @@ impl From<ServerCardStatus> for ServerCardOptions {
                     indicator_type: StatusElementTypes::Circle,
                     color: StatusColor::Yellow,
                 }),
-                status_line: Some("Starting server...".to_string()),
+                status_line: Some("Server's signing on...".to_string()),
                 background: Background::Filled,
                 full_card_clickable: false,
             },
@@ -274,7 +274,7 @@ impl From<ServerCardStatus> for ServerCardOptions {
                     indicator_type: StatusElementTypes::Circle,
                     color: StatusColor::Yellow,
                 }),
-                status_line: Some("Authenticating...".to_string()),
+                status_line: Some("Checking the warrant...".to_string()),
                 background: Background::Filled,
                 full_card_clickable: false,
             },
@@ -314,7 +314,7 @@ impl From<ServerCardStatus> for ServerCardOptions {
                     indicator_type: StatusElementTypes::Circle,
                     color: StatusColor::Neutral,
                 }),
-                status_line: Some("Shutting down...".to_string()),
+                status_line: Some("Standing down...".to_string()),
                 background: Background::Filled,
                 full_card_clickable: false,
             },
@@ -491,7 +491,7 @@ impl ServerCardView {
 
         if tools.is_empty() {
             return Text::new(
-                "No tools available".to_string(),
+                "No kit available".to_string(),
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
@@ -909,7 +909,7 @@ impl ServerCardView {
             .build_icon_button(
                 appearance,
                 Icon::Refresh,
-                "Server update available".to_string(),
+                "Server update on the wire".to_string(),
                 self.mouse_handles.update_icon_button.clone(),
             )
             .on_click(move |ctx, _, _| {
