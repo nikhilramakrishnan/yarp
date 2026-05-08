@@ -130,7 +130,7 @@ impl AIContextMenuCategory {
             AIContextMenuCategory::Plans => "Plans",
             AIContextMenuCategory::Diffs => "Diffs",
             AIContextMenuCategory::Docs => "Docs",
-            AIContextMenuCategory::Tasks => "Past tasks",
+            AIContextMenuCategory::Tasks => "Closed cases",
             AIContextMenuCategory::Rules => "Rules",
             AIContextMenuCategory::Servers => "Servers and integrations",
             AIContextMenuCategory::Terminal => "Terminal",
@@ -139,7 +139,7 @@ impl AIContextMenuCategory {
             AIContextMenuCategory::RecentBlock => "Most recent block",
             AIContextMenuCategory::Code => "Code",
             AIContextMenuCategory::DiffSet => "Diff sets",
-            AIContextMenuCategory::Conversations => "Conversations",
+            AIContextMenuCategory::Conversations => "Case files",
             AIContextMenuCategory::Skills => "Skills",
         }
     }
