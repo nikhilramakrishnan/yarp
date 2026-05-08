@@ -366,24 +366,24 @@ impl AgentRunDisplayStatus {
 impl std::fmt::Display for AgentRunDisplayStatus {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AgentRunDisplayStatus::TaskQueued => write!(f, "Queued"),
-            AgentRunDisplayStatus::TaskPending => write!(f, "Pending"),
-            AgentRunDisplayStatus::TaskClaimed => write!(f, "Claimed"),
+            AgentRunDisplayStatus::TaskQueued => write!(f, "On the duty roster"),
+            AgentRunDisplayStatus::TaskPending => write!(f, "Awaiting orders"),
+            AgentRunDisplayStatus::TaskClaimed => write!(f, "Picked up"),
             AgentRunDisplayStatus::TaskInProgress
-            | AgentRunDisplayStatus::ConversationInProgress => write!(f, "In progress"),
+            | AgentRunDisplayStatus::ConversationInProgress => write!(f, "On the beat"),
             AgentRunDisplayStatus::TaskSucceeded | AgentRunDisplayStatus::ConversationSucceeded => {
-                write!(f, "Done")
+                write!(f, "Wrapped up")
             }
-            AgentRunDisplayStatus::TaskFailed => write!(f, "Failed"),
+            AgentRunDisplayStatus::TaskFailed => write!(f, "Botched"),
             AgentRunDisplayStatus::TaskError | AgentRunDisplayStatus::ConversationError => {
-                write!(f, "Error")
+                write!(f, "Went sideways")
             }
             AgentRunDisplayStatus::TaskBlocked { .. }
-            | AgentRunDisplayStatus::ConversationBlocked { .. } => write!(f, "Blocked"),
+            | AgentRunDisplayStatus::ConversationBlocked { .. } => write!(f, "Stuck"),
             AgentRunDisplayStatus::TaskCancelled | AgentRunDisplayStatus::ConversationCancelled => {
-                write!(f, "Cancelled")
+                write!(f, "Stood down")
             }
-            AgentRunDisplayStatus::TaskUnknown => write!(f, "Failed"),
+            AgentRunDisplayStatus::TaskUnknown => write!(f, "Botched"),
         }
     }
 }
