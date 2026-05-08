@@ -76,11 +76,11 @@ pub fn render_inline_notifications_discovery_banner(
 
     let (title, buttons) = match notifications_mode {
         NotificationsMode::Dismissed => (
-            "We won't show this banner again, but you can always go to Settings to enable notifications.",
+            "We won't flag this again — Standing Orders has the radio chatter switch if you want it on.",
             vec![],
         ),
         NotificationsMode::Disabled => (
-            "Notifications were turned off, but you can always go to Settings to enable notifications.",
+            "Radio chatter's off — Standing Orders has the switch if you want it back on.",
             vec![],
         ),
         NotificationsMode::Unset => (
@@ -108,11 +108,11 @@ pub fn render_inline_notifications_discovery_banner(
             let (title, docs_button) = match request_outcome {
                 Some(request_outcome) => match request_outcome {
                     RequestPermissionsOutcome::Accepted => (
-                        "Success! You are now ready to receive desktop notifications.",
+                        "Right then — radio chatter's wired in. You'll catch the dispatches now.",
                         learn_more_button,
                     ),
                     RequestPermissionsOutcome::PermissionsDenied => (
-                        "Yarp was denied permissions to send you notifications.",
+                        "Yarp's been waved off the radio — no clearance to chime in.",
                         troubleshoot_button,
                     ),
                     RequestPermissionsOutcome::OtherError { .. } => (
@@ -121,7 +121,7 @@ pub fn render_inline_notifications_discovery_banner(
                     ),
                 },
                 None => (
-                    "Don't forget to 'Allow' the permissions request to finish setting up notifications.",
+                    "Wave 'Allow' through on the request to wire up the radio chatter.",
                     learn_more_button,
                 ),
             };
