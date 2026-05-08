@@ -73,38 +73,35 @@ use yarpui::fonts::Weight;
 
 const FONT_SIZE: f32 = 12.;
 
-const SAFE_MODE_TITLE: &str = "Secret redaction";
+const SAFE_MODE_TITLE: &str = "Classified-info redaction";
 static SAFE_MODE_DESCRIPTION: LazyLock<&'static str> = LazyLock::new(|| {
-    "When this setting is enabled, Yarp will scan blocks, the contents of \
-        Yarp Drive objects, and Fuzz prompts for potential sensitive \
-        information and prevent saving or sending this data to any \
-        servers. You can customize this list via regexes."
+    "With this on, Yarp sweeps blocks, Yarp Drive case files, and Fuzz \
+        prompts for classified material and stops it from being filed or \
+        radioed to any HQ. Tune the list with regexes."
 });
-const USER_SECRET_REGEX_TITLE: &str = "Custom secret redaction";
+const USER_SECRET_REGEX_TITLE: &str = "Custom classified redaction";
 const USER_SECRET_REGEX_DESCRIPTION: &str =
-    "Use regex to define additional secrets or data you'd like to redact. This will take effect \
-    when the next command runs. You can use the inline (?i) flag as a prefix to your regex \
-    to make it case-insensitive.";
+    "Use regex to flag extra classified material to redact. Takes effect on the next call-out. \
+    Prefix your regex with the (?i) flag to make it case-insensitive.";
 const TELEMETRY_DESCRIPTION_OLD: &str =
-    "App analytics help us make the product better for you. We only collect \
-    app usage metadata, never console input or output.";
-const TELEMETRY_TITLE: &str = "Help improve Yarp";
+    "Dispatch logs help us tighten up the kit. We only collect app usage \
+    metadata — never console input or output.";
+const TELEMETRY_TITLE: &str = "Help improve the station";
 const TELEMETRY_DESCRIPTION: &str =
-    "App analytics help us make the product better for you. We may collect \
-    certain console interactions to improve Yarp's AI capabilities.";
+    "Dispatch logs help us tighten up the kit. We may collect certain \
+    console traffic to sharpen Yarp's AI radio.";
 const TELEMETRY_FREE_TIER_NOTE: &str =
-    "On the free tier, analytics must be enabled to use AI features.";
+    "On the free duty roster, dispatch logs must be on for the AI radio to work.";
 const TELEMETRY_DOCS_URL: &str =
     "https://github.com/hotfuzz/yarp/support-and-community/privacy-and-security/privacy#what-telemetry-data-does-yarp-collect-and-why";
 
-const DATA_MANAGEMENT_TITLE: &str = "Manage your data";
+const DATA_MANAGEMENT_TITLE: &str = "Manage the case files";
 const DATA_MANAGEMENT_DESCRIPTION: &str =
-    "At any time, you may choose to delete your Yarp account permanently. \
-    You will no longer be able to use Yarp.";
-const DATA_MANAGEMENT_LINK_TEXT: &str = "Visit the data management page";
+    "Hand in your badge any time and we'll incinerate the records. You'll be off duty for good.";
+const DATA_MANAGEMENT_LINK_TEXT: &str = "Visit the records office";
 
-const PRIVACY_POLICY_TITLE: &str = "Privacy policy";
-const PRIVACY_POLICY_LINK_TEXT: &str = "Read Yarp's privacy policy";
+const PRIVACY_POLICY_TITLE: &str = "Standing Orders on privacy";
+const PRIVACY_POLICY_LINK_TEXT: &str = "Read Yarp's privacy Standing Orders";
 
 pub fn data_management_url(custom_token: Option<&str>) -> String {
     match custom_token {
@@ -796,7 +793,7 @@ impl SecretRedactionWidget {
         if is_enterprise_tab_active {
             row.add_child(Shrinkable::new(1., Empty::new().finish()).finish());
             row.add_child(self.render_info(
-                "Enterprise secret redaction cannot be modified.".to_string(),
+                "Squad-level redaction is locked down.".to_string(),
                 appearance,
             ));
         }
@@ -915,7 +912,7 @@ impl SecretRedactionWidget {
 
         if enterprise_regex_list.is_empty() {
             return ui_builder
-                .paragraph("No enterprise regexes have been configured by your organization.")
+                .paragraph("Your squad hasn't filed any redaction rules.")
                 .with_style(UiComponentStyles {
                     font_color: Some(description_text_color),
                     ..Default::default()
@@ -1191,7 +1188,7 @@ impl SettingsWidget for SecretRedactionWidget {
                     Container::new({
                         if is_enterprise_enabled {
                             self.render_info(
-                                "Enabled by your organization.".to_string(),
+                                "Mandated by your squad.".to_string(),
                                 appearance,
                             )
                         } else {
@@ -1244,7 +1241,7 @@ impl SettingsWidget for SecretRedactionWidget {
 
             // Create the label with local-only icon if needed
             let label_with_icon = super::settings_page::render_dropdown_item_label(
-                "Secret visual redaction mode".to_string(),
+                "Visual redaction of classified info".to_string(),
                 None,
                 local_only_icon_state,
                 None,
@@ -1518,7 +1515,7 @@ impl SettingsWidget for AppAnalyticsWidget {
         } else {
             switch
                 .with_tooltip(TooltipConfig {
-                    text: "This setting is managed by your organization.".to_string(),
+                    text: "Locked down by your squad.".to_string(),
                     styles: ui_builder.default_tool_tip_styles(),
                 })
                 .disable()
@@ -1577,7 +1574,7 @@ impl SettingsWidget for AppAnalyticsWidget {
             Align::new(
                 ui_builder
                     .link(
-                        "Read more about Yarp's use of data".into(),
+                        "Read up on how Yarp handles the records".into(),
                         Some(TELEMETRY_DOCS_URL.into()),
                         None,
                         self.docs_link_mouse_state.clone(),
@@ -1627,7 +1624,7 @@ impl SettingsWidget for CrashReportsWidget {
         let privacy_settings = PrivacySettings::as_ref(app);
         Flex::column()
             .with_child(render_body_item::<PrivacyPageAction>(
-                "Send crash reports".into(),
+                "Radio in crash reports".into(),
                 None,
                 // Crash report state is always synced to cloud, so no need to show local only icon.
                 LocalOnlyIconState::Hidden,
@@ -1731,7 +1728,7 @@ impl SettingsWidget for CloudConversationStorageWidget {
         } else {
             switch
                 .with_tooltip(TooltipConfig {
-                    text: "This setting is managed by your organization.".to_string(),
+                    text: "Locked down by your squad.".to_string(),
                     styles: ui_builder.default_tool_tip_styles(),
                 })
                 .disable()
@@ -1805,7 +1802,7 @@ impl SettingsWidget for NetworkLogWidget {
         let ui_builder = appearance.ui_builder();
         Flex::column()
             .with_child(render_body_item::<PrivacyPageAction>(
-                "Network log console".into(),
+                "Radio traffic log".into(),
                 None,
                 // Not rendering a setting, so no need to show local only icon state.
                 LocalOnlyIconState::Hidden,
@@ -1843,7 +1840,7 @@ impl SettingsWidget for NetworkLogWidget {
                 Align::new(
                     ui_builder
                         .link(
-                            "View network logging".to_owned(),
+                            "View radio traffic log".to_owned(),
                             None,
                             Some(Box::new(|ctx| {
                                 ctx.dispatch_typed_action(PrivacyPageAction::LaunchNetworkLogging);
