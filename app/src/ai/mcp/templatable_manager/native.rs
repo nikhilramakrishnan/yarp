@@ -755,7 +755,7 @@ impl TemplatableMCPServerManager {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "PATH required to launch MCP server. Please open a new terminal session to autopopulate PATH."
+                                "Can't dispatch the MCP server without PATH. Open a fresh terminal so it gets kitted out automatically."
                                     .to_string(),
                             ),
                             window_id,

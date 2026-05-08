@@ -936,7 +936,7 @@ impl PersistedWorkspace {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::success(format!(
-                                    "{} installed and enabled successfully.",
+                                    "{} signed on and on duty.",
                                     server_type.binary_name()
                                 )),
                                 window_id,
@@ -975,7 +975,7 @@ impl PersistedWorkspace {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(format!(
-                                    "Failed to install {}: {}",
+                                    "{} couldn't be sworn in: {}",
                                     server_type.binary_name(),
                                     e
                                 )),
@@ -1095,7 +1095,7 @@ impl PersistedWorkspace {
                     {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             let toast = DismissibleToast::error(format!(
-                                "Failed to start LSP server for {workspace_root_display} with error {e}",
+                                "Couldn't get the LSP server on the beat for {workspace_root_display}: {e}",
                             ));
                             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                         });
