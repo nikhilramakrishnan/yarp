@@ -67,7 +67,7 @@ impl YarpDriveItem for YarpDriveEnvVarCollection {
         let title_to_render = if let Some(title) = title_text {
             title
         } else {
-            "Untitled".to_string()
+            "Unfiled env vars".to_string()
         };
         let title = appearance
             .ui_builder()
