@@ -1468,7 +1468,7 @@ impl CodePageWidget {
                     )
                     .with_child(
                         ui_builder
-                            .label("No index created")
+                            .label("No beat indexed")
                             .with_style(UiComponentStyles {
                                 font_color: Some(status_color),
                                 font_size: Some(12.),
@@ -1517,25 +1517,25 @@ impl CodePageWidget {
         } else if let Some(completed_successfully) = index_state.last_sync_successful() {
             should_render_retry = true;
             let (text, color, status_icon) = if completed_successfully {
-                ("Synced", theme.ansi_fg_green(), Icon::Check)
+                ("Filed", theme.ansi_fg_green(), Icon::Check)
             } else if let Some(CodebaseIndexFinishedStatus::Failed(
                 CodebaseIndexingError::ExceededMaxFileLimit
                 | CodebaseIndexingError::MaxDepthExceeded,
             )) = index_state.last_sync_result()
             {
                 (
-                    "Codebase too large",
+                    "Beat too big to patrol",
                     theme.ui_warning_color(),
                     Icon::AlertTriangle,
                 )
             } else if index_state.has_synced_version() {
                 (
-                    "Stale",
+                    "Cold",
                     theme.nonactive_ui_detail().into_solid(),
                     Icon::ClockRefresh,
                 )
             } else {
-                ("Failed", theme.ui_error_color(), Icon::AlertTriangle)
+                ("Botched", theme.ui_error_color(), Icon::AlertTriangle)
             };
 
             label_row.add_child(
@@ -1554,7 +1554,7 @@ impl CodePageWidget {
         } else {
             log::warn!("No index state for codebase");
             (
-                Cow::from("No index built"),
+                Cow::from("No beat on file"),
                 theme.nonactive_ui_text_color().into_solid(),
             )
         };
