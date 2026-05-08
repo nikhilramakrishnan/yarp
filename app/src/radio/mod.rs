@@ -281,6 +281,38 @@ pub fn send_message(to_pid: u32, msg: &Message) -> io::Result<()> {
     fs::write(&path, json)
 }
 
+/// Read this process's inbox without draining it — useful for UI surfaces
+/// that want to show "N pending dispatches" without consuming the messages.
+/// Corrupt files are silently dropped.
+pub fn peek_inbox() -> Vec<Message> {
+    let Some(dir) = inbox_dir(std::process::id()) else {
+        return Vec::new();
+    };
+    let entries = match fs::read_dir(&dir) {
+        Ok(entries) => entries,
+        Err(_) => return Vec::new(),
+    };
+    let mut paths_and_msgs: Vec<(PathBuf, Message)> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("json") {
+            continue;
+        }
+        let bytes = match fs::read(&path) {
+            Ok(b) => b,
+            Err(_) => continue,
+        };
+        match serde_json::from_slice::<Message>(&bytes) {
+            Ok(msg) => paths_and_msgs.push((path, msg)),
+            Err(_) => {
+                let _ = fs::remove_file(&path);
+            }
+        }
+    }
+    paths_and_msgs.sort_by_key(|(p, _)| p.file_name().map(|s| s.to_os_string()));
+    paths_and_msgs.into_iter().map(|(_, m)| m).collect()
+}
+
 /// Drain this process's inbox: returns all pending messages in send order
 /// and removes them from disk. Corrupt files are silently dropped.
 pub fn read_inbox() -> Vec<Message> {

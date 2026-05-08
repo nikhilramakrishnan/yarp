@@ -132,6 +132,20 @@ impl SettingsWidget for AboutPageWidget {
                 )
                 .with_child(
                     ui_builder
+                        .span(precinct_roster_line())
+                        .build()
+                        .with_margin_top(4.)
+                        .finish(),
+                )
+                .with_child(
+                    ui_builder
+                        .span(precinct_inbox_line())
+                        .build()
+                        .with_margin_top(4.)
+                        .finish(),
+                )
+                .with_child(
+                    ui_builder
                         .span("Copyright 2026 Yarp contributors. Sandford. Population: 1.")
                         .build()
                         .with_margin_top(16.)
@@ -149,6 +163,38 @@ fn precinct_population_line() -> String {
         0 => "Sole officer on the channel.".to_string(),
         1 => "1 other officer on the channel.".to_string(),
         n => format!("{n} other officers on the channel."),
+    }
+}
+
+fn precinct_roster_line() -> String {
+    let peer_list = radio::peers();
+    if peer_list.is_empty() {
+        return String::new();
+    }
+    let mut names: Vec<String> = peer_list
+        .iter()
+        .map(|p| match &p.tab_title {
+            Some(title) => format!("{} ({})", p.call_sign, title),
+            None => p.call_sign.clone(),
+        })
+        .collect();
+    // Cap rendered names; trailing "+N more" if oversized.
+    const MAX: usize = 5;
+    let overflow = names.len().saturating_sub(MAX);
+    names.truncate(MAX);
+    if overflow > 0 {
+        format!("Roster: {} (+{overflow} more)", names.join(", "))
+    } else {
+        format!("Roster: {}", names.join(", "))
+    }
+}
+
+fn precinct_inbox_line() -> String {
+    let pending = radio::peek_inbox().len();
+    match pending {
+        0 => String::new(),
+        1 => "1 pending dispatch in the inbox.".to_string(),
+        n => format!("{n} pending dispatches in the inbox."),
     }
 }
 
