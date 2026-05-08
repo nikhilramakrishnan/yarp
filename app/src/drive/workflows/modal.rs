@@ -99,14 +99,14 @@ const DIALOG_WIDTH: f32 = 460.;
 const AI_ASSIST_BUTTON_SIZE: f32 = 96.;
 const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
 
-const TITLE_PLACEHOLDER_TEXT: &str = "Unnamed beat";
+const TITLE_PLACEHOLDER_TEXT: &str = "Unnamed playbook";
 const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Note the procedure";
 const COMMAND_EDITOR_PLACEHOLDER_TEXT: &str =
     "echo \"Hello {{your_name}}\" # insert arguments with curly braces\n# enter a single-line command or an entire shell script";
 const ARGUMENT_BUTTON_TEXT: &str = "New argument";
 const ARGUMENT_DESCRIPTION_PLACEHOLDER_TEXT: &str = "Description";
 const ARGUMENT_DEFAULT_VALUE_PLACEHOLDER_TEXT: &str = "Default value (optional)";
-const SAVE_BUTTON_TEXT: &str = "File the beat";
+const SAVE_BUTTON_TEXT: &str = "File the playbook";
 const AI_ASSIST_BUTTON_TEXT: &str = "Autofill";
 const AI_ASSIST_LOADING_TEXT: &str = "On the wire";
 const DEFAULT_ARGUMENT_PREFIX: &str = "argument";
@@ -691,7 +691,7 @@ impl WorkflowModal {
 
         // Add "Copy workflow text" to menu
         menu_items.push(
-            MenuItemFields::new("Copy the beat as text")
+            MenuItemFields::new("Copy the playbook as text")
                 .with_on_select_action(WorkflowModalAction::CopyObjectToClipboard)
                 .with_icon(Icon::CopyMenuItem)
                 .into_item(),

@@ -352,7 +352,7 @@ impl ProfileModelSelector {
                     }
                     label
                 } else {
-                    "New models available".to_string()
+                    "Fresh officers on the rota".to_string()
                 }
             })))
         });
