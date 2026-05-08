@@ -66,7 +66,7 @@ impl OnboardingPromptBlock {
         const LINE_ONE: &str = "Right then — pick your prompt. Yarp's got a custom prompt builder, or load your standing PS1 if you've already kitted one out.";
         const LINE_TWO: &str =
             "Yarp plays nice with the regulars — oh-my-zsh, Starship, Powerlevel10K. ";
-        const LINK_TEXT: &str = "Learn more";
+        const LINK_TEXT: &str = "Pull the dossier";
         const LINK_DESTINATION: &str =
             "https://github.com/hotfuzz/yarp/terminal/appearance/prompt#custom-prompt-compatibility-table";
 
