@@ -194,7 +194,7 @@ const SORTING_BUTTON_TOOLTIP_LABEL: &str = "Sort by";
 const RETRY_BUTTON_TOOLTIP_LABEL: &str = "Retry filing";
 
 const SHARED_OBJECT_LIMIT_HIT_BANNER_LINE: &str =
-    "Top up the kit for more casebooks, workflows, channels on the air, and AI credits.";
+    "Top up the kit for more casebooks, workflows, channels on the air, and rations.";
 
 const PAYMENT_ISSUE_BANNER_LINE_1: &str =
     "Case files locked down — subscription payment's gone south.";

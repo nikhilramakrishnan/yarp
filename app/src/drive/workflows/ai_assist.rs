@@ -73,7 +73,7 @@ impl GeneratedCommandMetadataError {
                 "Couldn't write up the case. Try again with a different command."
             }
             Self::AiProviderError => "Wires got crossed. Try again.",
-            Self::RateLimited => "AI credits have run dry. Top up the kit and have another go.",
+            Self::RateLimited => "Rations have run dry. Top up the kit and have another go.",
             Self::Other => "Wires got crossed. Try again.",
         }
         .to_string()
@@ -151,7 +151,7 @@ impl WorkflowModal {
                                     if has_admin_permissions {
                                         ctx.emit(WorkflowModalEvent::AiAssistUpgradeError(Some(team.uid), current_user_id));
                                     } else {
-                                        ctx.emit(WorkflowModalEvent::AiAssistError("AI credits are spent. Have the team admin top up the kit.".to_string()));
+                                        ctx.emit(WorkflowModalEvent::AiAssistError("Rations are spent. Have the team admin top up the kit.".to_string()));
                                     }
                                 } else {
                                     ctx.emit(WorkflowModalEvent::AiAssistError(message.clone()));
