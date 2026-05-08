@@ -81,17 +81,17 @@ const REQUESTED_COMMAND_ACCEPT_LABEL: &str = "Run";
 const REQUESTED_COMMAND_EDIT_LABEL: &str = "Edit";
 const REQUESTED_COMMAND_MINIMIZE_LABEL: &str = "Done";
 
-const LOADING_MESSAGE: &str = "Generating command...";
-const COMMAND_WAITING_FOR_USER_MESSAGE: &str = "OK if I run this command and read the output?";
-const MCP_TOOL_WAITING_FOR_USER_MESSAGE: &str = "OK if I call this MCP tool?";
-const MONITORING_COMMAND_MESSAGE: &str = "Agent is monitoring command...";
-const AGENT_NEEDS_INPUT_MESSAGE: &str = "Agent needs your input to continue";
-const USER_TOOK_CONTROL_COMMAND_MESSAGE: &str = "User is in control.";
-const USER_STOPPED_CLI_SUBAGENT_COMMAND_MESSAGE: &str = "Paused agent. User is in control.";
-const AGENT_REQUESTED_USER_TAKE_CONTROL_COMMAND_MESSAGE: &str = "User in control";
-const AGENT_ERRORED_COMMAND_MESSAGE: &str = "Agent ran into an issue. Take over control.";
-pub const VIEWING_COMMAND_DETAIL_MESSAGE: &str = "Viewing command detail";
-const VIEWING_MCP_TOOL_DETAIL_MESSAGE: &str = "Viewing MCP tool call detail";
+const LOADING_MESSAGE: &str = "Drawing up the call-out...";
+const COMMAND_WAITING_FOR_USER_MESSAGE: &str = "Sign off on running this and reading the report?";
+const MCP_TOOL_WAITING_FOR_USER_MESSAGE: &str = "Sign off on calling this MCP tool?";
+const MONITORING_COMMAND_MESSAGE: &str = "PC is tailing the call-out...";
+const AGENT_NEEDS_INPUT_MESSAGE: &str = "PC needs orders to keep going";
+const USER_TOOK_CONTROL_COMMAND_MESSAGE: &str = "You've got the wheel.";
+const USER_STOPPED_CLI_SUBAGENT_COMMAND_MESSAGE: &str = "PC stood down. You've got the wheel.";
+const AGENT_REQUESTED_USER_TAKE_CONTROL_COMMAND_MESSAGE: &str = "You've got the wheel";
+const AGENT_ERRORED_COMMAND_MESSAGE: &str = "PC's snagged on something. Take the wheel.";
+pub const VIEWING_COMMAND_DETAIL_MESSAGE: &str = "Reading the call-out file";
+const VIEWING_MCP_TOOL_DETAIL_MESSAGE: &str = "Reading the MCP tool call file";
 
 const EDIT_COMMAND_ACTION_NAME: &str = "requested_command:edit";
 
@@ -157,7 +157,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         EDIT_COMMAND_ACTION_NAME,
-        "Edit requested command",
+        "Amend the call-out",
         RequestedCommandViewAction::OpenEditMode,
     )
     .with_key_binding(cmd_or_ctrl_shift("e"))
@@ -608,7 +608,7 @@ impl RequestedCommandView {
             .with_on_select_action(RequestedCommandViewAction::Accept)
             .into_item();
 
-            let auto_item = MenuItemFields::new_with_label("Auto-approve", auto_keystroke.as_str())
+            let auto_item = MenuItemFields::new_with_label("Rubber-stamp", auto_keystroke.as_str())
                 .with_on_select_action(RequestedCommandViewAction::AcceptAndAutoExecute)
                 .into_item();
 
@@ -709,7 +709,7 @@ impl RequestedCommandView {
             ) if show_for_action_id == &self.action_id => {
                 *shown.lock() = true;
                 Some(render_autonomy_checkbox_setting_speedbump_footer(
-                    "Always allow Fuzz to execute read-only commands (relies on model)",
+                    "Standing orders: let Fuzz run read-only call-outs (officer's discretion)",
                     *checked,
                     AIBlockAction::ToggleAutoexecuteReadonlyCommandsSpeedbumpCheckbox,
                     self.autoexecute_readonly_commands_speedbump_checkbox_handle
@@ -766,7 +766,7 @@ impl RequestedCommandView {
                 )
                 .with_child(
                     Text::new(
-                        "Your profile is set to always ask for permission to execute commands.",
+                        "Your kit's set to ring up for sign-off on every call-out.",
                         appearance.ui_font_family(),
                         font_size,
                     )
@@ -781,7 +781,7 @@ impl RequestedCommandView {
                             appearance
                                 .ui_builder()
                                 .link(
-                                    "Manage command execution setting".into(),
+                                    "Amend call-out Standing Orders".into(),
                                     None,
                                     Some(Box::new(move |ctx| {
                                         ctx.dispatch_typed_action(
@@ -1423,11 +1423,11 @@ impl View for RequestedCommandView {
                 // If we have a result, show the JSON response.
                 let result_text = match result {
                     CallMCPToolResult::Success { result } => serde_json::to_string_pretty(result)
-                        .unwrap_or_else(|_| "Error formatting JSON".to_string()),
+                        .unwrap_or_else(|_| "JSON came back garbled".to_string()),
                     CallMCPToolResult::Error(error) => {
                         format!("Error: {error}")
                     }
-                    CallMCPToolResult::Cancelled => "Tool call was cancelled".to_string(),
+                    CallMCPToolResult::Cancelled => "Stood down — tool call cancelled".to_string(),
                 };
                 format!("{command_text}\n\nResponse: {result_text}")
             } else if self.is_header_expanded {

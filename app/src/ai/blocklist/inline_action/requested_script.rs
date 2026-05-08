@@ -340,9 +340,9 @@ fn script_status(
 ) -> (&str, Box<dyn Element>) {
     let appearance = Appearance::as_ref(app);
     let label = match (is_executing, is_collapsed) {
-        (true, _) => "Running...",
-        (false, true) => "Expand to show script",
-        (false, false) => "Hide",
+        (true, _) => "On the move...",
+        (false, true) => "Pull the script open",
+        (false, false) => "Stash",
     };
     let is_expanded = (is_executing && is_viewing_detail) || (!is_executing && !is_collapsed);
     let icon = ConstrainedBox::new(
