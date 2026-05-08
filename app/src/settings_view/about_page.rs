@@ -328,12 +328,29 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         display_body
     };
     let age = radio::format_dispatch_age(msg.sent_at_unix);
-    let lead = if emergency { "10-13" } else { "Latest" };
-    let line = if body.is_empty() {
-        format!("{lead} from {} ({age})", msg.from_call_sign)
+    // Emergency rewrites the line's *shape*, not just its lead token, so the
+    // urgent dispatch scans with different rhythm than a routine one:
+    //   routine:    Latest from Cooper (12s ago): "ten-four"
+    //   emergency:  10-13 · Cooper · 12s ago — "need backup"
+    // Middle-dot separators echo the Code 3 banner above and read as terse
+    // hits; the em-dash before the quote replaces the routine's colon so the
+    // eye picks up "different separator → different urgency" before parsing
+    // any words. Routine keeps the parenthetical bracket for its slower,
+    // conversational rhythm.
+    let line = if emergency {
+        if body.is_empty() {
+            format!("10-13 \u{00B7} {} \u{00B7} {age}", msg.from_call_sign)
+        } else {
+            format!(
+                "10-13 \u{00B7} {} \u{00B7} {age} \u{2014} \u{201C}{body}\u{201D}",
+                msg.from_call_sign
+            )
+        }
+    } else if body.is_empty() {
+        format!("Latest from {} ({age})", msg.from_call_sign)
     } else {
         format!(
-            "{lead} from {} ({age}): \u{201C}{body}\u{201D}",
+            "Latest from {} ({age}): \u{201C}{body}\u{201D}",
             msg.from_call_sign
         )
     };
