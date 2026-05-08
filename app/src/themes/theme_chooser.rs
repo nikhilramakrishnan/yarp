@@ -739,7 +739,7 @@ impl ThemeChooser {
                 .with_child(
                     appearance
                         .ui_builder()
-                        .span("No matching themes!".to_string())
+                        .span("No leads on themes.".to_string())
                         .build()
                         .finish(),
                 )
