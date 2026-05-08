@@ -639,7 +639,7 @@ impl AgentAssistedEnvironmentModal {
             .finish();
 
         let dialog = Dialog::new(
-            "Select repos for your environment".to_string(),
+            "Pick beats for the unit".to_string(),
             Some(description),
             dialog_styles(appearance),
         )

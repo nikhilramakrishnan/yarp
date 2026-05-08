@@ -561,7 +561,7 @@ pub fn render_info_icon<T: Clone + Action>(
             13.,
             additional_info
                 .tooltip_override_text
-                .unwrap_or("Click to learn more in docs".to_owned()),
+                .unwrap_or("Pull the dossier in the docs".to_owned()),
             additional_info.mouse_state.clone(),
         )
         .on_click(move |ctx, _, _| {
@@ -587,7 +587,7 @@ pub fn render_local_only_icon(
         .ui_builder()
         .local_only_icon_with_tooltip(
             13.,
-            custom_tooltip.unwrap_or("This setting is not synced to your other devices".to_owned()),
+            custom_tooltip.unwrap_or("This kit setting stays at the station — not on the cloud ledger".to_owned()),
             mouse_state.clone(),
         )
         .finish();
