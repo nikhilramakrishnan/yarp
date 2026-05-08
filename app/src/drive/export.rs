@@ -322,7 +322,7 @@ impl ExportManager {
         };
 
         let name = if name.is_empty() {
-            "Untitled".to_string()
+            "Unfiled".to_string()
         } else {
             safe_filename(&name)
         };
@@ -457,7 +457,7 @@ impl ExportId {
             .map(|object| {
                 let mut name = object.display_name();
                 if name.is_empty() {
-                    name.push_str("Untitled")
+                    name.push_str("Unfiled")
                 }
                 name
             })

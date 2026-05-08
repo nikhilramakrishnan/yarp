@@ -311,7 +311,7 @@ impl FileNotebookView {
             .as_ref()
             .map(|location| location.name.clone())
             .or_else(|| self.file_state.display_name())
-            .unwrap_or_else(|| "Untitled".to_string())
+            .unwrap_or_else(|| "Unfiled notebook".to_string())
     }
 
     pub fn focus(&self, ctx: &mut ViewContext<Self>) {

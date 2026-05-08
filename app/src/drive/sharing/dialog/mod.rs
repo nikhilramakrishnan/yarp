@@ -2352,7 +2352,7 @@ impl SharingDialog {
             .with_padding_right(10.)
             .finish();
 
-        let name_text = subject.name(app).unwrap_or(Cow::Borrowed("Unknown"));
+        let name_text = subject.name(app).unwrap_or(Cow::Borrowed("John Doe"));
         let name_label = appearance
             .ui_builder()
             .span(name_text)

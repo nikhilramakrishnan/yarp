@@ -350,7 +350,7 @@ impl WorkflowView {
 
 impl WorkflowView {
     pub fn new_in_pane(ctx: &mut ViewContext<Self>) -> Self {
-        let pane_configuration = ctx.add_model(|_ctx| PaneConfiguration::new("Untitled"));
+        let pane_configuration = ctx.add_model(|_ctx| PaneConfiguration::new("Unfiled workflow"));
 
         Self::new_internal(ctx, ContainerConfiguration::Pane(pane_configuration))
     }
