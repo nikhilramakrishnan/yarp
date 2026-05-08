@@ -357,7 +357,7 @@ impl CommandRenderInfo {
                     Some(mins) if mins >= 60 => "Completed over 1 hour ago".to_string(),
                     Some(mins) if mins == 1 => format!("Completed {mins} minute ago"),
                     Some(mins) => format!("Completed {mins} minutes ago"),
-                    None => "No timestamp found".to_string(),
+                    None => "No timestamp on file".to_string(),
                 },
             },
             CommandContext::RunningAIBlock { prompt } => CommandRenderInfo {
@@ -374,7 +374,7 @@ impl CommandRenderInfo {
             },
             CommandContext::None => CommandRenderInfo {
                 command_text: Some(String::new()),
-                hint_text: "Empty Session".to_string(),
+                hint_text: "Empty beat".to_string(),
                 row_spacing: 0.,
                 hint_margin: 0.,
             },

@@ -286,7 +286,7 @@ impl View {
             SearchBar::new(
                 mixer.clone(),
                 search_bar_state.clone(),
-                "Search for a command",
+                "Call up a command",
                 Self::create_query_result_renderer,
                 ctx,
             )
