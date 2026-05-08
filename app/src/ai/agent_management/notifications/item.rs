@@ -36,7 +36,7 @@ impl NotificationFilter {
     pub(crate) fn label(&self) -> &'static str {
         match self {
             NotificationFilter::All => "All beats",
-            NotificationFilter::Unread => "Unread",
+            NotificationFilter::Unread => "Fresh",
             NotificationFilter::Errors => "Snags",
         }
     }
