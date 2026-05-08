@@ -187,9 +187,9 @@ const ALIAS_HELP_TEXT: &str = "Aliases allow you to create short strings to exec
 const RUN_ON_DESKTOP_BUTTON_TEXT: &str = "Run in Yarp";
 const RUN_ON_DESKTOP_BUTTON_WIDTH: f32 = 108.;
 
-const UNSAVED_CHANGES_TEXT: &str = "You have unsaved changes.";
-const KEEP_EDITING_TEXT: &str = "Keep editing";
-const DISCARD_CHANGES_TEXT: &str = "Discard changes";
+const UNSAVED_CHANGES_TEXT: &str = "Unfiled edits on the desk.";
+const KEEP_EDITING_TEXT: &str = "Keep working it";
+const DISCARD_CHANGES_TEXT: &str = "Toss the changes";
 const DIALOG_WIDTH: f32 = 460.;
 const MODAL_HORIZONTAL_MARGIN: f32 = 28.;
 
@@ -1593,7 +1593,7 @@ impl WorkflowView {
     fn save_aliases(&mut self, ctx: &mut ViewContext<Self>) {
         if let Err(e) = self.alias_bar.update(ctx, |bar, ctx| bar.save(ctx)) {
             log::error!("Error saving aliases: {e:?}");
-            self.display_error_toast("Error saving aliases".to_string(), ctx);
+            self.display_error_toast("Couldn't file the aliases.".to_string(), ctx);
         }
     }
 
@@ -1603,7 +1603,7 @@ impl WorkflowView {
         // Block saving if secrets are detected in the workflow when secret redaction is enabled.
         if self.workflow_contains_secrets(ctx) {
             self.display_error_toast(
-                "This workflow cannot be saved because it contains secrets".to_string(),
+                "Can't file this workflow — there's classified info in it.".to_string(),
                 ctx,
             );
             return;
@@ -1637,7 +1637,7 @@ impl WorkflowView {
                     id
                 } else {
                     log::error!("No client_id obtained for creating workflow");
-                    self.display_error_toast(String::from("Could not create workflow"), ctx);
+                    self.display_error_toast(String::from("Couldn't open the workflow."), ctx);
                     return;
                 };
 
@@ -2465,7 +2465,7 @@ impl WorkflowView {
                     .finish();
 
                 let button_with_tool_tip = appearance.ui_builder().tool_tip_on_element(
-                    "Generate a title, descriptions, or parameters with Yarp AI".to_string(),
+                    "Radio Yarp AI to draft a title, descriptions, or parameters".to_string(),
                     self.ui_state_handles.ai_assist_tool_tip.clone(),
                     rendered_button,
                     ParentAnchor::TopMiddle,
@@ -2669,7 +2669,7 @@ impl WorkflowView {
                                         pane.display_upgrade_error(Some(team.uid), current_user_id, ctx);
                                     } else {
                                         pane.display_error_toast(
-                                            "Looks like you're out of AI credits. Contact a team admin to upgrade for more credits.".to_string(),
+                                            "Meter's run out on credits. Get the team admin to top up the kit.".to_string(),
                                             ctx,
                                         );
                                     }
