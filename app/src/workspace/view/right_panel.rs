@@ -417,7 +417,7 @@ impl RightPanelView {
         let open_repository_button = ctx.add_typed_action_view(|_| {
             ActionButton::new("Open repository", NakedTheme)
                 .with_size(crate::view_components::action_button::ButtonSize::Small)
-                .with_tooltip("Navigate to a repo and initialize it for coding")
+                .with_tooltip("Walk to a repo and sign it on for coding")
                 .with_tooltip_alignment(TooltipAlignment::Center)
                 .on_click(|ctx| ctx.dispatch_typed_action(RightPanelAction::OpenRepository))
         });
@@ -709,12 +709,12 @@ impl RightPanelView {
 
         let tooltip = if let Some(keybinding) = tooltip_keybinding {
             ui_builder
-                .tool_tip_with_sublabel("Close panel".to_string(), keybinding)
+                .tool_tip_with_sublabel("Stand the panel down".to_string(), keybinding)
                 .build()
                 .finish()
         } else {
             ui_builder
-                .tool_tip("Close panel".to_string())
+                .tool_tip("Stand the panel down".to_string())
                 .build()
                 .finish()
         };
