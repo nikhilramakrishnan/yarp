@@ -1507,7 +1507,7 @@ impl CodeReviewView {
 
         let is_maximized = focus_handle.is_maximized(ctx);
         let (icon, tooltip) = if is_maximized {
-            (Icon::Minimize, "Restore")
+            (Icon::Minimize, "Drop it back")
         } else {
             (Icon::Maximize, "Pull up the case")
         };

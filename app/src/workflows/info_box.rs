@@ -439,7 +439,7 @@ impl WorkflowsMoreInfoView {
             .with_child(
                 Container::new(
                     Text::new_inline(
-                        "Command edited.",
+                        "Order amended.",
                         appearance.ui_font_family(),
                         appearance.monospace_font_size(),
                     )
