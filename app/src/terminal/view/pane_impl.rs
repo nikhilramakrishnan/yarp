@@ -801,9 +801,9 @@ impl TerminalView {
         button
             .with_tooltip(move || {
                 let tooltip_text = if is_open {
-                    "Hide details"
+                    "Stash the briefing"
                 } else {
-                    "Show details"
+                    "Open the briefing"
                 };
                 ui_builder
                     .tool_tip(tooltip_text.to_string())
