@@ -8,15 +8,15 @@ use yarpui::ViewContext;
 use super::view::Workspace;
 use crate::pane_group::{AnyPaneContent, FilePane};
 
-const YARP_HOME_TITLE: &str = "Welcome to Sandford";
+const YARP_HOME_TITLE: &str = "Sandford station, web detachment";
 const YARP_HOME_CONTENT: &str = r#"
-Welcome to Yarp on Web - your browser-based home for Yarp! 
-Use Yarp on Web to:
-* Join Shared Sessions
-* Create, View, and Edit Yarp Drive Objects
-* Manage your Yarp Settings
+Welcome to the Sandford web detachment — your browser-based outpost.
+Sign on here to:
+* Hop onto open channels
+* Open, read, and amend Yarp Drive case files
+* Amend your station's Standing Orders
 
-Yarp on Web can also be used by your teammates and peers who don't have Yarp downloaded yet to view your shared sessions, notebooks, and workflows."#;
+The web detachment also lets fellow officers without the desktop kit observe shared channels, casebooks, and duty rosters."#;
 
 /// Create a static "home page" pane.
 pub fn create_home_pane(ctx: &mut ViewContext<Workspace>) -> Box<dyn AnyPaneContent> {

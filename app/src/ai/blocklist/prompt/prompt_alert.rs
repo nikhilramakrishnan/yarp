@@ -23,27 +23,27 @@ use ai::api_keys::ApiKeyManager;
 
 const ANONYMOUS_USER_REQUEST_LIMIT_SOFT_GATE_PERCENTAGE: f32 = 0.5;
 
-const TELEMETRY_DISABLED_PRIMARY_TEXT: &str = "To use AI features,";
-const ENABLE_ANALYTICS_ACTION_TEXT: &str = "enable analytics";
-const UPGRADE_TO_BUILD_ACTION_TEXT: &str = "upgrade";
+const TELEMETRY_DISABLED_PRIMARY_TEXT: &str = "To call in the radio,";
+const ENABLE_ANALYTICS_ACTION_TEXT: &str = "switch on analytics";
+const UPGRADE_TO_BUILD_ACTION_TEXT: &str = "top up";
 
-const NO_CONNECTION_PRIMARY_TEXT: &str = "No internet connection";
+const NO_CONNECTION_PRIMARY_TEXT: &str = "Off the air — no signal";
 const ANONYMOUS_USER_REQUEST_LIMIT_SOFT_GATE_PRIMARY_TEXT: &str = "";
-const ANONYMOUS_USER_REQUEST_LIMIT_HARD_GATE_PRIMARY_TEXT: &str = "At Limit -";
-const DELINQUENT_DUE_TO_PAYMENT_ISSUE_PRIMARY_TEXT: &str = "Restricted due to payment issue";
-const OUT_OF_REQUESTS_PRIMARY_TEXT: &str = "Out of credits";
+const ANONYMOUS_USER_REQUEST_LIMIT_HARD_GATE_PRIMARY_TEXT: &str = "Rationed -";
+const DELINQUENT_DUE_TO_PAYMENT_ISSUE_PRIMARY_TEXT: &str = "Held back over a payment matter";
+const OUT_OF_REQUESTS_PRIMARY_TEXT: &str = "Out of rations";
 
-const ANONYMOUS_USER_REQUEST_LIMIT_ACTION_TEXT: &str = "Sign up for more AI credits";
-const DELINQUENT_DUE_TO_PAYMENT_ISSUE_ACTION_TEXT: &str = "Manage billing";
-const OVERAGES_TOGGLEABLE_BUT_NOT_ENABLED_ACTION_TEXT: &str = "Enable premium overages";
-const MONTHLY_OVERAGES_SPEND_LIMIT_REACHED_ACTION_TEXT: &str = "Increase monthly spend limit";
-const UPGRADE_TEXT: &str = "Upgrade";
-const COMPARE_PLANS_TEXT: &str = "Compare plans";
-const CONTACT_SUPPORT_TEXT: &str = "Contact support";
-const NON_ADMIN_CONTACT_ADMIN_TEXT: &str = ", contact a team admin";
-const NON_ADMIN_ASK_ADMIN_TO_ENABLE_OVERAGES_TEXT: &str = ", ask a team admin to enable overages";
+const ANONYMOUS_USER_REQUEST_LIMIT_ACTION_TEXT: &str = "Swear in for more rations";
+const DELINQUENT_DUE_TO_PAYMENT_ISSUE_ACTION_TEXT: &str = "Amend billing";
+const OVERAGES_TOGGLEABLE_BUT_NOT_ENABLED_ACTION_TEXT: &str = "Open up premium rations";
+const MONTHLY_OVERAGES_SPEND_LIMIT_REACHED_ACTION_TEXT: &str = "Raise the monthly spend ceiling";
+const UPGRADE_TEXT: &str = "Top up";
+const COMPARE_PLANS_TEXT: &str = "Compare duty rosters";
+const CONTACT_SUPPORT_TEXT: &str = "Radio support";
+const NON_ADMIN_CONTACT_ADMIN_TEXT: &str = ", radio a squad admin";
+const NON_ADMIN_ASK_ADMIN_TO_ENABLE_OVERAGES_TEXT: &str = ", ask a squad admin to open up rations";
 const NON_ADMIN_ASK_ADMIN_TO_INCREASE_OVERAGES_TEXT: &str =
-    ", ask a team admin to increase overages";
+    ", ask a squad admin to raise rations";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PromptAlertAction {

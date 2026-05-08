@@ -17,10 +17,10 @@ use super::{
     INLINE_BANNER_MARGIN_BETWEEN_BUTTONS, INLINE_BANNER_RIGHT_MARGIN,
 };
 
-const TITLE: &str = "Login for AI";
+const TITLE: &str = "Sign on to call in the radio";
 const CONTENT: &str =
-    "AI features are unavailable for logged-out users. Create an account to use AI.";
-const SIGN_UP_BUTTON_TEXT: &str = "Sign Up";
+    "AI radio's off the air for civilians. Get sworn in to ring up the squad.";
+const SIGN_UP_BUTTON_TEXT: &str = "Swear in";
 
 // Layout constants for three-column banner
 const ICON_SIZE_OFFSET: f32 = 3.0;
