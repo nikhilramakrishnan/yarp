@@ -217,14 +217,14 @@ impl SecretManager {
     ) -> ErrorMessageAndCommand {
         match error_type {
             SecretErrorType::NotInstalled => {
-                let message = format!("{} CLI is not installed", &self);
+                let message = format!("{} CLI is off the books", &self);
 
                 let (link, link_message) = (
                     match self {
                         SecretManager::OnePassword => Some(ONEPASSWORD_DOCS_LINK.to_owned()),
                         SecretManager::LastPass => Some(LASTPASS_DOCS_LINK.to_owned()),
                     },
-                    Some(format!("View {} CLI installation documentation", &self)),
+                    Some(format!("Pull the dossier on getting {} CLI on shift", &self)),
                 );
 
                 ErrorMessageAndCommand {
@@ -243,7 +243,7 @@ impl SecretManager {
                 };
                 ErrorMessageAndCommand {
                     message: format!(
-                        "{} didn't return secrets (likely not configured or authenticated)",
+                        "{} didn't hand over the keys (likely not signed on or unkitted)",
                         &self
                     ),
                     link,
@@ -251,7 +251,7 @@ impl SecretManager {
                 }
             }
             SecretErrorType::InvalidPlatform => ErrorMessageAndCommand {
-                message: "Platform not supported".to_owned(),
+                message: "This beat isn't on the roster".to_owned(),
                 link: None,
                 link_message: None,
             },
