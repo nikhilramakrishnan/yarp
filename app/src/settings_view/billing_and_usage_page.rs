@@ -426,7 +426,7 @@ impl BillingAndUsagePageView {
             }
             UserWorkspacesEvent::UpdateWorkspaceSettingsRejected(_err) => {
                 self.show_toast(
-                    "Failed to update workspace settings",
+                    "Couldn't amend the station orders",
                     ToastFlavor::Error,
                     ctx,
                 );
@@ -439,7 +439,7 @@ impl BillingAndUsagePageView {
             UserWorkspacesEvent::PurchaseAddonCreditsSuccess => {
                 self.purchase_addon_credits_loading = false;
                 self.show_toast(
-                    "Successfully purchased add-on credits",
+                    "Add-on credits on the books",
                     ToastFlavor::Success,
                     ctx,
                 );

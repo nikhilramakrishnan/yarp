@@ -435,10 +435,10 @@ pub(super) fn start_confirm(me: &mut GitDialog, ctx: &mut ViewContext<GitDialog>
         move |_me, result, ctx| {
             match result {
                 Ok(CommitOutcome::Committed) => {
-                    show_toast("Changes successfully committed.", ctx);
+                    show_toast("Report filed.", ctx);
                 }
                 Ok(CommitOutcome::Pushed) => {
-                    show_toast("Changes committed and pushed.", ctx);
+                    show_toast("Report filed and on the wire.", ctx);
                 }
                 Ok(CommitOutcome::PrCreated(pr)) => {
                     show_pr_created_toast(&pr, ctx);
