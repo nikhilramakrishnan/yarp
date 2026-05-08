@@ -2813,7 +2813,7 @@ fn render_references_footer(
     )?;
 
     let title = Text::new_inline(
-        "References",
+        "Evidence",
         appearance.ui_font_family(),
         appearance.monospace_font_size(),
     )
