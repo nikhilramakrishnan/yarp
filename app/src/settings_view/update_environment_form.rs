@@ -3058,7 +3058,7 @@ impl UpdateEnvironmentForm {
         let is_disabled = !self.can_suggest_image_for_current_repos();
 
         let button_text = if is_loading {
-            "Generating…"
+            "Drawing it up…"
         } else {
             "Suggest image"
         };

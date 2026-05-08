@@ -832,7 +832,7 @@ impl InitStepBlock {
             InitStepStatus::Running => {
                 // AI is generating AGENTS.md - show in-progress state
                 let appearance = Appearance::as_ref(app);
-                RenderableAction::new("Generating AGENTS.md...", app)
+                RenderableAction::new("Writing up AGENTS.md...", app)
                     .with_icon(in_progress_icon(appearance).finish())
                     .with_content_item_spacing()
                     .render(app)

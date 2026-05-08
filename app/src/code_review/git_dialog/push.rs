@@ -320,7 +320,7 @@ fn render_commits_section(state: &PushState, appearance: &Appearance) -> Box<dyn
             } else {
                 let loading = Container::new(
                     Text::new(
-                        "Loading…",
+                        "On the wire…",
                         appearance.ui_font_family(),
                         appearance.ui_font_size(),
                     )
