@@ -403,7 +403,7 @@ use yarpui::elements::{
 use yarpui::ui_components::button::{Button, ButtonVariant};
 use yarpui::{elements::MouseStateHandle, fonts::Properties};
 
-use crate::{autoupdate, channel::ChannelState};
+use crate::{autoupdate, channel::ChannelState, radio};
 
 use crate::ai::blocklist::{BlocklistAIHistoryEvent, PendingQueryState, SerializedBlockListItem};
 use crate::editor::{
@@ -4987,6 +4987,10 @@ impl Workspace {
 
         let window_id = ctx.window_id();
         ctx.windows().set_window_title(window_id, &window_title);
+
+        // Re-broadcast the on-disk radio beacon so peer terminals see this
+        // officer's live tab label in their roster instead of "Unfiled patrol".
+        radio::update_tab_title(radio::self_call_sign(), &tab_title);
     }
 
     fn rename_tab_internal(&mut self, index: usize, title: &str, ctx: &mut ViewContext<Self>) {
