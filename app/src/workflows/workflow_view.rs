@@ -2732,7 +2732,7 @@ impl WorkflowView {
 
         crate::workspace::ToastStack::handle(ctx).update(ctx, |stack, ctx| {
             stack.add_ephemeral_toast(
-                DismissibleToast::error("Meter's run out on credits.".into())
+                DismissibleToast::error("Rations are spent.".into())
                     .with_link(toast_link),
                 window_id,
                 ctx,
