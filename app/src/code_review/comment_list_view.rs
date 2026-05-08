@@ -921,7 +921,7 @@ impl CommentListView {
         } else if !ai_available {
             Cow::Borrowed("Agent code review requires AI credits")
         } else if matches!(destination, ReviewDestination::None) {
-            Cow::Borrowed("All terminals are busy")
+            Cow::Borrowed("All units are tied up")
         } else if !has_sendable_comments {
             Cow::Borrowed("No non-outdated comments to send")
         } else {
