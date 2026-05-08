@@ -296,7 +296,7 @@ impl View for AgentViewEntryBlock {
         let subtext = if is_open_elsewhere {
             Some("Open on a different shift")
         } else if self.is_restored {
-            Some("Reopened")
+            Some("Case reopened")
         } else if !self.is_new
             && !matches!(
                 self.origin,
