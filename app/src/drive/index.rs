@@ -2083,7 +2083,7 @@ impl DriveIndex {
 
     fn render_team_space_zero_state(&self, appearance: &Appearance) -> Box<dyn Element> {
         let hint_text =
-            "Drag a personal workflow or notebook here to file it with the squad.";
+            "Drag a personal playbook or notebook here to file it with the squad.";
         let zero_state_info = Container::new(
             appearance
                 .ui_builder()
