@@ -81,7 +81,7 @@ use super::{
 };
 
 const HEADER_FONT_SIZE: f32 = 16.;
-const OVERAGE_USAGE_LINK_TEXT: &str = "View details on overage usage";
+const OVERAGE_USAGE_LINK_TEXT: &str = "Pull the usage report";
 const OVERAGE_TOGGLE_ADMIN_HEADER: &str = "Enable premium model usage overages";
 const OVERAGE_TOGGLE_USER_HEADER_ENABLED: &str = "Premium model usage overages are enabled";
 const OVERAGE_TOGGLE_USER_HEADER_DISABLED: &str = "Premium model usage overages are not enabled";

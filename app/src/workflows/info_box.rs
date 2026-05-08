@@ -62,7 +62,7 @@ const ENV_VAR_RIGHT_ELEMENT_VERTICAL_MARGIN: f32 = 5.;
 const ENV_VAR_SPAN_VERTICAL_MARGIN: f32 = 15.;
 const ENV_VAR_BUTTON_HEIGHT: f32 = 30.;
 const ENV_VAR_SPAN: &str = "Environment variables";
-const NEW_ENV_VAR_BUTTON_LABEL: &str = "New environment variables";
+const NEW_ENV_VAR_BUTTON_LABEL: &str = "Issue env vars";
 
 /// Scale factor the title should be from the user's current font size.
 const TITLE_FONT_SIZE_SCALE_FACTOR: f32 = 1.12;

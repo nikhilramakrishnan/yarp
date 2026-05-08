@@ -145,8 +145,8 @@ const WORKFLOW_PARAMETER_HIGHLIGHT_COLOR: u32 = 0x42C0FA4D;
 const MAX_ELEMENT_WIDTH: f32 = 800.;
 
 const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
-const TITLE_PLACEHOLDER_TEXT: &str = "Add a title";
-const DESCRIPTION_PLACEHOLDER_TEXT: &str = "Add a description";
+const TITLE_PLACEHOLDER_TEXT: &str = "File a title";
+const DESCRIPTION_PLACEHOLDER_TEXT: &str = "File a brief";
 const COMMAND_PLACEHOLDER_TEXT: &str = "echo \"Hello {{your_name}}\" # insert arguments with curly braces\n# enter a single-line command or an entire shell script";
 const AGENT_MODE_QUERY_PLACEHOLDER_TEXT: &str = "Enter your prompt here... (e.g., 'Create a function to sort an array of objects by date' or 'Help me debug this React component').";
 const DESCRIPTION_MARGIN_TOP: f32 = 10.;
@@ -170,8 +170,8 @@ const HORIZONTAL_TEXT_INPUT_PADDING: f32 = 10.;
 
 const EDITOR_FONT_SIZE: f32 = 14.;
 
-const CREATE_BUTTON_TEXT: &str = "Create";
-const SAVE_BUTTON_TEXT: &str = "Update";
+const CREATE_BUTTON_TEXT: &str = "File it";
+const SAVE_BUTTON_TEXT: &str = "Amend it";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const BUTTON_PADDING: f32 = 12.;
 const BUTTON_FONT_SIZE: f32 = 14.;
@@ -180,7 +180,7 @@ const BUTTON_HEIGHT: f32 = 32.;
 
 const AI_ASSIST_BUTTON_SIZE: f32 = 92.;
 const AI_ASSIST_BUTTON_TEXT: &str = "Autofill";
-const AI_ASSIST_LOADING_TEXT: &str = "Loading";
+const AI_ASSIST_LOADING_TEXT: &str = "On the wire";
 
 const ALIAS_HELP_TEXT: &str = "Aliases allow you to create short strings to execute workflows. Each alias can have different argument values and environment variables, and aliases are personal to you.";
 
