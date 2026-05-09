@@ -275,7 +275,7 @@ impl TabData {
 
         if is_shared_or_viewed {
             menu_items.push(
-                MenuItemFields::new("Copy radio frequency")
+                MenuItemFields::new("Bag the frequency")
                     .with_on_select_action(WorkspaceAction::CopySharedSessionLinkFromTab {
                         tab_index: index,
                     })

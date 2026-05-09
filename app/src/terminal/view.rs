@@ -15798,7 +15798,7 @@ impl TerminalView {
     }
 
     fn prompt_context_menu_items(&self, ctx: &AppContext) -> Vec<MenuItem<TerminalAction>> {
-        let copy_prompt = MenuItemFields::new("Copy prompt")
+        let copy_prompt = MenuItemFields::new("Bag the prompt")
             .with_on_select_action(TerminalAction::ContextMenu(ContextMenuAction::CopyPrompt {
                 position: PromptPosition::Input,
                 part: PromptPart::EntirePrompt,
@@ -15844,7 +15844,7 @@ impl TerminalView {
             let mut items = vec![copy_prompt];
             if self.is_rprompt_shown(&self.model.lock()) {
                 items.push(
-                    MenuItemFields::new("Copy right prompt")
+                    MenuItemFields::new("Bag the right prompt")
                         .with_on_select_action(TerminalAction::ContextMenu(
                             ContextMenuAction::CopyRprompt,
                         ))
@@ -16344,17 +16344,17 @@ impl TerminalView {
         ctx: &mut ViewContext<Self>,
     ) -> Vec<MenuItem<TerminalAction>> {
         let mut items = vec![
-            MenuItemFields::new("Copy")
+            MenuItemFields::new("Bag the case file")
                 .with_on_select_action(TerminalAction::ContextMenu(
                     ContextMenuAction::CopyAIBlock { ai_block_view_id },
                 ))
                 .into_item(),
-            MenuItemFields::new("Copy prompt")
+            MenuItemFields::new("Bag the prompt")
                 .with_on_select_action(TerminalAction::ContextMenu(
                     ContextMenuAction::CopyAIBlockQuery { ai_block_view_id },
                 ))
                 .into_item(),
-            MenuItemFields::new("Copy output as Markdown")
+            MenuItemFields::new("Bag the output as Markdown")
                 .with_on_select_action(TerminalAction::ContextMenu(
                     ContextMenuAction::CopyAIBlockOutput { ai_block_view_id },
                 ))
@@ -16365,7 +16365,7 @@ impl TerminalView {
             match link {
                 RichContentLink::Url(url) => {
                     items.push(
-                        MenuItemFields::new("Copy URL")
+                        MenuItemFields::new("Bag the URL")
                             .with_on_select_action(TerminalAction::ContextMenu(
                                 ContextMenuAction::CopyUrl { url_content: url },
                             ))
@@ -16375,7 +16375,7 @@ impl TerminalView {
                 #[cfg(feature = "local_fs")]
                 RichContentLink::FilePath { absolute_path, .. } => {
                     items.push(
-                        MenuItemFields::new("Copy path")
+                        MenuItemFields::new("Bag the path")
                             .with_on_select_action(TerminalAction::ContextMenu(
                                 ContextMenuAction::CopyUrl {
                                     url_content: absolute_path.to_string_lossy().into_owned(),
@@ -16401,7 +16401,7 @@ impl TerminalView {
 
         if num_requested_commands > 0 {
             items.push(
-                MenuItemFields::new(String::from("Copy command"))
+                MenuItemFields::new(String::from("Bag the command"))
                     .with_on_select_action(TerminalAction::ContextMenu(
                         ContextMenuAction::CopyAgentCommand { ai_block_view_id },
                     ))
@@ -16435,7 +16435,7 @@ impl TerminalView {
         });
         if has_git_branch {
             items.push(
-                MenuItemFields::new(String::from("Copy git branch"))
+                MenuItemFields::new(String::from("Bag the git branch"))
                     .with_on_select_action(TerminalAction::ContextMenu(
                         ContextMenuAction::CopyAgentGitBranch { ai_block_view_id },
                     ))
@@ -16468,7 +16468,7 @@ impl TerminalView {
         }
 
         items.push(
-            MenuItemFields::new("Copy case file text")
+            MenuItemFields::new("Bag the case file text")
                 .with_on_select_action(TerminalAction::ContextMenu(
                     ContextMenuAction::CopyAIBlockConversation { ai_block_view_id },
                 ))
