@@ -757,6 +757,49 @@ pub fn self_mic_check_at_unix() -> Option<u64> {
     Some(at)
 }
 
+// Tracks when this Yarp last fired an inbox ack on at least one inbound
+// 10-13. Drives the transient "10-4, en route" beat in the agent message
+// bar so the operator gets a confirmation that their reply hit the wire
+// before quieter producers retake the row. Stored as the unix-second
+// timestamp; 0 means no ack recorded.
+static SELF_INBOX_ACK_AT: AtomicU64 = AtomicU64::new(0);
+
+/// How long the post-inbox-ack confirmation lingers in the agent message
+/// bar. Short on purpose — this is a state-change beat, not a mode flag,
+/// and the bar has plenty of fallback producers waiting their turn.
+pub const SELF_INBOX_ACK_BAR_SECS: u64 = 5;
+
+/// Mark that this Yarp just acknowledged at least one inbound 10-13.
+/// Called from the inbox-ack handler the moment the en-route reply
+/// broadcast goes out, so the bar producer can paint a brief "10-4, en
+/// route" line confirming the reply landed.
+pub fn mark_self_inbox_ack() {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    SELF_INBOX_ACK_AT.store(now, Ordering::Relaxed);
+}
+
+/// Seconds since the last inbox ack, while still inside the bar window;
+/// `None` once the window expires. Bar producers gate the "10-4, en
+/// route" line on `Some(_)`.
+pub fn time_since_self_inbox_ack() -> Option<Duration> {
+    let at = SELF_INBOX_ACK_AT.load(Ordering::Relaxed);
+    if at == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let elapsed = now.saturating_sub(at);
+    if elapsed >= SELF_INBOX_ACK_BAR_SECS {
+        return None;
+    }
+    Some(Duration::from_secs(elapsed))
+}
+
 /// True if this Yarp is currently flagged as calling 10-13 (TTL not yet
 /// expired). UI surfaces use this to render the originator's status row in
 /// the same red rhythm as the responder side.

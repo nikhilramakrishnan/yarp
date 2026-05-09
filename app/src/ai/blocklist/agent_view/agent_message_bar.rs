@@ -327,6 +327,7 @@ impl View for AgentMessageBar {
         let Some(mut message) = ephemeral_message_model
             .produce_message(args)
             .or_else(|| BootstrappingMessageProducer.produce_message(args))
+            .or_else(|| PostAckMessageProducer.produce_message(args))
             .or_else(|| MaydayMessageProducer.produce_message(args))
             .or_else(|| ForkSlashCommandMessageProducer.produce_message(args))
             .or_else(|| AttachedBlocksMessageProducer.produce_message(args))
@@ -452,6 +453,45 @@ impl MessageProvider<AgentMessageArgs<'_>> for BootstrappingMessageProducer {
         } else {
             Some(Message::from_text("Bringing the unit online..."))
         }
+    }
+}
+
+/// Brief post-ack confirmation in the agent message bar: paints a green
+/// "10-4 — stood down, channel clear" or "10-4, en route — reply out" beat
+/// for ~5 seconds after the operator hits stand-down or inbox-ack. Without
+/// this the keystroke is silent at the input surface — the bar would jump
+/// straight from red mayday chrome to whatever quieter producer takes
+/// over. Slots above MaydayMessageProducer so the confirmation wins
+/// briefly even when peer-mayday remains active for other callers; once
+/// the window expires the mayday producer retakes the row. Both branches
+/// gate on the radio's per-event timestamp so the beat is process-local
+/// and decays automatically — no Entity state required.
+struct PostAckMessageProducer;
+
+impl MessageProvider<AgentMessageArgs<'_>> for PostAckMessageProducer {
+    fn produce_message(&self, args: AgentMessageArgs<'_>) -> Option<Message> {
+        let AgentMessageArgs { appearance, .. } = args;
+        let green = appearance.theme().ansi_fg_green();
+
+        // Stand-down ack window is 30s on the signon line, but we only want
+        // a short beat in the bar — clip to the inbox-ack window so both
+        // post-ack confirmations decay on the same rhythm here.
+        if let Some(elapsed) = crate::radio::time_since_self_stand_down() {
+            if elapsed.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS {
+                return Some(
+                    Message::from_text("10-4 — stood down, channel clear.")
+                        .with_text_color(green),
+                );
+            }
+        }
+
+        if crate::radio::time_since_self_inbox_ack().is_some() {
+            return Some(
+                Message::from_text("10-4, en route — reply out.").with_text_color(green),
+            );
+        }
+
+        None
     }
 }
 

@@ -6106,6 +6106,12 @@ impl Workspace {
             let reply = radio::Message::new(radio::self_call_sign(), radio::EN_ROUTE_BODY);
             let _ = radio::send_message(msg.from_pid, &reply);
         }
+        // Record the ack moment when at least one en-route reply went out so
+        // the agent message bar can paint a brief "10-4, en route" beat —
+        // without this the keystroke is silent at the input surface.
+        if !acked.is_empty() {
+            radio::mark_self_inbox_ack();
+        }
         ctx.notify();
     }
 
