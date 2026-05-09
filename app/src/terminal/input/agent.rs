@@ -199,12 +199,24 @@ impl Input {
         )
         .finish();
 
-        let border_color = if crate::radio::self_in_mayday()
-            || crate::radio::peer_in_mayday()
-        {
+        let border_color = if crate::radio::self_in_mayday() {
             // 10-13 dominates every other input chrome state — the operator's
-            // own active call or a peer's distress call outranks NLD coloring.
+            // own active call outranks NLD coloring.
             appearance.theme().ansi_fg_red()
+        } else if crate::radio::peer_in_mayday() {
+            // Peer is calling *us* — distinguish inbound from outbound on the
+            // same surface that already shouts self-mayday. Yellow matches the
+            // titlebar/tab/sidebar yellow we use for peer state.
+            appearance.theme().ansi_fg_yellow()
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            // Post-ack 5s pulse: green confirms the radio just settled
+            // (stand-down or inbox-ack) so the composer mirrors the
+            // workspace banner / tab / dock chrome.
+            appearance.theme().ansi_fg_green()
         } else if !self.ai_input_model.as_ref(app).is_ai_input_enabled()
             && !self.suggestions_mode_model.as_ref(app).is_slash_commands()
             && !self.slash_command_model.as_ref(app).state().is_detected_command()

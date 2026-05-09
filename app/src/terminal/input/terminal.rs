@@ -158,7 +158,30 @@ impl Input {
 
         let show_block_dividers = *BlockListSettings::as_ref(app).show_block_dividers.value();
 
-        let input = if show_block_dividers {
+        // Radio-state override on the input divider: even when block dividers
+        // are off, light up the strip on self/peer mayday and post-ack pulse so
+        // the operator's typing surface mirrors the workspace banner / dock /
+        // tab chrome. Same precedence as agent input: self → red, peer →
+        // yellow, post-ack 5s → green.
+        let radio_border_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+
+        let input = if let Some(color) = radio_border_color {
+            Container::new(hoverable_input)
+                .with_border(Border::top(1.).with_border_color(color))
+                .finish()
+        } else if show_block_dividers {
             Container::new(hoverable_input)
                 .with_border(
                     Border::top(1.)
