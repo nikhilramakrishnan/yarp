@@ -602,7 +602,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:copy",
-            "Copy command and output",
+            "Bag command and output",
             TerminalAction::Copy,
         )
         .with_custom_action(CustomAction::CopyBlock)
@@ -611,7 +611,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:copy_outputs",
-            "Copy command output",
+            "Bag command output",
             TerminalAction::CopyOutputs,
         )
         .with_custom_action(CustomAction::CopyBlockOutput)
@@ -632,7 +632,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "terminal:scroll_up_one_line",
-            "Scroll terminal output up one line",
+            "Roll the terminal output up one line",
             TerminalAction::Scroll {
                 delta: 1.0.into_lines(),
             },
@@ -640,7 +640,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Terminal") & id!("TerminalView_NonEmptyBlockList")),
         EditableBinding::new(
             "terminal:scroll_down_one_line",
-            "Scroll terminal output down one line",
+            "Roll the terminal output down one line",
             TerminalAction::Scroll {
                 delta: -(1.0.into_lines()),
             },
@@ -650,7 +650,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "terminal:scroll_to_top_of_selected_block",
-        "Scroll to top of selected block",
+        "Roll to top of selected block",
         TerminalAction::ScrollToTopOfSelectedBlocks,
     )
     .with_custom_action(CustomAction::ScrollToTopOfSelectedBlocks)
@@ -661,7 +661,7 @@ pub fn init(app: &mut AppContext) {
     )]);
     app.register_editable_bindings([EditableBinding::new(
         "terminal:scroll_to_bottom_of_selected_block",
-        "Scroll to bottom of selected block",
+        "Roll to bottom of selected block",
         TerminalAction::ScrollToBottomOfSelectedBlocks,
     )
     .with_custom_action(CustomAction::ScrollToBottomOfSelectedBlocks)
@@ -682,7 +682,7 @@ pub fn init(app: &mut AppContext) {
             // from the menus and doesn't conflict with cmd-A in the editor.
             EditableBinding::new(
                 "terminal:select_all_blocks",
-                "Select all blocks",
+                "Pick all blocks",
                 TerminalAction::SelectAllBlocks,
             )
             .with_context_predicate(
@@ -691,7 +691,7 @@ pub fn init(app: &mut AppContext) {
             .with_custom_action(CustomAction::SelectAll),
             EditableBinding::new(
                 "terminal:select_all_blocks",
-                "Select all blocks",
+                "Pick all blocks",
                 TerminalAction::SelectAllBlocks,
             )
             .with_context_predicate(
@@ -702,7 +702,7 @@ pub fn init(app: &mut AppContext) {
     } else {
         app.register_editable_bindings([EditableBinding::new(
             "terminal:select_all_blocks",
-            "Select all blocks",
+            "Pick all blocks",
             TerminalAction::SelectAllBlocks,
         )
         .with_context_predicate(
@@ -713,7 +713,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "terminal:expand_block_selection_above",
-            "Expand selected blocks above",
+            "Stretch block selection above",
             TerminalAction::ExpandBlockSelectionAbove,
         )
         .with_key_binding("shift-up")
@@ -725,7 +725,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:expand_block_selection_below",
-            "Expand selected blocks below",
+            "Stretch block selection below",
             TerminalAction::ExpandBlockSelectionBelow,
         )
         .with_key_binding("shift-down")
