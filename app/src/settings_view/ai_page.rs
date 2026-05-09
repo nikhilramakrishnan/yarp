@@ -4986,7 +4986,7 @@ impl SettingsWidget for MCPServersWidget {
         };
 
         let button = render_full_pane_width_ai_button(
-            "Manage MCP servers",
+            "Mind MCP servers",
             is_any_ai_enabled,
             self.manage_mcp_servers_button.clone(),
             AISettingsPageAction::OpenMCPServerCollection,
@@ -5153,7 +5153,7 @@ impl SettingsWidget for AIFactWidget {
         .finish();
 
         let button = render_full_pane_width_ai_button(
-            "Manage rules",
+            "Mind the rules",
             is_any_ai_enabled,
             self.manage_rules_button.clone(),
             AISettingsPageAction::OpenAIFactCollection,
