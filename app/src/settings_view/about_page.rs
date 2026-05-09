@@ -432,6 +432,27 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
 }
 
 fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
+    // When this Yarp is the 10-13 originator, surface their own broadcast in
+    // the dispatch row so the surface stack stays continuous: signon goes red,
+    // population counts the operator, and the dispatch row leads with the
+    // operator's own 10-13 instead of disappearing while peers haven't replied
+    // yet. A peer's emergency in inbox still wins (latest_dispatch already
+    // promotes 10-13s) — self only fills the gap when no peer 10-13 is queued.
+    if radio::self_in_mayday()
+        && !radio::peek_inbox()
+            .iter()
+            .any(|m| dispatch_is_emergency(&m.body))
+    {
+        let started = radio::self_mayday_started_at_unix();
+        let age = started
+            .map(radio::format_dispatch_age)
+            .unwrap_or_else(|| "now".to_string());
+        let line = format!(
+            "10-13 \u{00B7} {} \u{00B7} broadcasting \u{00B7} {age}",
+            radio::self_call_sign()
+        );
+        return Some((line, true));
+    }
     let msg = radio::latest_dispatch()?;
     let emergency = dispatch_is_emergency(&msg.body);
     // Hoist the 10-13 prefix out of the quoted body when present — burying
@@ -721,12 +742,6 @@ impl AboutPageWidget {
         // On a 10-13 the ack reads as 'en route' instead of 'copy/all clear' —
         // acknowledging an emergency is responding to it, not just receiving it.
         let pending = radio::peek_inbox().len();
-        let label = match (emergency, pending) {
-            (true, 0..=1) => "10-4, en route".to_string(),
-            (true, n) => format!("10-4, en route ({n})"),
-            (false, 0..=1) => "10-4, copy".to_string(),
-            (false, n) => format!("10-4, all clear ({n})"),
-        };
         let theme = appearance.theme();
         let ui_builder = appearance.ui_builder();
 
@@ -739,6 +754,28 @@ impl AboutPageWidget {
             });
         }
         let dispatch_span = dispatch_builder.build().finish();
+
+        // Synthetic self-broadcast (own 10-13 with no peer messages queued)
+        // has nothing to ack — Stand down in mic_check_row owns self-cancel.
+        // Render as text-only so the row stays informational instead of
+        // surfacing a no-op button.
+        if pending == 0 {
+            return Container::new(
+                Wrap::row()
+                    .with_main_axis_alignment(MainAxisAlignment::Center)
+                    .with_children([dispatch_span])
+                    .finish(),
+            )
+            .with_margin_top(4.)
+            .finish();
+        }
+
+        let label = match (emergency, pending) {
+            (true, 0..=1) => "10-4, en route".to_string(),
+            (true, n) => format!("10-4, en route ({n})"),
+            (false, 0..=1) => "10-4, copy".to_string(),
+            (false, n) => format!("10-4, all clear ({n})"),
+        };
 
         // Mirror the 10-13 broadcast button's red tint when acknowledging an
         // emergency — the broadcast side already uses Error to flag "officer

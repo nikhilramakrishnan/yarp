@@ -6052,10 +6052,7 @@ impl Workspace {
 
     fn ten_thirteen_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
         let _ = radio::broadcast(radio::TEN_THIRTEEN_BROADCAST_BODY);
-        // 5 min TTL — long enough for peers to actually respond, short enough
-        // that a stale flag doesn't leave the originator's UI red after the
-        // situation has resolved without an explicit stand-down.
-        radio::mark_self_mayday(std::time::Duration::from_secs(300));
+        radio::mark_self_mayday(std::time::Duration::from_secs(radio::SELF_MAYDAY_TTL_SECS));
         ctx.notify();
     }
 

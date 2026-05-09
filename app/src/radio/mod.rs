@@ -20,6 +20,13 @@ use serde::{Deserialize, Serialize};
 // the right default — restart implies the situation has been resolved.
 static SELF_MAYDAY_UNTIL: AtomicU64 = AtomicU64::new(0);
 
+/// Self-mayday window. Picked to outlast a normal cross-precinct response —
+/// peers see the 10-13 in their inbox, ack as en-route, and the originator's
+/// UI auto-clears once a "10-4" reply lands. The TTL is the safety net for
+/// the case where every peer is offline; long enough to hand off to a manual
+/// Stand down without auto-resolving prematurely.
+pub const SELF_MAYDAY_TTL_SECS: u64 = 300;
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Beacon {
     pub pid: u32,
@@ -491,6 +498,26 @@ pub fn self_in_mayday() -> bool {
         .map(|d| d.as_secs())
         .unwrap_or_default();
     now < until
+}
+
+/// Unix-second timestamp when this Yarp began calling 10-13, derived from the
+/// stored deadline minus the fixed TTL. None when not in mayday or after
+/// expiry. Lets dispatch surfaces format "broadcasting · 12s ago" with the
+/// same age helper used for inbox messages, so self-broadcast and peer reply
+/// share visual rhythm.
+pub fn self_mayday_started_at_unix() -> Option<u64> {
+    let until = SELF_MAYDAY_UNTIL.load(Ordering::Relaxed);
+    if until == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now >= until {
+        return None;
+    }
+    Some(until.saturating_sub(SELF_MAYDAY_TTL_SECS))
 }
 
 
