@@ -2401,7 +2401,7 @@ impl SettingsWidget for ProjectExplorerToggleWidget {
         let code_settings = CodeSettings::as_ref(app);
 
         render_body_item::<CodeSettingsPageAction>(
-            "Project explorer".into(),
+            "Beat directory".into(),
             None,
             LocalOnlyIconState::Hidden,
             ToggleState::Enabled,
