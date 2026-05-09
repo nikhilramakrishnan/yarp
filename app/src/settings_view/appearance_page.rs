@@ -4387,7 +4387,7 @@ impl SettingsWidget for TabCloseButtonPositionWidget {
     ) -> Box<dyn Element> {
         render_dropdown_item(
             appearance,
-            "Tab close button position",
+            "Beat close button position",
             None,
             None,
             LocalOnlyIconState::for_setting(
