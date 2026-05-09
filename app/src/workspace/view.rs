@@ -18409,9 +18409,29 @@ impl Workspace {
                     radio::self_call_sign()
                 )
             } else {
+                // Tag each responder with their case file when their peer
+                // beacon carries one — symmetric to the peer-mayday fold a
+                // few lines down so both halves of the banner pair read the
+                // same way. Lets the calling officer clock who's rolling on
+                // what before glancing at the about-page roster.
+                let case_tags: std::collections::HashMap<String, String> = radio::peers()
+                    .into_iter()
+                    .filter_map(|p| {
+                        p.tab_title
+                            .filter(|t| !t.is_empty())
+                            .map(|t| (p.call_sign, t))
+                    })
+                    .collect();
                 const MAX_NAMED: usize = 3;
                 let total = responders.len();
-                let named: Vec<String> = responders.into_iter().take(MAX_NAMED).collect();
+                let named: Vec<String> = responders
+                    .into_iter()
+                    .take(MAX_NAMED)
+                    .map(|name| match case_tags.get(&name) {
+                        Some(tag) => format!("{name} ({tag})"),
+                        None => name,
+                    })
+                    .collect();
                 let names = named.join(", ");
                 let suffix = if total > MAX_NAMED {
                     format!("{} +{} more en route.", names, total - MAX_NAMED)
