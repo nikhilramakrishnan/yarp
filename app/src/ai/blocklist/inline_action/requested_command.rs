@@ -79,7 +79,7 @@ pub const REQUESTED_COMMAND_BODY_VERTICAL_PADDING: f32 = 16.;
 const REQUESTED_COMMAND_REJECT_LABEL: &str = "Wave it off";
 const REQUESTED_COMMAND_ACCEPT_LABEL: &str = "Run";
 const REQUESTED_COMMAND_EDIT_LABEL: &str = "Amend";
-const REQUESTED_COMMAND_MINIMIZE_LABEL: &str = "Done";
+const REQUESTED_COMMAND_MINIMIZE_LABEL: &str = "Squared away";
 
 const LOADING_MESSAGE: &str = "Drawing up the call-out...";
 const COMMAND_WAITING_FOR_USER_MESSAGE: &str = "Sign off on running this and reading the report?";

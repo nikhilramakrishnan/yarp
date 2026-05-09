@@ -387,7 +387,7 @@ pub fn render_privacy_settings_overlay_body<A: Action + Clone + 'static>(
             .with_child(render_close_overlay_button(
                 appearance,
                 ui_builder,
-                "Done".into(),
+                "Squared away".into(),
                 handles.close_button_mouse.clone(),
                 actions.hide_overlay.clone(),
             ))
