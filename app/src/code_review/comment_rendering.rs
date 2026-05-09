@@ -109,7 +109,7 @@ fn render_comment_file_path_header(
 
         let outdated_chip = Container::new(
             Text::new(
-                "Outdated",
+                "Stale",
                 appearance.ui_font_family(),
                 appearance.ui_font_size(),
             )
