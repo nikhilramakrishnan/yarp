@@ -367,7 +367,7 @@ define_settings_group!(SessionSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.input.show_model_selectors_in_prompt",
-        description: "Whether to show AI model selectors in the input prompt.",
+        description: "Whether to show PC playbook selectors in the input prompt.",
     },
     agent_footer_chip_selection: AgentToolbarChipSelectionSetting {
         type: AgentToolbarChipSelection,
