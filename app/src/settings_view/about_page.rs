@@ -427,6 +427,16 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // Track which senders have a 10-13 in queue so the roster can name the
     // officer(s) who need backup rather than just lighting the whole line red.
     let mut distressed: std::collections::HashSet<String> = std::collections::HashSet::new();
+    // Track which senders' *most recent* queued message is a stand-down
+    // broadcast. resolve_superseded_emergencies drops their 10-13 once the
+    // stand-down lands, so a sender showing up here means "their call closed
+    // and the resolution is still in your inbox". Symmetric to distressed:
+    // distressed badges senders who need backup, stood_down badges senders
+    // whose case just resolved — both let the roster name names instead of
+    // burying the state in body text.
+    let mut stood_down: std::collections::HashSet<String> = std::collections::HashSet::new();
+    let mut latest_body_per_sender: std::collections::HashMap<String, String> =
+        std::collections::HashMap::new();
     // Count repeats per sender so a chatty officer doesn't crowd the line,
     // and preserve arrival order for predictable rendering.
     let mut order: Vec<String> = Vec::new();
@@ -435,8 +445,17 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
         if dispatch_is_emergency(&msg.body) {
             distressed.insert(msg.from_call_sign.clone());
         }
+        latest_body_per_sender.insert(msg.from_call_sign.clone(), msg.body.clone());
         if seen.insert(msg.from_call_sign.as_str()) {
             order.push(msg.from_call_sign.clone());
+        }
+    }
+    // Promote distress over resolution: if a peer is currently calling 10-13,
+    // their stand-down badge from a *prior* case is irrelevant — backup is
+    // the active state and the roster should read it.
+    for (sender, body) in &latest_body_per_sender {
+        if !distressed.contains(sender) && radio::is_stand_down_body(body) {
+            stood_down.insert(sender.clone());
         }
     }
     // Promote distressed senders to the front so the eye lands on who needs
@@ -450,9 +469,15 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // Tag distressed senders inline with the 10-13 code so a multi-sender
     // inbox doesn't leave the operator guessing which officer triggered the
     // red — matches the latest-dispatch row's "10-13 · <officer>" lead.
+    // Stand-down senders pick up a "(stood down)" suffix so a quiet roster
+    // line still tells the operator "this name is here because their call
+    // just closed, not because they're chatty" — symmetric with the 10-13
+    // prefix and matches the earlier-dispatches preview's "stood down" tag.
     let render_name = |name: &str| -> String {
         if distressed.contains(name) {
             format!("10-13 {name}")
+        } else if stood_down.contains(name) {
+            format!("{name} (stood down)")
         } else {
             name.to_string()
         }
