@@ -1068,7 +1068,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.knowledge.rules_enabled",
-        description: "Whether the agent uses your saved rules during requests.",
+        description: "Whether the PC uses your saved standing orders during requests.",
     }
     // Whether yarp drive context should be included in AI requests
     yarp_drive_context_enabled: YarpDriveContextEnabled {
