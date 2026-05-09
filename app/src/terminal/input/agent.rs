@@ -584,6 +584,7 @@ impl Input {
     }
 
     pub(super) fn render_ambient_agent_status_footer(&self, app: &AppContext) -> Box<dyn Element> {
+        let appearance = Appearance::as_ref(app);
         let ambient_agent_model = self.ambient_agent_view_model.as_ref(app);
         let mut stack = Stack::new().with_constrain_absolute_children();
 
@@ -612,6 +613,32 @@ impl Input {
                 ctx.dispatch_typed_action(TerminalAction::MiddleClickOnInput);
             })
             .finish();
+
+        // Cloud-mode ambient footer carries no radio chrome by default. Mirror
+        // the terminal-input divider stripe so this surface broadcasts the
+        // channel state in lockstep with the rest of the chrome — self → red,
+        // peer → yellow, post-ack 5s → green.
+        let radio_border_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+
+        let input = if let Some(color) = radio_border_color {
+            Container::new(input)
+                .with_border(Border::top(1.).with_border_color(color))
+                .finish()
+        } else {
+            input
+        };
 
         let mut column = Flex::column();
         if show_status_bar {
