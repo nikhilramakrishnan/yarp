@@ -95,9 +95,30 @@ impl Input {
             add_input_suggestions_overlays(self, &mut stack, appearance, menu_positioning, app);
         }
 
-        let mut input_container = Container::new(stack.finish()).with_border(
-            Border::top(1.0).with_border_fill(internal_colors::fg_overlay_2(appearance.theme())),
-        );
+        // CLI rich-input top divider sits above the editor for OpenCode and
+        // similar CLI agents — operator-visible chrome on the rich CLI input
+        // surface. Override the fg_overlay_2 fill on self/peer mayday and the
+        // post-ack pulse so this divider mirrors channel state — self → red,
+        // peer → yellow, post-ack 5s → green, fg_overlay_2 fallback.
+        let radio_top_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+        let cli_top_border = if let Some(color) = radio_top_color {
+            Border::top(1.0).with_border_color(color)
+        } else {
+            Border::top(1.0).with_border_fill(internal_colors::fg_overlay_2(appearance.theme()))
+        };
+        let mut input_container = Container::new(stack.finish()).with_border(cli_top_border);
 
         // When an alt screen CLI agent (e.g. OpenCode) is running, match
         // the rich input background to the alt screen so it blends in.
