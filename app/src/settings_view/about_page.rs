@@ -437,13 +437,10 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     // the dispatch row so the surface stack stays continuous: signon goes red,
     // population counts the operator, and the dispatch row leads with the
     // operator's own 10-13 instead of disappearing while peers haven't replied
-    // yet. A peer's emergency in inbox still wins (latest_dispatch already
-    // promotes 10-13s) — self only fills the gap when no peer 10-13 is queued.
-    if radio::self_in_mayday()
-        && !radio::peek_inbox()
-            .iter()
-            .any(|m| dispatch_is_emergency(&m.body))
-    {
+    // yet. The synthetic only wins when the inbox is empty — once any peer
+    // message lands (en-route reply or otherwise) the real latest_dispatch
+    // takes over so the operator sees who's responding.
+    if radio::self_in_mayday() && radio::peek_inbox().is_empty() {
         let started = radio::self_mayday_started_at_unix();
         let age = started
             .map(radio::format_dispatch_age)
