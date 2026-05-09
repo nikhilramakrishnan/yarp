@@ -1465,7 +1465,7 @@ impl NotebookView {
         // Add "Duplicate" to menu
         if active_notebook_data.space(ctx) != Some(Space::Shared) {
             menu_items.push(
-                MenuItemFields::new("Copy the file")
+                MenuItemFields::new("Spin off a duplicate")
                     .with_on_select_action(NotebookAction::Duplicate)
                     .with_icon(icons::Icon::Duplicate)
                     .into_item(),

@@ -4719,7 +4719,7 @@ impl DriveIndex {
                             || (self.is_online(app) && matches!(space, Space::Team { .. }))
                         {
                             menu_items.push(
-                                MenuItemFields::new("Copy the file")
+                                MenuItemFields::new("Spin off a duplicate")
                                     .with_on_select_action(DriveIndexAction::DuplicateObject(
                                         *cloud_object_type_and_id,
                                     ))
