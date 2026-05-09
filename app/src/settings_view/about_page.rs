@@ -163,6 +163,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
                 .with_child(self.mic_check_row(appearance))
+                .with_child(self.direct_dispatch_row(appearance))
                 .with_child(
                     ui_builder
                         .span(sandford_population_line())
@@ -506,6 +507,59 @@ impl AboutPageWidget {
         )
         .with_margin_top(8.)
         .finish()
+    }
+
+    // 1:1 direct-dispatch row — one "Hail Sandford" button per live peer.
+    // Drops a "Hail — checking in." into that peer's inbox so an officer can
+    // ping a specific unit without lighting up the whole channel. Each render
+    // generates fresh MouseStateHandles per peer; the peer set is short-lived
+    // (process-bound) so persistent hover state isn't worth the bookkeeping.
+    fn direct_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let peer_list = radio::peers();
+        if peer_list.is_empty() {
+            return Empty::new().finish();
+        }
+        let ui_builder = appearance.ui_builder();
+        let hail_button_style = UiComponentStyles {
+            font_size: Some(12.),
+            font_weight: Some(Weight::Semibold),
+            border_radius: Some(yarpui::elements::CornerRadius::with_all(
+                yarpui::elements::Radius::Pixels(4.),
+            )),
+            padding: Some(Coords {
+                top: 4.,
+                bottom: 4.,
+                left: 10.,
+                right: 10.,
+            }),
+            ..Default::default()
+        };
+        let mut row = Wrap::row().with_main_axis_alignment(MainAxisAlignment::Center);
+        for peer in peer_list {
+            let label_call_sign = peer.call_sign.clone();
+            let tooltip_call_sign = peer.call_sign.clone();
+            let tooltip_builder = ui_builder.clone();
+            let to_pid = peer.pid;
+            let button = ui_builder
+                .button(ButtonVariant::Outlined, MouseStateHandle::default())
+                .with_style(hail_button_style.clone())
+                .with_text_label(format!("Hail {label_call_sign}"))
+                .with_tooltip(move || {
+                    tooltip_builder
+                        .tool_tip(format!(
+                            "Drop a 'checking in' ping into {tooltip_call_sign}'s inbox."
+                        ))
+                        .build()
+                        .finish()
+                })
+                .build()
+                .on_click(move |ctx, _, _| {
+                    ctx.dispatch_typed_action(WorkspaceAction::RadioHail { to_pid });
+                })
+                .finish();
+            row = row.with_child(Container::new(button).with_padding_left(6.).finish());
+        }
+        Container::new(row.finish()).with_margin_top(6.).finish()
     }
 
     fn precinct_status_row(&self, appearance: &Appearance) -> Box<dyn Element> {

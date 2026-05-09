@@ -164,6 +164,9 @@ pub enum WorkspaceAction {
     AckInboxDispatch,
     MicCheckBroadcast,
     TenThirteenBroadcast,
+    RadioHail {
+        to_pid: u32,
+    },
     DownloadNewVersion,
     ConfigureKeybindingSettings {
         keybinding_name: Option<String>,
@@ -765,6 +768,7 @@ impl WorkspaceAction {
             | AckInboxDispatch
             | MicCheckBroadcast
             | TenThirteenBroadcast
+            | RadioHail { .. }
             | DownloadNewVersion
             | ConfigureKeybindingSettings { .. }
             | ExportAllYarpDriveObjects
