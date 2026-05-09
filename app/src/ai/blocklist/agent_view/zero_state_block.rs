@@ -1312,13 +1312,36 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
         }
     }
 
+    // Oz updates card is the duty-log expansion on the radio-room landing
+    // surface — operator stares at this when the wire is quiet. Override the
+    // surface_overlay_2 frame on self/peer mayday and the post-ack pulse so
+    // the card mirrors channel state — self → red, peer → yellow, post-ack
+    // 5s → green, surface_overlay_2 fallback.
+    let oz_border_color = if radio::self_in_mayday() {
+        Some(appearance.theme().ansi_fg_red())
+    } else if radio::peer_in_mayday() {
+        Some(appearance.theme().ansi_fg_yellow())
+    } else if radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(appearance.theme().ansi_fg_green())
+    } else {
+        None
+    };
     Some(
-        Hoverable::new(state_handles.fuzz_updates.clone(), |_| {
+        Hoverable::new(state_handles.fuzz_updates.clone(), move |_| {
+            let border = if let Some(color) = oz_border_color {
+                Border::all(1.).with_border_color(color)
+            } else {
+                Border::all(1.).with_border_fill(theme.surface_overlay_2())
+            };
             Container::new(body.finish())
                 .with_vertical_padding(8.)
                 .with_horizontal_padding(12.)
                 .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
-                .with_border(Border::all(1.).with_border_fill(theme.surface_overlay_2()))
+                .with_border(border)
                 .finish()
         })
         .with_cursor(Cursor::PointingHand)
