@@ -1072,6 +1072,24 @@ impl AboutPageWidget {
             .filter(|m| dispatch_is_emergency(&m.body))
             .map(|m| m.from_call_sign.clone())
             .collect();
+        // Last-write-wins per sender so we know which peers are *currently*
+        // hailing us. Drives the "Hail back" CTA flip below — closes the
+        // loop on the inbox roster's "(hailing)" suffix so the response
+        // verb reads as a reply rather than an unprompted ping.
+        let hailing_signs: std::collections::HashSet<String> = {
+            let mut latest_body_per_sender: std::collections::HashMap<String, String> =
+                std::collections::HashMap::new();
+            for msg in radio::peek_inbox() {
+                latest_body_per_sender.insert(msg.from_call_sign, msg.body);
+            }
+            latest_body_per_sender
+                .into_iter()
+                .filter(|(name, body)| {
+                    !emergency_signs.contains(name) && radio::is_hail_body(body)
+                })
+                .map(|(name, _)| name)
+                .collect()
+        };
         let ui_builder = appearance.ui_builder();
         let hail_button_style = UiComponentStyles {
             font_size: Some(12.),
@@ -1108,11 +1126,18 @@ impl AboutPageWidget {
             };
             let tooltip_builder = ui_builder.clone();
             let to_pid = peer.pid;
+            let is_hailing_us = hailing_signs.contains(&peer.call_sign);
             let (variant, label, tooltip) = if in_distress {
                 (
                     ButtonVariant::Error,
                     format!("Respond to {label_call_sign}"),
                     format!("Send '10-4, en route' to {tooltip_target}."),
+                )
+            } else if is_hailing_us {
+                (
+                    ButtonVariant::Outlined,
+                    format!("Hail back {label_call_sign}"),
+                    format!("Reply to {tooltip_target}'s hail with one of your own."),
                 )
             } else {
                 (
