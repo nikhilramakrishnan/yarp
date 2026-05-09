@@ -167,12 +167,12 @@ const OFFLINE_BANNER_PADDING_VERTICAL: f32 = 4.;
 const FOLDER_LABEL: &str = "Folder";
 const NOTEBOOK_LABEL: &str = "Casebook";
 const WORKFLOW_LABEL: &str = "Playbook";
-const AGENT_MODE_WORKFLOW_LABEL: &str = "Prompt";
+const AGENT_MODE_WORKFLOW_LABEL: &str = "Order";
 const ENV_VAR_COLLECTION_LABEL: &str = "Environment variables";
 const INDEX_FOLDER_LABEL: &str = "New folder";
 const INDEX_NOTEBOOK_LABEL: &str = "New casebook";
 const INDEX_WORKFLOW_LABEL: &str = "New playbook";
-const INDEX_AGENT_MODE_WORKFLOW_LABEL: &str = "New prompt";
+const INDEX_AGENT_MODE_WORKFLOW_LABEL: &str = "New order";
 const INDEX_ENV_VAR_COLLECTION_LABEL: &str = "New environment variables";
 
 const IMPORT_LABEL: &str = "Bring in";
