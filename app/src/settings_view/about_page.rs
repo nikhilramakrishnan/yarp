@@ -1033,11 +1033,21 @@ impl AboutPageWidget {
             .finish();
         }
 
-        let label = match (emergency, pending) {
-            (true, 0..=1) => "10-4, en route".to_string(),
-            (true, n) => format!("10-4, en route ({n})"),
-            (false, 0..=1) => "10-4, copy".to_string(),
-            (false, n) => format!("10-4, all clear ({n})"),
+        // When the latest dispatch is a stand-down broadcast, the ack-button
+        // verb shifts from generic "copy" to "all clear" so it matches the
+        // dispatch row's resolution framing — the row reads "10-4 all clear ·
+        // Cooper stood down" up top and the ack reads "10-4, all clear" below.
+        // Without this, single-pending stand-downs got "10-4, copy" which
+        // softens the resolution vibe the row is trying to project.
+        let stand_down_dispatch = radio::latest_dispatch()
+            .map(|m| radio::is_stand_down_body(&m.body))
+            .unwrap_or(false);
+        let label = match (emergency, stand_down_dispatch, pending) {
+            (true, _, 0..=1) => "10-4, en route".to_string(),
+            (true, _, n) => format!("10-4, en route ({n})"),
+            (false, true, 0..=1) => "10-4, all clear".to_string(),
+            (false, _, 0..=1) => "10-4, copy".to_string(),
+            (false, _, n) => format!("10-4, all clear ({n})"),
         };
 
         // Mirror the 10-13 broadcast button's red tint when acknowledging an
