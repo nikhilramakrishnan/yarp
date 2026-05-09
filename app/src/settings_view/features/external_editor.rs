@@ -280,7 +280,7 @@ impl View for ExternalEditorView {
 
         let default_editor = render_dropdown_item(
             appearance,
-            "Choose an editor to open file links",
+            "Pick an editor to open file links",
             None,
             None,
             LocalOnlyIconState::for_setting(
@@ -295,7 +295,7 @@ impl View for ExternalEditorView {
 
         let code_panels_editor = render_dropdown_item(
             appearance,
-            "Choose an editor to open files from the code review panel, project explorer, and global search",
+            "Pick an editor to open case files from the evidence review panel, beat directory, and stationhouse sweep",
             None,
             None,
             LocalOnlyIconState::for_setting(
@@ -310,7 +310,7 @@ impl View for ExternalEditorView {
 
         let default_layout = render_dropdown_item(
             appearance,
-            "Choose a layout to open files in Yarp",
+            "Pick a layout for opening case files in Yarp",
             None,
             None,
             LocalOnlyIconState::for_setting(
