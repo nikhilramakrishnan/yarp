@@ -363,14 +363,25 @@ fn precinct_status_line() -> (String, bool) {
     for msg in radio::peek_inbox() {
         latest_body_per_sender.insert(msg.from_call_sign, msg.body);
     }
-    let stood_down_count = latest_body_per_sender
-        .values()
-        .filter(|b| radio::is_stand_down_body(b))
-        .count();
-    let calm_phrase: String = match stood_down_count {
-        0 => "all clear".to_string(),
-        1 => "just stood down".to_string(),
-        n => format!("{n} just stood down"),
+    let mut stood_down_names: Vec<String> = latest_body_per_sender
+        .iter()
+        .filter(|(_, body)| radio::is_stand_down_body(body))
+        .map(|(name, _)| name.clone())
+        .collect();
+    stood_down_names.sort();
+    // Name enumeration on the resolution side mirrors the Code 3 distress
+    // enumeration: 1-3 stood-down senders surface their call signs so the
+    // banner names whose case just closed; >3 collapses to the count phrase
+    // because the row's character budget runs out. Singular form keeps
+    // "just" — "Cooper just stood down" reads as the active resolution
+    // moment — but plural forms drop "just" so "Cooper & Danny stood down"
+    // doesn't trip on the awkward "Cooper & Danny just stood down".
+    let calm_phrase: String = match stood_down_names.as_slice() {
+        [] => "all clear".to_string(),
+        [a] => format!("{a} just stood down"),
+        [a, b] => format!("{a} & {b} stood down"),
+        [a, b, c] => format!("{a}, {b} & {c} stood down"),
+        names => format!("{} just stood down", names.len()),
     };
     // Code 4 keeps the longer noun phrase — without an emergency fragment to
     // anchor the line, "Code 4 · 4" alone reads cryptic; the full phrasing
