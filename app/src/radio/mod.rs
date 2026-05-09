@@ -782,6 +782,31 @@ pub fn latest_emergency() -> Option<Message> {
         .max_by_key(|m| m.sent_at_unix)
 }
 
+/// Call signs of peers whose 10-13 is sitting in this Yarp's inbox, deduped
+/// and ordered newest-call-first so the freshest distress lead reads first.
+/// Lets the peer-mayday banner chrome surface "Cooper, Wainwright need
+/// assistance" instead of silently dropping all but the single latest
+/// caller — a back-to-back second 10-13 from a different officer was
+/// otherwise invisible until the operator acked the first call. Inbox
+/// already filters stood-down emergencies via
+/// `resolve_superseded_emergencies`, so any name returned here is by
+/// definition a call still wanting a response.
+pub fn pending_emergency_callers() -> Vec<String> {
+    let mut messages: Vec<Message> = peek_inbox()
+        .into_iter()
+        .filter(|m| is_emergency_body(&m.body))
+        .collect();
+    messages.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
+    let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
+    let mut out: Vec<String> = Vec::new();
+    for msg in messages {
+        if seen.insert(msg.from_call_sign.clone()) {
+            out.push(msg.from_call_sign);
+        }
+    }
+    out
+}
+
 /// Call signs of peers who have replied "en route" to a 10-13 sitting in
 /// this Yarp's inbox, deduped and ordered by reply timestamp (oldest
 /// first — the order officers actually rolled). Lets the self-mayday

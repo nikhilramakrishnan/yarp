@@ -18435,12 +18435,31 @@ impl Workspace {
                 }),
             });
         }
-        if let Some(emergency) = radio::latest_emergency() {
+        let callers = radio::pending_emergency_callers();
+        if !callers.is_empty() {
+            // Fold every caller into the description so a back-to-back second
+            // 10-13 from a different officer doesn't get buried under the
+            // single freshest call. Same cap-at-3 + "+N more" shape as the
+            // self-mayday roll-call so the two halves of the banner pair
+            // read symmetrically. AckInboxDispatch already drains the entire
+            // inbox of emergencies and replies en-route to each distinct
+            // caller, so a single press still covers the whole roster.
+            const MAX_NAMED: usize = 3;
+            let total = callers.len();
+            let named: Vec<String> = callers.into_iter().take(MAX_NAMED).collect();
+            let names = named.join(", ");
+            let description = if total == 1 {
+                format!("{} needs assistance.", names)
+            } else if total > MAX_NAMED {
+                format!("{} +{} more need assistance.", names, total - MAX_NAMED)
+            } else {
+                format!("{} need assistance.", names)
+            };
             return Some(WorkspaceBannerFields {
                 banner_type: WorkspaceBanner::Mayday,
                 severity: BannerSeverity::Error,
                 heading: Some("10-13 inbound.".into()),
-                description: format!("{} needs assistance.", emergency.from_call_sign),
+                description,
                 secondary_button: None,
                 button: Some(WorkspaceBannerButtonDetails {
                     text: "10-4 en route".into(),
