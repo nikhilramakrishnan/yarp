@@ -272,7 +272,7 @@ impl InlineHistoryMenuView {
                     })
             });
             let header_config = InlineMenuHeaderConfig {
-                label: "History".to_string(),
+                label: "Duty log".to_string(),
                 trailing_element: Some(Box::new(move |_app: &AppContext| {
                     ChildView::new(&configure_button).finish()
                 })),
