@@ -199,7 +199,13 @@ impl Input {
         )
         .finish();
 
-        let border_color = if !self.ai_input_model.as_ref(app).is_ai_input_enabled()
+        let border_color = if crate::radio::self_in_mayday()
+            || crate::radio::peer_in_mayday()
+        {
+            // 10-13 dominates every other input chrome state — the operator's
+            // own active call or a peer's distress call outranks NLD coloring.
+            appearance.theme().ansi_fg_red()
+        } else if !self.ai_input_model.as_ref(app).is_ai_input_enabled()
             && !self.suggestions_mode_model.as_ref(app).is_slash_commands()
             && !self.slash_command_model.as_ref(app).state().is_detected_command()
             // If NLD, don't color the border if the input is empty, because the current
@@ -499,7 +505,14 @@ impl Input {
     ) -> Box<dyn Element> {
         let theme = appearance.theme();
         let background = internal_colors::fg_overlay_1(theme);
-        let border_color = internal_colors::neutral_2(theme);
+        // 10-13 paints the cloud-mode v2 input chrome red so the emergency is
+        // visible at the surface the operator is typing into, matching the
+        // classic-agent border treatment.
+        let border_color = if crate::radio::self_in_mayday() || crate::radio::peer_in_mayday() {
+            theme.ansi_fg_red()
+        } else {
+            internal_colors::neutral_2(theme)
+        };
 
         let editor_with_min_height =
             ConstrainedBox::new(self.render_input_box(/*show_vim_status=*/ false, appearance, app))
