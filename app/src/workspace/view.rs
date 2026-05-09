@@ -18444,9 +18444,33 @@ impl Workspace {
             // read symmetrically. AckInboxDispatch already drains the entire
             // inbox of emergencies and replies en-route to each distinct
             // caller, so a single press still covers the whole roster.
+            //
+            // Each named caller picks up their case tag in parens when the
+            // peer beacon carries one — symmetric to the about-page roster
+            // and dispatch rows that already lead with "(case-foo · 12s)".
+            // Lets an officer triage from the banner alone: "Cooper
+            // (case-foo) needs assistance" tells them what they're rolling
+            // on before they click ack. Tag drops silently when the peer
+            // hasn't published one — the row stays clean rather than
+            // showing an empty paren.
+            let case_tags: std::collections::HashMap<String, String> = radio::peers()
+                .into_iter()
+                .filter_map(|p| {
+                    p.tab_title
+                        .filter(|t| !t.is_empty())
+                        .map(|t| (p.call_sign, t))
+                })
+                .collect();
             const MAX_NAMED: usize = 3;
             let total = callers.len();
-            let named: Vec<String> = callers.into_iter().take(MAX_NAMED).collect();
+            let named: Vec<String> = callers
+                .into_iter()
+                .take(MAX_NAMED)
+                .map(|name| match case_tags.get(&name) {
+                    Some(tag) => format!("{name} ({tag})"),
+                    None => name,
+                })
+                .collect();
             let names = named.join(", ");
             let description = if total == 1 {
                 format!("{} needs assistance.", names)
