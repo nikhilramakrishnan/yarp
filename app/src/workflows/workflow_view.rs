@@ -2465,7 +2465,7 @@ impl WorkflowView {
                     .finish();
 
                 let button_with_tool_tip = appearance.ui_builder().tool_tip_on_element(
-                    "Radio Yarp AI to draft a title, descriptions, or parameters".to_string(),
+                    "Radio the PC to draft a title, descriptions, or parameters".to_string(),
                     self.ui_state_handles.ai_assist_tool_tip.clone(),
                     rendered_button,
                     ParentAnchor::TopMiddle,
