@@ -5394,8 +5394,8 @@ impl SettingsWidget for OtherAIWidget {
 
         column.add_child(render_dropdown_item(
             appearance,
-            "Agent thinking display",
-            Some("Sets how the agent's thinking traces show on the wire."),
+            "PC thinking display",
+            Some("Sets how the PC's thinking traces show on the wire."),
             None,
             LocalOnlyIconState::for_setting(
                 ThinkingDisplayMode::storage_key(),

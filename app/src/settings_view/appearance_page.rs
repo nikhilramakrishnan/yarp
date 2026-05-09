@@ -3723,7 +3723,7 @@ impl SettingsWidget for AIFontWidget {
         let mut ai_font_row = Flex::row().with_cross_axis_alignment(CrossAxisAlignment::Center);
         let mut ai_font = Flex::column();
         ai_font.add_child(render_body_item_label::<AppearancePageAction>(
-            "Agent font".to_string(),
+            "PC font".to_string(),
             None,
             None,
             LocalOnlyIconState::for_setting(
