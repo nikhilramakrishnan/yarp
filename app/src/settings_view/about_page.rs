@@ -568,29 +568,48 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         display_body
     };
     let age = radio::format_dispatch_age(msg.sent_at_unix);
+    // Look up the originator's tab title so the dispatch row carries case-file
+    // context — "Latest from Cooper · case-foo" beats "Latest from Cooper"
+    // when the responder is triaging which window to flip to. Skipped when
+    // the peer's tab title is unset/empty so we don't render a dangling
+    // separator. On emergency the tag rides as "(case-foo)" to mirror the
+    // hail-button tooltip's bracket, and on routine it folds inside the
+    // existing parenthetical alongside age.
+    let case_tag: Option<String> = radio::peers()
+        .into_iter()
+        .find(|p| p.call_sign == msg.from_call_sign)
+        .and_then(|p| p.tab_title)
+        .filter(|t| !t.is_empty());
     // Emergency rewrites the line's *shape*, not just its lead token, so the
     // urgent dispatch scans with different rhythm than a routine one:
-    //   routine:    Latest from Cooper (12s ago): "ten-four"
-    //   emergency:  10-13 · Cooper · 12s ago — "need backup"
+    //   routine:    Latest from Cooper · case-foo (12s ago): "ten-four"
+    //   emergency:  10-13 · Cooper (case-foo) · 12s ago — "need backup"
     // Middle-dot separators echo the Code 3 banner above and read as terse
     // hits; the em-dash before the quote replaces the routine's colon so the
     // eye picks up "different separator → different urgency" before parsing
     // any words. Routine keeps the parenthetical bracket for its slower,
     // conversational rhythm.
+    let from_label = match &case_tag {
+        Some(tag) if emergency => format!("{} ({tag})", msg.from_call_sign),
+        _ => msg.from_call_sign.clone(),
+    };
+    let routine_meta = match &case_tag {
+        Some(tag) => format!("{tag} · {age}"),
+        None => age.clone(),
+    };
     let line = if emergency {
         if body.is_empty() {
-            format!("10-13 \u{00B7} {} \u{00B7} {age}", msg.from_call_sign)
+            format!("10-13 \u{00B7} {from_label} \u{00B7} {age}")
         } else {
             format!(
-                "10-13 \u{00B7} {} \u{00B7} {age} \u{2014} \u{201C}{body}\u{201D}",
-                msg.from_call_sign
+                "10-13 \u{00B7} {from_label} \u{00B7} {age} \u{2014} \u{201C}{body}\u{201D}"
             )
         }
     } else if body.is_empty() {
-        format!("Latest from {} ({age})", msg.from_call_sign)
+        format!("Latest from {} ({routine_meta})", msg.from_call_sign)
     } else {
         format!(
-            "Latest from {} ({age}): \u{201C}{body}\u{201D}",
+            "Latest from {} ({routine_meta}): \u{201C}{body}\u{201D}",
             msg.from_call_sign
         )
     };
