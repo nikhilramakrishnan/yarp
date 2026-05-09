@@ -1246,7 +1246,7 @@ impl AboutPageWidget {
                 (
                     ButtonVariant::Outlined,
                     format!("Hail back {label_call_sign}"),
-                    format!("Reply to {tooltip_target}'s hail with one of your own."),
+                    format!("Return {tooltip_target}'s hail — 'reading you loud and clear'."),
                 )
             } else {
                 (
