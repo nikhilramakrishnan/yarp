@@ -192,13 +192,36 @@ impl Input {
         menu_positioning: MenuPositioning,
         content: Box<dyn Element>,
     ) -> Box<dyn Element> {
+        // Suggestions menu floats above the input — the operator pulls this up
+        // for radio codes and completions. Mirror the input's radio stripe so
+        // the floating chrome stays contiguous with the surface below it:
+        // self → red, peer → yellow, post-ack 5s → green, outline fallback.
+        let radio_menu_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+        let menu_border = if let Some(color) = radio_menu_color {
+            Border::all(1.0).with_border_color(color)
+        } else {
+            Border::all(1.0).with_border_fill(theme.outline())
+        };
+
         // Inner container for the visual menu content (background, border, shadow)
         // This is wrapped by Resizable so the resize handles align with the border.
         let inner_container = Container::new(content)
             .with_background(theme.surface_2())
             .with_corner_radius(corner_radius)
             .with_drop_shadow(DropShadow::default())
-            .with_border(Border::all(1.0).with_border_fill(theme.outline()))
+            .with_border(menu_border)
             .finish();
 
         // Apply width resizing based on config
