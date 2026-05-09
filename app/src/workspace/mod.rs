@@ -1020,7 +1020,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             // If you rename this name, please update the name in command_palette/action/data_source.rs
             "workspace:search_drive",
-            "Search Yarp Drive",
+            "Sweep Yarp Drive",
             WorkspaceAction::OpenPalette {
                 mode: PaletteMode::YarpDrive,
                 source: PaletteSource::Keybinding,
