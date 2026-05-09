@@ -258,7 +258,7 @@ impl AgentTypeSelector {
 
             if is_suggested {
                 let suggested_text =
-                    Text::new("Top pick".to_string(), font_family, OPTION_DESC_FONT_SIZE)
+                    Text::new("Sarge's pick".to_string(), font_family, OPTION_DESC_FONT_SIZE)
                         .with_style(Properties::default().weight(Weight::Medium))
                         .with_color(badge_text_color)
                         .finish();
