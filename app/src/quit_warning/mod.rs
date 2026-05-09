@@ -293,7 +293,7 @@ impl<'a> UnsavedStateSummary<'a> {
         let mut info_text_lines = Vec::<String>::new();
 
         let scope_suffix = match self.scope {
-            QuitScope::Tabs(ref tabs) if tabs.len() == 1 => " in this tab.",
+            QuitScope::Tabs(ref tabs) if tabs.len() == 1 => " in this beat.",
             QuitScope::Window(_) => " in this window.",
             QuitScope::Pane { .. } => " in this pane.",
             QuitScope::App | QuitScope::Tabs(_) | QuitScope::EditorTab { .. } => ".",
@@ -314,7 +314,7 @@ impl<'a> UnsavedStateSummary<'a> {
             } else if self.tabs_with_long_running_commands > 1 {
                 let _ = write!(
                     &mut process_info_text,
-                    " in {} tabs",
+                    " in {} beats",
                     self.tabs_with_long_running_commands
                 );
             }
@@ -432,8 +432,8 @@ impl<'a> QuitWarningDialog<'a> {
 
         let title = match &state.scope {
             QuitScope::Pane { .. } => "Close pane?",
-            QuitScope::Tabs(tabs) if tabs.len() == 1 => "Close tab?",
-            QuitScope::Tabs(_) => "Close tabs?",
+            QuitScope::Tabs(tabs) if tabs.len() == 1 => "Close this beat?",
+            QuitScope::Tabs(_) => "Close these beats?",
             QuitScope::Window(_) => "Close window?",
             QuitScope::App => "End the shift?",
             QuitScope::EditorTab { .. } => "File these changes?",
