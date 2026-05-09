@@ -306,26 +306,39 @@ fn styled_precinct_text_row(
 }
 
 fn precinct_status_line() -> (String, bool) {
-    let inbox_emergencies = radio::peek_inbox()
+    // Pull distressed-peer names off the inbox dedup'd and sorted, then
+    // prepend "you" when self-mayday is set so the banner names who's
+    // actually in distress instead of collapsing to a bare count. Self
+    // counts toward the tally — the originator is in distress even though
+    // their broadcast never self-delivers, so the banner needs to read
+    // Code 3 the moment they hit 10-13. >3 names crowds the row, fall back
+    // to count phrasing.
+    let mut distressed_names: Vec<String> = radio::peek_inbox()
         .iter()
         .filter(|m| dispatch_is_emergency(&m.body))
-        .count();
-    // Self-mayday counts toward the banner's emergency tally — the
-    // originator is in distress even though their own broadcast never
-    // self-delivers, so the banner needs to read Code 3 the moment they
-    // hit 10-13. Otherwise the operator's own signon row goes red while
-    // the banner above it stays Code 4 — split signal at the top of stack.
-    let self_mayday = if radio::self_in_mayday() { 1 } else { 0 };
-    let emergency_count = inbox_emergencies + self_mayday;
+        .map(|m| m.from_call_sign.clone())
+        .collect::<std::collections::HashSet<_>>()
+        .into_iter()
+        .collect();
+    distressed_names.sort();
+    if radio::self_in_mayday() {
+        // "you" leads so the operator sees their own state first when they
+        // are calling alongside peers — symmetric to how the signon row
+        // treats self-mayday as the more pressing duty state.
+        distressed_names.insert(0, "you".to_string());
+    }
+    let emergency_count = distressed_names.len();
     let peer_count = radio::peers().len();
     if emergency_count > 0 {
-        // Code 3 fragments collapse to terse counts — banner context already
-        // implies "pending" and the channel audience, so dropping the nouns
-        // keeps the emergency line scannable instead of running long.
-        let phrase = if emergency_count == 1 {
-            "1 emergency".to_string()
-        } else {
-            format!("{emergency_count} emergencies")
+        // Name enumeration mirrors the signon's "responding to {names}'s
+        // 10-13s" pattern: 1-3 emergencies surface call signs so the
+        // operator can triage from the banner alone; >3 falls back to the
+        // numeric phrasing because the row's character budget runs out.
+        let phrase = match distressed_names.as_slice() {
+            [a] => format!("{a} in 10-13"),
+            [a, b] => format!("{a} & {b} in 10-13"),
+            [a, b, c] => format!("{a}, {b} & {c} in 10-13"),
+            _ => format!("{emergency_count} emergencies"),
         };
         let line = if peer_count > 0 {
             format!("Code 3 \u{00B7} {phrase} \u{00B7} {peer_count} on channel")
