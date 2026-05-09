@@ -944,7 +944,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "workspace:close_other_tabs",
-            "Close other tabs",
+            "Close other beats",
             WorkspaceAction::CloseNonActiveTabs,
         )
         .with_custom_action(CustomAction::CloseOtherTabs)
@@ -952,8 +952,8 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace")),
         EditableBinding::new(
             "workspace:close_tabs_right_active_tab",
-            BindingDescription::new("Close tabs to the right").with_dynamic_override(|ctx| {
-                uses_vertical_tabs(ctx).then(|| "close tabs below".into())
+            BindingDescription::new("Close beats to the right").with_dynamic_override(|ctx| {
+                uses_vertical_tabs(ctx).then(|| "close beats below".into())
             }),
             WorkspaceAction::CloseTabsRightActiveTab,
         )
