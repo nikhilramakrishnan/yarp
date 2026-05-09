@@ -1327,7 +1327,7 @@ impl AISettingsPageView {
 
             let items = vec![
                 DropdownItem::new(
-                    "New Tab",
+                    "New beat",
                     AISettingsPageAction::SetConversationLayout(OpenConversationPreference::NewTab),
                 ),
                 DropdownItem::new(
@@ -1342,7 +1342,7 @@ impl AISettingsPageView {
             let current = *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                 .open_conversation_layout_preference;
             match current {
-                OpenConversationPreference::NewTab => dropdown.set_selected_by_name("New Tab", ctx),
+                OpenConversationPreference::NewTab => dropdown.set_selected_by_name("New beat", ctx),
                 OpenConversationPreference::SplitPane => {
                     dropdown.set_selected_by_name("Split Pane", ctx)
                 }

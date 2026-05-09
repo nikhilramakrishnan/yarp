@@ -160,7 +160,7 @@ impl TabConfigParamsModal {
             })
         });
         let submit_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("Open Tab", PrimaryTheme)
+            ActionButton::new("Open beat", PrimaryTheme)
                 .with_keybinding(
                     KeystrokeSource::Fixed(Keystroke::parse("enter").unwrap_or_default()),
                     ctx,
@@ -170,7 +170,7 @@ impl TabConfigParamsModal {
                 })
         });
         let submit_button_disabled =
-            ctx.add_typed_action_view(|_| ActionButton::new("Open Tab", DisabledTheme));
+            ctx.add_typed_action_view(|_| ActionButton::new("Open beat", DisabledTheme));
         Self {
             param_fields: Vec::new(),
             pending_config: None,
