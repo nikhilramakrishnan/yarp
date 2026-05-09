@@ -411,7 +411,7 @@ impl InitStepBlock {
                 false,
             ),
             simple_navigation_button(
-                "Pass for now".to_string(),
+                "Wave it off".to_string(),
                 mouse_states.skip_button.clone(),
                 InitProjectBlockAction::SkipIndex,
                 false,
@@ -428,7 +428,7 @@ impl InitStepBlock {
         for (i, linkable_file) in LINKABLE_FILES.iter().enumerate() {
             if let Some(path) = linkable_files.iter().find(|p| p.ends_with(linkable_file)) {
                 buttons.push(simple_navigation_button(
-                    format!("Link existing {linkable_file} to my AGENTS.md file"),
+                    format!("Wire existing {linkable_file} up as my AGENTS.md"),
                     mouse_states.link_buttons[i].clone(),
                     InitProjectBlockAction::LinkFromExisting(path.clone()),
                     false,
@@ -437,13 +437,13 @@ impl InitStepBlock {
         }
 
         buttons.push(simple_navigation_button(
-            "Issue AGENTS.md file".to_string(),
+            "Issue AGENTS.md".to_string(),
             mouse_states.generate_button.clone(),
             InitProjectBlockAction::GenerateRules,
             false,
         ));
         buttons.push(simple_navigation_button(
-            "Pass on AGENTS.md for now".to_string(),
+            "Wave off AGENTS.md for now".to_string(),
             mouse_states.skip_button.clone(),
             InitProjectBlockAction::SkipRules,
             false,
