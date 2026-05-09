@@ -2724,7 +2724,7 @@ fn render_use_computer(
             btn.render(
                 appearance,
                 button::Params {
-                    content: button::Content::Label("View screenshot".into()),
+                    content: button::Content::Label("View surveillance shot".into()),
                     theme: &button::themes::Secondary,
                     options: button::Options {
                         size: button::Size::Small,
@@ -3615,7 +3615,7 @@ fn render_collapsible_debug_output(
         // "Debug output" label
         row.add_child(
             Text::new(
-                "Debug output".to_string(),
+                "Working notes".to_string(),
                 appearance.ai_font_family(),
                 appearance.monospace_font_size(),
             )
@@ -3758,7 +3758,7 @@ fn conversation_search_phase(task: &crate::ai::agent::task::Task) -> Conversatio
 
 fn format_conversation_search_phase(phase: &ConversationSearchPhase) -> String {
     match phase {
-        ConversationSearchPhase::ListingMessages => "Listing messages".to_string(),
+        ConversationSearchPhase::ListingMessages => "Cataloguing dispatches".to_string(),
         ConversationSearchPhase::Grepping { patterns } => {
             if patterns.is_empty() {
                 return "Grepping for patterns".to_string();
