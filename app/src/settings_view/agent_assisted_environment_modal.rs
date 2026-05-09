@@ -332,7 +332,7 @@ impl AgentAssistedEnvironmentModal {
             .with_cross_axis_alignment(CrossAxisAlignment::Stretch)
             .with_spacing(8.);
 
-        col.add_child(self.render_section_title("Selected repos", appearance));
+        col.add_child(self.render_section_title("Repos on the duty roster", appearance));
 
         if self.selected_repo_paths.is_empty() {
             col.add_child(
@@ -413,7 +413,7 @@ impl AgentAssistedEnvironmentModal {
             .with_child(
                 Expanded::new(
                     1.,
-                    self.render_section_title("Available indexed repos", appearance),
+                    self.render_section_title("Indexed repos on the books", appearance),
                 )
                 .finish(),
             )
