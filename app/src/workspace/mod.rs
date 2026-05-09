@@ -718,7 +718,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             TOGGLE_RIGHT_PANEL_BINDING_NAME,
             BindingDescription::new("Toggle evidence review")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Code Review"),
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Casebook Review"),
             WorkspaceAction::ToggleRightPanel,
         )
         .with_enabled(|| cfg!(feature = "local_fs"))
@@ -728,7 +728,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME,
             BindingDescription::new("Toggle vertical beats panel")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Vertical Tabs Panel"),
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Vertical Beats Panel"),
             WorkspaceAction::ToggleVerticalTabsPanel,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::USE_VERTICAL_TABS_FLAG))
