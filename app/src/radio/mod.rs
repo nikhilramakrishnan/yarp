@@ -767,6 +767,21 @@ pub fn peer_in_mayday() -> bool {
     peek_inbox().iter().any(|m| is_emergency_body(&m.body))
 }
 
+/// The newest peer 10-13 sitting in this Yarp's inbox, if any. Lets chrome
+/// surfaces name the caller ("10-13 inbound · Cooper needs assistance")
+/// without re-running the same emergency-bodied scan at the call site.
+/// Inbox already filters stood-down emergencies via
+/// `resolve_superseded_emergencies`, so any match here is by definition a
+/// call still wanting a response. Within the urgent set we still pick the
+/// freshest by `sent_at_unix` so a back-to-back second 10-13 from a
+/// different officer surfaces over the older one.
+pub fn latest_emergency() -> Option<Message> {
+    peek_inbox()
+        .into_iter()
+        .filter(|m| is_emergency_body(&m.body))
+        .max_by_key(|m| m.sent_at_unix)
+}
+
 /// Unix-second timestamp when this Yarp began calling 10-13, derived from the
 /// stored deadline minus the fixed TTL. None when not in mayday or after
 /// expiry. Lets dispatch surfaces format "broadcasting · 12s ago" with the

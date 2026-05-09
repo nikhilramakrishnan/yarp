@@ -682,6 +682,10 @@ pub enum WorkspaceBanner {
     WaylandCrashRecovery,
     /// to display when settings.toml has errors (parse failure or invalid values)
     InvalidSettings,
+    /// to display when this Yarp is calling a 10-13, or a peer's 10-13 is
+    /// sitting in this Yarp's inbox. Not user-dismissible — the only way out
+    /// is to stand down (own call) or roll en route (peer's call).
+    Mayday,
 }
 
 impl WorkspaceBanner {
@@ -698,6 +702,7 @@ impl WorkspaceBanner {
             #[cfg(target_os = "linux")]
             Self::WaylandCrashRecovery => true,
             Self::InvalidSettings => true,
+            Self::Mayday => false,
         }
     }
 }
@@ -3194,6 +3199,19 @@ impl Workspace {
             },
             |me, _, ctx| {
                 me.update_window_title(ctx);
+                // Repaint every tick so the mayday banner picks up state
+                // changes the operator didn't drive directly: peer 10-13
+                // arriving while focus is elsewhere, self-mayday TTL
+                // expiring after 5min unattended, peer's stand-down
+                // landing in the inbox. A gated "only notify when active"
+                // version would leave the red banner stuck on screen
+                // through the active→inactive edge (no notify fires once
+                // state goes false). Self flips at click sites already
+                // repaint immediately; this poll is the safety net for
+                // everything else. Cost is one repaint per 5s per
+                // workspace, comfortably below the noise floor of normal
+                // user-driven renders.
+                ctx.notify();
                 Self::schedule_radio_title_refresh(ctx);
             },
         );
@@ -18350,12 +18368,12 @@ impl Workspace {
     // warning on mac)
     #[allow(clippy::let_and_return)]
     fn banner_fields(&self, app: &AppContext) -> Option<WorkspaceBannerFields> {
-        // The settings error banner sits just below reauth in priority — it's
-        // more important that users are notified their settings file is broken
-        // than that they continue to see any of the autoupdate or crash recovery
-        // banners.
+        // 10-13 outranks every other banner — an officer needs assistance is
+        // the loudest signal the workspace can carry, and stacking it under
+        // reauth or a settings-file error would bury the call.
         let banner_fields = self
-            .render_reauth_banner_element()
+            .render_mayday_banner_element()
+            .or_else(|| self.render_reauth_banner_element())
             .or_else(|| self.render_settings_error_banner(app))
             .or_else(|| self.render_autoupdate_banner_element(app));
 
@@ -18363,6 +18381,53 @@ impl Workspace {
         let banner_fields = banner_fields.or_else(|| crash_recovery::banner_metadata(app));
 
         banner_fields
+    }
+
+    /// Surface an active 10-13 in the workspace banner row, the loudest in-app
+    /// chrome we have. Self-mayday outranks peer-mayday — your own call
+    /// dominates the situational picture even if a peer is also on the wire,
+    /// matching the OS window-title precedence. Buttons reuse the existing
+    /// radio actions so the banner is just another surface for the same
+    /// channel grammar: "Stand down" closes your call, "10-4 en route"
+    /// answers a peer's. Not dismissible — the banner only goes away when
+    /// the call resolves.
+    fn render_mayday_banner_element(&self) -> Option<WorkspaceBannerFields> {
+        if radio::self_in_mayday() {
+            return Some(WorkspaceBannerFields {
+                banner_type: WorkspaceBanner::Mayday,
+                severity: BannerSeverity::Error,
+                heading: Some("10-13 broadcasting.".into()),
+                description: format!(
+                    "{} on the wire — stand down when the situation is clear.",
+                    radio::self_call_sign()
+                ),
+                secondary_button: None,
+                button: Some(WorkspaceBannerButtonDetails {
+                    text: "Stand down".into(),
+                    action: WorkspaceAction::StandDownMayday,
+                    variant: BannerButtonVariant::Outlined,
+                    icon: None,
+                    more_info_button_action: None,
+                }),
+            });
+        }
+        if let Some(emergency) = radio::latest_emergency() {
+            return Some(WorkspaceBannerFields {
+                banner_type: WorkspaceBanner::Mayday,
+                severity: BannerSeverity::Error,
+                heading: Some("10-13 inbound.".into()),
+                description: format!("{} needs assistance.", emergency.from_call_sign),
+                secondary_button: None,
+                button: Some(WorkspaceBannerButtonDetails {
+                    text: "10-4 en route".into(),
+                    action: WorkspaceAction::AckInboxDispatch,
+                    variant: BannerButtonVariant::Outlined,
+                    icon: None,
+                    more_info_button_action: None,
+                }),
+            });
+        }
+        None
     }
 
     fn render_settings_error_banner(&self, app: &AppContext) -> Option<WorkspaceBannerFields> {
@@ -18777,6 +18842,7 @@ impl Workspace {
                 self.settings_error_banner_dismissed = true;
                 self.sync_settings_error_state_into_settings_pane(ctx);
             }
+            WorkspaceBanner::Mayday => {}
         }
         ctx.notify();
     }
