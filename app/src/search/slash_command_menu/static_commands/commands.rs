@@ -425,7 +425,7 @@ pub const REWIND: StaticCommand = StaticCommand {
 
 pub const EXPORT_TO_CLIPBOARD: StaticCommand = StaticCommand {
     name: "/export-to-clipboard",
-    description: "Copy the briefing to the clipboard (markdown)",
+    description: "Bag the briefing as markdown",
     icon_path: "bundled/svg/copy.svg",
     availability: Availability::AGENT_VIEW.union(Availability::AI_ENABLED),
     auto_enter_ai_mode: true,
