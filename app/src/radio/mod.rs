@@ -427,6 +427,15 @@ pub fn latest_dispatch() -> Option<Message> {
     peek_inbox().into_iter().max_by_key(|m| m.sent_at_unix)
 }
 
+
+/// Classify a message body as a 10-13 (officer needs assistance) emergency.
+/// Detected on the raw body so any UI surface or workspace handler can branch
+/// on urgency without re-implementing the parser. Police shorthand: 10-13
+/// always leads the body when broadcast or hailed via the emergency CTA.
+pub fn is_emergency_body(body: &str) -> bool {
+    body.trim_start().starts_with("10-13")
+}
+
 /// Sweep `~/.yarp/radio/inbox/<pid>/` directories whose owning pid is no
 /// longer alive — without it, a long-running install accumulates inbox dirs
 /// for every terminal that ever booted. Returns the number of inboxes

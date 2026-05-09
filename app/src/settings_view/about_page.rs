@@ -477,11 +477,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     Some((line, emergency))
 }
 
-// 10-13 = officer needs assistance. Detected on the raw body so the latest-dispatch
-// row can paint itself red and read as an emergency at a glance.
-fn dispatch_is_emergency(body: &str) -> bool {
-    body.trim_start().starts_with("10-13")
-}
+use radio::is_emergency_body as dispatch_is_emergency;
 
 impl AboutPageWidget {
     fn mic_check_row(&self, appearance: &Appearance) -> Box<dyn Element> {

@@ -6015,7 +6015,24 @@ impl Workspace {
     }
 
     fn ack_inbox_dispatch(&mut self, ctx: &mut ViewContext<Self>) {
-        let _ = radio::read_inbox();
+        // Drain locally; for any 10-13 we just acked, fire a closing-loop
+        // "10-4, en route" reply back to the dispatcher's pid so the ack
+        // button's label ("10-4, en route") matches what the channel sees.
+        // Without the reply, emergency response was silent on the wire —
+        // the dispatcher's only feedback was their own broadcast echoing.
+        let drained = radio::read_inbox();
+        let mut acked: std::collections::HashSet<u32> = std::collections::HashSet::new();
+        for msg in drained {
+            if !radio::is_emergency_body(&msg.body) {
+                continue;
+            }
+            if !acked.insert(msg.from_pid) {
+                continue;
+            }
+            let reply =
+                radio::Message::new(radio::self_call_sign(), "10-4, en route — hold tight.");
+            let _ = radio::send_message(msg.from_pid, &reply);
+        }
         ctx.notify();
     }
 
