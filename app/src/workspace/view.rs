@@ -5971,9 +5971,9 @@ impl Workspace {
         let message = if count == 0 {
             "Channel's quiet — no other stations on duty.".to_owned()
         } else if count == 1 {
-            "Radioed 1 other station.".to_owned()
+            "Radio sent — 1 station standing by.".to_owned()
         } else {
-            format!("Radioed {count} other stations.")
+            format!("Radio sent — {count} stations standing by.")
         };
 
         self.toast_stack.update(ctx, |toast_stack, ctx| {
