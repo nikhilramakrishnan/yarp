@@ -124,8 +124,8 @@ impl LaunchConfig {
         }
         let mut tabs_str = num_tabs.to_string();
         match num_tabs {
-            1 => tabs_str.push_str(" tab "),
-            _ => tabs_str.push_str(" tabs"),
+            1 => tabs_str.push_str(" beat "),
+            _ => tabs_str.push_str(" beats"),
         }
         Flex::row()
             .with_children(vec![
