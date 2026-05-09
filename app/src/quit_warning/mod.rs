@@ -400,8 +400,8 @@ impl<'a> QuitWarningDialog<'a> {
 
         if let Some(callback) = on_confirm {
             let confirm_title = match state.scope {
-                QuitScope::Window(_) | QuitScope::Tabs(_) | QuitScope::Pane { .. } => "Yes, close",
-                QuitScope::App => "Yes, quit",
+                QuitScope::Window(_) | QuitScope::Tabs(_) | QuitScope::Pane { .. } => "Lock it down",
+                QuitScope::App => "Off the clock",
                 _ => "",
             };
             buttons.push(ModalButton::for_app(confirm_title.to_string(), callback));
