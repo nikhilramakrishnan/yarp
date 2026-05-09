@@ -175,13 +175,13 @@ impl SessionConfigModal {
         .finish();
 
         let subtitle_text = if self.show_session_type_row {
-            "File a reusable starting point for your tabs. \
+            "File a reusable starting point for your beats. \
              Pick a repo, pick a session type, and optionally pin a worktree. \
-             Call it in whenever you want to clock on a new tab with this setup."
+             Call it in whenever you want to clock on a new beat with this setup."
         } else {
-            "File a reusable starting point for your tabs. \
+            "File a reusable starting point for your beats. \
              Pick a repo, optionally pin a worktree, and \
-             call it in whenever you want to clock on a new tab with this setup."
+             call it in whenever you want to clock on a new beat with this setup."
         };
         let subtitle =
             FormattedTextElement::from_str(subtitle_text, appearance.ui_font_family(), 14.)

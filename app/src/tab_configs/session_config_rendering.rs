@@ -403,7 +403,7 @@ where
         blended_colors::text_sub(theme, theme.background())
     };
     let label = Text::new(
-        "Spin up a fresh worktree every time a new tab clocks on",
+        "Spin up a fresh worktree every time a new beat clocks on",
         appearance.ui_font_family(),
         12.,
     )
