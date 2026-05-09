@@ -1210,7 +1210,7 @@ impl View for CategoriesView {
 
     fn accessibility_contents(&self, _: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new(
-            "Workflows",
+            "Playbooks",
             "Search or use arrow up and arrow down keys to flip through the playbook. Hit enter to call it in and esc to stand down.",
             YarpA11yRole::MenuRole,
         ))
