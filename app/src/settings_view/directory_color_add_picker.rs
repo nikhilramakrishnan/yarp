@@ -26,8 +26,8 @@ use crate::{
     },
 };
 
-const ADD_DIRECTORY_LABEL: &str = "+ Add directory…";
-const BUTTON_LABEL: &str = "Add directory color";
+const ADD_DIRECTORY_LABEL: &str = "+ Sign on a directory…";
+const BUTTON_LABEL: &str = "Pin a colour to a directory";
 const MENU_WIDTH: f32 = 340.;
 
 /// A dropdown used by the Directory tab colors settings widget, with a button fallback
