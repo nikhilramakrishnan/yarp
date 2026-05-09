@@ -797,6 +797,11 @@ pub enum BannerSeverity {
     Warning,
     /// Error banners use an ansi-blended red background.
     Error,
+    /// Success banners use an ansi-blended green background. Used by the
+    /// post-ack 10-4 confirmation so the chrome at the top mirrors the
+    /// agent message bar's stood-down/en-route beat instead of flipping
+    /// straight from red to gone.
+    Success,
 }
 
 /// Visual style for an individual banner action button.
@@ -18559,6 +18564,34 @@ impl Workspace {
                 }),
             });
         }
+        // No active mayday on either half of the channel — paint the brief
+        // post-ack confirmation so the chrome at the top mirrors the agent
+        // message bar's 10-4 beat instead of flipping straight from red to
+        // gone. Stand-down ack outranks inbox-ack since closing your own
+        // call is the louder state change. Window matches the agent bar's
+        // 5-second clip so both surfaces decay on the same beat.
+        if let Some(elapsed) = radio::time_since_self_stand_down() {
+            if elapsed.as_secs() < radio::SELF_INBOX_ACK_BAR_SECS {
+                return Some(WorkspaceBannerFields {
+                    banner_type: WorkspaceBanner::Mayday,
+                    severity: BannerSeverity::Success,
+                    heading: Some("10-4 — stood down.".into()),
+                    description: "Channel clear.".into(),
+                    secondary_button: None,
+                    button: None,
+                });
+            }
+        }
+        if radio::time_since_self_inbox_ack().is_some() {
+            return Some(WorkspaceBannerFields {
+                banner_type: WorkspaceBanner::Mayday,
+                severity: BannerSeverity::Success,
+                heading: Some("10-4 — en route.".into()),
+                description: "Reply out.".into(),
+                secondary_button: None,
+                button: None,
+            });
+        }
         None
     }
 
@@ -18748,12 +18781,18 @@ impl Workspace {
         let bg_color = match fields.severity {
             BannerSeverity::Warning => theme.ansi_fg_yellow(),
             BannerSeverity::Error => theme.ansi_fg_red(),
+            BannerSeverity::Success => theme.ansi_fg_green(),
         };
         let text_color = theme.main_text_color(Fill::Solid(bg_color)).into_solid();
 
-        // Left side: alert icon + bold heading + regular description, all inline.
+        // Success severity is the post-ack 10-4 beat — the alert icon would
+        // misread as a fresh problem, so swap to a check.
+        let banner_icon = match fields.severity {
+            BannerSeverity::Warning | BannerSeverity::Error => Icon::AlertCircle,
+            BannerSeverity::Success => Icon::CheckCircleBroken,
+        };
         let icon =
-            ConstrainedBox::new(Icon::AlertCircle.to_yarpui_icon(text_color.into()).finish())
+            ConstrainedBox::new(banner_icon.to_yarpui_icon(text_color.into()).finish())
                 .with_width(16.)
                 .with_height(16.)
                 .finish();
