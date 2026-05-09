@@ -95,7 +95,7 @@ const TELEMETRY_FREE_TIER_NOTE: &str =
 const TELEMETRY_DOCS_URL: &str =
     "https://github.com/hotfuzz/yarp/support-and-community/privacy-and-security/privacy#what-telemetry-data-does-yarp-collect-and-why";
 
-const DATA_MANAGEMENT_TITLE: &str = "Manage the case files";
+const DATA_MANAGEMENT_TITLE: &str = "Mind the case files";
 const DATA_MANAGEMENT_DESCRIPTION: &str =
     "Hand in your badge any time and we'll incinerate the records. You'll be off duty for good.";
 const DATA_MANAGEMENT_LINK_TEXT: &str = "Visit the records office";
@@ -766,7 +766,7 @@ impl SecretRedactionWidget {
             .count();
 
         let personal_tab = self.render_tab(
-            "Personal".to_string(),
+            "My desk".to_string(),
             personal_count,
             SecretRedactionTab::Personal,
             active_tab == SecretRedactionTab::Personal,
