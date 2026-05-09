@@ -395,7 +395,7 @@ impl EnvVarCollectionView {
             && (!FeatureFlag::SharedWithMe.is_enabled() || access_level.can_trash())
         {
             menu_items.push(
-                MenuItemFields::new("Trash")
+                MenuItemFields::new("Bin it")
                     .with_on_select_action(EnvVarCollectionAction::Trash)
                     .with_icon(Icon::Trash)
                     .into_item(),
