@@ -555,6 +555,30 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         };
         return Some((line, true));
     }
+    // Stand-down rendering: when the latest dispatch is a peer's "Stand down
+    // — situation resolved." broadcast and no other 10-13 is active, the
+    // routine fallthrough renders it as "Latest from Cooper: 'Stand down …'"
+    // which buries the resolution semantic inside a quoted body. Pull it
+    // forward as "10-4 all clear · Cooper stood down · 12s ago" so the row
+    // reads as the call closing rather than yet another piece of routine
+    // chatter. Stays not-emergency so the row drops out of red — that's the
+    // whole point of the surface, signalling the call is over.
+    if !emergency_active && radio::is_stand_down_body(&msg.body) {
+        let case_tag: Option<String> = radio::peers()
+            .into_iter()
+            .find(|p| p.call_sign == msg.from_call_sign)
+            .and_then(|p| p.tab_title)
+            .filter(|t| !t.is_empty());
+        let age = radio::format_dispatch_age(msg.sent_at_unix);
+        let from_label = match &case_tag {
+            Some(tag) => format!("{} ({tag})", msg.from_call_sign),
+            None => msg.from_call_sign.clone(),
+        };
+        let line = format!(
+            "10-4 all clear \u{00B7} {from_label} stood down \u{00B7} {age}"
+        );
+        return Some((line, false));
+    }
     let emergency = dispatch_is_emergency(&msg.body);
     // Hoist the 10-13 prefix out of the quoted body when present — burying
     // urgency inside quotes ("Latest from … : \"10-13 …\"") makes the eye
