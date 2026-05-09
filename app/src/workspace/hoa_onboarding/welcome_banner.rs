@@ -28,8 +28,8 @@ struct FeatureItem {
 const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::LayoutAlt01,
-        title: "Vertical tabs",
-        description: "Tab titles read like a duty roster — git branch, worktree, PR, fully customisable.",
+        title: "Vertical beats",
+        description: "Beat titles read like a duty roster — git branch, worktree, PR, fully customisable.",
     },
     FeatureItem {
         icon: Icon::Sliders,
