@@ -945,7 +945,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.profiles.agent_mode_coding_permissions",
-        description: "The file read permission level for the agent.",
+        description: "The file read clearance level for the PC.",
     }
     // Specific filepaths that Agent Mode can read without asking for additional permissions.
     // These should be persisted as absolute filepaths to avoid ambiguity.
@@ -961,7 +961,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Never,
         private: false,
         toml_path: "agents.profiles.agent_mode_coding_file_read_allowlist",
-        description: "File paths the agent can read without asking for permission.",
+        description: "File paths the PC can read without radioing in for clearance.",
     }
     // Whether or not the profile-level command autoexecution speedbump has been shown.
     //
