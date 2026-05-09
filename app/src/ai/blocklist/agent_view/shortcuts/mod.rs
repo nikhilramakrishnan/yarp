@@ -249,6 +249,25 @@ pub fn render_agent_shortcuts_view(
         app,
     ));
 
+    // Shortcuts strip is the radio-room cheat sheet at the foot of the agent
+    // view. Override its top/bottom border color on self/peer mayday and the
+    // post-ack pulse so the operator's reference card mirrors the channel
+    // state on the rest of the chrome — self → red, peer → yellow, post-ack
+    // 5s → green.
+    let border_color = if crate::radio::self_in_mayday() {
+        appearance.theme().ansi_fg_red()
+    } else if crate::radio::peer_in_mayday() {
+        appearance.theme().ansi_fg_yellow()
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        appearance.theme().ansi_fg_green()
+    } else {
+        blended_colors::neutral_2(appearance.theme())
+    };
+
     Container::new(
         Flex::column()
             .with_cross_axis_alignment(CrossAxisAlignment::Stretch)
@@ -261,7 +280,7 @@ pub fn render_agent_shortcuts_view(
     .with_border(
         Border::new(1.)
             .with_sides(true, false, true, false)
-            .with_border_color(blended_colors::neutral_2(appearance.theme())),
+            .with_border_color(border_color),
     )
     .finish()
 }
