@@ -165,7 +165,7 @@ impl ConversationUsageView {
             ));
         }
 
-        labels.push(render_label_text("Tool calls", appearance));
+        labels.push(render_label_text("Equipment used", appearance));
         values.push(render_value_text(
             format_value_text(self.usage_info.tool_calls, "call"),
             appearance,
@@ -306,13 +306,13 @@ impl ConversationUsageView {
         ));
         values.push(render_section_header("".to_string(), appearance));
 
-        labels.push(render_label_text("Files changed", appearance));
+        labels.push(render_label_text("Case files altered", appearance));
         values.push(render_value_text(
             format_value_text(self.usage_info.files_changed, "file"),
             appearance,
         ));
 
-        labels.push(render_label_text("Diffs applied", appearance));
+        labels.push(render_label_text("Edits stamped down", appearance));
         let diffs_element = Flex::row()
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
@@ -349,7 +349,7 @@ impl ConversationUsageView {
             .finish();
         values.push(diffs_element);
 
-        labels.push(render_label_text("Commands executed", appearance));
+        labels.push(render_label_text("Orders carried out", appearance));
         values.push(render_value_text(
             format_value_text(self.usage_info.commands_executed, "command"),
             appearance,
