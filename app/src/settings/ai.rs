@@ -1421,7 +1421,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.show_agent_notifications",
-        description: "Whether agent notifications are shown.",
+        description: "Whether the PC's notifications are shown.",
     }
 
     // Per-agent, per-host tracking of whether the user dismissed the plugin install chip.

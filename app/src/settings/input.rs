@@ -160,7 +160,7 @@ define_settings_group!(InputSettings,
             sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
             private: false,
             toml_path: "agents.yarp_agent.input.show_agent_tips",
-            description: "Whether agent tips are displayed in the input.",
+            description: "Whether duty tips are displayed in the input.",
         },
         // Whether to show the terminal input message bar (contextual hints at the bottom of terminal input).
         // Only applicable when FeatureFlag::AgentView is enabled.
