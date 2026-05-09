@@ -731,23 +731,27 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     // yet. The synthetic only wins when the inbox is empty — once any peer
     // message lands (en-route reply or otherwise) the real latest_dispatch
     // takes over so the operator sees who's responding.
-    // Moment ack for the 10-13 click itself: wins over any inbox traffic for
-    // a brief window so the dispatch row surfaces "broadcasting · just now"
-    // right after the press even when stale chatter (a prior hail, an
+    // Moment ack for the 10-13 click itself: wins over stale inbox traffic
+    // for a brief window so the dispatch row surfaces "broadcasting · just
+    // now" right after the press even when older chatter (a prior hail, an
     // unrelated reply) is sitting in the inbox. Without this, hitting the
     // panic button on top of stale traffic leaves the signon flipping red
     // while the dispatch row keeps showing the older message — the click
-    // looks like it missed the wire. After the moment window expires the
-    // empty-inbox branch below takes over for the rest of the mayday TTL,
-    // so a long-running call still degrades to peer traffic the moment any
-    // peer replies.
+    // looks like it missed the wire. Yields to peer en-route replies even
+    // inside the moment window: "Cooper en route" is the actual news a
+    // 10-13 caller wants to see, and the en-route rewrite path further
+    // down handles that better than this ack would.
     if let Some(at) = radio::self_mayday_just_broadcast_at_unix() {
-        let line = format!(
-            "10-13 \u{00B7} {} \u{00B7} broadcasting \u{00B7} {}",
-            radio::self_call_sign(),
-            radio::format_dispatch_age(at)
-        );
-        return Some((line, true));
+        let inbox_top_is_en_route = radio::latest_dispatch()
+            .is_some_and(|m| radio::is_en_route_body(&m.body));
+        if !inbox_top_is_en_route {
+            let line = format!(
+                "10-13 \u{00B7} {} \u{00B7} broadcasting \u{00B7} {}",
+                radio::self_call_sign(),
+                radio::format_dispatch_age(at)
+            );
+            return Some((line, true));
+        }
     }
     if radio::self_in_mayday() && radio::peek_inbox().is_empty() {
         let started = radio::self_mayday_started_at_unix();
