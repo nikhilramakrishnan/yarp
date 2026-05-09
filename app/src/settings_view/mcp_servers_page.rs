@@ -329,7 +329,7 @@ impl MCPServersSettingsPageView {
             log::warn!(
                 "Unrecognized autoinstall value '{autoinstall_param}': no matching gallery item found"
             );
-            self.add_error_toast(format!("Unknown MCP server '{autoinstall_param}'"), ctx);
+            self.add_error_toast(format!("MCP server '{autoinstall_param}' isn't on the roster"), ctx);
             return;
         };
 

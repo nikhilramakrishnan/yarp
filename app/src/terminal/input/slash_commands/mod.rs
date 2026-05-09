@@ -2034,7 +2034,7 @@ impl Input {
                 };
 
                 let Some(prompt) = argument.filter(|a| !a.is_empty()).cloned() else {
-                    show_error_toast("/queue requires a prompt argument".to_owned(), ctx);
+                    show_error_toast("/queue needs a brief to dispatch".to_owned(), ctx);
                     return true;
                 };
 
