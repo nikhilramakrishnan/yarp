@@ -36,7 +36,7 @@ pub mod viewer;
 pub use tests::MAX_BYTES_SHAREABLE;
 
 /// The toast copy when copying a shared session link.
-pub const COPY_LINK_TEXT: &str = "Radio frequency copied";
+pub const COPY_LINK_TEXT: &str = "Radio frequency bagged.";
 
 /// Throttle period for selection updates. We throttle instead of debounce because we want
 /// to send selections even when it updates fast, so it appears live.

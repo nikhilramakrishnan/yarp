@@ -61,7 +61,7 @@ const EMAIL_BUTTON_TEXT: &str = "Radio";
 const EMAIL_BUTTON_SENDING_TEXT: &str = "Radioing...";
 const LOADING_TEXT: &str = "On the case...";
 
-const LINK_COPIED_TOAST: &str = "Frequency copied.";
+const LINK_COPIED_TOAST: &str = "Frequency bagged.";
 const EMAIL_SUCCESS_TOAST: &str = "Tip-offs radioed out.";
 const EMAIL_FAILURE_TOAST: &str = "Couldn't get the tip-offs out. Try again.";
 

@@ -488,7 +488,7 @@ impl ShowBlocksView {
         ctx.clipboard()
             .write(ClipboardContent::plain_text(block_url.to_string()));
         ctx.emit(ShowBlocksEvent::ShowToast {
-            message: "Case file link copied.".to_string(),
+            message: "Case file frequency bagged.".to_string(),
             flavor: ToastFlavor::Default,
         })
     }

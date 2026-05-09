@@ -4189,7 +4189,7 @@ impl Workspace {
         ));
 
         self.toast_stack.update(ctx, |toast_stack, ctx| {
-            let toast = DismissibleToast::default("Radio control frequency copied.".to_string());
+            let toast = DismissibleToast::default("Radio control frequency bagged.".to_string());
             toast_stack.add_ephemeral_toast(toast, ctx);
         });
     }

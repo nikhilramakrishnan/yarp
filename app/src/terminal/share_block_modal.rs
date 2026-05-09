@@ -502,7 +502,7 @@ impl ShareBlockModal {
             );
             ctx.clipboard().write(ClipboardContent::plain_text(link));
             ctx.emit(ShareBlockModalEvent::ShowToast {
-                message: "Case file link copied.".to_string(),
+                message: "Case file frequency bagged.".to_string(),
                 flavor: ToastFlavor::Default,
             });
         }
