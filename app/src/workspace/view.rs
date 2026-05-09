@@ -5041,10 +5041,32 @@ impl Workspace {
         // the about page. Truncation runs on the composed string so the
         // marker survives length pressure — losing the suffix is fine,
         // losing the marker would defeat the point.
+        // Post-ack 10-4 pulse: when the call has just closed (stand-down or
+        // inbox-ack within the bar's 5s window) but no peer mayday is still
+        // open, prepend a brief "10-4" marker so the OS chrome mirrors the
+        // agent message bar's confirmation beat instead of hard-cutting from
+        // 10-13 to neutral. Stand-down outranks inbox-ack — closing your own
+        // call is the louder state change. The 5s window matches the bar
+        // and banner so all three surfaces decay on identical rhythm; the
+        // per-workspace 5s polling refresh (schedule_radio_title_refresh)
+        // catches the trailing edge so the title settles back to neutral
+        // without an explicit timer here.
+        let post_ack_prefix = if radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+        {
+            Some("10-4 stood down")
+        } else if radio::time_since_self_inbox_ack().is_some() {
+            Some("10-4 en route")
+        } else {
+            None
+        };
         let composed = if radio::self_in_mayday() {
             format!("10-13 \u{00B7} {tab_title}")
         } else if radio::peer_in_mayday() {
             format!("10-13 inbound \u{00B7} {tab_title}")
+        } else if let Some(prefix) = post_ack_prefix {
+            format!("{prefix} \u{00B7} {tab_title}")
         } else {
             tab_title.clone()
         };
@@ -6116,6 +6138,11 @@ impl Workspace {
         // without this the keystroke is silent at the input surface.
         if !acked.is_empty() {
             radio::mark_self_inbox_ack();
+            // Repaint the OS chrome so the 10-4 pulse lands on the click
+            // instead of waiting up to 5s for the polling refresh — the
+            // agent message bar and workspace banner already paint the
+            // beat on the next render, this keeps the titlebar in step.
+            self.update_window_title(ctx);
         }
         ctx.notify();
     }
