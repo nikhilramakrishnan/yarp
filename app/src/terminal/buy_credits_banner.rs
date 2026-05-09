@@ -480,9 +480,32 @@ impl BuyCreditsBanner {
 
         content.add_child(close_button);
 
+        // Auto-reload-blocked banner is a floating chrome card that sits
+        // above the input — broadcast the radio palette on the outer edge
+        // so the operator sees a single contiguous dispatch state across
+        // the chrome: self → red, peer → yellow, post-ack 5s → green,
+        // theme.outline fallback.
+        let radio_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+        let banner_border = Border::all(1.);
+        let banner_border = match radio_color {
+            Some(color) => banner_border.with_border_color(color),
+            None => banner_border.with_border_fill(theme.outline()),
+        };
         Container::new(content.finish())
             .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)))
-            .with_border(Border::all(1.).with_border_fill(theme.outline()))
+            .with_border(banner_border)
             .with_background_color(theme.surface_1().into())
             .with_horizontal_padding(16.)
             .with_vertical_padding(12.)
@@ -776,9 +799,30 @@ impl BuyCreditsBanner {
         // The dropdown adds some margin so we need to use less padding.
         let vertical_padding = if has_admin_permissions { 6. } else { 12. };
 
+        // Out-of-credits banner is a floating chrome card above the input
+        // — broadcast the radio palette on the outer edge: self → red,
+        // peer → yellow, post-ack 5s → green, theme.outline fallback.
+        let radio_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+        let banner_border = Border::all(1.);
+        let banner_border = match radio_color {
+            Some(color) => banner_border.with_border_color(color),
+            None => banner_border.with_border_fill(theme.outline()),
+        };
         Container::new(content)
             .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)))
-            .with_border(Border::all(1.).with_border_fill(theme.outline()))
+            .with_border(banner_border)
             .with_background_color(theme.surface_1().into())
             .with_horizontal_padding(16.)
             .with_vertical_padding(vertical_padding)

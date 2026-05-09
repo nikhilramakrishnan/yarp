@@ -540,6 +540,28 @@ impl View for Voltron {
                 .finish(),
         };
 
+        // Voltron is the floating workflow panel above/below the input —
+        // when the radio stripe is active on the input chrome, this seam
+        // needs to match: self → red, peer → yellow, post-ack 5s → green,
+        // theme.outline fallback.
+        let radio_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+        let voltron_border = Border::all(1.0);
+        let voltron_border = match radio_color {
+            Some(color) => voltron_border.with_border_color(color),
+            None => voltron_border.with_border_fill(theme.outline()),
+        };
         let container = Container::new(
             ConstrainedBox::new(voltron_content)
                 .with_max_height(402.)
@@ -548,7 +570,7 @@ impl View for Voltron {
         .with_margin_top(117.)
         .with_background(theme.surface_2())
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)))
-        .with_border(Border::all(1.0).with_border_fill(theme.outline()));
+        .with_border(voltron_border);
 
         let resizable = Resizable::new(self.resizable_state_handle.clone(), container.finish())
             .on_resize(move |ctx, _| ctx.notify())
