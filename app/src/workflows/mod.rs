@@ -239,7 +239,7 @@ impl CloudModelType for CloudWorkflowModel {
         if self.data.is_agent_mode_workflow() {
             "Prompt"
         } else {
-            "Workflow"
+            "Playbook"
         }
     }
 
