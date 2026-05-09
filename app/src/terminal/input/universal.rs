@@ -185,15 +185,38 @@ impl Input {
         .with_margin_top(margin_top)
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)));
 
+        // Universal input box is the typing surface — what the operator stares
+        // at all day. Override the outline frame on self/peer mayday and the
+        // post-ack pulse so the input chrome mirrors channel state — self →
+        // red, peer → yellow, post-ack 5s → green, outline fallback.
+        let radio_input_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+        let input_border = if let Some(color) = radio_input_color {
+            Border::all(1.).with_border_color(color)
+        } else {
+            Border::all(1.).with_border_fill(theme.outline())
+        };
+
         // Apply styling based on focus state
         if self.is_pane_focused(app) {
             // Focused: show background
             container = container
                 .with_background(internal_colors::fg_overlay_1(theme))
-                .with_border(Border::all(1.).with_border_fill(theme.outline()));
+                .with_border(input_border);
         } else {
             // Unfocused: no background
-            container = container.with_border(Border::all(1.).with_border_fill(theme.outline()));
+            container = container.with_border(input_border);
         }
 
         let drop_target = DropTarget::new(
