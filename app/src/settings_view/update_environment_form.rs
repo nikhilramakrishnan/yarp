@@ -1741,7 +1741,7 @@ impl UpdateEnvironmentForm {
             .with_spacing(FORM_LABEL_SPACING);
 
         field.add_child(Self::render_form_label(
-            "Setup command(s)",
+            "Briefing order(s)",
             false,
             appearance,
         ));
@@ -1762,7 +1762,7 @@ impl UpdateEnvironmentForm {
             });
 
         let helper_text = Text::new(
-            "Setup commands run independently. Each command runs from the workspace root (/workspace). If a command depends on the previous one, combine them with &&.",
+            "Briefing orders run independently. Each one runs from the workspace root (/workspace). If an order depends on the previous one, combine them with &&.",
             appearance.ui_font_family(),
             appearance.ui_font_size() * 0.85,
         )

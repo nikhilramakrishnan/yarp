@@ -1826,7 +1826,7 @@ impl EnvironmentsPageWidget {
 
             if !env_setup_commands.is_empty() {
                 let commands_text = env_setup_commands.join(", ");
-                details_parts.push(format!("Setup commands: {}", commands_text));
+                details_parts.push(format!("Briefing orders: {}", commands_text));
             }
 
             // Create details section with Env ID on first line and other details below
