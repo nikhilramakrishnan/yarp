@@ -219,13 +219,13 @@ pub fn render_models_section(
         .with_child(render_filterable_dropdown_row(
             appearance,
             "Base model",
-            "This model serves as the primary engine behind the agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Yarp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
+            "This model serves as the primary engine behind the PC. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Yarp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization.",
             &view.base_model_dropdown,
         ))
         .with_child(render_filterable_dropdown_row(
             appearance,
             "Full terminal use model",
-            "The model used when the agent operates inside interactive terminal applications like database shells, debuggers, REPLs, or dev servers—reading live output and writing commands to the PTY.",
+            "The model used when the PC operates inside interactive terminal applications like database shells, debuggers, REPLs, or dev servers—reading live output and writing commands to the PTY.",
             &view.full_terminal_use_model_dropdown,
         ));
 
@@ -233,7 +233,7 @@ pub fn render_models_section(
         column.add_child(render_filterable_dropdown_row(
             appearance,
             "Computer use model",
-            "The model used when the agent takes control of your computer to interact with graphical applications through mouse movements, clicks, and keyboard input.",
+            "The model used when the PC takes control of your computer to interact with graphical applications through mouse movements, clicks, and keyboard input.",
             &view.computer_use_model_dropdown,
         ));
     }
