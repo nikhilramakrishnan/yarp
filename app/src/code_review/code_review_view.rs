@@ -5989,7 +5989,7 @@ impl CodeReviewView {
                 let toast_id = self.revert_hunk_toast_id(ctx);
                 crate::workspace::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = crate::view_components::DismissibleToast::default(
-                        "Diff removed".to_string(),
+                        "Hunk wiped from the case file.".to_string(),
                     )
                     .with_object_id(toast_id)
                     .with_action_button(self.undo_action_button.clone());
