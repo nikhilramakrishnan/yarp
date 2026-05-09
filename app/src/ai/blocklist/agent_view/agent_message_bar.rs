@@ -469,13 +469,15 @@ struct MaydayMessageProducer;
 
 impl MessageProvider<AgentMessageArgs<'_>> for MaydayMessageProducer {
     fn produce_message(&self, args: AgentMessageArgs<'_>) -> Option<Message> {
-        let AgentMessageArgs { appearance, .. } = args;
+        let AgentMessageArgs {
+            appearance, app, ..
+        } = args;
         let red = appearance.theme().ansi_fg_red();
 
         if crate::radio::self_in_mayday() {
             let responders = crate::radio::en_route_responders();
-            let text = if responders.is_empty() {
-                "10-13 active — broadcast out, no responders yet.".to_owned()
+            let lead = if responders.is_empty() {
+                "10-13 active — broadcast out, no responders yet".to_owned()
             } else {
                 let cap = 2;
                 let summary = if responders.len() <= cap {
@@ -484,9 +486,21 @@ impl MessageProvider<AgentMessageArgs<'_>> for MaydayMessageProducer {
                     let extra = responders.len() - cap;
                     format!("{}, +{extra} more", responders[..cap].join(", "))
                 };
-                format!("10-13 active — {summary} en route.")
+                format!("10-13 active — {summary} en route")
             };
-            return Some(Message::from_text(text).with_text_color(red));
+            // Fold the stand-down keystroke directly into the bar so the
+            // operator can resolve their own active call without leaving the
+            // input focus — same action the workspace banner fires, just
+            // surfaced where the cursor already is.
+            let message = match keybinding_name_to_keystroke("workspace:radio_stand_down", app) {
+                Some(keystroke) => Message::new(vec![
+                    MessageItem::text(format!("{lead}, ")),
+                    MessageItem::keystroke(keystroke),
+                    MessageItem::text(" to stand down"),
+                ]),
+                None => Message::from_text(format!("{lead}.")),
+            };
+            return Some(message.with_text_color(red));
         }
 
         if crate::radio::peer_in_mayday() {
@@ -501,10 +515,19 @@ impl MessageProvider<AgentMessageArgs<'_>> for MaydayMessageProducer {
                 let extra = callers.len() - cap;
                 format!("{}, +{extra} more", callers[..cap].join(", "))
             };
-            return Some(
-                Message::from_text(format!("10-13 inbound — {summary} needs assistance."))
-                    .with_text_color(red),
-            );
+            let lead = format!("10-13 inbound — {summary} needs assistance");
+            // Fold the inbox-ack keystroke so the operator can reply en route
+            // straight from the bar — pairs with the about-page ack button
+            // and the palette entry on the same wire format.
+            let message = match keybinding_name_to_keystroke("workspace:radio_ack_dispatch", app) {
+                Some(keystroke) => Message::new(vec![
+                    MessageItem::text(format!("{lead}, ")),
+                    MessageItem::keystroke(keystroke),
+                    MessageItem::text(" to ack en route"),
+                ]),
+                None => Message::from_text(format!("{lead}.")),
+            };
+            return Some(message.with_text_color(red));
         }
 
         None
