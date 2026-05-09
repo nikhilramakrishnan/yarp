@@ -931,6 +931,37 @@ impl<'a> TabComponent<'a> {
         let font_style = styles.font_properties();
         let font_color = styles.font_color.expect("Font color is set");
 
+        // Radio-state tint on the active tab so the tab strip carries the
+        // 10-13/10-4 channel state at a glance without each label needing
+        // a textual prefix (mayday is workspace-wide, prefixing every tab
+        // would be redundant noise). Self-mayday outranks peer because the
+        // operator's own open call dominates inbound. Post-ack pulses
+        // mirror the agent message bar / banner / titlebar 5s windows so
+        // every chrome surface decays on the same beat. Only applies when
+        // active so non-focused tabs stay calm.
+        let radio_tint: Option<ColorU> = if self.is_active_tab() {
+            let theme = self.appearance.theme();
+            if crate::radio::self_in_mayday() {
+                Some(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(theme.ansi_fg_green())
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+        let font_color = match radio_tint {
+            Some(color) => ThemeFill::Solid(color).into(),
+            None => font_color,
+        };
+
         if self.is_tab_being_renamed() {
             Align::new(
                 TextInput::new(
