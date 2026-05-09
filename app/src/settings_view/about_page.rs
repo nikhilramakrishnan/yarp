@@ -793,11 +793,12 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         return Some((line, false));
     }
     // Hail rendering: collapse the verbatim "Hail — checking in." body into
-    // "Hail · Cooper · case-foo · 12s ago" so the dispatch row reads as a
-    // calm roll-call rather than a quoted snippet competing with itself.
-    // Mirrors the stand-down branch's terse 3-token rhythm. Skipped during
-    // any active emergency so a routine ping never displaces the converging
-    // wave or distress lead.
+    // "Checking in · Cooper · case-foo · 12s ago" so the dispatch row reads
+    // as a calm roll-call rather than a quoted snippet competing with itself.
+    // Lead is the radio phrase the body actually carries — paralleling how
+    // emergency leads with the code ("10-13 · …"). Skipped during any active
+    // emergency so a routine ping never displaces the converging wave or
+    // distress lead.
     if !emergency_active && radio::is_hail_body(&msg.body) {
         let case_tag: Option<String> = radio::peers()
             .into_iter()
@@ -809,7 +810,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
             Some(tag) => format!("{} \u{00B7} {tag}", msg.from_call_sign),
             None => msg.from_call_sign.clone(),
         };
-        let line = format!("Hail \u{00B7} {from_label} \u{00B7} {age}");
+        let line = format!("Checking in \u{00B7} {from_label} \u{00B7} {age}");
         return Some((line, false));
     }
     let emergency = dispatch_is_emergency(&msg.body);
