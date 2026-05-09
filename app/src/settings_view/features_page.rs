@@ -2754,7 +2754,7 @@ impl FeaturesPageView {
             Category::new("Text Editing", text_editing_widgets),
             Category::new("Terminal Input", editor_widgets),
             Category::new("Terminal", terminal_widgets),
-            Category::new("Notifications", notifications_widgets),
+            Category::new("Briefings", notifications_widgets),
             Category::new(
                 "Workflows",
                 vec![Box::new(WorkflowsInCommandSearch::default())],
