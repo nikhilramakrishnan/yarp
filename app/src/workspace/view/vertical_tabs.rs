@@ -1791,6 +1791,30 @@ fn render_tab_group(
         pane_id: pane_group.focused_pane_id(app),
     };
 
+    // Radio-state accent on the active group's leading edge so the
+    // sidebar carries 10-13/10-4 channel state when the user has
+    // vertical tabs enabled — without it, only horizontal tabs / the
+    // titlebar / dock would carry the signal and sidebar users would
+    // miss it. Active-only mirrors the horizontal-tab pattern: mayday
+    // is workspace-wide so per-row decoration would be redundant.
+    let radio_active_tint: Option<ColorU> = if is_active {
+        if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+
     let mut group_element = Hoverable::new(group_mouse_state, move |group_state| {
         let build_rows = || {
             let mut rows = Flex::column()
@@ -1941,6 +1965,14 @@ fn render_tab_group(
                 container = container.with_border(
                     Border::all(1.).with_border_fill(ThemeFill::Solid(theme.accent().into())),
                 );
+            } else if let Some(tint) = radio_active_tint {
+                // Active-tab radio accent: 2px leading strip overrides
+                // the structural top/bottom border on the active row.
+                container = container.with_border(
+                    Border::new(2.)
+                        .with_sides(false, false, false, true)
+                        .with_border_fill(ThemeFill::Solid(tint)),
+                );
             } else if has_top_border || is_first_tab || is_last_tab {
                 container = container.with_border(
                     Border::new(1.)
@@ -1961,6 +1993,12 @@ fn render_tab_group(
             if is_drag_target {
                 container = container.with_border(
                     Border::all(1.).with_border_fill(ThemeFill::Solid(theme.accent().into())),
+                );
+            } else if let Some(tint) = radio_active_tint {
+                container = container.with_border(
+                    Border::new(2.)
+                        .with_sides(false, false, false, true)
+                        .with_border_fill(ThemeFill::Solid(tint)),
                 );
             }
             container.finish()
