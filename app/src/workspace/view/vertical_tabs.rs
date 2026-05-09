@@ -2525,10 +2525,10 @@ impl TypedPane<'_> {
             TypedPane::Workflow { .. } => "Playbook",
             TypedPane::Settings => "Settings",
             TypedPane::EnvVarCollection => "Environment Variables",
-            TypedPane::EnvironmentManagement => "Environments",
+            TypedPane::EnvironmentManagement => "Posts",
             TypedPane::AIFact => "Standing Orders",
             TypedPane::AIDocument => "Brief",
-            TypedPane::ExecutionProfileEditor => "Execution Profile",
+            TypedPane::ExecutionProfileEditor => "Loadout",
             TypedPane::Other => "Other",
         }
     }
