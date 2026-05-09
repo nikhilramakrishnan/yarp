@@ -242,7 +242,7 @@ impl NodeVersionPopupView {
         // Heading
         col.add_child(
             Text::new(
-                "No node versions installed",
+                "No node versions on the roster",
                 styles.ui_font_family,
                 styles.detail_font_size + 2.,
             )
@@ -286,7 +286,7 @@ impl NodeVersionPopupView {
 
         col.add_child(
             Container::new(
-                Text::new("Installed", styles.ui_font_family, styles.detail_font_size)
+                Text::new("On the roster", styles.ui_font_family, styles.detail_font_size)
                     .with_style(Properties::default())
                     .with_color(styles.secondary_text_color)
                     .finish(),
