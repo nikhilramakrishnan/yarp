@@ -870,7 +870,7 @@ impl InitStepBlock {
             }
             InitStepStatus::Running => {
                 let appearance = Appearance::as_ref(app);
-                RenderableAction::new("Creating environment...", app)
+                RenderableAction::new("Setting up the post...", app)
                     .with_icon(in_progress_icon(appearance).finish())
                     .with_content_item_spacing()
                     .render(app)
@@ -893,10 +893,10 @@ impl InitStepBlock {
 
         match env_result {
             CreateEnvironmentResult::Created => {
-                Self::render_success_completion("Environment created", app)
+                Self::render_success_completion("Post on the books", app)
             }
             CreateEnvironmentResult::Skipped => {
-                Self::render_skipped_completion("Environment creation skipped", app)
+                Self::render_skipped_completion("Post setup stood down", app)
             }
         }
     }
