@@ -1214,10 +1214,36 @@ impl View for BlocklistAIStatusBar {
                 // Don't render yarping indicator - the loading screen is shown in the main view
                 return Empty::new().finish();
             } else if agent_view_controller.is_active() {
-                return Flex::column()
+                let column = Flex::column()
                     .with_child(ChildView::new(&self.child_agent_status_card).finish())
                     .with_child(ChildView::new(&self.agent_message_bar).finish())
                     .finish();
+                // The AgentView-active branch bypasses the standard radio
+                // stripe paint below. Mirror it here so the status bar's
+                // 10-13/10-4 channel state stays visible during an active
+                // agent run — same precedence as the rest of the chrome.
+                let radio_stripe_color = if crate::radio::self_in_mayday() {
+                    Some(appearance.theme().ansi_fg_red())
+                } else if crate::radio::peer_in_mayday() {
+                    Some(appearance.theme().ansi_fg_yellow())
+                } else if crate::radio::time_since_self_stand_down()
+                    .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                    .unwrap_or(false)
+                    || crate::radio::time_since_self_inbox_ack().is_some()
+                {
+                    Some(appearance.theme().ansi_fg_green())
+                } else {
+                    None
+                };
+                if let Some(radio_color) = radio_stripe_color {
+                    return Container::new(column)
+                        .with_border(
+                            Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
+                        )
+                        .with_padding_left(-LEFT_STRIPE_WIDTH)
+                        .finish();
+                }
+                return column;
             } else {
                 return Empty::new().finish();
             };
