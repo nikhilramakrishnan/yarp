@@ -71,7 +71,7 @@ pub struct WelcomeView {
 
 impl WelcomeView {
     pub fn new(startup_directory: Option<PathBuf>, ctx: &mut ViewContext<Self>) -> Self {
-        let pane_configuration = ctx.add_model(|_ctx| PaneConfiguration::new("New tab"));
+        let pane_configuration = ctx.add_model(|_ctx| PaneConfiguration::new("New beat"));
         let window_id = ctx.window_id();
         let view_id = ctx.view_id();
         let palette = ctx.add_typed_action_view(|ctx| {
