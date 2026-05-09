@@ -68,7 +68,7 @@ impl CloudModelType for CloudNotebookModel {
 
     fn model_type_name(&self) -> &'static str {
         if self.ai_document_id.is_some() {
-            "Plan"
+            "Duty roster"
         } else {
             "Casebook"
         }
