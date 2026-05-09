@@ -3308,7 +3308,7 @@ pub(crate) fn render_debug_footer<V: View>(
     })
     .finish();
     let copy_button_with_tooltip = appearance.ui_builder().tool_tip_on_element(
-        "Copy debug ID".to_string(),
+        "Bag the debug ID".to_string(),
         props.debug_copy_button_handle,
         copy_button,
         yarpui::elements::ParentAnchor::TopRight,

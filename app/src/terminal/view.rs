@@ -15234,11 +15234,11 @@ impl TerminalView {
                     .is_active_and_long_running();
 
                 let copy_commands_str = if is_single_selection {
-                    "Copy command"
+                    "Bag the command"
                 } else {
-                    "Copy commands"
+                    "Bag the commands"
                 };
-                let copy_str = "Copy";
+                let copy_str = "Bag the case file";
                 let find_str = if is_single_selection {
                     "Find within block"
                 } else {
@@ -16503,14 +16503,14 @@ impl TerminalView {
         if ChannelState::channel().is_dogfood() {
             vec![
                 (
-                    "Copy debugging link".to_string(),
+                    "Bag the debugging frequency".to_string(),
                     ContextMenuAction::CopyAIDebuggingLink {
                         conversation_token: conversation_token.clone(),
                         request_id: server_output_id,
                     },
                 ),
                 (
-                    "Copy case file ID".to_string(),
+                    "Bag the case file ID".to_string(),
                     ContextMenuAction::CopyConversationId {
                         conversation_id: conversation_token.clone(),
                     },
@@ -16518,7 +16518,7 @@ impl TerminalView {
             ]
         } else {
             vec![(
-                "Copy debugging ID".to_string(),
+                "Bag the debugging ID".to_string(),
                 ContextMenuAction::CopyExternalDebuggingId {
                     request_id: server_output_id,
                     conversation_id: conversation_token.clone(),
