@@ -33,8 +33,8 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     },
     FeatureItem {
         icon: Icon::Sliders,
-        title: "Tab configs",
-        description: "Per-tab Standing Orders for working directory, startup commands, theme, and worktree — one click and you're on the beat.",
+        title: "Beat configs",
+        description: "Per-beat Standing Orders for working directory, startup commands, theme, and worktree — one click and you're on the beat.",
     },
     FeatureItem {
         icon: Icon::Inbox,

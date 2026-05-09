@@ -56,7 +56,7 @@ where
 {
     let callout_bg = callout_background_fill(appearance).into_solid();
     let title = Text::new(
-        "Create your first tab config",
+        "File your first beat config",
         appearance.ui_font_family(),
         16.,
     )
