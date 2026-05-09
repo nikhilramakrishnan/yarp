@@ -166,7 +166,7 @@ impl SessionConfigModal {
         let theme = appearance.theme();
 
         let title = FormattedTextElement::from_str(
-            "Create your first tab config",
+            "File your first beat config",
             appearance.ui_font_family(),
             24.,
         )
