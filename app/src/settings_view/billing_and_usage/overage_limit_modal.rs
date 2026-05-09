@@ -160,7 +160,7 @@ impl SpendingLimitModal {
                 Some("Enter a valid currency amount, officer.".to_string())
             }
             Some(SpendingLimitModalInputErrorState::NumberOutOfRange) => {
-                Some("Pick an amount between $0.01 and $10,000,000.".to_string())
+                Some("Pick a figure between $0.01 and $10,000,000, sergeant.".to_string())
             }
             None => None,
         }
