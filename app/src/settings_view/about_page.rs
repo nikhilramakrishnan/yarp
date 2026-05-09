@@ -1252,7 +1252,7 @@ impl AboutPageWidget {
                 (
                     ButtonVariant::Outlined,
                     format!("Hail {label_call_sign}"),
-                    format!("Drop a 'checking in' ping into {tooltip_target}'s inbox."),
+                    format!("Raise {tooltip_target} on the wire — 'checking in'."),
                 )
             };
             let button = ui_builder
