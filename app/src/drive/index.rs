@@ -175,8 +175,8 @@ const INDEX_WORKFLOW_LABEL: &str = "New playbook";
 const INDEX_AGENT_MODE_WORKFLOW_LABEL: &str = "New prompt";
 const INDEX_ENV_VAR_COLLECTION_LABEL: &str = "New environment variables";
 
-const IMPORT_LABEL: &str = "Import";
-const REMOVE_LABEL: &str = "Remove";
+const IMPORT_LABEL: &str = "Bring in";
+const REMOVE_LABEL: &str = "Strike off";
 const OFFLINE_BANNER_TEXT: &str = "Off the radio. Some case files are read-only until you're back on the air.";
 
 pub const DRIVE_INDEX_VIEW_POSITION_ID: &str = "drive_index_view_id";
@@ -2134,7 +2134,7 @@ impl DriveIndex {
         appearance: &Appearance,
         app: &AppContext,
     ) -> Box<dyn Element> {
-        let button_text = "Create team".to_owned();
+        let button_text = "Stand up a squad".to_owned();
         let create_button = if UserWorkspaces::as_ref(app).total_teammates_in_joinable_teams() == 0
         {
             appearance
@@ -2202,9 +2202,9 @@ impl DriveIndex {
         app: &AppContext,
     ) -> Box<dyn Element> {
         let text = if UserWorkspaces::as_ref(app).num_joinable_teams() > 1 {
-            "View teams to join"
+            "See open squads"
         } else {
-            "View team to join"
+            "See the open squad"
         };
 
         let join_button = Container::new(
