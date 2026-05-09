@@ -2391,7 +2391,7 @@ impl UsageWidget {
             )
             .finish()
         } else {
-            let header = "Credits";
+            let header = "Rations";
             let description =
                 format!("This is the {refresh_duration} ration cap for your account.");
 

@@ -3400,7 +3400,7 @@ impl SettingsWidget for UsageWidget {
         );
 
         let request_usage_row = self.render_ai_usage_limit_row(
-            "Credits",
+            "Rations",
             request_limit_description,
             ai_request_usage_model.requests_used(),
             ai_request_usage_model.request_limit(),
