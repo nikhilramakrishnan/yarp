@@ -102,8 +102,25 @@ struct StateHandles {
 pub(super) static QUERY_RESULT_RENDERER_STYLES: LazyLock<QueryResultRendererStyles> =
     LazyLock::<QueryResultRendererStyles>::new(|| QueryResultRendererStyles {
         result_item_height_fn: |appearance| appearance.monospace_font_size() + 8.,
+        // Inline-menu panel border (slash commands, prompts, conversations,
+        // history, repos, skills) — the panel rides on the input edge so
+        // mirror the radio stripe to keep the seam contiguous: self → red,
+        // peer → yellow, post-ack 5s → green, outline fallback.
         panel_border_fn: |appearance| {
-            Border::all(1.0).with_border_fill(appearance.theme().outline())
+            let theme = appearance.theme();
+            if crate::radio::self_in_mayday() {
+                Border::all(1.0).with_border_color(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Border::all(1.0).with_border_color(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Border::all(1.0).with_border_color(theme.ansi_fg_green())
+            } else {
+                Border::all(1.0).with_border_fill(theme.outline())
+            }
         },
         panel_corner_radius: CornerRadius::with_all(Radius::Pixels(0.)),
         result_vertical_padding: 2.,
