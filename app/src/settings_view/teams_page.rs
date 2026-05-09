@@ -3085,7 +3085,7 @@ impl TeamsWidget {
             let link = appearance
                 .ui_builder()
                 .link(
-                    "Manage plan".into(),
+                    "Mind the duty roster".into(),
                     None,
                     Some(Box::new(move |ctx| {
                         ctx.dispatch_typed_action(

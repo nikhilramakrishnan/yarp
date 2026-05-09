@@ -26,7 +26,7 @@ const DEFAULT_PROSUMER_MODAL_SUBHEADER: &str = "Yarp's Pro plan caps how many dr
 const DEFAULT_ADMIN_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many drive case files you can file.\n\nUpgrade to a paid plan for unlimited filings.";
 const DEFAULT_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many drive case files you can file.\n\nFlag a station admin to upgrade to a paid plan for unlimited filings.";
 const VIEW_PLANS_TEXT: &str = "Compare plans";
-const MANAGE_BILLING_BUTTON_TEXT: &str = "Manage billing";
+const MANAGE_BILLING_BUTTON_TEXT: &str = "Mind the rations";
 
 #[derive(Default)]
 struct MouseStateHandles {

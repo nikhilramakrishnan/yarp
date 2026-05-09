@@ -3111,7 +3111,7 @@ impl UsageWidget {
                 if has_admin_permissions {
                     vec![
                         FormattedTextFragment::hyperlink_action(
-                            "Manage billing",
+                            "Mind the rations",
                             BillingAndUsagePageAction::GenerateStripeBillingPortalLink {
                                 team_uid: team.uid,
                             },
@@ -3486,7 +3486,7 @@ impl PlanWidget {
                 .with_text_and_icon_label(
                     TextAndIcon::new(
                         TextAndIconAlignment::IconFirst,
-                        "Manage billing",
+                        "Mind the rations",
                         Icon::CoinsStacked.to_yarpui_icon(appearance.theme().accent()),
                         MainAxisSize::Min,
                         MainAxisAlignment::Center,
