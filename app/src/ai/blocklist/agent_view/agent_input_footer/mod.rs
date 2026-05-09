@@ -2016,6 +2016,30 @@ impl View for AgentInputFooter {
             container = container.with_padding_right(16.);
         }
 
+        // Chip-row dispatch-channel pulse: even when the input border
+        // above is muted (post-ack window decayed back to neutral border),
+        // the chip row sits in the same composer surface and should carry
+        // the radio signal during the active mayday/post-ack window. Same
+        // precedence as the rest of the chrome — self → red, peer →
+        // yellow, post-ack 5s → green.
+        let appearance = crate::appearance::Appearance::as_ref(app);
+        let radio_top_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+        if let Some(color) = radio_top_color {
+            container = container.with_border(Border::top(1.).with_border_color(color));
+        }
+
         // If the model chip has switched to show the ftu model options
         // (and this is the first time this has happened)
         // we show a little callout explaining the change.
