@@ -18604,10 +18604,16 @@ impl Workspace {
             return None;
         }
 
+        // Tag the heading with the operator's own call sign — gives the
+        // banner a "You've signed off duty, dispatch-12." read so the
+        // sign-off row mirrors the mayday pair's case-file rhythm. The
+        // call sign always resolves (env-derived with Officer-{pid}
+        // fallback) so no bare-heading branch is needed.
+        let heading = format!("You've signed off duty, {}.", radio::self_call_sign());
         Some(WorkspaceBannerFields {
             banner_type: WorkspaceBanner::Reauth,
             severity: BannerSeverity::Warning,
-            heading: Some("You've signed off duty.".into()),
+            heading: Some(heading),
             description: "Sign on again to get back on the radio with HQ.".into(),
             secondary_button: None,
             button: Some(WorkspaceBannerButtonDetails {
