@@ -3190,7 +3190,7 @@ impl UpdateEnvironmentForm {
                 );
                 Some(render_warning_box(
                     WarningBoxConfig::new(
-                        "You need to grant access to your GitHub repos to suggest a Docker image",
+                        "Need a warrant on your GitHub repos before we can pin a Docker image suggestion",
                     )
                     .with_width(DROPDOWN_MAX_WIDTH)
                     .with_button(button),

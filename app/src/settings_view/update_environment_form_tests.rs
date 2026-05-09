@@ -865,7 +865,7 @@ fn test_render_docker_image_field_shows_github_auth_required_message() {
 
             assert!(
                 text_content.contains(
-                    "You need to grant access to your GitHub repos to suggest a Docker image"
+                    "Need a warrant on your GitHub repos before we can pin a Docker image suggestion"
                 ),
                 "Expected GitHub auth required message in rendered content: {text_content}"
             );
