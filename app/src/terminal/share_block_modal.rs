@@ -546,7 +546,7 @@ impl ShareBlockModal {
         ctx.clipboard()
             .write(ClipboardContent::plain_text(embed_snippet));
         ctx.emit(ShareBlockModalEvent::ShowToast {
-            message: "Pinned report copied.".to_string(),
+            message: "Pinned report bagged.".to_string(),
             flavor: ToastFlavor::Success,
         });
     }
