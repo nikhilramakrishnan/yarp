@@ -104,7 +104,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
     if ContextFlag::CreateNewSession.is_enabled() {
         maximize_yarp_items.push(FeatureItem::new(
             "Split the beat",
-            "Carve a tab into panes — patrol multiple sessions side by side.",
+            "Carve a beat into panes — patrol multiple sessions side by side.",
             Tip::Action(TipAction::SplitPane),
             ctx,
         ));
@@ -113,7 +113,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
     if ContextFlag::LaunchConfigurations.is_enabled() {
         maximize_yarp_items.push(FeatureItem::new(
             "Save the duty roster",
-            "Snapshot your windows, tabs, and panes — pin them for the next shift.",
+            "Snapshot your windows, beats, and panes — pin them for the next shift.",
             Tip::Action(TipAction::SaveNewLaunchConfig),
             ctx,
         ));
