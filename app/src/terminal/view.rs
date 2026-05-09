@@ -15141,7 +15141,7 @@ impl TerminalView {
 
                             if is_markdown_file(&path) {
                                 items.push(
-                                    MenuItemFields::new("Open in Yarp")
+                                    MenuItemFields::new("Pull up in Yarp")
                                         .with_on_select_action(TerminalAction::OpenFileInYarp(path))
                                         .into_item(),
                                 );

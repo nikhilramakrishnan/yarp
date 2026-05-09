@@ -1962,7 +1962,7 @@ impl CodeView {
 
             if is_markdown_file(&path) {
                 items.push(
-                    MenuItemFields::new("View Markdown preview")
+                    MenuItemFields::new("Pull up the Markdown preview")
                         .with_on_select_action(CodeViewAction::RenderMarkdown)
                         .into_item(),
                 );
