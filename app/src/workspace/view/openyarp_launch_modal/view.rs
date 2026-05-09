@@ -187,7 +187,7 @@ impl OpenYarpLaunchModal {
 
     fn render_badge(appearance: &Appearance) -> Box<dyn Element> {
         Container::new(
-            Text::new_inline("New".to_string(), appearance.ui_font_family(), 14.)
+            Text::new_inline("Just in".to_string(), appearance.ui_font_family(), 14.)
                 .with_color(PhenomenonStyle::modal_badge_text())
                 .finish(),
         )

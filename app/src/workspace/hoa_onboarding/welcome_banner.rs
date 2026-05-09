@@ -84,9 +84,9 @@ pub fn render_welcome_banner(
         ),
     );
 
-    // "New" badge
+    // "Just in" badge
     let badge = Container::new(
-        Text::new_inline("New".to_string(), appearance.ui_font_family(), 14.)
+        Text::new_inline("Just in".to_string(), appearance.ui_font_family(), 14.)
             .with_color(PhenomenonStyle::modal_badge_text())
             .finish(),
     )
