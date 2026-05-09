@@ -1078,7 +1078,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.knowledge.yarp_drive_context_enabled",
-        description: "Whether Yarp Drive context is included in AI requests.",
+        description: "Whether Yarp Drive context is included in PC briefings.",
     }
 
     // Whether the codebase speedbump banner has been permanently dismissed for a given repo path.
