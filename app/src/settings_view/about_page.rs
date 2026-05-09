@@ -700,7 +700,14 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
             Some(tag) => format!("{tag} \u{00B7} {age}"),
             None => age.clone(),
         };
-        let frag = if snippet.is_empty() {
+        // Stand-down fragments collapse to "Cooper (case-foo · 12s) — stood
+        // down" rather than quoting the literal "Stand down — situation
+        // resolved." body. The reader cares that the call closed; the
+        // verbatim text is decoration that pushes more useful fragments out
+        // of the row's character budget.
+        let frag = if radio::is_stand_down_body(&msg.body) {
+            format!("{} ({case_meta}) \u{2014} stood down", msg.from_call_sign)
+        } else if snippet.is_empty() {
             format!("{} ({case_meta})", msg.from_call_sign)
         } else {
             format!(
