@@ -5986,7 +5986,7 @@ impl Input {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::error(format!(
-                            "Cannot run `{truncated_command}` (command already running)."
+                            "Can't run `{truncated_command}` — already on the air."
                         )),
                         window_id,
                         ctx,
@@ -11834,12 +11834,12 @@ impl Input {
                         let window_id = ctx.window_id();
                         let message = if skipped_files.len() == 1 {
                             format!(
-                                "{} was not attached — exceeds 10MB limit.",
+                                "{} wouldn't pin — heavier than the 10MB cap.",
                                 skipped_files[0]
                             )
                         } else {
                             format!(
-                                "{} files were not attached — exceed 10MB limit.",
+                                "{} files wouldn't pin — heavier than the 10MB cap.",
                                 skipped_files.len()
                             )
                         };
