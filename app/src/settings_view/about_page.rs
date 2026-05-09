@@ -305,6 +305,18 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .filter(|m| dispatch_is_emergency(&m.body))
         .map(|m| m.from_call_sign.clone())
         .collect();
+    // While we're mid-10-13, tag peers whose en-route reply is queued so the
+    // roster reads "who's coming" not just "who's around" — solidarity is
+    // strongest when the operator can scan the responder list at a glance.
+    let en_route_signs: std::collections::HashSet<String> = if radio::self_in_mayday() {
+        radio::peek_inbox()
+            .iter()
+            .filter(|m| radio::is_en_route_body(&m.body))
+            .map(|m| m.from_call_sign.clone())
+            .collect()
+    } else {
+        std::collections::HashSet::new()
+    };
     let distress_count = peer_list
         .iter()
         .filter(|p| emergency_signs.contains(&p.call_sign))
@@ -312,13 +324,22 @@ fn precinct_roster_line() -> Option<(String, bool)> {
     let any_in_distress = distress_count > 0;
     // Promote distressed peers to the front so when the roster overflows the
     // MAX cap below, the (10-13) badge never gets truncated off the line.
+    // En-route responders rank just behind distressed peers — a unit actively
+    // responding to our 10-13 is more load-bearing than a quiet idle one.
     let mut sorted_peers = peer_list.clone();
-    sorted_peers.sort_by_key(|p| !emergency_signs.contains(&p.call_sign));
+    sorted_peers.sort_by_key(|p| {
+        (
+            !emergency_signs.contains(&p.call_sign),
+            !en_route_signs.contains(&p.call_sign),
+        )
+    });
     let mut names: Vec<String> = sorted_peers
         .iter()
         .map(|p| {
             if emergency_signs.contains(&p.call_sign) {
                 format!("{} (10-13)", p.call_sign)
+            } else if en_route_signs.contains(&p.call_sign) {
+                format!("{} (en route)", p.call_sign)
             } else {
                 match &p.tab_title {
                     Some(title) => format!("{} ({})", p.call_sign, title),
