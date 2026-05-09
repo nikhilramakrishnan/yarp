@@ -991,7 +991,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| FeatureFlag::FastForwardAutoexecuteButton.is_enabled()),
         EditableBinding::new(
             TOGGLE_QUEUE_NEXT_PROMPT_KEYBINDING,
-            "Toggle Queue Next Prompt",
+            "Toggle Queue Next Order",
             TerminalAction::ToggleQueueNextPrompt,
         )
         .with_key_binding("cmdorctrl-shift-J")
