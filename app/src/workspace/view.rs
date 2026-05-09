@@ -18440,10 +18440,19 @@ impl Workspace {
                 };
                 format!("{} on the wire — {}", radio::self_call_sign(), suffix)
             };
+            // Tag the heading with the operator's own case file when the
+            // self-beacon carries one — gives the banner a "10-13 broadcasting
+            // from case-foo." read so the operator clocks which patrol the
+            // emergency belongs to without leaving the row. Bare heading
+            // holds the slot when no tab title is published yet.
+            let heading = match radio::self_tab_title() {
+                Some(tag) => format!("10-13 broadcasting from {tag}."),
+                None => "10-13 broadcasting.".into(),
+            };
             return Some(WorkspaceBannerFields {
                 banner_type: WorkspaceBanner::Mayday,
                 severity: BannerSeverity::Error,
-                heading: Some("10-13 broadcasting.".into()),
+                heading: Some(heading),
                 description,
                 secondary_button: None,
                 button: Some(WorkspaceBannerButtonDetails {

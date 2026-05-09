@@ -80,6 +80,21 @@ pub fn self_call_sign() -> String {
         .unwrap_or_else(|_| format!("Officer-{}", std::process::id()))
 }
 
+/// The current tab label this process most-recently broadcast on its own
+/// beacon — symmetric to `self_call_sign`. Lets the workspace banner and
+/// other self-facing surfaces tag the operator's own case file without
+/// having to thread the active tab title through every render path.
+/// Empty/missing tab title collapses to `None` so callers can fall back
+/// to the bare heading rather than rendering an "Unfiled patrol" tag.
+pub fn self_tab_title() -> Option<String> {
+    let self_pid = std::process::id();
+    list_active()
+        .into_iter()
+        .find(|b| b.pid == self_pid)
+        .and_then(|b| b.tab_title)
+        .filter(|t| !t.is_empty())
+}
+
 /// View-friendly summary of a peer on the channel — what a picker UI or
 /// `/radio` listing wants to render. Uptime is computed at read time.
 #[derive(Debug, Clone, PartialEq, Eq)]
