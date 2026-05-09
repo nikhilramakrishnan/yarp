@@ -107,12 +107,33 @@ pub fn render_block_container(
     appearance: &Appearance,
     are_block_dividers_enabled: bool,
 ) -> Box<dyn Element> {
-    let border = if are_block_dividers_enabled {
-        Border::top(1.).with_border_fill(appearance.theme().outline())
+    let theme = appearance.theme();
+    // Agent-view block frame is the radio room's case-file edge — every
+    // block in the conversation lives inside this frame. Override on
+    // self/peer mayday and the post-ack pulse so the case file mirrors
+    // channel state alongside the rest of the chrome — self → red,
+    // peer → yellow, post-ack 5s → green, outline fallback.
+    let radio_color = if crate::radio::self_in_mayday() {
+        Some(theme.ansi_fg_red())
+    } else if crate::radio::peer_in_mayday() {
+        Some(theme.ansi_fg_yellow())
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(theme.ansi_fg_green())
     } else {
-        Border::new(1.)
-            .with_sides(true, false, true, false)
-            .with_border_fill(appearance.theme().outline())
+        None
+    };
+    let base = if are_block_dividers_enabled {
+        Border::top(1.)
+    } else {
+        Border::new(1.).with_sides(true, false, true, false)
+    };
+    let border = match radio_color {
+        Some(color) => base.with_border_color(color),
+        None => base.with_border_fill(theme.outline()),
     };
 
     let mut container = Container::new(content).with_background(background);
