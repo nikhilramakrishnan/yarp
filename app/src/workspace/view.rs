@@ -5960,7 +5960,7 @@ impl Workspace {
                 workspace.toast_stack.update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
                         DismissibleToast::default(
-                            "Radio in from another station.".to_owned(),
+                            "Channel's lit — radio incoming.".to_owned(),
                         ),
                         ctx,
                     );
