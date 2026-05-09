@@ -277,7 +277,7 @@ impl CreateApiKeyModal {
                     self.request_state = RequestState::Idle;
                     ctx.emit(CreateApiKeyModalEvent::Error {
                         message:
-                            "Unable to create a team API key because there is no current team."
+                            "Can't issue a team warrant — no squad on the roster."
                                 .to_string(),
                     });
                     ctx.notify();
