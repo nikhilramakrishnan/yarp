@@ -19,7 +19,7 @@ use yarpui::{
 };
 
 const EXPLANATION_TEXT: &str = "Would you like to set up a post for this project so you can run cloud officers in it? The PC will walk you through choosing GitHub repos, configuring a Docker image, and specifying briefing orders.";
-const NO_REPOS_HELP_TEXT: &str = "If you want to create an environment with repos, rerun this command and pass in file paths or GitHub links as arguments, e.g. \"/create-environment <filepath> <GitHub URL>\".";
+const NO_REPOS_HELP_TEXT: &str = "If you want to set up a post with repos, rerun this command and pass in file paths or GitHub links as arguments, e.g. \"/create-environment <filepath> <GitHub URL>\".";
 
 #[derive(Debug, Clone)]
 pub enum InitEnvironmentBlockAction {
@@ -155,7 +155,7 @@ impl View for InitEnvironmentBlock {
 
         let rendered_step = match &self.setup_state {
             SetupState::Pending { action_view } => self.render_pending_step(action_view, app),
-            SetupState::Skipped => RenderableAction::new("Environment setup cancelled", app)
+            SetupState::Skipped => RenderableAction::new("Post setup stood down", app)
                 .with_icon(cancelled_icon(appearance).finish())
                 .with_content_item_spacing()
                 .render(app)
