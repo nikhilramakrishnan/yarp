@@ -269,7 +269,17 @@ fn self_signon_line() -> (String, bool) {
     } else if inbox_emergency {
         responder_label
     } else {
-        "on patrol".to_string()
+        // Routine duty status picks up shift size so the operator gets a
+        // glanceable peer count without scrolling to the roster row.
+        // "solo patrol" mirrors the Code 4 banner's same fallback when
+        // peer_count is 0 — keeps the two surfaces in lockstep on the
+        // alone-on-channel framing.
+        let peer_count = radio::peers().len();
+        match peer_count {
+            0 => "solo patrol".to_string(),
+            1 => "on patrol \u{00B7} 1 on shift".to_string(),
+            n => format!("on patrol \u{00B7} {n} on shift"),
+        }
     };
     let prefix = if sign.starts_with("Officer-") {
         sign
