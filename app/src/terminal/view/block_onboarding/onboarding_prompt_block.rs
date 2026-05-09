@@ -238,9 +238,9 @@ impl OnboardingPromptBlock {
         // Pixel values pulled from Figma mocks
         // https://www.figma.com/file/y888viqzWBoMpFTxQqkQEN/Activation?node-id=568:1595&mode=dev
         const HEADER_TEXT: &str = "Shell prompt (PS1)";
-        const NO_PS1_TEXT: &str = "No existing prompt.";
-        const CORRECTION_TEXT: &str = "Look incorrect? ";
-        const LINK_TEXT: &str = "Let us know.";
+        const NO_PS1_TEXT: &str = "No prompt on the books.";
+        const CORRECTION_TEXT: &str = "Looks botched? ";
+        const LINK_TEXT: &str = "Drop a tip.";
         const LINK_DESTINATION: &str = "https://github.com/hotfuzz/yarp/issues/new?assignees=&labels=Bug&projects=&template=01_bug_report.yml";
 
         const HEADER_MARGIN_LEFT: f32 = 4.;
