@@ -658,6 +658,50 @@ pub fn time_since_self_stand_down() -> Option<Duration> {
     Some(Duration::from_secs(elapsed))
 }
 
+// Tracks when this Yarp last fired a mic check so the signon line can
+// render a brief "mic check · stand by" ack instead of the click being
+// silent. Mic-check is a question to the channel ("anyone on?"), so the
+// ack window confirms the broadcast left the building before any peer
+// reply lands. Stored as the unix-second timestamp; 0 means none recorded.
+// In-process only, like the mayday and stand-down flags.
+static SELF_MIC_CHECK_AT: AtomicU64 = AtomicU64::new(0);
+
+/// How long the post-mic-check acknowledgment lingers on the signon line.
+/// Shorter than the stand-down ack — a mic-check is a routine "you there?"
+/// not a closure of distress, so the beat just needs to confirm the
+/// broadcast went out before settling back to routine.
+pub const SELF_MIC_CHECK_ACK_SECS: u64 = 15;
+
+/// Mark that this Yarp just fired a mic check. Drives the transient
+/// signon ack window; called from the radio handler the moment the
+/// mic-check broadcast goes out.
+pub fn mark_self_mic_check() {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    SELF_MIC_CHECK_AT.store(now, Ordering::Relaxed);
+}
+
+/// Seconds since the last mic check, while still inside the ack window;
+/// `None` once the window expires (or if no mic-check has been recorded).
+/// UI surfaces gate the "mic check · stand by" line on `Some(_)`.
+pub fn time_since_self_mic_check() -> Option<Duration> {
+    let at = SELF_MIC_CHECK_AT.load(Ordering::Relaxed);
+    if at == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let elapsed = now.saturating_sub(at);
+    if elapsed >= SELF_MIC_CHECK_ACK_SECS {
+        return None;
+    }
+    Some(Duration::from_secs(elapsed))
+}
+
 /// True if this Yarp is currently flagged as calling 10-13 (TTL not yet
 /// expired). UI surfaces use this to render the originator's status row in
 /// the same red rhythm as the responder side.

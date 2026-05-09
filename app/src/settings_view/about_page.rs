@@ -279,6 +279,16 @@ fn self_signon_line() -> (String, bool) {
         // 10-13 (ours or a peer's) preempts the ack — stale acks must
         // never squat on top of live distress traffic.
         "stood down \u{00B7} channel clear".to_string()
+    } else if radio::time_since_self_mic_check().is_some() {
+        // Transient post-mic-check ack window: a mic-check is a question
+        // to the channel ("anyone on?") that doesn't self-deliver, so
+        // without this branch the click is silent until — and unless —
+        // a peer happens to reply. Holds the row on "mic check · stand
+        // by" for SELF_MIC_CHECK_ACK_SECS so the operator sees the
+        // broadcast went out. Gated below the stand-down branch so an
+        // operator who mic-checks during the tail of a stand-down ack
+        // doesn't paper over the more meaningful closure beat.
+        "mic check \u{00B7} stand by".to_string()
     } else {
         // Routine duty status picks up shift size so the operator gets a
         // glanceable peer count without scrolling to the roster row.

@@ -6049,6 +6049,12 @@ impl Workspace {
 
     fn mic_check_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
         let _ = radio::broadcast(radio::MIC_CHECK_BROADCAST_BODY);
+        // Record the mic-check moment so the signon line can render a brief
+        // "mic check · stand by" beat — without this the click is silent
+        // until (and unless) a peer replies. Symmetric with the stand-down
+        // ack: each broadcast that doesn't self-deliver gets a transient
+        // confirmation that the channel heard it.
+        radio::mark_self_mic_check();
         ctx.notify();
     }
 
