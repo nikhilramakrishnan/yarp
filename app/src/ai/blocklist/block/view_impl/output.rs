@@ -3120,7 +3120,7 @@ fn render_response_footer(props: Props, app: &AppContext) -> Option<Box<dyn Elem
         )
         .with_tooltip(move || {
             ui_builder
-                .tool_tip("Branch the case file".to_string())
+                .tool_tip("Spin off the case file".to_string())
                 .build()
                 .finish()
         })

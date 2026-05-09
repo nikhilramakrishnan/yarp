@@ -16456,7 +16456,7 @@ impl TerminalView {
             let history_model = BlocklistAIHistoryModel::as_ref(ctx);
             if history_model.can_conversation_be_shared(&ai_conversation_id) {
                 items.push(
-                    MenuItemFields::new("Share case file")
+                    MenuItemFields::new("Put the case on the wire")
                         .with_on_select_action(TerminalAction::ContextMenu(
                             ContextMenuAction::OpenConversationShareDialog {
                                 conversation_id: ai_conversation_id,

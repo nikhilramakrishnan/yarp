@@ -932,7 +932,7 @@ impl TypedActionView for ConversationListView {
                     // Only show share item if the conversation is shareable
                     let share_item = if is_shareable {
                         Some(
-                            MenuItemFields::new("Share case file")
+                            MenuItemFields::new("Put the case on the wire")
                                 .with_on_select_action(
                                     ConversationListViewAction::OpenShareDialog { conversation_id },
                                 )
@@ -946,7 +946,7 @@ impl TypedActionView for ConversationListView {
                         // Forking from a closed ambient agent conversation is not supported at this point.
                         if !is_ambient_agent_conversation {
                             Some([
-                                MenuItemFields::new("Branch case file in new pane")
+                                MenuItemFields::new("Spin off the case in a new pane")
                                     .with_on_select_action(
                                         ConversationListViewAction::ForkConversation {
                                             conversation_id,
@@ -954,7 +954,7 @@ impl TypedActionView for ConversationListView {
                                         },
                                     )
                                     .into_item(),
-                                MenuItemFields::new("Branch case file in new tab")
+                                MenuItemFields::new("Spin off the case in a new tab")
                                     .with_on_select_action(
                                         ConversationListViewAction::ForkConversation {
                                             conversation_id,
