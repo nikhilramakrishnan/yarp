@@ -658,7 +658,7 @@ impl RequestedCommandView {
                 citations_padding,
                 app,
             )
-            .map(|citation| ("Copied from", citation))
+            .map(|citation| ("Lifted from", citation))
         } else {
             // Otherwise, we render all the citations (if any) and mention that the command was derived from them.
             render_citation_chips(
@@ -668,7 +668,7 @@ impl RequestedCommandView {
                 citations_padding,
                 app,
             )
-            .map(|citations| ("Derived from", citations))
+            .map(|citations| ("Drawn from", citations))
         };
 
         let citations_footer = citations_footer_props.map(|(prefix, suffix)| {
