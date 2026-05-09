@@ -658,6 +658,25 @@ pub fn time_since_self_stand_down() -> Option<Duration> {
     Some(Duration::from_secs(elapsed))
 }
 
+/// Unix-second timestamp of the last stand-down, while still inside the ack
+/// window; `None` once the window expires. Lets dispatch surfaces format
+/// "stood down · 5s ago" with the same age helper used for inbox messages,
+/// so the synthetic stand-down row shares visual rhythm with peer chatter.
+pub fn self_stand_down_at_unix() -> Option<u64> {
+    let at = SELF_STAND_DOWN_AT.load(Ordering::Relaxed);
+    if at == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now.saturating_sub(at) >= SELF_STAND_DOWN_ACK_SECS {
+        return None;
+    }
+    Some(at)
+}
+
 // Tracks when this Yarp last fired a mic check so the signon line can
 // render a brief "mic check · stand by" ack instead of the click being
 // silent. Mic-check is a question to the channel ("anyone on?"), so the
@@ -700,6 +719,25 @@ pub fn time_since_self_mic_check() -> Option<Duration> {
         return None;
     }
     Some(Duration::from_secs(elapsed))
+}
+
+/// Unix-second timestamp of the last mic check, while still inside the ack
+/// window; `None` once the window expires. Mirrors the stand-down getter so
+/// the synthetic mic-check dispatch row uses the same age helper as inbox
+/// messages.
+pub fn self_mic_check_at_unix() -> Option<u64> {
+    let at = SELF_MIC_CHECK_AT.load(Ordering::Relaxed);
+    if at == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now.saturating_sub(at) >= SELF_MIC_CHECK_ACK_SECS {
+        return None;
+    }
+    Some(at)
 }
 
 /// True if this Yarp is currently flagged as calling 10-13 (TTL not yet

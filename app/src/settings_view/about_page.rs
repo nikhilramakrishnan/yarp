@@ -742,6 +742,42 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         );
         return Some((line, true));
     }
+    // Parallel ack rendering for self stand-down: when the operator just
+    // stood down and the inbox is empty (en-route replies were drained, no
+    // unrelated traffic), the dispatch row would otherwise vanish — leaving
+    // only the signon's "stood down · channel clear" beat hanging without
+    // its dispatch-row counterpart. Synthesize the closure row so the two
+    // surfaces fade together. Gated on empty inbox so any peer message
+    // (including a peer's own stand-down) wins — real chatter outranks the
+    // synthetic. Not-emergency: same rationale as the peer stand-down branch
+    // below — the row's job here is to signal the call closed.
+    if let Some(at) = radio::self_stand_down_at_unix() {
+        if radio::peek_inbox().is_empty() {
+            let line = format!(
+                "10-4 all clear \u{00B7} {} stood down \u{00B7} {}",
+                radio::self_call_sign(),
+                radio::format_dispatch_age(at)
+            );
+            return Some((line, false));
+        }
+    }
+    // Parallel ack rendering for self mic-check: the broadcast doesn't
+    // self-deliver and there may be no peer reply yet, so without this the
+    // dispatch row stays empty while the signon shows "mic check · stand
+    // by". Gated on empty inbox — any peer reply (or unrelated traffic)
+    // takes priority since it's fresher and more informative than echoing
+    // our own ping. Not-emergency: routine "you there?" stays in the
+    // routine rhythm.
+    if let Some(at) = radio::self_mic_check_at_unix() {
+        if radio::peek_inbox().is_empty() {
+            let line = format!(
+                "Mic check \u{00B7} {} \u{00B7} awaiting reply \u{00B7} {}",
+                radio::self_call_sign(),
+                radio::format_dispatch_age(at)
+            );
+            return Some((line, false));
+        }
+    }
     let msg = radio::latest_dispatch()?;
     // When a 10-13 is active (self or peer-originated) and the latest inbox
     // dispatch is an en-route ack, rewrite the row so the response
