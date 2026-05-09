@@ -666,7 +666,7 @@ impl AIAssistantPanelView {
         ));
 
         for part in transcript {
-            result.push_str(&format!("Prompt: {}\n\n", part.raw_user_prompt().trim()));
+            result.push_str(&format!("Brief: {}\n\n", part.raw_user_prompt().trim()));
             result.push_str(&format!(
                 "PC: {}\n\n",
                 part.raw_assistant_answer().trim()

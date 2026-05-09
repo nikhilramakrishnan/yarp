@@ -738,7 +738,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.input.ai_auto_detection_enabled",
-        description: "Controls whether AI automatically detects natural language input.",
+        description: "Controls whether the PC automatically detects natural language input.",
     },
     // This field should not be referenced directly -- use the
     // `is_nld_in_terminal_enabled()` getter.
@@ -761,7 +761,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.input.ai_command_denylist",
-        description: "Commands to exclude from AI natural language autodetection.",
+        description: "Commands to exclude from the PC's natural language autodetection.",
     },
     // This field should not be referenced directly to lookup intelligent autosuggestion enablement
     // -- use the `is_intelligent_autosuggestions_enabled()` getter.
