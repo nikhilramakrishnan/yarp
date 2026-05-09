@@ -809,7 +809,7 @@ pub fn init(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::YarpAi.as_str()),
         EditableBinding::new(
             "workspace:close_panel",
-            BindingDescription::new("Close focused panel")
+            BindingDescription::new("Stand the focused panel down")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Close focused panel"),
             WorkspaceAction::ClosePanel,
         )
@@ -817,7 +817,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::CloseCurrentSession),
         EditableBinding::new(
             "workspace:toggle_command_palette",
-            BindingDescription::new("Toggle command palette")
+            BindingDescription::new("Toggle the command palette")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Command Palette"),
             WorkspaceAction::TogglePalette {
                 mode: PaletteMode::Command,
