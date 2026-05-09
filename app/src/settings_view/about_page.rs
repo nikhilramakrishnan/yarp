@@ -240,13 +240,29 @@ fn self_signon_line() -> (String, bool) {
     //   inbox emergency — *they* broadcast a 10-13, we're the responder
     // Self-mayday outranks responder framing because your own emergency is
     // the more pressing duty state. Both flip the row to the red rhythm.
-    let responder_label = if distressed_peers.len() == 1 {
-        // Borrow the single name for a possessive — "responding to Danny's
-        // 10-13" beats "responding to 10-13" when there's only one call.
-        let name = distressed_peers.iter().next().unwrap();
-        format!("responding to {name}'s 10-13")
-    } else {
-        "responding to 10-13".to_string()
+    let responder_label = match distressed_peers.len() {
+        1 => {
+            // Borrow the single name for a possessive — "responding to Danny's
+            // 10-13" beats "responding to 10-13" when there's only one call.
+            let name = distressed_peers.iter().next().unwrap();
+            format!("responding to {name}'s 10-13")
+        }
+        n @ (2 | 3) => {
+            // Enumerate names for 2-3 distressed peers so the signon row tells
+            // the operator which case files to flip to without scrolling — a
+            // bare "responding to 10-13" loses the discrimination the inbox
+            // already has. Above 3 the row gets crowded and the count phrasing
+            // ("responding to 4 10-13s") earns its width back.
+            let mut names: Vec<String> = distressed_peers.iter().cloned().collect();
+            names.sort();
+            let joined = if n == 2 {
+                format!("{} & {}", names[0], names[1])
+            } else {
+                format!("{}, {} & {}", names[0], names[1], names[2])
+            };
+            format!("responding to {joined}'s 10-13s")
+        }
+        n => format!("responding to {n} 10-13s"),
     };
     let status: String = if self_calling {
         "calling 10-13".to_string()
@@ -318,20 +334,30 @@ fn precinct_status_line() -> (String, bool) {
         };
         return (line, true);
     }
-    // When the channel is quiet but the most recent dispatch was a peer's
-    // stand-down, swap the static "all clear" for "just stood down" so the
-    // banner echoes the resolution moment instead of pretending nothing
-    // happened. Reads as "the call just closed" rather than "nothing has
-    // ever been wrong" — the dispatch row below is still announcing the
-    // stand-down and the banner shouldn't contradict it. Reverts to "all
-    // clear" once the stand-down ages out of latest_dispatch.
-    let recently_resolved = radio::latest_dispatch()
-        .map(|m| radio::is_stand_down_body(&m.body))
-        .unwrap_or(false);
-    let calm_phrase = if recently_resolved {
-        "just stood down"
-    } else {
-        "all clear"
+    // When the channel is quiet but peers have stand-down broadcasts queued,
+    // swap the static "all clear" for "just stood down" so the banner echoes
+    // the resolution moment instead of pretending nothing happened. Reads as
+    // "the call just closed" rather than "nothing has ever been wrong" — the
+    // dispatch row below is still announcing the stand-down and the banner
+    // shouldn't contradict it. When two or more distinct senders' latest
+    // body is a stand-down, lift the count into the phrase ("2 just stood
+    // down") so the banner conveys the wave rather than reading like a
+    // single closure. Mirrors the inbox-line stood_down badging: same
+    // last-write-wins rule, same "distress wins" precedence by virtue of
+    // running only inside the no-emergencies branch.
+    let mut latest_body_per_sender: std::collections::HashMap<String, String> =
+        std::collections::HashMap::new();
+    for msg in radio::peek_inbox() {
+        latest_body_per_sender.insert(msg.from_call_sign, msg.body);
+    }
+    let stood_down_count = latest_body_per_sender
+        .values()
+        .filter(|b| radio::is_stand_down_body(b))
+        .count();
+    let calm_phrase: String = match stood_down_count {
+        0 => "all clear".to_string(),
+        1 => "just stood down".to_string(),
+        n => format!("{n} just stood down"),
     };
     // Code 4 keeps the longer noun phrase — without an emergency fragment to
     // anchor the line, "Code 4 · 4" alone reads cryptic; the full phrasing
@@ -740,8 +766,17 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     // doesn't crowd the preview.
     let mut sorted: Vec<radio::Message> = inbox;
     sorted.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
-    let mut iter = sorted.into_iter();
-    let _newest = iter.next();
+    let mut sorted_iter = sorted.into_iter();
+    let _newest = sorted_iter.next();
+    // Promote stand-down fragments ahead of routine chatter so the preview
+    // leads with "Cooper (case-foo · 12s) — stood down" before any quoted
+    // chatter snippet. Symmetric to the inbox-line "(stood down)" badge:
+    // resolutions deserve top billing in the secondary surface, and
+    // recency-only ordering buries them when a chatty peer fires after the
+    // close. Recency from the initial sort is preserved within each tier.
+    let (stand_downs, others): (Vec<_>, Vec<_>) = sorted_iter
+        .partition(|m| radio::is_stand_down_body(&m.body));
+    let iter = stand_downs.into_iter().chain(others);
     let case_tags: std::collections::HashMap<String, String> = radio::peers()
         .into_iter()
         .filter_map(|p| {
