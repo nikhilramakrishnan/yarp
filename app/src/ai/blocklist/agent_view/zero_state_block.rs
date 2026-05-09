@@ -460,13 +460,31 @@ impl View for AgentViewZeroStateBlock {
         let content = content.finish();
 
         let show_bottom_border = !self.origin.is_cloud_agent();
+        // Zero-state block frames the radio room before any case file is open.
+        // Override the outer top/bottom border on self/peer mayday and the
+        // post-ack pulse so the operator's landing surface mirrors channel
+        // state — self → red, peer → yellow, post-ack 5s → green, outline
+        // fallback.
+        let border_color = if radio::self_in_mayday() {
+            appearance.theme().ansi_fg_red()
+        } else if radio::peer_in_mayday() {
+            appearance.theme().ansi_fg_yellow()
+        } else if radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || radio::time_since_self_inbox_ack().is_some()
+        {
+            appearance.theme().ansi_fg_green()
+        } else {
+            theme.outline().into()
+        };
         let content = Container::new(content)
             .with_horizontal_padding(*terminal::view::PADDING_LEFT)
             .with_vertical_padding(styles::CONTAINER_VERTICAL_PADDING)
             .with_border(
                 Border::new(1.)
                     .with_sides(true, false, show_bottom_border, false)
-                    .with_border_fill(theme.outline()),
+                    .with_border_color(border_color),
             )
             .finish();
 
