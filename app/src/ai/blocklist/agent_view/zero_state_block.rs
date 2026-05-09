@@ -1182,10 +1182,10 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
                             Container::new(
                                 Text::new(
                                     if changelog_model.fuzz_updates.len() == 1 {
-                                        "1 update".to_owned()
+                                        "1 wire".to_owned()
                                     } else {
                                         format!(
-                                            "{} updates",
+                                            "{} wires",
                                             changelog_model
                                                 .fuzz_updates
                                                 .len()
