@@ -3733,7 +3733,7 @@ impl TerminalView {
         let control_master_error_banner = ctx.add_typed_action_view(|_| {
             Banner::new(BannerTextContent::formatted_text(vec![
                 FormattedTextFragment::plain_text("Completions aren't on duty ("),
-                FormattedTextFragment::hyperlink("more info", CONTROLMASTER_ISSUES_URL),
+                FormattedTextFragment::hyperlink("Pull the dossier", CONTROLMASTER_ISSUES_URL),
                 FormattedTextFragment::plain_text("). Enabling tmux yarpification in "),
                 FormattedTextFragment::hyperlink_action(
                     "settings",
