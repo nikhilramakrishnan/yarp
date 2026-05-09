@@ -639,22 +639,22 @@ impl AgentManagementView {
                     ArtifactFilter::All,
                 )),
             )),
-            MenuItem::Item(MenuItemFields::new("Pull Request").with_on_select_action(
+            MenuItem::Item(MenuItemFields::new("Charge sheet").with_on_select_action(
                 DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
                     ArtifactFilter::PullRequest,
                 )),
             )),
-            MenuItem::Item(MenuItemFields::new("Plan").with_on_select_action(
+            MenuItem::Item(MenuItemFields::new("Stakeout plan").with_on_select_action(
                 DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
                     ArtifactFilter::Plan,
                 )),
             )),
-            MenuItem::Item(MenuItemFields::new("Screenshot").with_on_select_action(
+            MenuItem::Item(MenuItemFields::new("Surveillance shot").with_on_select_action(
                 DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
                     ArtifactFilter::Screenshot,
                 )),
             )),
-            MenuItem::Item(MenuItemFields::new("File").with_on_select_action(
+            MenuItem::Item(MenuItemFields::new("Case file").with_on_select_action(
                 DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
                     ArtifactFilter::File,
                 )),
