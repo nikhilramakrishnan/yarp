@@ -70,7 +70,7 @@ impl CloudModelType for CloudNotebookModel {
         if self.ai_document_id.is_some() {
             "Plan"
         } else {
-            "Notebook"
+            "Casebook"
         }
     }
 
