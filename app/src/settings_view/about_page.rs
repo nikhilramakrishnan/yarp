@@ -342,10 +342,14 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .filter(|m| dispatch_is_emergency(&m.body))
         .map(|m| m.from_call_sign.clone())
         .collect();
-    // While we're mid-10-13, tag peers whose en-route reply is queued so the
-    // roster reads "who's coming" not just "who's around" — solidarity is
-    // strongest when the operator can scan the responder list at a glance.
-    let en_route_signs: std::collections::HashSet<String> = if radio::self_in_mayday() {
+    // While *any* 10-13 is live (self or peer-originated), tag peers whose
+    // en-route reply is queued so the roster reads "who's coming" not just
+    // "who's around" — solidarity is strongest when the operator can scan
+    // the responder list at a glance. Gating on any-active-emergency (rather
+    // than just self-mayday) means a peer-side responder sees the wave of
+    // backup converging on the originator's call too, not just their own.
+    let any_emergency_active = radio::self_in_mayday() || !emergency_signs.is_empty();
+    let en_route_signs: std::collections::HashSet<String> = if any_emergency_active {
         radio::peek_inbox()
             .iter()
             .filter(|m| radio::is_en_route_body(&m.body))
