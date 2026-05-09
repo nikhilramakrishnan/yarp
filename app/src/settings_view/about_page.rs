@@ -276,7 +276,11 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .filter(|p| emergency_signs.contains(&p.call_sign))
         .count();
     let any_in_distress = distress_count > 0;
-    let mut names: Vec<String> = peer_list
+    // Promote distressed peers to the front so when the roster overflows the
+    // MAX cap below, the (10-13) badge never gets truncated off the line.
+    let mut sorted_peers = peer_list.clone();
+    sorted_peers.sort_by_key(|p| !emergency_signs.contains(&p.call_sign));
+    let mut names: Vec<String> = sorted_peers
         .iter()
         .map(|p| {
             if emergency_signs.contains(&p.call_sign) {
