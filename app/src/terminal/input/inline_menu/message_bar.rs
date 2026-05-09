@@ -85,17 +85,36 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> View for InlineMenuMessageBa
                 .positioner
                 .as_ref(app)
                 .should_render_inline_menu_below_input();
+            // Inline menu message bar (terminal-mode only) sits between the
+            // menu and the input — when the radio stripe is active on the
+            // input, this seam needs to match: self → red, peer → yellow,
+            // post-ack 5s → green, theme.outline fallback.
+            let theme = Appearance::as_ref(app).theme();
+            let radio_msg_color = if crate::radio::self_in_mayday() {
+                Some(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(theme.ansi_fg_green())
+            } else {
+                None
+            };
+            let msg_border = Border::new(INLINE_MENU_BORDER_WIDTH).with_sides(
+                is_rendering_below_input,
+                false,
+                !is_rendering_below_input,
+                false,
+            );
+            let msg_border = match radio_msg_color {
+                Some(color) => msg_border.with_border_color(color),
+                None => msg_border.with_border_fill(theme.outline()),
+            };
             Container::new(message_bar)
-                .with_border(
-                    Border::new(INLINE_MENU_BORDER_WIDTH)
-                        .with_sides(
-                            is_rendering_below_input,
-                            false,
-                            !is_rendering_below_input,
-                            false,
-                        )
-                        .with_border_fill(Appearance::as_ref(app).theme().outline()),
-                )
+                .with_border(msg_border)
                 .finish()
         } else {
             message_bar

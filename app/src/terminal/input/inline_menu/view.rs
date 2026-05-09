@@ -1093,7 +1093,13 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> View for InlineMenuView<A, T
                         .with_margin_left(DETAILS_MARGIN_LEFT)
                         .finish(),
                 )
-                .with_border(Border::left(1.0).with_border_fill(theme.outline()))
+                .with_border({
+                    let details_border = Border::left(1.0);
+                    match radio_content_color {
+                        Some(color) => details_border.with_border_color(color),
+                        None => details_border.with_border_fill(theme.outline()),
+                    }
+                })
                 .finish();
 
                 if let Some(min_required_width) = details_config.min_required_details_width {
