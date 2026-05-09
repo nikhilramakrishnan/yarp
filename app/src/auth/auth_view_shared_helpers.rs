@@ -456,7 +456,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
         .with_child(
             Shrinkable::new(
                 1.,
-                render_privacy_settings_section_header("Help improve Yarp", appearance).finish(),
+                render_privacy_settings_section_header("File beat reports", appearance).finish(),
             )
             .finish(),
         )
@@ -501,7 +501,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
         .with_child(
             Shrinkable::new(
                 1.,
-                render_privacy_settings_section_header("Send crash reports", appearance).finish(),
+                render_privacy_settings_section_header("File incident reports", appearance).finish(),
             )
             .finish(),
         )
