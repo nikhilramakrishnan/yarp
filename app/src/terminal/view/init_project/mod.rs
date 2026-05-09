@@ -372,10 +372,10 @@ impl InitStepBlock {
         mouse_states: &LanguageServersMouseStateHandles,
     ) -> Vec<KeyboardNavigableButtonBuilder> {
         let button_text = if server_info.is_installed {
-            format!("Enable {} support", server_info.server_type.language_name())
+            format!("Enable {} kit", server_info.server_type.language_name())
         } else {
             format!(
-                "Install and enable {}",
+                "Issue and enable {} kit",
                 server_info.server_type.language_name()
             )
         };
@@ -741,7 +741,7 @@ impl InitStepBlock {
         Self::render_ready_with_buttons(
             action_view,
             format!(
-                "Enable {} support for this codebase? This will give you smarter code navigation, inline error checking, and more.",
+                "Issue {} kit for this casebook? Sharper code navigation on patrol, inline charges flagged on the spot, and more.",
                 server_info.server_type.language_name()
             ),
             app,
@@ -786,19 +786,19 @@ impl InitStepBlock {
                 servers_to_install,
             } => {
                 let label = if !servers_to_install.is_empty() {
-                    "Started installation for language support".to_string()
+                    "Language kit on order".to_string()
                 } else if enabled_servers.len() == 1 {
                     format!(
-                        "{} language support enabled",
+                        "{} kit on the books",
                         enabled_servers[0].language_name()
                     )
                 } else {
-                    "Language support enabled".to_string()
+                    "Language kit on the books".to_string()
                 };
                 Self::render_success_completion(&label, app)
             }
             LanguageServersResult::Skipped => {
-                Self::render_skipped_completion("Language support skipped", app)
+                Self::render_skipped_completion("Language kit waved off", app)
             }
         }
     }
