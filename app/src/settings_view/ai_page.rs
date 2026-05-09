@@ -4902,8 +4902,8 @@ impl SettingsWidget for MCPServersWidget {
 
         let mcp_description = vec![
             FormattedTextFragment::plain_text(
-                "Add MCP servers to extend the Yarp Agent's capabilities. \
-            MCP servers expose data sources or tools to agents through a standardized interface, essentially acting like plugins. ",
+                "Sweep MCP servers in to widen the Yarp Agent's beat. \
+            MCP servers wire up data sources or tools to PCs through a standardised radio, essentially acting like plugins. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Pull the dossier",
