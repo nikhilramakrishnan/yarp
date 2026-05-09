@@ -37,11 +37,11 @@ const BORDER_WIDTH: f32 = 1.;
 
 const MODAL_SUBHEADER: &str =
     "Lift a theme straight off photo evidence — drop a .png or .jpg and we'll match the colors.";
-const IMAGE_PICKER_BUTTON_PRE_SELECT_TEXT: &str = "Select an image";
-const IMAGE_PICKER_BUTTON_SELECTING_TEXT: &str = "Selecting image...";
-const IMAGE_PICKER_BUTTON_POST_SELECT_TEXT: &str = "Select a new image";
+const IMAGE_PICKER_BUTTON_PRE_SELECT_TEXT: &str = "Pick a piece of evidence";
+const IMAGE_PICKER_BUTTON_SELECTING_TEXT: &str = "Pulling evidence...";
+const IMAGE_PICKER_BUTTON_POST_SELECT_TEXT: &str = "Pick fresh evidence";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
-const CREATE_BUTTON_TEXT: &str = "Open theme file";
+const CREATE_BUTTON_TEXT: &str = "Crack open the theme file";
 
 #[derive(Default)]
 struct MouseStateHandles {
