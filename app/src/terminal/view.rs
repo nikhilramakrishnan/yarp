@@ -15433,7 +15433,7 @@ impl TerminalView {
                         ctx,
                     ))
                     .into_item()]);
-                items.append(&mut vec![MenuItemFields::new("Toggle bookmark")
+                items.append(&mut vec![MenuItemFields::new("Toggle the tag")
                     .with_on_select_action(TerminalAction::ContextMenu(
                         ContextMenuAction::ToggleBookmark,
                     ))
@@ -24986,7 +24986,7 @@ impl TypedActionView for TerminalView {
             }
             BookmarkBlock(_) | BookmarkSelectedBlock => {
                 Custom(AccessibilityContent::new_without_help(
-                    "Toggle Bookmark block",
+                    "Toggle the tag on this block",
                     YarpA11yRole::TextRole,
                 ))
             }
