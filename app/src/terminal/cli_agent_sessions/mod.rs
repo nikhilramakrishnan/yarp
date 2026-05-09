@@ -191,7 +191,7 @@ impl CLIAgentSession {
                     .payload
                     .summary
                     .clone()
-                    .or_else(|| Some("Waiting for your answer".to_owned())),
+                    .or_else(|| Some("Holding for your answer".to_owned())),
             },
             CLIAgentEventType::PermissionReplied => {
                 if !matches!(self.status, CLIAgentSessionStatus::Blocked { .. }) {
