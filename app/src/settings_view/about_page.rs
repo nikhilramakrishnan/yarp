@@ -160,14 +160,10 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(self.precinct_latest_dispatch_row(appearance))
                 .with_child(self.mic_check_row(appearance))
                 .with_child(self.direct_dispatch_row(appearance))
-                .with_child(
-                    ui_builder
-                        .span(sandford_population_line())
-                        .with_soft_wrap()
-                        .build()
-                        .with_margin_top(16.)
-                        .finish(),
-                )
+                .with_child({
+                    let (line, emergency) = sandford_population_line();
+                    styled_precinct_text_row(appearance, line, emergency, false, 16.)
+                })
                 .finish(),
         )
         .finish()
@@ -180,9 +176,32 @@ impl SettingsWidget for AboutPageWidget {
 // folding officer count into the same line so the stack stays tight.
 // "Sandford. Population: N." — live peer count + self. Single Yarp running
 // reads as the original Hot Fuzz line ("Population: 1"); adding peers grows it.
-fn sandford_population_line() -> String {
+//
+// On a pending 10-13 the line picks up an "officer(s) down" suffix so the
+// urgency pass continues all the way to the bottom of the stack — without
+// it, the eye drops off the precinct rows into a routine-toned footer and
+// loses the emergency rhythm. Copyright text stays intact (brand boundary).
+fn sandford_population_line() -> (String, bool) {
     let population = radio::peers().len() + 1;
-    format!("Copyright 2026 Yarp contributors. Sandford. Population: {population}.")
+    let down: std::collections::HashSet<String> = radio::peek_inbox()
+        .iter()
+        .filter(|m| dispatch_is_emergency(&m.body))
+        .map(|m| m.from_call_sign.clone())
+        .collect();
+    let emergency = !down.is_empty();
+    let line = if emergency {
+        let suffix = if down.len() == 1 {
+            "1 officer down".to_string()
+        } else {
+            format!("{} officers down", down.len())
+        };
+        format!(
+            "Copyright 2026 Yarp contributors. Sandford. Population: {population} \u{00B7} {suffix}."
+        )
+    } else {
+        format!("Copyright 2026 Yarp contributors. Sandford. Population: {population}.")
+    };
+    (line, emergency)
 }
 
 // Sign-on line — "Officer Cooper \u{00B7} on patrol." The fallback call sign
