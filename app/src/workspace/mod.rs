@@ -1162,7 +1162,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "workspace:create_team_env_vars",
-            BindingDescription::new("Create new team environment variables")
+            BindingDescription::new("File new squad environment variables")
                 .with_custom_description(
                     bindings::MAC_MENUS_CONTEXT,
                     "New Team Environment Variables",
@@ -1179,7 +1179,7 @@ pub fn init(app: &mut AppContext) {
         .with_group(bindings::BindingGroup::EnvVarCollection.as_str()),
         EditableBinding::new(
             "workspace:create_personal_env_vars",
-            BindingDescription::new("Create new personal environment variables")
+            BindingDescription::new("File new personal environment variables")
                 .with_custom_description(
                     bindings::MAC_MENUS_CONTEXT,
                     "New Personal Environment Variables",
