@@ -457,7 +457,7 @@ impl InitStepBlock {
     ) -> Vec<KeyboardNavigableButtonBuilder> {
         vec![
             simple_navigation_button(
-                "Create an environment".to_string(),
+                "Set up a post".to_string(),
                 mouse_states.create_button.clone(),
                 InitProjectBlockAction::StartCreateEnvironment,
                 false,
