@@ -917,9 +917,9 @@ impl CommentListView {
                 Cow::Owned(format!("Wire diff notes to {label}"))
             }
         } else if !ai_enabled {
-            Cow::Borrowed("AI desk has to be on the air to radio notes to Agent")
+            Cow::Borrowed("AI desk has to be on the air to radio notes to the PC")
         } else if !ai_available {
-            Cow::Borrowed("Agent review needs AI rations on the books")
+            Cow::Borrowed("PC review needs AI rations on the books")
         } else if matches!(destination, ReviewDestination::None) {
             Cow::Borrowed("All units are tied up")
         } else if !has_sendable_comments {
