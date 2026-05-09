@@ -645,6 +645,14 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     sorted.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
     let mut iter = sorted.into_iter();
     let _newest = iter.next();
+    let case_tags: std::collections::HashMap<String, String> = radio::peers()
+        .into_iter()
+        .filter_map(|p| {
+            p.tab_title
+                .filter(|t| !t.is_empty())
+                .map(|t| (p.call_sign, t))
+        })
+        .collect();
     let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
     let mut frags: Vec<String> = Vec::new();
     for msg in iter {
@@ -658,11 +666,15 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         } else {
             snippet
         };
+        let case_meta = match case_tags.get(&msg.from_call_sign) {
+            Some(tag) => format!("{tag} \u{00B7} {age}"),
+            None => age.clone(),
+        };
         let frag = if snippet.is_empty() {
-            format!("{} ({age})", msg.from_call_sign)
+            format!("{} ({case_meta})", msg.from_call_sign)
         } else {
             format!(
-                "{} ({age}) \u{2014} \u{201C}{snippet}\u{201D}",
+                "{} ({case_meta}) \u{2014} \u{201C}{snippet}\u{201D}",
                 msg.from_call_sign
             )
         };
