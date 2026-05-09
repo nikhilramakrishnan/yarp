@@ -15240,9 +15240,9 @@ impl TerminalView {
                 };
                 let copy_str = "Bag the case file";
                 let find_str = if is_single_selection {
-                    "Find within block"
+                    "Sweep within block"
                 } else {
-                    "Find within blocks"
+                    "Sweep within blocks"
                 };
                 let scroll_to_top_str = if is_single_selection {
                     "Scroll to top of block"
