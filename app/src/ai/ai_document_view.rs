@@ -1227,7 +1227,7 @@ impl BackingView for AIDocumentView {
             AIDocumentModel::as_ref(ctx).get_document_yarp_drive_object_link(&self.document_id, ctx)
         {
             menu_items.push(
-                MenuItemFields::new("Copy frequency")
+                MenuItemFields::new("Bag the frequency")
                     .with_on_select_action(AIDocumentAction::CopyLink(link))
                     .with_icon(Icon::Link)
                     .into_item(),
