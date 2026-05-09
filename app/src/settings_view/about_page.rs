@@ -830,9 +830,17 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     // resolutions deserve top billing in the secondary surface, and
     // recency-only ordering buries them when a chatty peer fires after the
     // close. Recency from the initial sort is preserved within each tier.
-    let (stand_downs, others): (Vec<_>, Vec<_>) = sorted_iter
+    // Three-tier ordering: stand-downs first (resolution headlines), then
+    // substantive chatter (anything with body text the operator hasn't seen
+    // collapsed away), then routine hails last. Hails carry the lowest
+    // signal — "checking in" never beats a quoted snippet — so when the
+    // 2-frag budget is tight, a hail should yield to substantive content.
+    let (stand_downs, rest): (Vec<_>, Vec<_>) = sorted_iter
         .partition(|m| radio::is_stand_down_body(&m.body));
-    let iter = stand_downs.into_iter().chain(others);
+    let (hails, others): (Vec<_>, Vec<_>) = rest
+        .into_iter()
+        .partition(|m| radio::is_hail_body(&m.body));
+    let iter = stand_downs.into_iter().chain(others).chain(hails);
     let case_tags: std::collections::HashMap<String, String> = radio::peers()
         .into_iter()
         .filter_map(|p| {
