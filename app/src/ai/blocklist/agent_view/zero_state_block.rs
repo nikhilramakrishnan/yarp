@@ -384,10 +384,17 @@ impl View for AgentViewZeroStateBlock {
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
 
+        // Radio status — same surface fed into both local and cloud
+        // headers so a 10-13 or peer roster reads regardless of which
+        // patrol the operator is briefing. Computed once per render.
+        let radio_lines = radio_status_lines();
+
         let header_props = if self.origin.is_cloud_agent() {
             HeaderProps {
                 title: "Open a new cloud case file".into(),
-                description: AgentViewDescription::CloudModeWithDocsLink,
+                description: AgentViewDescription::CloudModeWithDocsLink {
+                    radio_lines: radio_lines.clone(),
+                },
                 icon: Icon::OzCloud,
             }
         } else {
@@ -400,73 +407,8 @@ impl View for AgentViewZeroStateBlock {
                 local_description += &format!(" on `{location_label}`");
             }
 
-            // Surface the rest of the radio channel right where the operator
-            // is briefing this patrol — gives the zero state a "you're not
-            // patrolling alone" beat that ties the agent view back to the
-            // inter-terminal channel without making them /radio first.
-            // Cap at three named units; the rest fold into "+N more" so the
-            // line never overruns the description column.
             let mut description_lines: Vec<Cow<'static, str>> = vec![local_description.into()];
-
-            // Inline emergency flag — surfaces 10-13 state right where the
-            // operator is briefing the next patrol so they don't open the
-            // agent view while a mayday is sitting unread on the radio.
-            // Self-mayday wins over peer-mayday since it's the operator's
-            // own active call; peer-mayday names up to two callers and folds
-            // the rest so the line never overruns the description column.
-            if radio::self_in_mayday() {
-                let responders = radio::en_route_responders();
-                let line = if responders.is_empty() {
-                    "10-13 active — broadcast out, no responders yet.".to_owned()
-                } else {
-                    let cap = 2;
-                    let summary = if responders.len() <= cap {
-                        responders.join(", ")
-                    } else {
-                        let extra = responders.len() - cap;
-                        format!("{}, +{extra} more", responders[..cap].join(", "))
-                    };
-                    format!("10-13 active — {summary} en route.")
-                };
-                description_lines.push(line.into());
-            } else if radio::peer_in_mayday() {
-                let callers = radio::pending_emergency_callers();
-                if !callers.is_empty() {
-                    let cap = 2;
-                    let summary = if callers.len() <= cap {
-                        callers.join(", ")
-                    } else {
-                        let extra = callers.len() - cap;
-                        format!("{}, +{extra} more", callers[..cap].join(", "))
-                    };
-                    description_lines.push(
-                        format!("10-13 inbound — {summary} needs assistance.").into(),
-                    );
-                }
-            }
-
-            let peers = radio::peers();
-            if !peers.is_empty() {
-                let names: Vec<String> = peers
-                    .iter()
-                    .map(|peer| match peer.tab_title.as_deref() {
-                        Some(tag) if !tag.is_empty() => {
-                            format!("{} ({tag})", peer.call_sign)
-                        }
-                        _ => peer.call_sign.clone(),
-                    })
-                    .collect();
-                let cap = 3;
-                let summary = if names.len() <= cap {
-                    names.join(", ")
-                } else {
-                    let extra = names.len() - cap;
-                    format!("{}, +{extra} more", names[..cap].join(", "))
-                };
-                description_lines.push(
-                    format!("Other units on the channel: {summary}.").into(),
-                );
-            }
+            description_lines.extend(radio_lines);
 
             HeaderProps {
                 title: "Open a new case file".into(),
@@ -611,14 +553,81 @@ fn current_working_directory_for_zero_state(terminal_model: &TerminalModel) -> O
 enum AgentViewDescription {
     /// Plain text descriptions (used for local agent mode).
     PlainText(Vec<Cow<'static, str>>),
-    /// Cloud mode description with "Read the briefing" hyperlink.
-    CloudModeWithDocsLink,
+    /// Cloud mode description with "Read the briefing" hyperlink, plus
+    /// optional radio status lines (mayday flag, peer roster) appended
+    /// after the chrome so the operator sees the channel beat without
+    /// leaving the agent view to /radio.
+    CloudModeWithDocsLink { radio_lines: Vec<Cow<'static, str>> },
 }
 
 struct HeaderProps {
     title: Cow<'static, str>,
     description: AgentViewDescription,
     icon: Icon,
+}
+
+/// Builds the inline radio status lines fed into the agent zero-state
+/// header — slot in below the action-framing description so a 10-13 or
+/// peer roster reads where the operator is briefing the next patrol,
+/// regardless of whether it's a local or cloud unit.
+///
+/// Self-mayday wins over peer-mayday since it's the operator's own
+/// active call. Caller / responder lists cap at two with "+N more" so
+/// the line never overruns the description column. The roster uses a
+/// cap of three for the same reason. An empty channel collapses to no
+/// lines so the bare action-framing reads alone.
+fn radio_status_lines() -> Vec<Cow<'static, str>> {
+    let mut lines: Vec<Cow<'static, str>> = Vec::new();
+
+    if radio::self_in_mayday() {
+        let responders = radio::en_route_responders();
+        let line = if responders.is_empty() {
+            "10-13 active — broadcast out, no responders yet.".to_owned()
+        } else {
+            let cap = 2;
+            let summary = if responders.len() <= cap {
+                responders.join(", ")
+            } else {
+                let extra = responders.len() - cap;
+                format!("{}, +{extra} more", responders[..cap].join(", "))
+            };
+            format!("10-13 active — {summary} en route.")
+        };
+        lines.push(line.into());
+    } else if radio::peer_in_mayday() {
+        let callers = radio::pending_emergency_callers();
+        if !callers.is_empty() {
+            let cap = 2;
+            let summary = if callers.len() <= cap {
+                callers.join(", ")
+            } else {
+                let extra = callers.len() - cap;
+                format!("{}, +{extra} more", callers[..cap].join(", "))
+            };
+            lines.push(format!("10-13 inbound — {summary} needs assistance.").into());
+        }
+    }
+
+    let peers = radio::peers();
+    if !peers.is_empty() {
+        let names: Vec<String> = peers
+            .iter()
+            .map(|peer| match peer.tab_title.as_deref() {
+                Some(tag) if !tag.is_empty() => format!("{} ({tag})", peer.call_sign),
+                _ => peer.call_sign.clone(),
+            })
+            .collect();
+        let cap = 3;
+        let summary = if names.len() <= cap {
+            names.join(", ")
+        } else {
+            let extra = names.len() - cap;
+            format!("{}, +{extra} more", names[..cap].join(", "))
+        };
+        lines.push(format!("Other units on the channel: {summary}.").into());
+    }
+
+    lines
 }
 
 fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box<dyn Element>> {
@@ -691,7 +700,7 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
                     .finish()
             }));
         }
-        AgentViewDescription::CloudModeWithDocsLink => {
+        AgentViewDescription::CloudModeWithDocsLink { radio_lines } => {
             // First line: plain text.
             items.push(
                 Container::new(
@@ -715,6 +724,16 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
                 FormattedTextFragment::hyperlink("Read the briefing", CLOUD_AGENT_DOCS_URL),
             ])]);
 
+            // The terminator margin (-12.) compensates for downstream
+            // layout — keep it on whichever line is genuinely last so
+            // the bottom of the description block reads the same with
+            // or without radio lines following.
+            let briefing_terminator_margin = if radio_lines.is_empty() {
+                -12.
+            } else {
+                styles::DESCRIPTION_LINE_MARGIN_BOTTOM
+            };
+
             items.push(
                 Container::new(
                     FormattedTextElement::new(
@@ -731,9 +750,38 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
                     })
                     .finish(),
                 )
-                .with_margin_bottom(-12.)
+                .with_margin_bottom(briefing_terminator_margin)
                 .finish(),
             );
+
+            // Radio status interlude — same surface the local zero state
+            // gets, rendered in the same monospace rhythm so a 10-13 or
+            // peer roster reads the same in either mode.
+            let radio_count = radio_lines.len();
+            for (idx, line) in radio_lines.into_iter().enumerate() {
+                let is_last = idx + 1 == radio_count;
+                let margin = if is_last {
+                    -12.
+                } else {
+                    styles::DESCRIPTION_LINE_MARGIN_BOTTOM
+                };
+                items.push(
+                    Container::new(
+                        FormattedTextElement::new(
+                            parse_markdown(&line).expect("is valid markdown"),
+                            appearance.monospace_font_size(),
+                            appearance.ui_font_family(),
+                            appearance.ui_font_family(),
+                            sub_text_color,
+                            Default::default(),
+                        )
+                        .with_inline_code_properties(Some(main_text_color), None)
+                        .finish(),
+                    )
+                    .with_margin_bottom(margin)
+                    .finish(),
+                );
+            }
         }
     }
 
