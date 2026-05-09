@@ -13656,7 +13656,7 @@ impl TerminalView {
             });
 
             let a11y_content = AccessibilityContent::new(
-                format!("Suggested corrected command: {}", correction.command),
+                format!("Tip-off corrected command: {}", correction.command),
                 "Hit right arrow to slot it in, keep typing to wave it off",
                 YarpA11yRole::HelpRole,
             );
