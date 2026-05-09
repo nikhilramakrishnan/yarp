@@ -1195,7 +1195,7 @@ impl CodeFooterView {
                     .to_yarpui_icon(ThemeFill::Solid(text_color))
                     .finish()
             },
-            "Restart server",
+            "Bring this language officer back on duty",
             CodeFooterViewAction::RestartServer,
         )
     }
@@ -1218,7 +1218,7 @@ impl CodeFooterView {
                     .with_uniform_padding(2.)
                     .finish()
             },
-            "Stop server",
+            "Stand the language officer down",
             CodeFooterViewAction::StopServer,
         )
     }
@@ -1240,7 +1240,7 @@ impl CodeFooterView {
                     .to_yarpui_icon(ThemeFill::Solid(text_color))
                     .finish()
             },
-            "Start server",
+            "Send the language officer out",
             CodeFooterViewAction::StartServer,
         )
     }
