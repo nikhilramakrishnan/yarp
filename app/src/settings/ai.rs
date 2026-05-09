@@ -1189,7 +1189,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.should_show_oz_updates_in_zero_state",
-        description: "Whether the \"What's new\" section is shown in the agent view.",
+        description: "Whether the \"What's new\" section is shown in the officer's view.",
     }
 
     // Whether or not the user has enabled the ability to use Yarp credits even when providing
