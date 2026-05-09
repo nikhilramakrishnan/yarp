@@ -1498,6 +1498,24 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
             WorkspaceAction::FlashOtherStations,
         )
         .with_context_predicate(id!("Workspace")),
+        EditableBinding::new(
+            "workspace:radio_mic_check",
+            "Radio: mic check the precinct",
+            WorkspaceAction::MicCheckBroadcast,
+        )
+        .with_context_predicate(id!("Workspace")),
+        EditableBinding::new(
+            "workspace:radio_ten_thirteen",
+            "Radio: 10-13 — officer needs assistance",
+            WorkspaceAction::TenThirteenBroadcast,
+        )
+        .with_context_predicate(id!("Workspace")),
+        EditableBinding::new(
+            "workspace:radio_stand_down",
+            "Radio: stand down — situation resolved",
+            WorkspaceAction::StandDownMayday,
+        )
+        .with_context_predicate(id!("Workspace")),
     ]);
 }
 
