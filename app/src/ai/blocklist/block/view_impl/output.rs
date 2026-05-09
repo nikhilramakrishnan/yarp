@@ -1037,7 +1037,7 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                             output_items.add_child(
                                 render_informational_footer(
                                     app,
-                                    "Sorry you had a bad experience with this interaction. We've refunded you 1 credit. We appreciate your feedback!"
+                                    "Sorry the call went pear-shaped. We've refunded 1 ration. Thanks for the tip-off!"
                                         .to_string(),
                                 )
                                 .with_agent_output_item_spacing(app)
@@ -1049,7 +1049,7 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                                 render_informational_footer(
                                     app,
                                     format!(
-                                        "Sorry you had a bad experience with this interaction. We've refunded you {request_refunded_count} credits. We appreciate your feedback!"
+                                        "Sorry the call went pear-shaped. We've refunded {request_refunded_count} rations. Thanks for the tip-off!"
                                     ),
                                 )
                                 .with_agent_output_item_spacing(app)
