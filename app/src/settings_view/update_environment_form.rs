@@ -3182,7 +3182,7 @@ impl UpdateEnvironmentForm {
                 let auth_url_with_next = self.auth_url_with_next(auth_url);
                 let action = UpdateEnvironmentFormAction::OpenUrl(auth_url_with_next);
                 let button = WarningBoxButtonConfig::new(
-                    "Authenticate",
+                    "File the warrant",
                     self.suggest_image_auth_button_mouse_state.clone(),
                     move |ctx| {
                         ctx.dispatch_typed_action(action.clone());
