@@ -1054,10 +1054,15 @@ impl AboutPageWidget {
         // emergency — the broadcast side already uses Error to flag "officer
         // needs assistance"; the response side should carry the same urgency
         // so the dispatch row reads red-on-red instead of red dispatch + grey
-        // ack. Routine dispatches stay Secondary so a copy/all-clear ack
-        // doesn't look as loud as a 10-13 response.
+        // ack. Stand-down acks drop to Outlined to match the de-escalation
+        // tier of the stand-down broadcast button — the row already reads
+        // "10-4 all clear · Cooper stood down" with a calmer label, so the
+        // button shouldn't compete by sitting at full Secondary weight.
+        // Routine dispatches stay Secondary so a copy ack doesn't disappear.
         let ack_variant = if emergency {
             ButtonVariant::Error
+        } else if stand_down_dispatch {
+            ButtonVariant::Outlined
         } else {
             ButtonVariant::Secondary
         };
