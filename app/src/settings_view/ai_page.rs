@@ -5681,7 +5681,7 @@ impl SettingsWidget for CLIAgentWidget {
             let command_list_description = appearance
                 .ui_builder()
                 .paragraph(
-                    "Add regex patterns to call up the coding agent duty belt for matching commands.",
+                    "Add regex patterns to call up the coding PC duty belt for matching commands.",
                 )
                 .with_style(UiComponentStyles {
                     font_size: Some(appearance.ui_font_size()),
