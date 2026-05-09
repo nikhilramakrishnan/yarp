@@ -1754,10 +1754,10 @@ impl CodePageWidget {
         );
 
         let (description, is_installing) = match &repo_status {
-            Some(LspRepoStatus::DisabledAndInstalled { .. }) => ("Installed", false),
-            Some(LspRepoStatus::Installing { .. }) => ("Installing...", true),
-            Some(LspRepoStatus::CheckingForInstallation) => ("Checking...", true),
-            _ => ("Available for download", false),
+            Some(LspRepoStatus::DisabledAndInstalled { .. }) => ("Wired in", false),
+            Some(LspRepoStatus::Installing { .. }) => ("Wiring in...", true),
+            Some(LspRepoStatus::CheckingForInstallation) => ("Checking the kit...", true),
+            _ => ("Ready to wire in", false),
         };
 
         name_desc_column.add_child(
