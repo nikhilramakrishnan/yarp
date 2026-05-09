@@ -12045,7 +12045,7 @@ impl Workspace {
                             let toast = DismissibleToast::error(
                                 "Yarp's not cleared to ring desktop notifications.".to_string(),
                             )
-                            .with_link(ToastLink::new("Troubleshoot notifications".to_string()).with_href(url));
+                            .with_link(ToastLink::new("Troubleshoot Briefings".to_string()).with_href(url));
                             toast_stack.add_persistent_toast(toast, ctx);
                         });
                     }
