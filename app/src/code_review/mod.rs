@@ -56,14 +56,14 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "code_review:save_all_unsaved_files",
-            "Save all unsaved files in code review",
+            "Stamp down every unfiled case file in evidence review",
             CodeReviewAction::SaveAllUnsavedFiles,
         )
         .with_context_predicate(id!("CodeReviewView"))
         .with_key_binding("cmdorctrl-s"),
         EditableBinding::new(
             "code_review:show_find_bar",
-            "Show find bar in code review",
+            "Show find bar in evidence review",
             CodeReviewAction::ShowFindBar,
         )
         .with_context_predicate(id!("CodeReviewView"))
