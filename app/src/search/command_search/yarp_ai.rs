@@ -36,8 +36,8 @@ use yarpui::{
     AppContext, Element, SingletonEntity,
 };
 
-const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Call in for a command tip from Yarp AI";
-const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into a shell order via Yarp AI";
+const OPEN_YARP_AI_ITEM_BODY_TEXT: &str = "Call in for a command tip from the PC";
+const TRANSLATE_WITH_YARP_AI_ITEM_BODY_TEXT: &str = "Translate into a shell order via the PC";
 
 #[derive(Clone, Debug)]
 pub enum YarpAISearchItem {
@@ -140,7 +140,7 @@ impl SearchItem for YarpAISearchItem {
     }
 
     fn accessibility_label(&self) -> String {
-        format!("Yarp AI: {}", self.item_body_text())
+        format!("PC: {}", self.item_body_text())
     }
 }
 
