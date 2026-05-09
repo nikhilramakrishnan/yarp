@@ -219,7 +219,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     ));
 
     app.register_fixed_bindings(vec![FixedBinding::empty(
-        "Start Input at the Top".to_string(),
+        "Start the radio mic at the top".to_string(),
         builder(SettingsAction::AppearancePageToggle(
             AppearancePageAction::SetInputMode {
                 new_mode: InputMode::Waterfall,
@@ -231,7 +231,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     .with_group(bindings::BindingGroup::Settings.as_str())]);
 
     app.register_fixed_bindings(vec![FixedBinding::empty(
-        "Pin Input to the Top".to_string(),
+        "Pin the radio mic to the top".to_string(),
         builder(SettingsAction::AppearancePageToggle(
             AppearancePageAction::SetInputMode {
                 new_mode: InputMode::PinnedToTop,
@@ -243,7 +243,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     .with_group(bindings::BindingGroup::Settings.as_str())]);
 
     app.register_fixed_bindings(vec![FixedBinding::empty(
-        "Pin Input to the Bottom".to_string(),
+        "Pin the radio mic to the bottom".to_string(),
         builder(SettingsAction::AppearancePageToggle(
             AppearancePageAction::SetInputMode {
                 new_mode: InputMode::PinnedToBottom,
@@ -255,7 +255,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 
     // Add command palette entry for toggling between Yarp and Classic input modes
     app.register_fixed_bindings(vec![FixedBinding::empty(
-        "Toggle Input Mode (Yarp/Classic)".to_string(),
+        "Toggle the radio mic mode (Yarp/Classic)".to_string(),
         builder(SettingsAction::AppearancePageToggle(
             AppearancePageAction::ToggleInputMode,
         )),
