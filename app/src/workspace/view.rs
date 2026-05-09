@@ -15744,7 +15744,7 @@ impl Workspace {
                 let command = code.trim().to_string();
                 let args_state =
                     ArgumentsState::for_command_workflow(&Default::default(), command.clone());
-                let workflow = Workflow::new("Command from Yarp AI", command)
+                let workflow = Workflow::new("Command from the PC", command)
                     .with_arguments(args_state.arguments);
                 self.run_workflow_in_active_input(
                     &WorkflowType::AIGenerated {
@@ -16465,7 +16465,7 @@ impl Workspace {
         let body = appearance
             .ui_builder()
             .wrappable_text(
-                "Brief Yarp AI to break down errors, suggest commands, or write scripts.".to_owned(),
+                "Brief Yarp's PC to break down errors, suggest commands, or write scripts.".to_owned(),
                 true,
             )
             .with_style(UiComponentStyles {

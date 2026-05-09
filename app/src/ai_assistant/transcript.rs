@@ -66,7 +66,7 @@ const WHAT_TO_DO_NEXT_PROMPT: &str = "What should I do next?";
 const IN_FLIGHT_REQUEST_TEXT: &str = "On the case...";
 const ACCURACY_NOTICE_TEXT: &str = "AI dispatch can call it wrong. Double-check its work.";
 const MISSING_CONTEXT_NOTICE_TEXT: &str =
-    "Yarp AI may lose earlier intel as a case file runs long.";
+    "Yarp's PC may lose earlier intel as a case file runs long.";
 
 lazy_static::lazy_static! {
     static ref SCROLL_BUFFER_OFFSET_PX: Pixels = (10.).into_pixels();
