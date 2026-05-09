@@ -678,7 +678,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             NEW_TERMINAL_TAB_BINDING_NAME,
-            BindingDescription::new("New Terminal Tab"),
+            BindingDescription::new("New Terminal beat"),
             WorkspaceAction::AddTerminalTab {
                 hide_homepage: false,
             },
@@ -688,7 +688,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             NEW_AGENT_TAB_BINDING_NAME,
-            BindingDescription::new("New PC Tab"),
+            BindingDescription::new("New PC beat"),
             WorkspaceAction::AddAgentTab,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -698,7 +698,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             NEW_AMBIENT_AGENT_TAB_BINDING_NAME,
-            BindingDescription::new("New Ambient Officer Tab"),
+            BindingDescription::new("New Ambient Officer beat"),
             WorkspaceAction::AddAmbientAgentTab,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
