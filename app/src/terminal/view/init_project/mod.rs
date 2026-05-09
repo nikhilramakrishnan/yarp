@@ -632,7 +632,7 @@ impl InitStepBlock {
                 )
                 .with_header(
                     HeaderConfig::new(
-                        "Would you like the Agent to index this codebase? This will lead to more efficient and tailored help.",
+                        "Want the PC to sweep the casebook on this project? Tailors its help for sharper work on patrol.",
                         app,
                     )
                     .with_icon(yellow_stop_icon(appearance))
@@ -691,7 +691,7 @@ impl InitStepBlock {
                     .finish()
             }
             CodebaseIndexingResult::Skipped => {
-                Self::render_skipped_completion("Codebase index cancelled", app)
+                Self::render_skipped_completion("Sweep on the casebook waved off", app)
             }
         }
     }
