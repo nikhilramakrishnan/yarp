@@ -771,21 +771,21 @@ impl InputSuggestionsMode {
             InputSuggestionsMode::UserQueryMenu {
                 action: UserQueryMenuAction::ForkFrom,
                 ..
-            } => Some("Search queries"),
+            } => Some("Sweep queries"),
             InputSuggestionsMode::UserQueryMenu {
                 action: UserQueryMenuAction::Rewind,
                 ..
-            } => Some("Search queries to rewind to"),
-            InputSuggestionsMode::ConversationMenu => Some("Search case files"),
-            InputSuggestionsMode::SkillMenu => Some("Search skills"),
-            InputSuggestionsMode::ModelSelector => Some("Search models"),
-            InputSuggestionsMode::ProfileSelector => Some("Search profiles"),
+            } => Some("Sweep queries to roll back to"),
+            InputSuggestionsMode::ConversationMenu => Some("Sweep case files"),
+            InputSuggestionsMode::SkillMenu => Some("Sweep skills"),
+            InputSuggestionsMode::ModelSelector => Some("Sweep officers"),
+            InputSuggestionsMode::ProfileSelector => Some("Sweep loadouts"),
             InputSuggestionsMode::SlashCommands if FeatureFlag::AgentView.is_enabled() => {
-                Some("Search commands")
+                Some("Sweep commands")
             }
-            InputSuggestionsMode::PromptsMenu => Some("Search prompts"),
-            InputSuggestionsMode::IndexedReposMenu => Some("Search indexed repos"),
-            InputSuggestionsMode::PlanMenu { .. } => Some("Search plans"),
+            InputSuggestionsMode::PromptsMenu => Some("Sweep prompts"),
+            InputSuggestionsMode::IndexedReposMenu => Some("Sweep indexed repos"),
+            InputSuggestionsMode::PlanMenu { .. } => Some("Sweep plans"),
             _ => None,
         }
     }
