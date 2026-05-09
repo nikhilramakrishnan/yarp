@@ -77,7 +77,7 @@ use super::inline_action_icons::{self, icon_size};
 pub const REQUESTED_COMMAND_BODY_VERTICAL_PADDING: f32 = 16.;
 
 const REQUESTED_COMMAND_REJECT_LABEL: &str = "Wave it off";
-const REQUESTED_COMMAND_ACCEPT_LABEL: &str = "Run";
+const REQUESTED_COMMAND_ACCEPT_LABEL: &str = "Roll out";
 const REQUESTED_COMMAND_EDIT_LABEL: &str = "Amend";
 const REQUESTED_COMMAND_MINIMIZE_LABEL: &str = "Squared away";
 
