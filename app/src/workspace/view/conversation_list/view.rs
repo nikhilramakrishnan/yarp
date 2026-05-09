@@ -954,7 +954,7 @@ impl TypedActionView for ConversationListView {
                                         },
                                     )
                                     .into_item(),
-                                MenuItemFields::new("Spin off the case in a new tab")
+                                MenuItemFields::new("Spin off the case in a new beat")
                                     .with_on_select_action(
                                         ConversationListViewAction::ForkConversation {
                                             conversation_id,
