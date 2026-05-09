@@ -415,7 +415,7 @@ impl From<&DriveIndexAction> for LoginGatedFeature {
     fn from(val: &DriveIndexAction) -> LoginGatedFeature {
         use DriveIndexAction::*;
         match val {
-            OpenTeamSettingsPage => "Open Team Settings",
+            OpenTeamSettingsPage => "Open Squad Settings",
             ViewPlans { .. } => "View Plans",
             ManageBilling { .. } => "Manage Billing",
             _ => "Unknown reason",
