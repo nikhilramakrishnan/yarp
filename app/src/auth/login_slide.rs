@@ -454,7 +454,7 @@ impl LoginSlideView {
     /// Terminal+Drive), since there are no AI features to opt out of there.
     fn privacy_disclaimer_prefix(&self) -> &'static str {
         if self.ai_enabled {
-            "If you'd like to opt out of analytics and AI features, you can adjust your "
+            "If you'd like to opt out of analytics and PC features, you can adjust your "
         } else {
             "If you'd like to opt out of analytics, you can adjust your "
         }
@@ -469,7 +469,7 @@ impl LoginSlideView {
         let title_text = if is_terminal {
             "Sign on for the Yarp Drive beat"
         } else {
-            "Sign on for AI duty"
+            "Sign on for PC duty"
         };
         let title = FormattedTextElement::from_str(title_text, appearance.ui_font_family(), 36.)
             .with_color(internal_colors::text_main(
@@ -593,7 +593,7 @@ impl LoginSlideView {
         let skip_label = if matches!(self.intention, OnboardingIntention::Terminal) {
             "Disable Yarp Drive"
         } else {
-            "Disable AI features"
+            "Disable PC features"
         };
         let skip_button = self.skip_button.render(
             appearance,
@@ -890,7 +890,7 @@ impl LoginSlideView {
         let title_text = if is_terminal {
             "Sign Yarp Drive off the duty roster?"
         } else {
-            "Sign AI off the duty roster?"
+            "Sign the PC off the duty roster?"
         };
         let title = FormattedTextElement::from_str(title_text, appearance.ui_font_family(), 16.)
             .with_color(internal_colors::text_main(theme, dialog_surface_solid))
@@ -926,7 +926,7 @@ impl LoginSlideView {
         let body_text_str = if is_terminal {
             "Yarp Drive lets you file playbooks and case notes across every station and share them with your squad. By continuing, you won't have access to the following features:"
         } else {
-            "Yarp runs better with the AI desk. By continuing, you won't have access to any of the following features:"
+            "Yarp runs better with the PC desk. By continuing, you won't have access to any of the following features:"
         };
         let body_text =
             FormattedTextElement::from_str(body_text_str, appearance.ui_font_family(), 14.)
@@ -981,7 +981,7 @@ impl LoginSlideView {
         let cancel_label = if is_terminal {
             "Enable Yarp Drive"
         } else {
-            "Enable AI features"
+            "Enable PC features"
         };
         let login_button = self.dialog_login_button.render(
             appearance,

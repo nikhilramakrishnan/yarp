@@ -316,7 +316,7 @@ impl CodeFooterView {
                 Some(if is_ai_enabled {
                     "Brief the PC with the /update-tab-config skill"
                 } else {
-                    "Sign on AI to use the /update-tab-config skill"
+                    "Sign on the PC to use the /update-tab-config skill"
                 }),
                 ctx,
             );

@@ -1871,7 +1871,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "input:toggle_natural_language_command_search",
-            "Open AI command tip-offs",
+            "Open PC command tip-offs",
             InputAction::ShowAiCommandSearch,
         )
         .with_context_predicate(
@@ -1910,7 +1910,7 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding("alt-shift-I"),
         EditableBinding::new(
             "input:clear_and_reset_ai_context_menu_query",
-            "Wipe and reset AI context menu query",
+            "Wipe and reset PC context menu query",
             InputAction::ClearAndResetAIContextMenuQuery,
         )
         .with_context_predicate(id!("Input") & id!("AIContextMenuOpen") & !id!("IMEOpen"))

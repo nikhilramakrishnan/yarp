@@ -20811,7 +20811,7 @@ impl TypedActionView for Workspace {
             AttemptLoginGatedAIUpgrade => {
                 AuthManager::handle(ctx).update(ctx, |auth_manager, ctx| {
                     auth_manager.attempt_login_gated_feature(
-                        "Upgrade AI Usage",
+                        "Upgrade PC Duty",
                         AuthViewVariant::RequireLoginCloseable,
                         ctx,
                     )

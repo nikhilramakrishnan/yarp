@@ -176,8 +176,8 @@ where
     };
 
     let paragraph_1 = "All of Yarp's local kit works without the radio.";
-    let paragraph_2 = "But your first shift needs the line up, so the AI desk and cloud officers can clock on.";
-    let paragraph_3 = "Cloud kit is on offer to every officer, so the line has to be live to meter AI usage, keep troublemakers out, and pin cloud case files to a badge. If you stay off-the-books, an anonymous badge number is filed to keep that kit running.";
+    let paragraph_2 = "But your first shift needs the line up, so the PC desk and cloud officers can clock on.";
+    let paragraph_3 = "Cloud kit is on offer to every officer, so the line has to be live to meter PC duty, keep troublemakers out, and pin cloud case files to a badge. If you stay off-the-books, an anonymous badge number is filed to keep that kit running.";
 
     Container::new(
         Flex::column()
