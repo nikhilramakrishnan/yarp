@@ -1774,7 +1774,7 @@ impl LocalCodeEditorView {
                         Shrinkable::new(
                             1.,
                             Text::new_inline(
-                                "Add as context",
+                                "Tag as evidence",
                                 appearance.ui_font_family(),
                                 appearance.ui_font_size(),
                             )
