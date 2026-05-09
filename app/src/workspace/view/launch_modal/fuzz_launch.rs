@@ -69,7 +69,7 @@ impl Slide for OzLaunchSlide {
             OzLaunchSlide::CloudAgents => "Ambient officers",
             OzLaunchSlide::AgentAutomations => "PC automations",
             OzLaunchSlide::AgentManagement => "Duty roster",
-            OzLaunchSlide::LaunchCredits => "Launch credits",
+            OzLaunchSlide::LaunchCredits => "Launch rations",
         }
     }
 
