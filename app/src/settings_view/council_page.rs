@@ -127,7 +127,7 @@ impl SettingsWidget for CouncilPageWidget {
 
         let path_for_open = personas_path();
         let open_button = pill_button(
-            "Open personas.json",
+            "Crack open personas.json",
             self.open_button_mouse.clone(),
             appearance,
             move |ctx| {
@@ -161,7 +161,7 @@ impl SettingsWidget for CouncilPageWidget {
                 for team in &roster.teams {
                     let is_default = team.name == default_team_name;
                     let label = if is_default {
-                        format!("{} — default", team.name)
+                        format!("{} — standard issue", team.name)
                     } else {
                         team.name.clone()
                     };
