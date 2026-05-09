@@ -1391,7 +1391,7 @@ impl AppearanceSettingsPageView {
             tab_settings_widgets.push(Box::new(DirectoryTabColorsWidget { add_picker }));
         }
 
-        categories.push(Category::new("Tabs", tab_settings_widgets));
+        categories.push(Category::new("Beats", tab_settings_widgets));
 
         categories.push(Category::new(
             "Full-screen Apps",
