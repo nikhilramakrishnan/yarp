@@ -422,11 +422,11 @@ impl KeybindingsView {
             Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
         let title = match section {
-            KeybindingSection::Essentials => "Essentials",
+            KeybindingSection::Essentials => "On the beat",
             KeybindingSection::Blocks => "Case files",
-            KeybindingSection::InputEditor => "Input Editor",
-            KeybindingSection::Terminal => "Terminal",
-            KeybindingSection::Fundamentals => "Fundamentals",
+            KeybindingSection::InputEditor => "Order pad",
+            KeybindingSection::Terminal => "Patrol car",
+            KeybindingSection::Fundamentals => "Basic training",
         };
 
         let mut section_header = self.render_text(
