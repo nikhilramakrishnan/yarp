@@ -324,7 +324,7 @@ impl SearchItem for SkillSearchItem {
                 .finish(),
         );
 
-        // Description and optional "Project Skill" badge
+        // Description and optional "Beat drill" badge
         // The description should truncate first, badge stays fixed size
         // We wrap the whole description_row in Shrinkable to give it a bounded constraint
         let mut description_row = Flex::row().with_cross_axis_alignment(CrossAxisAlignment::Center);
@@ -342,14 +342,16 @@ impl SearchItem for SkillSearchItem {
             description_row.add_child(Shrinkable::new(1., description_text.finish()).finish());
         }
 
-        // "Project Skill" badge for project skills (placed after description)
+        // "Beat drill" badge for project skills (placed after description) —
+        // marks a drill that lives at the beat root (.yarp/skills) rather than
+        // a station-wide one in ~/.yarp.
         if self.scope == SkillScope::Project {
             let badge_font_size = font_size - 4.0;
             // Badge text uses disabled_text_color (40% opacity) per Figma #6d7276
             let badge_text_color =
                 inline_styles::disabled_text_color(theme, background_color.into());
             let badge_text = Text::new_inline(
-                "Project Skill".to_string(),
+                "Beat drill".to_string(),
                 appearance.ui_font_family(),
                 badge_font_size,
             )
