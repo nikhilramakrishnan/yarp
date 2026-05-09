@@ -2026,26 +2026,26 @@ impl CodePageWidget {
                         AnsiColorIdentifier::Green
                             .to_ansi_color(&theme.terminal_colors().normal)
                             .into(),
-                        "Available",
+                        "On call",
                     ),
                     LspState::Starting | LspState::Available { .. } => (
                         AnsiColorIdentifier::Yellow
                             .to_ansi_color(&theme.terminal_colors().normal)
                             .into(),
-                        "Busy",
+                        "Tied up",
                     ),
                     LspState::Failed { .. } => (
                         AnsiColorIdentifier::Red
                             .to_ansi_color(&theme.terminal_colors().normal)
                             .into(),
-                        "Failed",
+                        "Down",
                     ),
                     LspState::Stopped { .. } | LspState::Stopping { .. } => {
-                        (theme.disabled_ui_text_color().into_solid(), "Stopped")
+                        (theme.disabled_ui_text_color().into_solid(), "Off duty")
                     }
                 }
             }
-            None => (theme.disabled_ui_text_color().into_solid(), "Not running"),
+            None => (theme.disabled_ui_text_color().into_solid(), "Stood down"),
         }
     }
 }
