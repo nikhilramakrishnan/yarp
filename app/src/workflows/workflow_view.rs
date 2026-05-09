@@ -179,7 +179,7 @@ const BUTTON_BORDER_RADIUS: f32 = 4.;
 const BUTTON_HEIGHT: f32 = 32.;
 
 const AI_ASSIST_BUTTON_SIZE: f32 = 92.;
-const AI_ASSIST_BUTTON_TEXT: &str = "Autofill";
+const AI_ASSIST_BUTTON_TEXT: &str = "Draft it up";
 const AI_ASSIST_LOADING_TEXT: &str = "On the wire";
 
 const ALIAS_HELP_TEXT: &str = "Aliases are short call signs that fire off a playbook. Each one can carry its own argument values and environment variables, and they stay on your personal radio.";
