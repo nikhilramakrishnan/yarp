@@ -98,17 +98,17 @@ impl SettingsFileError {
     pub fn heading_and_description(&self) -> (String, String) {
         match self {
             Self::FileParseFailed(_) => (
-                "Your settings file contains an error.".to_owned(),
-                format!("{self}. Open the file to fix it."),
+                "Your standing orders won't read straight.".to_owned(),
+                format!("{self}. Pull the file to sort it."),
             ),
             Self::InvalidSettings(keys) => match keys.len() {
                 1 => (
-                    "Your settings file contains an error.".to_owned(),
-                    format!("{self}. The default value is being used."),
+                    "Your standing orders won't read straight.".to_owned(),
+                    format!("{self}. Falling back to standard procedure."),
                 ),
                 _ => (
-                    "Your settings file contains errors.".to_owned(),
-                    format!("{self}. Default values are being used."),
+                    "Your standing orders won't read straight in places.".to_owned(),
+                    format!("{self}. Falling back to standard procedure."),
                 ),
             },
         }
