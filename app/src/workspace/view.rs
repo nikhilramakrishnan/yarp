@@ -17648,8 +17648,32 @@ impl Workspace {
         .with_height(TAB_BAR_HEIGHT)
         .finish();
 
-        let tab_bar_border =
-            Border::bottom(TAB_BAR_BORDER_HEIGHT).with_border_fill(appearance.theme().outline());
+        // Tab bar bottom edge runs across the top of the workspace — when
+        // the radio stripe is active on the input chrome below, this seam
+        // anchors the dispatch state at the very top so the operator's eye
+        // catches it on a glance: self → red, peer → yellow, post-ack 5s →
+        // green, theme.outline fallback.
+        let tab_bar_border = {
+            let theme = appearance.theme();
+            let radio_color = if crate::radio::self_in_mayday() {
+                Some(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(theme.ansi_fg_green())
+            } else {
+                None
+            };
+            let base = Border::bottom(TAB_BAR_BORDER_HEIGHT);
+            match radio_color {
+                Some(color) => base.with_border_color(color),
+                None => base.with_border_fill(theme.outline()),
+            }
+        };
 
         let mut tab_bar_container = Container::new(
             EventHandler::new(Clipped::new(self.render_tab_bar_hoverable(bar_contents)).finish())
