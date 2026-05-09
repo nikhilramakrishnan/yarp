@@ -318,13 +318,28 @@ fn precinct_status_line() -> (String, bool) {
         };
         return (line, true);
     }
+    // When the channel is quiet but the most recent dispatch was a peer's
+    // stand-down, swap the static "all clear" for "just stood down" so the
+    // banner echoes the resolution moment instead of pretending nothing
+    // happened. Reads as "the call just closed" rather than "nothing has
+    // ever been wrong" — the dispatch row below is still announcing the
+    // stand-down and the banner shouldn't contradict it. Reverts to "all
+    // clear" once the stand-down ages out of latest_dispatch.
+    let recently_resolved = radio::latest_dispatch()
+        .map(|m| radio::is_stand_down_body(&m.body))
+        .unwrap_or(false);
+    let calm_phrase = if recently_resolved {
+        "just stood down"
+    } else {
+        "all clear"
+    };
     // Code 4 keeps the longer noun phrase — without an emergency fragment to
     // anchor the line, "Code 4 · 4" alone reads cryptic; the full phrasing
     // earns its width.
     let line = match peer_count {
         0 => "Code 4 \u{00B7} sole patrol".to_string(),
-        1 => "Code 4 \u{00B7} all clear \u{00B7} 1 other officer on channel".to_string(),
-        n => format!("Code 4 \u{00B7} all clear \u{00B7} {n} other officers on channel"),
+        1 => format!("Code 4 \u{00B7} {calm_phrase} \u{00B7} 1 other officer on channel"),
+        n => format!("Code 4 \u{00B7} {calm_phrase} \u{00B7} {n} other officers on channel"),
     };
     (line, false)
 }
