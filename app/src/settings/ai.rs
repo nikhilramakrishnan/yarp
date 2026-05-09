@@ -263,9 +263,9 @@ impl VoiceInputToggleKey {
                     Some(side) => format!("{side} {symbol}"),
                     None => symbol,
                 };
-                format!("Voice input (hold {key_name} key)")
+                format!("Radio mic (hold {key_name} key)")
             }
-            None => "Voice input".to_string(),
+            None => "Radio mic".to_string(),
         }
     }
 
