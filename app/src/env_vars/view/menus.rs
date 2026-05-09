@@ -53,7 +53,7 @@ impl EnvVarCollectionView {
         );
 
         let edit_item = Self::item(
-            "Edit",
+            "Amend",
             EnvVarCollectionAction::EditCommand,
             None,
             Some(Icon::Terminal),

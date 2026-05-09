@@ -228,7 +228,7 @@ impl NotebookEmbed {
                     appearance,
                     Icon::Pencil,
                     self.mouse_state_handles.edit_button_state.clone(),
-                    "Edit",
+                    "Amend",
                     None,
                 )
                 .on_click(move |ctx, _, _| {
