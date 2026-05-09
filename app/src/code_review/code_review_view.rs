@@ -4471,7 +4471,7 @@ impl CodeReviewView {
             .with_child(
                 Container::new(
                     Text::new(
-                        "As you or the Agent edit the case file, the diffs land on this desk.",
+                        "As you or the PC edit the case file, the diffs land on this desk.",
                         appearance.ui_font_family(),
                         14.,
                     )

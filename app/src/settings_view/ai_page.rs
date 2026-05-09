@@ -4266,7 +4266,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Directory go-ahead list",
-            "Cleared beats — the agent has file access to these directories.",
+            "Cleared beats — the PC has file access to these directories.",
             list,
             view,
             ai_settings,
@@ -5954,7 +5954,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
                 app,
             ));
             column.add_child(render_ai_setting_description(
-                "Let the agent call in and coordinate parallel backup officers as a multi-agent orchestration.",
+                "Let the lead PC call in and coordinate parallel backup officers as a multi-officer orchestration.",
                 is_any_ai_enabled,
                 app,
             ));
