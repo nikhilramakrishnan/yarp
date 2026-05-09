@@ -254,7 +254,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::custom(
-            SettingActionPairDescriptions::new("Show agent tips", "Hide agent tips"),
+            SettingActionPairDescriptions::new("Show duty tips", "Hide duty tips"),
             builder(SettingsAction::AI(
                 AISettingsPageAction::ToggleShowAgentTips,
             )),
@@ -2010,7 +2010,7 @@ impl AISettingsPageView {
 
                     dropdown.set_menu_header_text_override(|label| {
                         if label == "Other" {
-                            "Select coding agent".to_string()
+                            "Select coding officer".to_string()
                         } else {
                             label.to_string()
                         }
