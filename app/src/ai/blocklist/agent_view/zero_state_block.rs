@@ -407,6 +407,44 @@ impl View for AgentViewZeroStateBlock {
             // Cap at three named units; the rest fold into "+N more" so the
             // line never overruns the description column.
             let mut description_lines: Vec<Cow<'static, str>> = vec![local_description.into()];
+
+            // Inline emergency flag — surfaces 10-13 state right where the
+            // operator is briefing the next patrol so they don't open the
+            // agent view while a mayday is sitting unread on the radio.
+            // Self-mayday wins over peer-mayday since it's the operator's
+            // own active call; peer-mayday names up to two callers and folds
+            // the rest so the line never overruns the description column.
+            if radio::self_in_mayday() {
+                let responders = radio::en_route_responders();
+                let line = if responders.is_empty() {
+                    "10-13 active — broadcast out, no responders yet.".to_owned()
+                } else {
+                    let cap = 2;
+                    let summary = if responders.len() <= cap {
+                        responders.join(", ")
+                    } else {
+                        let extra = responders.len() - cap;
+                        format!("{}, +{extra} more", responders[..cap].join(", "))
+                    };
+                    format!("10-13 active — {summary} en route.")
+                };
+                description_lines.push(line.into());
+            } else if radio::peer_in_mayday() {
+                let callers = radio::pending_emergency_callers();
+                if !callers.is_empty() {
+                    let cap = 2;
+                    let summary = if callers.len() <= cap {
+                        callers.join(", ")
+                    } else {
+                        let extra = callers.len() - cap;
+                        format!("{}, +{extra} more", callers[..cap].join(", "))
+                    };
+                    description_lines.push(
+                        format!("10-13 inbound — {summary} needs assistance.").into(),
+                    );
+                }
+            }
+
             let peers = radio::peers();
             if !peers.is_empty() {
                 let names: Vec<String> = peers
