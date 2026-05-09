@@ -3415,7 +3415,7 @@ impl Element for BlockListElement {
                     let banner_intro_text = if is_historical_conversation_restoration {
                         "Case file reopened".to_string()
                     } else {
-                        "Previous session".to_string()
+                        "Previous beat".to_string()
                     };
 
                     let separator_text =

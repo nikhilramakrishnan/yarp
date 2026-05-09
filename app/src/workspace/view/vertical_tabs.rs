@@ -4419,7 +4419,7 @@ pub(super) fn render_settings_popup(
     .finish();
 
     let focused_session_option = render_tab_item_mode_option(
-        "Focused session",
+        "Focused beat",
         matches!(
             current_tab_item_mode,
             VerticalTabsTabItemMode::FocusedSession

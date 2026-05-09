@@ -44,7 +44,7 @@ impl WorkingDirectoryMode {
     pub fn dropdown_item_label(&self) -> &'static str {
         match self {
             WorkingDirectoryMode::HomeDir => "Home directory",
-            WorkingDirectoryMode::PreviousDir => "Previous session's directory",
+            WorkingDirectoryMode::PreviousDir => "Previous beat's directory",
             WorkingDirectoryMode::CustomDir => "Custom directory",
         }
     }
