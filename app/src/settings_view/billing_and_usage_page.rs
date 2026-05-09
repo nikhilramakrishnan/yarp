@@ -82,9 +82,9 @@ use super::{
 
 const HEADER_FONT_SIZE: f32 = 16.;
 const OVERAGE_USAGE_LINK_TEXT: &str = "Pull the usage report";
-const OVERAGE_TOGGLE_ADMIN_HEADER: &str = "Enable premium model usage overages";
-const OVERAGE_TOGGLE_USER_HEADER_ENABLED: &str = "Premium model usage overages are enabled";
-const OVERAGE_TOGGLE_USER_HEADER_DISABLED: &str = "Premium model usage overages are not enabled";
+const OVERAGE_TOGGLE_ADMIN_HEADER: &str = "Sign on premium-model overage tour";
+const OVERAGE_TOGGLE_USER_HEADER_ENABLED: &str = "Premium-model overage tour is on duty";
+const OVERAGE_TOGGLE_USER_HEADER_DISABLED: &str = "Premium-model overage tour is off duty";
 const OVERAGE_TOGGLE_DESCRIPTION: &str = "Keep working premium models past your playbook quotas. Tour is logged in $20 increments up to your spending cap, with any remaining balance billed on your scheduled billing date.";
 const OVERAGE_TOGGLE_USER_DESCRIPTION: &str =
     "Ask the chief to wave through overages for more AI tour.";
