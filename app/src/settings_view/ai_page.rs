@@ -6097,7 +6097,7 @@ impl ApiKeysWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Run the Yarp Agent on your own API keys from model providers. Keys stay at the station and never head up to the cloud. Auto models, or models from providers you haven't filed a key for, run on Yarp credits.",
+                        "Run the Yarp Agent on your own API keys from model providers. Keys stay at the station and never head up to the cloud. Auto models, or models from providers you haven't filed a key for, run on Yarp rations.",
                         is_enabled,
                         app,
                     ))
@@ -6235,7 +6235,7 @@ impl ApiKeysWidget {
         let ai_settings = AISettings::as_ref(app);
 
         let toggle = render_ai_setting_toggle::<CanUseYarpCreditsWithByok>(
-            "Yarp credit fallback",
+            "Yarp ration fallback",
             AISettingsPageAction::ToggleCanUseYarpCreditsWithByok,
             *ai_settings.can_use_yarp_credits_with_byok,
             ai_settings.is_any_ai_enabled(app),
@@ -6245,7 +6245,7 @@ impl ApiKeysWidget {
         );
 
         let description = render_ai_setting_description(
-            "When on, agent requests can swap to one of Yarp's house models if yours go off the air. Yarp keeps using your API keys before it dips into your Yarp credits.",
+            "When on, agent requests can swap to one of Yarp's house models if yours go off the air. Yarp keeps using your API keys before it dips into your Yarp rations.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
