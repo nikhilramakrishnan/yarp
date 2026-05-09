@@ -919,12 +919,12 @@ impl InitStepBlock {
         let init_completed = self.model.as_ref(app).is_completed();
         match rules_result {
             ProjectScopedRulesResult::LinkedFromExisting(path) => {
-                Self::render_success_completion(&format!("Project rules linked from {path}"), app)
+                Self::render_success_completion(&format!("Standing orders linked from {path}"), app)
             }
             ProjectScopedRulesResult::GenerateNew {
                 button_disabled, ..
             } => {
-                let mut action = RenderableAction::new("Project rules configured", app)
+                let mut action = RenderableAction::new("Standing orders on the books", app)
                     .with_icon(Icon::Check.to_yarpui_icon(Fill::success()).finish());
                 if init_completed {
                     action = action.with_action_button(Self::regenerate_button(
@@ -936,7 +936,7 @@ impl InitStepBlock {
                 action.with_content_item_spacing().render(app).finish()
             }
             ProjectScopedRulesResult::AlreadyExists { button_disabled } => {
-                let mut action = RenderableAction::new("Project rules already configured", app)
+                let mut action = RenderableAction::new("Standing orders already on the books", app)
                     .with_icon(Icon::Check.to_yarpui_icon(Fill::success()).finish());
                 if init_completed {
                     action = action.with_action_button(Self::regenerate_button(
@@ -948,7 +948,7 @@ impl InitStepBlock {
                 action.with_content_item_spacing().render(app).finish()
             }
             ProjectScopedRulesResult::Skipped => {
-                Self::render_skipped_completion("Project rules skipped", app)
+                Self::render_skipped_completion("Standing orders waved off", app)
             }
         }
     }
