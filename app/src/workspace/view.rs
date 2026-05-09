@@ -6073,8 +6073,14 @@ impl Workspace {
     }
 
     fn radio_respond(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
+        // Send the en-route reply, then drain the responded-to peer's traffic
+        // from local inbox so the responder's UI immediately drops them off
+        // the distress list. Without the drain the responder would still see
+        // PeerX flagged on roster/banner until they also clicked the bulk
+        // "10-4, en route" ack — double-press for a single response.
         let msg = radio::Message::new(radio::self_call_sign(), radio::EN_ROUTE_BODY);
         let _ = radio::send_message(to_pid, &msg);
+        let _ = radio::drain_from_pid(to_pid);
         ctx.notify();
     }
 

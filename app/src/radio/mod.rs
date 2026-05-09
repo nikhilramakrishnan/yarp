@@ -434,6 +434,45 @@ pub fn read_inbox() -> Vec<Message> {
     resolve_superseded_emergencies(out)
 }
 
+/// Drain only messages from the given pid — used when responding 1:1 to a
+/// peer's 10-13 so the responder's UI clears that specific peer's distress
+/// without dropping pending traffic from other senders. Returns the drained
+/// messages in arrival order; other senders' files stay on disk untouched.
+pub fn drain_from_pid(from_pid: u32) -> Vec<Message> {
+    let Some(dir) = inbox_dir(std::process::id()) else {
+        return Vec::new();
+    };
+    let entries = match fs::read_dir(&dir) {
+        Ok(entries) => entries,
+        Err(_) => return Vec::new(),
+    };
+    let mut paths_and_msgs: Vec<(PathBuf, Message)> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("json") {
+            continue;
+        }
+        let bytes = match fs::read(&path) {
+            Ok(b) => b,
+            Err(_) => continue,
+        };
+        match serde_json::from_slice::<Message>(&bytes) {
+            Ok(msg) if msg.from_pid == from_pid => paths_and_msgs.push((path, msg)),
+            Ok(_) => {}
+            Err(_) => {
+                let _ = fs::remove_file(&path);
+            }
+        }
+    }
+    paths_and_msgs.sort_by_key(|(p, _)| p.file_name().map(|s| s.to_os_string()));
+    let mut out = Vec::with_capacity(paths_and_msgs.len());
+    for (path, msg) in paths_and_msgs {
+        let _ = fs::remove_file(&path);
+        out.push(msg);
+    }
+    out
+}
+
 /// Most recent dispatch in this process's inbox, or None if empty. Reads
 /// without draining — UI surfaces can render the latest body alongside a
 /// pending-count without consuming the message.
