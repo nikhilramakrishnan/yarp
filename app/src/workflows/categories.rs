@@ -164,14 +164,14 @@ impl WorkflowViewType {
         let a11y_content = match self {
             WorkflowViewType::Category { .. } => {
                 format!(
-                    "Showing workflows with category {}",
+                    "Showing playbooks with category {}",
                     self.as_str(category_names)
                 )
             }
-            WorkflowViewType::All => "Showing all workflows".into(),
-            WorkflowViewType::LocalPersonal => "Showing my workflows".into(),
-            WorkflowViewType::Project => "Showing project workflows".into(),
-            WorkflowViewType::Team => "Showing team workflows".into(),
+            WorkflowViewType::All => "Showing all playbooks".into(),
+            WorkflowViewType::LocalPersonal => "Showing my playbooks".into(),
+            WorkflowViewType::Project => "Showing repo playbooks".into(),
+            WorkflowViewType::Team => "Showing squad playbooks".into(),
         };
 
         AccessibilityContent::new_without_help(a11y_content, YarpA11yRole::UserAction)
