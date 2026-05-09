@@ -1188,7 +1188,29 @@ impl View for CLISubagentView {
             }
         }
 
-        let mut output_border = Border::all(1.).with_border_fill(internal_colors::neutral_3(theme));
+        // CLI subagent output frame is the operator's stdout/stderr panel.
+        // On non-failed status, override the neutral_3 frame on self/peer
+        // mayday and the post-ack pulse so the output panel mirrors channel
+        // state — self → red, peer → yellow, post-ack 5s → green. Failed
+        // status retains its ui_error_color override (higher-priority signal).
+        let radio_output_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+        let mut output_border = if let Some(color) = radio_output_color {
+            Border::all(1.).with_border_color(color)
+        } else {
+            Border::all(1.).with_border_fill(internal_colors::neutral_3(theme))
+        };
         if let AIBlockOutputStatus::Failed { error, .. } = &status {
             output_border = Border::all(1.).with_border_color(theme.ui_error_color());
             output_items.add_child(render_failed_output(
