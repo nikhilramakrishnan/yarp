@@ -5767,11 +5767,34 @@ pub(super) fn render_detail_sidecar(
     .with_max_height(max_height)
     .finish();
 
+    // Detail sidecar floats above the workspace edge whenever the operator
+    // hovers a tab with patrol details enabled — when the radio stripe is
+    // active on the input chrome below, this overlay should match so the
+    // operator's eye sees a single contiguous edge: self → red, peer →
+    // yellow, post-ack 5s → green, detail_sidecar fallback.
+    let sidecar_radio_color = if crate::radio::self_in_mayday() {
+        Some(theme.ansi_fg_red())
+    } else if crate::radio::peer_in_mayday() {
+        Some(theme.ansi_fg_yellow())
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(theme.ansi_fg_green())
+    } else {
+        None
+    };
     let sidecar = Hoverable::new(state.detail_sidecar_mouse_state.clone(), move |_| {
+        let base = Border::all(1.);
+        let border = match sidecar_radio_color {
+            Some(color) => base.with_border_color(color),
+            None => base.with_border_fill(detail_sidecar_border_fill(theme)),
+        };
         SavePosition::new(
             Container::new(scrollable)
                 .with_background(sidecar_background)
-                .with_border(Border::all(1.).with_border_fill(detail_sidecar_border_fill(theme)))
+                .with_border(border)
                 .with_corner_radius(CornerRadius::with_all(Radius::Pixels(
                     DETAIL_SIDECAR_CORNER_RADIUS,
                 )))
