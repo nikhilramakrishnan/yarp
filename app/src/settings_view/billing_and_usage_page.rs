@@ -87,7 +87,7 @@ const OVERAGE_TOGGLE_USER_HEADER_ENABLED: &str = "Premium-model overage tour is 
 const OVERAGE_TOGGLE_USER_HEADER_DISABLED: &str = "Premium-model overage tour is off duty";
 const OVERAGE_TOGGLE_DESCRIPTION: &str = "Keep working premium models past your playbook quotas. Tour is logged in $20 increments up to your spending cap, with any remaining balance billed on your scheduled billing date.";
 const OVERAGE_TOGGLE_USER_DESCRIPTION: &str =
-    "Ask the chief to wave through overages for more AI tour.";
+    "Ask the chief to wave through overages for more PC tour.";
 
 const SORT_MENU_ITEM_DISPLAY_NAME_A_Z_LABEL: &str = "A to Z";
 const SORT_MENU_ITEM_DISPLAY_NAME_Z_A_LABEL: &str = "Z to A";
@@ -3116,7 +3116,7 @@ impl UsageWidget {
                                 team_uid: team.uid,
                             },
                         ),
-                        FormattedTextFragment::plain_text(" to regain access to AI features."),
+                        FormattedTextFragment::plain_text(" to regain access to PC features."),
                     ]
                 } else {
                     // Non-admin team member - show message to contact admin
@@ -3151,7 +3151,7 @@ impl UsageWidget {
                                 ));
                             }
                             fragments.push(FormattedTextFragment::plain_text(
-                                " for increased access to AI features.",
+                                " for increased access to PC features.",
                             ));
                             fragments
                         }
@@ -3163,7 +3163,7 @@ impl UsageWidget {
                         };
                         vec![
                             FormattedTextFragment::hyperlink(upgrade_text, upgrade_url),
-                            FormattedTextFragment::plain_text(" to get more AI usage."),
+                            FormattedTextFragment::plain_text(" to get more PC duty."),
                         ]
                     }
                 } else {
@@ -3198,7 +3198,7 @@ impl UsageWidget {
             } else if !team.billing_metadata.is_usage_based_pricing_toggleable() {
                 vec![
                     FormattedTextFragment::hyperlink("Contact support", "mailto:support@yarp.dev"),
-                    FormattedTextFragment::plain_text(" for more AI usage."),
+                    FormattedTextFragment::plain_text(" for more PC duty."),
                 ]
             } else {
                 vec![]

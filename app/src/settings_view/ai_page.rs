@@ -3420,19 +3420,19 @@ impl SettingsWidget for UsageWidget {
                 if has_admin_permissions {
                     vec![
                         FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
-                        FormattedTextFragment::plain_text(" to get more AI usage."),
+                        FormattedTextFragment::plain_text(" to get more PC duty."),
                     ]
                 } else {
                     // The /upgrade page says to contact their administrator.
                     vec![
                         FormattedTextFragment::hyperlink("Compare plans", upgrade_url),
-                        FormattedTextFragment::plain_text(" for more AI usage."),
+                        FormattedTextFragment::plain_text(" for more PC duty."),
                     ]
                 }
             } else {
                 vec![
                     FormattedTextFragment::hyperlink("Contact support", "mailto:support@yarp.dev"),
-                    FormattedTextFragment::plain_text(" for more AI usage."),
+                    FormattedTextFragment::plain_text(" for more PC duty."),
                 ]
             }
         } else {
@@ -3440,7 +3440,7 @@ impl SettingsWidget for UsageWidget {
             let upgrade_url = UserWorkspaces::upgrade_link(user_id);
             vec![
                 FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
-                FormattedTextFragment::plain_text(" to get more AI usage."),
+                FormattedTextFragment::plain_text(" to get more PC duty."),
             ]
         };
 
