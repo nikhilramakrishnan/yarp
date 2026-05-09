@@ -49,7 +49,7 @@ const SEARCH_VERTICAL_PADDING: f32 = 4.;
 // of total breathing room above the divider line.
 const SEARCH_FOOTER_TOP_MARGIN: f32 = 4.;
 
-const SEARCH_PLACEHOLDER_TEXT: &str = "Search the duty roster";
+const SEARCH_PLACEHOLDER_TEXT: &str = "Sweep the duty roster";
 
 const BUTTON_TOOLTIP: &str = "Pick the PC's model";
 
