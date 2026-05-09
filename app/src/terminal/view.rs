@@ -11411,7 +11411,7 @@ impl TerminalView {
 
                 if self.is_navigated_away_from_window(ctx) {
                     let notification_title =
-                        title.clone().unwrap_or_else(|| "Notification".to_string());
+                        title.clone().unwrap_or_else(|| "Briefing".to_string());
                     let notification = BlockNotification {
                         title: notification_title,
                         body: body.clone(),
