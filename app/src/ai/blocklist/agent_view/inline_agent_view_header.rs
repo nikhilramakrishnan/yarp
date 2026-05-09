@@ -4,7 +4,7 @@ use ai::agent::action::{AIAgentActionType, ShellCommandDelay};
 use parking_lot::FairMutex;
 use yarp_core::ui::appearance::Appearance;
 use yarpui::{
-    elements::{CornerRadius, Radius},
+    elements::{Border, Container, CornerRadius, Radius},
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity, View, ViewContext,
 };
 
@@ -132,11 +132,12 @@ impl View for InlineAgentViewHeader {
             } else {
                 format!("{AGENT_PROMPT_TO_INTERACT_MESSAGE} the running command")
             };
-            return HeaderConfig::new(message, app)
+            let header = HeaderConfig::new(message, app)
                 .with_icon(icon)
                 .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(8.)))
                 .with_markdown()
                 .render(app);
+            return wrap_with_radio_stripe(header, appearance);
         }
 
         let action_model = self.action_model.as_ref(app);
@@ -172,9 +173,41 @@ impl View for InlineAgentViewHeader {
             icons::in_progress_icon(appearance)
         };
 
-        HeaderConfig::new(message, app)
+        let header = HeaderConfig::new(message, app)
             .with_icon(icon)
             .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(8.)))
-            .render(app)
+            .render(app);
+        wrap_with_radio_stripe(header, appearance)
+    }
+}
+
+// Inline agent-view header carries no radio chrome by default. Paint a
+// 1px top stripe on self/peer mayday and the post-ack pulse so the
+// headline element of the inline split broadcasts the channel state in
+// lockstep with the workspace banner, dock, tab, status-bar and input
+// borders. Self → red, peer → yellow, post-ack 5s → green.
+fn wrap_with_radio_stripe(
+    header: Box<dyn Element>,
+    appearance: &Appearance,
+) -> Box<dyn Element> {
+    let radio_color = if crate::radio::self_in_mayday() {
+        Some(appearance.theme().ansi_fg_red())
+    } else if crate::radio::peer_in_mayday() {
+        Some(appearance.theme().ansi_fg_yellow())
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(appearance.theme().ansi_fg_green())
+    } else {
+        None
+    };
+    if let Some(color) = radio_color {
+        Container::new(header)
+            .with_border(Border::top(1.).with_border_color(color))
+            .finish()
+    } else {
+        header
     }
 }
