@@ -1088,7 +1088,7 @@ impl AboutPageWidget {
             .with_text_label("Mic check".to_owned())
             .with_tooltip(move || {
                 mic_check_tooltip_builder
-                    .tool_tip("Roll-call ping to every Yarp on the channel.".to_owned())
+                    .tool_tip("Roll-call the channel — 'mic check, anyone on this channel?'".to_owned())
                     .build()
                     .finish()
             })
