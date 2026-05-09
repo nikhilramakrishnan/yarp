@@ -736,6 +736,24 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> InlineMenuView<A, T> {
             .blend(&theme.surface_overlay_1())
             .into();
 
+        // Inline menu header chrome (label strip, tab dividers, top/bottom
+        // outer borders) broadcasts the radio stripe so the operator sees
+        // a single contiguous edge across the menu and the input below:
+        // self → red, peer → yellow, post-ack 5s → green, outline fallback.
+        let radio_header_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+
         let has_tabs = tab_configs.len() > 1;
         let label_margin_right = if has_tabs { 16. } else { 0. };
 
@@ -801,11 +819,12 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> InlineMenuView<A, T> {
                     .finish();
 
                 let is_first_tab = idx == 0;
-                let mut tab_container = Container::new(button_element).with_border(
-                    Border::new(1.)
-                        .with_sides(false, is_first_tab, false, true)
-                        .with_border_fill(theme.outline()),
-                );
+                let tab_border = Border::new(1.).with_sides(false, is_first_tab, false, true);
+                let tab_border = match radio_header_color {
+                    Some(color) => tab_border.with_border_color(color),
+                    None => tab_border.with_border_fill(theme.outline()),
+                };
+                let mut tab_container = Container::new(button_element).with_border(tab_border);
                 if is_active {
                     tab_container = tab_container
                         .with_background(theme.background())
@@ -853,15 +872,17 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> InlineMenuView<A, T> {
         .with_height(inline_styles::HEADER_ROW_HEIGHT)
         .finish();
 
+        let header_outer_border = Border::new(inline_styles::HEADER_BORDER)
+            .with_sides(true, false, true, false);
+        let header_outer_border = match radio_header_color {
+            Some(color) => header_outer_border.with_border_color(color),
+            None => header_outer_border.with_border_fill(theme.outline()),
+        };
         let header = Container::new(header_row)
             .with_padding_left(*terminal::view::PADDING_LEFT)
             .with_padding_right(8.)
             .with_background(theme.surface_overlay_1())
-            .with_border(
-                Border::new(inline_styles::HEADER_BORDER)
-                    .with_sides(true, false, true, false)
-                    .with_border_fill(theme.outline()),
-            )
+            .with_border(header_outer_border)
             .finish();
 
         Some(header)
@@ -1008,6 +1029,24 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> View for InlineMenuView<A, T
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
 
+        // Inline menu content border (chunky top/bottom edge stitching the
+        // menu to the input below) broadcasts the radio stripe so the seam
+        // stays contiguous with the input's own stripe: self → red,
+        // peer → yellow, post-ack 5s → green, agent/terminal default fallback.
+        let radio_content_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+
         let is_rendering_below_input = self
             .positioner
             .as_ref(app)
@@ -1130,20 +1169,25 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> View for InlineMenuView<A, T
         let height = self.positioner.as_ref(app).inline_menu_height(app);
         let menu = ConstrainedBox::new(
             Container::new(aligned_content)
-                .with_border(
-                    Border::new(inline_styles::CONTENT_BORDER_WIDTH)
+                .with_border({
+                    let content_border = Border::new(inline_styles::CONTENT_BORDER_WIDTH)
                         .with_sides(
                             is_rendering_below_input || !has_header,
                             false,
                             !is_rendering_below_input || !has_header,
                             false,
-                        )
-                        .with_border_fill(if self.agent_view_controller.as_ref(app).is_active() {
-                            input::agent::styles::default_border_color(theme)
-                        } else {
-                            input::terminal::styles::default_border_color(theme)
-                        }),
-                )
+                        );
+                    match radio_content_color {
+                        Some(color) => content_border.with_border_color(color),
+                        None => content_border.with_border_fill(
+                            if self.agent_view_controller.as_ref(app).is_active() {
+                                input::agent::styles::default_border_color(theme)
+                            } else {
+                                input::terminal::styles::default_border_color(theme)
+                            },
+                        ),
+                    }
+                })
                 .finish(),
         )
         .with_height(height)
