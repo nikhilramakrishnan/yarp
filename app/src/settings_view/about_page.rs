@@ -324,23 +324,44 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     }
     // Any pending 10-13 turns the whole inbox line red — emergency dominates routine.
     let emergency = inbox.iter().any(|m| dispatch_is_emergency(&m.body));
+    // Track which senders have a 10-13 in queue so the roster can name the
+    // officer(s) who need backup rather than just lighting the whole line red.
+    let mut distressed: std::collections::HashSet<String> = std::collections::HashSet::new();
     // Count repeats per sender so a chatty officer doesn't crowd the line,
     // and preserve arrival order for predictable rendering.
     let mut order: Vec<String> = Vec::new();
     let mut seen: std::collections::HashSet<&str> = std::collections::HashSet::new();
     for msg in &inbox {
+        if dispatch_is_emergency(&msg.body) {
+            distressed.insert(msg.from_call_sign.clone());
+        }
         if seen.insert(msg.from_call_sign.as_str()) {
             order.push(msg.from_call_sign.clone());
         }
     }
+    // Promote distressed senders to the front so the eye lands on who needs
+    // backup before scanning the rest of the roster — within each group we
+    // keep arrival order so render stays stable.
+    order.sort_by_key(|s| !distressed.contains(s));
     let distinct = order.len();
     const MAX: usize = 4;
     let overflow = order.len().saturating_sub(MAX);
     order.truncate(MAX);
+    // Tag distressed senders inline with the 10-13 code so a multi-sender
+    // inbox doesn't leave the operator guessing which officer triggered the
+    // red — matches the latest-dispatch row's "10-13 · <officer>" lead.
+    let render_name = |name: &str| -> String {
+        if distressed.contains(name) {
+            format!("10-13 {name}")
+        } else {
+            name.to_string()
+        }
+    };
+    let rendered: Vec<String> = order.iter().map(|s| render_name(s)).collect();
     let roster = if overflow > 0 {
-        format!("{} +{overflow} more", order.join(", "))
+        format!("{} +{overflow} more", rendered.join(", "))
     } else {
-        order.join(", ")
+        rendered.join(", ")
     };
     let total = inbox.len();
     let dispatches = if total == 1 {
