@@ -423,8 +423,22 @@ pub fn read_inbox() -> Vec<Message> {
 /// Most recent dispatch in this process's inbox, or None if empty. Reads
 /// without draining — UI surfaces can render the latest body alongside a
 /// pending-count without consuming the message.
+///
+/// Emergency promotion: if any queued message is a 10-13 we surface the
+/// latest 10-13 instead of the wall-clock latest. Without this, a routine
+/// hail arriving after a 10-13 would mask the emergency in the dispatch row
+/// even though the inbox-line and roster still flagged it red — split-signal
+/// bug. Within urgent vs. routine groups, newest still wins.
 pub fn latest_dispatch() -> Option<Message> {
-    peek_inbox().into_iter().max_by_key(|m| m.sent_at_unix)
+    let inbox = peek_inbox();
+    if let Some(latest_emergency) = inbox
+        .iter()
+        .filter(|m| is_emergency_body(&m.body))
+        .max_by_key(|m| m.sent_at_unix)
+    {
+        return Some(latest_emergency.clone());
+    }
+    inbox.into_iter().max_by_key(|m| m.sent_at_unix)
 }
 
 
