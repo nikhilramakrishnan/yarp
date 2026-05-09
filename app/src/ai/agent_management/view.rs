@@ -490,7 +490,7 @@ impl AgentManagementView {
         };
 
         let mut dropdown = Dropdown::new(ctx);
-        Self::setup_filter_menu(&mut dropdown, "Status", ctx);
+        Self::setup_filter_menu(&mut dropdown, "Patrol state", ctx);
 
         // Use this helper to make dropdown items with status icons
         let make_status_option =
