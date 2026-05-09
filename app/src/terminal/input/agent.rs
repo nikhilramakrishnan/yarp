@@ -517,11 +517,20 @@ impl Input {
     ) -> Box<dyn Element> {
         let theme = appearance.theme();
         let background = internal_colors::fg_overlay_1(theme);
-        // 10-13 paints the cloud-mode v2 input chrome red so the emergency is
-        // visible at the surface the operator is typing into, matching the
-        // classic-agent border treatment.
-        let border_color = if crate::radio::self_in_mayday() || crate::radio::peer_in_mayday() {
+        // Cloud-mode v2 input chrome mirrors radio channel state at the
+        // typing surface — self → red, peer → yellow, post-ack 5s → green,
+        // neutral_2 fallback. Matches the chrome treatment on the rest of
+        // the agent view so the operator gets one coherent stripe.
+        let border_color = if crate::radio::self_in_mayday() {
             theme.ansi_fg_red()
+        } else if crate::radio::peer_in_mayday() {
+            theme.ansi_fg_yellow()
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            theme.ansi_fg_green()
         } else {
             internal_colors::neutral_2(theme)
         };

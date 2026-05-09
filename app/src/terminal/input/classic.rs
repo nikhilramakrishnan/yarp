@@ -253,22 +253,42 @@ impl Input {
         let show_block_dividers = *BlockListSettings::as_ref(app).show_block_dividers.value();
         let should_render_divider = !FeatureFlag::AgentView.is_enabled() || show_block_dividers;
 
+        // Classic input divider sits between the agent block list and the
+        // input editor — the seam the operator's eye tracks when toggling
+        // focus. Override the outline fill on self/peer mayday and the
+        // post-ack pulse so this seam mirrors channel state — self → red,
+        // peer → yellow, post-ack 5s → green, outline fallback.
+        let radio_divider_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+        let apply_radio_color = |b: Border| match radio_divider_color {
+            Some(color) => b.with_border_color(color),
+            None => b.with_border_fill(theme.outline()),
+        };
         let border = match input_mode {
-            InputMode::PinnedToBottom => Border::top(if should_render_divider {
+            InputMode::PinnedToBottom => apply_radio_color(Border::top(if should_render_divider {
                 get_input_box_top_border_width()
             } else {
                 0.
-            })
-            .with_border_fill(theme.outline()),
-            InputMode::PinnedToTop => Border::bottom(if should_render_divider {
+            })),
+            InputMode::PinnedToTop => apply_radio_color(Border::bottom(if should_render_divider {
                 get_input_box_top_border_width()
             } else {
                 0.
-            })
-            .with_border_fill(theme.outline()),
-            InputMode::Waterfall => Border::new(get_input_box_top_border_width())
-                .with_sides(true, false, true, false)
-                .with_border_fill(theme.outline()),
+            })),
+            InputMode::Waterfall => apply_radio_color(
+                Border::new(get_input_box_top_border_width()).with_sides(true, false, true, false),
+            ),
         };
 
         let drop_target = DropTarget::new(
