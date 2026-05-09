@@ -942,7 +942,17 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         })
         .collect();
     let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
-    let mut frags: Vec<String> = Vec::new();
+    // Track each frag's kind alongside the rendered text so we can detect a
+    // uniform stand-down or hail set after building, and promote the noun
+    // into the "Earlier ..." lead instead of repeating "— stood down" /
+    // "— hail" on every fragment.
+    #[derive(PartialEq)]
+    enum Kind {
+        StandDown,
+        Hail,
+        Other,
+    }
+    let mut frags: Vec<(Kind, String)> = Vec::new();
     for msg in iter {
         if !seen.insert(msg.from_call_sign.clone()) {
             continue;
@@ -964,19 +974,31 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         // ("Stand down — situation resolved." / "Hail — checking in.") is
         // decoration that pushes more useful fragments out of the row's
         // character budget.
-        let frag = if radio::is_stand_down_body(&msg.body) {
-            format!("{} ({case_meta}) \u{2014} stood down", msg.from_call_sign)
+        let (kind, frag) = if radio::is_stand_down_body(&msg.body) {
+            (
+                Kind::StandDown,
+                format!("{} ({case_meta}) \u{2014} stood down", msg.from_call_sign),
+            )
         } else if radio::is_hail_body(&msg.body) {
-            format!("{} ({case_meta}) \u{2014} hail", msg.from_call_sign)
+            (
+                Kind::Hail,
+                format!("{} ({case_meta}) \u{2014} hail", msg.from_call_sign),
+            )
         } else if snippet.is_empty() {
-            format!("{} ({case_meta})", msg.from_call_sign)
+            (
+                Kind::Other,
+                format!("{} ({case_meta})", msg.from_call_sign),
+            )
         } else {
-            format!(
-                "{} ({case_meta}) \u{2014} \u{201C}{snippet}\u{201D}",
-                msg.from_call_sign
+            (
+                Kind::Other,
+                format!(
+                    "{} ({case_meta}) \u{2014} \u{201C}{snippet}\u{201D}",
+                    msg.from_call_sign
+                ),
             )
         };
-        frags.push(frag);
+        frags.push((kind, frag));
         if frags.len() >= 2 {
             break;
         }
@@ -984,7 +1006,37 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     if frags.is_empty() {
         return None;
     }
-    Some(format!("Earlier: {}", frags.join("; ")))
+    // Uniform-kind collapse: if every preview frag is the same kind of
+    // routine signal, drop the per-frag "— stood down" / "— hail" suffix
+    // and bake the noun into the lead. "Earlier stand-downs: Cooper (12s);
+    // Danny (38s)" reads tighter than "Earlier: Cooper (12s) — stood down;
+    // Danny (38s) — stood down" without losing what each frag is. Only
+    // applies at len ≥ 2 since at len = 1 stripping the suffix actually
+    // loses information unless the noun is shouted in the lead anyway, and
+    // "Earlier hails: Cooper (12s)" is no shorter than "Earlier: Cooper
+    // (12s) — hail".
+    let (lead, frag_texts): (&str, Vec<String>) = if frags.len() >= 2
+        && frags.iter().all(|(k, _)| *k == Kind::StandDown)
+    {
+        (
+            "Earlier stand-downs",
+            frags
+                .into_iter()
+                .map(|(_, f)| f.replace(" \u{2014} stood down", ""))
+                .collect(),
+        )
+    } else if frags.len() >= 2 && frags.iter().all(|(k, _)| *k == Kind::Hail) {
+        (
+            "Earlier hails",
+            frags
+                .into_iter()
+                .map(|(_, f)| f.replace(" \u{2014} hail", ""))
+                .collect(),
+        )
+    } else {
+        ("Earlier", frags.into_iter().map(|(_, f)| f).collect())
+    };
+    Some(format!("{lead}: {}", frag_texts.join("; ")))
 }
 
 impl AboutPageWidget {
