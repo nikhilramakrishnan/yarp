@@ -38,7 +38,7 @@ const SIDE_PADDING: f32 = 16.;
 const BUTTON_SIZE: f32 = 24.;
 const DOC_LINK_WIDTH: f32 = 120.;
 const SAVE_CONFIG_BUTTON_LABEL: &str = "Lodge duty roster";
-const OPEN_FILE_BUTTON_LABEL: &str = "Open YAML File";
+const OPEN_FILE_BUTTON_LABEL: &str = "Pull up the YAML";
 
 pub fn init(app: &mut AppContext) {
     use yarpui::keymap::macros::*;
