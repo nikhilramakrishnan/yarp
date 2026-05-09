@@ -134,7 +134,7 @@ impl ConversationUsageView {
 
         // Usage summary
         labels.push(render_section_header(
-            "USAGE SUMMARY".to_string(),
+            "DUTY LOG".to_string(),
             appearance,
         ));
         values.push(render_section_header("".to_string(), appearance));
@@ -301,7 +301,7 @@ impl ConversationUsageView {
 
         // Tool call summary
         labels.push(render_section_header(
-            "TOOL CALL SUMMARY".to_string(),
+            "EQUIPMENT LOG".to_string(),
             appearance,
         ));
         values.push(render_section_header("".to_string(), appearance));
@@ -376,7 +376,7 @@ impl ConversationUsageView {
 
                     // Section header
                     labels.push(render_section_header(
-                        "LAST RESPONSE TIME".to_string(),
+                        "LAST CALL-OUT".to_string(),
                         appearance,
                     ));
                     values.push(render_section_header("".to_string(), appearance));
@@ -390,7 +390,7 @@ impl ConversationUsageView {
                         appearance,
                     ));
 
-                    labels.push(render_label_text("Total agent response time", appearance));
+                    labels.push(render_label_text("Total PC response time", appearance));
                     values.push(render_value_text(
                         format!(
                             "{:.1} seconds",
@@ -402,7 +402,7 @@ impl ConversationUsageView {
                     if let Some(wall_ms) = timing.wall_to_wall_response_time_ms {
                         if wall_ms != 0 {
                             labels.push(render_label_text(
-                                "Total time (including tool calls)",
+                                "Total time (including equipment use)",
                                 appearance,
                             ));
                             values.push(render_value_text(
