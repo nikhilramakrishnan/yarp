@@ -1668,8 +1668,7 @@ impl Input {
             create_project if command.name == commands::CREATE_NEW_PROJECT.name => {
                 if argument.is_none_or(|args| args.is_empty()) {
                     show_error_toast(
-                        "Please describe the project you want to create after /create-new-project"
-                            .to_owned(),
+                        "/create-new-project needs a brief on what to file".to_owned(),
                         ctx,
                     );
                     return true;
