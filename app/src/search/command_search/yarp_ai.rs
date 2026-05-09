@@ -244,7 +244,7 @@ impl DataSourceRunError for GenerateCommandsFromNaturalLanguageError {
         match self {
             Self::BadPrompt => "Couldn't pin a hit. Try a more specific query.",
             Self::AiProviderError => "Wires got crossed. Try again.",
-            Self::RateLimited => "You've hit your AI rations cap. Try again later.",
+            Self::RateLimited => "You've hit your PC rations cap. Try again later.",
             Self::Other => "Wires got crossed. Try again.",
         }
         .to_string()

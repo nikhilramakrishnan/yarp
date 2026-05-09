@@ -312,7 +312,7 @@ impl Input {
         if command.availability.contains(Availability::AI_ENABLED)
             && !AISettings::as_ref(ctx).is_any_ai_enabled(ctx)
         {
-            show_error_toast(format!("{} needs AI on the air", command.name), ctx);
+            show_error_toast(format!("{} needs PC on the air", command.name), ctx);
             return true;
         }
 

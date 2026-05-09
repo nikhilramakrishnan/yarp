@@ -184,6 +184,6 @@ impl SearchItem for AIQuerySearchResultItem {
     }
 
     fn accessibility_label(&self) -> String {
-        format!("AI query: {}", self.query_text)
+        format!("PC query: {}", self.query_text)
     }
 }
