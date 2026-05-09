@@ -43,8 +43,8 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     },
     FeatureItem {
         icon: Icon::MessageCheckSquare,
-        title: "Native code review",
-        description: "Hand inline comments from Yarp's code review straight to Claude Code, Codex, or OpenCode.",
+        title: "Native casebook review",
+        description: "Hand inline notes from Yarp's casebook review straight to Claude Code, Codex, or OpenCode.",
     },
 ];
 
