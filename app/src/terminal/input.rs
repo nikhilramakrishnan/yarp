@@ -1910,7 +1910,7 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding("alt-shift-I"),
         EditableBinding::new(
             "input:clear_and_reset_ai_context_menu_query",
-            "Clear and reset AI context menu query",
+            "Wipe and reset AI context menu query",
             InputAction::ClearAndResetAIContextMenuQuery,
         )
         .with_context_predicate(id!("Input") & id!("AIContextMenuOpen") & !id!("IMEOpen"))
