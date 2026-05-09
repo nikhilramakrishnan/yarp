@@ -1240,7 +1240,7 @@ impl AboutPageWidget {
                 (
                     ButtonVariant::Error,
                     format!("Respond to {label_call_sign}"),
-                    format!("Send '10-4, en route' to {tooltip_target}."),
+                    format!("Roll on {tooltip_target}'s 10-13 — '10-4, en route'."),
                 )
             } else if is_hailing_us {
                 (
