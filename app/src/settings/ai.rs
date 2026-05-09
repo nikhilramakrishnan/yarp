@@ -857,7 +857,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.voice.voice_input_enabled",
-        description: "Controls whether voice input is enabled for AI interactions.",
+        description: "Controls whether voice input is enabled for PC briefings.",
     },
     // The number of times the user has entered Agent Mode.
     // Not a user-visible setting. We model it so we can show the voice input new feature popup
