@@ -6530,13 +6530,13 @@ impl Workspace {
         let pane_name_target = match target {
             VerticalTabsPaneContextMenuTarget::ClickedPane(locator) => PaneNameMenuTarget {
                 locator,
-                rename_label: "Rename pane",
-                reset_label: "Reset pane name",
+                rename_label: "Re-badge the pane",
+                reset_label: "Reset the pane name",
             },
             VerticalTabsPaneContextMenuTarget::ActivePane(locator) => PaneNameMenuTarget {
                 locator,
-                rename_label: "Rename active pane",
-                reset_label: "Reset active pane name",
+                rename_label: "Re-badge the active pane",
+                reset_label: "Reset the active pane name",
             },
         };
         let menu_items = tab.menu_items_with_pane_name_target(
