@@ -18,7 +18,7 @@ use yarpui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
-const EXPLANATION_TEXT: &str = "Would you like to create an environment for this project so you can run cloud agents in it? The agent will guide you through choosing GitHub repos, configuring a Docker image, and specifying startup commands.";
+const EXPLANATION_TEXT: &str = "Would you like to set up a post for this project so you can run cloud officers in it? The PC will walk you through choosing GitHub repos, configuring a Docker image, and specifying briefing orders.";
 const NO_REPOS_HELP_TEXT: &str = "If you want to create an environment with repos, rerun this command and pass in file paths or GitHub links as arguments, e.g. \"/create-environment <filepath> <GitHub URL>\".";
 
 #[derive(Debug, Clone)]

@@ -825,7 +825,7 @@ impl InitStepBlock {
                 };
                 Self::render_ready_with_buttons(
                     action_view,
-                    "Would you like to create an AGENTS.md file? Yarp can create one for you with project specific rules, context, and conventions inferred from your codebase. The agent will use this context as it codes.",
+                    "Would you like to create an AGENTS.md file? Yarp can draft one for you with project-specific standing orders, context, and conventions inferred from your codebase. The PC will use this context as it works the case.",
                     app,
                 )
             }
@@ -864,7 +864,7 @@ impl InitStepBlock {
                 };
                 Self::render_ready_with_buttons(
                     action_view,
-                    "Would you like to create an environment for this project so you can run cloud agents in it? The agent will guide you through choosing GitHub repos, configuring a Docker image, and specifying startup commands.",
+                    "Would you like to set up a post for this project so you can run cloud officers in it? The PC will walk you through choosing GitHub repos, configuring a Docker image, and specifying briefing orders.",
                     app,
                 )
             }
