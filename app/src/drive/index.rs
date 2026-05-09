@@ -416,8 +416,8 @@ impl From<&DriveIndexAction> for LoginGatedFeature {
         use DriveIndexAction::*;
         match val {
             OpenTeamSettingsPage => "Open Squad Settings",
-            ViewPlans { .. } => "View Plans",
-            ManageBilling { .. } => "Manage Billing",
+            ViewPlans { .. } => "View duty rosters",
+            ManageBilling { .. } => "Mind the rations",
             _ => "Unknown reason",
         }
     }
