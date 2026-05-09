@@ -2166,7 +2166,7 @@ fn render_group_header(props: GroupHeaderProps<'_>, app: &AppContext) -> Box<dyn
     let theme = appearance.theme();
     let title = pane_group.display_title(app);
     let title = if title.is_empty() {
-        "Unfiled tab".to_string()
+        "Unfiled beat".to_string()
     } else {
         title
     };
