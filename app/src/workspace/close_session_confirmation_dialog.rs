@@ -131,7 +131,7 @@ impl View for CloseSessionConfirmationDialog {
 
         let dialog = Container::new(
             Dialog::new(
-                "Close session?".into(),
+                "Sign off this shift?".into(),
                 Some(
                     "Heads up — this session is on the air. Closing it pulls every officer off the channel."
                         .into(),
