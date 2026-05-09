@@ -45,7 +45,7 @@ use crate::ai::blocklist::inline_action::inline_action_icons::icon_size;
 use crate::ui_components::blended_colors;
 
 const REQUESTED_ACTION_CANCEL_LABEL: &str = "Stand down";
-const REQUESTED_ACTION_RUN_LABEL: &str = "Run";
+const REQUESTED_ACTION_RUN_LABEL: &str = "Move out";
 
 const KEYBOARD_SHORTCUT_MARGIN_RIGHT: f32 = 8.;
 
