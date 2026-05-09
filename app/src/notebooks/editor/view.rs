@@ -2746,7 +2746,7 @@ impl TypedActionView for RichTextEditorView {
                 }
                 let window_id = ctx.window_id();
                 crate::workspace::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast = DismissibleToast::default(String::from("Link copied"));
+                    let toast = DismissibleToast::default(String::from("Frequency bagged."));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
                 ctx.notify();
