@@ -2756,7 +2756,7 @@ impl FeaturesPageView {
             Category::new("Terminal", terminal_widgets),
             Category::new("Briefings", notifications_widgets),
             Category::new(
-                "Workflows",
+                "Playbooks",
                 vec![Box::new(WorkflowsInCommandSearch::default())],
             ),
             Category::new("System", system_widgets),
