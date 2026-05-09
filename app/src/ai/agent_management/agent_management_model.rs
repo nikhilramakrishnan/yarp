@@ -162,7 +162,7 @@ impl AgentNotificationsModel {
                         .display_title()
                         .unwrap_or_else(|| format!("{} completed", agent.display_name()));
                     let message = match agent {
-                        CLIAgent::Codex => "Notification from Codex",
+                        CLIAgent::Codex => "Codex called it in.",
                         _ => "Case wrapped up.",
                     };
                     self.add_notification(
