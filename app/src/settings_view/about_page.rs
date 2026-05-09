@@ -476,6 +476,17 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .filter(|p| emergency_signs.contains(&p.call_sign))
         .count();
     let any_in_distress = distress_count > 0;
+    // Originator's view when the whole channel rolls on our 10-13: every peer
+    // has an en-route ack queued, so per-name "(en route)" tags read as
+    // repeated noise ("Cooper (en route), Danny (en route), Eve (en route)").
+    // Collapse into a count-led lead and drop the per-name suffix. Gated on
+    // self_in_mayday + N >= 2 — at N=1 the per-name tag is shorter than the
+    // count lead, so the routine rendering wins.
+    let all_en_route = radio::self_in_mayday()
+        && peer_list.len() >= 2
+        && peer_list
+            .iter()
+            .all(|p| en_route_signs.contains(&p.call_sign));
     // Promote distressed peers to the front so when the roster overflows the
     // MAX cap below, the (10-13) badge never gets truncated off the line.
     // En-route responders rank just behind distressed peers — a unit actively
@@ -492,7 +503,7 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         .map(|p| {
             if emergency_signs.contains(&p.call_sign) {
                 format!("{} (10-13)", p.call_sign)
-            } else if en_route_signs.contains(&p.call_sign) {
+            } else if en_route_signs.contains(&p.call_sign) && !all_en_route {
                 format!("{} (en route)", p.call_sign)
             } else if hailing_signs.contains(&p.call_sign) {
                 format!("{} (hailing)", p.call_sign)
@@ -526,6 +537,11 @@ fn precinct_roster_line() -> Option<(String, bool)> {
         } else {
             format!("Roster \u{00B7} {body}")
         }
+    } else if all_en_route {
+        format!(
+            "Roster \u{00B7} all {n} en route \u{00B7} {body}",
+            n = peer_list.len()
+        )
     } else {
         format!("Roster: {body}")
     };
