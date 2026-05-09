@@ -777,6 +777,32 @@ pub fn self_mayday_started_at_unix() -> Option<u64> {
     Some(until.saturating_sub(SELF_MAYDAY_TTL_SECS))
 }
 
+/// How long the post-broadcast moment ack lingers — long enough to span the
+/// "just now" → "5s ago" age bucket so the dispatch row visibly ticks over
+/// once before settling. Same width as the per-peer hail/respond windows.
+pub const SELF_MAYDAY_JUST_BROADCAST_SECS: u64 = 10;
+
+/// Unix-second timestamp of the most recent 10-13 broadcast press, but only
+/// while the moment ack is still fresh. Lets the dispatch row surface
+/// "10-13 · {sign} · broadcasting · {age}" right after the click even when
+/// the inbox holds stale traffic from before the call — without this, a
+/// re-press (or a fresh 10-13 atop a peer hail) leaves the dispatch row
+/// showing the older message while the signon flips red, which reads as
+/// the click missing the wire. Derives from the same `until` deadline as
+/// `self_mayday_started_at_unix`, so a re-press resets the ack window the
+/// same way it resets the persistent state.
+pub fn self_mayday_just_broadcast_at_unix() -> Option<u64> {
+    let started = self_mayday_started_at_unix()?;
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now.saturating_sub(started) >= SELF_MAYDAY_JUST_BROADCAST_SECS {
+        return None;
+    }
+    Some(started)
+}
+
 // Per-peer click acks. Hailing or responding to a specific peer goes out as a
 // targeted message that doesn't echo back to the sender's UI, so without these
 // the per-peer button stays visually identical the moment after the click.
