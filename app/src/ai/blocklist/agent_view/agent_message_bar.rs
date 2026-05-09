@@ -327,6 +327,7 @@ impl View for AgentMessageBar {
         let Some(mut message) = ephemeral_message_model
             .produce_message(args)
             .or_else(|| BootstrappingMessageProducer.produce_message(args))
+            .or_else(|| MaydayMessageProducer.produce_message(args))
             .or_else(|| ForkSlashCommandMessageProducer.produce_message(args))
             .or_else(|| AttachedBlocksMessageProducer.produce_message(args))
             .or_else(|| AttachedTextSelectionMessageProducer.produce_message(args))
@@ -451,6 +452,62 @@ impl MessageProvider<AgentMessageArgs<'_>> for BootstrappingMessageProducer {
         } else {
             Some(Message::from_text("Bringing the unit online..."))
         }
+    }
+}
+
+/// Surfaces 10-13 state in the agent message bar — the line directly under
+/// the prompt editor where the operator is typing the next dispatch. The
+/// workspace banner already carries the loud chrome at the top of the
+/// window; this is the contextual signal at the input itself, so the
+/// emergency reads where the cursor is. Self-mayday wins over peer-mayday
+/// since the operator's own active call outranks inbound. Cap-2 + "+N
+/// more" matches the banner and zero-state header so all three surfaces
+/// fold the same way. Returns `None` when neither half of the channel is
+/// in distress so quieter producers (autodetect, zero-state hints) carry
+/// the bar.
+struct MaydayMessageProducer;
+
+impl MessageProvider<AgentMessageArgs<'_>> for MaydayMessageProducer {
+    fn produce_message(&self, args: AgentMessageArgs<'_>) -> Option<Message> {
+        let AgentMessageArgs { appearance, .. } = args;
+        let red = appearance.theme().ansi_fg_red();
+
+        if crate::radio::self_in_mayday() {
+            let responders = crate::radio::en_route_responders();
+            let text = if responders.is_empty() {
+                "10-13 active — broadcast out, no responders yet.".to_owned()
+            } else {
+                let cap = 2;
+                let summary = if responders.len() <= cap {
+                    responders.join(", ")
+                } else {
+                    let extra = responders.len() - cap;
+                    format!("{}, +{extra} more", responders[..cap].join(", "))
+                };
+                format!("10-13 active — {summary} en route.")
+            };
+            return Some(Message::from_text(text).with_text_color(red));
+        }
+
+        if crate::radio::peer_in_mayday() {
+            let callers = crate::radio::pending_emergency_callers();
+            if callers.is_empty() {
+                return None;
+            }
+            let cap = 2;
+            let summary = if callers.len() <= cap {
+                callers.join(", ")
+            } else {
+                let extra = callers.len() - cap;
+                format!("{}, +{extra} more", callers[..cap].join(", "))
+            };
+            return Some(
+                Message::from_text(format!("10-13 inbound — {summary} needs assistance."))
+                    .with_text_color(red),
+            );
+        }
+
+        None
     }
 }
 
