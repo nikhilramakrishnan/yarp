@@ -4457,7 +4457,7 @@ impl DriveIndex {
                         );
                         if editability.can_edit() {
                             menu_items.push(
-                                MenuItemFields::new("File")
+                                MenuItemFields::new("Put it on the wire")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
                                         yarp_drive_item_id: *yarp_drive_item_id,
                                     })
@@ -4686,7 +4686,7 @@ impl DriveIndex {
                         }
                         if editability.can_edit() {
                             menu_items.push(
-                                MenuItemFields::new("File")
+                                MenuItemFields::new("Put it on the wire")
                                     .with_on_select_action(DriveIndexAction::ToggleShareDialog {
                                         yarp_drive_item_id: *yarp_drive_item_id,
                                     })
