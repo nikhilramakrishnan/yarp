@@ -1136,7 +1136,33 @@ impl View for BlocklistAIStatusBar {
         if let Some(cloud_mode_setup_terminal_message) =
             self.render_cloud_mode_setup_terminal_message(app)
         {
-            return render_standard_message_bar(cloud_mode_setup_terminal_message, None, app);
+            let bar = render_standard_message_bar(cloud_mode_setup_terminal_message, None, app);
+            // Cloud-mode-setup early return bypasses the radio left stripe
+            // below. Mirror it here so the operator-visible setup message
+            // still carries channel state — same precedence as the rest of
+            // the chrome.
+            let radio_stripe_color = if crate::radio::self_in_mayday() {
+                Some(appearance.theme().ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(appearance.theme().ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(appearance.theme().ansi_fg_green())
+            } else {
+                None
+            };
+            if let Some(radio_color) = radio_stripe_color {
+                return Container::new(bar)
+                    .with_border(
+                        Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
+                    )
+                    .with_padding_left(-LEFT_STRIPE_WIDTH)
+                    .finish();
+            }
+            return bar;
         }
         let status_element =
             if let Some(cloud_mode_setup_status) = self.render_cloud_mode_setup_status(app) {
