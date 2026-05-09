@@ -4985,7 +4985,19 @@ impl Workspace {
         };
         let tab_title = tab.pane_group.as_ref(ctx).display_title(ctx);
 
-        let window_title = truncate_from_end(&tab_title, MAX_WINDOW_TITLE_LENGTH);
+        // Prepend a 10-13 marker when this Yarp is actively calling a 10-13
+        // so the OS chrome (titlebar, dock, alt-tab) carries the distress
+        // state across to whatever surface the operator is looking at —
+        // settings, terminal, agent view. Without this the call is invisible
+        // outside the about page. Truncation runs on the composed string so
+        // the marker survives — losing the suffix is fine, losing the
+        // marker would defeat the point.
+        let composed = if radio::self_in_mayday() {
+            format!("10-13 \u{00B7} {tab_title}")
+        } else {
+            tab_title.clone()
+        };
+        let window_title = truncate_from_end(&composed, MAX_WINDOW_TITLE_LENGTH);
 
         let window_id = ctx.window_id();
         ctx.windows().set_window_title(window_id, &window_title);
@@ -6032,6 +6044,10 @@ impl Workspace {
                 .any(|m| m.body.trim_start().starts_with("10-4"))
         {
             radio::clear_self_mayday();
+            // Drop the 10-13 marker from the OS chrome the moment the call
+            // closes — leaving it stuck after a peer rolls would read as
+            // the call still being open.
+            self.update_window_title(ctx);
         }
         let mut acked: std::collections::HashSet<u32> = std::collections::HashSet::new();
         for msg in drained {
@@ -6061,6 +6077,10 @@ impl Workspace {
     fn ten_thirteen_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
         let _ = radio::broadcast(radio::TEN_THIRTEEN_BROADCAST_BODY);
         radio::mark_self_mayday(std::time::Duration::from_secs(radio::SELF_MAYDAY_TTL_SECS));
+        // Refresh the OS chrome so the 10-13 marker shows up in the
+        // titlebar, dock, and alt-tab — without this the distress signal is
+        // trapped inside the about page until the next tab event.
+        self.update_window_title(ctx);
         ctx.notify();
     }
 
@@ -6080,6 +6100,9 @@ impl Workspace {
         // brief "stood down · channel clear" beat before settling back to
         // routine — the click would otherwise be silent visually.
         radio::mark_self_stand_down();
+        // Drop the 10-13 marker from the OS chrome the moment the operator
+        // stands down, mirroring the en-route auto-clear above.
+        self.update_window_title(ctx);
         ctx.notify();
     }
 
