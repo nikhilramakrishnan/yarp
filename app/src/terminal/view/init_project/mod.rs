@@ -825,14 +825,14 @@ impl InitStepBlock {
                 };
                 Self::render_ready_with_buttons(
                     action_view,
-                    "Would you like to create an AGENTS.md file? Yarp can draft one for you with project-specific standing orders, context, and conventions inferred from your codebase. The PC will use this context as it works the case.",
+                    "Issue AGENTS.md for this casebook? The PC can draft one up with project-specific standing orders, context, and conventions pulled from your codebase — and use it on patrol as they work the case.",
                     app,
                 )
             }
             InitStepStatus::Running => {
                 // AI is generating AGENTS.md - show in-progress state
                 let appearance = Appearance::as_ref(app);
-                RenderableAction::new("Writing up AGENTS.md...", app)
+                RenderableAction::new("Drafting up AGENTS.md...", app)
                     .with_icon(in_progress_icon(appearance).finish())
                     .with_content_item_spacing()
                     .render(app)
