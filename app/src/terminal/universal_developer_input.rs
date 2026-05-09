@@ -986,7 +986,7 @@ fn build_renderable_option_config(
             },
             label: None,
             tooltip: Some(tooltip_config(
-                "Agent Mode",
+                "PC mode",
                 Some(agent_mode_tooltip_subtext(terminal_keybindings)),
                 app,
             )),
