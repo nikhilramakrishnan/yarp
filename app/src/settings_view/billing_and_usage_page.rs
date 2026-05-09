@@ -97,7 +97,7 @@ const SORT_MENU_ITEM_REQUEST_USAGE_DESCENDING_LABEL: &str = "Usage descending";
 const AUTO_RELOAD_EXCEED_LIMIT_WARNING_STRING: &str =
     "Auto reload is off duty — the next reload would blow past your monthly spend cap. Raise the cap to put auto reload back on shift.";
 const AUTO_RELOAD_DELINQUENT_WARNING_STRING: &str =
-    "Held at the desk over a billing issue. Update your payment method to pick up add-on credits.";
+    "Held at the desk over a billing issue. Update your payment method to pick up add-on rations.";
 const RESTRICTED_BILLING_USAGE_WARNING_STRING: &str =
     "Auto reload is off duty after a recent failed reload. Update your payment method and radio it in again.";
 
@@ -439,7 +439,7 @@ impl BillingAndUsagePageView {
             UserWorkspacesEvent::PurchaseAddonCreditsSuccess => {
                 self.purchase_addon_credits_loading = false;
                 self.show_toast(
-                    "Add-on credits on the books",
+                    "Add-on rations on the books",
                     ToastFlavor::Success,
                     ctx,
                 );
@@ -1641,7 +1641,7 @@ impl UsageWidget {
         let ui_builder = appearance.ui_builder();
         let theme = appearance.theme();
 
-        let header = Text::new_inline("Add-on credits", appearance.ui_font_family(), 16.)
+        let header = Text::new_inline("Add-on rations", appearance.ui_font_family(), 16.)
             .with_color(fg.into())
             .with_style(Properties::default().weight(Weight::Bold))
             .finish();
@@ -1697,9 +1697,9 @@ impl UsageWidget {
                     .current_team()
                     .is_some_and(|team| team.billing_metadata.is_on_legacy_paid_plan());
                 let (link_text, suffix) = if is_legacy_paid {
-                    ("Switch to the Build plan", " to purchase add-on credits.")
+                    ("Switch to the Build plan", " to purchase add-on rations.")
                 } else {
-                    ("Upgrade to the Build plan", " to purchase add-on credits.")
+                    ("Upgrade to the Build plan", " to purchase add-on rations.")
                 };
 
                 let text_fragments = vec![
@@ -1754,7 +1754,7 @@ impl UsageWidget {
             // Every other case relates to not being a team admin. If you aren't an admin, we show
             // a generic message telling you to talk to them.
             (_, _, false) => {
-                let paragraph_text = "Radio the chief to pick up add-on credits for the squad.";
+                let paragraph_text = "Radio the chief to pick up add-on rations for the squad.";
                 Some(
                     ui_builder
                         .paragraph(paragraph_text)
@@ -3218,7 +3218,7 @@ impl UsageWidget {
                 ));
             }
             fragments.push(FormattedTextFragment::plain_text(
-                " for more credits and access to more models.",
+                " for more rations and access to more models.",
             ));
             fragments
         };
