@@ -2138,11 +2138,30 @@ fn render_blocked_action(props: BlockedActionProps<'_>, app: &AppContext) -> Box
         }
     }
 
+    // Blocked-action card is the operator's sign-off surface — the PC is
+    // flagging for clearance and this is where you stare. Override the outer
+    // 1px frame on self/peer mayday and the post-ack pulse so the card edge
+    // mirrors the channel state on the rest of the chrome — self → red,
+    // peer → yellow, post-ack 5s → green.
+    let border_color = if crate::radio::self_in_mayday() {
+        appearance.theme().ansi_fg_red()
+    } else if crate::radio::peer_in_mayday() {
+        appearance.theme().ansi_fg_yellow()
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        appearance.theme().ansi_fg_green()
+    } else {
+        internal_colors::neutral_3(theme)
+    };
+
     Expanded::new(
         1.0,
         Container::new(stack.finish())
             .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
-            .with_border(Border::all(1.).with_border_color(internal_colors::neutral_3(theme)))
+            .with_border(Border::all(1.).with_border_color(border_color))
             .finish(),
     )
     .finish()
