@@ -16878,7 +16878,7 @@ impl Workspace {
                         Shrinkable::new(
                             1.,
                             Text::new_inline(
-                                "Sweep sessions, PCs, files…",
+                                "Sweep beats, PCs, case files…",
                                 appearance.ui_font_family(),
                                 14.,
                             )
