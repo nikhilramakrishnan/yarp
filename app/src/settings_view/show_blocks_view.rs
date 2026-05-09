@@ -162,7 +162,7 @@ impl UserOwnedBlock {
         if self.unshare_request_status == UnshareBlockRequestState::InFlight {
             appearance
                 .ui_builder()
-                .label("Pulling...")
+                .label("Pulling off the air…")
                 .with_style(
                     UiComponentStyles::default()
                         .set_font_family_id(appearance.monospace_font_family())
