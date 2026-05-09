@@ -1776,7 +1776,7 @@ impl Input {
                     .as_ref(ctx)
                     .active_conversation(self.terminal_view_id)
                 else {
-                    show_error_toast("No open case file to file out".to_owned(), ctx);
+                    show_error_toast("No open case file to bag.".to_owned(), ctx);
                     return true;
                 };
 
