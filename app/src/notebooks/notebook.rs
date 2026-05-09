@@ -185,7 +185,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::ResetFontSize),
         EditableBinding::new(
             "notebookview:focus_terminal_input",
-            "Focus Terminal Input from Casebook",
+            "Focus the radio mic from the casebook",
             NotebookAction::FocusTerminalInput,
         )
         .with_context_predicate(id!("NotebookView"))
