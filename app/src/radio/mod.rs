@@ -367,9 +367,6 @@ pub fn broadcast(body: impl Into<String>) -> (usize, usize) {
     (delivered, failed)
 }
 
-/// Read this process's inbox without draining it — useful for UI surfaces
-/// that want to show "N pending dispatches" without consuming the messages.
-/// Corrupt files are silently dropped.
 pub fn peek_inbox() -> Vec<Message> {
     let Some(dir) = inbox_dir(std::process::id()) else {
         return Vec::new();
@@ -396,11 +393,10 @@ pub fn peek_inbox() -> Vec<Message> {
         }
     }
     paths_and_msgs.sort_by_key(|(p, _)| p.file_name().map(|s| s.to_os_string()));
-    paths_and_msgs.into_iter().map(|(_, m)| m).collect()
+    let raw: Vec<Message> = paths_and_msgs.into_iter().map(|(_, m)| m).collect();
+    resolve_superseded_emergencies(raw)
 }
 
-/// Drain this process's inbox: returns all pending messages in send order
-/// and removes them from disk. Corrupt files are silently dropped.
 pub fn read_inbox() -> Vec<Message> {
     let Some(dir) = inbox_dir(std::process::id()) else {
         return Vec::new();
@@ -432,7 +428,10 @@ pub fn read_inbox() -> Vec<Message> {
         let _ = fs::remove_file(&path);
         out.push(msg);
     }
-    out
+    // Drain on disk regardless, then drop superseded emergencies from the
+    // returned Vec so callers (en-route ack) don't reply 10-4 to a sender
+    // whose stand-down already resolved their emergency.
+    resolve_superseded_emergencies(out)
 }
 
 /// Most recent dispatch in this process's inbox, or None if empty. Reads
@@ -463,6 +462,43 @@ pub fn latest_dispatch() -> Option<Message> {
 /// always leads the body when broadcast or hailed via the emergency CTA.
 pub fn is_emergency_body(body: &str) -> bool {
     body.trim_start().starts_with("10-13")
+}
+
+/// Classify a message body as a stand-down — the originator declaring their
+/// 10-13 resolved. Receivers use this to hide superseded emergencies from
+/// the same sender so the UI reflects "situation handled" instead of staying
+/// red until manually acked.
+pub fn is_stand_down_body(body: &str) -> bool {
+    body.trim() == STAND_DOWN_BROADCAST_BODY.trim()
+}
+
+/// Filter superseded emergencies: when a sender's stand-down arrives after
+/// their 10-13, the 10-13 is no longer urgent — the situation resolved on
+/// the originator's side. Walks forward (messages are arrival-sorted), tracks
+/// each sender's latest stand-down, and drops 10-13s from that sender at or
+/// before that timestamp. The stand-down message itself stays so the receiver
+/// still sees the resolution as latest dispatch.
+fn resolve_superseded_emergencies(mut msgs: Vec<Message>) -> Vec<Message> {
+    use std::collections::HashMap;
+    let mut latest_stand_down: HashMap<u32, u64> = HashMap::new();
+    for m in &msgs {
+        if is_stand_down_body(&m.body) {
+            let entry = latest_stand_down.entry(m.from_pid).or_insert(0);
+            if m.sent_at_unix > *entry {
+                *entry = m.sent_at_unix;
+            }
+        }
+    }
+    msgs.retain(|m| {
+        if !is_emergency_body(&m.body) {
+            return true;
+        }
+        match latest_stand_down.get(&m.from_pid) {
+            Some(&t) => m.sent_at_unix > t,
+            None => true,
+        }
+    });
+    msgs
 }
 
 
