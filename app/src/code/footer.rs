@@ -1173,7 +1173,7 @@ impl CodeFooterView {
                     .to_yarpui_icon(ThemeFill::Solid(text_color))
                     .finish()
             },
-            "Open logs",
+            "Pull the duty log",
             CodeFooterViewAction::OpenLogs,
         )
     }
