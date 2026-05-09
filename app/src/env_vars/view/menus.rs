@@ -404,7 +404,7 @@ impl EnvVarCollectionView {
 
         #[cfg(feature = "local_fs")]
         menu_items.push(
-            MenuItemFields::new("Export")
+            MenuItemFields::new("Hand off the file")
                 .with_on_select_action(EnvVarCollectionAction::Export)
                 .with_icon(Icon::Download)
                 .into_item(),
