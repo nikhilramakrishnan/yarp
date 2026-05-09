@@ -5969,7 +5969,7 @@ impl Workspace {
         }
 
         let message = if count == 0 {
-            "No other stations on duty.".to_owned()
+            "Channel's quiet — no other stations on duty.".to_owned()
         } else if count == 1 {
             "Radioed 1 other station.".to_owned()
         } else {
