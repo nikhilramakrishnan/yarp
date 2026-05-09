@@ -279,7 +279,7 @@ impl View for TerminalViewZeroStateBlock {
                         Shrinkable::new(
                             1.,
                             render_standard_message(
-                                Message::from_text("autodetect agent prompts in terminal sessions"),
+                                Message::from_text("autodetect officer prompts on the beat"),
                                 app,
                             ),
                         )

@@ -1111,7 +1111,7 @@ impl TerminalView {
 
 fn default_agent_conversation_title(is_ambient_agent: bool) -> String {
     if is_ambient_agent {
-        "New cloud agent".to_owned()
+        "New cloud case file".to_owned()
     } else {
         "New case file".to_owned()
     }
