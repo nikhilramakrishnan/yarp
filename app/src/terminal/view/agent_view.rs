@@ -120,7 +120,7 @@ impl TerminalView {
             ctx.spawn(future, move |me, conversation, ctx| {
                 let Some(conversation) = conversation else {
                     me.show_error_toast(
-                        format!("Failed to load conversation with id: {conversation_id}"),
+                        format!("Couldn't pull up case file {conversation_id}"),
                         ctx,
                     );
                     return;

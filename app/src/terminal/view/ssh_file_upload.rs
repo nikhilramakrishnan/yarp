@@ -365,9 +365,9 @@ impl FileUpload {
     /// assembly.
     fn render_file_detail_text(&self, file: &FileUploadInfo) -> FormattedText {
         let status_string = match file.status {
-            FileUploadStatus::Started | FileUploadStatus::AwaitingPassword => "Uploading",
-            FileUploadStatus::Completed { successful: true } => "Uploaded",
-            FileUploadStatus::Completed { successful: false } => "Failed to upload",
+            FileUploadStatus::Started | FileUploadStatus::AwaitingPassword => "On the wire",
+            FileUploadStatus::Completed { successful: true } => "Wired up",
+            FileUploadStatus::Completed { successful: false } => "Wire dropped on",
         };
 
         let mut file_iter = file.local_file_paths.iter().peekable();
