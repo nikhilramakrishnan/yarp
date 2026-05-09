@@ -77,8 +77,8 @@ impl SshRemoteServerChoiceView {
                 rich_navigation_button(
                     "Install Yarp's SSH extension".to_string(),
                     Some(
-                        "Install Yarp's extension to enable agent features like file browsing, \
-                         code review, and intelligent command completions in this session."
+                        "Install Yarp's extension to give the PC duties like file browsing, \
+                         code review, and command suggestions on this beat."
                             .to_string(),
                     ),
                     /* recommended */ true,
@@ -88,8 +88,8 @@ impl SshRemoteServerChoiceView {
                 rich_navigation_button(
                     "Carry on without it".to_string(),
                     Some(
-                        "You'll still get a Yarpified experience just without the coding \
-                         features."
+                        "You'll still get a Yarpified shift, just without the coding \
+                         duties."
                             .to_string(),
                     ),
                     /* recommended */ false,
