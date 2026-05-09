@@ -43,7 +43,7 @@ const INLINE_BANNER_SPACING: f32 = 8.;
 const INLINE_BANNER_BUTTON_PADDING: f32 = 8.;
 
 const DELINQUENT_DUE_TO_PAYMENT_ISSUE_TOOLTIP_MESSAGE: &str = "Locked down — payment's gone south";
-const OUT_OF_REQUESTS_TOOLTIP_MESSAGE: &str = "Out of credits";
+const OUT_OF_REQUESTS_TOOLTIP_MESSAGE: &str = "Out of rations";
 
 /// Types of zero-state prompt suggestions.
 #[derive(Debug, Copy, Clone, Serialize)]
