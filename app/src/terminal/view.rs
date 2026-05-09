@@ -22307,7 +22307,7 @@ impl TerminalView {
             render_hoverable_block_button(
                 icon,
                 Some(ToolbeltButtonTooltip {
-                    label: "Filter block output".to_string(),
+                    label: "Sift the block output".to_string(),
                     tool_tip_below_button,
                 }),
                 should_disable_filter_button,
