@@ -309,16 +309,34 @@ impl View for TerminalViewZeroStateBlock {
         .with_cursor(Cursor::PointingHand)
         .finish();
 
+        // Terminal-mode zero state block edge mirrors the radio palette so
+        // the operator's eye sees a single contiguous stripe across all the
+        // chrome above the input: self → red, peer → yellow, post-ack 5s →
+        // green, theme.outline fallback. Matches the agent-view zero state.
+        let zero_state_border_color = if crate::radio::self_in_mayday() {
+            Some(theme.ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(theme.ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(theme.ansi_fg_green())
+        } else {
+            None
+        };
+        let zero_state_border = Border::new(1.).with_sides(true, false, true, false);
+        let zero_state_border = match zero_state_border_color {
+            Some(color) => zero_state_border.with_border_color(color),
+            None => zero_state_border.with_border_fill(theme.outline()),
+        };
         Stack::new()
             .with_child(
                 Container::new(content.finish())
                     .with_horizontal_padding(*terminal::view::PADDING_LEFT)
                     .with_vertical_padding(styles::CONTAINER_VERTICAL_PADDING)
-                    .with_border(
-                        Border::new(1.)
-                            .with_sides(true, false, true, false)
-                            .with_border_fill(theme.outline()),
-                    )
+                    .with_border(zero_state_border)
                     .finish(),
             )
             .with_positioned_child(
