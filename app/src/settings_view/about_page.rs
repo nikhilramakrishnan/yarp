@@ -624,7 +624,9 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // Stand-down senders pick up a "(stood down)" suffix so a quiet roster
     // line still tells the operator "this name is here because their call
     // just closed, not because they're chatty" — symmetric with the 10-13
-    // prefix and matches the earlier-dispatches preview's "stood down" tag.
+    // prefix. Verb form here ("stood down") rather than the earlier-
+    // dispatches preview's tag form ("all-clear"): the inbox row is naming
+    // what each peer *did*, while the preview is naming the *kind* of frag.
     // Suffixes drop when the noun already covers the kind (all-hails /
     // all-stand-downs) so the row doesn't read "3 hails from … (Cooper
     // (hailing), Danny (hailing))".
@@ -918,7 +920,7 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     let mut sorted_iter = sorted.into_iter();
     let _newest = sorted_iter.next();
     // Promote stand-down fragments ahead of routine chatter so the preview
-    // leads with "Cooper (case-foo · 12s) — stood down" before any quoted
+    // leads with "Cooper (case-foo · 12s) — all-clear" before any quoted
     // chatter snippet. Symmetric to the inbox-line "(stood down)" badge:
     // resolutions deserve top billing in the secondary surface, and
     // recency-only ordering buries them when a chatty peer fires after the
