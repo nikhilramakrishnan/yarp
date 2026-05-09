@@ -1001,7 +1001,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::LaunchConfigurations.is_enabled()),
         EditableBinding::new(
             "workspace:toggle_files_palette",
-            "Toggle Files Palette",
+            "Toggle the case file palette",
             WorkspaceAction::TogglePalette {
                 mode: PaletteMode::Files,
                 source: PaletteSource::Keybinding,
