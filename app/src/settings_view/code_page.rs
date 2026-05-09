@@ -1512,8 +1512,8 @@ impl CodePageWidget {
                 Some(SyncProgress::Syncing {
                     completed_nodes,
                     total_nodes,
-                }) => Cow::from(format!("Syncing - {completed_nodes} / {total_nodes}")),
-                None => Cow::from("Syncing..."),
+                }) => Cow::from(format!("Filing - {completed_nodes} / {total_nodes}")),
+                None => Cow::from("Filing..."),
             };
             (progress_text, theme.disabled_ui_text_color().into_solid())
         } else if let Some(completed_successfully) = index_state.last_sync_successful() {
