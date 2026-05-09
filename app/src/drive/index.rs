@@ -2546,7 +2546,7 @@ impl DriveIndex {
         let text = Container::new(
             appearance
                 .ui_builder()
-                .span("Trash".to_string())
+                .span("Incinerator".to_string())
                 .with_style(UiComponentStyles {
                     font_family_id: Some(appearance.ui_font_family()),
                     font_size: Some(TITLE_FONT_SIZE),
