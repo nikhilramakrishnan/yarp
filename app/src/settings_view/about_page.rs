@@ -159,6 +159,7 @@ impl SettingsWidget for AboutPageWidget {
                 .with_child(self.precinct_roster_row(appearance))
                 .with_child(self.precinct_inbox_row(appearance))
                 .with_child(self.precinct_latest_dispatch_row(appearance))
+                .with_child(self.precinct_earlier_dispatches_row(appearance))
                 .with_child(self.mic_check_row(appearance))
                 .with_child(self.direct_dispatch_row(appearance))
                 .with_child({
@@ -577,6 +578,65 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
 
 use radio::is_emergency_body as dispatch_is_emergency;
 
+// Compact preview of dispatches sitting *behind* the latest one. The
+// latest-dispatch row already shows its body and sender; this surface fills
+// the gap between "1 unread shown" and the inbox-row's volume tally by
+// naming the next 1-2 senders and a short snippet so the operator can tell
+// whether the queue is "Cooper said the same thing twice" vs "three
+// different officers all chiming in" without acking and reading.
+//
+// Skipped when only the latest is queued (no "earlier" exists), or when
+// every queued message is an en-route ack during a self-10-13 — in that
+// frame the dispatch row already enumerates responders, so an "earlier"
+// line would just repeat names.
+fn precinct_earlier_dispatches_line() -> Option<String> {
+    let inbox = radio::peek_inbox();
+    if inbox.len() < 2 {
+        return None;
+    }
+    let self_mayday = radio::self_in_mayday();
+    if self_mayday && inbox.iter().all(|m| radio::is_en_route_body(&m.body)) {
+        return None;
+    }
+    // Walk newest-first, skip the absolute newest (already shown above), and
+    // grab up to two earlier ones, deduped by sender so a chatty officer
+    // doesn't crowd the preview.
+    let mut sorted: Vec<radio::Message> = inbox;
+    sorted.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
+    let mut iter = sorted.into_iter();
+    let _newest = iter.next();
+    let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
+    let mut frags: Vec<String> = Vec::new();
+    for msg in iter {
+        if !seen.insert(msg.from_call_sign.clone()) {
+            continue;
+        }
+        let age = radio::format_dispatch_age(msg.sent_at_unix);
+        let snippet: String = msg.body.chars().take(28).collect();
+        let snippet = if msg.body.chars().count() > 28 {
+            format!("{snippet}…")
+        } else {
+            snippet
+        };
+        let frag = if snippet.is_empty() {
+            format!("{} ({age})", msg.from_call_sign)
+        } else {
+            format!(
+                "{} ({age}) \u{2014} \u{201C}{snippet}\u{201D}",
+                msg.from_call_sign
+            )
+        };
+        frags.push(frag);
+        if frags.len() >= 2 {
+            break;
+        }
+    }
+    if frags.is_empty() {
+        return None;
+    }
+    Some(format!("Earlier: {}", frags.join("; ")))
+}
+
 impl AboutPageWidget {
     fn mic_check_row(&self, appearance: &Appearance) -> Box<dyn Element> {
         // No peers on the channel — nothing to broadcast at, with one
@@ -807,6 +867,17 @@ impl AboutPageWidget {
             return Empty::new().finish();
         };
         styled_precinct_text_row(appearance, line, emergency, false, 4.)
+    }
+
+    fn precinct_earlier_dispatches_row(&self, appearance: &Appearance) -> Box<dyn Element> {
+        let Some(line) = precinct_earlier_dispatches_line() else {
+            return Empty::new().finish();
+        };
+        // Routine styling — earlier dispatches are *context*, not the
+        // urgent surface; the latest-dispatch row above already owns red.
+        // Tighter top margin so the preview reads as a continuation of the
+        // dispatch row rather than a fresh section.
+        styled_precinct_text_row(appearance, line, false, false, 2.)
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
