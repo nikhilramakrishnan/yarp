@@ -87,9 +87,9 @@ pub struct NotificationsSettings {
     #[schemars(description = "Whether to notify when a password prompt is detected.")]
     pub is_password_prompt_enabled: bool,
 
-    #[schemars(description = "Whether to notify when an agent task completes.")]
+    #[schemars(description = "Whether to call out when an officer's detail is complete.")]
     pub is_agent_task_completed_enabled: bool,
-    #[schemars(description = "Whether to notify when a session needs attention.")]
+    #[schemars(description = "Whether to call out when a session needs attention.")]
     pub is_needs_attention_enabled: bool,
 
     #[schemars(description = "Whether to play a sound with notifications.")]
