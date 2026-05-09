@@ -112,9 +112,9 @@ const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_SUFFIX: &str = ".";
 const ENTERPRISE_USAGE_CALLOUT_BODY_NON_ADMIN: &str =
     "Enterprise rations don't show up in full here yet. Flag a station admin for the detailed tally.";
 
-const ADDON_CREDITS_DESCRIPTION: &str = "Add-on credits ship in prepaid packages that roll over each billing cycle and expire after one year. The more you stock the locker, the better the per-credit rate. Once your base playbook quota is spent, add-on credits get drawn down.";
+const ADDON_CREDITS_DESCRIPTION: &str = "Add-on rations ship in prepaid packages that roll over each billing cycle and expire after one year. The more you stock the locker, the better the per-ration rate. Once your base playbook quota is spent, add-on rations get drawn down.";
 const ADDITIONAL_ADDON_CREDITS_DESCRIPTION_FOR_TEAM: &str =
-    "Add-on credits in the squad locker are shared across the unit.";
+    "Add-on rations in the squad locker are shared across the unit.";
 
 // Cloud agent trial widget constants.
 const AMBIENT_AGENT_TRIAL_TITLE: &str = "Cloud agent trial";
@@ -2185,7 +2185,7 @@ impl UsageWidget {
             if let (Some(count), Some(cost)) = (total_overages_count, total_overages_cost) {
                 if count == 1 {
                     (
-                        "1 credit".to_string(),
+                        "1 ration".to_string(),
                         format!("${:.2}", cost as f64 / 100.0),
                     )
                 } else {
