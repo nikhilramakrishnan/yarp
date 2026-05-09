@@ -377,19 +377,25 @@ fn precinct_status_line() -> (String, bool) {
     // moment — but plural forms drop "just" so "Cooper & Danny stood down"
     // doesn't trip on the awkward "Cooper & Danny just stood down".
     // Hail-aware fallback: when no stand-downs are queued but peers are
-    // hailing in, "all clear" reads stale — the channel is alive. Surface
-    // the hail count so the banner conveys "quiet but populated" rather
-    // than "nobody home". Stand-downs still win the slot because resolution
-    // is the louder signal; this only kicks in when stand_down_names is
-    // empty.
-    let hailing_count = latest_body_per_sender
-        .values()
-        .filter(|b| radio::is_hail_body(b))
-        .count();
+    // hailing in, "all clear" reads stale — the channel is alive. Mirror
+    // the stood_down name-enumeration pattern (1-3 names, count fallback)
+    // so the banner reads "Cooper checking in" rather than the mechanical
+    // "1 checking in" — same rhythm as "Cooper just stood down". Stand-downs
+    // still win the slot; this only kicks in when stand_down_names is empty.
+    let mut hailing_names: Vec<String> = latest_body_per_sender
+        .iter()
+        .filter(|(_, body)| radio::is_hail_body(body))
+        .map(|(name, _)| name.clone())
+        .collect();
+    hailing_names.sort();
     let calm_phrase: String = match stood_down_names.as_slice() {
-        [] if hailing_count == 1 => "1 checking in".to_string(),
-        [] if hailing_count > 1 => format!("{hailing_count} checking in"),
-        [] => "all clear".to_string(),
+        [] => match hailing_names.as_slice() {
+            [] => "all clear".to_string(),
+            [a] => format!("{a} checking in"),
+            [a, b] => format!("{a} & {b} checking in"),
+            [a, b, c] => format!("{a}, {b} & {c} checking in"),
+            names => format!("{} checking in", names.len()),
+        },
         [a] => format!("{a} just stood down"),
         [a, b] => format!("{a} & {b} stood down"),
         [a, b, c] => format!("{a}, {b} & {c} stood down"),
