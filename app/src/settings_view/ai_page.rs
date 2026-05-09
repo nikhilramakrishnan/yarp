@@ -4437,7 +4437,7 @@ impl AgentsWidget {
                     "No MCP servers on your roster yet. Once you swear one in, you can set how far the Yarp Agent can patrol on its own when working with them. ",
                 ),
                 FormattedTextFragment::hyperlink_action(
-                    "Add a server",
+                    "Swear one in",
                     AISettingsPageAction::OpenMCPServerCollection,
                 ),
                 FormattedTextFragment::plain_text(" or "),
