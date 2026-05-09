@@ -271,8 +271,8 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::custom(
             SettingActionPairDescriptions::new(
-                "Show Fuzz changelog in new agent conversation view",
-                "Hide Fuzz changelog in new agent conversation view",
+                "Show Fuzz changelog in new case file view",
+                "Hide Fuzz changelog in new case file view",
             ),
             builder(SettingsAction::AI(
                 AISettingsPageAction::ToggleShowOzUpdatesInZeroState,
