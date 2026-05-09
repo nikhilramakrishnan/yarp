@@ -591,7 +591,7 @@ impl SubshellsWidget {
 
         column.add_child(
             view.build_input_list(
-                "Added commands",
+                "Logged-in commands",
                 &yarpify_settings.added_subshell_commands,
                 &view.remove_added_command_button_states,
                 YarpifyPageAction::RemoveAddedCommand,
@@ -603,7 +603,7 @@ impl SubshellsWidget {
 
         column.add_child(
             view.build_input_list(
-                "Denylisted commands",
+                "No-go commands",
                 &yarpify_settings.subshell_command_denylist,
                 &view.remove_denylisted_command_button_states,
                 YarpifyPageAction::RemoveDenylistedCommand,
@@ -789,7 +789,7 @@ impl SettingsWidget for SSHWidget {
                     let yarpify_settings = YarpifySettings::as_ref(app);
                     column.add_child(
                         view.build_input_list(
-                            "Denylisted hosts",
+                            "No-go hosts",
                             &yarpify_settings.ssh_hosts_denylist,
                             &view.remove_denylisted_ssh_button_states,
                             YarpifyPageAction::RemoveDenylistedSshHost,
