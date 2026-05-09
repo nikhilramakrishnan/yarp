@@ -964,14 +964,14 @@ pub fn init(app: &mut AppContext) {
         // (i.e. whether notifications are already on or off).
         EditableBinding::new(
             "workspace:toggle_notifications_on",
-            "Turn notifications on",
+            "Turn Briefings on",
             WorkspaceAction::ToggleNotifications,
         )
         .with_group(bindings::BindingGroup::Notifications.as_str())
         .with_context_predicate(id!("Workspace") & !id!("Notifications_Enabled")),
         EditableBinding::new(
             "workspace:toggle_notifications_off",
-            "Turn notifications off",
+            "Turn Briefings off",
             WorkspaceAction::ToggleNotifications,
         )
         .with_group(bindings::BindingGroup::Notifications.as_str())
@@ -990,7 +990,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::NavigationPalette),
         EditableBinding::new(
             "workspace:toggle_launch_config_palette",
-            "Launch configuration palette",
+            "Roll-out kit palette",
             WorkspaceAction::TogglePalette {
                 mode: PaletteMode::LaunchConfig,
                 source: PaletteSource::Keybinding,
@@ -1044,7 +1044,7 @@ pub fn init(app: &mut AppContext) {
             .with_enabled(|| ContextFlag::PromptForVersionUpdates.is_enabled()),
             EditableBinding::new(
                 "workspace:check_for_updates",
-                "Check for updates",
+                "Check for fresh issue",
                 WorkspaceAction::CheckForUpdate,
             )
             .with_group(bindings::BindingGroup::AutoUpdate.as_str())
