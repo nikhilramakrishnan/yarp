@@ -147,8 +147,8 @@ const PRIMARY_HEADER_FONT_SIZE: f32 = 24.;
 const AI_SETTINGS_DROPDOWN_WIDTH: f32 = 250.;
 const AI_SETTINGS_DROPDOWN_MAX_HEIGHT: f32 = 250.;
 const NEXT_COMMAND_DESCRIPTION: &str = "Let the PC flag the next command to bark based on your duty log, outputs, and common playbooks.";
-const PROMPT_SUGGESTIONS_DESCRIPTION: &str = "Let AI flag natural language prompts as inline banners in the input, based on recent commands and outputs on the wire.";
-const SUGGESTED_CODE_BANNERS_DESCRIPTION: &str = "Let AI flag code diffs and queries as inline banners in the blocklist, based on recent commands and outputs on the wire.";
+const PROMPT_SUGGESTIONS_DESCRIPTION: &str = "Let the PC put natural language prompts on BOLO as inline banners in the input, based on recent commands and outputs on the wire.";
+const SUGGESTED_CODE_BANNERS_DESCRIPTION: &str = "Let the PC put code diffs and queries on BOLO as inline banners in the case file, based on recent commands and outputs on the wire.";
 const NATURAL_LANGUAGE_AUTOSUGGESTIONS: &str =
     "Let AI flag natural language autosuggestions based on recent commands and outputs on the wire.";
 const SHARED_BLOCK_TITLE_GENERATION_DESCRIPTION: &str =
