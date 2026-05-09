@@ -9,7 +9,7 @@ use super::{
 };
 use crate::{
     appearance::Appearance, channel::ChannelState, radio, themes::theme::ColorScheme,
-    workspace::WorkspaceAction,
+    ui_components::blended_colors, workspace::WorkspaceAction,
 };
 use yarpui::{
     assets::asset_cache::AssetSource,
@@ -974,7 +974,14 @@ use radio::is_emergency_body as dispatch_is_emergency;
 // every queued message is an en-route ack during a self-10-13 — in that
 // frame the dispatch row already enumerates responders, so an "earlier"
 // line would just repeat names.
-fn precinct_earlier_dispatches_line() -> Option<String> {
+// Anything older than this in the earlier-dispatches preview reads at
+// reduced opacity so the operator can glance the row and clock that the
+// queue has gone cold without parsing every age suffix. 30m matches the
+// shift-handoff vibe — within half an hour, leftovers are still warm
+// context; past it, they're tape that hasn't been cleared yet.
+const EARLIER_DISPATCH_STALE_SECS: u64 = 1800;
+
+fn precinct_earlier_dispatches_line() -> Option<(String, bool)> {
     let inbox = radio::peek_inbox();
     if inbox.len() < 2 {
         return None;
@@ -1035,6 +1042,11 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         Other,
     }
     let mut frags: Vec<(Kind, String)> = Vec::new();
+    // Track the oldest sent_at among kept frags so the row builder can
+    // dim the line when the queue has stopped advancing — the reader still
+    // sees the names, but the preview yields visual weight to the latest
+    // dispatch row above it.
+    let mut oldest_sent: Option<u64> = None;
     for msg in iter {
         if !seen.insert(msg.from_call_sign.clone()) {
             continue;
@@ -1081,6 +1093,10 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
             )
         };
         frags.push((kind, frag));
+        oldest_sent = Some(match oldest_sent {
+            Some(prev) => prev.min(msg.sent_at_unix),
+            None => msg.sent_at_unix,
+        });
         if frags.len() >= 2 {
             break;
         }
@@ -1088,6 +1104,13 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     if frags.is_empty() {
         return None;
     }
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    let stale = oldest_sent
+        .map(|t| now.saturating_sub(t) > EARLIER_DISPATCH_STALE_SECS)
+        .unwrap_or(false);
     // Uniform-kind collapse: if every preview frag is the same kind of
     // routine signal, drop the per-frag "— all-clear" / "— hail" suffix
     // and bake the noun into the lead. "Earlier all-clears: Cooper (12s);
@@ -1118,7 +1141,7 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     } else {
         ("Earlier", frags.into_iter().map(|(_, f)| f).collect())
     };
-    Some(format!("{lead}: {}", frag_texts.join("; ")))
+    Some((format!("{lead}: {}", frag_texts.join("; ")), stale))
 }
 
 impl AboutPageWidget {
@@ -1404,14 +1427,31 @@ impl AboutPageWidget {
     }
 
     fn precinct_earlier_dispatches_row(&self, appearance: &Appearance) -> Box<dyn Element> {
-        let Some(line) = precinct_earlier_dispatches_line() else {
+        let Some((line, stale)) = precinct_earlier_dispatches_line() else {
             return Empty::new().finish();
         };
         // Routine styling — earlier dispatches are *context*, not the
         // urgent surface; the latest-dispatch row above already owns red.
         // Tighter top margin so the preview reads as a continuation of the
-        // dispatch row rather than a fresh section.
-        styled_precinct_text_row(appearance, line, false, false, 2.)
+        // dispatch row rather than a fresh section. When the oldest queued
+        // frag has crossed the stale threshold (30m), drop to the muted
+        // sub-text color so the operator can glance and clock that the
+        // queue isn't moving without re-parsing every age suffix.
+        if !stale {
+            return styled_precinct_text_row(appearance, line, false, false, 2.);
+        }
+        let theme = appearance.theme();
+        let ui_builder = appearance.ui_builder();
+        ui_builder
+            .span(line)
+            .with_soft_wrap()
+            .with_style(UiComponentStyles {
+                font_color: Some(blended_colors::text_sub(theme, theme.background())),
+                ..Default::default()
+            })
+            .build()
+            .with_margin_top(2.)
+            .finish()
     }
 
     fn precinct_latest_dispatch_row(&self, appearance: &Appearance) -> Box<dyn Element> {
