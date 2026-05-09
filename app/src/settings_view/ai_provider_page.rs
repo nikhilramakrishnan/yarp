@@ -110,7 +110,7 @@ impl SettingsWidget for AIProviderWidget {
 
         let intro = ui
             .span(
-                "Yarp's in-house AI desk (command suggestions, commit messages, the AI \
+                "Yarp's in-house PC desk (command suggestions, commit messages, the PC \
                  assistant panel) radios the LLM provider wired up below. Third-party CLI \
                  harnesses (Claude Code, OpenCode, Gemini) carry their own credentials and \
                  don't ride this channel."
