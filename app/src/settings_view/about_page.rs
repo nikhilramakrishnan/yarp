@@ -591,6 +591,17 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     const MAX: usize = 4;
     let overflow = order.len().saturating_sub(MAX);
     order.truncate(MAX);
+    // When the entire inbox is one *kind* of routine traffic — all hails or
+    // all stand-downs — promote that into the noun ("3 hails from 3 officers"
+    // beats "3 pending dispatches from 3 officers (Cooper (hailing), …)") and
+    // drop the now-redundant per-name suffix. Emergency rendering owns the
+    // distress path, so this only kicks in when no 10-13 is queued.
+    let all_hails = !emergency
+        && !inbox.is_empty()
+        && inbox.iter().all(|m| radio::is_hail_body(&m.body));
+    let all_stand_downs = !emergency
+        && !inbox.is_empty()
+        && inbox.iter().all(|m| radio::is_stand_down_body(&m.body));
     // Tag distressed senders inline with the 10-13 code so a multi-sender
     // inbox doesn't leave the operator guessing which officer triggered the
     // red — matches the latest-dispatch row's "10-13 · <officer>" lead.
@@ -598,12 +609,15 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // line still tells the operator "this name is here because their call
     // just closed, not because they're chatty" — symmetric with the 10-13
     // prefix and matches the earlier-dispatches preview's "stood down" tag.
+    // Suffixes drop when the noun already covers the kind (all-hails /
+    // all-stand-downs) so the row doesn't read "3 hails from … (Cooper
+    // (hailing), Danny (hailing))".
     let render_name = |name: &str| -> String {
         if distressed.contains(name) {
             format!("10-13 {name}")
-        } else if stood_down.contains(name) {
+        } else if stood_down.contains(name) && !all_stand_downs {
             format!("{name} (stood down)")
-        } else if hailing.contains(name) {
+        } else if hailing.contains(name) && !all_hails {
             format!("{name} (hailing)")
         } else {
             name.to_string()
@@ -627,6 +641,18 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
             "1 unit en route".to_string()
         } else {
             format!("{total} units en route")
+        }
+    } else if all_stand_downs {
+        if total == 1 {
+            "1 stand-down".to_string()
+        } else {
+            format!("{total} stand-downs")
+        }
+    } else if all_hails {
+        if total == 1 {
+            "1 hail".to_string()
+        } else {
+            format!("{total} hails")
         }
     } else if total == 1 {
         "1 pending dispatch".to_string()
