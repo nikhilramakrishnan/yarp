@@ -3060,7 +3060,7 @@ impl UpdateEnvironmentForm {
         let button_text = if is_loading {
             "Drawing it up…"
         } else {
-            "Suggest image"
+            "Pitch an image"
         };
 
         let tooltip_text = "Yarp will pitch a Docker image based on the repos you've called in.";
