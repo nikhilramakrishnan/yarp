@@ -50,7 +50,7 @@ impl SessionType {
     pub(crate) fn pill_label(&self) -> &'static str {
         match self {
             SessionType::Terminal => "Terminal",
-            SessionType::Fuzz => "Built in agent",
+            SessionType::Fuzz => "In-house PC",
             SessionType::CliAgent(CLIAgent::Claude) => "Claude",
             SessionType::CliAgent(CLIAgent::Codex) => "Codex",
             SessionType::CliAgent(CLIAgent::Gemini) => "Gemini",
