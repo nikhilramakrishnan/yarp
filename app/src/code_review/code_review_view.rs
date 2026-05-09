@@ -6812,7 +6812,7 @@ impl CodeReviewView {
                 });
                 self.git_operations_chevron.update(ctx, |button, ctx| {
                     button.set_disabled(disabled, ctx);
-                    button.set_tooltip(disabled.then_some("No git actions available"), ctx);
+                    button.set_tooltip(disabled.then_some("No git moves on the books."), ctx);
                 });
             }
             PrimaryGitActionMode::Push => {
