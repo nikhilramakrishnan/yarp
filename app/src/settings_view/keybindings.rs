@@ -1126,7 +1126,7 @@ impl SettingsWidget for KeybindingsWidget {
 
         let subheader = render_sub_header(
             appearance,
-            "Configure keyboard shortcuts",
+            "Set the radio shortcuts",
             local_only_icon_state,
         );
         let description = self.render_description(view.bindings.as_ref(), appearance);

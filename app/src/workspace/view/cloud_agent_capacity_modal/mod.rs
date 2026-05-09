@@ -277,9 +277,9 @@ impl CloudAgentCapacityModal {
         let content = content.finish();
         let cta_button = if show_cta {
             let cta_button_label = if can_upgrade {
-                "Upgrade plan"
+                "Upgrade kit"
             } else {
-                "Open billing"
+                "Open the rations book"
             };
             Some(
                 appearance
