@@ -37,7 +37,7 @@ const FOLDER_TITLE: &str = "Folder name";
 const ENV_VAR_COLLECTION_TITLE: &str = "Collection name";
 const CREATE_BUTTON_TEXT: &str = "File it";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
-const RENAME_BUTTON_TEXT: &str = "Rename";
+const RENAME_BUTTON_TEXT: &str = "Re-file";
 
 /// Struct holding necessary infromation and states for the dialog
 /// that opens when creating or updating a folder or notebook.
