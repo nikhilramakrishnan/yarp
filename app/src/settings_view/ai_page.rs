@@ -3963,7 +3963,7 @@ impl AgentsWidget {
         let is_any_ai_enabled = ai_settings.is_any_ai_enabled(app);
         let permissions_subheader = Container::new(render_custom_size_header(
             appearance,
-            "Permissions",
+            "Clearances",
             14.0,
             Some(styles::header_font_color(is_any_ai_enabled, app)),
         ))
@@ -4196,7 +4196,7 @@ impl AgentsWidget {
             appearance,
         );
         render_ai_list(
-            "Command denylist",
+            "Command no-go list",
             "Regex patterns for commands the Yarp Agent must always radio dispatch for clearance before running.",
             list,
             view,
@@ -4229,7 +4229,7 @@ impl AgentsWidget {
         );
 
         render_ai_list(
-            "Command allowlist",
+            "Command go-ahead list",
             "Regex patterns for commands the Yarp Agent can run on its own beat without calling in.",
             list,
             view,
@@ -4265,7 +4265,7 @@ impl AgentsWidget {
         );
 
         render_ai_list(
-            "Directory allowlist",
+            "Directory go-ahead list",
             "Cleared beats — the agent has file access to these directories.",
             list,
             view,
@@ -4350,7 +4350,7 @@ impl AgentsWidget {
     ) -> Box<dyn Element> {
         let code_settings = CodeSettings::as_ref(app);
         let toggle = render_ai_setting_toggle::<CodebaseContextEnabled>(
-            "Codebase Context",
+            "Repo Context",
             AISettingsPageAction::ToggleCodebaseContext,
             *code_settings.codebase_context_enabled,
             ai_settings.is_any_ai_enabled(app),
@@ -4839,7 +4839,7 @@ impl AIInputWidget {
 
         section
             .with_child(render_ai_setting_label::<AICommandDenylist>(
-                "Natural language denylist".to_owned(),
+                "Plain-English no-go list".to_owned(),
                 is_toggleable,
                 &view.local_only_icon_tooltip_states,
                 app,
