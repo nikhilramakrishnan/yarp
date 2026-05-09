@@ -174,7 +174,7 @@ impl DetailsBar {
         match editor.state {
             EditorState::None => appearance
                 .ui_builder()
-                .span("Reading the file")
+                .span("Cracking open the case file")
                 .with_style(base_text_styles)
                 .build()
                 .finish(),

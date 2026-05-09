@@ -14,7 +14,7 @@ use crate::{
 
 const DEFAULT_DROPDOWN_WIDTH: f32 = 380.;
 /// Placeholder text shown in the dropdown top bar while branches are loading.
-const LOADING_PLACEHOLDER: &str = "Fetching branches\u{2026}";
+const LOADING_PLACEHOLDER: &str = "Pulling beat list\u{2026}";
 
 /// A filterable dropdown that lists local git branches for the given repo path.
 ///
