@@ -225,20 +225,35 @@ fn sandford_population_line() -> (String, bool) {
 fn self_signon_line() -> (String, bool) {
     let sign = radio::self_call_sign();
     let self_calling = radio::self_in_mayday();
-    let inbox_emergency = radio::peek_inbox()
+    // Distinct distressed-peer call signs in our inbox — used both for the
+    // signon's emergency flag and to name the peer when only one is in
+    // distress ("responding to Danny's 10-13") so the row tells the operator
+    // which case file to flip to without scrolling to the dispatch row.
+    let distressed_peers: std::collections::HashSet<String> = radio::peek_inbox()
         .iter()
-        .any(|m| dispatch_is_emergency(&m.body));
+        .filter(|m| dispatch_is_emergency(&m.body))
+        .map(|m| m.from_call_sign.clone())
+        .collect();
+    let inbox_emergency = !distressed_peers.is_empty();
     // Two distinct urgent states feed the signon:
     //   self-mayday   — *we* broadcast a 10-13, peers may not have responded yet
     //   inbox emergency — *they* broadcast a 10-13, we're the responder
     // Self-mayday outranks responder framing because your own emergency is
     // the more pressing duty state. Both flip the row to the red rhythm.
-    let status = if self_calling {
-        "calling 10-13"
-    } else if inbox_emergency {
-        "responding to 10-13"
+    let responder_label = if distressed_peers.len() == 1 {
+        // Borrow the single name for a possessive — "responding to Danny's
+        // 10-13" beats "responding to 10-13" when there's only one call.
+        let name = distressed_peers.iter().next().unwrap();
+        format!("responding to {name}'s 10-13")
     } else {
-        "on patrol"
+        "responding to 10-13".to_string()
+    };
+    let status: String = if self_calling {
+        "calling 10-13".to_string()
+    } else if inbox_emergency {
+        responder_label
+    } else {
+        "on patrol".to_string()
     };
     let prefix = if sign.starts_with("Officer-") {
         sign
