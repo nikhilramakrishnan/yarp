@@ -33,6 +33,7 @@ use crate::{
     },
     appearance::Appearance,
     changelog_model::{self, ChangelogModel},
+    radio,
     settings::{AISettings, AISettingsChangedEvent},
     terminal::{
         self,
@@ -399,9 +400,39 @@ impl View for AgentViewZeroStateBlock {
                 local_description += &format!(" on `{location_label}`");
             }
 
+            // Surface the rest of the radio channel right where the operator
+            // is briefing this patrol — gives the zero state a "you're not
+            // patrolling alone" beat that ties the agent view back to the
+            // inter-terminal channel without making them /radio first.
+            // Cap at three named units; the rest fold into "+N more" so the
+            // line never overruns the description column.
+            let mut description_lines: Vec<Cow<'static, str>> = vec![local_description.into()];
+            let peers = radio::peers();
+            if !peers.is_empty() {
+                let names: Vec<String> = peers
+                    .iter()
+                    .map(|peer| match peer.tab_title.as_deref() {
+                        Some(tag) if !tag.is_empty() => {
+                            format!("{} ({tag})", peer.call_sign)
+                        }
+                        _ => peer.call_sign.clone(),
+                    })
+                    .collect();
+                let cap = 3;
+                let summary = if names.len() <= cap {
+                    names.join(", ")
+                } else {
+                    let extra = names.len() - cap;
+                    format!("{}, +{extra} more", names[..cap].join(", "))
+                };
+                description_lines.push(
+                    format!("Other units on the channel: {summary}.").into(),
+                );
+            }
+
             HeaderProps {
                 title: "Open a new case file".into(),
-                description: AgentViewDescription::PlainText(vec![local_description.into()]),
+                description: AgentViewDescription::PlainText(description_lines),
                 icon: Icon::Fuzz,
             }
         };
