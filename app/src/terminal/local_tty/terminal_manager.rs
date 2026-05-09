@@ -1939,7 +1939,7 @@ impl TerminalManager {
                     }
                     LinkAccessLevelUpdateResponse::Error => {
                         let reason_string =
-                            "Failed to update permissions for shared session".to_owned();
+                            "Couldn't amend clearances on the open channel".to_owned();
                         view.show_persistent_toast(reason_string, ToastFlavor::Error, ctx);
                     }
                 });
