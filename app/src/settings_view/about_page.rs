@@ -500,6 +500,11 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // whose case just resolved — both let the roster name names instead of
     // burying the state in body text.
     let mut stood_down: std::collections::HashSet<String> = std::collections::HashSet::new();
+    // Senders whose latest queued body is a routine hail. Mirrors stood_down
+    // so the roster can read "Cooper (hailing)" without making the operator
+    // pop the body open — keeps the inbox line glanceable when peers are
+    // just checking in.
+    let mut hailing: std::collections::HashSet<String> = std::collections::HashSet::new();
     let mut latest_body_per_sender: std::collections::HashMap<String, String> =
         std::collections::HashMap::new();
     // Count repeats per sender so a chatty officer doesn't crowd the line,
@@ -519,8 +524,13 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // their stand-down badge from a *prior* case is irrelevant — backup is
     // the active state and the roster should read it.
     for (sender, body) in &latest_body_per_sender {
-        if !distressed.contains(sender) && radio::is_stand_down_body(body) {
+        if distressed.contains(sender) {
+            continue;
+        }
+        if radio::is_stand_down_body(body) {
             stood_down.insert(sender.clone());
+        } else if radio::is_hail_body(body) {
+            hailing.insert(sender.clone());
         }
     }
     // Promote distressed senders to the front so the eye lands on who needs
@@ -543,6 +553,8 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
             format!("10-13 {name}")
         } else if stood_down.contains(name) {
             format!("{name} (stood down)")
+        } else if hailing.contains(name) {
+            format!("{name} (hailing)")
         } else {
             name.to_string()
         }
