@@ -77,6 +77,7 @@ struct AboutPageWidget {
     ack_dispatch_button_mouse_state: MouseStateHandle,
     mic_check_button_mouse_state: MouseStateHandle,
     ten_thirteen_button_mouse_state: MouseStateHandle,
+    stand_down_button_mouse_state: MouseStateHandle,
 }
 
 impl SettingsWidget for AboutPageWidget {
@@ -587,7 +588,10 @@ impl AboutPageWidget {
         // is resolved. Outlined variant — it's a de-escalation, not a
         // broadcast at the same urgency tier as the red 10-13 button.
         let stand_down = ui_builder
-            .button(ButtonVariant::Outlined, MouseStateHandle::default())
+            .button(
+                ButtonVariant::Outlined,
+                self.stand_down_button_mouse_state.clone(),
+            )
             .with_style(radio_button_style)
             .with_text_label("Stand down".to_owned())
             .with_tooltip(move || {
