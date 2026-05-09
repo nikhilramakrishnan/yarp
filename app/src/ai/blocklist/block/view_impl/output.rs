@@ -1335,7 +1335,7 @@ fn render_search_codebase(
                         renderable_action(
                             props,
                             id,
-                            format!("Search in {}", root_repo_path.to_string_lossy()).as_str(),
+                            format!("Sweep in {}", root_repo_path.to_string_lossy()).as_str(),
                             app,
                             footer,
                             appearance,
@@ -1442,11 +1442,11 @@ fn render_search_codebase(
                             let root_repo_path = root_repo_path?;
                             let message = match reason {
                                 SearchCodebaseFailureReason::CodebaseNotIndexed => format!(
-                                    "Search in {} failed because the codebase isn't indexed",
+                                    "Sweep in {} failed because the codebase isn't indexed",
                                     root_repo_path.to_string_lossy(),
                                 ),
                                 _ => {
-                                    format!("Search in {} failed", root_repo_path.to_string_lossy())
+                                    format!("Sweep in {} failed", root_repo_path.to_string_lossy())
                                 }
                             };
                             renderable_action(
@@ -1466,7 +1466,7 @@ fn render_search_codebase(
                             renderable_action(
                                 props,
                                 id,
-                                format!("Search in {} cancelled", root_repo_path.to_string_lossy())
+                                format!("Sweep in {} cancelled", root_repo_path.to_string_lossy())
                                     .as_str(),
                                 app,
                                 footer,
@@ -1485,7 +1485,7 @@ fn render_search_codebase(
             renderable_action(
                 props,
                 id,
-                format!("Search in {}", root_repo_path.to_string_lossy()).as_str(),
+                format!("Sweep in {}", root_repo_path.to_string_lossy()).as_str(),
                 app,
                 footer,
                 appearance,
