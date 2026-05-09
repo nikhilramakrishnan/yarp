@@ -502,6 +502,7 @@ pub const HAIL_BODY: &str = "Hail — checking in.";
 pub const EN_ROUTE_BODY: &str = "10-4, en route — hold tight.";
 pub const MIC_CHECK_BROADCAST_BODY: &str = "Mic check — anyone on this channel?";
 pub const TEN_THIRTEEN_BROADCAST_BODY: &str = "10-13! Officer needs assistance — copy and respond.";
+pub const STAND_DOWN_BROADCAST_BODY: &str = "Stand down — situation resolved.";
 
 /// Sweep `~/.yarp/radio/inbox/<pid>/` directories whose owning pid is no
 /// longer alive — without it, a long-running install accumulates inbox dirs

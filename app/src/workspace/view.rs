@@ -6059,6 +6059,16 @@ impl Workspace {
         ctx.notify();
     }
 
+    fn stand_down_mayday(&mut self, ctx: &mut ViewContext<Self>) {
+        radio::clear_self_mayday();
+        // Tell the channel the situation is resolved so peers' inboxes
+        // surface the stand-down (their dispatch row reads "Latest from X:
+        // 'Standing down — situation resolved.'") and the implicit-clear
+        // path stops at their en-route reply going forward.
+        let _ = radio::broadcast(radio::STAND_DOWN_BROADCAST_BODY);
+        ctx.notify();
+    }
+
     fn radio_hail(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
         let msg = radio::Message::new(radio::self_call_sign(), radio::HAIL_BODY);
         let _ = radio::send_message(to_pid, &msg);
@@ -19997,6 +20007,7 @@ impl TypedActionView for Workspace {
             AckInboxDispatch => self.ack_inbox_dispatch(ctx),
             MicCheckBroadcast => self.mic_check_broadcast(ctx),
             TenThirteenBroadcast => self.ten_thirteen_broadcast(ctx),
+            StandDownMayday => self.stand_down_mayday(ctx),
             RadioHail { to_pid } => self.radio_hail(*to_pid, ctx),
             RadioRespond { to_pid } => self.radio_respond(*to_pid, ctx),
             DownloadNewVersion => self.download_new_version(ctx),

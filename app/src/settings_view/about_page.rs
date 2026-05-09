@@ -485,8 +485,11 @@ use radio::is_emergency_body as dispatch_is_emergency;
 
 impl AboutPageWidget {
     fn mic_check_row(&self, appearance: &Appearance) -> Box<dyn Element> {
-        // No peers on the channel — nothing to broadcast at.
-        if radio::peers().is_empty() {
+        // No peers on the channel — nothing to broadcast at, with one
+        // exception: a self-mayday flag we set with no peers around. Show a
+        // standalone Stand-down button in that case so the operator can
+        // clear their own urgency without needing peers to ack.
+        if radio::peers().is_empty() && !radio::self_in_mayday() {
             return Empty::new().finish();
         }
         // Suppress the routine "Mic check" roll-call during an active 10-13 —
@@ -496,6 +499,7 @@ impl AboutPageWidget {
         let in_emergency = radio::peek_inbox()
             .iter()
             .any(|m| dispatch_is_emergency(&m.body));
+        let self_calling = radio::self_in_mayday();
         let ui_builder = appearance.ui_builder();
         let radio_button_style = UiComponentStyles {
             font_size: Some(12.),
@@ -517,6 +521,7 @@ impl AboutPageWidget {
         // emergency channel before they hit either button.
         let mic_check_tooltip_builder = ui_builder.clone();
         let ten_thirteen_tooltip_builder = ui_builder.clone();
+        let stand_down_tooltip_builder = ui_builder.clone();
 
         let mic_check = ui_builder
             .button(
@@ -543,7 +548,7 @@ impl AboutPageWidget {
                 ButtonVariant::Error,
                 self.ten_thirteen_button_mouse_state.clone(),
             )
-            .with_style(radio_button_style)
+            .with_style(radio_button_style.clone())
             .with_text_label("10-13".to_owned())
             .with_tooltip(move || {
                 ten_thirteen_tooltip_builder
@@ -557,12 +562,43 @@ impl AboutPageWidget {
             })
             .finish();
 
+        // Stand-down clears self-mayday and tells the channel the situation
+        // is resolved. Outlined variant — it's a de-escalation, not a
+        // broadcast at the same urgency tier as the red 10-13 button.
+        let stand_down = ui_builder
+            .button(ButtonVariant::Outlined, MouseStateHandle::default())
+            .with_style(radio_button_style)
+            .with_text_label("Stand down".to_owned())
+            .with_tooltip(move || {
+                stand_down_tooltip_builder
+                    .tool_tip(
+                        "Clear your 10-13 and broadcast 'situation resolved' to the channel."
+                            .to_owned(),
+                    )
+                    .build()
+                    .finish()
+            })
+            .build()
+            .on_click(|ctx, _, _| {
+                ctx.dispatch_typed_action(WorkspaceAction::StandDownMayday);
+            })
+            .finish();
+
         let mut row = Wrap::row().with_main_axis_alignment(MainAxisAlignment::Center);
-        if !in_emergency {
+        if self_calling {
+            // Originator's row: stand-down leads (highest-priority CTA for
+            // them right now), 10-13 stays so they can re-broadcast if no
+            // one's responding, mic-check is suppressed since the channel
+            // is already lit on their behalf.
+            row = row.with_child(stand_down);
+            if !radio::peers().is_empty() {
+                row = row.with_child(Container::new(ten_thirteen).with_padding_left(8.).finish());
+            }
+        } else if in_emergency {
+            row = row.with_child(ten_thirteen);
+        } else {
             row = row.with_child(mic_check);
             row = row.with_child(Container::new(ten_thirteen).with_padding_left(8.).finish());
-        } else {
-            row = row.with_child(ten_thirteen);
         }
         Container::new(row.finish())
             .with_margin_top(8.)

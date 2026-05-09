@@ -164,6 +164,7 @@ pub enum WorkspaceAction {
     AckInboxDispatch,
     MicCheckBroadcast,
     TenThirteenBroadcast,
+    StandDownMayday,
     RadioHail {
         to_pid: u32,
     },
@@ -771,6 +772,7 @@ impl WorkspaceAction {
             | AckInboxDispatch
             | MicCheckBroadcast
             | TenThirteenBroadcast
+            | StandDownMayday
             | RadioHail { .. }
             | RadioRespond { .. }
             | DownloadNewVersion
