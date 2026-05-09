@@ -167,6 +167,9 @@ pub enum WorkspaceAction {
     RadioHail {
         to_pid: u32,
     },
+    RadioRespond {
+        to_pid: u32,
+    },
     DownloadNewVersion,
     ConfigureKeybindingSettings {
         keybinding_name: Option<String>,
@@ -769,6 +772,7 @@ impl WorkspaceAction {
             | MicCheckBroadcast
             | TenThirteenBroadcast
             | RadioHail { .. }
+            | RadioRespond { .. }
             | DownloadNewVersion
             | ConfigureKeybindingSettings { .. }
             | ExportAllYarpDriveObjects

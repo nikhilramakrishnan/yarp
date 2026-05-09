@@ -519,6 +519,14 @@ impl AboutPageWidget {
         if peer_list.is_empty() {
             return Empty::new().finish();
         }
+        // Peers with a pending 10-13 in our inbox flip to an urgent "Respond"
+        // CTA — same surface, but the verb and color match the emergency
+        // signal already lit on the roster line.
+        let emergency_signs: std::collections::HashSet<String> = radio::peek_inbox()
+            .iter()
+            .filter(|m| dispatch_is_emergency(&m.body))
+            .map(|m| m.from_call_sign.clone())
+            .collect();
         let ui_builder = appearance.ui_builder();
         let hail_button_style = UiComponentStyles {
             font_size: Some(12.),
@@ -536,25 +544,38 @@ impl AboutPageWidget {
         };
         let mut row = Wrap::row().with_main_axis_alignment(MainAxisAlignment::Center);
         for peer in peer_list {
+            let in_distress = emergency_signs.contains(&peer.call_sign);
             let label_call_sign = peer.call_sign.clone();
             let tooltip_call_sign = peer.call_sign.clone();
             let tooltip_builder = ui_builder.clone();
             let to_pid = peer.pid;
+            let (variant, label, tooltip) = if in_distress {
+                (
+                    ButtonVariant::Error,
+                    format!("Respond to {label_call_sign}"),
+                    format!("Send '10-4, en route' to {tooltip_call_sign}."),
+                )
+            } else {
+                (
+                    ButtonVariant::Outlined,
+                    format!("Hail {label_call_sign}"),
+                    format!("Drop a 'checking in' ping into {tooltip_call_sign}'s inbox."),
+                )
+            };
             let button = ui_builder
-                .button(ButtonVariant::Outlined, MouseStateHandle::default())
+                .button(variant, MouseStateHandle::default())
                 .with_style(hail_button_style.clone())
-                .with_text_label(format!("Hail {label_call_sign}"))
+                .with_text_label(label)
                 .with_tooltip(move || {
-                    tooltip_builder
-                        .tool_tip(format!(
-                            "Drop a 'checking in' ping into {tooltip_call_sign}'s inbox."
-                        ))
-                        .build()
-                        .finish()
+                    tooltip_builder.tool_tip(tooltip.clone()).build().finish()
                 })
                 .build()
                 .on_click(move |ctx, _, _| {
-                    ctx.dispatch_typed_action(WorkspaceAction::RadioHail { to_pid });
+                    if in_distress {
+                        ctx.dispatch_typed_action(WorkspaceAction::RadioRespond { to_pid });
+                    } else {
+                        ctx.dispatch_typed_action(WorkspaceAction::RadioHail { to_pid });
+                    }
                 })
                 .finish();
             row = row.with_child(Container::new(button).with_padding_left(6.).finish());

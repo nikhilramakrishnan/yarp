@@ -6035,6 +6035,12 @@ impl Workspace {
         ctx.notify();
     }
 
+    fn radio_respond(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
+        let msg = radio::Message::new(radio::self_call_sign(), "10-4, en route — hold tight.");
+        let _ = radio::send_message(to_pid, &msg);
+        ctx.notify();
+    }
+
     fn export_all_yarp_drive_objects(&mut self, ctx: &mut ViewContext<Self>) {
         let window_id = ctx.window_id();
         let cloud_model = CloudModel::as_ref(ctx);
@@ -19962,6 +19968,7 @@ impl TypedActionView for Workspace {
             MicCheckBroadcast => self.mic_check_broadcast(ctx),
             TenThirteenBroadcast => self.ten_thirteen_broadcast(ctx),
             RadioHail { to_pid } => self.radio_hail(*to_pid, ctx),
+            RadioRespond { to_pid } => self.radio_respond(*to_pid, ctx),
             DownloadNewVersion => self.download_new_version(ctx),
             ConfigureKeybindingSettings { keybinding_name } => {
                 self.show_keyboard_settings(keybinding_name.as_deref(), ctx)
