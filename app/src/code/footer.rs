@@ -1369,7 +1369,7 @@ impl CodeFooterView {
                     .to_yarpui_icon(ThemeFill::Solid(text_color))
                     .finish()
             },
-            "Manage servers",
+            "Manage language officers",
             CodeFooterViewAction::ManageServers,
         )
     }
