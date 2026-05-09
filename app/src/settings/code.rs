@@ -20,7 +20,7 @@ define_settings_group!(CodeSettings, settings: [
         private: false,
         storage_key: "AgentModeCodebaseContext",
         toml_path: "code.indexing.agent_mode_codebase_context",
-        description: "Whether codebase context is provided to the AI agent.",
+        description: "Whether codebase context is provided to the PC.",
     },
     auto_indexing_enabled: AutoIndexingEnabled {
         type: bool,
