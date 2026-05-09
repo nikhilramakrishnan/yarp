@@ -18393,14 +18393,38 @@ impl Workspace {
     /// the call resolves.
     fn render_mayday_banner_element(&self) -> Option<WorkspaceBannerFields> {
         if radio::self_in_mayday() {
+            // Fold the en-route roll-call into the description so the caller
+            // sees who's coming without leaving the banner. "Cooper en
+            // route" lands first, then "Cooper, Wainwright" as more roll;
+            // when nobody's replied yet the original "stand down when
+            // clear" copy holds the slot. Cap at three names — past that
+            // we summarise as "+N more" to keep the banner from elbowing
+            // the action button off the row on narrow windows. Banner
+            // text already truncates with an ellipsis as a fallback, but
+            // a structured "+N" reads better than a clipped name list.
+            let responders = radio::en_route_responders();
+            let description = if responders.is_empty() {
+                format!(
+                    "{} on the wire — stand down when the situation is clear.",
+                    radio::self_call_sign()
+                )
+            } else {
+                const MAX_NAMED: usize = 3;
+                let total = responders.len();
+                let named: Vec<String> = responders.into_iter().take(MAX_NAMED).collect();
+                let names = named.join(", ");
+                let suffix = if total > MAX_NAMED {
+                    format!("{} +{} more en route.", names, total - MAX_NAMED)
+                } else {
+                    format!("{} en route.", names)
+                };
+                format!("{} on the wire — {}", radio::self_call_sign(), suffix)
+            };
             return Some(WorkspaceBannerFields {
                 banner_type: WorkspaceBanner::Mayday,
                 severity: BannerSeverity::Error,
                 heading: Some("10-13 broadcasting.".into()),
-                description: format!(
-                    "{} on the wire — stand down when the situation is clear.",
-                    radio::self_call_sign()
-                ),
+                description,
                 secondary_button: None,
                 button: Some(WorkspaceBannerButtonDetails {
                     text: "Stand down".into(),

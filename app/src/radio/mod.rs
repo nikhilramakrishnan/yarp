@@ -782,6 +782,31 @@ pub fn latest_emergency() -> Option<Message> {
         .max_by_key(|m| m.sent_at_unix)
 }
 
+/// Call signs of peers who have replied "en route" to a 10-13 sitting in
+/// this Yarp's inbox, deduped and ordered by reply timestamp (oldest
+/// first — the order officers actually rolled). Lets the self-mayday
+/// banner chrome render "Cooper, Wainwright en route" so the caller sees
+/// who's coming without checking the about page. Only meaningful while
+/// `self_in_mayday()` — the en-route replies in the inbox are by
+/// construction for the active call until either the operator acks (which
+/// drains the inbox) or stands down (which calls `drain_en_route_replies`
+/// directly). Returns an empty vec when no replies have landed yet.
+pub fn en_route_responders() -> Vec<String> {
+    let mut messages: Vec<Message> = peek_inbox()
+        .into_iter()
+        .filter(|m| is_en_route_body(&m.body))
+        .collect();
+    messages.sort_by_key(|m| m.sent_at_unix);
+    let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
+    let mut out: Vec<String> = Vec::new();
+    for msg in messages {
+        if seen.insert(msg.from_call_sign.clone()) {
+            out.push(msg.from_call_sign);
+        }
+    }
+    out
+}
+
 /// Unix-second timestamp when this Yarp began calling 10-13, derived from the
 /// stored deadline minus the fixed TTL. None when not in mayday or after
 /// expiry. Lets dispatch surfaces format "broadcasting · 12s ago" with the
