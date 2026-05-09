@@ -48,7 +48,7 @@ impl ResourceCenterFooterItem {
     pub fn ui_label(&self) -> &'static str {
         match self {
             ResourceCenterFooterItem::Slack => "Slack",
-            ResourceCenterFooterItem::Feedback => "Feedback",
+            ResourceCenterFooterItem::Feedback => "File a complaint",
         }
     }
 
@@ -325,7 +325,7 @@ impl ResourceCenterView {
         let current_page = self.page_views.get(self.current_view_index).map(|x| x.page);
 
         let header_text = match current_page {
-            Some(ResourceCenterPage::Keybindings) => "Keyboard Shortcuts".to_string(),
+            Some(ResourceCenterPage::Keybindings) => "Radio codes".to_string(),
             _ => {
                 if FeatureFlag::AvatarInTabBar.is_enabled() {
                     String::new()
