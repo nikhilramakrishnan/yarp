@@ -717,7 +717,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::ToggleYarpDrive),
         EditableBinding::new(
             TOGGLE_RIGHT_PANEL_BINDING_NAME,
-            BindingDescription::new("Toggle code review")
+            BindingDescription::new("Toggle evidence review")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Code Review"),
             WorkspaceAction::ToggleRightPanel,
         )
