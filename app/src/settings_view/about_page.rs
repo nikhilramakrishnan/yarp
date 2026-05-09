@@ -268,6 +268,17 @@ fn self_signon_line() -> (String, bool) {
         "calling 10-13".to_string()
     } else if inbox_emergency {
         responder_label
+    } else if radio::time_since_self_stand_down().is_some() {
+        // Transient post-stand-down ack window: the click would otherwise
+        // bounce the row from "calling 10-13" straight back to routine
+        // "on patrol", with no beat confirming the channel heard the
+        // stand-down. This branch holds the row on "stood down · channel
+        // clear" for SELF_STAND_DOWN_ACK_SECS so the operator gets a
+        // visible acknowledgment, then expires back to the routine arm
+        // below. Gated below self_calling/inbox_emergency so a fresh
+        // 10-13 (ours or a peer's) preempts the ack — stale acks must
+        // never squat on top of live distress traffic.
+        "stood down \u{00B7} channel clear".to_string()
     } else {
         // Routine duty status picks up shift size so the operator gets a
         // glanceable peer count without scrolling to the roster row.

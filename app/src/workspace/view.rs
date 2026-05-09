@@ -6070,6 +6070,10 @@ impl Workspace {
         // the dispatch row claim "Cooper en route" minutes after we said
         // we're good. Other inbox traffic (unrelated 10-13s, hails) stays.
         let _ = radio::drain_en_route_replies();
+        // Record the stand-down moment so the signon line can render a
+        // brief "stood down · channel clear" beat before settling back to
+        // routine — the click would otherwise be silent visually.
+        radio::mark_self_stand_down();
         ctx.notify();
     }
 

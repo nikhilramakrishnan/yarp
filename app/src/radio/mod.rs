@@ -613,6 +613,51 @@ pub fn clear_self_mayday() {
     SELF_MAYDAY_UNTIL.store(0, Ordering::Relaxed);
 }
 
+// Tracks when this Yarp last fired a stand-down so the signon line can
+// render a brief "stood down · channel clear" acknowledgment instead of
+// jumping straight back to routine "on patrol". Without this hook the
+// stand-down click is silent — the originator sees no transient confirmation
+// that the channel heard them. Stored as the unix-second timestamp of the
+// stand-down event; 0 means none recorded. In-process only, like the
+// mayday flag — a restart implies acknowledgment has long since been read.
+static SELF_STAND_DOWN_AT: AtomicU64 = AtomicU64::new(0);
+
+/// How long the post-stand-down acknowledgment lingers on the signon line.
+/// Picked so the operator gets a clear "channel heard you" beat after the
+/// click before the row settles back to routine — long enough to read,
+/// short enough that it doesn't squat on top of fresh inbox traffic.
+pub const SELF_STAND_DOWN_ACK_SECS: u64 = 30;
+
+/// Mark that this Yarp just fired a stand-down. Drives the transient
+/// signon ack window — the radio handlers in workspace::view call this
+/// the moment the stand-down broadcast goes out.
+pub fn mark_self_stand_down() {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    SELF_STAND_DOWN_AT.store(now, Ordering::Relaxed);
+}
+
+/// Seconds since the last stand-down, while still inside the ack window;
+/// `None` once the window expires (or if no stand-down has been recorded).
+/// UI surfaces gate the "stood down · channel clear" line on `Some(_)`.
+pub fn time_since_self_stand_down() -> Option<Duration> {
+    let at = SELF_STAND_DOWN_AT.load(Ordering::Relaxed);
+    if at == 0 {
+        return None;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let elapsed = now.saturating_sub(at);
+    if elapsed >= SELF_STAND_DOWN_ACK_SECS {
+        return None;
+    }
+    Some(Duration::from_secs(elapsed))
+}
+
 /// True if this Yarp is currently flagged as calling 10-13 (TTL not yet
 /// expired). UI surfaces use this to render the originator's status row in
 /// the same red rhythm as the responder side.
