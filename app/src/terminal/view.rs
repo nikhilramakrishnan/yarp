@@ -25165,11 +25165,11 @@ impl TypedActionView for TerminalView {
             OpenCodeInYarp { .. } => ActionAccessibilityContent::from_debug(),
             OpenInYarpBanner(action) => self.open_in_yarp_banner_accessibility_content(*action),
             OpenAIBlockAttachedBlocksMenu { .. } => Custom(AccessibilityContent::new_without_help(
-                "Open list of blocks attached as context to this AI query.".to_owned(),
+                "Open list of blocks attached as context to this PC query.".to_owned(),
                 YarpA11yRole::PopoverRole,
             )),
             OpenAIBlockOverflowMenu { .. } => Custom(AccessibilityContent::new_without_help(
-                "Open overflow menu with copy options for this AI block.".to_owned(),
+                "Open overflow menu with copy options for this PC block.".to_owned(),
                 YarpA11yRole::PopoverRole,
             )),
             RewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
@@ -25182,7 +25182,7 @@ impl TypedActionView for TerminalView {
                 YarpA11yRole::ButtonRole,
             )),
             SelectAIAttachedBlock(_) => Custom(AccessibilityContent::new_without_help(
-                "Click on a block attached as context to this AI query.".to_owned(),
+                "Click on a block attached as context to this PC query.".to_owned(),
                 YarpA11yRole::ButtonRole,
             )),
             PickRepoToOpen => Custom(AccessibilityContent::new_without_help(
