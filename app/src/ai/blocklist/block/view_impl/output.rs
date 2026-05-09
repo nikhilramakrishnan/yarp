@@ -1287,7 +1287,7 @@ fn render_search_codebase(
                                 appearance
                                     .ui_builder()
                                     .link(
-                                        "Manage AI Autonomy permissions".into(),
+                                        "Manage PC Autonomy permissions".into(),
                                         None,
                                         Some(Box::new(move |ctx| {
                                             ctx.dispatch_typed_action(
