@@ -417,7 +417,7 @@ fn snapshot_single_terminal_pane() {
     let snapshot = make_terminal_leaf(Some("/home/user/project"), true);
     let config = tab_config_from_pane_snapshot(&snapshot, None, None);
 
-    assert_eq!(config.name, "My Tab Config");
+    assert_eq!(config.name, "My Beat Config");
     assert!(config.title.is_none());
     assert!(config.color.is_none());
     assert_eq!(config.panes.len(), 1);
