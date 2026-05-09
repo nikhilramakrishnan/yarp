@@ -657,10 +657,10 @@ impl View for LaunchConfigSaveModal {
 
     fn accessibility_contents(&self, _ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new(
-            "Save Config Modal",
-            "Type the name of the file to which you want to save your
-            current configuration of windows, beats, and panes. Use enter to save the
-            launch configuration, esc to quit the save configuration modal.",
+            "Lodge Duty Roster Modal",
+            "Type the name of the file to which you want to lodge your
+            current arrangement of patrol cars, beats, and panes. Use enter to lodge the
+            duty roster, esc to stand down the modal.",
             YarpA11yRole::PopoverRole,
         ))
     }
