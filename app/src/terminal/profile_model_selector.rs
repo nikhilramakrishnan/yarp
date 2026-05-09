@@ -1705,7 +1705,7 @@ impl ProfileModelSelector {
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
         let header = self.render_model_spec_header(
-            "Model Specs".to_string(),
+            "Officer specs".to_string(),
             "Sandford's benchmarks: how the officer performs on the beat, how fast it burns rations, and how quick it closes the case.".to_string(),
             app,
         );
