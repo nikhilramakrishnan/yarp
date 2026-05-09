@@ -19212,9 +19212,28 @@ impl Workspace {
 
     fn render_panel_separator(app: &AppContext) -> Box<dyn Element> {
         let appearance = Appearance::as_ref(app);
+        let theme = appearance.theme();
+        // Vertical seam between panels — when the radio stripe is active
+        // on the input chrome below, this seam needs to match so the
+        // operator's eye sees a single contiguous dispatch state across
+        // the panel layout: self → red, peer → yellow, post-ack 5s →
+        // green, theme.outline fallback.
+        let separator_color = if crate::radio::self_in_mayday() {
+            theme.ansi_fg_red()
+        } else if crate::radio::peer_in_mayday() {
+            theme.ansi_fg_yellow()
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            theme.ansi_fg_green()
+        } else {
+            theme.outline().into_solid()
+        };
         ConstrainedBox::new(
             Rect::new()
-                .with_background_color(appearance.theme().outline().into_solid())
+                .with_background_color(separator_color)
                 .finish(),
         )
         .with_width(1.0)
