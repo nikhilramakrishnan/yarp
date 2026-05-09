@@ -653,7 +653,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ZeroStateMessageProducer {
             items.push(MessageItem::clickable(
                 vec![
                     MessageItem::keystroke(fork_keystroke),
-                    MessageItem::text("to fork the case"),
+                    MessageItem::text("to spin off the case"),
                 ],
                 |ctx| {
                     ctx.dispatch_typed_action(

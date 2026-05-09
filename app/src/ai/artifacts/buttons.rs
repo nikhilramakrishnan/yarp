@@ -223,7 +223,7 @@ fn make_branch_button(branch: String, theme: Arc<dyn ActionButtonTheme>) -> Acti
     make_artifact_button(
         branch.clone(),
         Icon::GitBranch,
-        "File a copy of the branch name",
+        "Bag the branch name",
         Some(AnsiColorIdentifier::Green),
         ArtifactButtonAction::CopyBranch { branch },
         theme,
