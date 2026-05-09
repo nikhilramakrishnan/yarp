@@ -200,7 +200,7 @@ impl ConversationUsageView {
                     .ui_builder()
                     .info_button_with_tooltip(
                         font_size * 0.85,
-                        "You can change which model the PC uses for full terminal use on the AI settings page",
+                        "You can change which model the PC uses for full terminal use on Settings > AI",
                         self.full_terminal_use_tooltip_mouse_state.clone(),
                     )
                     .finish();
