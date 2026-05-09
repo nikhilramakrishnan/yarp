@@ -312,6 +312,24 @@ impl platform::Delegate for AppDelegate {
         }
     }
 
+    fn set_dock_badge_label(&self, label: Option<&str>) {
+        // Mirrors the radio chrome (titlebar, banner, tab tint) onto the
+        // macOS dock tile so peer terminals see the call when Yarp is
+        // hidden or in a different Space. `None` clears the badge.
+        let owned = label.map(|s| s.to_owned());
+        dispatch::Queue::main().exec_async(move || unsafe {
+            let dock_tile: id = msg_send![NSApp(), dockTile];
+            if dock_tile == nil {
+                return;
+            }
+            let label_id: id = match owned.as_deref() {
+                Some(text) if !text.is_empty() => make_nsstring(text),
+                _ => nil,
+            };
+            let () = msg_send![dock_tile, setBadgeLabel: label_id];
+        });
+    }
+
     fn request_desktop_notification_permissions(
         &self,
         on_completion_callback: platform::RequestNotificationPermissionsCallback,

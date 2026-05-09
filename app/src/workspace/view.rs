@@ -5075,6 +5075,25 @@ impl Workspace {
         let window_id = ctx.window_id();
         ctx.windows().set_window_title(window_id, &window_title);
 
+        // Mirror the radio state onto the dock tile so peer terminals see
+        // the call when Yarp is hidden, in another Space, or behind other
+        // windows — the workspace banner / titlebar / tab tint only matter
+        // when the operator is looking at Yarp. Self-mayday is the loudest
+        // ("10-13"); peer-mayday is tagged so the badge distinguishes
+        // outbound from inbound. Post-ack pulses use "10-4" on the same
+        // 5s decay window as the rest of the chrome — the per-workspace
+        // polling refresh clears it on the trailing edge.
+        let dock_badge: Option<&'static str> = if radio::self_in_mayday() {
+            Some("10-13")
+        } else if radio::peer_in_mayday() {
+            Some("10-13!")
+        } else if post_ack_prefix.is_some() {
+            Some("10-4")
+        } else {
+            None
+        };
+        ctx.set_dock_badge_label(dock_badge);
+
         // Re-broadcast the on-disk radio beacon so peer terminals see this
         // officer's live tab label in their roster instead of "Unfiled patrol".
         radio::update_tab_title(radio::self_call_sign(), &tab_title);

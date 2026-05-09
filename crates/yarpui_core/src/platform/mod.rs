@@ -196,6 +196,11 @@ pub trait Delegate: 'static {
 
     fn request_user_attention(&self, window_id: WindowId);
 
+    /// Set the badge label on the application's dock tile (macOS) or
+    /// equivalent. Pass `None` to clear it. Default impl is a no-op so
+    /// platforms without a dock tile (winit/headless/test) ignore it.
+    fn set_dock_badge_label(&self, _label: Option<&str>) {}
+
     fn clipboard(&mut self) -> &mut dyn Clipboard;
 
     fn system_theme(&self) -> SystemTheme;

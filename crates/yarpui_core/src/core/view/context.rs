@@ -387,6 +387,12 @@ impl<'a, T: View> ViewContext<'a, T> {
         self.app.request_user_attention(window_id);
     }
 
+    /// Delegates to the OS to set the dock-tile badge label (macOS) or
+    /// equivalent. Pass `None` to clear it.
+    pub fn set_dock_badge_label(&mut self, label: Option<&str>) {
+        self.app.set_dock_badge_label(label);
+    }
+
     /// Global actions are being phased out. Prefer dispatching typed actions instead of global actions.
     /// Dispatch a global action to be handled by the registered handler
     ///
