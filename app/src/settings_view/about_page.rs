@@ -977,7 +977,7 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         let (kind, frag) = if radio::is_stand_down_body(&msg.body) {
             (
                 Kind::StandDown,
-                format!("{} ({case_meta}) \u{2014} stood down", msg.from_call_sign),
+                format!("{} ({case_meta}) \u{2014} all-clear", msg.from_call_sign),
             )
         } else if radio::is_hail_body(&msg.body) {
             (
@@ -1007,10 +1007,10 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         return None;
     }
     // Uniform-kind collapse: if every preview frag is the same kind of
-    // routine signal, drop the per-frag "— stood down" / "— hail" suffix
-    // and bake the noun into the lead. "Earlier stand-downs: Cooper (12s);
-    // Danny (38s)" reads tighter than "Earlier: Cooper (12s) — stood down;
-    // Danny (38s) — stood down" without losing what each frag is. Only
+    // routine signal, drop the per-frag "— all-clear" / "— hail" suffix
+    // and bake the noun into the lead. "Earlier all-clears: Cooper (12s);
+    // Danny (38s)" reads tighter than "Earlier: Cooper (12s) — all-clear;
+    // Danny (38s) — all-clear" without losing what each frag is. Only
     // applies at len ≥ 2 since at len = 1 stripping the suffix actually
     // loses information unless the noun is shouted in the lead anyway, and
     // "Earlier hails: Cooper (12s)" is no shorter than "Earlier: Cooper
@@ -1019,10 +1019,10 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
         && frags.iter().all(|(k, _)| *k == Kind::StandDown)
     {
         (
-            "Earlier stand-downs",
+            "Earlier all-clears",
             frags
                 .into_iter()
-                .map(|(_, f)| f.replace(" \u{2014} stood down", ""))
+                .map(|(_, f)| f.replace(" \u{2014} all-clear", ""))
                 .collect(),
         )
     } else if frags.len() >= 2 && frags.iter().all(|(k, _)| *k == Kind::Hail) {
