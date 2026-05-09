@@ -2283,12 +2283,12 @@ impl FileTreeView {
                     let path_local = item.path().to_local_path_lossy();
                     if !is_file_content_binary(&path_local) {
                         items.extend([
-                            MenuItemFields::new("Open in new pane")
+                            MenuItemFields::new("Crack open in a new pane")
                                 .with_on_select_action(FileTreeAction::OpenInNewPane {
                                     id: id.clone(),
                                 })
                                 .into_item(),
-                            MenuItemFields::new("Open in new tab")
+                            MenuItemFields::new("Crack open in a new beat")
                                 .with_on_select_action(FileTreeAction::OpenInNewTab {
                                     id: id.clone(),
                                 })
@@ -2296,7 +2296,7 @@ impl FileTreeView {
                         ]);
                     } else {
                         items.push(
-                            MenuItemFields::new("Open file")
+                            MenuItemFields::new("Crack open")
                                 .with_on_select_action(FileTreeAction::ItemClicked {
                                     id: id.clone(),
                                 })
@@ -2306,7 +2306,7 @@ impl FileTreeView {
                 }
                 FileTreeItem::DirectoryHeader { .. } => {
                     items.push(
-                        MenuItemFields::new("New file")
+                        MenuItemFields::new("File a new case file")
                             .with_on_select_action(FileTreeAction::NewFileBelowDirectory {
                                 id: id.clone(),
                             })
@@ -2323,7 +2323,7 @@ impl FileTreeView {
                         );
                     }
                     items.push(
-                        MenuItemFields::new("Open in new tab")
+                        MenuItemFields::new("Crack open in a new beat")
                             .with_on_select_action(FileTreeAction::OpenInNewTab { id: id.clone() })
                             .into_item(),
                     );
