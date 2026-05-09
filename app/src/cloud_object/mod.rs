@@ -1512,13 +1512,13 @@ pub enum Space {
 impl Space {
     pub fn name(&self, app: &AppContext) -> String {
         match self {
-            Space::Personal => "Personal".to_string(),
+            Space::Personal => "My desk".to_string(),
             Space::Team { team_uid, .. } => {
                 let user_workspaces = UserWorkspaces::as_ref(app);
                 if let Some(team) = user_workspaces.team_from_uid(*team_uid) {
                     team.name.clone()
                 } else {
-                    "Team".to_string()
+                    "The squad".to_string()
                 }
             }
             Space::Shared => "Filed to my desk".to_string(),
