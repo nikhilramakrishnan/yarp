@@ -1632,7 +1632,7 @@ impl TerminalView {
 
         if model.shared_session_status().is_sharer_or_viewer() {
             items.push(
-                MenuItemFields::new("Copy radio frequency")
+                MenuItemFields::new("Bag the frequency")
                     .with_on_select_action(TerminalAction::CopySharedSessionLink {
                         source: SharedSessionActionSource::RightClickMenu,
                     })
