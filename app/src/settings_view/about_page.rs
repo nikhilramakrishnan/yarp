@@ -488,13 +488,43 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     // When this Yarp is mid-10-13 and the latest inbox dispatch is an
     // en-route ack, rewrite the row so the response relationship reads at
     // a glance — the originator wants "Cooper's coming" not "Cooper said
-    // ten-four". Stays red because the call is still active until stand-down.
+    // ten-four". When multiple peers are en route, list them all in arrival
+    // order (latest first) so the originator sees the wave converging, not
+    // just the most recent ack — "Cooper, Danny en route" beats "Cooper en
+    // route" when Danny's also coming. Stays red because the call is still
+    // active until stand-down.
     if radio::self_in_mayday() && radio::is_en_route_body(&msg.body) {
+        let mut owned: Vec<radio::Message> = radio::peek_inbox()
+            .into_iter()
+            .filter(|m| radio::is_en_route_body(&m.body))
+            .collect();
+        owned.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
+        // Dedupe by call sign so a peer who re-acks doesn't get listed twice;
+        // preserve latest-first order from the sorted vec.
+        let mut seen: std::collections::HashSet<String> =
+            std::collections::HashSet::new();
+        let names: Vec<String> = owned
+            .iter()
+            .filter_map(|m| {
+                if seen.insert(m.from_call_sign.clone()) {
+                    Some(m.from_call_sign.clone())
+                } else {
+                    None
+                }
+            })
+            .collect();
         let age = radio::format_dispatch_age(msg.sent_at_unix);
-        let line = format!(
-            "10-4 \u{00B7} {} en route \u{00B7} {age}",
-            msg.from_call_sign
-        );
+        let line = if names.len() <= 1 {
+            format!(
+                "10-4 \u{00B7} {} en route \u{00B7} {age}",
+                msg.from_call_sign
+            )
+        } else {
+            format!(
+                "10-4 \u{00B7} {} en route \u{00B7} {age}",
+                names.join(", ")
+            )
+        };
         return Some((line, true));
     }
     let emergency = dispatch_is_emergency(&msg.body);
