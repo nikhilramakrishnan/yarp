@@ -688,6 +688,26 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         );
         return Some((line, false));
     }
+    // Hail rendering: collapse the verbatim "Hail — checking in." body into
+    // "Hail · Cooper · case-foo · 12s ago" so the dispatch row reads as a
+    // calm roll-call rather than a quoted snippet competing with itself.
+    // Mirrors the stand-down branch's terse 3-token rhythm. Skipped during
+    // any active emergency so a routine ping never displaces the converging
+    // wave or distress lead.
+    if !emergency_active && radio::is_hail_body(&msg.body) {
+        let case_tag: Option<String> = radio::peers()
+            .into_iter()
+            .find(|p| p.call_sign == msg.from_call_sign)
+            .and_then(|p| p.tab_title)
+            .filter(|t| !t.is_empty());
+        let age = radio::format_dispatch_age(msg.sent_at_unix);
+        let from_label = match &case_tag {
+            Some(tag) => format!("{} \u{00B7} {tag}", msg.from_call_sign),
+            None => msg.from_call_sign.clone(),
+        };
+        let line = format!("Hail \u{00B7} {from_label} \u{00B7} {age}");
+        return Some((line, false));
+    }
     let emergency = dispatch_is_emergency(&msg.body);
     // Hoist the 10-13 prefix out of the quoted body when present — burying
     // urgency inside quotes ("Latest from … : \"10-13 …\"") makes the eye
@@ -826,13 +846,16 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
             Some(tag) => format!("{tag} \u{00B7} {age}"),
             None => age.clone(),
         };
-        // Stand-down fragments collapse to "Cooper (case-foo · 12s) — stood
-        // down" rather than quoting the literal "Stand down — situation
-        // resolved." body. The reader cares that the call closed; the
-        // verbatim text is decoration that pushes more useful fragments out
-        // of the row's character budget.
+        // Stand-down and hail fragments collapse to "{name} ({case_meta}) —
+        // {tag}" rather than quoting the verbatim body. The reader cares
+        // that the call closed (or that someone hailed); the literal text
+        // ("Stand down — situation resolved." / "Hail — checking in.") is
+        // decoration that pushes more useful fragments out of the row's
+        // character budget.
         let frag = if radio::is_stand_down_body(&msg.body) {
             format!("{} ({case_meta}) \u{2014} stood down", msg.from_call_sign)
+        } else if radio::is_hail_body(&msg.body) {
+            format!("{} ({case_meta}) \u{2014} hail", msg.from_call_sign)
         } else if snippet.is_empty() {
             format!("{} ({case_meta})", msg.from_call_sign)
         } else {

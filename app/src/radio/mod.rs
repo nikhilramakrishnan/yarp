@@ -556,6 +556,14 @@ pub fn is_en_route_body(body: &str) -> bool {
     body.trim() == EN_ROUTE_BODY.trim()
 }
 
+/// Classify a message body as a routine hail — the standard "checking in"
+/// 1:1 ping. UI surfaces collapse the verbatim "Hail — checking in." body
+/// into a calmer "Hail" lead so the dispatch row reads as a quiet roll-call
+/// rather than a quoted snippet, mirroring how stand-downs collapse.
+pub fn is_hail_body(body: &str) -> bool {
+    body.trim() == HAIL_BODY.trim()
+}
+
 /// Filter superseded emergencies: when a sender's stand-down arrives after
 /// their 10-13, the 10-13 is no longer urgent — the situation resolved on
 /// the originator's side. Walks forward (messages are arrival-sorted), tracks
