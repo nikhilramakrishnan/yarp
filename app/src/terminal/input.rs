@@ -412,28 +412,31 @@ pub const AI_COMMAND_SEARCH_HINT_TEXT: &str = "Type '#' to radio in for command 
 
 const AGENT_MODE_AI_DISABLED_AUTODETECTION_DISABLED_HINT_TEXT: &str = "Bark commands";
 
-// Rotating hint text options for new Agent Mode conversations
+// Rotating hint text options for new Agent Mode conversations.
+// Phrasing leans on the Sandford NWA radio-dispatch vocabulary used
+// throughout the terminal so the rotating examples read as briefings
+// from an officer at the desk, not generic devops prompts.
 const AGENT_MODE_HINT_OPTIONS: &[&str] = &[
-    "Yarp anything e.g. Deploy my React app to Vercel and set up environment variables",
-    "Yarp anything e.g. Help me debug why my Python tests are failing in CI",
-    "Yarp anything e.g. Set up a new microservice with Docker and create the deployment pipeline",
-    "Yarp anything e.g. Find and fix the memory leak in my Node.js application",
-    "Yarp anything e.g. Create a backup script for my PostgreSQL database and schedule it",
-    "Yarp anything e.g. Help me migrate my data from MySQL to PostgreSQL",
-    "Yarp anything e.g. Set up monitoring and alerts for my AWS infrastructure",
-    "Yarp anything e.g. Build a REST API for my mobile app using FastAPI",
-    "Yarp anything e.g. Help me optimize my SQL queries that are running slowly",
-    "Yarp anything e.g. Create a GitHub Actions workflow to automatically deploy on merge",
-    "Yarp anything e.g. Set up Redis caching for my web application",
-    "Yarp anything e.g. Help me troubleshoot why my Kubernetes pods keep crashing",
-    "Yarp anything e.g. Build a data pipeline to process CSV files and load them into BigQuery",
-    "Yarp anything e.g. Set up SSL certificates and configure HTTPS for my domain",
-    "Yarp anything e.g. Help me refactor this legacy code to use modern design patterns",
-    "Yarp anything e.g. Create unit tests for my authentication service",
-    "Yarp anything e.g. Set up log aggregation with ELK stack for my distributed system",
-    "Yarp anything e.g. Help me implement OAuth2 authentication in my Express.js app",
-    "Yarp anything e.g. Optimize my Docker images to reduce build times and size",
-    "Yarp anything e.g. Set up A/B testing infrastructure for my web application",
+    "Yarp anything e.g. Roll my React app out to Vercel and bag the env variables",
+    "Yarp anything e.g. Run down why my Python tests are folding in CI",
+    "Yarp anything e.g. Stand up a new microservice with Docker and a deployment beat",
+    "Yarp anything e.g. Track the memory leak in my Node.js detail",
+    "Yarp anything e.g. Set up a backup beat for my PostgreSQL and put it on the rota",
+    "Yarp anything e.g. Move my case files from MySQL to PostgreSQL",
+    "Yarp anything e.g. Set up monitoring and alerts for my AWS station",
+    "Yarp anything e.g. Stand up a REST API for the mobile beat using FastAPI",
+    "Yarp anything e.g. Run down the SQL queries that are going slow",
+    "Yarp anything e.g. Set up a GitHub Actions detail that rolls out on merge",
+    "Yarp anything e.g. Set up Redis caching for my web app",
+    "Yarp anything e.g. Run down why my Kubernetes pods keep going down",
+    "Yarp anything e.g. Build a data pipeline to process CSV files and file them in BigQuery",
+    "Yarp anything e.g. Set up SSL papers and HTTPS on my domain",
+    "Yarp anything e.g. Bring this legacy code up to current procedure",
+    "Yarp anything e.g. Write unit tests for my authentication detail",
+    "Yarp anything e.g. Set up log aggregation with ELK for my distributed beat",
+    "Yarp anything e.g. Stand up OAuth2 authentication in my Express.js detail",
+    "Yarp anything e.g. Trim my Docker images to keep build times and size down",
+    "Yarp anything e.g. Set up A/B testing infrastructure for my web app",
 ];
 
 fn get_agent_mode_new_conversation_hint_text() -> &'static str {
