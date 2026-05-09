@@ -2375,12 +2375,12 @@ fn create_formatted_text_for_file_glob(
 
         let mut fragments = if is_cancelled || is_queued {
             vec![
-                FormattedTextFragment::plain_text("Search for files that match "),
+                FormattedTextFragment::plain_text("Sweep for files that match "),
                 FormattedTextFragment::inline_code(pattern),
             ]
         } else {
             vec![
-                FormattedTextFragment::plain_text("Finding files that match "),
+                FormattedTextFragment::plain_text("Sweeping files that match "),
                 FormattedTextFragment::inline_code(pattern),
             ]
         };
@@ -2396,17 +2396,17 @@ fn create_formatted_text_for_file_glob(
         if is_cancelled {
             lines.push(FormattedTextLine::Line(vec![
                 FormattedTextFragment::plain_text(format!(
-                    "Cancelled search for files that match the following patterns in {path}"
+                    "Cancelled sweep for files that match the following patterns in {path}"
                 )),
             ]));
         } else {
             lines.push(FormattedTextLine::Line(vec![if is_queued {
                 FormattedTextFragment::plain_text(format!(
-                    "Find files that match the following patterns in {path}"
+                    "Sweep for files that match the following patterns in {path}"
                 ))
             } else {
                 FormattedTextFragment::plain_text(format!(
-                    "Finding files that match the following patterns in {path}"
+                    "Sweeping files that match the following patterns in {path}"
                 ))
             }]));
         }
