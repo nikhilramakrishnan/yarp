@@ -1494,7 +1494,7 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace")),
         EditableBinding::new(
             "workspace:flash_other_stations",
-            "Radio: flash all other Yarp stations",
+            "Radio: raise all other stations",
             WorkspaceAction::FlashOtherStations,
         )
         .with_context_predicate(id!("Workspace")),
