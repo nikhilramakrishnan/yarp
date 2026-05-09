@@ -41,7 +41,7 @@ lazy_static! {
         };
 }
 
-const DEFAULT_PLACEHOLDER_TEXT: &str = "Search for a secret";
+const DEFAULT_PLACEHOLDER_TEXT: &str = "Sweep for a secret";
 
 pub struct ExternalSecretsMenu {
     scroll_state: ScrollStateHandle,

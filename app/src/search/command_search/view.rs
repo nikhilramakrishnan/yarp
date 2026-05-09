@@ -63,7 +63,7 @@ use super::{
     zero_state::{CommandSearchZeroStateEvent, CommandSearchZeroStateView},
 };
 
-const DEFAULT_PLACEHOLDER_TEXT: &str = "Search your case files, playbooks, and more";
+const DEFAULT_PLACEHOLDER_TEXT: &str = "Sweep case files, playbooks, and the rest of the kit";
 const PANEL_POSITION_ID: &str = "CommandSearchViewPanel";
 const DETAILS_PANEL_MARGIN: f32 = 4.;
 const MIN_WIDTH_RATIO: f32 = 0.25;

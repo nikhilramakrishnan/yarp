@@ -1247,7 +1247,7 @@ impl View for CategoriesView {
 
 impl VoltronFeatureViewMeta for CategoriesView {
     fn editor_placeholder_text(&self) -> &'static str {
-        "Search playbooks"
+        "Sweep playbooks"
     }
 
     fn custom_action() -> Option<CustomAction> {
