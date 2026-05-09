@@ -1207,7 +1207,7 @@ pub fn render_ambient_credits_banner(credits: i32, app: &AppContext) -> Box<dyn 
     // Use ANSI terminal colors for the pill styling.
     let text_color = theme.terminal_colors().normal.blue;
 
-    let credits_text = format!("{credits} free cloud-patrol credits");
+    let credits_text = format!("{credits} free cloud-patrol rations");
     let text = Text::new(credits_text, font_family, font_size)
         .with_color(text_color.into())
         .with_style(Properties::default().weight(Weight::Semibold))
