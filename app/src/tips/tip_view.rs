@@ -137,7 +137,7 @@ impl TipsView {
             ),
             TipItem::new(
                 "Split the Beat".to_string(),
-                "Carve a tab into panes — patrol multiple sessions side by side."
+                "Carve a beat into panes — patrol multiple beats side by side."
                     .to_string(),
                 TipAction::SplitPane,
                 ctx,

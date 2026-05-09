@@ -104,7 +104,7 @@ fn maximize_yarp_items(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Fea
     if ContextFlag::CreateNewSession.is_enabled() {
         maximize_yarp_items.push(FeatureItem::new(
             "Split the beat",
-            "Carve a beat into panes — patrol multiple sessions side by side.",
+            "Carve a beat into panes — patrol multiple beats side by side.",
             Tip::Action(TipAction::SplitPane),
             ctx,
         ));
