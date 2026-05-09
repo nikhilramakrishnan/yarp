@@ -134,7 +134,7 @@ fn test_retry_menu_item_visibility() {
             let menu_items = index.menu_items(&Space::Personal, &yarp_drive_item_id, ctx);
             assert_eq!(menu_items.len(), 5);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Edit");
-            assert_eq!(label_for_menu_item(&menu_items[1]), "Copy workflow text");
+            assert_eq!(label_for_menu_item(&menu_items[1]), "Bag the playbook text");
             assert_eq!(label_for_menu_item(&menu_items[2]), "Share");
             assert_eq!(label_for_menu_item(&menu_items[3]), "Duplicate");
             assert_eq!(label_for_menu_item(&menu_items[4]), "Export");
@@ -147,7 +147,7 @@ fn test_retry_menu_item_visibility() {
             assert_eq!(menu_items.len(), 6);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Retry");
             assert_eq!(label_for_menu_item(&menu_items[1]), "Edit");
-            assert_eq!(label_for_menu_item(&menu_items[2]), "Copy workflow text");
+            assert_eq!(label_for_menu_item(&menu_items[2]), "Bag the playbook text");
             assert_eq!(label_for_menu_item(&menu_items[3]), "Share");
             assert_eq!(label_for_menu_item(&menu_items[4]), "Duplicate");
             assert_eq!(label_for_menu_item(&menu_items[5]), "Export");
@@ -161,7 +161,7 @@ fn test_retry_menu_item_visibility() {
             let menu_items = index.menu_items(&Space::Personal, &yarp_drive_item_id, ctx);
             assert_eq!(menu_items.len(), 5);
             assert_eq!(label_for_menu_item(&menu_items[0]), "Edit");
-            assert_eq!(label_for_menu_item(&menu_items[1]), "Copy workflow text");
+            assert_eq!(label_for_menu_item(&menu_items[1]), "Bag the playbook text");
             assert_eq!(label_for_menu_item(&menu_items[2]), "Share");
             assert_eq!(label_for_menu_item(&menu_items[3]), "Duplicate");
             assert_eq!(label_for_menu_item(&menu_items[4]), "Export");

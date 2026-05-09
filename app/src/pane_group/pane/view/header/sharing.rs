@@ -189,7 +189,7 @@ impl<P: BackingView> PaneHeader<P> {
                     "Open channel".to_string(),
                 )
             } else {
-                (Icon::Link, false, "Copy radio frequency".to_string())
+                (Icon::Link, false, "Bag the frequency".to_string())
             };
 
         let ui_builder = appearance.ui_builder().clone();

@@ -4585,9 +4585,9 @@ impl DriveIndex {
                         let workflow: Option<&CloudWorkflow> = object.into();
                         let workflow = workflow.expect("Object is workflow");
                         let label = if workflow.model().data.is_agent_mode_workflow() {
-                            "Copy prompt"
+                            "Bag the prompt"
                         } else {
-                            "Copy workflow text"
+                            "Bag the playbook text"
                         };
                         menu_items.push(
                             MenuItemFields::new(label)

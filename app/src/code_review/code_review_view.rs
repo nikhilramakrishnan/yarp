@@ -2997,7 +2997,7 @@ impl CodeReviewView {
                 ActionButton::new("", NakedTheme)
                     .with_icon(Icon::Copy)
                     .with_size(ButtonSize::InlineActionHeader)
-                    .with_tooltip("Copy the case file path")
+                    .with_tooltip("Bag the case file path")
                     .on_click(move |ctx| {
                         ctx.dispatch_typed_action(CodeReviewAction::CopyFilePath(copy_path.clone()))
                     })

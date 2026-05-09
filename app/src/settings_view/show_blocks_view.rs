@@ -145,7 +145,7 @@ impl UserOwnedBlock {
                 ButtonVariant::Basic,
                 self.copy_button_mouse_state_handle.clone(),
             )
-            .with_text_label("Copy case file link".into());
+            .with_text_label("Bag the case file frequency".into());
 
         let button = if self.unshare_request_status == UnshareBlockRequestState::InFlight {
             button.disabled().build()

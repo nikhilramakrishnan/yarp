@@ -2716,7 +2716,7 @@ fn test_prompt_context_menu_items_for_ps1() {
             let items = view.prompt_context_menu_items(ctx);
             let len = items.len();
             assert_eq!(len, 3);
-            assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
+            assert_eq!(items[0].fields().unwrap().label(), "Bag the prompt");
             assert!(items[1].is_separator());
             assert_eq!(items[2].fields().unwrap().label(), "Reissue the prompt");
             assert!(!items[2].fields().unwrap().is_disabled());
@@ -2772,7 +2772,7 @@ fn test_prompt_context_menu_items_for_context_chips() {
             // <context chip specific actions>
             // ------------
             // Edit prompt
-            assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
+            assert_eq!(items[0].fields().unwrap().label(), "Bag the prompt");
             assert!(items[1].is_separator());
             assert_eq!(
                 items[2].fields().unwrap().label(),
@@ -2816,7 +2816,7 @@ fn test_prompt_context_menu_items_for_no_context_chips() {
             // Copy prompt
             // ------------
             // Edit prompt
-            assert_eq!(items[0].fields().unwrap().label(), "Copy prompt");
+            assert_eq!(items[0].fields().unwrap().label(), "Bag the prompt");
             assert!(items[1].is_separator());
             assert_eq!(items[2].fields().unwrap().label(), "Reissue the prompt");
             assert!(!items[2].fields().unwrap().is_disabled());
