@@ -1184,7 +1184,7 @@ impl MCPServersListPageView {
         let description_fragments = vec![
             FormattedTextFragment::plain_text(DESCRIPTION_TEXT),
             FormattedTextFragment::hyperlink(
-                "Learn more.",
+                "Read the brief.",
                 "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp",
             ),
         ];
