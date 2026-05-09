@@ -507,15 +507,21 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         return Some((line, true));
     }
     let msg = radio::latest_dispatch()?;
-    // When this Yarp is mid-10-13 and the latest inbox dispatch is an
-    // en-route ack, rewrite the row so the response relationship reads at
-    // a glance — the originator wants "Cooper's coming" not "Cooper said
-    // ten-four". When multiple peers are en route, list them all in arrival
-    // order (latest first) so the originator sees the wave converging, not
-    // just the most recent ack — "Cooper, Danny en route" beats "Cooper en
-    // route" when Danny's also coming. Stays red because the call is still
-    // active until stand-down.
-    if radio::self_in_mayday() && radio::is_en_route_body(&msg.body) {
+    // When a 10-13 is active (self or peer-originated) and the latest inbox
+    // dispatch is an en-route ack, rewrite the row so the response
+    // relationship reads at a glance — readers want "Cooper's coming" not
+    // "Cooper said ten-four". When multiple peers are en route, list them
+    // all in arrival order (latest first) so the wave reads as converging,
+    // not just the most recent ack — "Cooper, Danny en route" beats "Cooper
+    // en route" when Danny's also coming. Stays red because the call is
+    // still active until stand-down. Gating on any-active-emergency (rather
+    // than just self_in_mayday) means peer-side responders see the same
+    // converging-wave picture the originator does.
+    let emergency_active = radio::self_in_mayday()
+        || radio::peek_inbox()
+            .iter()
+            .any(|m| dispatch_is_emergency(&m.body));
+    if emergency_active && radio::is_en_route_body(&msg.body) {
         let mut owned: Vec<radio::Message> = radio::peek_inbox()
             .into_iter()
             .filter(|m| radio::is_en_route_body(&m.body))
