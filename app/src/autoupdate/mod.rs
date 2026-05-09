@@ -710,13 +710,13 @@ pub fn accessibility_content(
     match (request_type, update_available) {
         // Found autoupdate
         (RequestType::ManualCheck, Ok(UpdateReady::Yes { .. })) => Some(AccessibilityContent::new(
-            "Update available.",
+            "Fresh issue available.",
             "Open the command palette to file the update and clock back on",
             YarpA11yRole::HelpRole,
         )),
         // Any non-successful autoupdate check
         (RequestType::ManualCheck, _) => Some(AccessibilityContent::new_without_help(
-            "No updates available",
+            "No fresh issue available",
             YarpA11yRole::HelpRole,
         )),
         _ => None,
