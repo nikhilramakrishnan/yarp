@@ -1131,8 +1131,7 @@ impl AboutPageWidget {
             .with_tooltip(move || {
                 stand_down_tooltip_builder
                     .tool_tip(
-                        "Clear your 10-13 and broadcast 'situation resolved' to the channel."
-                            .to_owned(),
+                        "Wave off the 10-13 — channel hears the all-clear.".to_owned(),
                     )
                     .build()
                     .finish()
