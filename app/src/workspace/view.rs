@@ -18522,10 +18522,26 @@ impl Workspace {
             } else {
                 "10-4 en route".into()
             };
+            // Single-caller heading picks up the caller's case tag —
+            // "10-13 inbound from case-bar." — symmetric to the self-mayday
+            // heading fold a few lines up. Multi-caller stays generic
+            // because tagging the heading with one case file would
+            // mislead about which patrol the row is rolling on.
+            let heading = if total == 1 {
+                match named[0].split_once(" (") {
+                    Some((_, tag_with_paren)) => {
+                        let tag = tag_with_paren.trim_end_matches(')');
+                        format!("10-13 inbound from {tag}.")
+                    }
+                    None => "10-13 inbound.".into(),
+                }
+            } else {
+                "10-13 inbound.".into()
+            };
             return Some(WorkspaceBannerFields {
                 banner_type: WorkspaceBanner::Mayday,
                 severity: BannerSeverity::Error,
-                heading: Some("10-13 inbound.".into()),
+                heading: Some(heading),
                 description,
                 secondary_button: None,
                 button: Some(WorkspaceBannerButtonDetails {
