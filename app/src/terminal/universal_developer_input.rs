@@ -1003,7 +1003,7 @@ fn build_renderable_option_config(
                 {
                     "Auto".into()
                 } else if input_model.as_ref(app).is_ai_input_enabled() {
-                    "Agent".into()
+                    "PC".into()
                 } else {
                     "Shell".into()
                 },
