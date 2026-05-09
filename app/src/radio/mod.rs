@@ -436,6 +436,16 @@ pub fn is_emergency_body(body: &str) -> bool {
     body.trim_start().starts_with("10-13")
 }
 
+
+// Canonical message bodies for the precinct radio. Centralized so a hail, the
+// emergency response, the routine ack-on-emergency, and any future palette
+// entry all speak the same wire format — divergence here would let two yarps
+// disagree on what counts as a hail vs. an emergency reply.
+pub const HAIL_BODY: &str = "Hail — checking in.";
+pub const EN_ROUTE_BODY: &str = "10-4, en route — hold tight.";
+pub const MIC_CHECK_BROADCAST_BODY: &str = "Mic check — anyone on this channel?";
+pub const TEN_THIRTEEN_BROADCAST_BODY: &str = "10-13! Officer needs assistance — copy and respond.";
+
 /// Sweep `~/.yarp/radio/inbox/<pid>/` directories whose owning pid is no
 /// longer alive — without it, a long-running install accumulates inbox dirs
 /// for every terminal that ever booted. Returns the number of inboxes

@@ -6029,31 +6029,30 @@ impl Workspace {
             if !acked.insert(msg.from_pid) {
                 continue;
             }
-            let reply =
-                radio::Message::new(radio::self_call_sign(), "10-4, en route — hold tight.");
+            let reply = radio::Message::new(radio::self_call_sign(), radio::EN_ROUTE_BODY);
             let _ = radio::send_message(msg.from_pid, &reply);
         }
         ctx.notify();
     }
 
     fn mic_check_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
-        let _ = radio::broadcast("Mic check — anyone on this channel?");
+        let _ = radio::broadcast(radio::MIC_CHECK_BROADCAST_BODY);
         ctx.notify();
     }
 
     fn ten_thirteen_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
-        let _ = radio::broadcast("10-13! Officer needs assistance — copy and respond.");
+        let _ = radio::broadcast(radio::TEN_THIRTEEN_BROADCAST_BODY);
         ctx.notify();
     }
 
     fn radio_hail(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
-        let msg = radio::Message::new(radio::self_call_sign(), "Hail — checking in.");
+        let msg = radio::Message::new(radio::self_call_sign(), radio::HAIL_BODY);
         let _ = radio::send_message(to_pid, &msg);
         ctx.notify();
     }
 
     fn radio_respond(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
-        let msg = radio::Message::new(radio::self_call_sign(), "10-4, en route — hold tight.");
+        let msg = radio::Message::new(radio::self_call_sign(), radio::EN_ROUTE_BODY);
         let _ = radio::send_message(to_pid, &msg);
         ctx.notify();
     }
