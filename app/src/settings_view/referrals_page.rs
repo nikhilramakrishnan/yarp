@@ -176,7 +176,7 @@ lazy_static! {
             icon_path: "bundled/svg/referral-notebook.svg",
             icon_width: 64.,
             icon_height: 64.,
-            label: "Notebook".to_owned(),
+            label: "Casebook".to_owned(),
         },
         Reward {
             required_referral_count: 35,
