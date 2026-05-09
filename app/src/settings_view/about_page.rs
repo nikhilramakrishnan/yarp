@@ -186,11 +186,32 @@ fn sandford_population_line() -> (String, bool) {
         down.insert(radio::self_call_sign());
     }
     let emergency = !down.is_empty();
+    // During a self-10-13, count distinct peers who've acked en route so the
+    // population line reflects the backup wave converging — "1 down · 2
+    // responding" reads as the situation actively being handled, not just
+    // the call still being live. Only counted on self-mayday to avoid
+    // crediting random copy-acks on routine traffic.
+    let responding: std::collections::HashSet<String> = if radio::self_in_mayday() {
+        radio::peek_inbox()
+            .iter()
+            .filter(|m| radio::is_en_route_body(&m.body))
+            .map(|m| m.from_call_sign.clone())
+            .collect()
+    } else {
+        std::collections::HashSet::new()
+    };
     let line = if emergency {
-        let suffix = if down.len() == 1 {
+        let down_frag = if down.len() == 1 {
             "1 officer down".to_string()
         } else {
             format!("{} officers down", down.len())
+        };
+        let suffix = if responding.is_empty() {
+            down_frag
+        } else if responding.len() == 1 {
+            format!("{down_frag} \u{00B7} 1 responding")
+        } else {
+            format!("{down_frag} \u{00B7} {} responding", responding.len())
         };
         format!(
             "Copyright 2026 Yarp contributors. Sandford. Population: {population} \u{00B7} {suffix}."
