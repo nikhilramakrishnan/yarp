@@ -328,7 +328,7 @@ pub fn init(app: &mut AppContext) {
         // Ctrl-G: open rich input for CLI agents before the keystroke reaches the PTY.
         EditableBinding::new(
             OPEN_CLI_AGENT_RICH_INPUT_KEYBINDING,
-            "Toggle CLI Agent Rich Input",
+            "Toggle CLI PC rich input",
             TerminalAction::OpenCLIAgentRichInput,
         )
         .with_key_binding("ctrl-g")
@@ -362,7 +362,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             ACCEPT_PROMPT_SUGGESTION_KEYBINDING,
-            "Accept Prompt Suggestion",
+            "Sign off on prompt tip-off",
             TerminalAction::ResolvePromptSuggestion(PromptSuggestionResolution::Accept {
                 interaction_source: InteractionSource::Keybinding,
             }),
@@ -383,9 +383,9 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             CANCEL_COMMAND_KEYBINDING,
             if cfg!(windows) {
-                "Copy text or cancel active process"
+                "Bag text or stand down running call-out"
             } else {
-                "Cancel active process"
+                "Stand down running call-out"
             },
             TerminalAction::CtrlC,
         )
