@@ -20613,7 +20613,7 @@ impl TypedActionView for Workspace {
                     status.is_syncing_all_inputs(window_id)
                 });
                 let verb = if enabled { "enabled" } else { "disabled" };
-                let mut message = format!("You {verb} synchronized inputs in all tabs.");
+                let mut message = format!("You {verb} synchronized inputs across every beat.");
                 if let Some(keystroke) = keybinding_name_to_keystroke(
                     "workspace:toggle_sync_all_terminal_inputs_in_all_tabs",
                     ctx,
@@ -20646,7 +20646,7 @@ impl TypedActionView for Workspace {
                     status.should_sync_this_pane_group(current_pane_group_id, window_id)
                 });
                 let verb = if enabled { "enabled" } else { "disabled" };
-                let mut message = format!("You {verb} synchronized inputs in this tab.");
+                let mut message = format!("You {verb} synchronized inputs on this beat.");
                 if let Some(keystroke) = keybinding_name_to_keystroke(
                     "workspace:toggle_sync_terminal_inputs_in_tab",
                     ctx,
