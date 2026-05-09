@@ -1409,7 +1409,7 @@ impl NotebookView {
                 match space {
                     Space::Personal => {
                         menu_items.extend(team_spaces.iter().map(|space| {
-                            MenuItemFields::new(format!("Move to {}", space.name(ctx)))
+                            MenuItemFields::new(format!("Reassign to {}", space.name(ctx)))
                                 .with_on_select_action(NotebookAction::MoveToSpace {
                                     cloud_object_type_and_id: cloud_object_type,
                                     new_space: *space,
