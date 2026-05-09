@@ -826,13 +826,14 @@ impl AgentInputFooter {
             }
         }
 
-        Flex::row()
+        let row = Flex::row()
             .with_main_axis_size(MainAxisSize::Max)
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween)
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(left)
             .with_child(right.finish())
-            .finish()
+            .finish();
+        wrap_with_radio_stripe(row, app)
     }
 
     fn all_display_chips(&self) -> impl Iterator<Item = &ViewHandle<DisplayChip>> {
@@ -1433,7 +1434,8 @@ impl AgentInputFooter {
             })
             .finish();
 
-        Container::new(content).with_vertical_padding(4.).finish()
+        let cli_footer = Container::new(content).with_vertical_padding(4.).finish();
+        wrap_with_radio_stripe(cli_footer, app)
     }
 
     pub fn has_open_chip_menu(&self, app: &AppContext) -> bool {
@@ -2618,5 +2620,37 @@ impl ActionButtonTheme for NLDButtonTheme {
 
     fn should_opt_out_of_contrast_adjustment(&self) -> bool {
         true
+    }
+}
+
+// Cloud-mode-v2 and CLI footer paths sit in the same composer surface as
+// the default chip row but render via early-return branches that bypass the
+// inline radio top-stripe. Wrap their final element so dispatch state pulses
+// across all footer variants — self → red, peer → yellow, post-ack 5s →
+// green.
+fn wrap_with_radio_stripe(
+    element: Box<dyn Element>,
+    app: &AppContext,
+) -> Box<dyn Element> {
+    let appearance = crate::appearance::Appearance::as_ref(app);
+    let radio_color = if crate::radio::self_in_mayday() {
+        Some(appearance.theme().ansi_fg_red())
+    } else if crate::radio::peer_in_mayday() {
+        Some(appearance.theme().ansi_fg_yellow())
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(appearance.theme().ansi_fg_green())
+    } else {
+        None
+    };
+    if let Some(color) = radio_color {
+        Container::new(element)
+            .with_border(Border::top(1.).with_border_color(color))
+            .finish()
+    } else {
+        element
     }
 }
