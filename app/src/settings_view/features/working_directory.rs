@@ -152,7 +152,7 @@ impl View for WorkingDirectoryView {
                         config.new_window.mode == WorkingDirectoryMode::CustomDir,
                         appearance,
                     ),
-                    ui_builder.label("New tab").build().finish(),
+                    ui_builder.label("New beat").build().finish(),
                     render_row(
                         &self.new_tab_working_directory_dropdown,
                         &self.new_tab_working_directory_editor,

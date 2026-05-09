@@ -6863,7 +6863,7 @@ impl SettingsWidget for NewTabPlacementWidget {
     ) -> Box<dyn Element> {
         render_dropdown_item(
             appearance,
-            "New tab placement",
+            "New beat placement",
             None,
             None,
             LocalOnlyIconState::for_setting(
