@@ -402,7 +402,19 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
         rendered.join(", ")
     };
     let total = inbox.len();
-    let dispatches = if total == 1 {
+    // When this Yarp is mid-10-13 and every reply in the inbox is an en-route
+    // ack, this isn't generic traffic — it's backup converging. Frame the
+    // count as replies rolling in so the originator reads "help is moving"
+    // instead of "you have N dispatches".
+    let backup_converging =
+        radio::self_in_mayday() && inbox.iter().all(|m| radio::is_en_route_body(&m.body));
+    let dispatches = if backup_converging {
+        if total == 1 {
+            "1 unit en route".to_string()
+        } else {
+            format!("{total} units en route")
+        }
+    } else if total == 1 {
         "1 pending dispatch".to_string()
     } else {
         format!("{total} pending dispatches")

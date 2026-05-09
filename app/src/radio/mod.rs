@@ -511,6 +511,14 @@ pub fn is_stand_down_body(body: &str) -> bool {
     body.trim() == STAND_DOWN_BROADCAST_BODY.trim()
 }
 
+
+/// Classify a message body as an "en route" reply — the canonical 1:1
+/// response to a 10-13 hail. Lets the inbox roster line frame an inbox of
+/// pure en-route replies as backup converging rather than generic traffic.
+pub fn is_en_route_body(body: &str) -> bool {
+    body.trim() == EN_ROUTE_BODY.trim()
+}
+
 /// Filter superseded emergencies: when a sender's stand-down arrives after
 /// their 10-13, the 10-13 is no longer urgent — the situation resolved on
 /// the originator's side. Walks forward (messages are arrival-sorted), tracks
