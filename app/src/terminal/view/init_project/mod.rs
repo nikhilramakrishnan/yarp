@@ -463,7 +463,7 @@ impl InitStepBlock {
                 false,
             ),
             simple_navigation_button(
-                "Pass for now".to_string(),
+                "Wave it off".to_string(),
                 mouse_states.skip_button.clone(),
                 InitProjectBlockAction::SkipCreateEnvironment,
                 false,
@@ -517,7 +517,7 @@ impl InitStepBlock {
         let mut button = appearance
             .ui_builder()
             .button(ButtonVariant::Outlined, mouse_state.clone())
-            .with_text_label("Re-issue AGENTS.md file".to_string());
+            .with_text_label("Re-issue AGENTS.md".to_string());
         if disabled {
             button = button.disabled();
         }
