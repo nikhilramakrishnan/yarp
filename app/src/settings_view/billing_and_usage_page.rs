@@ -1739,7 +1739,7 @@ impl UsageWidget {
             // they're on an Enterprise-like plan. For admins, we show them a message to contact their
             // Account Executive.
             (false, false, true) => {
-                let paragraph_text = "Radio your Account Executive to stock more add-on credits.";
+                let paragraph_text = "Radio your Account Executive to stock more add-on rations.";
                 Some(
                     ui_builder
                         .paragraph(paragraph_text)
