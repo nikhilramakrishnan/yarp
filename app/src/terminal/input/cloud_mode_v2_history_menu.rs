@@ -123,7 +123,23 @@ impl View for CloudModeV2HistoryMenuView {
         let row_count = self.inner.as_ref(app).result_count(app);
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
-        let border_color = internal_colors::neutral_4(theme);
+        // Cloud-mode v2 history menu floats above the cloud-mode input — when
+        // the radio stripe is active on the input below, this overlay menu
+        // should match so the operator's eye doesn't catch a mismatched edge:
+        // self → red, peer → yellow, post-ack 5s → green, neutral_4 fallback.
+        let border_color = if crate::radio::self_in_mayday() {
+            theme.ansi_fg_red()
+        } else if crate::radio::peer_in_mayday() {
+            theme.ansi_fg_yellow()
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            theme.ansi_fg_green()
+        } else {
+            internal_colors::neutral_4(theme)
+        };
         let background = internal_colors::neutral_1(theme);
 
         let item_height = appearance.monospace_font_size() + 8.;
