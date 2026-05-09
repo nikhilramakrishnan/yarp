@@ -1250,7 +1250,35 @@ impl View for BlocklistAIStatusBar {
                 self.context_model.as_ref(app).selected_conversation_id(app) == Some(id)
             });
 
-        if !FeatureFlag::AgentView.is_enabled()
+        // Radio state takes precedence over the NLD/AI-brand left stripe, and
+        // applies on both AgentView and pre-AgentView paths — the status bar
+        // is always-visible during an agent run, so painting the stripe in
+        // 10-13/10-4 colors keeps the channel state on the operator's
+        // primary surface even when the workspace banner is offscreen
+        // (e.g. scrolled, or below a tall block list). Same precedence as
+        // the composer / titlebar / dock: self → red, peer → yellow,
+        // post-ack 5s → green.
+        let radio_stripe_color = if crate::radio::self_in_mayday() {
+            Some(appearance.theme().ansi_fg_red())
+        } else if crate::radio::peer_in_mayday() {
+            Some(appearance.theme().ansi_fg_yellow())
+        } else if crate::radio::time_since_self_stand_down()
+            .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+            .unwrap_or(false)
+            || crate::radio::time_since_self_inbox_ack().is_some()
+        {
+            Some(appearance.theme().ansi_fg_green())
+        } else {
+            None
+        };
+
+        if let Some(radio_color) = radio_stripe_color {
+            container = container
+                .with_border(
+                    Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
+                )
+                .with_padding_left(-LEFT_STRIPE_WIDTH);
+        } else if !FeatureFlag::AgentView.is_enabled()
             && self.input_model.as_ref(app).is_ai_input_enabled()
             && !is_passive_code_diff
             && is_active_exchange_in_selected_conversation
