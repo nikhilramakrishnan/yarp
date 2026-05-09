@@ -464,6 +464,18 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         return Some((line, true));
     }
     let msg = radio::latest_dispatch()?;
+    // When this Yarp is mid-10-13 and the latest inbox dispatch is an
+    // en-route ack, rewrite the row so the response relationship reads at
+    // a glance — the originator wants "Cooper's coming" not "Cooper said
+    // ten-four". Stays red because the call is still active until stand-down.
+    if radio::self_in_mayday() && radio::is_en_route_body(&msg.body) {
+        let age = radio::format_dispatch_age(msg.sent_at_unix);
+        let line = format!(
+            "10-4 \u{00B7} {} en route \u{00B7} {age}",
+            msg.from_call_sign
+        );
+        return Some((line, true));
+    }
     let emergency = dispatch_is_emergency(&msg.body);
     // Hoist the 10-13 prefix out of the quoted body when present — burying
     // urgency inside quotes ("Latest from … : \"10-13 …\"") makes the eye
