@@ -4662,13 +4662,13 @@ impl Input {
                 let user_message = match e.kind() {
                     std::io::ErrorKind::PermissionDenied => {
                         format!(
-                            "Permission denied writing to {}. Check file permissions.",
+                            "Locked out — no clearance to file at {}.",
                             file_path.display()
                         )
                     }
                     std::io::ErrorKind::NotFound => {
                         format!(
-                            "Directory not found: {}",
+                            "Folder's not on the books: {}",
                             file_path
                                 .parent()
                                 .map(|p| p.display().to_string())
@@ -4676,10 +4676,10 @@ impl Input {
                         )
                     }
                     std::io::ErrorKind::AlreadyExists => {
-                        format!("File {} already exists", file_path.display())
+                        format!("Case file's already pinned at {}.", file_path.display())
                     }
                     _ => {
-                        format!("Failed to export to {}: {}", file_path.display(), e)
+                        format!("Couldn't file out to {}: {}", file_path.display(), e)
                     }
                 };
 
