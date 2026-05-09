@@ -4288,7 +4288,7 @@ fn subtitle_options_for_primary(
             (VerticalTabsCompactSubtitle::Branch, "Branch"),
             (
                 VerticalTabsCompactSubtitle::WorkingDirectory,
-                "Working Directory",
+                "Beat",
             ),
         ],
         VerticalTabsPrimaryInfo::WorkingDirectory => [
@@ -4305,7 +4305,7 @@ fn subtitle_options_for_primary(
             ),
             (
                 VerticalTabsCompactSubtitle::WorkingDirectory,
-                "Working Directory",
+                "Beat",
             ),
         ],
     }
@@ -4522,7 +4522,7 @@ pub(super) fn render_settings_popup(
 
     let pane_title_header = Container::new(
         Text::new_inline(
-            "Pane title as".to_string(),
+            "Pane badge as".to_string(),
             appearance.ui_font_family(),
             SETTINGS_POPUP_MENU_ITEM_FONT_SIZE,
         )
@@ -4543,7 +4543,7 @@ pub(super) fn render_settings_popup(
     );
 
     let directory_option = render_primary_info_option(
-        "Working Directory",
+        "Beat",
         matches!(
             current_primary_info,
             VerticalTabsPrimaryInfo::WorkingDirectory
