@@ -489,6 +489,13 @@ impl AboutPageWidget {
         if radio::peers().is_empty() {
             return Empty::new().finish();
         }
+        // Suppress the routine "Mic check" roll-call during an active 10-13 —
+        // pinging the channel for presence while an officer needs backup is a
+        // tone-break. The 10-13 button stays so the operator can join the
+        // emergency wave without hunting for an unrelated CTA.
+        let in_emergency = radio::peek_inbox()
+            .iter()
+            .any(|m| dispatch_is_emergency(&m.body));
         let ui_builder = appearance.ui_builder();
         let radio_button_style = UiComponentStyles {
             font_size: Some(12.),
@@ -550,17 +557,16 @@ impl AboutPageWidget {
             })
             .finish();
 
-        Container::new(
-            Wrap::row()
-                .with_main_axis_alignment(MainAxisAlignment::Center)
-                .with_children([
-                    mic_check,
-                    Container::new(ten_thirteen).with_padding_left(8.).finish(),
-                ])
-                .finish(),
-        )
-        .with_margin_top(8.)
-        .finish()
+        let mut row = Wrap::row().with_main_axis_alignment(MainAxisAlignment::Center);
+        if !in_emergency {
+            row = row.with_child(mic_check);
+            row = row.with_child(Container::new(ten_thirteen).with_padding_left(8.).finish());
+        } else {
+            row = row.with_child(ten_thirteen);
+        }
+        Container::new(row.finish())
+            .with_margin_top(8.)
+            .finish()
     }
 
     // 1:1 direct-dispatch row — one "Hail Sandford" button per live peer.
@@ -596,8 +602,14 @@ impl AboutPageWidget {
             }),
             ..Default::default()
         };
+        // Same distressed-first sort the roster line uses — keeps the urgent
+        // "Respond" CTAs at the head of the wrap row so an operator scanning
+        // left-to-right hits the in-distress peers before the routine hails,
+        // and a wrapping row never buries a Respond CTA on a second line.
+        let mut sorted_peers = peer_list.clone();
+        sorted_peers.sort_by_key(|p| !emergency_signs.contains(&p.call_sign));
         let mut row = Wrap::row().with_main_axis_alignment(MainAxisAlignment::Center);
-        for peer in peer_list {
+        for peer in sorted_peers {
             let in_distress = emergency_signs.contains(&peer.call_sign);
             let label_call_sign = peer.call_sign.clone();
             // When the peer's tab title is known, fold it into the tooltip so
