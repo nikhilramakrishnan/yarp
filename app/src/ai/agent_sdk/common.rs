@@ -184,8 +184,8 @@ pub(super) async fn fetch_and_validate_conversation_harness(
 pub fn format_owner(owner: &Owner) -> &'static str {
     // TODO: For potentially-shared objects, consider looking up the particular user/team name.
     match owner {
-        Owner::User { .. } => "Personal",
-        Owner::Team { .. } => "Team",
+        Owner::User { .. } => "My desk",
+        Owner::Team { .. } => "The squad",
     }
 }
 
