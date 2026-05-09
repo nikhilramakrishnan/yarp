@@ -913,8 +913,8 @@ impl CommentListView {
                 Cow::Borrowed("No fresh notes on the file to send up")
             } else {
                 let cmd = agent.command_prefix();
-                let label = if cmd.is_empty() { "CLI agent" } else { cmd };
-                Cow::Owned(format!("Send diff comments to {label}"))
+                let label = if cmd.is_empty() { "CLI PC" } else { cmd };
+                Cow::Owned(format!("Wire diff notes to {label}"))
             }
         } else if !ai_enabled {
             Cow::Borrowed("AI desk has to be on the air to radio notes to Agent")
