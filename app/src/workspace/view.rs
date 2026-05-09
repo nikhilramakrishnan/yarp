@@ -18499,6 +18499,20 @@ impl Workspace {
             } else {
                 format!("{} need assistance.", names)
             };
+            // Single-caller case can specialise the button to "10-4 en route
+            // to Cooper" — the operator gets tactile confirmation of who
+            // they're rolling on before they press. Multi-caller stays
+            // generic because AckInboxDispatch covers the whole roster
+            // and naming one over the others would mislead.
+            let button_text = if total == 1 {
+                let bare_name = named[0]
+                    .split_once(" (")
+                    .map(|(name, _)| name)
+                    .unwrap_or(&named[0]);
+                format!("10-4 en route to {bare_name}")
+            } else {
+                "10-4 en route".into()
+            };
             return Some(WorkspaceBannerFields {
                 banner_type: WorkspaceBanner::Mayday,
                 severity: BannerSeverity::Error,
@@ -18506,7 +18520,7 @@ impl Workspace {
                 description,
                 secondary_button: None,
                 button: Some(WorkspaceBannerButtonDetails {
-                    text: "10-4 en route".into(),
+                    text: button_text,
                     action: WorkspaceAction::AckInboxDispatch,
                     variant: BannerButtonVariant::Outlined,
                     icon: None,
