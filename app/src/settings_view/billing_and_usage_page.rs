@@ -1141,10 +1141,10 @@ impl UsageWidget {
             .finish();
 
         let credits_text = if credits_remaining == 1 {
-            "1 credit remaining".to_string()
+            "1 ration left".to_string()
         } else {
             format!(
-                "{} credits remaining",
+                "{} rations left",
                 credits_remaining.separate_with_commas()
             )
         };
@@ -1948,8 +1948,8 @@ impl UsageWidget {
             appearance,
             auto_reload_switch,
             Some(format!(
-                "When enabled, auto reload will automatically purchase {auto_reload_amount} \
-                credits when your add-on credit balance reaches 100 credits remaining."
+                "When enabled, auto reload will automatically restock {auto_reload_amount} \
+                rations when your add-on ration balance hits 100 left."
             )),
         ))
         .with_padding_right(-TOGGLE_BUTTON_RIGHT_PADDING)
