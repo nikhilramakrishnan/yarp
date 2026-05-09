@@ -183,7 +183,7 @@ pub fn maybe_log_out(app: &mut AppContext) {
         }));
 
         let alert_data = AlertDialogWithCallbacks::for_app(
-            "Log out?",
+            "Sign off the duty roster?",
             info_text_vec.join("\n"),
             button_data,
             move |ctx| {
