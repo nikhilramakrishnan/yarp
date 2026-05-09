@@ -222,7 +222,7 @@ impl CloudAgentCapacityModal {
             let mut benefits = vec![
                 format!("{} the ambient officers on patrol at once", agent_multiplier),
                 credits_text,
-                "Bring your own API key".to_string(),
+                "Bring your own warrant".to_string(),
             ];
             for extra in extra_benefits {
                 benefits.push(extra.to_string());
