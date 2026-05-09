@@ -157,14 +157,14 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "Right-click a block to fork the case from that point.".to_string(),
+            description: "Right-click a block to spin off the case from that point.".to_string(),
             link: None,
             binding_name: None,
             action: None,
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "Right-click a block to copy the case output.".to_string(),
+            description: "Right-click a block to bag the case output.".to_string(),
             link: None,
             binding_name: None,
             action: None,
