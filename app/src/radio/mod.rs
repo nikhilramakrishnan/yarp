@@ -757,6 +757,16 @@ pub fn self_in_mayday() -> bool {
     now < until
 }
 
+/// True when any peer's live 10-13 is sitting in this Yarp's inbox. Lets
+/// chrome surfaces (window title, future status indicators) flag inbound
+/// distress without re-deriving the same `peek_inbox` + `is_emergency_body`
+/// scan at every call site. Inbox already filters stood-down emergencies
+/// via `resolve_superseded_emergencies`, so anything emergency-bodied here
+/// is by definition a call still wanting a response.
+pub fn peer_in_mayday() -> bool {
+    peek_inbox().iter().any(|m| is_emergency_body(&m.body))
+}
+
 /// Unix-second timestamp when this Yarp began calling 10-13, derived from the
 /// stored deadline minus the fixed TTL. None when not in mayday or after
 /// expiry. Lets dispatch surfaces format "broadcasting · 12s ago" with the

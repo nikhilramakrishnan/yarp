@@ -3174,7 +3174,29 @@ impl Workspace {
             registry.register(window_id, weak_handle);
         });
 
+        // Drive the OS chrome's 10-13 marker off a 5s heartbeat so peer
+        // distress signals propagate to the titlebar even when the operator
+        // never visits the about page (where the inbox poll lives). Self
+        // flips already refresh the title at their click sites; this poll
+        // only earns its keep for inbound peer 10-13s. The check is cheap —
+        // peek_inbox + is_emergency scan — and `set_window_title` with the
+        // same string is a no-op at the OS layer, so there's no flicker
+        // cost when nothing has changed.
+        Self::schedule_radio_title_refresh(ctx);
+
         ws
+    }
+
+    fn schedule_radio_title_refresh(ctx: &mut ViewContext<Self>) {
+        ctx.spawn(
+            async move {
+                yarpui::r#async::Timer::after(std::time::Duration::from_secs(5)).await;
+            },
+            |me, _, ctx| {
+                me.update_window_title(ctx);
+                Self::schedule_radio_title_refresh(ctx);
+            },
+        );
     }
 
     #[cfg(any(test, feature = "integration_tests"))]
@@ -4989,11 +5011,17 @@ impl Workspace {
         // so the OS chrome (titlebar, dock, alt-tab) carries the distress
         // state across to whatever surface the operator is looking at —
         // settings, terminal, agent view. Without this the call is invisible
-        // outside the about page. Truncation runs on the composed string so
-        // the marker survives — losing the suffix is fine, losing the
-        // marker would defeat the point.
+        // outside the about page. Self-mayday outranks inbound — if this
+        // operator is the one calling, that fact dominates whether peers
+        // are also on the wire. "inbound" leads the peer variant so the
+        // chrome reads as "someone needs help" without having to glance at
+        // the about page. Truncation runs on the composed string so the
+        // marker survives length pressure — losing the suffix is fine,
+        // losing the marker would defeat the point.
         let composed = if radio::self_in_mayday() {
             format!("10-13 \u{00B7} {tab_title}")
+        } else if radio::peer_in_mayday() {
+            format!("10-13 inbound \u{00B7} {tab_title}")
         } else {
             tab_title.clone()
         };
