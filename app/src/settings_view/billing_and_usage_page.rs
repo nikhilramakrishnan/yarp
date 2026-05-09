@@ -2282,8 +2282,8 @@ impl UsageWidget {
                     on_click_action: None,
                     secondary_text: None,
                     tooltip_override_text: match info.is_current_user {
-                        true => Some("Your credit cap is prorated — you signed on midway through the billing cycle.".to_string()),
-                        false => Some("This credit cap is prorated — this officer signed on midway through the billing cycle.".to_string()),
+                        true => Some("Your ration cap is prorated — you signed on midway through the billing cycle.".to_string()),
+                        false => Some("This ration cap is prorated — this officer signed on midway through the billing cycle.".to_string()),
                     },
                 },
             ))
