@@ -4719,12 +4719,35 @@ pub(super) fn render_settings_popup(
         appearance,
         theme,
     ));
+    // Settings popup floats over the vertical tabs sidebar — when
+    // the radio stripe is active on the input chrome below, this
+    // overlay's edge needs to match so the operator's eye sees a
+    // single contiguous dispatch state: self → red, peer → yellow,
+    // post-ack 5s → green, fg_overlay_1 fallback.
+    let popup_radio_color = if crate::radio::self_in_mayday() {
+        Some(theme.ansi_fg_red())
+    } else if crate::radio::peer_in_mayday() {
+        Some(theme.ansi_fg_yellow())
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        Some(theme.ansi_fg_green())
+    } else {
+        None
+    };
+    let popup_border = Border::all(1.);
+    let popup_border = match popup_radio_color {
+        Some(color) => popup_border.with_border_color(color),
+        None => popup_border.with_border_fill(internal_colors::fg_overlay_1(theme)),
+    };
     EventHandler::new(
         ConstrainedBox::new(
             Container::new(popup_col.finish())
                 .with_vertical_padding(8.)
                 .with_background(internal_colors::neutral_1(theme))
-                .with_border(Border::all(1.).with_border_fill(internal_colors::fg_overlay_1(theme)))
+                .with_border(popup_border)
                 .with_corner_radius(CornerRadius::with_all(Radius::Pixels(
                     SETTINGS_POPUP_CORNER_RADIUS,
                 )))
