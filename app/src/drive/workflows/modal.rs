@@ -691,7 +691,7 @@ impl WorkflowModal {
 
         // Add "Copy workflow text" to menu
         menu_items.push(
-            MenuItemFields::new("Copy the playbook as text")
+            MenuItemFields::new("Bag the playbook as text")
                 .with_on_select_action(WorkflowModalAction::CopyObjectToClipboard)
                 .with_icon(Icon::CopyMenuItem)
                 .into_item(),
