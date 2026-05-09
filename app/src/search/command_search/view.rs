@@ -1004,8 +1004,8 @@ impl View for CommandSearchView {
 
     fn accessibility_contents(&self, _ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new(
-            "Command Search".to_owned(),
-            "Search your history, workflows, and more.  Use the Up and Down arrows to browse search results after typing.  Press Enter to accept a selected result, inserting it into the terminal input.  Press Escape to close.".to_owned(),
+            "Command Sweep".to_owned(),
+            "Sweep your history, playbooks, and more.  Use the Up and Down arrows to browse results after typing.  Press Enter to accept a selected result, inserting it into the terminal input.  Press Escape to stand down.".to_owned(),
             YarpA11yRole::MenuRole,
         ))
     }
