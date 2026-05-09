@@ -584,7 +584,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:bookmark_selected_block",
-            "Bookmark selected block",
+            "Tag the selected block",
             TerminalAction::BookmarkSelectedBlock,
         )
         .with_custom_action(CustomAction::ToggleBookmarkBlock)
