@@ -2131,7 +2131,7 @@ impl From<&AISettingsPageAction> for LoginGatedFeature {
     fn from(val: &AISettingsPageAction) -> LoginGatedFeature {
         use AISettingsPageAction::*;
         match val {
-            AttemptLoginGatedUpgrade => "Upgrade AI Usage",
+            AttemptLoginGatedUpgrade => "Upgrade PC Duty",
             _ => "Unknown reason",
         }
     }
@@ -4791,7 +4791,7 @@ impl AIInputWidget {
             > = LazyLock::new(|| {
                 vec![
                     FormattedTextFragment::plain_text(
-                        "Switch the radio on to detect when natural language hits the terminal input — Yarp drops into Agent Mode for AI queries automatically.",
+                        "Switch the radio on to detect when natural language hits the terminal input — Yarp drops into Agent Mode for PC queries automatically.",
                     ),
                     FormattedTextFragment::plain_text(
                         " Got a wrong call on a detection? ",
