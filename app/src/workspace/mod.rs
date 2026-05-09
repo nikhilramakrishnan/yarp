@@ -876,7 +876,7 @@ pub fn init(app: &mut AppContext) {
         .with_mac_key_binding("cmd-ctrl-k"),
         EditableBinding::new(
             "workspace:toggle_block_snackbar",
-            "Toggle pinned command header",
+            "Toggle pinned order header",
             WorkspaceAction::ToggleBlockSnackbar,
         )
         .with_group(bindings::BindingGroup::Settings.as_str())

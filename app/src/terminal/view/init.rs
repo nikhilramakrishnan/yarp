@@ -974,7 +974,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "terminal:toggle_snackbar_in_active_pane",
-        "Toggle Pinned Command Header in Active Pane",
+        "Toggle Pinned Order Header in Active Pane",
         TerminalAction::ToggleSnackbarInActivePane,
     )
     .with_context_predicate(id!("Terminal"))]);
