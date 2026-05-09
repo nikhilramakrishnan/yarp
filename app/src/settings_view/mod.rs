@@ -1209,7 +1209,7 @@ impl SettingsView {
         // the app keeps compiling, they're just not surfaced in the sidebar.
         let mut nav_items = vec![
             SettingsNavItem::Umbrella(SettingsUmbrella::new(
-                "Agents",
+                "PCs",
                 SettingsSection::ai_subpages().to_vec(),
             )),
             SettingsNavItem::Umbrella(SettingsUmbrella::new(
