@@ -199,7 +199,7 @@ impl View for RewindConfirmationDialog {
 
         let dialog = Container::new(
             Dialog::new(
-                "Rewind".into(),
+                "Wind it back".into(),
                 Some(
                     "Wind it back? Code and case file go back to this point, and any commands the PC's running get called off. The original case file is filed in the records."
                         .into(),
