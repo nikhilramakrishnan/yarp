@@ -435,6 +435,26 @@ fn precinct_roster_line() -> Option<(String, bool)> {
     } else {
         std::collections::HashSet::new()
     };
+    // Hailing peers earn a "(hailing)" tag in the routine roster — symmetric
+    // to the inbox roster's "(hailing)" suffix. Gated on no-emergency-active
+    // so the red 10-13/en-route rhythm stays unpolluted; under Code 3 the
+    // tab_title fallback is fine because the roster's job under urgency is
+    // "who's coming", not "who's chatty". Last-write-wins per sender so a
+    // peer who hailed and then sent something else doesn't get tagged.
+    let hailing_signs: std::collections::HashSet<String> = if any_emergency_active {
+        std::collections::HashSet::new()
+    } else {
+        let mut latest_body_per_sender: std::collections::HashMap<String, String> =
+            std::collections::HashMap::new();
+        for msg in radio::peek_inbox() {
+            latest_body_per_sender.insert(msg.from_call_sign, msg.body);
+        }
+        latest_body_per_sender
+            .into_iter()
+            .filter(|(_, body)| radio::is_hail_body(body))
+            .map(|(name, _)| name)
+            .collect()
+    };
     let distress_count = peer_list
         .iter()
         .filter(|p| emergency_signs.contains(&p.call_sign))
@@ -458,6 +478,8 @@ fn precinct_roster_line() -> Option<(String, bool)> {
                 format!("{} (10-13)", p.call_sign)
             } else if en_route_signs.contains(&p.call_sign) {
                 format!("{} (en route)", p.call_sign)
+            } else if hailing_signs.contains(&p.call_sign) {
+                format!("{} (hailing)", p.call_sign)
             } else {
                 match &p.tab_title {
                     Some(title) => format!("{} ({})", p.call_sign, title),
