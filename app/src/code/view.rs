@@ -116,14 +116,14 @@ pub fn init(app: &mut AppContext) {
         .with_key_binding("cmdorctrl-shift-S"),
         EditableBinding::new(
             "code_view:close_all_tabs",
-            "Close all tabs",
+            "Close every open case file",
             CodeViewAction::CloseAll,
         )
         .with_context_predicate(id!("CodeEditorView"))
         .with_key_binding("cmdorctrl-r w"),
         EditableBinding::new(
             "code_view:close_saved_tabs",
-            "Close saved tabs",
+            "Close every filed case file",
             CodeViewAction::CloseSaved,
         )
         .with_context_predicate(id!("CodeEditorView"))
