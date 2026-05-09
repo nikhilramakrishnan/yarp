@@ -1516,6 +1516,17 @@ fn add_overflow_menu_items_as_editable_binding(app: &mut AppContext) {
             WorkspaceAction::StandDownMayday,
         )
         .with_context_predicate(id!("Workspace")),
+        // Pairs with the about-page ack button so an operator can drain the
+        // inbox and reply en-route to every queued 10-13 from the palette
+        // without navigating away from a focused beat. Same action the
+        // workspace mayday banner fires on press, so the wire format stays
+        // identical no matter which surface the click came from.
+        EditableBinding::new(
+            "workspace:radio_ack_dispatch",
+            "Radio: 10-4 — acknowledge inbox",
+            WorkspaceAction::AckInboxDispatch,
+        )
+        .with_context_predicate(id!("Workspace")),
     ]);
 }
 
