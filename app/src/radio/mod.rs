@@ -473,6 +473,43 @@ pub fn drain_from_pid(from_pid: u32) -> Vec<Message> {
     out
 }
 
+
+/// Drain en-route replies from this Yarp's inbox — used at stand-down so the
+/// originator's inbox doesn't keep displaying acks to a now-resolved 10-13.
+/// Other senders' messages stay put; only en-route bodies are reaped.
+pub fn drain_en_route_replies() -> usize {
+    let Some(dir) = inbox_dir(std::process::id()) else {
+        return 0;
+    };
+    let entries = match fs::read_dir(&dir) {
+        Ok(entries) => entries,
+        Err(_) => return 0,
+    };
+    let mut reaped = 0usize;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("json") {
+            continue;
+        }
+        let bytes = match fs::read(&path) {
+            Ok(b) => b,
+            Err(_) => continue,
+        };
+        match serde_json::from_slice::<Message>(&bytes) {
+            Ok(msg) if is_en_route_body(&msg.body) => {
+                if fs::remove_file(&path).is_ok() {
+                    reaped += 1;
+                }
+            }
+            Ok(_) => {}
+            Err(_) => {
+                let _ = fs::remove_file(&path);
+            }
+        }
+    }
+    reaped
+}
+
 /// Most recent dispatch in this process's inbox, or None if empty. Reads
 /// without draining — UI surfaces can render the latest body alongside a
 /// pending-count without consuming the message.

@@ -6063,6 +6063,11 @@ impl Workspace {
         // 'Standing down — situation resolved.'") and the implicit-clear
         // path stops at their en-route reply going forward.
         let _ = radio::broadcast(radio::STAND_DOWN_BROADCAST_BODY);
+        // Reap our own inbox of en-route replies — they were responses to
+        // the call we just resolved, so leaving them in place would have
+        // the dispatch row claim "Cooper en route" minutes after we said
+        // we're good. Other inbox traffic (unrelated 10-13s, hails) stays.
+        let _ = radio::drain_en_route_replies();
         ctx.notify();
     }
 
