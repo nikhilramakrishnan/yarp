@@ -43,7 +43,7 @@ impl InlineMenuAction for AcceptSkill {
         // If no item is selected, show "No skills found" message with escape hint
         if args.inline_menu_model.selected_item().is_none() {
             return Some(Message::new(vec![
-                MessageItem::text("No skills found"),
+                MessageItem::text("No skills on the books"),
                 MessageItem::keystroke(Keystroke {
                     key: "escape".to_owned(),
                     ..Default::default()
