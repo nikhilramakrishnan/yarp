@@ -8,9 +8,17 @@
 use std::fs;
 use std::io;
 use std::path::PathBuf;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
+
+// Tracks "I am the one calling 10-13" — broadcast doesn't self-deliver, so
+// without this flag the originator's UI would stay routine while every
+// recipient lights up red. Stored as a unix-second deadline; 0 means clear.
+// In-process state, not persisted: a Yarp restart drops the flag, which is
+// the right default — restart implies the situation has been resolved.
+static SELF_MAYDAY_UNTIL: AtomicU64 = AtomicU64::new(0);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Beacon {
@@ -448,6 +456,41 @@ pub fn latest_dispatch() -> Option<Message> {
 /// always leads the body when broadcast or hailed via the emergency CTA.
 pub fn is_emergency_body(body: &str) -> bool {
     body.trim_start().starts_with("10-13")
+}
+
+
+/// Mark this Yarp as actively calling 10-13 for `ttl` seconds. Lets the
+/// originator's UI render "calling 10-13" while their broadcast is in flight
+/// — without it, the broadcaster's signon would stay "on patrol" because
+/// broadcast doesn't self-deliver. Also flips when the originator manually
+/// stands down by clearing the flag.
+pub fn mark_self_mayday(ttl: Duration) {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    SELF_MAYDAY_UNTIL.store(now + ttl.as_secs(), Ordering::Relaxed);
+}
+
+/// Drop the self-mayday flag (e.g. when the operator stands down or
+/// receives an "en route" reply).
+pub fn clear_self_mayday() {
+    SELF_MAYDAY_UNTIL.store(0, Ordering::Relaxed);
+}
+
+/// True if this Yarp is currently flagged as calling 10-13 (TTL not yet
+/// expired). UI surfaces use this to render the originator's status row in
+/// the same red rhythm as the responder side.
+pub fn self_in_mayday() -> bool {
+    let until = SELF_MAYDAY_UNTIL.load(Ordering::Relaxed);
+    if until == 0 {
+        return false;
+    }
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    now < until
 }
 
 

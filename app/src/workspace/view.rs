@@ -6021,6 +6021,16 @@ impl Workspace {
         // Without the reply, emergency response was silent on the wire —
         // the dispatcher's only feedback was their own broadcast echoing.
         let drained = radio::read_inbox();
+        // If we're the one who called the 10-13 and the inbox now contains a
+        // peer's "en route" reply, the situation is being responded to —
+        // clear our self-mayday flag so the signon row drops the red.
+        if radio::self_in_mayday()
+            && drained
+                .iter()
+                .any(|m| m.body.trim_start().starts_with("10-4"))
+        {
+            radio::clear_self_mayday();
+        }
         let mut acked: std::collections::HashSet<u32> = std::collections::HashSet::new();
         for msg in drained {
             if !radio::is_emergency_body(&msg.body) {
@@ -6042,6 +6052,10 @@ impl Workspace {
 
     fn ten_thirteen_broadcast(&mut self, ctx: &mut ViewContext<Self>) {
         let _ = radio::broadcast(radio::TEN_THIRTEEN_BROADCAST_BODY);
+        // 5 min TTL — long enough for peers to actually respond, short enough
+        // that a stale flag doesn't leave the originator's UI red after the
+        // situation has resolved without an explicit stand-down.
+        radio::mark_self_mayday(std::time::Duration::from_secs(300));
         ctx.notify();
     }
 

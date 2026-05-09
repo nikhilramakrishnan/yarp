@@ -170,24 +170,19 @@ impl SettingsWidget for AboutPageWidget {
     }
 }
 
-// Precinct-state banner. Code 4 = all clear; Code 3 = emergency response.
-// Real-world police shorthand mapped onto the radio domain — the banner gives
-// the whole precinct stack a unifying status pulse above the per-row detail,
-// folding officer count into the same line so the stack stays tight.
-// "Sandford. Population: N." — live peer count + self. Single Yarp running
-// reads as the original Hot Fuzz line ("Population: 1"); adding peers grows it.
-//
-// On a pending 10-13 the line picks up an "officer(s) down" suffix so the
-// urgency pass continues all the way to the bottom of the stack — without
-// it, the eye drops off the precinct rows into a routine-toned footer and
-// loses the emergency rhythm. Copyright text stays intact (brand boundary).
 fn sandford_population_line() -> (String, bool) {
     let population = radio::peers().len() + 1;
-    let down: std::collections::HashSet<String> = radio::peek_inbox()
+    let mut down: std::collections::HashSet<String> = radio::peek_inbox()
         .iter()
         .filter(|m| dispatch_is_emergency(&m.body))
         .map(|m| m.from_call_sign.clone())
         .collect();
+    // Self-mayday counts toward the down list — without this, an officer
+    // calling their own 10-13 would see "Population: 1." with no urgency
+    // marker even though their signon row is red.
+    if radio::self_in_mayday() {
+        down.insert(radio::self_call_sign());
+    }
     let emergency = !down.is_empty();
     let line = if emergency {
         let suffix = if down.len() == 1 {
@@ -204,19 +199,20 @@ fn sandford_population_line() -> (String, bool) {
     (line, emergency)
 }
 
-// Sign-on line — "Officer Cooper \u{00B7} on patrol." The fallback call sign
-// already starts with "Officer-" (process-id form), so we don't double-prefix.
-//
-// Status verb flips with the inbox: a pending 10-13 means we ARE the responder,
-// so the line reads "responding to 10-13" instead of "on patrol" and tints red
-// to match the rest of the stack. The very first thing the operator's eye lands
-// on names the active duty state.
 fn self_signon_line() -> (String, bool) {
     let sign = radio::self_call_sign();
-    let emergency = radio::peek_inbox()
+    let self_calling = radio::self_in_mayday();
+    let inbox_emergency = radio::peek_inbox()
         .iter()
         .any(|m| dispatch_is_emergency(&m.body));
-    let status = if emergency {
+    // Two distinct urgent states feed the signon:
+    //   self-mayday   — *we* broadcast a 10-13, peers may not have responded yet
+    //   inbox emergency — *they* broadcast a 10-13, we're the responder
+    // Self-mayday outranks responder framing because your own emergency is
+    // the more pressing duty state. Both flip the row to the red rhythm.
+    let status = if self_calling {
+        "calling 10-13"
+    } else if inbox_emergency {
         "responding to 10-13"
     } else {
         "on patrol"
@@ -226,6 +222,7 @@ fn self_signon_line() -> (String, bool) {
     } else {
         format!("Officer {sign}")
     };
+    let emergency = self_calling || inbox_emergency;
     (format!("{prefix} \u{00B7} {status}."), emergency)
 }
 
@@ -255,10 +252,17 @@ fn styled_precinct_text_row(
 }
 
 fn precinct_status_line() -> (String, bool) {
-    let emergency_count = radio::peek_inbox()
+    let inbox_emergencies = radio::peek_inbox()
         .iter()
         .filter(|m| dispatch_is_emergency(&m.body))
         .count();
+    // Self-mayday counts toward the banner's emergency tally — the
+    // originator is in distress even though their own broadcast never
+    // self-delivers, so the banner needs to read Code 3 the moment they
+    // hit 10-13. Otherwise the operator's own signon row goes red while
+    // the banner above it stays Code 4 — split signal at the top of stack.
+    let self_mayday = if radio::self_in_mayday() { 1 } else { 0 };
+    let emergency_count = inbox_emergencies + self_mayday;
     let peer_count = radio::peers().len();
     if emergency_count > 0 {
         // Code 3 fragments collapse to terse counts — banner context already
