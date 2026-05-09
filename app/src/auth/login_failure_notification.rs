@@ -31,7 +31,7 @@ impl LoginFailureReason {
             fragments.extend([
                 FormattedTextFragment::plain_text(" Not the first time? See our "),
                 FormattedTextFragment::hyperlink(
-                    "troubleshooting docs",
+                    "troubleshooting brief",
                     LOGIN_TROUBLESHOOTING_DOCS_URL,
                 ),
                 FormattedTextFragment::plain_text("."),
