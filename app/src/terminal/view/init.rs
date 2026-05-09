@@ -982,7 +982,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             TOGGLE_AUTOEXECUTE_MODE_KEYBINDING,
-            "Toggle Auto-execute Mode",
+            "Toggle rubber-stamp mode",
             TerminalAction::ToggleAutoexecuteMode,
         )
         .with_key_binding("cmdorctrl-shift-I")
