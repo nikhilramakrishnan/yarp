@@ -236,7 +236,7 @@ impl AgentManagementView {
         });
 
         let personal_filter_button = ctx.add_typed_action_view(|_ctx| {
-            ActionButton::new("Mine", NakedTheme)
+            ActionButton::new("My desk", NakedTheme)
                 .with_size(ButtonSize::Small)
                 .with_tooltip("Watch case files you opened")
                 .on_click(|ctx| {
