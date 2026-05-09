@@ -150,14 +150,10 @@ impl SettingsWidget for AboutPageWidget {
                 // of the precinct stack below. Sits above the status banner so the
                 // four precinct rows (banner / roster / inbox / dispatch) render
                 // as one contiguous urgent stack on emergency.
-                .with_child(
-                    ui_builder
-                        .span(self_signon_line())
-                        .with_soft_wrap()
-                        .build()
-                        .with_margin_top(4.)
-                        .finish(),
-                )
+                .with_child({
+                    let (line, emergency) = self_signon_line();
+                    styled_precinct_text_row(appearance, line, emergency, false, 4.)
+                })
                 .with_child(self.precinct_status_row(appearance))
                 .with_child(self.precinct_roster_row(appearance))
                 .with_child(self.precinct_inbox_row(appearance))
@@ -191,13 +187,27 @@ fn sandford_population_line() -> String {
 
 // Sign-on line — "Officer Cooper \u{00B7} on patrol." The fallback call sign
 // already starts with "Officer-" (process-id form), so we don't double-prefix.
-fn self_signon_line() -> String {
+//
+// Status verb flips with the inbox: a pending 10-13 means we ARE the responder,
+// so the line reads "responding to 10-13" instead of "on patrol" and tints red
+// to match the rest of the stack. The very first thing the operator's eye lands
+// on names the active duty state.
+fn self_signon_line() -> (String, bool) {
     let sign = radio::self_call_sign();
-    if sign.starts_with("Officer-") {
-        format!("{sign} \u{00B7} on patrol.")
+    let emergency = radio::peek_inbox()
+        .iter()
+        .any(|m| dispatch_is_emergency(&m.body));
+    let status = if emergency {
+        "responding to 10-13"
     } else {
-        format!("Officer {sign} \u{00B7} on patrol.")
-    }
+        "on patrol"
+    };
+    let prefix = if sign.starts_with("Officer-") {
+        sign
+    } else {
+        format!("Officer {sign}")
+    };
+    (format!("{prefix} \u{00B7} {status}."), emergency)
 }
 
 fn styled_precinct_text_row(
