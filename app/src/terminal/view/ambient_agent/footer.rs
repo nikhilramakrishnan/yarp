@@ -80,7 +80,24 @@ pub fn render_loading_footer(appearance: &Appearance) -> Box<dyn Element> {
     let header_color = blended_colors::text_main(theme, theme.background());
     let body_color = blended_colors::text_disabled(theme, theme.background());
     let background = theme.surface_2().into();
-    let border_color = blended_colors::neutral_4(theme);
+    // The loading footer replaces the terminal input while we wait for an
+    // ambient officer to report in — when the radio stripe is active on the
+    // surrounding chrome, this seam needs to match so the operator's eye
+    // sees a single contiguous edge: self → red, peer → yellow, post-ack
+    // 5s → green, neutral_4 fallback.
+    let border_color = if crate::radio::self_in_mayday() {
+        theme.ansi_fg_red()
+    } else if crate::radio::peer_in_mayday() {
+        theme.ansi_fg_yellow()
+    } else if crate::radio::time_since_self_stand_down()
+        .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+        .unwrap_or(false)
+        || crate::radio::time_since_self_inbox_ack().is_some()
+    {
+        theme.ansi_fg_green()
+    } else {
+        blended_colors::neutral_4(theme)
+    };
 
     build_centered_footer(
         "Ambient officer reporting in…".to_string(),
