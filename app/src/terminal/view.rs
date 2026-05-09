@@ -15424,7 +15424,7 @@ impl TerminalView {
                         ))
                         .into_item(),
                 ]);
-                items.append(&mut vec![MenuItemFields::new("Toggle block filter")
+                items.append(&mut vec![MenuItemFields::new("Toggle block sift")
                     .with_on_select_action(TerminalAction::ToggleBlockFilterOnSelectedOrLastBlock(
                         ToggleBlockFilterSource::ContextMenu,
                     ))
