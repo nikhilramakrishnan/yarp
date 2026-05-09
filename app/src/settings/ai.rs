@@ -445,7 +445,7 @@ pub struct CycleInfo {
     schemars::JsonSchema,
     settings_value::SettingsValue,
 )]
-#[schemars(description = "AI usage quota information across billing cycles.")]
+#[schemars(description = "PC duty quota information across billing cycles.")]
 pub struct AIRequestQuotaInfo {
     /// History of billing cycles and their usage.
     ///

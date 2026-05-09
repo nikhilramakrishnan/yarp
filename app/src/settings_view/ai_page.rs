@@ -150,11 +150,11 @@ const NEXT_COMMAND_DESCRIPTION: &str = "Let the PC flag the next command to bark
 const PROMPT_SUGGESTIONS_DESCRIPTION: &str = "Let the PC put natural language prompts on BOLO as inline banners in the input, based on recent commands and outputs on the wire.";
 const SUGGESTED_CODE_BANNERS_DESCRIPTION: &str = "Let the PC put code diffs and queries on BOLO as inline banners in the case file, based on recent commands and outputs on the wire.";
 const NATURAL_LANGUAGE_AUTOSUGGESTIONS: &str =
-    "Let AI flag natural language autosuggestions based on recent commands and outputs on the wire.";
+    "Let the PC flag natural language autosuggestions based on recent commands and outputs on the wire.";
 const SHARED_BLOCK_TITLE_GENERATION_DESCRIPTION: &str =
-    "Let AI file a title for your shared block based on the command and output.";
+    "Let the PC file a title for your shared block based on the command and output.";
 const GIT_OPERATIONS_AUTOGEN_DESCRIPTION: &str =
-    "Let AI file commit messages and pull request titles and descriptions.";
+    "Let the PC file commit messages and pull request titles and descriptions.";
 const WISPR_FLOW_URL: &str = "https://wisprflow.ai/";
 
 pub fn init_actions_from_parent_view<T: Action + Clone>(
@@ -5084,7 +5084,7 @@ impl AIFactWidget {
         );
 
         let description = render_ai_setting_description(
-            "Let AI flag rules worth filing based on your interactions.",
+            "Let the PC flag rules worth filing based on your interactions.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
