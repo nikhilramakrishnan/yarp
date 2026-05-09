@@ -923,7 +923,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CloseWindow.is_enabled()),
         EditableBinding::new(
             "workspace:close_window",
-            BindingDescription::new("Close Window")
+            BindingDescription::new("Close station house")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Close Window"),
             WorkspaceAction::CloseWindow,
         )
