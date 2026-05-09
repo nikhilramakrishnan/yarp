@@ -322,9 +322,9 @@ impl DefaultSessionMode {
     pub fn display_name(&self) -> &'static str {
         match self {
             DefaultSessionMode::Terminal => "Terminal",
-            DefaultSessionMode::Agent => "Agent",
+            DefaultSessionMode::Agent => "PC",
             DefaultSessionMode::CloudAgent => "Cloud Fuzz",
-            DefaultSessionMode::TabConfig => "Tab Config",
+            DefaultSessionMode::TabConfig => "Beat config",
             DefaultSessionMode::DockerSandbox => "Local Docker Sandbox",
         }
     }
