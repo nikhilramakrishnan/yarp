@@ -1932,7 +1932,7 @@ impl Workspace {
                     log::warn!("Failed to remove tab config file: {e:?}");
                     self.toast_stack.update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
-                            DismissibleToast::error(format!("Couldn't strike the tab Standing Orders from the record: {e}")),
+                            DismissibleToast::error(format!("Couldn't strike the beat Standing Orders from the record: {e}")),
                             ctx,
                         );
                     });
