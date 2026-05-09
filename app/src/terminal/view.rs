@@ -26824,6 +26824,30 @@ impl View for TerminalView {
                     .with_background(agent_view_bg_fill(app))
                     .finish();
 
+            // Cloud-mode details panel sits next to the terminal column —
+            // this top seam is the chrome edge above both. Broadcast the
+            // radio palette so the operator's eye sees a single contiguous
+            // dispatch state: self → red, peer → yellow, post-ack 5s →
+            // green, theme.outline fallback.
+            let theme = appearance.theme();
+            let radio_color = if crate::radio::self_in_mayday() {
+                Some(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(theme.ansi_fg_green())
+            } else {
+                None
+            };
+            let panel_top_border = Border::top(1.0);
+            let panel_top_border = match radio_color {
+                Some(color) => panel_top_border.with_border_color(color),
+                None => panel_top_border.with_border_fill(theme.outline()),
+            };
             Container::new(
                 Flex::row()
                     .with_main_axis_size(yarpui::elements::MainAxisSize::Max)
@@ -26832,7 +26856,7 @@ impl View for TerminalView {
                     .with_child(panel_with_background)
                     .finish(),
             )
-            .with_border(Border::top(1.0).with_border_fill(appearance.theme().outline()))
+            .with_border(panel_top_border)
             .finish()
         } else {
             final_element
