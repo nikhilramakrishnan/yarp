@@ -1783,7 +1783,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "workspace:edit_prompt",
-        BindingDescription::new("Edit Prompt")
+        BindingDescription::new("Amend the prompt")
             .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Edit Prompt"),
         WorkspaceAction::OpenPromptEditor {
             open_source: PromptEditorOpenSource::CommandPalette,
