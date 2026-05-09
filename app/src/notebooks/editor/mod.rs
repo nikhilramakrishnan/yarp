@@ -138,7 +138,7 @@ impl BlockType {
         match self {
             BlockType::Text => "Text",
             BlockType::Header(size) => size.label(),
-            BlockType::RunnableCommand => "Command",
+            BlockType::RunnableCommand => "Order",
             BlockType::UnorderedList => "Bulleted list",
             BlockType::OrderedList => "Numbered list",
             BlockType::Code => "Code",
