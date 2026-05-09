@@ -379,8 +379,8 @@ impl PlatformPageWidget {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let text = vec![
-            FormattedTextFragment::plain_text("Issue and manage API keys so outside Fuzz cloud officers can radio your Yarp account.\nFor more details, hit the "),
-            FormattedTextFragment::hyperlink("Documentation.", API_KEY_DOCS_URL),
+            FormattedTextFragment::plain_text("Issue and manage API keys so outside Fuzz cloud officers can radio your Yarp account.\nFor more details, crack open the "),
+            FormattedTextFragment::hyperlink("Standing Orders.", API_KEY_DOCS_URL),
         ];
 
         let text_element = FormattedTextElement::new(
