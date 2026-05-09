@@ -70,7 +70,7 @@ impl View for SshRemoteServerFailedBanner {
 
         // Title
         let title = Text::new(
-            "SSH extension couldn't be installed",
+            "Couldn't kit out the SSH extension on the remote post",
             appearance.ui_font_family(),
             font_size,
         )
@@ -79,10 +79,9 @@ impl View for SshRemoteServerFailedBanner {
 
         // Description
         let body = Text::new(
-            "The binary could not be written or executed on the remote host. \
-             This may be due to permission restrictions or missing dependencies. \
-             While advanced features like file browsing and code review are currently \
-             disabled, the rest of your Yarpified experience is fully available.",
+            "The kit wouldn't drop on the remote post — could be locked permissions or missing gear. \
+             Sweeping the case files and the diff review are off the menu for now, but the rest of \
+             your Yarpified shift is squared away.",
             appearance.ui_font_family(),
             small_font_size,
         )
