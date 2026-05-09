@@ -978,7 +978,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace") & id!("Notifications_Enabled")),
         EditableBinding::new(
             "workspace:toggle_navigation_palette",
-            BindingDescription::new("Toggle navigation palette")
+            BindingDescription::new("Toggle the navigation palette")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Navigation Palette"),
             WorkspaceAction::TogglePalette {
                 mode: PaletteMode::Navigation,
@@ -1266,7 +1266,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "workspace:open_repository",
-            BindingDescription::new("Open repository")
+            BindingDescription::new("Pull up a repo")
                 .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Open Repository"),
             WorkspaceAction::OpenRepository { path: None },
         )
