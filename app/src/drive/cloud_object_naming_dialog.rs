@@ -35,7 +35,7 @@ const BUTTON_MARGIN_BETWEEN: f32 = 8.;
 const NOTEBOOK_TITLE: &str = "Notebook name";
 const FOLDER_TITLE: &str = "Folder name";
 const ENV_VAR_COLLECTION_TITLE: &str = "Collection name";
-const CREATE_BUTTON_TEXT: &str = "Create";
+const CREATE_BUTTON_TEXT: &str = "File it";
 const CANCEL_BUTTON_TEXT: &str = "Stand down";
 const RENAME_BUTTON_TEXT: &str = "Rename";
 
