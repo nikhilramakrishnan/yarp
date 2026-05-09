@@ -376,7 +376,19 @@ fn precinct_status_line() -> (String, bool) {
     // "just" — "Cooper just stood down" reads as the active resolution
     // moment — but plural forms drop "just" so "Cooper & Danny stood down"
     // doesn't trip on the awkward "Cooper & Danny just stood down".
+    // Hail-aware fallback: when no stand-downs are queued but peers are
+    // hailing in, "all clear" reads stale — the channel is alive. Surface
+    // the hail count so the banner conveys "quiet but populated" rather
+    // than "nobody home". Stand-downs still win the slot because resolution
+    // is the louder signal; this only kicks in when stand_down_names is
+    // empty.
+    let hailing_count = latest_body_per_sender
+        .values()
+        .filter(|b| radio::is_hail_body(b))
+        .count();
     let calm_phrase: String = match stood_down_names.as_slice() {
+        [] if hailing_count == 1 => "1 checking in".to_string(),
+        [] if hailing_count > 1 => format!("{hailing_count} checking in"),
         [] => "all clear".to_string(),
         [a] => format!("{a} just stood down"),
         [a, b] => format!("{a} & {b} stood down"),
