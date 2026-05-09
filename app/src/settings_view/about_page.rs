@@ -546,20 +546,28 @@ impl AboutPageWidget {
         for peer in peer_list {
             let in_distress = emergency_signs.contains(&peer.call_sign);
             let label_call_sign = peer.call_sign.clone();
-            let tooltip_call_sign = peer.call_sign.clone();
+            // When the peer's tab title is known, fold it into the tooltip so
+            // the operator can tell which window they're hailing — buttons stay
+            // terse but the hover spells out the case file.
+            let tooltip_target = match peer.tab_title.as_deref() {
+                Some(title) if !title.is_empty() => {
+                    format!("{} ({})", peer.call_sign, title)
+                }
+                _ => peer.call_sign.clone(),
+            };
             let tooltip_builder = ui_builder.clone();
             let to_pid = peer.pid;
             let (variant, label, tooltip) = if in_distress {
                 (
                     ButtonVariant::Error,
                     format!("Respond to {label_call_sign}"),
-                    format!("Send '10-4, en route' to {tooltip_call_sign}."),
+                    format!("Send '10-4, en route' to {tooltip_target}."),
                 )
             } else {
                 (
                     ButtonVariant::Outlined,
                     format!("Hail {label_call_sign}"),
-                    format!("Drop a 'checking in' ping into {tooltip_call_sign}'s inbox."),
+                    format!("Drop a 'checking in' ping into {tooltip_target}'s inbox."),
                 )
             };
             let button = ui_builder
