@@ -144,7 +144,7 @@ impl ConversationUsageView {
         {
             let last_block_credits = self.usage_info.credits_spent_for_last_block.unwrap();
             labels.push(render_label_text(
-                "Credits spent (last response)",
+                "Rations spent (last response)",
                 appearance,
             ));
             values.push(render_value_text(
@@ -152,13 +152,13 @@ impl ConversationUsageView {
                 appearance,
             ));
 
-            labels.push(render_label_text("Credits spent (total)", appearance));
+            labels.push(render_label_text("Rations spent (total)", appearance));
             values.push(render_value_text(
                 format_credits(self.usage_info.credits_spent),
                 appearance,
             ));
         } else {
-            labels.push(render_label_text("Credits spent", appearance));
+            labels.push(render_label_text("Rations spent", appearance));
             values.push(render_value_text(
                 format_credits(self.usage_info.credits_spent),
                 appearance,
