@@ -289,14 +289,14 @@ pub fn init(app: &mut AppContext) {
         FixedBinding::custom(
             CustomAction::AddWindow,
             WorkspaceAction::AddWindow,
-            "Create New Window",
+            "Open new station house",
             id!("Workspace"),
         )
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         FixedBinding::custom(
             CustomAction::NewFile,
             WorkspaceAction::NewCodeFile,
-            "New File",
+            "File a fresh report",
             id!("Workspace") & !id!("Workspace_ViewOnlySharedSession"),
         ),
     ]);
