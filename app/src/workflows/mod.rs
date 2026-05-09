@@ -237,7 +237,7 @@ impl CloudModelType for CloudWorkflowModel {
 
     fn model_type_name(&self) -> &'static str {
         if self.data.is_agent_mode_workflow() {
-            "Prompt"
+            "Briefing"
         } else {
             "Playbook"
         }
