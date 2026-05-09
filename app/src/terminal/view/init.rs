@@ -1159,7 +1159,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             SET_INPUT_MODE_AGENT_ACTION_NAME,
-            "Set Input Mode to Agent Mode",
+            "Switch input to PC mode",
             TerminalAction::SetInputModeAgent,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -1168,7 +1168,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
         .with_linux_or_windows_key_binding("ctrl-i"),
         EditableBinding::new(
             SET_INPUT_MODE_TERMINAL_ACTION_NAME,
-            "Set Input Mode to Terminal Mode",
+            "Switch input to Terminal mode",
             TerminalAction::SetInputModeTerminal,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -1177,7 +1177,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
         .with_linux_or_windows_key_binding("ctrl-i"),
         EditableBinding::new(
             TOGGLE_HIDE_CLI_RESPONSES_KEYBINDING,
-            "Toggle Hide CLI Responses",
+            "Toggle hide CLI dispatches",
             TerminalAction::ToggleHideCliResponses,
         )
         .with_key_binding("cmdorctrl-g")
