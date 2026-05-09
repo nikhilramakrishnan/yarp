@@ -165,7 +165,7 @@ impl TerminationType {
 
     fn text(&self, appearance: &Appearance) -> Box<dyn Element> {
         let text = match self {
-            TerminationType::Normal => "Shell process exited",
+            TerminationType::Normal => "PC clocked out",
             TerminationType::PtySpawnFailure { .. } => "PC couldn't sign on!",
             TerminationType::Premature { .. } => "PC went off-duty unexpectedly!",
         };
