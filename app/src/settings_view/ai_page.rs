@@ -4442,7 +4442,7 @@ impl AgentsWidget {
                 ),
                 FormattedTextFragment::plain_text(" or "),
                 FormattedTextFragment::hyperlink(
-                    "learn more about MCPs.",
+                    "read the brief on MCPs.",
                     "https://github.com/hotfuzz/yarp/agent-platform/capabilities/mcp",
                 ),
             ];
@@ -4736,9 +4736,9 @@ impl AIInputWidget {
             static AUTODETECTION_DESCRIPTION_FRAGMENTS: LazyLock<Vec<FormattedTextFragment>> =
                 LazyLock::new(|| {
                     vec![
-                        FormattedTextFragment::plain_text("Encountered an incorrect detection? "),
+                        FormattedTextFragment::plain_text("Got a wrong call on a detection? "),
                         FormattedTextFragment::hyperlink(
-                            "Let us know",
+                            "Tip us off",
                             "https://hotfuzz.typeform.com/to/offrTIpq",
                         ),
                     ]
@@ -4794,10 +4794,10 @@ impl AIInputWidget {
                         "Switch the radio on to detect when natural language hits the terminal input — Yarp drops into Agent Mode for AI queries automatically.",
                     ),
                     FormattedTextFragment::plain_text(
-                        " Encountered an incorrect input detection? ",
+                        " Got a wrong call on a detection? ",
                     ),
                     FormattedTextFragment::hyperlink(
-                        "Let us know",
+                        "Tip us off",
                         "https://hotfuzz.typeform.com/to/offrTIpq",
                     ),
                 ]
