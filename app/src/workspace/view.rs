@@ -17210,12 +17210,35 @@ impl Workspace {
             }
             tab_bar.add_child(right_row.finish());
 
+            // Cloud-mode wasm tab bar bottom edge — same logic as the
+            // desktop tab bar at ~17666: anchor the radio dispatch state
+            // at the very top of the workspace so the operator's eye
+            // catches it on a glance: self → red, peer → yellow,
+            // post-ack 5s → green, neutral_2 fallback.
+            let cloud_tab_bar_border = {
+                let theme = appearance.theme();
+                let radio_color = if crate::radio::self_in_mayday() {
+                    Some(theme.ansi_fg_red())
+                } else if crate::radio::peer_in_mayday() {
+                    Some(theme.ansi_fg_yellow())
+                } else if crate::radio::time_since_self_stand_down()
+                    .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                    .unwrap_or(false)
+                    || crate::radio::time_since_self_inbox_ack().is_some()
+                {
+                    Some(theme.ansi_fg_green())
+                } else {
+                    None
+                };
+                let base = Border::bottom(1.0);
+                match radio_color {
+                    Some(color) => base.with_border_color(color),
+                    None => base.with_border_fill(blended_colors::neutral_2(theme)),
+                }
+            };
             return Container::new(tab_bar.finish())
                 .with_background_color(bg_color)
-                .with_border(
-                    Border::bottom(1.0)
-                        .with_border_fill(blended_colors::neutral_2(appearance.theme())),
-                )
+                .with_border(cloud_tab_bar_border)
                 .with_padding_left(24.)
                 .with_padding_right(24.)
                 .with_padding_top(4.)
