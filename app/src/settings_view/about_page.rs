@@ -683,8 +683,16 @@ fn precinct_earlier_dispatches_line() -> Option<String> {
     if inbox.len() < 2 {
         return None;
     }
-    let self_mayday = radio::self_in_mayday();
-    if self_mayday && inbox.iter().all(|m| radio::is_en_route_body(&m.body)) {
+    // Skip the preview when *every* queued message is an en-route ack during
+    // any active 10-13 (self or peer-originated) — the dispatch row above
+    // already enumerates the responder wave, so an "Earlier:" line under it
+    // would just repeat names. Broadening the gate beyond self-mayday means
+    // peer-side responders don't see a redundant "Earlier: Danny (case-foo
+    // · 12s) — '10-4 en route'" line under their dispatch row's
+    // "Cooper, Danny en route".
+    let any_emergency_active = radio::self_in_mayday()
+        || inbox.iter().any(|m| dispatch_is_emergency(&m.body));
+    if any_emergency_active && inbox.iter().all(|m| radio::is_en_route_body(&m.body)) {
         return None;
     }
     // Walk newest-first, skip the absolute newest (already shown above), and
