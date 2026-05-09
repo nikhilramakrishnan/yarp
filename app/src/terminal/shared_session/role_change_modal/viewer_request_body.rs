@@ -67,7 +67,7 @@ impl View for ViewerRequestBody {
     fn render(&self, app: &AppContext) -> Box<dyn Element> {
         let appearance = Appearance::as_ref(app);
         let header = format!("Waved for {} access", self.role_label());
-        let text = format!("Waiting on {}...", self.display_name);
+        let text = format!("Holding for {}...", self.display_name);
 
         let cancel_button = appearance
             .ui_builder()
