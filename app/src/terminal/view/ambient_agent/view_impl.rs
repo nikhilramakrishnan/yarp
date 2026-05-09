@@ -34,7 +34,7 @@ use super::{
     is_cloud_agent_pre_first_exchange, AmbientAgentEntryBlock, AmbientAgentViewModelEvent,
 };
 const CHILD_AGENT_GITHUB_AUTH_REQUIRED_BLOCKED_ACTION: &str =
-    "GitHub credentials required before kitting out the child PC.";
+    "Sign on with GitHub before kitting out the child PC.";
 
 impl TerminalView {
     fn active_ambient_agent_conversation_id(&self, ctx: &AppContext) -> Option<AIConversationId> {
