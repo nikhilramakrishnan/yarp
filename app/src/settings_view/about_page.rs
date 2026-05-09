@@ -1296,7 +1296,33 @@ impl AboutPageWidget {
             let tooltip_builder = ui_builder.clone();
             let to_pid = peer.pid;
             let is_hailing_us = hailing_signs.contains(&peer.call_sign);
-            let (variant, label, tooltip) = if in_distress {
+            // Transient post-click ack windows take precedence over the
+            // routine variant logic so the operator sees the click
+            // registered. Respond ack ranks above hail ack — responding to a
+            // 10-13 is the heavier moment and shouldn't be papered over by a
+            // stale routine ping mark on the same pid. After the window
+            // expires the button returns to its normal Hail/Respond label.
+            let respond_age = radio::self_respond_at_unix(to_pid);
+            let hail_age = radio::self_hail_at_unix(to_pid);
+            let (variant, label, tooltip) = if let Some(at) = respond_age {
+                (
+                    ButtonVariant::Error,
+                    format!(
+                        "En route to {label_call_sign} \u{00B7} {}",
+                        radio::format_dispatch_age(at)
+                    ),
+                    format!("Rolled on {tooltip_target}'s 10-13 — reply on the wire."),
+                )
+            } else if let Some(at) = hail_age {
+                (
+                    ButtonVariant::Outlined,
+                    format!(
+                        "Hailed {label_call_sign} \u{00B7} {}",
+                        radio::format_dispatch_age(at)
+                    ),
+                    format!("Hailed {tooltip_target} — waiting on a reply."),
+                )
+            } else if in_distress {
                 (
                     ButtonVariant::Error,
                     format!("Respond to {label_call_sign}"),

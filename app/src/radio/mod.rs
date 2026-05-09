@@ -8,6 +8,8 @@
 use std::fs;
 use std::io;
 use std::path::PathBuf;
+use std::collections::HashMap;
+use std::sync::Mutex;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
@@ -773,6 +775,83 @@ pub fn self_mayday_started_at_unix() -> Option<u64> {
         return None;
     }
     Some(until.saturating_sub(SELF_MAYDAY_TTL_SECS))
+}
+
+// Per-peer click acks. Hailing or responding to a specific peer goes out as a
+// targeted message that doesn't echo back to the sender's UI, so without these
+// the per-peer button stays visually identical the moment after the click.
+// Tracks the unix-second when this Yarp last fired a hail / en-route reply
+// at each peer pid, so the per-peer button can render a transient
+// "Hailed Cooper · 3s" / "En route to Cooper · 3s" label inside the ack
+// window. Pid keyed (not call sign) so a peer that restarts and picks up a
+// fresh sign doesn't carry stale ack state across the rename.
+static SELF_HAIL_AT: Mutex<Option<HashMap<u32, u64>>> = Mutex::new(None);
+static SELF_RESPOND_AT: Mutex<Option<HashMap<u32, u64>>> = Mutex::new(None);
+
+/// How long the post-hail ack lingers on the per-peer button. Kept short
+/// because a hail is a routine ping — the operator just needs visual
+/// confirmation the click registered before the button settles back.
+pub const SELF_HAIL_ACK_SECS: u64 = 5;
+
+/// How long the post-respond ack lingers on the per-peer button. Same shape
+/// as the hail ack, separate const so future tuning can diverge — responding
+/// to a 10-13 is a heavier moment than a routine hail.
+pub const SELF_RESPOND_ACK_SECS: u64 = 5;
+
+/// Mark that this Yarp just fired a hail at `pid`. Drives the per-peer
+/// "Hailed {sign} · {age}" label so the operator sees the click registered
+/// even when the peer doesn't reply right away.
+pub fn mark_self_hailed(pid: u32) {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let mut guard = SELF_HAIL_AT.lock().unwrap_or_else(|e| e.into_inner());
+    guard.get_or_insert_with(HashMap::new).insert(pid, now);
+}
+
+/// Mark that this Yarp just fired the en-route reply at `pid`. Drives the
+/// per-peer "En route to {sign} · {age}" label, mirroring the hail ack
+/// surface so a 10-13 response gets the same visual confirmation.
+pub fn mark_self_responded(pid: u32) {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    let mut guard = SELF_RESPOND_AT.lock().unwrap_or_else(|e| e.into_inner());
+    guard.get_or_insert_with(HashMap::new).insert(pid, now);
+}
+
+/// Unix-second timestamp of the last hail at `pid` while still inside the
+/// ack window; `None` once expired. Returning the raw timestamp lets the
+/// caller reuse `format_dispatch_age` so per-peer buttons stay in lockstep
+/// with inbox/dispatch age phrasing.
+pub fn self_hail_at_unix(pid: u32) -> Option<u64> {
+    let guard = SELF_HAIL_AT.lock().unwrap_or_else(|e| e.into_inner());
+    let at = guard.as_ref()?.get(&pid).copied()?;
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now.saturating_sub(at) >= SELF_HAIL_ACK_SECS {
+        return None;
+    }
+    Some(at)
+}
+
+/// Unix-second timestamp of the last en-route reply at `pid` while still
+/// inside the ack window; `None` once expired. Mirror of `self_hail_at_unix`.
+pub fn self_respond_at_unix(pid: u32) -> Option<u64> {
+    let guard = SELF_RESPOND_AT.lock().unwrap_or_else(|e| e.into_inner());
+    let at = guard.as_ref()?.get(&pid).copied()?;
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or_default();
+    if now.saturating_sub(at) >= SELF_RESPOND_ACK_SECS {
+        return None;
+    }
+    Some(at)
 }
 
 

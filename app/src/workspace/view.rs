@@ -6086,6 +6086,11 @@ impl Workspace {
     fn radio_hail(&mut self, to_pid: u32, ctx: &mut ViewContext<Self>) {
         let msg = radio::Message::new(radio::self_call_sign(), radio::HAIL_BODY);
         let _ = radio::send_message(to_pid, &msg);
+        // Per-peer ack window so the click registers visually even when the
+        // peer doesn't reply right away — a targeted hail doesn't echo back
+        // to the sender's inbox, so without this mark the button would look
+        // identical the moment after the press.
+        radio::mark_self_hailed(to_pid);
         ctx.notify();
     }
 
@@ -6098,6 +6103,11 @@ impl Workspace {
         let msg = radio::Message::new(radio::self_call_sign(), radio::EN_ROUTE_BODY);
         let _ = radio::send_message(to_pid, &msg);
         let _ = radio::drain_from_pid(to_pid);
+        // Per-peer ack window: drain immediately flips the button away from
+        // "Respond to X" back to the routine "Hail" variant, which reads as
+        // if the click did nothing. The mark gives a brief "En route to X"
+        // confirmation before the button settles back to its routine label.
+        radio::mark_self_responded(to_pid);
         ctx.notify();
     }
 
