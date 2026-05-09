@@ -507,7 +507,7 @@ impl ProfileModelSelector {
 
         let manage_api_key_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Amend", SecondaryTheme)
-                .with_tooltip("Manage badge numbers")
+                .with_tooltip("Mind the badge numbers")
                 .with_size(ButtonSize::XSmall)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(WorkspaceAction::ShowSettingsPageWithSearch {
