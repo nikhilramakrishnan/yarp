@@ -387,7 +387,7 @@ impl UpdateEnvironmentForm {
             form.update_editor_text_colors(ctx);
         });
         // Create editors
-        let name_editor = Self::create_single_line_editor("Environment name", ctx);
+        let name_editor = Self::create_single_line_editor("Post name", ctx);
         let description_editor = Self::create_description_editor(ctx);
         let docker_image_editor =
             Self::create_single_line_editor("e.g. python:3.11, node:20-alpine", ctx);

@@ -350,7 +350,7 @@ impl EnvironmentSetupModeSelector {
             1,
             Icon::Terminal,
             "Tag in the PC",
-            "Pick a locally signed-on repo and we'll wire up an environment to suit",
+            "Pick a locally signed-on repo and we'll wire up a post to suit",
             false,
             self.local_repos_mouse_state.clone(),
             EnvironmentSetupModeSelectorAction::SelectLocalRepositories,
