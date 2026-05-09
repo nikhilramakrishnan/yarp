@@ -788,15 +788,16 @@ pub fn self_mayday_started_at_unix() -> Option<u64> {
 static SELF_HAIL_AT: Mutex<Option<HashMap<u32, u64>>> = Mutex::new(None);
 static SELF_RESPOND_AT: Mutex<Option<HashMap<u32, u64>>> = Mutex::new(None);
 
-/// How long the post-hail ack lingers on the per-peer button. Kept short
-/// because a hail is a routine ping — the operator just needs visual
-/// confirmation the click registered before the button settles back.
-pub const SELF_HAIL_ACK_SECS: u64 = 5;
+/// How long the post-hail ack lingers on the per-peer button. Spans the
+/// "just now" → "5s ago" age bucket transition so the operator sees the
+/// label tick over once before the button settles back to its routine
+/// variant — a single static frame would read as a stuck button.
+pub const SELF_HAIL_ACK_SECS: u64 = 10;
 
 /// How long the post-respond ack lingers on the per-peer button. Same shape
 /// as the hail ack, separate const so future tuning can diverge — responding
 /// to a 10-13 is a heavier moment than a routine hail.
-pub const SELF_RESPOND_ACK_SECS: u64 = 5;
+pub const SELF_RESPOND_ACK_SECS: u64 = 10;
 
 /// Mark that this Yarp just fired a hail at `pid`. Drives the per-peer
 /// "Hailed {sign} · {age}" label so the operator sees the click registered
