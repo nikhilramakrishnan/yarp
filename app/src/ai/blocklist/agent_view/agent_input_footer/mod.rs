@@ -2064,7 +2064,7 @@ fn render_ftu_callout(
                     Expanded::new(
                         1.,
                         Text::new(
-                            "Reassigned to Full Terminal Agent's standing officer.",
+                            "Reassigned to Full Terminal PC's standing officer.",
                             appearance.ui_font_family(),
                             appearance.monospace_font_size() - 2.,
                         )
