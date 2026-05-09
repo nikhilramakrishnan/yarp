@@ -196,7 +196,7 @@ impl View for CommandSearchZeroStateView {
 
         let command_search_text = Container::new(
             Text::new_inline(
-                "Command Search",
+                "Records sweep",
                 appearance.ui_font_family(),
                 styles::header_text_font_size(appearance),
             )
