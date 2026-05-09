@@ -19141,9 +19141,33 @@ impl Workspace {
                     .with_height(TAB_BAR_HEIGHT)
                     .finish(),
             );
-            contents = Container::new(contents)
-                .with_border(Border::top(1.).with_border_fill(appearance.theme().surface_2()))
-                .finish();
+            // Right-panel traffic-light spacer top edge runs across the
+            // top of the right panel on Windows/Linux when traffic lights
+            // are on the right — when the radio stripe is active on the
+            // input chrome below, this seam needs to match so the
+            // operator's eye sees a contiguous dispatch state at the
+            // panel edge: self → red, peer → yellow, post-ack 5s →
+            // green, surface_2 fallback.
+            let theme = appearance.theme();
+            let panel_radio_color = if crate::radio::self_in_mayday() {
+                Some(theme.ansi_fg_red())
+            } else if crate::radio::peer_in_mayday() {
+                Some(theme.ansi_fg_yellow())
+            } else if crate::radio::time_since_self_stand_down()
+                .map(|e| e.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS)
+                .unwrap_or(false)
+                || crate::radio::time_since_self_inbox_ack().is_some()
+            {
+                Some(theme.ansi_fg_green())
+            } else {
+                None
+            };
+            let panel_border = Border::top(1.);
+            let panel_border = match panel_radio_color {
+                Some(color) => panel_border.with_border_color(color),
+                None => panel_border.with_border_fill(theme.surface_2()),
+            };
+            contents = Container::new(contents).with_border(panel_border).finish();
         }
         col.add_child(Shrinkable::new(1.0, contents).finish());
 
