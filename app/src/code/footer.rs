@@ -368,7 +368,7 @@ impl CodeFooterView {
         // Create a button that dispatches EnableLSP action
         // The action handler will check lsp_repo_status to decide whether to install first
         let enable_lsp_button = server_type.map(|st| {
-            let label = format!("Enable {}", st.binary_name());
+            let label = format!("Sign on {}", st.binary_name());
             ctx.add_typed_action_view(|_ctx| {
                 ActionButton::new(label, NakedTheme)
                     .with_size(ButtonSize::Small)
@@ -655,10 +655,10 @@ impl CodeFooterView {
     fn button_label_for_status(status: &LspRepoStatus) -> Option<String> {
         match status {
             LspRepoStatus::DisabledAndNotInstalled { server_type } => {
-                Some(format!("Install {}", server_type.binary_name()))
+                Some(format!("Wire in {}", server_type.binary_name()))
             }
             LspRepoStatus::DisabledAndInstalled { server_type } => {
-                Some(format!("Enable {}", server_type.binary_name()))
+                Some(format!("Sign on {}", server_type.binary_name()))
             }
             _ => None,
         }
@@ -666,7 +666,7 @@ impl CodeFooterView {
 
     /// Returns the appropriate button label for a set of CTA-worthy statuses.
     /// When multiple servers need action, uses plural labels
-    /// ("Enable servers" / "Install servers").
+    /// ("Sign on language officers" / "Wire in language officers").
     #[cfg_attr(target_arch = "wasm32", allow(dead_code))]
     fn button_label_for_cta_statuses(statuses: &[&LspRepoStatus]) -> Option<String> {
         match statuses.len() {
@@ -677,9 +677,9 @@ impl CodeFooterView {
                     .iter()
                     .any(|s| matches!(s, LspRepoStatus::DisabledAndNotInstalled { .. }));
                 if any_needs_install {
-                    Some("Install servers".to_string())
+                    Some("Wire in language officers".to_string())
                 } else {
-                    Some("Enable servers".to_string())
+                    Some("Sign on language officers".to_string())
                 }
             }
         }
