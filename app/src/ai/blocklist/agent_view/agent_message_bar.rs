@@ -757,7 +757,7 @@ impl MessageProvider<AgentMessageArgs<'_>> for ForkSlashCommandMessageProducer {
         // Other fork-like commands open in the current pane with Enter and a new pane
         // with Cmd/Ctrl+Enter.
         let (primary_label, secondary_label) = if command_name == commands::FORK.name {
-            (" new pane", " new tab")
+            (" new pane", " new beat")
         } else {
             (" current pane", " new pane")
         };
