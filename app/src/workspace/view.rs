@@ -11524,7 +11524,7 @@ impl Workspace {
                     log::error!("Conversation forking failed. {e}.");
                     WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         let toast =
-                            DismissibleToast::error("Branching the case file failed.".to_owned());
+                            DismissibleToast::error("Couldn't peel off a copy of the case file.".to_owned());
                         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                     });
                     return;

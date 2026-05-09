@@ -1453,7 +1453,7 @@ impl NotebookView {
             if let Some(link) = self.notebook_link(ctx) {
                 if let Ok(url) = Url::parse(&link) {
                     menu_items.push(
-                        MenuItemFields::new("Open on Desktop")
+                        MenuItemFields::new("Pull up on Desktop")
                             .with_on_select_action(NotebookAction::OpenLinkOnDesktop(url))
                             .with_icon(icons::Icon::Laptop)
                             .into_item(),
