@@ -1861,9 +1861,9 @@ impl UsageWidget {
                         .finish();
 
                 let credits_text = if credits_purchased == 1 {
-                    "1 credit".to_string()
+                    "1 ration".to_string()
                 } else {
-                    format!("{} credits", credits_purchased.separate_with_commas())
+                    format!("{} rations", credits_purchased.separate_with_commas())
                 };
 
                 let credits_component = Container::new(
@@ -2190,12 +2190,12 @@ impl UsageWidget {
                     )
                 } else {
                     (
-                        format!("{} credits", count.separate_with_commas()),
+                        format!("{} rations", count.separate_with_commas()),
                         format!("${:.2}", cost as f64 / 100.0),
                     )
                 }
             } else {
-                ("0 credits".to_string(), "$0.00".to_string())
+                ("0 rations".to_string(), "$0.00".to_string())
             };
 
         let mut left_side_component =

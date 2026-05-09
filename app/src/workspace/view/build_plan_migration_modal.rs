@@ -223,7 +223,7 @@ impl BuildPlanMigrationModal {
                         .map(|(i, option)| {
                             DropdownItem::new(
                                 format!(
-                                    "${} / {} credits",
+                                    "${} / {} rations",
                                     option.price_usd_cents / 100,
                                     option.credits.separate_with_commas(),
                                 ),
