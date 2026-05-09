@@ -186,12 +186,12 @@ fn sandford_population_line() -> (String, bool) {
         down.insert(radio::self_call_sign());
     }
     let emergency = !down.is_empty();
-    // During a self-10-13, count distinct peers who've acked en route so the
-    // population line reflects the backup wave converging — "1 down · 2
-    // responding" reads as the situation actively being handled, not just
-    // the call still being live. Only counted on self-mayday to avoid
-    // crediting random copy-acks on routine traffic.
-    let responding: std::collections::HashSet<String> = if radio::self_in_mayday() {
+    // During *any* active 10-13 (self or peer), count distinct call signs
+    // that have acked en route so the population line reflects the backup
+    // wave — "1 down · 2 responding" reads as the situation actively being
+    // handled. Only counted while emergency is live; on routine traffic an
+    // "en route" body is just a stray copy-ack and shouldn't pad the banner.
+    let responding: std::collections::HashSet<String> = if emergency {
         radio::peek_inbox()
             .iter()
             .filter(|m| radio::is_en_route_body(&m.body))
