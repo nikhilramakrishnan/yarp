@@ -11496,7 +11496,7 @@ impl Workspace {
                 log::error!("Failed to load Fuzz conversation {conversation_id} for forking.");
                 WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::error(
-                        "Couldn't pull up the case file to branch.".to_owned(),
+                        "Couldn't pull up the case file to spin off.".to_owned(),
                     );
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
