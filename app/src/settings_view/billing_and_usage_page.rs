@@ -102,7 +102,7 @@ const RESTRICTED_BILLING_USAGE_WARNING_STRING: &str =
     "Auto reload is off duty after a recent failed reload. Update your payment method and radio it in again.";
 
 const OVERVIEW_TAB_TEXT: &str = "Overview";
-const USAGE_HISTORY_TAB_TEXT: &str = "Usage History";
+const USAGE_HISTORY_TAB_TEXT: &str = "Duty history";
 
 const ENTERPRISE_USAGE_CALLOUT_HEADER: &str = "Patrol log only goes so far in this view";
 const ENTERPRISE_USAGE_CALLOUT_BODY_ADMIN_PREFIX: &str =
