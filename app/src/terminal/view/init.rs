@@ -393,7 +393,7 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Terminal") & !id!("IMEOpen")),
         EditableBinding::new(
             "terminal:focus_input",
-            "Focus terminal input",
+            "Focus the radio mic",
             TerminalAction::FocusInputAndClearSelection,
         )
         .with_custom_action(CustomAction::FocusInput)
@@ -408,7 +408,7 @@ pub fn init(app: &mut AppContext) {
             .with_context_predicate(id!("Terminal") & !id!("IMEOpen")),
         EditableBinding::new(
             "terminal:reinput_commands",
-            "Reinput selected commands",
+            "Re-issue selected commands",
             TerminalAction::ReinputCommands,
         )
         .with_context_predicate(
@@ -416,7 +416,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:reinput_commands_with_sudo",
-            "Reinput selected commands as root",
+            "Re-issue selected commands with chief's badge",
             TerminalAction::ReinputCommandsWithSudo,
         )
         .with_context_predicate(
@@ -424,7 +424,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:find",
-            "Find in Terminal",
+            "Look up in Terminal",
             TerminalAction::ShowFindBar,
         )
         .with_key_binding(cmd_or_ctrl_shift("f"))
@@ -432,21 +432,21 @@ pub fn init(app: &mut AppContext) {
         .with_context_predicate(id!("Terminal")),
         EditableBinding::new(
             "terminal:select_bookmark_up",
-            "Select the closest bookmark up",
+            "Pick the closest tag above",
             TerminalAction::SelectBookmarkUp,
         )
         .with_key_binding("alt-up")
         .with_context_predicate(id!("Terminal") & !id!("IMEOpen")),
         EditableBinding::new(
             "terminal:select_bookmark_down",
-            "Select the closest bookmark down",
+            "Pick the closest tag below",
             TerminalAction::SelectBookmarkDown,
         )
         .with_key_binding("alt-down")
         .with_context_predicate(id!("Terminal") & !id!("IMEOpen")),
         EditableBinding::new(
             "terminal:open_block_list_context_menu_via_keybinding",
-            "Open block context menu",
+            "Crack open block context menu",
             TerminalAction::OpenBlockListContextMenu,
         )
         .with_mac_key_binding("ctrl-m")
@@ -455,7 +455,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:toggle_teams_modal",
-            "Toggle team workflows modal",
+            "Toggle squad playbooks modal",
             TerminalAction::OpenWorkflowModal,
         )
         .with_key_binding(cmd_or_ctrl_shift("s"))
@@ -466,7 +466,7 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:copy_git_branch",
-            "Copy git branch",
+            "Bag the git branch",
             TerminalAction::CopyGitBranch,
         )
         .with_context_predicate(
