@@ -4001,7 +4001,7 @@ impl TerminalView {
             )
         });
         let agent_view_back_button = ctx.add_typed_action_view(|ctx| {
-            ActionButton::new("for the beat", AgentViewHeaderTheme)
+            ActionButton::new("Back to the beat", AgentViewHeaderTheme)
                 .with_icon(icons::Icon::ArrowLeft)
                 .with_size(ButtonSize::Small)
                 .with_keybinding(
