@@ -2898,7 +2898,7 @@ fn render_suggested_rules_and_prompts_footer(
     let theme = appearance.theme();
     let title_row_color = theme.sub_text_color(theme.background());
     let title_text = Text::new_inline(
-        "Suggestions:",
+        "Tip-offs:",
         appearance.ui_font_family(),
         appearance.monospace_font_size(),
     )
