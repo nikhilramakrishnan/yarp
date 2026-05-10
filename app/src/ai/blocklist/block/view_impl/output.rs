@@ -2581,7 +2581,7 @@ fn render_read_mcp_resource(
         renderable_action = renderable_action
             .with_header(blocked_action_header(
                 action_id.clone(),
-                "OK if I read this MCP resource?",
+                "Sign off on reading this MCP resource?",
                 buttons.run_button.clone(),
                 buttons.cancel_button.clone(),
                 props.action_model,
@@ -2767,7 +2767,7 @@ fn render_request_computer_use(
         renderable_action = renderable_action
             .with_header(blocked_action_header(
                 action_id.clone(),
-                "OK if I use computer control for this task?",
+                "OK to take the wheel for this call?",
                 buttons.run_button.clone(),
                 buttons.cancel_button.clone(),
                 props.action_model,
