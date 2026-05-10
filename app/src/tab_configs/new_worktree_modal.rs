@@ -414,12 +414,12 @@ impl View for NewWorktreeModal {
             .with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
         // Repo picker
-        body.add_child(Self::render_section_label("Select repository", appearance));
+        body.add_child(Self::render_section_label("Pick a repo", appearance));
         body.add_child(ChildView::new(&self.repo_picker).finish());
 
         // Branch picker (with gap)
         body.add_child(
-            Container::new(Self::render_section_label("Select branch", appearance))
+            Container::new(Self::render_section_label("Pick a branch", appearance))
                 .with_margin_top(SECTION_GAP)
                 .finish(),
         );
