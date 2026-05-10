@@ -536,7 +536,7 @@ where
     };
 
     let label = Text::new(
-        "Auto-generate worktree branch name",
+        "Auto-spin the worktree branch name",
         appearance.ui_font_family(),
         12.,
     )
