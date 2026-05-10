@@ -1243,9 +1243,9 @@ fn render_search_codebase(
                                     .clone(),
                                 vec![
                                     RadioButtonItem::text(
-                                        "Always allow file access for coding tasks",
+                                        "Always wave case files through on patrol",
                                     ),
-                                    RadioButtonItem::text("Always allow file access for this repo"),
+                                    RadioButtonItem::text("Always wave case files through on this beat"),
                                 ],
                                 props
                                     .state_handles
@@ -1749,7 +1749,7 @@ fn render_read_files(
             *shown.lock() = true;
             renderable_action =
                 renderable_action.with_footer(render_autonomy_checkbox_setting_speedbump_footer(
-                    "Always allow file access for coding tasks",
+                    "Always wave case files through on patrol",
                     *checked,
                     AIBlockAction::ToggleAutoreadFilesSpeedbumpCheckbox,
                     props
@@ -2495,7 +2495,7 @@ fn render_file_retrieval_tool(
         } if show_for_action_id == action_id => {
             *shown.lock() = true;
             config = config.with_footer(render_autonomy_checkbox_setting_speedbump_footer(
-                "Always allow file access for coding tasks",
+                "Always wave case files through on patrol",
                 *checked,
                 AIBlockAction::ToggleAutoreadFilesSpeedbumpCheckbox,
                 props
