@@ -52,7 +52,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     },
     FeatureItem {
         icon: Icon::Fuzz,
-        title: "Open Automated Development",
+        title: "Open PC-first development",
         description: "The Yarp repo is run PC-first, dispatched by Fuzz, our ambient officer orchestration platform.",
         inline_link: None,
     },
