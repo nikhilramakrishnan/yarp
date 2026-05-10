@@ -3767,7 +3767,7 @@ fn format_conversation_search_phase(phase: &ConversationSearchPhase) -> String {
             format!("Grepping for patterns: {joined}")
         }
         ConversationSearchPhase::ReadingMessages { count } => {
-            format!("Reading {count} messages")
+            format!("Reading {count} dispatches")
         }
     }
 }
