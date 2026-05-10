@@ -1385,7 +1385,7 @@ fn render_search_codebase(
                     renderable_action(
                         props,
                         id,
-                        format!("Searching in {}", root_repo_path.to_string_lossy()).as_str(),
+                        format!("Sweep in {}", root_repo_path.to_string_lossy()).as_str(),
                         app,
                         footer,
                         appearance,
