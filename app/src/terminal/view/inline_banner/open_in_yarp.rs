@@ -77,8 +77,8 @@ pub fn render_open_in_yarp_banner(
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let button_text = match state.target.file_type {
-        OpenableFileType::Markdown => "View in Yarp",
-        OpenableFileType::Code | OpenableFileType::Text => "Edit in Yarp",
+        OpenableFileType::Markdown => "Pin it up",
+        OpenableFileType::Code | OpenableFileType::Text => "Mark it up",
     };
 
     let open_button = InlineBannerTextButton {
