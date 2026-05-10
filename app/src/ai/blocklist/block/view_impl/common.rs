@@ -3074,7 +3074,7 @@ fn render_invalid_api_key_error(
     .finish();
 
     let alert_text = Text::new(
-        "Provided API key is not valid",
+        "That API key didn't check out",
         appearance.ui_font_family(),
         14.,
     )
@@ -3084,8 +3084,8 @@ fn render_invalid_api_key_error(
 
     let detail_text = Text::new(
         format!(
-            "Failed to authenticate with {provider} when using {model_name}. \
-                     Double-check that your API key is correct."
+            "Dispatch couldn't sign {provider} on as {model_name}. \
+                     Double-check the API key."
         ),
         appearance.ui_font_family(),
         14.,
