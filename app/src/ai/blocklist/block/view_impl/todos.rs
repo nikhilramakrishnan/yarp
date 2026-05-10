@@ -197,14 +197,14 @@ pub(super) fn render_completed_todo_items(
         if i == 0 {
             if let Some((index, list_len)) = index_and_len {
                 completed_text += format!(
-                    "Completed {} ({}/{})",
+                    "Wrapped up {} ({}/{})",
                     completed_item.title,
                     index + 1,
                     list_len
                 )
                 .as_str()
             } else {
-                completed_text += format!("Completed {}", completed_item.title).as_str()
+                completed_text += format!("Wrapped up {}", completed_item.title).as_str()
             }
         } else if let Some((index, list_len)) = index_and_len {
             completed_text +=
