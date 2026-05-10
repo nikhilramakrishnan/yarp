@@ -75,9 +75,9 @@ impl SshRemoteServerChoiceView {
         let buttons = ctx.add_typed_action_view(|_| {
             KeyboardNavigableButtons::new(vec![
                 rich_navigation_button(
-                    "Install Yarp's SSH extension".to_string(),
+                    "Kit out Yarp's SSH extension".to_string(),
                     Some(
-                        "Install Yarp's extension to give the PC duties like file browsing, \
+                        "Kit out Yarp's extension to give the PC duties like file browsing, \
                          code review, and command suggestions on this beat."
                             .to_string(),
                     ),
@@ -121,7 +121,7 @@ impl SshRemoteServerChoiceView {
         // Match the Figma design: a plain title row, no icon / chevron /
         // action buttons. `HeaderConfig` without an `interaction_mode` set
         // renders exactly that.
-        HeaderConfig::new("Pick your kit for this remote session:", app)
+        HeaderConfig::new("Pick your kit for this remote post:", app)
             .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(
                 PROMPT_BORDER_RADIUS,
             )))
