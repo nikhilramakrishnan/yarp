@@ -1439,7 +1439,7 @@ impl TerminalView {
             && matches!(reason, RoleUpdatedReason::InactivityLimitReached)
         {
             self.show_persistent_toast(
-                "Radio went quiet — write privileges pulled while the holder was off-air.".to_owned(),
+                "Channel went quiet — write privileges pulled while the holder was off-air.".to_owned(),
                 ToastFlavor::Error,
                 ctx,
             );
