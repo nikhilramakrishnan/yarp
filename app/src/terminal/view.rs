@@ -8851,7 +8851,7 @@ impl TerminalView {
             .error
             .as_ref()
             .map(|e| e.notifications_error_banner_title())
-            .unwrap_or("Error sending notification");
+            .unwrap_or("Radio chatter cut out");
 
         let a11y_content = AccessibilityContent::new(
             banner_title,
@@ -22609,7 +22609,7 @@ impl TerminalView {
                 .error
                 .as_ref()
                 .map(|e| e.notifications_error_banner_title())
-                .unwrap_or("Error sending notification");
+                .unwrap_or("Radio chatter cut out");
 
             inline_banners.insert(
                 state.banner_id,

@@ -112,8 +112,8 @@ pub enum NotificationSendError {
 impl NotificationSendError {
     pub fn notifications_error_banner_title(&self) -> &str {
         match self {
-            NotificationSendError::PermissionsDenied | NotificationSendError::PermissionsNotYetGranted => "Yarp tried to send you a notification for the last block but does not have permission.",
-            NotificationSendError::Other { .. } => "Yarp tried to send you a notification for the last block, but something went wrong.",
+            NotificationSendError::PermissionsDenied | NotificationSendError::PermissionsNotYetGranted => "Yarp tried to radio in on the last call-out — off the air without clearance.",
+            NotificationSendError::Other { .. } => "Yarp tried to radio in on the last call-out, but the chatter cut out.",
         }
     }
 }
