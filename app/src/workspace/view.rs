@@ -6781,12 +6781,12 @@ impl Workspace {
                 match autoupdate::get_update_state(ctx) {
                     AutoupdateStage::UpdateReady { new_version, .. }
                     | AutoupdateStage::UpdatedPendingRestart { new_version } => menu_items.push(
-                        MenuItemFields::new(format!("Install update ({})", new_version.version))
+                        MenuItemFields::new(format!("Reissue Yarp ({})", new_version.version))
                             .with_on_select_action(WorkspaceAction::ApplyUpdate)
                             .into_item(),
                     ),
                     AutoupdateStage::Updating { new_version, .. } => menu_items.push(
-                        MenuItemFields::new(format!("Updating to ({})", new_version.version))
+                        MenuItemFields::new(format!("Reissuing Yarp ({})", new_version.version))
                             .with_disabled(true)
                             .into_item(),
                     ),
@@ -8506,7 +8506,7 @@ impl Workspace {
                     ) =>
                 {
                     items.push(
-                        MenuItemFields::new(format!("Updating to ({})", new_version.version))
+                        MenuItemFields::new(format!("Reissuing Yarp ({})", new_version.version))
                             .with_disabled(true)
                             .into_item(),
                     )
