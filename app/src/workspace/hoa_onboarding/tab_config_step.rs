@@ -65,7 +65,7 @@ where
     .finish();
 
     let description = Text::new(
-        "File a reusable starting kit for your tabs. Pick a repo, choose a session type, and optionally attach a worktree. Pull it whenever you want to open a tab with this setup.",
+        "File a reusable starting kit for your beats. Pick a repo, choose a session type, and optionally attach a worktree. Pull it whenever you want to open a beat with this setup.",
         appearance.ui_font_family(),
         14.,
     )
