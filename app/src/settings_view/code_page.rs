@@ -1346,7 +1346,7 @@ impl CodePageWidget {
                 .with_text_and_icon_label(
                     yarpui::ui_components::button::TextAndIcon::new(
                         yarpui::ui_components::button::TextAndIconAlignment::IconFirst,
-                        "Open project rules",
+                        "Open standing orders",
                         yarpui::elements::Icon::new(
                             "bundled/svg/file-code-02.svg",
                             theme.foreground(),
