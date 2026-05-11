@@ -224,7 +224,10 @@ impl SecretManager {
                         SecretManager::OnePassword => Some(ONEPASSWORD_DOCS_LINK.to_owned()),
                         SecretManager::LastPass => Some(LASTPASS_DOCS_LINK.to_owned()),
                     },
-                    Some(format!("Pull the dossier on getting {} CLI on shift", &self)),
+                    Some(format!(
+                        "Pull the dossier on getting {} CLI on shift",
+                        &self
+                    )),
                 );
 
                 ErrorMessageAndCommand {

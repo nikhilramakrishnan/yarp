@@ -3,15 +3,16 @@ use std::{ffi::OsString, sync::Arc, time::Duration};
 use futures::channel::oneshot;
 use yarp_cli::agent::Harness;
 use yarp_cli::{
-    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
-    SESSION_SHARING_SERVER_URL_OVERRIDE_ENV, WS_SERVER_URL_OVERRIDE_ENV,
+    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV,
+    SERVER_ROOT_URL_OVERRIDE_ENV, SESSION_SHARING_SERVER_URL_OVERRIDE_ENV,
+    WS_SERVER_URL_OVERRIDE_ENV,
 };
 use yarp_core::channel::ChannelState;
 
 use super::{
-    IdleTimeoutSender, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
-    LEGACY_OZ_PARENT_STATE_ROOT_ENV, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
-    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+    IdleTimeoutSender, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
+    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
+    LEGACY_OZ_PARENT_STATE_ROOT_ENV,
 };
 use crate::ai::agent::{
     task::TaskId, AIAgentActionResult, AIAgentActionResultType, AIAgentInput, AIAgentOutput,
@@ -196,7 +197,9 @@ fn task_env_vars_include_parent_run_id_when_present() {
         Some(&OsString::from("claude"))
     );
     assert_eq!(
-        env_vars.get(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
+        env_vars.get(&OsString::from(
+            FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV
+        )),
         Some(&OsString::from("1"))
     );
     assert_eq!(
@@ -260,7 +263,9 @@ fn task_env_vars_omit_parent_run_id_when_absent() {
         env_vars.get(&OsString::from(FUZZ_HARNESS_ENV)),
         Some(&OsString::from("fuzz"))
     );
-    assert!(!env_vars.contains_key(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)));
+    assert!(!env_vars.contains_key(&OsString::from(
+        FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV
+    )));
     assert!(!env_vars.contains_key(&OsString::from(
         LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV
     )));
@@ -279,7 +284,9 @@ fn task_env_vars_enable_external_parent_listener_for_claude_runs_without_parent_
     let task_id: AmbientAgentTaskId = "550e8400-e29b-41d4-a716-446655440002".parse().unwrap();
     let env_vars = task_env_vars(Some(&task_id), None, Harness::Claude);
     assert_eq!(
-        env_vars.get(&OsString::from(FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV)),
+        env_vars.get(&OsString::from(
+            FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV
+        )),
         Some(&OsString::from("1"))
     );
     assert_eq!(

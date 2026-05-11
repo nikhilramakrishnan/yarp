@@ -448,7 +448,9 @@ fn open_file_download_picker<V: yarpui::View>(
                 move |_me, result, ctx| match result {
                     Ok(()) => show_file_download_toast(
                         &artifact_uid,
-                        DismissibleToast::success(format!("Logged {toast_filename} into evidence.")),
+                        DismissibleToast::success(format!(
+                            "Logged {toast_filename} into evidence."
+                        )),
                         ctx,
                     ),
                     Err(error) => {

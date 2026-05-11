@@ -393,9 +393,7 @@ impl AgentInputFooter {
         let install_plugin_button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new("Wire up dispatch", InstallPluginButtonTheme)
                 .with_icon(Icon::Download)
-                .with_tooltip(
-                    "Install the Yarp plugin so dispatch can radio in officer alerts",
-                )
+                .with_tooltip("Install the Yarp plugin so dispatch can radio in officer alerts")
                 .with_size(cli_button_size)
                 .with_tooltip_alignment(TooltipAlignment::Left)
                 .with_adjoined_side(AdjoinedSide::Right)
@@ -892,9 +890,7 @@ impl AgentInputFooter {
                     let window_id = ctx.window_id();
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
-                            DismissibleToast::error(format!(
-                                "Couldn't pull the case file: {err}"
-                            )),
+                            DismissibleToast::error(format!("Couldn't pull the case file: {err}")),
                             window_id,
                             ctx,
                         );
@@ -1758,7 +1754,7 @@ impl AgentInputFooter {
             if let Some(toggle_key) = settings.maybe_setup_first_time_voice(ctx) {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::success(format!(
-                        "Radio's hot. Press and hold `{}` to call in (Standing Orders > AI > Voice to retune).",
+                        "Radio's hot. Press and hold `{}` to call in (Standing Orders > Taskforce > Voice to retune).",
                         toggle_key.display_name()
                     ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
@@ -2628,10 +2624,7 @@ impl ActionButtonTheme for NLDButtonTheme {
 // inline radio top-stripe. Wrap their final element so dispatch state pulses
 // across all footer variants — self → red, peer → yellow, post-ack 5s →
 // green.
-fn wrap_with_radio_stripe(
-    element: Box<dyn Element>,
-    app: &AppContext,
-) -> Box<dyn Element> {
+fn wrap_with_radio_stripe(element: Box<dyn Element>, app: &AppContext) -> Box<dyn Element> {
     let appearance = crate::appearance::Appearance::as_ref(app);
     let radio_color = if crate::radio::self_in_mayday() {
         Some(appearance.theme().ansi_fg_red())

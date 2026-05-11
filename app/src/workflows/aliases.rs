@@ -30,13 +30,13 @@ define_settings_group!(WorkflowAliases, settings: [
 ]);
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone, schemars::JsonSchema, SettingsValue)]
-#[schemars(description = "A shortcut alias for a Yarp Drive workflow.")]
+#[schemars(description = "A shortcut alias for a Records Locker playbook.")]
 pub struct WorkflowAlias {
-    #[schemars(description = "The alias text that triggers this workflow.")]
+    #[schemars(description = "The alias text that triggers this playbook.")]
     pub alias: String,
-    #[schemars(description = "The identifier of the linked workflow.")]
+    #[schemars(description = "The identifier of the linked playbook.")]
     pub workflow_id: SyncId,
-    #[schemars(description = "Pre-filled argument values for the workflow.")]
+    #[schemars(description = "Pre-filled argument values for the playbook.")]
     pub arguments: Option<HashMap<String, String>>,
     #[schemars(description = "The identifier of the environment variable collection to use.")]
     pub env_vars: Option<SyncId>,

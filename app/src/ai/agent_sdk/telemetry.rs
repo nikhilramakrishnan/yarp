@@ -279,14 +279,14 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            CliTelemetryEventDiscriminants::AgentRun => "Ran an agent from the Yarp CLI",
+            CliTelemetryEventDiscriminants::AgentRun => "Ran an officer from the Yarp CLI",
             CliTelemetryEventDiscriminants::AgentRunAmbient => {
-                "Ran an ambient agent from the Yarp CLI"
+                "Ran an ambient officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::AgentProfileList => {
-                "Listed agent profiles from the Yarp CLI"
+                "Listed officer profiles from the Yarp CLI"
             }
-            CliTelemetryEventDiscriminants::AgentList => "Listed agents from the Yarp CLI",
+            CliTelemetryEventDiscriminants::AgentList => "Listed officers from the Yarp CLI",
             CliTelemetryEventDiscriminants::EnvironmentList => {
                 "Listed cloud environments from the Yarp CLI"
             }
@@ -354,25 +354,25 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
                 "Downloaded an artifact from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleCreate => {
-                "Created a scheduled agent from the Yarp CLI"
+                "Created a scheduled officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleList => {
-                "Listed scheduled agents from the Yarp CLI"
+                "Listed scheduled officers from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleGet => {
-                "Got scheduled agent configuration from the Yarp CLI"
+                "Got scheduled officer configuration from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::SchedulePause => {
-                "Paused a scheduled agent from the Yarp CLI"
+                "Paused a scheduled officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUnpause => {
-                "Unpaused a scheduled agent from the Yarp CLI"
+                "Unpaused a scheduled officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUpdate => {
-                "Updated a scheduled agent from the Yarp CLI"
+                "Updated a scheduled officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleDelete => {
-                "Deleted a scheduled agent from the Yarp CLI"
+                "Deleted a scheduled officer from the Yarp CLI"
             }
             CliTelemetryEventDiscriminants::SecretCreate => "Created a secret from the Yarp CLI",
             CliTelemetryEventDiscriminants::SecretDelete => "Deleted a secret from the Yarp CLI",

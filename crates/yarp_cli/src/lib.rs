@@ -83,15 +83,15 @@ pub struct GlobalOptions {
 #[derive(Debug, Default, Parser, Clone)]
 #[command(
     name = "fuzz",
-    display_name = "Fuzz",
-    about = r#"The orchestration platform for cloud agents
+    display_name = "Yarp Taskforce",
+    about = r#"The orchestration platform for cloud officers
 
-The Fuzz CLI is a tool for running, managing, and orchestrating coding agents at scale.
+The Taskforce CLI is a tool for running, managing, and orchestrating coding officers at scale.
 Use the CLI to:
-* Launch and inspect cloud agents
-* Schedule cloud agents to run in the future
-* Manage the environments that cloud agents run in
-* Upload secrets to Fuzz's secure storage"#
+* Launch and inspect cloud officers
+* Schedule cloud officers to run in the future
+* Manage the environments that cloud officers run in
+* Upload secrets to Taskforce secure storage"#
 )]
 #[clap(args_conflicts_with_subcommands = true)]
 pub struct Args {
@@ -467,7 +467,7 @@ pub enum WorkerCommand {
 /// but it allows scripting some Yarp functionality.
 #[derive(Debug, Clone, Subcommand)]
 pub enum CliCommand {
-    /// Interact with Fuzz.
+    /// Interact with Taskforce officers.
     #[command(subcommand)]
     Agent(crate::agent::AgentCommand),
 
@@ -502,7 +502,7 @@ pub enum CliCommand {
     #[command(subcommand)]
     Integration(crate::integration::IntegrationCommand),
 
-    /// Create and manage scheduled Fuzz agents. Scheduled agents run a user-defined task periodically, according to a cron schedule.
+    /// Create and manage scheduled Taskforce officers. Scheduled officers run a user-defined task periodically, according to a cron schedule.
     ///
     /// As a shorthand, the `schedule` command behaves identically to `schedule create`.
     Schedule(crate::schedule::ScheduleCommand),
@@ -515,7 +515,7 @@ pub enum CliCommand {
     #[command(subcommand)]
     Federate(crate::federate::FederateCommand),
 
-    /// Support commands for agent harnesses to integrate with Fuzz.
+    /// Support commands for officer harnesses to integrate with Taskforce.
     #[command(hide = true)]
     HarnessSupport(crate::harness_support::HarnessSupportArgs),
 

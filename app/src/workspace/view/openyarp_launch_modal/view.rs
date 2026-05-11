@@ -53,7 +53,7 @@ const FEATURE_ITEMS: &[FeatureItem] = &[
     FeatureItem {
         icon: Icon::Fuzz,
         title: "Open PC-first development",
-        description: "The Yarp repo is run PC-first, dispatched by Fuzz, our ambient officer orchestration platform.",
+        description: "The Yarp repo is run PC-first, dispatched by Taskforce, our ambient officer orchestration platform.",
         inline_link: None,
     },
     FeatureItem {

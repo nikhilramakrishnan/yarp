@@ -258,7 +258,7 @@ fn status_explanation(status: SimpleIntegrationConnectionStatus) -> &'static str
             "This provider is connected but there is an error."
         }
         SimpleIntegrationConnectionStatus::IntegrationNotConfigured => {
-            "Connection is active, but the agent integration has not been configured yet."
+            "Connection is active, but the officer integration has not been configured yet."
         }
         SimpleIntegrationConnectionStatus::NotEnabled => {
             "Integration is configured but currently disabled."

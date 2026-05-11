@@ -53,6 +53,9 @@ impl ServerConversationToken {
     }
 
     pub fn debug_link(&self) -> String {
+        if Self::should_use_local_link() {
+            return self.conversation_link();
+        }
         format!(
             "{}/debug/maa/{}",
             ChannelState::server_root_url(),
@@ -61,11 +64,23 @@ impl ServerConversationToken {
     }
 
     pub fn conversation_link(&self) -> String {
+        if Self::should_use_local_link() {
+            return format!(
+                "{}://conversation/{}",
+                ChannelState::url_scheme(),
+                self.as_str()
+            );
+        }
         format!(
             "{}/conversation/{}",
             ChannelState::server_root_url(),
             self.as_str()
         )
+    }
+
+    fn should_use_local_link() -> bool {
+        let server_root_url = ChannelState::server_root_url();
+        server_root_url.is_empty() || server_root_url.contains("localhost.invalid")
     }
 }
 

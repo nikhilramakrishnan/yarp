@@ -49,7 +49,7 @@ pub(crate) fn apply_selected_agent_model_update(
         return;
     }
 
-    log::info!("Selecting base agent model {model_id} (from session sharing update)");
+    log::info!("Selecting base officer model {model_id} (from session sharing update)");
 
     // Update the local LLMPreferences to match the selected model
     LLMPreferences::handle(ctx).update(ctx, |prefs, ctx| {

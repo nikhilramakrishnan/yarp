@@ -143,7 +143,7 @@ pub fn uninstall_cli() -> Result<()> {
     let cli_path = cli_install_target_path();
 
     if !cli_path.exists() {
-        return Err(anyhow!("Fuzz command isn't on the books."));
+        return Err(anyhow!("Taskforce command isn't on the books."));
     }
 
     // Safety check: verify it's actually a symlink before removing

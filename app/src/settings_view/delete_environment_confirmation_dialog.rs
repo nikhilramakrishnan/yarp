@@ -84,10 +84,7 @@ impl View for DeleteEnvironmentConfirmationDialog {
 
         let appearance = Appearance::as_ref(app);
 
-        let description = format!(
-            "Strike the {} beat off the books?",
-            self.env_name
-        );
+        let description = format!("Strike the {} beat off the books?", self.env_name);
 
         let dialog = Dialog::new(
             "Strike beat off the books?".to_string(),

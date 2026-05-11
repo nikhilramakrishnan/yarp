@@ -1118,17 +1118,16 @@ impl SettingsWidget for KeybindingsWidget {
         {
             Some(LocalOnlyIconState::Visible {
                 mouse_state: self.local_only_icon_mouse_state.clone(),
-                custom_tooltip: Some("Shortcuts stay at the station — not on the cloud ledger".to_string()),
+                custom_tooltip: Some(
+                    "Shortcuts stay at the station — not on the cloud ledger".to_string(),
+                ),
             })
         } else {
             None
         };
 
-        let subheader = render_sub_header(
-            appearance,
-            "Set the radio shortcuts",
-            local_only_icon_state,
-        );
+        let subheader =
+            render_sub_header(appearance, "Set the radio shortcuts", local_only_icon_state);
         let description = self.render_description(view.bindings.as_ref(), appearance);
 
         Flex::column()

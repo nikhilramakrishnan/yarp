@@ -82,7 +82,7 @@ static TAB_CONFIGS: LazyLock<Vec<InlineMenuTabConfig<InlineModelSelectorTab>>> =
         if FeatureFlag::InlineMenuHeaders.is_enabled() {
             configs.push(InlineMenuTabConfig {
                 id: InlineModelSelectorTab::FullTerminalUse,
-                label: "Full Terminal Use".to_string(),
+                label: "Full Desk Beat".to_string(),
                 filters: HashSet::from([QueryFilter::FullTerminalUseModels]),
             });
         }
@@ -187,10 +187,10 @@ impl InlineModelSelectorView {
                         cli_ctrl.as_ref(app).is_agent_in_control_or_tagged_in();
                     let message = match active_tab {
                         InlineModelSelectorTab::FullTerminalUse if main_agent_in_progress && !is_cli_agent_in_control_or_tagged_in => {
-                            Some("Base PC's on duty. Full Terminal Use officers only report to the Full Terminal Use PC.")
+                            Some("Base PC is on duty. Full desk beat officers only report to the full-desk PC.")
                         }
                         InlineModelSelectorTab::BaseAgent if is_cli_agent_in_control_or_tagged_in => {
-                            Some("Full Terminal Use PC's on duty. Base officers only report to the Base PC.")
+                            Some("Full-desk PC is on duty. Base officers only report to the Base PC.")
                         }
                         _ => None,
                     };

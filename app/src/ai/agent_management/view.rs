@@ -110,6 +110,9 @@ const BUTTON_SIZE: f32 = 20.;
 const CREATOR_AVATAR_FONT_SIZE: f32 = 10.;
 
 const SESSION_EXPIRED_TEXT: &str = "Case file's gone cold — sessions close out after a week.";
+const TASKFORCE_READY_SIGNAL: &str = "GRID STANDING BY";
+const TASKFORCE_ACTIVE_SIGNAL: &str = "GRID ACTIVE";
+const TASKFORCE_REVIEW_SIGNAL: &str = "SARGE REVIEW";
 
 pub fn init(app: &mut AppContext) {
     use crate::util::bindings::cmd_or_ctrl_shift;
@@ -210,6 +213,15 @@ enum ViewState {
     NoFilterMatches,
     /// We have tasks that should be shown to the user
     HasTasks,
+}
+
+#[derive(Default)]
+struct TaskforceStats {
+    total: usize,
+    active: usize,
+    closed: usize,
+    needs_attention: usize,
+    evidence: usize,
 }
 
 impl AgentManagementView {
@@ -649,11 +661,13 @@ impl AgentManagementView {
                     ArtifactFilter::Plan,
                 )),
             )),
-            MenuItem::Item(MenuItemFields::new("Surveillance shot").with_on_select_action(
-                DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
-                    ArtifactFilter::Screenshot,
-                )),
-            )),
+            MenuItem::Item(
+                MenuItemFields::new("Surveillance shot").with_on_select_action(
+                    DropdownAction::SelectActionAndClose(
+                        AgentManagementViewAction::SetArtifactFilter(ArtifactFilter::Screenshot),
+                    ),
+                ),
+            ),
             MenuItem::Item(MenuItemFields::new("Case file").with_on_select_action(
                 DropdownAction::SelectActionAndClose(AgentManagementViewAction::SetArtifactFilter(
                     ArtifactFilter::File,
@@ -1809,10 +1823,7 @@ impl AgentManagementView {
 
         if FeatureFlag::AgentHarness.is_enabled() {
             if let Some(harness) = card_data.harness() {
-                metadata_parts.push(format!(
-                    "Kit: {}",
-                    harness_display::display_name(harness)
-                ));
+                metadata_parts.push(format!("Kit: {}", harness_display::display_name(harness)));
             }
         }
 
@@ -1893,7 +1904,7 @@ impl AgentManagementView {
 
         let build_header = |use_expanded: bool| {
             let title = Text::new_inline(
-                "Patrols",
+                "Taskforce grid",
                 appearance.ui_font_family(),
                 appearance.ui_font_size() + 4.,
             )
@@ -1971,6 +1982,11 @@ impl AgentManagementView {
             Flex::column()
                 .with_cross_axis_alignment(CrossAxisAlignment::Start)
                 .with_child(header_top.finish())
+                .with_child(
+                    Container::new(self.render_taskforce_signal_strip(app))
+                        .with_margin_top(8.)
+                        .finish(),
+                )
                 .with_child(header_bottom)
                 .finish()
         };
@@ -1982,6 +1998,118 @@ impl AgentManagementView {
                 build_header(false),
             )],
         )
+        .finish()
+    }
+
+    fn taskforce_stats(&self, app: &AppContext) -> TaskforceStats {
+        let model = AgentConversationsModel::as_ref(app);
+        let mut stats = TaskforceStats::default();
+
+        for card_state in &self.items {
+            let card_data = match &card_state.item_id {
+                ManagementCardItemId::Task(task_id) => model.get_task(task_id),
+                ManagementCardItemId::Conversation(conv_id) => model.get_conversation(conv_id),
+            };
+            let Some(card_data) = card_data else {
+                continue;
+            };
+
+            stats.total += 1;
+            stats.evidence += card_data.artifacts(app).len();
+            match card_data.display_status(app).status_filter() {
+                StatusFilter::Working => stats.active += 1,
+                StatusFilter::Done => stats.closed += 1,
+                StatusFilter::Failed => stats.needs_attention += 1,
+                StatusFilter::All => {}
+            }
+        }
+
+        stats
+    }
+
+    fn render_taskforce_signal_strip(&self, app: &AppContext) -> Box<dyn Element> {
+        let appearance = Appearance::as_ref(app);
+        let stats = self.taskforce_stats(app);
+        let signal = if stats.needs_attention > 0 {
+            TASKFORCE_REVIEW_SIGNAL
+        } else if stats.active > 0 {
+            TASKFORCE_ACTIVE_SIGNAL
+        } else {
+            TASKFORCE_READY_SIGNAL
+        };
+
+        Wrap::row()
+            .with_spacing(6.)
+            .with_cross_axis_alignment(CrossAxisAlignment::Center)
+            .with_child(Self::render_taskforce_signal_cell(
+                "SIGNAL",
+                signal.to_owned(),
+                appearance,
+            ))
+            .with_child(Self::render_taskforce_signal_cell(
+                "UNITS LIVE",
+                stats.active.to_string(),
+                appearance,
+            ))
+            .with_child(Self::render_taskforce_signal_cell(
+                "CASE FILES",
+                stats.total.to_string(),
+                appearance,
+            ))
+            .with_child(Self::render_taskforce_signal_cell(
+                "CASE CLOSED",
+                stats.closed.to_string(),
+                appearance,
+            ))
+            .with_child(Self::render_taskforce_signal_cell(
+                "EVIDENCE",
+                stats.evidence.to_string(),
+                appearance,
+            ))
+            .with_child(Self::render_taskforce_signal_cell(
+                "ESCALATE",
+                stats.needs_attention.to_string(),
+                appearance,
+            ))
+            .finish()
+    }
+
+    fn render_taskforce_signal_cell(
+        label: &'static str,
+        value: String,
+        appearance: &Appearance,
+    ) -> Box<dyn Element> {
+        let theme = appearance.theme();
+        let label_text = Text::new_inline(
+            label.to_owned(),
+            appearance.monospace_font_family(),
+            appearance.ui_font_size() - 3.,
+        )
+        .with_style(Properties::default().weight(Weight::Semibold))
+        .with_color(theme.nonactive_ui_text_color().into())
+        .finish();
+
+        let value_text = Text::new_inline(
+            value,
+            appearance.monospace_font_family(),
+            appearance.ui_font_size() - 1.,
+        )
+        .with_style(Properties::default().weight(Weight::Semibold))
+        .with_color(theme.active_ui_text_color().into())
+        .finish();
+
+        Container::new(
+            Flex::column()
+                .with_cross_axis_alignment(CrossAxisAlignment::Start)
+                .with_child(label_text)
+                .with_child(Container::new(value_text).with_margin_top(2.).finish())
+                .finish(),
+        )
+        .with_background(internal_colors::fg_overlay_1(theme))
+        .with_border(Border::all(1.).with_border_fill(internal_colors::fg_overlay_2(theme)))
+        .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
+        .with_horizontal_padding(8.)
+        .with_vertical_padding(6.)
         .finish()
     }
 

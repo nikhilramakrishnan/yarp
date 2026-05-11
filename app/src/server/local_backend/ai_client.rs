@@ -3,7 +3,7 @@
 //! yarp does not have a Yarp backend. The five methods that drive an LLM
 //! call (dialogue, command suggestions, command metadata, code review copy)
 //! will eventually route through a local provider — for now they return a
-//! clear error so callers see something actionable instead of a `localhost.invalid`
+//! clear error so callers see something actionable instead of a fake network
 //! connection failure. State-tracking methods (agent task registry, request
 //! quota, model discovery) are real implementations backed by `~/.yarp/`.
 //!
@@ -19,9 +19,7 @@ use chrono::Utc;
 use uuid::Uuid;
 
 use ai::index::full_source_code_embedding::{
-    self,
-    store_client::IntermediateNode,
-    ContentHash, EmbeddingConfig, NodeHash, RepoMetadata,
+    self, store_client::IntermediateNode, ContentHash, EmbeddingConfig, NodeHash, RepoMetadata,
 };
 use yarp_graphql::ai::AgentTaskState;
 use yarp_multi_agent_api::ConversationData;
@@ -47,8 +45,8 @@ use crate::server::server_api::ai::{
     AttachmentFileInfo, CreateFileArtifactUploadRequest, CreateFileArtifactUploadResponse,
     DownloadAttachmentsResponse, FileArtifactRecord, ListAgentMessagesRequest,
     PrepareAttachmentUploadsResponse, ReadAgentMessageResponse, ReportAgentEventRequest,
-    ReportAgentEventResponse, SendAgentMessageRequest, SendAgentMessageResponse,
-    SpawnAgentRequest, SpawnAgentResponse, TaskListFilter, TaskStatusUpdate,
+    ReportAgentEventResponse, SendAgentMessageRequest, SendAgentMessageResponse, SpawnAgentRequest,
+    SpawnAgentResponse, TaskListFilter, TaskStatusUpdate,
 };
 use crate::terminal::model::block::SerializedBlock;
 use yarp_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
@@ -205,8 +203,8 @@ impl AIClient for OssAiClient {
                 log::warn!("yarp: command-suggestion LLM call failed: {err:#}");
                 GenerateCommandsFromNaturalLanguageError::AiProviderError
             })?;
-        let parsed: CommandsJson = serde_json::from_str(extract_json_object(&response))
-            .map_err(|err| {
+        let parsed: CommandsJson =
+            serde_json::from_str(extract_json_object(&response)).map_err(|err| {
                 log::warn!("yarp: command-suggestion JSON parse failed: {err:#}; raw={response}");
                 GenerateCommandsFromNaturalLanguageError::BadPrompt
             })?;
@@ -286,11 +284,9 @@ impl AIClient for OssAiClient {
                 log::warn!("yarp: command-metadata LLM call failed: {err:#}");
                 GeneratedCommandMetadataError::AiProviderError
             })?;
-        let parsed: MetadataJson = serde_json::from_str(extract_json_object(&response))
-            .map_err(|err| {
-                log::warn!(
-                    "yarp: command-metadata JSON parse failed: {err:#}; raw={response}"
-                );
+        let parsed: MetadataJson =
+            serde_json::from_str(extract_json_object(&response)).map_err(|err| {
+                log::warn!("yarp: command-metadata JSON parse failed: {err:#}; raw={response}");
                 GeneratedCommandMetadataError::BadCommand
             })?;
         Ok(GeneratedCommandMetadata {

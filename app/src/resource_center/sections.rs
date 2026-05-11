@@ -35,7 +35,7 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
                 ctx,
             ),
             FeatureItem::new(
-                "Call up the command palette",
+                "Call up the command grid",
                 "Radio in any Yarp action from the keyboard.",
                 Tip::Action(TipAction::CommandPalette),
                 ctx,

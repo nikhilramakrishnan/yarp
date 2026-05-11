@@ -1107,7 +1107,7 @@ impl AgentConversationsModel {
                     let tasks = match personal_result {
                         Ok(tasks) => tasks,
                         Err(e) => {
-                            log::warn!("Failed to fetch ambient agent tasks: {e:?}");
+                            log::warn!("Failed to fetch ambient officer tasks: {e:?}");
                             vec![]
                         }
                     };
@@ -1142,7 +1142,7 @@ impl AgentConversationsModel {
                     // If there are missing conversation IDs, fetch their metadata
                     if !missing_conversation_ids.is_empty() {
                         log::info!(
-                            "Fetching {} missing conversation metadata entries for ambient agent tasks",
+                            "Fetching {} missing conversation metadata entries for ambient officer tasks",
                             missing_conversation_ids.len()
                         );
                         match ai_client

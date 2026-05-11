@@ -224,8 +224,8 @@ pub fn render_models_section(
         ))
         .with_child(render_filterable_dropdown_row(
             appearance,
-            "Full terminal use model",
-            "The model used when the PC operates inside interactive terminal applications like database shells, debuggers, REPLs, or dev servers—reading live output and writing commands to the PTY.",
+            "Full desk beat model",
+            "The model used when the PC operates inside interactive desk-beat applications like database shells, debuggers, REPLs, or dev servers - reading live output and writing commands to the PTY.",
             &view.full_terminal_use_model_dropdown,
         ));
 
@@ -537,7 +537,7 @@ fn render_command_allowlist_section(
 
     render_list_section(
         "Command allowlist",
-        "Regular expressions to match commands that can be automatically executed by Fuzz.",
+        "Regular expressions to match commands that can be automatically executed by Taskforce officers.",
         &profile_data.command_allowlist,
         &view.command_allowlist_mouse_state_handles,
         Some(&view.command_allowlist_editor),
@@ -563,7 +563,7 @@ fn render_command_denylist_section(
 
     render_list_section(
         "Command denylist",
-        "Regular expressions to match commands that Fuzz should always ask permission to execute.",
+        "Regular expressions to match commands that Taskforce officers should always ask permission to execute.",
         &profile_data.command_denylist,
         &view.command_denylist_mouse_state_handles,
         Some(&view.command_denylist_editor),
@@ -596,7 +596,7 @@ fn render_mcp_allowlist_section(
 
     render_list_section(
         "MCP allowlist",
-        "MCP servers that are allowed to be called by Fuzz.",
+        "MCP servers that are allowed to be called by Taskforce officers.",
         &profile_data.mcp_allowlist,
         &view.mcp_allowlist_mouse_state_handles,
         None,
@@ -622,7 +622,7 @@ fn render_mcp_denylist_section(
 
     render_list_section(
         "MCP denylist",
-        "MCP servers that are not allowed to be called by Fuzz.",
+        "MCP servers that are not allowed to be called by Taskforce officers.",
         &profile_data.mcp_denylist,
         &view.mcp_denylist_mouse_state_handles,
         None,
@@ -664,7 +664,7 @@ pub fn render_plan_auto_sync_toggle(
     .finish();
 
     let desc_elem = Text::new(
-        "The plans this PC writes up will be automatically added and synced to Yarp Drive."
+        "The plans this PC writes up will be automatically added and synced to Records Locker."
             .to_string(),
         appearance.ui_font_family(),
         11.,

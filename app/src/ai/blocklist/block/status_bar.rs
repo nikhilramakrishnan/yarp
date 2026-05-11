@@ -1005,7 +1005,10 @@ fn render_agent_tip(tip: &AgentTip, app: &AppContext) -> Box<dyn Element> {
         fragments.push(FormattedTextFragment::hyperlink_action(text, action));
     } else if let Some(link_target) = tip.link.clone() {
         fragments.push(FormattedTextFragment::plain_text(" "));
-        fragments.push(FormattedTextFragment::hyperlink("Pull the dossier", link_target));
+        fragments.push(FormattedTextFragment::hyperlink(
+            "Pull the dossier",
+            link_target,
+        ));
     }
 
     let formatted_text =
@@ -1156,9 +1159,7 @@ impl View for BlocklistAIStatusBar {
             };
             if let Some(radio_color) = radio_stripe_color {
                 return Container::new(bar)
-                    .with_border(
-                        Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
-                    )
+                    .with_border(Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color))
                     .with_padding_left(-LEFT_STRIPE_WIDTH)
                     .finish();
             }
@@ -1263,9 +1264,7 @@ impl View for BlocklistAIStatusBar {
                 };
                 if let Some(radio_color) = radio_stripe_color {
                     return Container::new(column)
-                        .with_border(
-                            Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
-                        )
+                        .with_border(Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color))
                         .with_padding_left(-LEFT_STRIPE_WIDTH)
                         .finish();
                 }
@@ -1326,9 +1325,7 @@ impl View for BlocklistAIStatusBar {
 
         if let Some(radio_color) = radio_stripe_color {
             container = container
-                .with_border(
-                    Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color),
-                )
+                .with_border(Border::left(LEFT_STRIPE_WIDTH).with_border_color(radio_color))
                 .with_padding_left(-LEFT_STRIPE_WIDTH);
         } else if !FeatureFlag::AgentView.is_enabled()
             && self.input_model.as_ref(app).is_ai_input_enabled()

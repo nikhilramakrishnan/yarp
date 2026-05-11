@@ -2095,7 +2095,8 @@ impl View for GlobalSearchView {
             font_color: Some(blended_colors::text_sub(theme, theme.background())),
             ..Default::default()
         };
-        let capped_message = "Only showing part of the haul. Tighten the sweep to narrow it down.".to_string();
+        let capped_message =
+            "Only showing part of the haul. Tighten the sweep to narrow it down.".to_string();
         let capped_text = Span::new(capped_message, capped_text_styles)
             .with_soft_wrap()
             .build()

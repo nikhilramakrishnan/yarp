@@ -12,8 +12,8 @@ use session_sharing_protocol::{
     },
     sharer::{DownstreamMessage, ReconnectToken, UpstreamMessage},
 };
-use yarpui::{App, ModelHandle};
 use websocket::{Message, WebsocketMessage as _};
+use yarpui::{App, ModelHandle};
 
 use crate::{
     auth::{auth_manager::AuthManager, AuthStateProvider},

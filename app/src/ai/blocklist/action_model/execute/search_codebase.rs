@@ -201,8 +201,9 @@ impl SearchCodebaseExecutor {
             return ActionExecution::Sync(AIAgentActionResultType::SearchCodebase(
                 SearchCodebaseResult::Failed {
                     reason: SearchCodebaseFailureReason::MissingCurrentWorkingDirectory,
-                    message: "The sweep came up empty. Try a different angle to track those files down."
-                        .to_string(),
+                    message:
+                        "The sweep came up empty. Try a different angle to track those files down."
+                            .to_string(),
                 },
             ));
         };

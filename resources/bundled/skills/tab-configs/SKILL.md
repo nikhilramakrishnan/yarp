@@ -43,11 +43,11 @@ All panes are defined in a flat `[[panes]]` array of tables. The **first entry i
 #### Leaf node fields
 
 - `id` (required, string): Unique identifier.
-- `type` (required, string): `"terminal"` (standard shell), `"agent"` (opens in Agent Mode), or `"cloud"` (cloud mode pane, no local shell).
-- `directory` (optional, string): Initial working directory. Supports `~` expansion. Applies to `terminal` and `agent` types.
-- `commands` (optional, array of strings): Commands to run in sequence on open. Applies to `terminal` and `agent` types.
+- `type` (required, string): `"terminal"` (standard shell), `"agent"` (opens a Taskforce pane), or `"cloud"` (cloud officer pane, no local shell).
+- `directory` (optional, string): Initial working directory. Supports `~` expansion. Applies to `terminal` and `agent` pane types.
+- `commands` (optional, array of strings): Commands to run in sequence on open. Applies to `terminal` and `agent` pane types.
 - `is_focused` (optional, bool): Set `true` on at most one pane to give it initial focus.
-- `shell` (optional, string): Shell executable to open this pane in (e.g. `"pwsh"`, `"zsh"`, `"bash"`, `"fish"`). Only applies to `terminal` and `agent` types. If omitted or the shell is not installed, the user's default shell is used.
+- `shell` (optional, string): Shell executable to open this pane in (e.g. `"pwsh"`, `"zsh"`, `"bash"`, `"fish"`). Only applies to `terminal` and `agent` pane types. If omitted or the shell is not installed, the user's default shell is used.
 
 #### Split node fields
 

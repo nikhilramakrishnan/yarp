@@ -164,7 +164,7 @@ impl FreeTierLimitHitModal {
                         .with_child(
                             Container::new(
                                 FormattedTextElement::from_str(
-                                    "Top up the plan to keep the AI radio on the air.",
+                                    "Top up the plan to keep the Taskforce radio on the air.",
                                     appearance.ui_font_family(),
                                     14.,
                                 )

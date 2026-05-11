@@ -188,18 +188,18 @@ impl SearchItem for NotebookSearchItem {
 
     fn accessibility_label(&self) -> String {
         if let Some(description) = &self.notebook_description {
-            format!("Notebook: {} - {}", self.notebook_name, description)
+            format!("Casebook: {} - {}", self.notebook_name, description)
         } else {
-            format!("Notebook: {}", self.notebook_name)
+            format!("Casebook: {}", self.notebook_name)
         }
     }
 
     fn render_details(&self, ctx: &AppContext) -> Option<Box<dyn Element>> {
         let appearance = Appearance::as_ref(ctx);
 
-        // Use notebook name, or "Unfiled notebook" if empty
+        // Use casebook name, or a fallback if empty.
         let display_name = if self.notebook_name.is_empty() {
-            "Unfiled notebook".to_string()
+            "Unfiled casebook".to_string()
         } else {
             self.notebook_name.clone()
         };

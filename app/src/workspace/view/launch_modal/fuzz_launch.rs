@@ -22,7 +22,7 @@ pub enum OzLaunchSlide {
 
 impl Slide for OzLaunchSlide {
     fn modal_title(&self) -> String {
-        "Introducing Fuzz".to_string()
+        "Introducing Taskforce".to_string()
     }
 
     fn modal_subtext_paragraphs(&self) -> Vec<FormattedTextLine> {
@@ -75,7 +75,9 @@ impl Slide for OzLaunchSlide {
 
     fn title(&self) -> &'static str {
         match self {
-            OzLaunchSlide::CloudAgents => "Step away from the desk — ambient officers cover the patrol",
+            OzLaunchSlide::CloudAgents => {
+                "Step away from the desk — ambient officers cover the patrol"
+            }
             OzLaunchSlide::AgentAutomations => {
                 "Run the briefing room — turn Skills into standing orders"
             }
@@ -96,13 +98,13 @@ impl Slide for OzLaunchSlide {
                 "Dispatch ambient officers to work calls in parallel, keep them on patrol after you've checked off duty, or call them up over the radio. You can listen in on the comms over the web too."
             }
             OzLaunchSlide::AgentAutomations => {
-                "Fuzz PCs are written up using the standard Skills format. The duty scheduler can put PCs on patrol at set intervals, or you can radio them in via the Fuzz SDK or API to start and manage Fuzz PCs from anywhere."
+                "Taskforce PCs are written up using the standard Skills format. The duty scheduler can put PCs on patrol at set intervals, or you can radio them in via the Taskforce SDK or API to start and manage Taskforce PCs from anywhere."
             }
             OzLaunchSlide::AgentManagement => {
                 "Read the whole roster — desk PCs and ambient officers — from inside Yarp. Listen in on a live shift, take the call back to your desk, or steer a PC with one click."
             }
             OzLaunchSlide::LaunchCredits => {
-                "Top up the kit to Build this month and you'll get 1,000 extra rations to put Fuzz on patrol. Rations only count toward Fuzz shifts in Yarp-hosted environments."
+                "Top up the kit to Build this month and you'll get 1,000 extra rations to put Taskforce on patrol. Rations only count toward Taskforce shifts in Yarp-hosted environments."
             }
         }
     }

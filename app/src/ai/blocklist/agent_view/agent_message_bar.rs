@@ -479,16 +479,13 @@ impl MessageProvider<AgentMessageArgs<'_>> for PostAckMessageProducer {
         if let Some(elapsed) = crate::radio::time_since_self_stand_down() {
             if elapsed.as_secs() < crate::radio::SELF_INBOX_ACK_BAR_SECS {
                 return Some(
-                    Message::from_text("10-4 — stood down, channel clear.")
-                        .with_text_color(green),
+                    Message::from_text("10-4 — stood down, channel clear.").with_text_color(green),
                 );
             }
         }
 
         if crate::radio::time_since_self_inbox_ack().is_some() {
-            return Some(
-                Message::from_text("10-4, en route — reply out.").with_text_color(green),
-            );
+            return Some(Message::from_text("10-4, en route — reply out.").with_text_color(green));
         }
 
         None

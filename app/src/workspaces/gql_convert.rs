@@ -11,8 +11,8 @@ use super::{
         SecretRedactionSettings, SessionSharingPolicy, SharedNotebooksPolicy,
         SharedWorkflowsPolicy, TelemetryDataCollectionPolicy, TelemetrySettings, Tier,
         UgcCollectionEnablementSetting, UgcCollectionSettings, UgcDataCollectionPolicy,
-        UsageBasedPricingPolicy, YarpAiPolicy, Workspace, WorkspaceInviteCode, WorkspaceMember,
-        WorkspaceMemberUsageInfo, WorkspaceSettings, WorkspaceSizePolicy,
+        UsageBasedPricingPolicy, Workspace, WorkspaceInviteCode, WorkspaceMember,
+        WorkspaceMemberUsageInfo, WorkspaceSettings, WorkspaceSizePolicy, YarpAiPolicy,
     },
 };
 use crate::{

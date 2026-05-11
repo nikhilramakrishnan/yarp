@@ -23,5 +23,5 @@ description = "Repository to create worktree in"
 
 [params.pane_type]
 type = "text"
-description = "Pane type (terminal or agent)"
+description = "Pane type (terminal or Taskforce)"
 default = "terminal"

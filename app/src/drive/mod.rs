@@ -74,13 +74,13 @@ impl From<DriveObjectType> for Icon {
 impl fmt::Display for DriveObjectType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            DriveObjectType::Notebook { .. } => write!(f, "notebook"),
-            DriveObjectType::Workflow => write!(f, "workflow"),
+            DriveObjectType::Notebook { .. } => write!(f, "casebook"),
+            DriveObjectType::Workflow => write!(f, "playbook"),
             DriveObjectType::Folder => write!(f, "folder"),
             DriveObjectType::EnvVarCollection => write!(f, "env var collection"),
             DriveObjectType::AgentModeWorkflow => write!(f, "prompt"),
-            DriveObjectType::AIFact => write!(f, "ai fact"),
-            DriveObjectType::AIFactCollection => write!(f, "ai fact collection"),
+            DriveObjectType::AIFact => write!(f, "standing order"),
+            DriveObjectType::AIFactCollection => write!(f, "standing orders"),
             DriveObjectType::MCPServer => write!(f, "mcp server"),
             DriveObjectType::MCPServerCollection => write!(f, "mcp server collection"),
         }
@@ -267,7 +267,7 @@ pub fn write_has_auto_opened_welcome_folder_to_user_defaults(app: &mut AppContex
     settings_value::SettingsValue,
 )]
 #[schemars(
-    description = "Sort order for Yarp Drive items.",
+    description = "Sort order for records locker items.",
     rename_all = "snake_case"
 )]
 pub enum DriveSortOrder {

@@ -58,7 +58,8 @@ impl Default for OssObjectClient {
     }
 }
 
-const ERR: &str = "Yarp Drive cloud sync is disabled in this build; cloud objects are not available.";
+const ERR: &str =
+    "Records Locker cloud sync is disabled in this build; cloud objects are not available.";
 
 fn err<T>() -> Result<T> {
     Err(anyhow!(ERR))
@@ -116,7 +117,10 @@ impl ObjectClient for OssObjectClient {
         err()
     }
 
-    async fn create_folder(&self, _request: CreateObjectRequest) -> Result<CreateCloudObjectResult> {
+    async fn create_folder(
+        &self,
+        _request: CreateObjectRequest,
+    ) -> Result<CreateCloudObjectResult> {
         err()
     }
 
@@ -137,10 +141,7 @@ impl ObjectClient for OssObjectClient {
         err()
     }
 
-    async fn grab_notebook_edit_access(
-        &self,
-        _notebook_id: NotebookId,
-    ) -> Result<ServerMetadata> {
+    async fn grab_notebook_edit_access(&self, _notebook_id: NotebookId) -> Result<ServerMetadata> {
         err()
     }
 
@@ -170,10 +171,7 @@ impl ObjectClient for OssObjectClient {
         Ok(InitialLoadResponse::default())
     }
 
-    async fn fetch_single_cloud_object(
-        &self,
-        _id: ServerId,
-    ) -> Result<GetCloudObjectResponse> {
+    async fn fetch_single_cloud_object(&self, _id: ServerId) -> Result<GetCloudObjectResponse> {
         err()
     }
 

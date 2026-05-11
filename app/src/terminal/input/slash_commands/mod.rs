@@ -238,7 +238,7 @@ impl Input {
             }
             SlashCommandsEvent::SelectedSavedPrompt { id } => {
                 let Some(workflow) = CloudModel::as_ref(ctx).get_workflow(id).cloned() else {
-                    log::warn!("Tried to execute workflow for id {id:?} but it does not exist");
+                    log::warn!("Tried to execute playbook for id {id:?} but it does not exist");
                     return;
                 };
                 let is_in_agent_view = FeatureFlag::AgentView.is_enabled()
@@ -328,7 +328,9 @@ impl Input {
                 ctx.dispatch_typed_action(&TerminalAction::OpenAddRulePane);
             }
             agent_or_new
-                if command.name == commands::NEW.name || command.name == commands::AGENT.name =>
+                if command.name == commands::NEW.name
+                    || command.name == commands::AGENT.name
+                    || command.name == commands::DETECTIVE.name =>
             {
                 if !self
                     .ai_context_model
@@ -353,7 +355,7 @@ impl Input {
                 }
                 // Keybindings can be triggered reflexively while users are already in an active
                 // conversation, so we gate only this path behind a second-press confirmation.
-                // Typed `/agent`/`/new` and slash-menu execution stay single-step by design.
+                // Typed `/detective`/`/agent`/`/new` and slash-menu execution stay single-step by design.
                 if trigger.is_keybinding() && self.agent_view_controller.as_ref(ctx).is_active() {
                     let should_start_new_conversation =
                         self.agent_view_controller.update(ctx, |controller, ctx| {
@@ -376,11 +378,12 @@ impl Input {
                     }
                 });
 
-                // /agent convenes the Sandford NWA council. If the team has
-                // any CLI-backed personas, emit EnterAgentCouncil so the
-                // native council view takes over. Otherwise fall through to
-                // the standard agent view.
-                if command.name == commands::AGENT.name {
+                // /detective and /agent convene the Sandford NWA council. If
+                // the team has any CLI-backed personas, emit EnterAgentCouncil
+                // so the native council view takes over. Otherwise fall
+                // through to the standard officer view.
+                if command.name == commands::DETECTIVE.name || command.name == commands::AGENT.name
+                {
                     if let Some(prompt) = prompt.as_ref() {
                         if let Some(roster) = crate::personas::Roster::load() {
                             if let Some(team) = roster.default_team() {
@@ -401,7 +404,10 @@ impl Input {
                     origin: AgentViewEntryOrigin::SlashCommand { trigger },
                 });
             }
-            cloud_agent if command.name == commands::CLOUD_AGENT.name => {
+            cloud_agent
+                if command.name == commands::CLOUD_AGENT.name
+                    || command.name == commands::CLOUD_DETECTIVE.name =>
+            {
                 let prompt = argument.and_then(|argument| {
                     let trimmed = argument.trim();
                     if trimmed.is_empty() {
@@ -440,10 +446,7 @@ impl Input {
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(name.to_owned()));
             }
             radio if command.name == commands::RADIO.name => {
-                let Some(raw) = argument
-                    .map(|a| a.trim())
-                    .filter(|a| !a.is_empty())
-                else {
+                let Some(raw) = argument.map(|a| a.trim()).filter(|a| !a.is_empty()) else {
                     show_error_toast(
                         "Radio's quiet — /radio [@unit] <message> to call it in.".to_owned(),
                         ctx,
@@ -458,7 +461,8 @@ impl Input {
                 } else if let Some((t, body)) = raw.split_once(':') {
                     let t = t.trim();
                     if !t.is_empty()
-                        && t.chars().all(|c| c.is_alphanumeric() || c == '.' || c == '_')
+                        && t.chars()
+                            .all(|c| c.is_alphanumeric() || c == '.' || c == '_')
                     {
                         (t, body.trim())
                     } else {
@@ -471,7 +475,8 @@ impl Input {
                 let target = target_lc.as_str();
                 if message.is_empty() {
                     show_error_toast(
-                        "Empty radio call — /radio @unit <message> to put something on the air.".to_owned(),
+                        "Empty radio call — /radio @unit <message> to put something on the air."
+                            .to_owned(),
                         ctx,
                     );
                     return true;
@@ -538,10 +543,7 @@ impl Input {
                 self.try_execute_command(&cmd, ctx);
             }
             respond if command.name == commands::RESPOND.name => {
-                let Some(message) = argument
-                    .map(|a| a.trim())
-                    .filter(|a| !a.is_empty())
-                else {
+                let Some(message) = argument.map(|a| a.trim()).filter(|a| !a.is_empty()) else {
                     show_error_toast(
                         "Need something to say back — /respond <message>.".to_owned(),
                         ctx,
@@ -650,7 +652,10 @@ impl Input {
                 let team = match roster.default_team() {
                     Some(team) => team,
                     None => {
-                        show_error_toast("No team on the roster — set one in personas.json.".to_owned(), ctx);
+                        show_error_toast(
+                            "No team on the roster — set one in personas.json.".to_owned(),
+                            ctx,
+                        );
                         return true;
                     }
                 };
@@ -678,12 +683,7 @@ impl Input {
                 );
                 let mut script = String::from(header);
                 for p in &team.members {
-                    let role = p
-                        .role
-                        .split('.')
-                        .next()
-                        .unwrap_or(&p.role)
-                        .trim();
+                    let role = p.role.split('.').next().unwrap_or(&p.role).trim();
                     let name_lc_pre = p.name.to_ascii_lowercase();
                     let persona_color = match name_lc_pre.as_str() {
                         "nicholas" | "angel" => Some(39),
@@ -783,10 +783,7 @@ impl Input {
                 self.try_execute_command(&cmd, ctx);
             }
             case if command.name == commands::CASE.name => {
-                let Some(name) = argument
-                    .map(|n| n.trim())
-                    .filter(|n| !n.is_empty())
-                else {
+                let Some(name) = argument.map(|n| n.trim()).filter(|n| !n.is_empty()) else {
                     show_error_toast(
                         "Case needs a name on the file — /case <name>.".to_owned(),
                         ctx,
@@ -797,7 +794,10 @@ impl Input {
                 ctx.dispatch_typed_action(&WorkspaceAction::SetActiveTabName(tab_name.clone()));
                 const CASE_QUOTES: &[(&str, &str)] = &[
                     ("angel", "Murder, murder, murder. — Angel"),
-                    ("angel", "I dare say there's a perfectly innocent explanation. — Angel"),
+                    (
+                        "angel",
+                        "I dare say there's a perfectly innocent explanation. — Angel",
+                    ),
                     ("frank", "It's all there in black and white. — Frank"),
                     ("frank", "Forget it, Nicholas, it's Sandford. — Frank"),
                     ("danny", "By the power of Greyskull. — Danny"),
@@ -805,7 +805,10 @@ impl Input {
                     ("andy", "Crusty Jugglers. — Andy"),
                     ("andy", "He's not Judge Judy and Executioner. — Andy"),
                     ("doris", "Crispy Christ. — Doris"),
-                    ("doris", "She's about to receive a great whopping kiss. — Doris"),
+                    (
+                        "doris",
+                        "She's about to receive a great whopping kiss. — Doris",
+                    ),
                     ("tony", "Yarp. — Tony"),
                     ("tony", "Narp. — Tony"),
                 ];
@@ -817,7 +820,8 @@ impl Input {
                         .unwrap_or(0)
                 };
                 let pick_for = |key: &str| -> &'static str {
-                    let pool: Vec<&'static str> = CASE_QUOTES.iter()
+                    let pool: Vec<&'static str> = CASE_QUOTES
+                        .iter()
                         .filter(|(k, _)| *k == key)
                         .map(|(_, q)| *q)
                         .collect();
@@ -911,9 +915,7 @@ impl Input {
                 self.try_execute_command(&cmd, ctx);
             }
             _duty if command.name == commands::DUTY.name => {
-                let callsign = argument
-                    .map(|a| a.trim())
-                    .filter(|a| !a.is_empty());
+                let callsign = argument.map(|a| a.trim()).filter(|a| !a.is_empty());
                 let cmd = if let Some(cs) = callsign {
                     if cs.eq_ignore_ascii_case("off") || cs.eq_ignore_ascii_case("clear") {
                         "prev_call=\"${YARP_CALLSIGN:-}\"; \
@@ -980,11 +982,14 @@ impl Input {
                             "doris" | "thatcher" => "Doris Thatcher",
                             _ => cs,
                         };
-                        let persona = roster
-                            .default_team()
-                            .and_then(|t| t.members.iter()
-                                .find(|p| p.name.eq_ignore_ascii_case(alias_to_name)
-                                    || p.name.split_whitespace().any(|w| w.eq_ignore_ascii_case(alias_to_name))));
+                        let persona = roster.default_team().and_then(|t| {
+                            t.members.iter().find(|p| {
+                                p.name.eq_ignore_ascii_case(alias_to_name)
+                                    || p.name
+                                        .split_whitespace()
+                                        .any(|w| w.eq_ignore_ascii_case(alias_to_name))
+                            })
+                        });
                         let persona_lines = if let Some(p) = persona {
                             let role = p.role.split('.').next().unwrap_or(&p.role).trim();
                             let lead_tag = if p.lead {
@@ -1130,7 +1135,8 @@ impl Input {
                         .unwrap_or(0)
                 };
                 let pick_for = |key: &str| -> &'static str {
-                    let pool: Vec<&'static str> = SIGN_OFFS.iter()
+                    let pool: Vec<&'static str> = SIGN_OFFS
+                        .iter()
                         .filter(|(k, _)| *k == key)
                         .map(|(_, q)| *q)
                         .collect();
@@ -1282,7 +1288,10 @@ impl Input {
                     ("🦔", "Forget it, Nicholas, it's Sandford. — Frank"),
                     ("🦔", "Welcome to Sandford. — Frank"),
                     ("🍦", "Pub? — Danny"),
-                    ("🍦", "Have you ever fired your gun in the air and yelled aaaaargh? — Danny"),
+                    (
+                        "🍦",
+                        "Have you ever fired your gun in the air and yelled aaaaargh? — Danny",
+                    ),
                 ];
                 let (quote_av, quote) = {
                     use std::time::{SystemTime, UNIX_EPOCH};
@@ -1697,8 +1706,7 @@ impl Input {
                             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                 toast_stack.add_ephemeral_toast(
                                     DismissibleToast::error(
-                                        "/open-file's only on call for local beats."
-                                            .to_owned(),
+                                        "/open-file's only on call for local beats.".to_owned(),
                                     ),
                                     window_id,
                                     ctx,
@@ -1738,15 +1746,17 @@ impl Input {
                             }
                             Ok(_) => {
                                 show_error_toast(
-                                    "/open-file is for case files, not directories"
-                                        .to_owned(),
+                                    "/open-file is for case files, not directories".to_owned(),
                                     ctx,
                                 );
                                 return true;
                             }
                             Err(_) => {
                                 show_error_toast(
-                                    format!("Lead's gone cold: no case file at {}", file_path.display()),
+                                    format!(
+                                        "Lead's gone cold: no case file at {}",
+                                        file_path.display()
+                                    ),
                                     ctx,
                                 );
                                 return true;
@@ -1789,9 +1799,7 @@ impl Input {
                 // Show a toast to confirm the export
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast = DismissibleToast::default(String::from(
-                        "Case file bagged.",
-                    ));
+                    let toast = DismissibleToast::default(String::from("Case file bagged."));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
             }
@@ -1981,10 +1989,7 @@ impl Input {
                     .as_ref(ctx)
                     .selected_conversation_id(ctx)
                 else {
-                    show_error_toast(
-                        "/fork-and-compact needs an open case file".to_owned(),
-                        ctx,
-                    );
+                    show_error_toast("/fork-and-compact needs an open case file".to_owned(), ctx);
                     return true;
                 };
 
@@ -2010,10 +2015,7 @@ impl Input {
                     .selected_conversation_id(ctx)
                     .is_none()
                 {
-                    show_error_toast(
-                        "/compact-and needs an open case file".to_owned(),
-                        ctx,
-                    );
+                    show_error_toast("/compact-and needs an open case file".to_owned(), ctx);
                     return true;
                 };
 

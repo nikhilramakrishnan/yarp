@@ -80,7 +80,7 @@ pub fn yarpify_description(
 
     let description = FormattedText::new(vec![FormattedTextLine::Line(vec![
         FormattedTextFragment::plain_text(
-            "Bring Yarp's features to your remote session. Blocks, full text editing, auto-complete, Fuzz, and more. "
+            "Bring Yarp's features to your remote session. Blocks, full text editing, auto-complete, Taskforce, and more. "
         ),
         FormattedTextFragment::hyperlink("Pull the dossier", SSH_DOCS_URL),
     ])]);

@@ -73,52 +73,51 @@ impl EnableAutoReloadModalBody {
             },
         );
 
-        ctx.subscribe_to_model(
-            &UserWorkspaces::handle(ctx),
-            |me, _handle, event, ctx| {
-                match event {
-                    UserWorkspacesEvent::UpdateWorkspaceSettingsSuccess => {
-                        if me.update_workspace_settings_loading {
-                            me.update_workspace_settings_loading = false;
+        ctx.subscribe_to_model(&UserWorkspaces::handle(ctx), |me, _handle, event, ctx| {
+            match event {
+                UserWorkspacesEvent::UpdateWorkspaceSettingsSuccess => {
+                    if me.update_workspace_settings_loading {
+                        me.update_workspace_settings_loading = false;
 
-                            // Emit telemetry for successful auto-reload enablement
-                            let selected_credits = me
-                                .addon_credits_options
-                                .get(me.selected_denomination_index)
-                                .map(|option| option.credits);
-                            send_telemetry_from_ctx!(
-                                TelemetryEvent::AutoReloadModalClosed {
-                                    action: AutoReloadModalAction::EnabledAutoReload,
-                                    selected_credits,
-                                    banner_toggle_flag_enabled:
-                                        FeatureFlag::BuildPlanAutoReloadBannerToggle.is_enabled(),
-                                    post_purchase_modal_flag_enabled:
-                                        FeatureFlag::BuildPlanAutoReloadPostPurchaseModal.is_enabled(),
-                                },
-                                ctx
-                            );
+                        // Emit telemetry for successful auto-reload enablement
+                        let selected_credits = me
+                            .addon_credits_options
+                            .get(me.selected_denomination_index)
+                            .map(|option| option.credits);
+                        send_telemetry_from_ctx!(
+                            TelemetryEvent::AutoReloadModalClosed {
+                                action: AutoReloadModalAction::EnabledAutoReload,
+                                selected_credits,
+                                banner_toggle_flag_enabled:
+                                    FeatureFlag::BuildPlanAutoReloadBannerToggle.is_enabled(),
+                                post_purchase_modal_flag_enabled:
+                                    FeatureFlag::BuildPlanAutoReloadPostPurchaseModal.is_enabled(),
+                            },
+                            ctx
+                        );
 
-                            ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
-                                message: "Auto-reload's been amended.".to_string(),
-                                flavor: ToastFlavor::Success,
-                            });
-                            ctx.emit(EnableAutoReloadModalBodyEvent::Close);
-                        }
+                        ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
+                            message: "Auto-reload's been amended.".to_string(),
+                            flavor: ToastFlavor::Success,
+                        });
+                        ctx.emit(EnableAutoReloadModalBodyEvent::Close);
                     }
-                    UserWorkspacesEvent::UpdateWorkspaceSettingsRejected(_err) => {
-                        if me.update_workspace_settings_loading {
-                            me.update_workspace_settings_loading = false;
-                            ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
-                                message: "Couldn't switch on auto-reload. Try again from Billing & usage.".to_string(),
-                                flavor: ToastFlavor::Error,
-                            });
-                            ctx.notify();
-                        }
-                    }
-                    _ => {}
                 }
-            },
-        );
+                UserWorkspacesEvent::UpdateWorkspaceSettingsRejected(_err) => {
+                    if me.update_workspace_settings_loading {
+                        me.update_workspace_settings_loading = false;
+                        ctx.emit(EnableAutoReloadModalBodyEvent::ShowToast {
+                            message:
+                                "Couldn't switch on auto-reload. Try again from Billing & usage."
+                                    .to_string(),
+                            flavor: ToastFlavor::Error,
+                        });
+                        ctx.notify();
+                    }
+                }
+                _ => {}
+            }
+        });
 
         let denomination_dropdown = ctx.add_typed_action_view(|ctx| {
             let mut dropdown = Dropdown::new(ctx);

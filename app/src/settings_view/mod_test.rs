@@ -170,13 +170,13 @@ fn match_data_countable_zero_is_not_truthy() {
 
 #[test]
 fn subpage_display_names_are_correct() {
-    assert_eq!(SettingsSection::YarpAgent.to_string(), "Yarp Agent");
-    assert_eq!(SettingsSection::AgentProfiles.to_string(), "Profiles");
+    assert_eq!(SettingsSection::YarpAgent.to_string(), "Taskforce");
+    assert_eq!(SettingsSection::AgentProfiles.to_string(), "Duty profiles");
     assert_eq!(SettingsSection::AgentMCPServers.to_string(), "MCP servers");
     assert_eq!(SettingsSection::Knowledge.to_string(), "Knowledge");
     assert_eq!(
         SettingsSection::ThirdPartyCLIAgents.to_string(),
-        "Third party CLI agents"
+        "Third-party CLI officers"
     );
     assert_eq!(
         SettingsSection::CodeIndexing.to_string(),
@@ -192,16 +192,19 @@ fn subpage_display_names_are_correct() {
     );
     assert_eq!(
         SettingsSection::OzCloudAPIKeys.to_string(),
-        "Fuzz Cloud API Keys"
+        "Taskforce Cloud API Keys"
     );
 }
 
 #[test]
 fn subpage_from_str_parses_display_names() {
-    // Both the legacy "Fuzz" name and the new "Yarp Agent" display name must
-    // resolve to SettingsSection::YarpAgent so existing deep links, persisted
-    // telemetry strings, and external callers continue to work after the
-    // user-facing rename (see specs/GH1063/product.md, Behavior #8).
+    // The current display names and legacy names must resolve to the same
+    // sections so existing deep links, persisted telemetry strings, and
+    // external callers continue to work after user-facing renames.
+    assert_eq!(
+        SettingsSection::from_str("Taskforce"),
+        Ok(SettingsSection::YarpAgent)
+    );
     assert_eq!(
         SettingsSection::from_str("Fuzz"),
         Ok(SettingsSection::YarpAgent)
@@ -209,6 +212,10 @@ fn subpage_from_str_parses_display_names() {
     assert_eq!(
         SettingsSection::from_str("Yarp Agent"),
         Ok(SettingsSection::YarpAgent)
+    );
+    assert_eq!(
+        SettingsSection::from_str("Duty profiles"),
+        Ok(SettingsSection::AgentProfiles)
     );
     assert_eq!(
         SettingsSection::from_str("Profiles"),
@@ -219,6 +226,10 @@ fn subpage_from_str_parses_display_names() {
         Ok(SettingsSection::Knowledge)
     );
     assert_eq!(
+        SettingsSection::from_str("Third-party CLI officers"),
+        Ok(SettingsSection::ThirdPartyCLIAgents)
+    );
+    assert_eq!(
         SettingsSection::from_str("Indexing and projects"),
         Ok(SettingsSection::CodeIndexing)
     );
@@ -227,8 +238,20 @@ fn subpage_from_str_parses_display_names() {
         Ok(SettingsSection::EditorAndCodeReview)
     );
     assert_eq!(
+        SettingsSection::from_str("Taskforce Cloud API Keys"),
+        Ok(SettingsSection::OzCloudAPIKeys)
+    );
+    assert_eq!(
         SettingsSection::from_str("Fuzz Cloud API Keys"),
         Ok(SettingsSection::OzCloudAPIKeys)
+    );
+    assert_eq!(
+        SettingsSection::from_str("Records Locker"),
+        Ok(SettingsSection::YarpDrive)
+    );
+    assert_eq!(
+        SettingsSection::from_str("Model Provider"),
+        Ok(SettingsSection::AIProvider)
     );
 }
 

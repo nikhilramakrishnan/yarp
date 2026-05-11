@@ -173,7 +173,9 @@ impl View for WasmNUXDialog {
                         .with_child(
                             appearance
                                 .ui_builder()
-                                .span("Yarp is the intelligent terminal. For the greater good.")
+                                .span(
+                                    "Yarp is the futuristic taskforce command station. For the greater good.",
+                                )
                                 .with_style(UiComponentStyles {
                                     font_weight: Some(Weight::Thin),
                                     font_color: Some(
@@ -218,7 +220,7 @@ impl View for WasmNUXDialog {
                 ))
         } else {
             let object_kind = match web_intent_parser::current_web_intent() {
-                Some(WebIntent::DriveObject(_)) => "drive case files",
+                Some(WebIntent::DriveObject(_)) => "Records Locker case files",
                 Some(WebIntent::SessionView(_)) => "open channels",
                 _ => "Yarp frequencies",
             };

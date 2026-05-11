@@ -164,9 +164,8 @@ impl ExportManager {
                 if let Some(export) = ids.first().and_then(|id| self.exports.get(id)) {
                     let window_id = export.window_id;
                     ToastStack::handle(ctx).update(ctx, move |toast_stack, ctx| {
-                        let toast = DismissibleToast::error(format!(
-                            "Couldn't ship the export: {err}"
-                        ));
+                        let toast =
+                            DismissibleToast::error(format!("Couldn't ship the export: {err}"));
                         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                     });
                 }
@@ -252,7 +251,7 @@ impl ExportManager {
                         .with_onclick_action(WorkspaceAction::OpenInExplorer { path: root_dir });
                 }
                 toast_stack.add_ephemeral_toast(
-                    DismissibleToast::success("Filed the case from the drive.".to_string())
+                    DismissibleToast::success("Filed the case from Records Locker.".to_string())
                         .with_link(toast_link),
                     window_id,
                     ctx,

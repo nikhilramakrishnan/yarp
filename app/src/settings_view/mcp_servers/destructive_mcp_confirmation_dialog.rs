@@ -58,24 +58,30 @@ impl From<&DestructiveMCPConfirmationDialogVariant>
 {
     fn from(variant: &DestructiveMCPConfirmationDialogVariant) -> Self {
         match *variant {
-            DestructiveMCPConfirmationDialogVariant::DeleteLocal => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Strike this MCP server from the books?".to_string(),
-                "Pulls the server off every one of your stations.".to_string(),
-                "Strike from books".to_string(),
-                "Stand down".to_string(),
-            ),
-            DestructiveMCPConfirmationDialogVariant::DeleteShared => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Strike this shared MCP server from the books?".to_string(),
-                "Pulls the server off your kit and off every officer on the squad.".to_string(),
-                "Strike from books".to_string(),
-                "Stand down".to_string(),
-            ),
-            DestructiveMCPConfirmationDialogVariant::Unshare => DestructiveMCPConfirmationDialogDisplayOptions::new(
-                "Pull this MCP server off the squad?".to_string(),
-                "Pulls the server off every officer on the squad.".to_string(),
-                "Pull from squad".to_string(),
-                "Stand down".to_string(),
-            ),
+            DestructiveMCPConfirmationDialogVariant::DeleteLocal => {
+                DestructiveMCPConfirmationDialogDisplayOptions::new(
+                    "Strike this MCP server from the books?".to_string(),
+                    "Pulls the server off every one of your stations.".to_string(),
+                    "Strike from books".to_string(),
+                    "Stand down".to_string(),
+                )
+            }
+            DestructiveMCPConfirmationDialogVariant::DeleteShared => {
+                DestructiveMCPConfirmationDialogDisplayOptions::new(
+                    "Strike this shared MCP server from the books?".to_string(),
+                    "Pulls the server off your kit and off every officer on the squad.".to_string(),
+                    "Strike from books".to_string(),
+                    "Stand down".to_string(),
+                )
+            }
+            DestructiveMCPConfirmationDialogVariant::Unshare => {
+                DestructiveMCPConfirmationDialogDisplayOptions::new(
+                    "Pull this MCP server off the squad?".to_string(),
+                    "Pulls the server off every officer on the squad.".to_string(),
+                    "Pull from squad".to_string(),
+                    "Stand down".to_string(),
+                )
+            }
         }
     }
 }

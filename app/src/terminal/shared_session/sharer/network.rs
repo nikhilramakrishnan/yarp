@@ -37,9 +37,9 @@ use std::pin::pin;
 use std::sync::Arc;
 use std::time::Duration;
 
+use websocket::{Message, Sink, Stream, WebSocket, WebsocketMessage as _};
 use yarpui::r#async::Timer;
 use yarpui::{Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity};
-use websocket::{Message, Sink, Stream, WebSocket, WebsocketMessage as _};
 
 use crate::editor::CrdtOperation;
 use crate::server::server_api::ServerApiProvider;
@@ -655,7 +655,7 @@ impl Network {
                     network.on_websocket_connected(ws_proxy_rx, sink, stream, ctx);
                 }
                 Err(e) => {
-                    let cause = Arc::new(e.context("Failed to create shared session"));
+                    let cause = Arc::new(e.context("Failed to open radio channel"));
                     report_error!(&*cause);
                     ctx.emit(NetworkEvent::FailedToCreateSharedSession {
                         reason: FailedToInitializeSessionReason::internal_server_error_without_details(),
@@ -1236,8 +1236,7 @@ impl Network {
     }
 }
 
-const NO_QUOTA_REMAINING_MESSAGE: &str =
-    "Day's airtime quota's burned. Try again later.";
+const NO_QUOTA_REMAINING_MESSAGE: &str = "Day's airtime quota's burned. Try again later.";
 
 /// Converts [`SessionTerminatedReason`] to a user-facing string.
 pub fn session_terminated_reason_string(

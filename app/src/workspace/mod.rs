@@ -205,13 +205,13 @@ pub fn init(app: &mut AppContext) {
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
                     "workspace:open_fuzz_launch_modal",
-                    "[Debug] Open Fuzz Launch Modal",
+                    "[Debug] Open Taskforce Launch Modal",
                     WorkspaceAction::OpenOzLaunchModal,
                 )
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
                     "workspace:reset_fuzz_launch_modal_state",
-                    "[Debug] Reset Fuzz Launch Modal State",
+                    "[Debug] Reset Taskforce Launch Modal State",
                     WorkspaceAction::ResetOzLaunchModalState,
                 )
                 .with_context_predicate(id!("Workspace")),
@@ -241,7 +241,7 @@ pub fn init(app: &mut AppContext) {
                 .with_context_predicate(id!("Workspace")),
                 EditableBinding::new(
                     "workspace:open_session_config_modal",
-                    "[Debug] Open Session Config Modal",
+                    "[Debug] Open Beat Config Modal",
                     WorkspaceAction::ShowSessionConfigModal,
                 )
                 .with_context_predicate(id!("Workspace")),
@@ -678,7 +678,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             NEW_TERMINAL_TAB_BINDING_NAME,
-            BindingDescription::new("New Terminal beat"),
+            BindingDescription::new("New desk beat"),
             WorkspaceAction::AddTerminalTab {
                 hide_homepage: false,
             },
@@ -688,7 +688,7 @@ pub fn init(app: &mut AppContext) {
         .with_enabled(|| ContextFlag::CreateNewSession.is_enabled()),
         EditableBinding::new(
             NEW_AGENT_TAB_BINDING_NAME,
-            BindingDescription::new("New PC beat"),
+            BindingDescription::new("New taskforce beat"),
             WorkspaceAction::AddAgentTab,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -727,8 +727,10 @@ pub fn init(app: &mut AppContext) {
         .with_linux_or_windows_key_binding("ctrl-shift-+"),
         EditableBinding::new(
             TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME,
-            BindingDescription::new("Toggle vertical beats panel")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Toggle Vertical Beats Panel"),
+            BindingDescription::new("Toggle vertical beats panel").with_custom_description(
+                bindings::MAC_MENUS_CONTEXT,
+                "Toggle Vertical Beats Panel",
+            ),
             WorkspaceAction::ToggleVerticalTabsPanel,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::USE_VERTICAL_TABS_FLAG))
@@ -763,7 +765,7 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::ToggleGlobalSearch),
         EditableBinding::new(
             LEFT_PANEL_YARP_DRIVE_BINDING_NAME,
-            BindingDescription::new("Left Panel: Yarp Drive"),
+            BindingDescription::new("Left Panel: Records Locker"),
             WorkspaceAction::ToggleYarpDrive,
         )
         .with_group(bindings::BindingGroup::Navigation.as_str())
@@ -789,17 +791,15 @@ pub fn init(app: &mut AppContext) {
         .with_linux_or_windows_key_binding("alt-shift-F"),
         EditableBinding::new(
             TOGGLE_YARP_DRIVE_BINDING_NAME,
-            BindingDescription::new("Toggle Yarp Drive")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Yarp Drive"),
+            BindingDescription::new("Toggle Records Locker")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Records Locker"),
             WorkspaceAction::ToggleYarpDrive,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME,
-            BindingDescription::new("Toggle case file list view").with_custom_description(
-                bindings::MAC_MENUS_CONTEXT,
-                "Case file list view",
-            ),
+            BindingDescription::new("Toggle case file list view")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Case file list view"),
             WorkspaceAction::ToggleConversationListView,
         )
         .with_enabled(|| FeatureFlag::AgentViewConversationListView.is_enabled())
@@ -817,8 +817,8 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::CloseCurrentSession),
         EditableBinding::new(
             "workspace:toggle_command_palette",
-            BindingDescription::new("Toggle the command palette")
-                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Command Palette"),
+            BindingDescription::new("Toggle the command grid")
+                .with_custom_description(bindings::MAC_MENUS_CONTEXT, "Command Grid"),
             WorkspaceAction::TogglePalette {
                 mode: PaletteMode::Command,
                 source: PaletteSource::Keybinding,
@@ -829,8 +829,9 @@ pub fn init(app: &mut AppContext) {
         .with_custom_action(CustomAction::CommandPalette),
         EditableBinding::new(
             "workspace:move_tab_left",
-            BindingDescription::new("Move beat left")
-                .with_dynamic_override(|ctx| uses_vertical_tabs(ctx).then(|| "move beat up".into())),
+            BindingDescription::new("Move beat left").with_dynamic_override(|ctx| {
+                uses_vertical_tabs(ctx).then(|| "move beat up".into())
+            }),
             WorkspaceAction::MoveActiveTabLeft,
         )
         .with_group(bindings::BindingGroup::Navigation.as_str())
@@ -1020,7 +1021,7 @@ pub fn init(app: &mut AppContext) {
         EditableBinding::new(
             // If you rename this name, please update the name in command_palette/action/data_source.rs
             "workspace:search_drive",
-            "Sweep Yarp Drive",
+            "Sweep Records Locker",
             WorkspaceAction::OpenPalette {
                 mode: PaletteMode::YarpDrive,
                 source: PaletteSource::Keybinding,
@@ -1075,7 +1076,7 @@ pub fn init(app: &mut AppContext) {
     if cfg!(not(target_family = "wasm")) {
         app.register_editable_bindings([EditableBinding::new(
             "workspace:export_all_yarp_drive_objects",
-            "Export all Yarp Drive objects",
+            "Export all Records Locker files",
             WorkspaceAction::ExportAllYarpDriveObjects,
         )
         .with_group(bindings::BindingGroup::Settings.as_str())
@@ -1088,14 +1089,14 @@ pub fn init(app: &mut AppContext) {
         app.register_editable_bindings([
             EditableBinding::new(
                 "workspace:install_cli",
-                "Wire in the Fuzz CLI",
+                "Wire in the Taskforce CLI",
                 WorkspaceAction::InstallCLI,
             )
             .with_group(bindings::BindingGroup::Settings.as_str())
             .with_context_predicate(id!("Workspace")),
             EditableBinding::new(
                 "workspace:uninstall_cli",
-                "Pull the Fuzz CLI",
+                "Pull the Taskforce CLI",
                 WorkspaceAction::UninstallCLI,
             )
             .with_group(bindings::BindingGroup::Settings.as_str())
@@ -1237,13 +1238,13 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "workspace:import_to_personal_drive",
-            "Import To Personal Drive",
+            "Import To Personal Records Locker",
             WorkspaceAction::ImportToPersonalDrive,
         )
         .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_YARP_DRIVE)),
         EditableBinding::new(
             "workspace:import_to_team_drive",
-            "Import To Team Drive",
+            "Import To Squad Records Locker",
             WorkspaceAction::ImportToTeamDrive,
         )
         .with_context_predicate(
@@ -1428,7 +1429,7 @@ fn add_open_setting_pages_as_editable_binding(app: &mut AppContext) {
         .with_context_predicate(id!("Workspace")),
         EditableBinding::new(
             "workspace:show_ai_settings_page",
-            BindingDescription::new("Open Settings: AI"),
+            BindingDescription::new("Open Settings: Taskforce"),
             WorkspaceAction::ShowSettingsPage(SettingsSection::YarpAgent),
         )
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())

@@ -108,10 +108,7 @@ impl View for DeleteConversationConfirmationDialog {
 
         let dialog = Dialog::new(
             title,
-            Some(
-                "Case file goes in the bin for good. No undoing this one."
-                    .into(),
-            ),
+            Some("Case file goes in the bin for good. No undoing this one.".into()),
             UiComponentStyles {
                 width: Some(DIALOG_WIDTH),
                 ..dialog_styles(appearance)

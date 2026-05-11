@@ -1,7 +1,7 @@
 pkgname=yarp-terminal@@CHANNEL_SUFFIX@@
 pkgver=@@VERSION@@
 pkgrel=@@RELEASE@@
-pkgdesc="Yarp, the Rust-based terminal for developers and teams"
+pkgdesc="Yarp, the Taskforce terminal for developers and teams"
 arch=('@@ARCH@@')
 url="https://yarp.dev"
 license=('custom')

@@ -26,7 +26,8 @@ use crate::{
 // sound like dispatch on the radio, not a generic chat agent.
 const AGENT_PROMPT_TO_INTERACT_MESSAGE: &str = "Tag the PC in on";
 const AGENT_WAITING_ON_INSTRUCTIONS_MESSAGE: &str = "PC's stood down — awaiting orders";
-const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str = "PC's holding the line — command still running";
+const AGENT_WAITING_FOR_COMMAND_TO_EXIT_MESSAGE: &str =
+    "PC's holding the line — command still running";
 const AGENT_BLOCKED_MESSAGE: &str = "PC's flagging for sign-off — over to you";
 const AGENT_IN_CONTROL_MESSAGE: &str = "PC on patrol";
 const USER_IN_CONTROL_MESSAGE: &str = "You've got the wheel";
@@ -186,10 +187,7 @@ impl View for InlineAgentViewHeader {
 // headline element of the inline split broadcasts the channel state in
 // lockstep with the workspace banner, dock, tab, status-bar and input
 // borders. Self → red, peer → yellow, post-ack 5s → green.
-fn wrap_with_radio_stripe(
-    header: Box<dyn Element>,
-    appearance: &Appearance,
-) -> Box<dyn Element> {
+fn wrap_with_radio_stripe(header: Box<dyn Element>, appearance: &Appearance) -> Box<dyn Element> {
     let radio_color = if crate::radio::self_in_mayday() {
         Some(appearance.theme().ansi_fg_red())
     } else if crate::radio::peer_in_mayday() {

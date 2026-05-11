@@ -1,14 +1,14 @@
 use clap::{Args, Subcommand};
 
-/// Federated authentication between Fuzz and cloud providers.
+/// Federated authentication between Taskforce and cloud providers.
 ///
-/// Fuzz supports OIDC federation to allow agents to securely authenticate to other systems
+/// Taskforce supports OIDC federation to allow officers to securely authenticate to other systems
 /// using short-lived credentials.
 #[derive(Debug, Clone, Subcommand)]
 pub enum FederateCommand {
-    /// Issue an identity token for the current Fuzz agent. This can only be called within a running Fuzz agent session.
+    /// Issue an identity token for the current Taskforce officer. This can only be called within a running Taskforce officer session.
     IssueToken(IssueTokenArgs),
-    /// Issue an identity token for the current Fuzz agent, in the format expected by Google Cloud's
+    /// Issue an identity token for the current Taskforce officer, in the format expected by Google Cloud's
     /// [executable-sourced credentials](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-other-providers#executable-sourced-credentials)
     /// mechanism.
     #[command(hide = true)]
@@ -42,7 +42,7 @@ pub struct IssueTokenArgs {
     /// - email (`email:user@yarp.dev`)
     /// - teams (`teams:my-team-id`)
     /// - environment (`environment:my-environment-id`)
-    /// - agent_name (`agent_name:my-agent`)
+    /// - agent_name (`agent_name:my-officer`)
     /// - skill_spec (`skill_spec:hotfuzz/repo_path_to_skill`)
     /// - run_id (`run_id:abc123`)
     /// - host (`host:my-worker-id`)

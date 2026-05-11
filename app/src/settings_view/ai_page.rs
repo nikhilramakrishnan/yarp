@@ -164,7 +164,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 ) {
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::new(
-            "AI",
+            "Taskforce",
             builder(SettingsAction::AI(AISettingsPageAction::ToggleGlobalAI)),
             context,
             flags::IS_ANY_AI_ENABLED,
@@ -175,7 +175,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::new(
-            "Active AI",
+            "Active Taskforce",
             builder(SettingsAction::AI(AISettingsPageAction::ToggleActiveAI)),
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::IS_ACTIVE_AI_ENABLED,
@@ -187,7 +187,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::new(
             if FeatureFlag::AgentView.is_enabled() {
-                "terminal command autodetection in agent input"
+                "beat command autodetection in PC input"
             } else {
                 "natural language detection"
             },
@@ -203,7 +203,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::new(
-            "agent prompt autodetection in terminal input",
+            "pc prompt autodetection in beat input",
             builder(SettingsAction::AI(
                 AISettingsPageAction::ToggleNLDInTerminal,
             )),
@@ -271,8 +271,8 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
         vec![ToggleSettingActionPair::custom(
             SettingActionPairDescriptions::new(
-                "Show Fuzz changelog in new case file view",
-                "Hide Fuzz changelog in new case file view",
+                "Show Taskforce changelog in new case file view",
+                "Hide Taskforce changelog in new case file view",
             ),
             builder(SettingsAction::AI(
                 AISettingsPageAction::ToggleShowOzUpdatesInZeroState,
@@ -1342,7 +1342,9 @@ impl AISettingsPageView {
             let current = *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                 .open_conversation_layout_preference;
             match current {
-                OpenConversationPreference::NewTab => dropdown.set_selected_by_name("New beat", ctx),
+                OpenConversationPreference::NewTab => {
+                    dropdown.set_selected_by_name("New beat", ctx)
+                }
                 OpenConversationPreference::SplitPane => {
                     dropdown.set_selected_by_name("Split Pane", ctx)
                 }
@@ -2411,7 +2413,7 @@ impl TypedActionView for AISettingsPageView {
                         );
                     }
                     Err(e) => {
-                        log::warn!("Failed to set value for Use Agent Footer setting: {e:?}");
+                        log::warn!("Failed to set value for Use PC Footer setting: {e:?}");
                     }
                 }
                 ctx.notify();
@@ -3066,8 +3068,8 @@ impl SettingsWidget for GlobalAIWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz yarp agent global ai a.i. active next command prompt code diffs suggestion suggested suggestions \
-                agent mode natural language detection input hint api keys bring your own byo google anthropic openai"
+        "taskforce yarp officer pc global active next command prompt code diffs suggestion suggested suggestions \
+                taskforce mode natural language detection input hint api keys bring your own byo google anthropic openai"
     }
 
     fn render(
@@ -3090,7 +3092,7 @@ impl SettingsWidget for GlobalAIWidget {
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
                 Text::new_inline(
-                    "Yarp Agent",
+                    "Yarp Taskforce",
                     appearance.ui_font_family(),
                     PRIMARY_HEADER_FONT_SIZE,
                 )
@@ -3103,16 +3105,20 @@ impl SettingsWidget for GlobalAIWidget {
             row.add_child(
                 ConstrainedBox::new(
                     Container::new(
-                        Text::new("Your squad has the AI radio off the air for remote-session beats.", appearance.ui_font_family(), 12.)
-                            .with_color(appearance.theme().ui_warning_color())
-                            .finish()
+                        Text::new(
+                            "Your squad has the Taskforce radio off the air for remote-session beats.",
+                            appearance.ui_font_family(),
+                            12.,
+                        )
+                        .with_color(appearance.theme().ui_warning_color())
+                        .finish(),
                     )
                     .with_padding_left(8.)
                     .with_padding_right(8.)
-                    .finish()
+                    .finish(),
                 )
                 .with_max_width(400.)
-                .finish()
+                .finish(),
             );
         }
 
@@ -3124,7 +3130,7 @@ impl SettingsWidget for GlobalAIWidget {
                     .with_child(
                         Container::new(
                             Text::new_inline(
-                                "Get sworn in to use the AI radio.",
+                                "Get sworn in to use the Taskforce radio.",
                                 appearance.ui_font_family(),
                                 14.,
                             )
@@ -3345,7 +3351,7 @@ impl SettingsWidget for UsageWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "a.i. ai usage limit plan"
+        "taskforce model usage limit plan credits"
     }
 
     fn render(
@@ -3711,7 +3717,7 @@ impl SettingsWidget for ActiveAIWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "active ai a.i. next command prompt suggestions code diffs suggested banners passive unit tests commit pull request pr git code review autogen generate"
+        "active taskforce officer next command prompt suggestions code diffs suggested banners passive unit tests commit pull request pr git code review autogen generate"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {
@@ -3803,9 +3809,9 @@ impl SettingsWidget for AgentsWidget {
 
     fn search_terms(&self) -> &str {
         if MCPServersWidget::should_show_mcp() {
-            "ai a.i. agent autonomy profiles allowlist denylist autoexecute permissions models llms planning mcp server"
+            "taskforce officer autonomy duty profiles allowlist denylist autoexecute permissions models llms planning mcp server"
         } else {
-            "ai a.i. agent autonomy profiles allowlist denylist autoexecute permissions models llms planning"
+            "taskforce officer autonomy duty profiles allowlist denylist autoexecute permissions models llms planning"
         }
     }
 
@@ -3839,7 +3845,7 @@ impl SettingsWidget for AgentsWidget {
                 .finish(),
             );
             agents_header.add_child(render_ai_setting_description(
-                "Lay down the standing orders for how your Agent works the beat. Pick what it can access, how far it can patrol on its own, and when it has to radio dispatch for the green light. You can also tune behavior around natural language input, codebase awareness, and more.",
+                "Lay down the standing orders for how each officer works the beat. Pick what they can access, how far they can patrol on their own, and when they have to radio dispatch for the green light. You can also tune behavior around natural language input, codebase awareness, and more.",
                 ai_settings.is_any_ai_enabled(app),
                 app,
             ));
@@ -3886,7 +3892,7 @@ impl AgentsWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Duty profiles let you spell out how your Agent works the beat — from the moves it can make and when it has to radio in for the go-ahead, to the models it pulls for tasks like coding and planning. You can also scope them to individual stations.",
+                        "Duty profiles let you spell out how each officer works the beat - from the moves they can make and when they have to radio in for the go-ahead, to the models they pull for tasks like coding and planning. You can also scope them to individual stations.",
                         is_any_ai_enabled,
                         app,
                     )
@@ -4197,7 +4203,7 @@ impl AgentsWidget {
         );
         render_ai_list(
             "Command no-go list",
-            "Regex patterns for commands the Yarp Agent must always radio dispatch for clearance before running.",
+            "Regex patterns for commands the Yarp Taskforce must always radio dispatch for clearance before running.",
             list,
             view,
             ai_settings,
@@ -4230,7 +4236,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Command go-ahead list",
-            "Regex patterns for commands the Yarp Agent can run on its own beat without calling in.",
+            "Regex patterns for commands the Yarp Taskforce can run on its own beat without calling in.",
             list,
             view,
             ai_settings,
@@ -4330,7 +4336,7 @@ impl AgentsWidget {
             appearance,
             "Base model",
             Some(
-                "This model is the duty officer behind the Yarp Agent. It works most calls and pulls in other models for tasks like planning or code generation when needed. Yarp may swap in backup officers based on model availability or for auxiliary work like wrapping up the case file.",
+                "This model is the duty officer behind the Yarp Taskforce. It works most calls and pulls in other models for tasks like planning or code generation when needed. Yarp may swap in backup officers based on model availability or for auxiliary work like wrapping up the case file.",
             ),
             Some(show_in_prompt_checkbox),
             LocalOnlyIconState::Hidden,
@@ -4361,7 +4367,7 @@ impl AgentsWidget {
 
         let codebase_context_description = vec![
             FormattedTextFragment::plain_text(
-                "Let the Yarp Agent draft a beat map of your codebase to use as context. No code is ever stored on our servers. ",
+                "Let the Yarp Taskforce draft a beat map of your codebase to use as context. No code is ever stored on our servers. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Pull the dossier",
@@ -4434,7 +4440,7 @@ impl AgentsWidget {
         let subtext = {
             let subtext_fragments = vec![
                 FormattedTextFragment::plain_text(
-                    "No MCP servers on your roster yet. Once you swear one in, you can set how far the Yarp Agent can patrol on its own when working with them. ",
+                    "No MCP servers on your roster yet. Once you swear one in, you can set how far the Yarp Taskforce can patrol on its own when working with them. ",
                 ),
                 FormattedTextFragment::hyperlink_action(
                     "Swear one in",
@@ -4515,7 +4521,7 @@ impl AgentsWidget {
         {
             let allowlist = self.render_mcp_list(
                 "MCP allowlist",
-                "The Yarp Agent has clearance to radio these MCP servers.",
+                "The Yarp Taskforce has clearance to radio these MCP servers.",
                 &view.mcp_allowlist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_allowlist(app, None),
                 view.mcp_allowlist_mouse_state_handles.clone(),
@@ -4532,7 +4538,7 @@ impl AgentsWidget {
         {
             let denylist = self.render_mcp_list(
                 "MCP denylist",
-                "The Yarp Agent will always radio dispatch for clearance before calling any MCP servers on this list.",
+                "The Yarp Taskforce will always radio dispatch for clearance before calling any MCP servers on this list.",
                 &view.mcp_denylist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_denylist(app, None),
                 view.mcp_denylist_mouse_state_handles.clone(),
@@ -4626,7 +4632,7 @@ impl SettingsWidget for AIInputWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz agent ai input natural language detection autodetection prompt terminal command commands history shell executed execution"
+        "taskforce officer pc input natural language detection autodetection prompt terminal command commands history shell executed execution"
     }
 
     fn render(
@@ -4746,7 +4752,7 @@ impl AIInputWidget {
 
             section.add_children([
                 render_ai_setting_toggle::<NLDInTerminalEnabled>(
-                    "Autodetect agent prompts in terminal input",
+                    "Autodetect PC prompts in beat input",
                     AISettingsPageAction::ToggleNLDInTerminal,
                     ai_settings.is_nld_in_terminal_enabled(app),
                     is_toggleable,
@@ -4755,7 +4761,7 @@ impl AIInputWidget {
                     app,
                 ),
                 render_ai_setting_toggle::<AIAutoDetectionEnabled>(
-                    "Autodetect terminal commands in agent input",
+                    "Autodetect beat commands in PC input",
                     AISettingsPageAction::ToggleAIInputAutoDetection,
                     is_nld_enabled,
                     is_toggleable,
@@ -4791,7 +4797,7 @@ impl AIInputWidget {
             > = LazyLock::new(|| {
                 vec![
                     FormattedTextFragment::plain_text(
-                        "Switch the radio on to detect when natural language hits the terminal input — Yarp drops into Agent Mode for PC queries automatically.",
+                        "Switch the radio on to detect when natural language hits the briefing input — Yarp drops into Taskforce Mode for PC queries automatically.",
                     ),
                     FormattedTextFragment::plain_text(
                         " Got a wrong call on a detection? ",
@@ -4876,7 +4882,7 @@ impl SettingsWidget for MCPServersWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz agent mcp server servers model context protocol file-based file based project claude .mcp.json .claude/.mcp.json .codex config.toml .codex/config.toml"
+        "taskforce officer mcp server servers model context protocol file-based file based project claude .mcp.json .claude/.mcp.json .codex config.toml .codex/config.toml"
     }
 
     fn should_render(&self, _app: &AppContext) -> bool {
@@ -4902,7 +4908,7 @@ impl SettingsWidget for MCPServersWidget {
 
         let mcp_description = vec![
             FormattedTextFragment::plain_text(
-                "Sweep MCP servers in to widen the Yarp Agent's beat. \
+                "Sweep MCP servers in to widen the Yarp Taskforce beat. \
             MCP servers wire up data sources or tools to PCs through a standardised radio, essentially acting like plugins. ",
             ),
             FormattedTextFragment::hyperlink(
@@ -4949,7 +4955,7 @@ impl SettingsWidget for MCPServersWidget {
                         > = LazyLock::new(|| {
                             vec![
                                 FormattedTextFragment::plain_text(
-                                    "Automatically detect and spawn MCP servers from globally-scoped third-party AI agent configuration files (e.g. in your home directory). Servers detected inside a repository are never spawned automatically and must be enabled individually from the MCP settings page. ",
+                                    "Automatically detect and spawn MCP servers from globally-scoped third-party PC configuration files (e.g. in your home directory). Servers detected inside a repository are never spawned automatically and must be enabled individually from the MCP settings page. ",
                                 ),
                                 FormattedTextFragment::hyperlink(
                                     "See supported providers.",
@@ -5034,7 +5040,7 @@ impl AIFactWidget {
 
         let rules_description = vec![
             FormattedTextFragment::plain_text(
-                "Rules keep the Yarp Agent in line with your conventions, whether for codebases or specific tours of duty. ",
+                "Rules keep the Yarp Taskforce in line with your conventions, whether for codebases or specific tours of duty. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Pull the dossier",
@@ -5102,7 +5108,7 @@ impl AIFactWidget {
         app: &yarpui::AppContext,
     ) -> Box<dyn Element> {
         let toggle = render_ai_setting_toggle::<YarpDriveContextEnabled>(
-            "Yarp Drive as agent context",
+            "Records locker as PC context",
             AISettingsPageAction::ToggleYarpDriveContext,
             *ai_settings.yarp_drive_context_enabled,
             ai_settings.is_any_ai_enabled(app),
@@ -5112,7 +5118,7 @@ impl AIFactWidget {
         );
 
         let description = render_ai_setting_description(
-            "The Yarp Agent can pull from the squad locker to tailor responses to your personal and team workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
+            "The Yarp Taskforce can pull from the records locker to tailor responses to your personal and team playbooks and environments. This includes any Playbooks, Casebooks, and Environment Variables.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -5128,7 +5134,7 @@ impl SettingsWidget for AIFactWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "agent fuzz ai a.i. knowledge fact memory memories rules yarp drive context workflows notebooks environment variables"
+        "taskforce officer pc knowledge fact memory memories rules records locker context playbooks casebooks environment variables"
     }
 
     fn should_render(&self, _app: &AppContext) -> bool {
@@ -5256,7 +5262,7 @@ impl SettingsWidget for VoiceWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "voice agent fuzz ai a.i. speech input natural language talk english"
+        "voice officer taskforce pc speech input natural language talk english"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {
@@ -5321,7 +5327,7 @@ impl SettingsWidget for OtherAIWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "other fuzz updates zero state empty changelog new conversation agent what's new use agent footer toolbar layout chip chips rearrange re-arrange thinking expanded reasoning collapse never show hide conversation history"
+        "other taskforce updates zero state empty changelog new conversation officer what's new use pc footer toolbar layout chip chips rearrange re-arrange thinking expanded reasoning collapse never show hide conversation history"
     }
 
     fn render(
@@ -5349,7 +5355,7 @@ impl SettingsWidget for OtherAIWidget {
         if FeatureFlag::AgentView.is_enabled() {
             let mut agent_view_column = Flex::column()
                 .with_child(render_ai_setting_toggle::<ShouldShowOzUpdatesInZeroState>(
-                    "Show the Fuzz changelog on the new case file view",
+                    "Show the Taskforce changelog on the new case file view",
                     AISettingsPageAction::ToggleShowOzUpdatesInZeroState,
                     *ai_settings.should_show_oz_updates_in_zero_state,
                     is_toggleable,
@@ -5357,7 +5363,9 @@ impl SettingsWidget for OtherAIWidget {
                     &view.local_only_icon_tooltip_states,
                     app,
                 ))
-                .with_child(render_ai_setting_toggle::<ShouldRenderUseAgentToolbarForUserCommands>(
+                .with_child(render_ai_setting_toggle::<
+                    ShouldRenderUseAgentToolbarForUserCommands,
+                >(
                     "Show \"Wave the PC in\" footer",
                     AISettingsPageAction::ToggleUseAgentToolbar,
                     *ai_settings.should_render_use_agent_footer_for_user_commands,
@@ -5367,7 +5375,7 @@ impl SettingsWidget for OtherAIWidget {
                     app,
                 ))
                 .with_child(render_ai_setting_description(
-                    "Flashes a tip to wave in the \"Full Terminal Use\"-enabled PC on long-running calls.",
+                    "Flashes a tip to wave in the full-desk PC on long-running calls.",
                     is_toggleable,
                     app,
                 ));
@@ -5451,7 +5459,7 @@ impl SettingsWidget for CLIAgentWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "third party cli coding agent claude codex gemini toolbar footer layout chip chips rearrange re-arrange bar command regex auto show rich input dismiss"
+        "third party cli coding officer claude codex gemini toolbar footer layout chip chips rearrange re-arrange bar command regex auto show rich input dismiss"
     }
 
     fn render(
@@ -5477,7 +5485,7 @@ impl SettingsWidget for CLIAgentWidget {
 
         let description_fragments = vec![
             FormattedTextFragment::plain_text(
-                "Show a duty belt of quick actions when running coding agents like ",
+                "Show a duty belt of quick actions when running CLI officers like ",
             ),
             FormattedTextFragment::inline_code("claude"),
             FormattedTextFragment::plain_text(", "),
@@ -5534,7 +5542,7 @@ impl SettingsWidget for CLIAgentWidget {
                         on_click_action: None,
                         secondary_text: None,
                         tooltip_override_text: Some(
-                            "Requires the Yarp plugin for your coding agent".to_owned(),
+                            "Requires the Yarp plugin for your CLI officer".to_owned(),
                         ),
                     }),
                     LocalOnlyIconState::for_setting(
@@ -5757,7 +5765,7 @@ impl SettingsWidget for AgentAttributionWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "agent attribution commit pull request co-author author credit fuzz yarp"
+        "officer attribution commit pull request co-author author credit taskforce yarp"
     }
 
     fn render(
@@ -5833,7 +5841,7 @@ impl SettingsWidget for AgentAttributionWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Fuzz can sign commit messages and pull requests it files",
+                "Taskforce officers can sign commit messages and pull requests they file",
                 !state.is_disabled,
                 app,
             ))
@@ -5855,7 +5863,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz cloud agent computer use orchestration multi-agent"
+        "taskforce cloud officer computer use orchestration multi-officer patrol"
     }
 
     fn render(
@@ -5912,7 +5920,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
 
         let toggle_row = build_toggle_element(
             render_body_item_label::<AISettingsPageAction>(
-                "Computer use in Cloud Agents".to_string(),
+                "Computer use in Cloud Officers".to_string(),
                 Some(styles::header_font_color(!is_disabled, app)),
                 None,
                 LocalOnlyIconState::Hidden,
@@ -5937,7 +5945,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Let cloud officers drive the screen during agent conversations started from the Yarp app.",
+                "Let cloud officers drive the screen during Taskforce briefings started from the Yarp app.",
                 !is_disabled,
                 app,
             ));
@@ -6097,7 +6105,7 @@ impl ApiKeysWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Run the Yarp Agent on your own API keys from model providers. Keys stay at the station and never head up to the cloud. Auto models, or models from providers you haven't filed a key for, run on Yarp rations.",
+                        "Run the Yarp Taskforce on your own API keys from model providers. Keys stay at the station and never head up to the cloud. Auto models, or models from providers you haven't filed a key for, run on Yarp rations.",
                         is_enabled,
                         app,
                     ))
@@ -6245,7 +6253,7 @@ impl ApiKeysWidget {
         );
 
         let description = render_ai_setting_description(
-            "When on, agent requests can swap to one of Yarp's house models if yours go off the air. Yarp keeps using your API keys before it dips into your Yarp rations.",
+            "When on, Taskforce requests can swap to one of Yarp's house models if yours go off the air. Yarp keeps using your API keys before it dips into your Yarp rations.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );

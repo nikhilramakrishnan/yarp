@@ -313,7 +313,7 @@ impl CustomizeUISlide {
             });
 
             chips.push(ChipSpec {
-                label: "Yarp Drive",
+                label: "Records Locker",
                 is_enabled: ui.show_yarp_drive,
                 mouse_state: self.chip_yarp_drive_mouse.clone(),
                 on_click: Box::new(|ctx, _, _| {

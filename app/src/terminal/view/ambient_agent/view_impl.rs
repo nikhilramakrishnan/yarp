@@ -524,14 +524,14 @@ impl TerminalView {
                 .and_then(|handle| handle.upgrade(ctx))
             else {
                 log::warn!(
-                    "Nested cloud mode has no pane stack; cannot pop to start sibling cloud mode session"
+                    "Nested cloud mode has no pane stack; cannot pop to start sibling cloud officer session"
                 );
                 return;
             };
 
             if pane_stack.as_ref(ctx).depth() <= 1 {
                 log::warn!(
-                    "Nested cloud mode pane stack depth <= 1; cannot pop to start sibling cloud mode session"
+                    "Nested cloud mode pane stack depth <= 1; cannot pop to start sibling cloud officer session"
                 );
                 return;
             }
@@ -614,7 +614,7 @@ impl TerminalView {
             super::create_cloud_mode_view(resources, Vector2F::zero(), ctx.window_id(), ctx);
 
         // Only insert an ambient agent entry block once the agent is actually dispatched.
-        // This avoids persisting an empty "New cloud agent" entry when the user enters cloud mode
+        // This avoids persisting an empty "New cloud officer" entry when the user enters cloud mode
         // but exits without sending anything.
         let ambient_agent_view_model = terminal_view.as_ref(ctx).ambient_agent_view_model().clone();
         let terminal_view_weak = terminal_view.downgrade();
@@ -634,7 +634,7 @@ impl TerminalView {
 
             let Some(pane_stack) = pane_stack.clone() else {
                 log::warn!(
-                    "Pane stack not available; cannot insert ambient agent entry block for cloud mode"
+                    "Pane stack not available; cannot insert ambient officer entry block for cloud mode"
                 );
                 return;
             };
@@ -699,10 +699,10 @@ impl TerminalView {
                     stack.push(terminal_manager, terminal_view, ctx);
                 });
             } else {
-                log::warn!("Pane stack deallocated, cannot enter cloud mode");
+                log::warn!("Pane stack deallocated, cannot enter cloud officer mode");
             }
         } else {
-            log::warn!("Pane stack not available, cannot enter cloud mode");
+            log::warn!("Pane stack not available, cannot enter cloud officer mode");
         }
 
         send_telemetry_from_ctx!(

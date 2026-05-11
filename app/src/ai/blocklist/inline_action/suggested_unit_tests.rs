@@ -329,7 +329,7 @@ impl SuggestedUnitTestsView {
             FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::hyperlink(
                     "Amend noticeboard Standing Orders",
-                    "Settings > AI",
+                    "Settings > Taskforce",
                 ),
             ])]),
             font_size,

@@ -11,7 +11,8 @@ use crate::search::QueryFilter;
 use crate::settings::AISettings;
 use crate::workspace::Workspace;
 use std::collections::HashMap;
-use yarpui::elements::{Container, Flex, MouseStateHandle, ParentElement, Shrinkable, Wrap};
+use yarpui::elements::{Container, Flex, MouseStateHandle, ParentElement, Shrinkable, Text, Wrap};
+use yarpui::fonts::{Properties, Weight};
 use yarpui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     WindowId,
@@ -124,6 +125,35 @@ impl ZeroState {
 
         valid_filters.into_iter()
     }
+
+    fn render_command_grid_briefing(appearance: &Appearance) -> Box<dyn Element> {
+        let theme = appearance.theme();
+        let label = Text::new_inline(
+            "COMMAND GRID",
+            appearance.monospace_font_family(),
+            appearance.ui_font_size() - 2.,
+        )
+        .with_style(Properties::default().weight(Weight::Semibold))
+        .with_color(theme.accent().into_solid())
+        .finish();
+
+        let status = Text::new_inline(
+            "Sweep controls, case files, evidence, beats, and standing orders.",
+            appearance.ui_font_family(),
+            appearance.ui_font_size(),
+        )
+        .with_color(theme.nonactive_ui_text_color().into())
+        .finish();
+
+        Container::new(
+            Flex::column()
+                .with_child(label)
+                .with_child(Container::new(status).with_margin_top(4.).finish())
+                .finish(),
+        )
+        .with_margin_bottom(14.)
+        .finish()
+    }
 }
 
 impl Entity for ZeroState {
@@ -137,9 +167,13 @@ impl View for ZeroState {
 
     fn render(&self, app: &AppContext) -> Box<dyn Element> {
         let appearance = Appearance::as_ref(app);
-        let mut flex = Flex::column().with_child(
-            self.render_filter_chips(appearance, Self::valid_query_filters(app, self.window_id)),
-        );
+        let mut flex =
+            Flex::column()
+                .with_child(Self::render_command_grid_briefing(appearance))
+                .with_child(self.render_filter_chips(
+                    appearance,
+                    Self::valid_query_filters(app, self.window_id),
+                ));
 
         let zero_state_items = self.items.as_ref(app).render(app);
         flex.add_child(Shrinkable::new(1., zero_state_items).finish());

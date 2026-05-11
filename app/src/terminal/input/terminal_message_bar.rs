@@ -344,11 +344,11 @@ impl MessageProvider<TerminalMessageArgs<'_>> for DefaultMessageProducer {
         if let Some(keystroke) = keystroke {
             Some(Message::new(vec![
                 MessageItem::keystroke(keystroke),
-                MessageItem::text(" new /agent case file"),
+                MessageItem::text(" new Taskforce case file"),
             ]))
         } else {
             Some(Message::new(vec![MessageItem::text(
-                "/agent for new case file",
+                "/detective for new Taskforce case file",
             )]))
         }
     }

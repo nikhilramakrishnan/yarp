@@ -195,7 +195,7 @@ impl AgentConfigRunner {
                             ctx.terminate_app(
                                 TerminationMode::ForceTerminate,
                                 Some(Err(anyhow::anyhow!(
-                                    "Cannot list agents: authorization required but no auth flow provided"
+                                    "Cannot list officers: authorization required but no auth flow provided"
                                 ))),
                             );
                         }
@@ -215,9 +215,9 @@ impl AgentConfigRunner {
         let ai_client = ServerApiProvider::handle(ctx).as_ref(ctx).get_ai_client();
 
         if repo.is_some() {
-            println!("Fetching agent skills from the specified repository...");
+            println!("Fetching officer skills from the specified repository...");
         } else {
-            println!("Fetching agent skills from your Yarp environments...");
+            println!("Fetching officer skills from your Yarp environments...");
         }
 
         let list_future = async move { ai_client.list_agents(repo).await };
@@ -236,14 +236,14 @@ impl AgentConfigRunner {
     /// Print a list of agents in a card-style format.
     fn print_agents_table(agents: &[AgentListItem]) {
         if agents.is_empty() {
-            println!("No agents found.");
+            println!("No officers found.");
             return;
         }
 
         if agents.len() == 1 {
-            println!("\nAgent:");
+            println!("\nOfficer:");
         } else {
-            println!("\nAgents ({}):", agents.len());
+            println!("\nOfficers ({}):", agents.len());
         }
 
         for agent in agents {

@@ -415,7 +415,7 @@ pub mod text {
                         writeln!(w, "Fetching conversation {conversation_id}")?;
                     }
                     AIAgentActionType::StartAgent { name, .. } => {
-                        writeln!(w, "Starting agent: {name}")?;
+                        writeln!(w, "Starting officer: {name}")?;
                     }
                     AIAgentActionType::SendMessageToAgent {
                         addresses, subject, ..
@@ -497,7 +497,7 @@ pub mod text {
                     writeln!(w, "Received {} messages", messages.len())?;
                 }
                 AIAgentOutputMessageType::EventsFromAgents { event_ids } => {
-                    writeln!(w, "Received {} agent events", event_ids.len())?;
+                    writeln!(w, "Received {} officer events", event_ids.len())?;
                 }
             }
         }
@@ -523,11 +523,15 @@ pub mod text {
         )
     }
 
-    /// Report the run ID with a link to the Fuzz dashboard.
+    /// Report the run ID with a link to the Taskforce dashboard.
     pub fn run_started<W: Write>(run_id: &str, w: &mut W) -> io::Result<()> {
         let run_url = super::run_url(run_id);
         writeln!(w, "Run ID: {run_id}")?;
-        writeln!(w, "Open in Fuzz: {run_url}\n")
+        if let Some(run_url) = run_url {
+            writeln!(w, "Open in Taskforce: {run_url}\n")
+        } else {
+            writeln!(w, "Local run saved in ~/.yarp/agent_tasks.json\n")
+        }
     }
 
     /// Report that a shared session has been established.
@@ -553,7 +557,7 @@ pub mod text {
     ) -> io::Result<()> {
         writeln!(
             w,
-            "Created plan (title: {title}, id: {document_id}, notebook: {notebook_link})"
+            "Created plan (title: {title}, id: {document_id}, casebook: {notebook_link})"
         )
     }
 }
@@ -630,9 +634,17 @@ pub mod json {
     #[derive(Serialize)]
     #[serde(tag = "event_type", rename_all = "snake_case")]
     enum JsonSystemEvent<'a> {
-        ConversationStarted { conversation_id: &'a str },
-        RunStarted { run_id: &'a str, run_url: &'a str },
-        SharedSessionEstablished { join_url: &'a str },
+        ConversationStarted {
+            conversation_id: &'a str,
+        },
+        RunStarted {
+            run_id: &'a str,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            run_url: Option<&'a str>,
+        },
+        SharedSessionEstablished {
+            join_url: &'a str,
+        },
     }
 
     #[derive(Serialize)]
@@ -1274,7 +1286,7 @@ pub mod json {
         let run_url = super::run_url(run_id);
         let message = JsonMessage::System(JsonSystemEvent::RunStarted {
             run_id,
-            run_url: &run_url,
+            run_url: run_url.as_deref(),
         });
         write_message(&message, w)
     }
@@ -1291,10 +1303,14 @@ use crate::code::editor_management::CodeSource;
 use std::io::{self, BufWriter, Write};
 use yarp_core::channel::ChannelState;
 
-/// Constructs the Fuzz dashboard URL for a given run ID.
-fn run_url(run_id: &str) -> String {
+/// Constructs the Fuzz dashboard URL for a given run ID when this build has a real dashboard.
+fn run_url(run_id: &str) -> Option<String> {
     let fuzz_root_url = ChannelState::fuzz_root_url();
-    format!("{fuzz_root_url}/runs/{run_id}")
+    let fuzz_root_url = fuzz_root_url.trim_end_matches('/');
+    if fuzz_root_url.is_empty() || fuzz_root_url.contains("localhost.invalid") {
+        return None;
+    }
+    Some(format!("{fuzz_root_url}/runs/{run_id}"))
 }
 
 /// Execute a closure with a buffered stdout writer and flush it afterwards.

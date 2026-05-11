@@ -42,24 +42,24 @@ impl ScheduleCommand {
 /// Schedule-related subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum ScheduleSubcommand {
-    /// Create a scheduled Fuzz agent.
+    /// Create a scheduled Taskforce officer.
     Create(CreateScheduleArgs),
-    /// List scheduled Fuzz agents.
+    /// List scheduled Taskforce officers.
     List,
-    /// Get a scheduled Fuzz agent's configuration.
+    /// Get a scheduled Taskforce officer's configuration.
     Get(GetScheduleArgs),
-    /// Update a scheduled Fuzz agent.
+    /// Update a scheduled Taskforce officer.
     Update(UpdateScheduleArgs),
-    /// Pause a scheduled Fuzz agent.
+    /// Pause a scheduled Taskforce officer.
     ///
-    /// A paused agent still exists, but will not run according to its schedule.
+    /// A paused officer still exists, but will not run according to its schedule.
     Pause(PauseScheduleArgs),
-    /// Unpause a scheduled Fuzz agent.
+    /// Unpause a scheduled Taskforce officer.
     ///
-    /// The agent will resume executing on its previously-configured schedule.
+    /// The officer will resume executing on its previously-configured schedule.
     #[command(alias = "resume")]
     Unpause(UnpauseScheduleArgs),
-    /// Delete a scheduled Fuzz agent.
+    /// Delete a scheduled Taskforce officer.
     Delete(DeleteScheduleArgs),
 }
 
@@ -73,7 +73,7 @@ pub enum ScheduleSubcommand {
     )
 )]
 pub struct CreateScheduleArgs {
-    /// Name of the scheduled agent.
+    /// Name of the scheduled officer.
     #[arg(long = "name")]
     pub name: String,
 
@@ -103,7 +103,7 @@ pub struct CreateScheduleArgs {
     #[arg(long = "mcp", value_name = "SPEC")]
     pub mcp_specs: Vec<MCPSpec>,
 
-    /// Prompt for what the scheduled agent should do.
+    /// Prompt for what the scheduled officer should do.
     #[arg(long = "prompt", short = 'p')]
     pub prompt: Option<String>,
 
@@ -112,7 +112,7 @@ pub struct CreateScheduleArgs {
     /// Format: `repo:skill_name` or `org/repo:skill_name`
     ///
     /// Skills are searched in `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
-    /// The skill is resolved at runtime in the agent's cloud environment.
+    /// The skill is resolved at runtime in the officer's cloud environment.
     ///
     /// When used with --prompt, the skill provides the base context and the prompt is the user task.
     /// This is useful for running recurring workflows like code reviews, dependency updates, or reports.
@@ -145,11 +145,11 @@ pub struct UpdateScheduleArgs {
     /// ID of the schedule to update.
     pub schedule_id: String,
 
-    /// Update the scheduled agent name.
+    /// Update the scheduled officer name.
     #[arg(long = "name")]
     pub name: Option<String>,
 
-    /// Update the cron schedule on which the agent is executed.
+    /// Update the cron schedule on which the officer is executed.
     #[arg(long = "cron")]
     pub cron: Option<String>,
 
@@ -178,20 +178,20 @@ pub struct UpdateScheduleArgs {
     #[arg(long = "remove-mcp", value_name = "SERVER_NAME")]
     pub remove_mcp: Vec<String>,
 
-    /// Update the scheduled agent's prompt.
+    /// Update the scheduled officer's prompt.
     #[arg(long = "prompt", short = 'p')]
     pub prompt: Option<String>,
 
-    /// Update the skill used as the base prompt for the scheduled agent.
+    /// Update the skill used as the base prompt for the scheduled officer.
     ///
     /// Format: `skill_name`, `repo:skill_name`, or `org/repo:skill_name`
     ///
     /// Skills are searched in `.agents/skills/`, `.yarp/skills/`, `.claude/skills/`, and `.codex/skills/` directories.
-    /// The skill is resolved at runtime in the agent's cloud environment.
+    /// The skill is resolved at runtime in the officer's cloud environment.
     #[arg(long = "skill", value_name = "SPEC", conflicts_with = "remove_skill")]
     pub skill: Option<SkillSpec>,
 
-    /// Remove the skill from this scheduled agent.
+    /// Remove the skill from this scheduled officer.
     #[arg(long = "remove-skill", conflicts_with = "skill")]
     pub remove_skill: bool,
 

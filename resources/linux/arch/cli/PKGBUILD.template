@@ -1,7 +1,7 @@
 pkgname=fuzz@@CHANNEL_SUFFIX@@
 pkgver=@@VERSION@@
 pkgrel=@@RELEASE@@
-pkgdesc="The orchestration platform for cloud agents"
+pkgdesc="The orchestration platform for cloud officers"
 arch=('@@ARCH@@')
 url="https://yarp.dev"
 license=('custom')

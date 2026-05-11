@@ -169,7 +169,7 @@ impl View for ExecutionProfileView {
                     model_flex.add_child(with_standard_vertical_margin(
                         render_model_line_with_icon(
                             Icon::Terminal,
-                            "Full terminal use:",
+                            "Full desk beat:",
                             cli_agent_model,
                             appearance,
                             is_any_ai_enabled,
@@ -363,7 +363,7 @@ impl View for ExecutionProfileView {
                         permissions_column.add_child(with_standard_vertical_margin(
                             render_bool_permission_line_with_icon(
                                 Icon::Compass,
-                                "Auto-sync plans to Yarp Drive:",
+                                "Auto-sync plans to Records Locker:",
                                 profile.autosync_plans_to_yarp_drive,
                                 appearance,
                                 is_any_ai_enabled,
@@ -686,7 +686,7 @@ fn render_action_permission_line_with_icon(
     is_ai_enabled: bool,
 ) -> Box<dyn Element> {
     let permission_text = match permission {
-        ActionPermission::AgentDecides => "Agent decides",
+        ActionPermission::AgentDecides => "Officer decides",
         ActionPermission::AlwaysAllow => "Always allow",
         ActionPermission::AlwaysAsk => "Always ask",
         ActionPermission::Unknown => "Unmarked",

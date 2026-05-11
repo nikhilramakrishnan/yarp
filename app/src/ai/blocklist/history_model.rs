@@ -404,8 +404,8 @@ impl BlocklistAIHistoryModel {
             .and_then(|c| c.orchestration_agent_id());
         if parent_agent_id.is_none() {
             log::warn!(
-                "No agent identifier for parent conversation {parent_conversation_id:?}; \
-                 child agent will not be linked to parent on the server."
+                "No officer identifier for parent conversation {parent_conversation_id:?}; \
+                 child officer will not be linked to parent on the server."
             );
         }
 

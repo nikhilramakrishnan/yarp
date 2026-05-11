@@ -83,13 +83,13 @@ const CODE_FEATURE_NAME: &str = "Code";
 const INITIALIZATION_SETTINGS_HEADER: &str = "Sign-on Standing Orders";
 const CODEBASE_INDEXING_LABEL: &str = "Beat indexing";
 const CODEBASE_INDEX_DESCRIPTION: &str = "Yarp can patrol and index your beats as you walk them, so the squad picks up the lay of the land fast and brings back targeted leads. The code itself never gets filed at HQ. If a beat won't index, Yarp still walks it and pulls leads via grep and find calls.";
-const YARP_INDEXING_IGNORE_DESCRIPTION: &str = "To keep specific files or districts off the patrol, list them in .yarpindexingignore at the beat root. The AI radio still has access — they just won't end up in beat embeddings.";
+const YARP_INDEXING_IGNORE_DESCRIPTION: &str = "To keep specific files or districts off the patrol, list them in .yarpindexingignore at the beat root. The Taskforce radio still has access - they just won't end up in beat embeddings.";
 const AUTO_INDEX_FEATURE_NAME: &str = "Patrol new beats automatically";
 const AUTO_INDEX_DESCRIPTION: &str = "With this on, Yarp patrols and indexes beats as you walk them — the squad picks up context fast and comes back with targeted leads.";
 const INDEXING_DISABLED_ADMIN_TEXT: &str = "Squad admins have stood down beat indexing.";
 const INDEXING_WORKSPACE_ENABLED_ADMIN_TEXT: &str = "Squad admins have called for beat indexing.";
 const INDEXING_DISABLED_GLOBAL_AI_TEXT: &str =
-    "Sign on the AI radio first to run beat indexing.";
+    "Sign on the Taskforce radio first to run beat indexing.";
 const CODEBASE_INDEX_LIMIT_REACHED: &str = "Out of beat slots on your duty roster. Strike old beats from the record to open up new patrols.";
 
 /// Identifies which subpage of the Code settings the user is viewing.
@@ -483,9 +483,7 @@ impl CodeSettingsPageView {
                 Err(err) => {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
-                            DismissibleToast::error(format!(
-                                "Couldn't pull the case file: {err}"
-                            )),
+                            DismissibleToast::error(format!("Couldn't pull the case file: {err}")),
                             window_id,
                             ctx,
                         );
@@ -2202,7 +2200,7 @@ impl SettingsWidget for ExternalEditorCodeWidget {
     type View = CodeSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "code editor open files markdown AI conversations layout pane tab"
+        "code editor open files markdown taskforce case files layout pane tab"
     }
 
     fn render(
@@ -2228,7 +2226,7 @@ impl SettingsWidget for AutoOpenCodeReviewPaneCodeWidget {
     type View = CodeSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz auto open code review pane panel agent mode change first time accepted diff view conversation"
+        "taskforce officer pc auto open code review pane panel accepted diff view conversation"
     }
 
     fn render(
@@ -2415,10 +2413,7 @@ impl SettingsWidget for ProjectExplorerToggleWidget {
                     ctx.dispatch_typed_action(CodeSettingsPageAction::ToggleProjectExplorer);
                 })
                 .finish(),
-            Some(
-                "Pins a beat map / file tree to the left side tools panel."
-                    .into(),
-            ),
+            Some("Pins a beat map / file tree to the left side tools panel.".into()),
         )
     }
 }

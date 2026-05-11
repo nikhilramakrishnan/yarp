@@ -9,7 +9,7 @@ use clap::{Arg, Args, Command, ValueEnum};
 /// Arguments for sharing a session or other object.
 #[derive(Debug, Clone, Args)]
 pub struct ShareArgs {
-    /// Share the agent's session
+    /// Share the officer's session
     ///
     /// Learn more at https://github.com/hotfuzz/yarp/knowledge-and-collaboration/session-sharing
     #[arg(long = "share", value_name = "RECIPIENTS", num_args=0..=1)]

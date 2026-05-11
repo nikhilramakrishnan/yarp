@@ -7,10 +7,10 @@ mod mouse;
 mod screenshot;
 
 use async_trait::async_trait;
-use yarpui::r#async::Timer;
 use windows::Win32::System::StationsAndDesktops::{
     CloseDesktop, DESKTOP_ACCESS_FLAGS, DESKTOP_CONTROL_FLAGS, HDESK, OpenInputDesktop,
 };
+use yarpui::r#async::Timer;
 
 use crate::{Action, ActionResult, Options};
 

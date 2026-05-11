@@ -14,20 +14,20 @@ use yarp_core::features::FeatureFlag;
 
 use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessActionInput};
 
-/// The result sent back to the executor after observing the child agent's lifecycle.
+/// The result sent back to the executor after observing the child officer's lifecycle.
 enum StartAgentDecision {
     /// The child conversation was created successfully.
     Started { agent_id: String },
-    /// An error occurred while starting the agent.
+    /// An error occurred while starting the officer.
     Error(String),
 }
 
 fn invalid_local_child_harness_error(harness_type: &str) -> String {
     let harness_name = harness_type.trim();
     if harness_name.is_empty() {
-        "Local child harness type is missing.".to_string()
+        "Local child-officer harness type is missing.".to_string()
     } else {
-        format!("Unsupported local child harness '{harness_name}'.")
+        format!("Unsupported local child-officer harness '{harness_name}'.")
     }
 }
 
@@ -125,18 +125,18 @@ impl StartAgentExecutor {
                     }
                     None => {
                         log::error!(
-                            "ConversationServerTokenAssigned fired but no agent identifier for \
+                            "ConversationServerTokenAssigned fired but no officer identifier for \
                              {conversation_id:?}"
                         );
                         let _ = pending.sender.try_send(StartAgentDecision::Error(
-                            "Server did not assign an agent identifier".to_string(),
+                            "Server did not assign an officer identifier".to_string(),
                         ));
                         if !FeatureFlag::OrchestrationV2.is_enabled() {
                             OrchestrationEventService::handle(ctx).update(ctx, |svc, ctx| {
                                 svc.emit_child_startup_errored(
                                     *conversation_id,
                                     "missing_agent_id".to_string(),
-                                    "Server did not assign an agent identifier".to_string(),
+                                    "Server did not assign an officer identifier".to_string(),
                                     ctx,
                                 );
                             });
@@ -232,13 +232,13 @@ impl StartAgentExecutor {
         let parent_conversation_id = input.conversation_id;
         let (execution_mode, parent_run_id) = match execution_mode.clone() {
             StartAgentExecutionMode::Local { harness_type: None } => {
-                // Legacy local Fuzz child agents do not use
+                // Legacy local Fuzz child officers do not use
                 // StartAgentRequest.parent_run_id. Instead, the child
                 // conversation is linked back to its parent on the first
                 // request via Request.metadata.parent_agent_id, sourced
                 // from the conversation's versioned orchestration_agent_id()
                 // (run_id in v2, server conversation token in v1). Remote
-                // child agents and local third-party harness children need
+                // child officers and local third-party harness children need
                 // parent_run_id here because their run is spawned before that
                 // first child request exists.
                 (StartAgentExecutionMode::Local { harness_type: None }, None)
@@ -258,7 +258,7 @@ impl StartAgentExecutor {
                 if !FeatureFlag::OrchestrationV2.is_enabled() {
                     return ActionExecution::Sync(AIAgentActionResultType::StartAgent(
                         StartAgentResult::Error {
-                            error: "Local harness child agents require orchestration v2."
+                            error: "Local harness child officers require orchestration v2."
                                 .to_string(),
                             version,
                         },
@@ -272,7 +272,7 @@ impl StartAgentExecutor {
                     return ActionExecution::Sync(AIAgentActionResultType::StartAgent(
                         StartAgentResult::Error {
                             error:
-                                "Local harness child agents require the parent run_id to be available."
+                                "Local harness child officers require the parent run_id to be available."
                                     .to_string(),
                             version,
                         },
@@ -298,7 +298,7 @@ impl StartAgentExecutor {
                 if !FeatureFlag::OrchestrationV2.is_enabled() {
                     return ActionExecution::Sync(AIAgentActionResultType::StartAgent(
                         StartAgentResult::Error {
-                            error: "Remote child agents require orchestration v2.".to_string(),
+                            error: "Remote child officers require orchestration v2.".to_string(),
                             version,
                         },
                     ));
@@ -310,7 +310,7 @@ impl StartAgentExecutor {
                 if Harness::parse_orchestration_harness(&harness_type) == Some(Harness::OpenCode) {
                     return ActionExecution::Sync(AIAgentActionResultType::StartAgent(
                         StartAgentResult::Error {
-                            error: "Remote child agents do not support the opencode harness yet."
+                            error: "Remote child officers do not support the opencode harness yet."
                                 .to_string(),
                             version,
                         },
@@ -323,7 +323,7 @@ impl StartAgentExecutor {
                 // it here so that agent authors can opt into running without an environment.
                 if environment_id.trim().is_empty() {
                     log::warn!(
-                        "Starting remote child agent with empty environment_id; the child will run \
+                        "Starting remote child officer with empty environment_id; the child will run \
                          with an empty environment."
                     );
                 }
@@ -334,8 +334,9 @@ impl StartAgentExecutor {
                 let Some(parent_run_id) = parent_run_id else {
                     return ActionExecution::Sync(AIAgentActionResultType::StartAgent(
                         StartAgentResult::Error {
-                            error: "Remote child agents require the parent run_id to be available."
-                                .to_string(),
+                            error:
+                                "Remote child officers require the parent run_id to be available."
+                                    .to_string(),
                             version,
                         },
                     ));
@@ -407,16 +408,16 @@ fn start_agent_error_message_for_status(
         ConversationStatus::Error => Some(
             error_message
                 .filter(|message| !message.trim().is_empty())
-                .unwrap_or("Child agent failed to initialize")
+                .unwrap_or("Child officer failed to initialize")
                 .to_string(),
         ),
         ConversationStatus::Cancelled => {
-            Some("Child agent was cancelled before initialization".to_string())
+            Some("Child officer was cancelled before initialization".to_string())
         }
         ConversationStatus::Blocked { blocked_action } => {
             let blocked_action = blocked_action.trim();
             Some(if blocked_action.is_empty() {
-                "Child agent startup was blocked before initialization".to_string()
+                "Child officer startup was blocked before initialization".to_string()
             } else {
                 blocked_action.to_string()
             })

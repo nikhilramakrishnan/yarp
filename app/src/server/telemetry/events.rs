@@ -5374,7 +5374,9 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::EnvVarCollectionInvoked | Self::EnvVarWorkflowParameterization => {
                 EnablementState::Always
             }
-            Self::BlockCompletedOnDogfoodOnly => EnablementState::ChannelSpecific { channels: vec![] },
+            Self::BlockCompletedOnDogfoodOnly => {
+                EnablementState::ChannelSpecific { channels: vec![] }
+            }
             Self::CompletedSettingsImport
             | Self::SettingsImportConfigFocused
             | Self::SettingsImportConfigParsed
@@ -6898,18 +6900,18 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::DetectedIsolationPlatform { .. } => {
                 "Detected that Yarp is running in an isolated sandbox"
             }
-            Self::AgentTipShown => "Selected an Agent Tip to show in the Agent Mode status bar",
-            Self::AgentTipClicked => "User clicked a link or action in an Agent Tip",
+            Self::AgentTipShown => "Selected a Taskforce tip to show in the Taskforce status bar",
+            Self::AgentTipClicked => "User clicked a link or action in a Taskforce tip",
             Self::AgentExitedShellProcess => {
-                "An agent-requested command caused the shell process to exit"
+                "An officer-requested command caused the shell process to exit"
             }
             Self::CLIAgentToolbarVoiceInputUsed { .. } => {
-                "User used voice input from the CLI agent footer"
+                "User used voice input from the CLI officer footer"
             }
             Self::CLIAgentToolbarImageAttached { .. } => {
-                "User attached an image from the CLI agent footer"
+                "User attached an image from the CLI officer footer"
             }
-            Self::CLIAgentToolbarShown { .. } => "CLI agent footer was shown to the user",
+            Self::CLIAgentToolbarShown { .. } => "CLI officer footer was shown to the user",
             Self::CLIAgentPluginChipClicked { .. } => {
                 "User clicked the plugin install or update chip"
             }
@@ -6923,21 +6925,21 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
                 "Auto plugin install or update failed"
             }
             Self::CLIAgentPluginDetected { .. } => {
-                "A CLI agent plugin was detected via a SessionStart event"
+                "A CLI officer plugin was detected via a SessionStart event"
             }
             Self::AgentNotificationShown { .. } => {
-                "An agent notification was shown to the user (toast or mailbox)"
+                "An officer notification was shown to the user (toast or mailbox)"
             }
-            Self::CLIAgentRichInputOpened { .. } => "User opened CLI agent Rich Input",
-            Self::CLIAgentRichInputClosed { .. } => "CLI agent Rich Input was closed",
+            Self::CLIAgentRichInputOpened { .. } => "User opened CLI officer Rich Input",
+            Self::CLIAgentRichInputClosed { .. } => "CLI officer Rich Input was closed",
             Self::CLIAgentRichInputSubmitted { .. } => {
-                "User submitted a prompt via CLI agent Rich Input"
+                "User submitted a prompt via CLI officer Rich Input"
             }
             Self::ToggleCLIAgentToolbarSetting { .. } => {
-                "User toggled the CLI agent footer setting"
+                "User toggled the CLI officer footer setting"
             }
             Self::ToggleUseAgentToolbarSetting { .. } => {
-                "User toggled the Use Agent footer setting"
+                "User toggled the Use PC footer setting"
             }
             Self::CodexModalOpened => "User opened the Codex modal",
             Self::CodexModalUseCodexClicked => "User clicked 'Use Codex' in the Codex modal",

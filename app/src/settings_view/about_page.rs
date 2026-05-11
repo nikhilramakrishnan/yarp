@@ -633,12 +633,10 @@ fn precinct_inbox_line() -> Option<(String, bool)> {
     // beats "3 pending dispatches from 3 officers (Cooper (hailing), …)") and
     // drop the now-redundant per-name suffix. Emergency rendering owns the
     // distress path, so this only kicks in when no 10-13 is queued.
-    let all_hails = !emergency
-        && !inbox.is_empty()
-        && inbox.iter().all(|m| radio::is_hail_body(&m.body));
-    let all_stand_downs = !emergency
-        && !inbox.is_empty()
-        && inbox.iter().all(|m| radio::is_stand_down_body(&m.body));
+    let all_hails =
+        !emergency && !inbox.is_empty() && inbox.iter().all(|m| radio::is_hail_body(&m.body));
+    let all_stand_downs =
+        !emergency && !inbox.is_empty() && inbox.iter().all(|m| radio::is_stand_down_body(&m.body));
     // Tag distressed senders inline with the 10-13 code so a multi-sender
     // inbox doesn't leave the operator guessing which officer triggered the
     // red — matches the latest-dispatch row's "10-13 · <officer>" lead.
@@ -742,8 +740,8 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     // 10-13 caller wants to see, and the en-route rewrite path further
     // down handles that better than this ack would.
     if let Some(at) = radio::self_mayday_just_broadcast_at_unix() {
-        let inbox_top_is_en_route = radio::latest_dispatch()
-            .is_some_and(|m| radio::is_en_route_body(&m.body));
+        let inbox_top_is_en_route =
+            radio::latest_dispatch().is_some_and(|m| radio::is_en_route_body(&m.body));
         if !inbox_top_is_en_route {
             let line = format!(
                 "10-13 \u{00B7} {} \u{00B7} broadcasting \u{00B7} {}",
@@ -823,8 +821,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         owned.sort_by_key(|m| std::cmp::Reverse(m.sent_at_unix));
         // Dedupe by call sign so a peer who re-acks doesn't get listed twice;
         // preserve latest-first order from the sorted vec.
-        let mut seen: std::collections::HashSet<String> =
-            std::collections::HashSet::new();
+        let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
         let names: Vec<String> = owned
             .iter()
             .filter_map(|m| {
@@ -842,10 +839,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
                 msg.from_call_sign
             )
         } else {
-            format!(
-                "10-4 \u{00B7} {} en route \u{00B7} {age}",
-                names.join(", ")
-            )
+            format!("10-4 \u{00B7} {} en route \u{00B7} {age}", names.join(", "))
         };
         return Some((line, true));
     }
@@ -868,9 +862,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
             Some(tag) => format!("{} ({tag})", msg.from_call_sign),
             None => msg.from_call_sign.clone(),
         };
-        let line = format!(
-            "10-4 all clear \u{00B7} {from_label} stood down \u{00B7} {age}"
-        );
+        let line = format!("10-4 all clear \u{00B7} {from_label} stood down \u{00B7} {age}");
         return Some((line, false));
     }
     // Hail rendering: collapse the verbatim "Hail — checking in." body into
@@ -899,8 +891,14 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
     // urgency inside quotes ("Latest from … : \"10-13 …\"") makes the eye
     // work twice. Lifted form ("10-13 from …") puts the code where it lands.
     let display_body = if emergency {
-        let stripped = msg.body.trim_start().strip_prefix("10-13").unwrap_or(&msg.body);
-        stripped.trim_start_matches([' ', '\t', ':', '-', '\u{00B7}', ',']).to_string()
+        let stripped = msg
+            .body
+            .trim_start()
+            .strip_prefix("10-13")
+            .unwrap_or(&msg.body);
+        stripped
+            .trim_start_matches([' ', '\t', ':', '-', '\u{00B7}', ','])
+            .to_string()
     } else {
         msg.body.clone()
     };
@@ -946,9 +944,7 @@ fn precinct_latest_dispatch_text() -> Option<(String, bool)> {
         if body.is_empty() {
             format!("10-13 \u{00B7} {from_label} \u{00B7} {age}")
         } else {
-            format!(
-                "10-13 \u{00B7} {from_label} \u{00B7} {age} \u{2014} \u{201C}{body}\u{201D}"
-            )
+            format!("10-13 \u{00B7} {from_label} \u{00B7} {age} \u{2014} \u{201C}{body}\u{201D}")
         }
     } else if body.is_empty() {
         format!("Latest from {} ({routine_meta})", msg.from_call_sign)
@@ -993,8 +989,8 @@ fn precinct_earlier_dispatches_line() -> Option<(String, bool)> {
     // peer-side responders don't see a redundant "Earlier: Danny (case-foo
     // · 12s) — '10-4 en route'" line under their dispatch row's
     // "Cooper, Danny en route".
-    let any_emergency_active = radio::self_in_mayday()
-        || inbox.iter().any(|m| dispatch_is_emergency(&m.body));
+    let any_emergency_active =
+        radio::self_in_mayday() || inbox.iter().any(|m| dispatch_is_emergency(&m.body));
     if any_emergency_active && inbox.iter().all(|m| radio::is_en_route_body(&m.body)) {
         return None;
     }
@@ -1016,11 +1012,10 @@ fn precinct_earlier_dispatches_line() -> Option<(String, bool)> {
     // collapsed away), then routine hails last. Hails carry the lowest
     // signal — "checking in" never beats a quoted snippet — so when the
     // 2-frag budget is tight, a hail should yield to substantive content.
-    let (stand_downs, rest): (Vec<_>, Vec<_>) = sorted_iter
-        .partition(|m| radio::is_stand_down_body(&m.body));
-    let (hails, others): (Vec<_>, Vec<_>) = rest
-        .into_iter()
-        .partition(|m| radio::is_hail_body(&m.body));
+    let (stand_downs, rest): (Vec<_>, Vec<_>) =
+        sorted_iter.partition(|m| radio::is_stand_down_body(&m.body));
+    let (hails, others): (Vec<_>, Vec<_>) =
+        rest.into_iter().partition(|m| radio::is_hail_body(&m.body));
     let iter = stand_downs.into_iter().chain(others).chain(hails);
     let case_tags: std::collections::HashMap<String, String> = radio::peers()
         .into_iter()
@@ -1079,10 +1074,7 @@ fn precinct_earlier_dispatches_line() -> Option<(String, bool)> {
                 format!("{} ({case_meta}) \u{2014} hail", msg.from_call_sign),
             )
         } else if snippet.is_empty() {
-            (
-                Kind::Other,
-                format!("{} ({case_meta})", msg.from_call_sign),
-            )
+            (Kind::Other, format!("{} ({case_meta})", msg.from_call_sign))
         } else {
             (
                 Kind::Other,
@@ -1120,27 +1112,26 @@ fn precinct_earlier_dispatches_line() -> Option<(String, bool)> {
     // loses information unless the noun is shouted in the lead anyway, and
     // "Earlier hails: Cooper (12s)" is no shorter than "Earlier: Cooper
     // (12s) — hail".
-    let (lead, frag_texts): (&str, Vec<String>) = if frags.len() >= 2
-        && frags.iter().all(|(k, _)| *k == Kind::StandDown)
-    {
-        (
-            "Earlier all-clears",
-            frags
-                .into_iter()
-                .map(|(_, f)| f.replace(" \u{2014} all-clear", ""))
-                .collect(),
-        )
-    } else if frags.len() >= 2 && frags.iter().all(|(k, _)| *k == Kind::Hail) {
-        (
-            "Earlier hails",
-            frags
-                .into_iter()
-                .map(|(_, f)| f.replace(" \u{2014} hail", ""))
-                .collect(),
-        )
-    } else {
-        ("Earlier", frags.into_iter().map(|(_, f)| f).collect())
-    };
+    let (lead, frag_texts): (&str, Vec<String>) =
+        if frags.len() >= 2 && frags.iter().all(|(k, _)| *k == Kind::StandDown) {
+            (
+                "Earlier all-clears",
+                frags
+                    .into_iter()
+                    .map(|(_, f)| f.replace(" \u{2014} all-clear", ""))
+                    .collect(),
+            )
+        } else if frags.len() >= 2 && frags.iter().all(|(k, _)| *k == Kind::Hail) {
+            (
+                "Earlier hails",
+                frags
+                    .into_iter()
+                    .map(|(_, f)| f.replace(" \u{2014} hail", ""))
+                    .collect(),
+            )
+        } else {
+            ("Earlier", frags.into_iter().map(|(_, f)| f).collect())
+        };
     Some((format!("{lead}: {}", frag_texts.join("; ")), stale))
 }
 
@@ -1193,7 +1184,9 @@ impl AboutPageWidget {
             .with_text_label("Mic check".to_owned())
             .with_tooltip(move || {
                 mic_check_tooltip_builder
-                    .tool_tip("Roll-call the channel — 'mic check, anyone on this channel?'".to_owned())
+                    .tool_tip(
+                        "Roll-call the channel — 'mic check, anyone on this channel?'".to_owned(),
+                    )
                     .build()
                     .finish()
             })
@@ -1213,7 +1206,9 @@ impl AboutPageWidget {
             .with_text_label("10-13".to_owned())
             .with_tooltip(move || {
                 ten_thirteen_tooltip_builder
-                    .tool_tip("10-13 \u{2014} officer needs assistance. Reddens the channel.".to_owned())
+                    .tool_tip(
+                        "10-13 \u{2014} officer needs assistance. Reddens the channel.".to_owned(),
+                    )
                     .build()
                     .finish()
             })
@@ -1235,9 +1230,7 @@ impl AboutPageWidget {
             .with_text_label("Stand down".to_owned())
             .with_tooltip(move || {
                 stand_down_tooltip_builder
-                    .tool_tip(
-                        "Wave off the 10-13 — channel hears the all-clear.".to_owned(),
-                    )
+                    .tool_tip("Wave off the 10-13 — channel hears the all-clear.".to_owned())
                     .build()
                     .finish()
             })
@@ -1263,9 +1256,7 @@ impl AboutPageWidget {
             row = row.with_child(mic_check);
             row = row.with_child(Container::new(ten_thirteen).with_padding_left(8.).finish());
         }
-        Container::new(row.finish())
-            .with_margin_top(8.)
-            .finish()
+        Container::new(row.finish()).with_margin_top(8.).finish()
     }
 
     // 1:1 direct-dispatch row — one "Hail Sandford" button per live peer.
@@ -1298,9 +1289,7 @@ impl AboutPageWidget {
             }
             latest_body_per_sender
                 .into_iter()
-                .filter(|(name, body)| {
-                    !emergency_signs.contains(name) && radio::is_hail_body(body)
-                })
+                .filter(|(name, body)| !emergency_signs.contains(name) && radio::is_hail_body(body))
                 .map(|(name, _)| name)
                 .collect()
         };
@@ -1390,9 +1379,7 @@ impl AboutPageWidget {
                 .button(variant, MouseStateHandle::default())
                 .with_style(hail_button_style.clone())
                 .with_text_label(label)
-                .with_tooltip(move || {
-                    tooltip_builder.tool_tip(tooltip.clone()).build().finish()
-                })
+                .with_tooltip(move || tooltip_builder.tool_tip(tooltip.clone()).build().finish())
                 .build()
                 .on_click(move |ctx, _, _| {
                     if in_distress {

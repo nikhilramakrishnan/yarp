@@ -124,12 +124,14 @@ pub async fn load_conversation_from_server(
                         RestorationMode::Continue,
                     ) {
                         Some(conversation) => {
-                            log::info!("Loaded Fuzz conversation {conversation_id} from server");
+                            log::info!(
+                                "Loaded Taskforce conversation {conversation_id} from server"
+                            );
                             Some(CloudConversationData::Fuzz(Box::new(conversation)))
                         }
                         None => {
                             log::warn!(
-                                "Failed to convert Fuzz server conversation data for {conversation_id}"
+                                "Failed to convert Taskforce server conversation data for {conversation_id}"
                             );
                             None
                         }
@@ -137,7 +139,7 @@ pub async fn load_conversation_from_server(
                 }
                 AIAgentHarness::ClaudeCode | AIAgentHarness::Gemini => {
                     if !FeatureFlag::AgentHarness.is_enabled() {
-                        log::warn!("Ignoring non-Fuzz conversation {conversation_id}: AgentHarness flag is disabled");
+                        log::warn!("Ignoring non-Taskforce conversation {conversation_id}: AgentHarness flag is disabled");
                         return None;
                     }
                     // Fetch snapshot data for third-party harness conversations.

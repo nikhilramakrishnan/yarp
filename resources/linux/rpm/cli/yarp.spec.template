@@ -2,7 +2,7 @@
 # Package Spec
 ###############################################################################
 
-Summary:     The orchestration platform for cloud agents.
+Summary:     The orchestration platform for cloud officers.
 Name:        fuzz@@CHANNEL_SUFFIX@@
 Version:     @@VERSION@@
 Release:     @@RELEASE@@
@@ -31,12 +31,12 @@ prefix:      /opt
 ###############################################################################
 
 %description
-The Fuzz CLI is a tool for running, managing, and orchestrating coding agents at scale.
+The Taskforce CLI is a tool for running, managing, and orchestrating coding officers at scale.
 Use the CLI to:
-* Launch and inspect cloud agents
-* Schedule cloud agents to run in the future
-* Manage the environments that cloud agents run in
-* Upload secrets to Fuzz's secure storage
+* Launch and inspect cloud officers
+* Schedule cloud officers to run in the future
+* Manage the environments that cloud officers run in
+* Upload secrets to Taskforce secure storage
 
 ###############################################################################
 # Build rule - how does the package get built?

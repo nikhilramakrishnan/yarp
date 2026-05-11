@@ -144,7 +144,8 @@ const CURSOR_BLINK_INTERVAL: Duration = Duration::from_millis(500);
 const DEFAULT_TAB_SIZE: usize = 4;
 
 pub const ACCEPT_AUTOSUGGESTION_KEYBINDING_NAME: &str = "editor_view:insert_autosuggestion";
-pub const VOICE_LIMIT_HIT_TOAST_TEXT: &str = "Radio chatter quota's tapped out. Your allowance comes back next billing cycle.";
+pub const VOICE_LIMIT_HIT_TOAST_TEXT: &str =
+    "Radio chatter quota's tapped out. Your allowance comes back next billing cycle.";
 pub const VOICE_ERROR_TOAST_TEXT: &str = "Radio chatter went sideways while we processed it.";
 
 pub const MAX_IMAGES_PER_CONVERSATION: usize = 200;
@@ -4973,8 +4974,7 @@ impl EditorView {
                             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                 toast_stack.add_ephemeral_toast(
                                     DismissibleToast::error(
-                                        "This officer doesn't take photo evidence."
-                                            .to_string(),
+                                        "This officer doesn't take photo evidence.".to_string(),
                                     ),
                                     window_id,
                                     ctx,

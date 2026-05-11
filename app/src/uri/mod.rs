@@ -760,13 +760,13 @@ impl Action {
                     primary_window_id.or_else(|| Some(open_new_window_get_handles(None, ctx).0));
 
                 let Some(window_id) = window_id else {
-                    log::warn!("unable to determine window for cloud agent setup action");
+                    log::warn!("unable to determine window for cloud officer setup action");
                     return;
                 };
 
                 let Some(mut workspaces) = ctx.views_of_type::<Workspace>(window_id) else {
                     log::warn!(
-                        "no workspace found in window {window_id} for cloud agent setup action"
+                        "no workspace found in window {window_id} for cloud officer setup action"
                     );
                     return;
                 };
@@ -777,7 +777,7 @@ impl Action {
                     });
                 } else {
                     log::warn!(
-                        "no workspace views in window {window_id} for cloud agent setup action"
+                        "no workspace views in window {window_id} for cloud officer setup action"
                     );
                 }
             }
@@ -787,14 +787,14 @@ impl Action {
 
                 let Some(window_id) = window_id else {
                     log::warn!(
-                        "unable to determine window for new cloud agent conversation action"
+                        "unable to determine window for new cloud officer conversation action"
                     );
                     return;
                 };
 
                 let Some(mut workspaces) = ctx.views_of_type::<Workspace>(window_id) else {
                     log::warn!(
-                        "no workspace found in window {window_id} for new cloud agent conversation action"
+                        "no workspace found in window {window_id} for new cloud officer conversation action"
                     );
                     return;
                 };
@@ -805,7 +805,7 @@ impl Action {
                     });
                 } else {
                     log::warn!(
-                        "no workspace views in window {window_id} for new cloud agent conversation action"
+                        "no workspace views in window {window_id} for new cloud officer conversation action"
                     );
                 }
             }
@@ -968,7 +968,9 @@ pub fn handle_incoming_uri(url: &Url, ctx: &mut AppContext) {
         Err(e) => {
             if let Some(window_id) = primary_window_id {
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast = DismissibleToast::error(format!("That custom URI isn't on the books: {e:?}"));
+                    let toast = DismissibleToast::error(format!(
+                        "That custom URI isn't on the books: {e:?}"
+                    ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
             }

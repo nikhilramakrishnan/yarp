@@ -130,7 +130,7 @@ pub fn init(app: &mut AppContext) {
     .with_key_binding("cmdorctrl-s")]);
 
     app.register_editable_bindings([EditableBinding::new(
-        "Close Workflow",
+        "Close Playbook",
         "Stand down",
         WorkflowAction::Close,
     )
@@ -2732,8 +2732,7 @@ impl WorkflowView {
 
         crate::workspace::ToastStack::handle(ctx).update(ctx, |stack, ctx| {
             stack.add_ephemeral_toast(
-                DismissibleToast::error("Rations are spent.".into())
-                    .with_link(toast_link),
+                DismissibleToast::error("Rations are spent.".into()).with_link(toast_link),
                 window_id,
                 ctx,
             );

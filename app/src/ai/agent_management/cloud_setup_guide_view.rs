@@ -109,7 +109,7 @@ impl CloudSetupGuideView {
         let mut header_container = Flex::column().with_spacing(8.);
 
         let title = Text::new(
-            "Joining the Fuzz: a beginner's guide to ambient officers",
+            "Joining the Taskforce: a beginner's guide to ambient officers",
             appearance.ui_font_family(),
             title_font_size,
         )
@@ -119,7 +119,7 @@ impl CloudSetupGuideView {
         header_container.add_child(title);
 
         let subtitle = Text::new(
-            "Dispatch Fuzz ambient officers straight from Yarp — radio them in via an integration (Linear, Slack), kick them off with an event (GitHub, built-in schedule), or call them in over the wire with the Fuzz SDK or CLI.",
+            "Dispatch Taskforce ambient officers straight from Yarp - radio them in via an integration (Linear, Slack), kick them off with an event (GitHub, built-in schedule), or call them in over the wire with the Taskforce SDK or CLI.",
             appearance.ui_font_family(),
             subtitle_font_size,
         )
@@ -169,7 +169,7 @@ impl CloudSetupGuideView {
         let font_size = 16.;
 
         Text::new(
-            "Manual sign-on: patch in a Slack or Linear integration with the Fuzz CLI",
+            "Manual sign-on: patch in a Slack or Linear integration with the Taskforce CLI",
             appearance.ui_font_family(),
             font_size,
         )
@@ -249,14 +249,12 @@ impl CloudSetupGuideView {
             )),
             CREATE_ENV_CLI_CMD => Some((
                 WorkflowType::Local(
-                    Workflow::new("Open up a Beat (CLI)", CREATE_ENV_CLI_CMD).with_arguments(
-                        vec![
-                            Argument::new("NAME", ArgumentType::Text)
-                                .with_description("Name for the beat"),
-                            Argument::new("DOCKER_IMAGE", ArgumentType::Text)
-                                .with_description("Docker image to kit out the beat with"),
-                        ],
-                    ),
+                    Workflow::new("Open up a Beat (CLI)", CREATE_ENV_CLI_CMD).with_arguments(vec![
+                        Argument::new("NAME", ArgumentType::Text)
+                            .with_description("Name for the beat"),
+                        Argument::new("DOCKER_IMAGE", ArgumentType::Text)
+                            .with_description("Docker image to kit out the beat with"),
+                    ]),
                 ),
                 SetupGuideStep::CreateEnvironmentCli,
             )),

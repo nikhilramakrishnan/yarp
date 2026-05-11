@@ -262,7 +262,9 @@ impl PromptRenderHelper {
                     } => "Issuing Yarp SSH kit...".to_string(),
                     RemoteServerSetupState::Initializing => "Reporting for duty...".to_string(),
                     RemoteServerSetupState::Ready => "Bringing the unit online...".to_string(),
-                    RemoteServerSetupState::Failed { .. } => "Bringing the unit online...".to_string(),
+                    RemoteServerSetupState::Failed { .. } => {
+                        "Bringing the unit online...".to_string()
+                    }
                 };
             }
         }

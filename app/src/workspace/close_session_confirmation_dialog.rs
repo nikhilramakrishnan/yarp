@@ -133,7 +133,7 @@ impl View for CloseSessionConfirmationDialog {
             Dialog::new(
                 "Sign off this shift?".into(),
                 Some(
-                    "Heads up — this session is on the air. Closing it pulls every officer off the channel."
+                    "Heads up — this beat is on the air. Closing it pulls every officer off the channel."
                         .into(),
                 ),
                 UiComponentStyles {
@@ -200,7 +200,7 @@ impl TypedActionView for CloseSessionConfirmationDialog {
                 let Some(open_confirmation_source) = self.open_confirmation_source else {
                     // Should not be possible.
                     log::error!(
-                        "Close session button pressed with no open confirmation dialog source"
+                        "Close beat button pressed with no open confirmation dialog source"
                     );
                     return;
                 };

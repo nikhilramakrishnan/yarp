@@ -977,7 +977,8 @@ impl View {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Can't open a new case file while a PC is on a command.".to_string(),
+                                "Can't open a new case file while a PC is on a command."
+                                    .to_string(),
                             ),
                             window_id,
                             ctx,

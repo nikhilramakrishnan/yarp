@@ -120,7 +120,7 @@ impl ThirdPartySlide {
         ];
 
         // Only show the notifications toggle for terminal intention.
-        // For agent intention, notifications are always enabled.
+        // For Taskforce intention, notifications are always enabled.
         if matches!(intention, OnboardingIntention::Terminal) {
             sections.push(self.render_notifications_section(appearance, show_agent_notifications));
         }
@@ -136,7 +136,7 @@ impl ThirdPartySlide {
     fn render_header(&self, appearance: &Appearance) -> Box<dyn Element> {
         let title = appearance
             .ui_builder()
-            .paragraph("Customize third party agents")
+            .paragraph("Customize third-party coding CLIs")
             .with_style(UiComponentStyles {
                 font_size: Some(36.),
                 font_weight: Some(Weight::Medium),
@@ -146,7 +146,7 @@ impl ThirdPartySlide {
             .finish();
 
         let subtitle = FormattedTextElement::from_str(
-            "Select defaults for using agents like Claude Code, Codex, and Gemini.",
+            "Select defaults for using coding CLIs like Claude Code, Codex, and Gemini.",
             appearance.ui_font_family(),
             16.,
         )
@@ -177,7 +177,7 @@ impl ThirdPartySlide {
         let card = render_toggle_card(
             appearance,
             ToggleCardSpec {
-                title: "CLI agent toolbar",
+                title: "CLI officer toolbar",
                 is_expanded: is_selected,
                 is_left_selected: cli_toolbar_enabled,
                 left_label: "Enabled",

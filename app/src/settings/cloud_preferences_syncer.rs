@@ -795,7 +795,7 @@ impl CloudPreferencesSyncer {
             .collect::<Vec<_>>();
 
         let Some(personal_drive) = UserWorkspaces::as_ref(ctx).personal_drive(ctx) else {
-            log::warn!("Unable to create cloud preferences due to unset personal drive");
+            log::warn!("Unable to create cloud preferences due to unavailable Records Locker");
             return;
         };
 
@@ -941,4 +941,3 @@ impl Entity for CloudPreferencesSyncer {
 
 /// Mark CloudPreferencesSyncer as global application state.
 impl SingletonEntity for CloudPreferencesSyncer {}
-

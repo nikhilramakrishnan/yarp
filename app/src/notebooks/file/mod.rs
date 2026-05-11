@@ -444,8 +444,8 @@ impl FileNotebookView {
                         }
                         FileModelEvent::FailedToLoad { error, .. } => {
                             safe_warn!(
-                                safe: ("Unable to read local notebook file"),
-                                full: ("Unable to read local notebook file: {error}")
+                                safe: ("Unable to read local casebook file"),
+                                full: ("Unable to read local casebook file: {error}")
                             );
                             me.file_state =
                                 match mem::replace(&mut me.file_state, FileState::NoFile) {
@@ -809,7 +809,7 @@ impl View for FileNotebookView {
 
     fn accessibility_contents(&self, _ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new_without_help(
-            format!("{} notebook", self.title()),
+            format!("{} casebook", self.title()),
             YarpA11yRole::TextRole,
         ))
     }

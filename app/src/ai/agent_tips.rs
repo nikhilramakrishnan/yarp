@@ -104,7 +104,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::SlashCommands,
         },
         AgentTip {
-            description: "<keybinding> for the Command Palette — every Yarp action on the duty board.".to_string(),
+            description: "<keybinding> for the Command Grid — every Yarp action on the duty board.".to_string(),
             link: None,
             binding_name: Some(TOGGLE_COMMAND_PALETTE_KEYBINDING_NAME),
             action: Some(WorkspaceAction::OpenPalette {
@@ -115,7 +115,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "File reusable playbooks, notebooks, and briefings on your".to_string(),
+            description: "File reusable playbooks, casebooks, and briefings on your".to_string(),
             link: None,
             binding_name: None,
             action: Some(WorkspaceAction::OpenYarpDrive),
@@ -129,7 +129,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "`@` to attach files, blocks, or Yarp Drive evidence to the order.".to_string(),
+            description: "`@` to attach files, blocks, or Records Locker evidence to the order.".to_string(),
             link: None,
             binding_name: None,
             action: None,
@@ -262,7 +262,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::General,
         },
         AgentTip {
-            description: "Use `fuzz` to run a Fuzz unit in plain clothes — handy for remote machines.".to_string(),
+            description: "Use the Taskforce CLI to run a unit in plain clothes - handy for remote machines.".to_string(),
             link: None,
             binding_name: None,
             action: None,
@@ -290,7 +290,7 @@ static DEFAULT_TIPS: LazyLock<Vec<AgentTip>> = LazyLock::new(|| {
             kind: AgentTipKind::Context,
         },
         AgentTip {
-            description: "Yarpify a remote SSH session to bring Fuzz onto that beat.".to_string(),
+            description: "Yarpify a remote SSH session to bring Taskforce onto that beat.".to_string(),
             link: None,
             binding_name: None,
             action: None,
@@ -418,7 +418,7 @@ impl WorkspaceAction {
     pub fn display_text(&self) -> Option<String> {
         match self {
             WorkspaceAction::OpenPalette { .. } => Some("Crack open the duty board".to_string()),
-            WorkspaceAction::OpenYarpDrive => Some("Yarp Drive.".to_string()),
+            WorkspaceAction::OpenYarpDrive => Some("Records Locker.".to_string()),
             WorkspaceAction::ToggleRightPanel => Some("Pull up the case file diff".to_string()),
             _ => None,
         }

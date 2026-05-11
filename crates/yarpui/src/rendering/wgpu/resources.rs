@@ -17,11 +17,11 @@ use lazy_static::lazy_static;
 use pathfinder_geometry::vector::Vector2F;
 use thiserror::Error;
 use version_compare::Version;
-use yarpui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
 use wgpu::{
     Adapter, Backend, CompositeAlphaMode, CurrentSurfaceTexture, Device, DeviceType, PresentMode,
     Queue, Surface, SurfaceConfiguration,
 };
+use yarpui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
 
 /// A mostly-arbitrary value to use as the height/width of a surface when
 /// creating a default surface configuration.

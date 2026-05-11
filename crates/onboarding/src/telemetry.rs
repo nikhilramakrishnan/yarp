@@ -39,7 +39,7 @@ pub enum OnboardingEvent {
     SlideNavigatedBack,
     /// The user clicked the upgrade/subscribe button on the FreeUserNoAi experiment slide.
     FreeUserNoAiUpgradeClicked,
-    /// The user clicked the "Upgrade" button on the "Customize your agent" slide.
+    /// The user clicked the "Upgrade" button on the Taskforce setup slide.
     AgentSlideUpgradeClicked,
     /// The user clicked the "Log in" link on the welcome/intro slide.
     WelcomeLoginClicked,
@@ -124,10 +124,10 @@ impl TelemetryEvent for OnboardingEvent {
             OnboardingEvent::SlideNavigatedNext => "User navigated to the next slide",
             OnboardingEvent::SlideNavigatedBack => "User navigated to the previous slide",
             OnboardingEvent::FreeUserNoAiUpgradeClicked => {
-                "User clicked the upgrade button on the free-user no-AI experiment slide"
+                "User clicked the upgrade button on the free-user no-Taskforce experiment slide"
             }
             OnboardingEvent::AgentSlideUpgradeClicked => {
-                "User clicked the Upgrade button on the Customize your agent slide"
+                "User clicked the Upgrade button on the Taskforce setup slide"
             }
             OnboardingEvent::WelcomeLoginClicked => {
                 "User clicked the Log in link on the welcome/intro slide"
@@ -198,10 +198,10 @@ impl TelemetryEventDesc for OnboardingEventDiscriminant {
                 "User navigated to the previous slide"
             }
             OnboardingEventDiscriminant::FreeUserNoAiUpgradeClicked => {
-                "User clicked the upgrade button on the free-user no-AI experiment slide"
+                "User clicked the upgrade button on the free-user no-Taskforce experiment slide"
             }
             OnboardingEventDiscriminant::AgentSlideUpgradeClicked => {
-                "User clicked the Upgrade button on the Customize your agent slide"
+                "User clicked the Upgrade button on the Taskforce setup slide"
             }
             OnboardingEventDiscriminant::WelcomeLoginClicked => {
                 "User clicked the Log in link on the welcome/intro slide"

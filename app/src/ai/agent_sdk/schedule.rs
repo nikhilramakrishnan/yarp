@@ -76,7 +76,7 @@ fn create(ctx: &mut AppContext, args: CreateScheduleArgs) -> anyhow::Result<()> 
             let environment_id = match EnvironmentChoice::resolve_for_create(environment_args, ctx)
             {
                 Ok(EnvironmentChoice::None) => {
-                    eprintln!("Scheduling agent to run without an environment.");
+                    eprintln!("Scheduling officer to run without an environment.");
                     None
                 }
                 Ok(EnvironmentChoice::Environment { id, .. }) => Some(id),
@@ -148,12 +148,12 @@ fn create(ctx: &mut AppContext, args: CreateScheduleArgs) -> anyhow::Result<()> 
             let mut config = ScheduledAmbientAgent::new(args.name, args.cron, true, prompt);
             config.agent_config = agent_config;
 
-            // Print something here because scheduling an agent can take a while.
-            println!("Scheduling agent {}...", config.name);
+            // Print something here because scheduling an officer can take a while.
+            println!("Scheduling officer {}...", config.name);
             let create_future = manager.create_schedule(config, owner, ctx);
             ctx.spawn(create_future, |_manager, result, ctx| match result {
                 Ok(sync_id) => {
-                    println!("Scheduled agent: {sync_id}");
+                    println!("Scheduled officer: {sync_id}");
                     ctx.terminate_app(TerminationMode::ForceTerminate, None);
                 }
                 Err(err) => {
@@ -283,7 +283,7 @@ fn print_schedule_info(info: &ScheduleInfo, output_format: OutputFormat) -> anyh
                 println!("Model ID: {model_id}");
             }
             if let Some(agent_name) = &info.agent_config.name {
-                println!("Agent name: {agent_name}");
+                println!("Officer name: {agent_name}");
             }
             if let Some(skill_spec) = &info.agent_config.skill_spec {
                 println!("Skill: {skill_spec}");
@@ -320,7 +320,7 @@ fn print_schedule_info(info: &ScheduleInfo, output_format: OutputFormat) -> anyh
                 table.add_row(vec![Cell::new("Model ID"), Cell::new(model_id)]);
             }
             if let Some(agent_name) = &info.agent_config.name {
-                table.add_row(vec![Cell::new("Agent name"), Cell::new(agent_name)]);
+                table.add_row(vec![Cell::new("Officer name"), Cell::new(agent_name)]);
             }
             if let Some(skill_spec) = &info.agent_config.skill_spec {
                 table.add_row(vec![Cell::new("Skill"), Cell::new(skill_spec)]);
@@ -346,7 +346,7 @@ fn pause(ctx: &mut AppContext, args: PauseScheduleArgs) -> anyhow::Result<()> {
                 return;
             }
 
-            println!("Pausing agent...");
+            println!("Pausing officer...");
             let pause_future = manager.pause_schedule(schedule_id, ctx);
             ctx.spawn(pause_future, |_manager, result, ctx| match result {
                 Ok(()) => {
@@ -374,7 +374,7 @@ fn unpause(ctx: &mut AppContext, args: UnpauseScheduleArgs) -> anyhow::Result<()
                 return;
             }
 
-            println!("Resuming agent...");
+            println!("Resuming officer...");
             let unpause_future = manager.unpause_schedule(schedule_id, ctx);
             ctx.spawn(unpause_future, |_manager, result, ctx| match result {
                 Ok(()) => {
@@ -499,7 +499,7 @@ fn update(ctx: &mut AppContext, args: UpdateScheduleArgs) -> anyhow::Result<()> 
                 args.skill.map(|s| Some(s.to_string()))
             };
 
-            println!("Updating agent...");
+            println!("Updating officer...");
             let update_future = manager.update_schedule(
                 schedule_id,
                 UpdateScheduleParams {
@@ -650,7 +650,7 @@ fn delete(ctx: &mut AppContext, args: DeleteScheduleArgs) -> anyhow::Result<()> 
                 return;
             }
 
-            println!("Deleting agent...");
+            println!("Deleting officer...");
             let delete_future = manager.delete_schedule(schedule_id, ctx);
             ctx.spawn(delete_future, |_manager, result, ctx| match result {
                 Ok(()) => {

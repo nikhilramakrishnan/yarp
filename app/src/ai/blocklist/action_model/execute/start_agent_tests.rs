@@ -84,7 +84,7 @@ fn execute_returns_error_when_child_startup_is_blocked_before_initialization() {
                 child_conversation_id,
                 ConversationStatus::Blocked {
                     blocked_action:
-                        "GitHub authentication required before starting the child agent."
+                        "GitHub authentication required before starting the child officer."
                             .to_string(),
                 },
                 ctx,
@@ -97,7 +97,7 @@ fn execute_returns_error_when_child_startup_is_blocked_before_initialization() {
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
                 if error
-                    == "GitHub authentication required before starting the child agent."
+                    == "GitHub authentication required before starting the child officer."
                     && version == StartAgentVersion::V1
         ));
 
@@ -153,7 +153,7 @@ fn execute_returns_detailed_error_when_child_startup_fails_before_initialization
                 terminal_view_id,
                 child_conversation_id,
                 ConversationStatus::Error,
-                Some("Failed to resolve child agent skills: review-comments".to_string()),
+                Some("Failed to resolve child officer skills: review-comments".to_string()),
                 ctx,
             );
         });
@@ -163,7 +163,7 @@ fn execute_returns_detailed_error_when_child_startup_fails_before_initialization
         assert!(matches!(
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
-                if error == "Failed to resolve child agent skills: review-comments"
+                if error == "Failed to resolve child officer skills: review-comments"
                     && version == StartAgentVersion::V1
         ));
     });
@@ -199,7 +199,7 @@ fn execute_returns_error_when_local_harness_child_requires_orchestration_v2() {
         assert!(matches!(
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
-                if error == "Local harness child agents require orchestration v2."
+                if error == "Local harness child officers require orchestration v2."
                     && version == StartAgentVersion::V2
         ));
     });
@@ -236,7 +236,7 @@ fn execute_rejects_invalid_local_harness_names_before_pane_creation() {
         assert!(matches!(
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
-                if error == "Unsupported local child harness 'codex'."
+                if error == "Unsupported local child-officer harness 'codex'."
                     && version == StartAgentVersion::V2
         ));
     });
@@ -274,7 +274,7 @@ fn execute_returns_error_when_local_harness_child_missing_parent_run_id() {
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
                 if error
-                    == "Local harness child agents require the parent run_id to be available."
+                    == "Local harness child officers require the parent run_id to be available."
                     && version == StartAgentVersion::V2
         ));
     });
@@ -319,7 +319,7 @@ fn execute_returns_error_when_remote_opencode_harness_is_requested() {
         assert!(matches!(
             result,
             AIAgentActionResultType::StartAgent(StartAgentResult::Error { error, version })
-                if error == "Remote child agents do not support the opencode harness yet."
+                if error == "Remote child officers do not support the opencode harness yet."
                     && version == StartAgentVersion::V2
         ));
     });

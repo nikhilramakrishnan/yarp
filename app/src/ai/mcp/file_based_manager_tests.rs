@@ -3,8 +3,8 @@ use crate::ai::mcp::FileMCPWatcher;
 use crate::ai::mcp::ParsedTemplatableMCPServerResult;
 use crate::auth::AuthStateProvider;
 use crate::settings::{AISettings, FocusedTerminalInfo};
-use crate::yarp_managed_paths_watcher::{yarp_data_dir, YarpManagedPathsWatcher};
 use crate::workspaces::user_workspaces::UserWorkspaces;
+use crate::yarp_managed_paths_watcher::{yarp_data_dir, YarpManagedPathsWatcher};
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
 };
@@ -12,9 +12,9 @@ use settings::Setting as _;
 use std::collections::HashSet;
 use std::path::PathBuf;
 use uuid::Uuid;
+use watcher::HomeDirectoryWatcher;
 use yarp_core::features::FeatureFlag;
 use yarpui::{App, Entity, ModelHandle, SingletonEntity as _};
-use watcher::HomeDirectoryWatcher;
 
 // Helper to initialize dependencies and return FileBasedMCPManager handle
 fn setup_app(app: &mut App) -> yarpui::ModelHandle<FileBasedMCPManager> {

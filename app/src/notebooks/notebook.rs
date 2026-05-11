@@ -130,7 +130,8 @@ const CONFLICT_RESOLUTION_MESSAGE: &str =
     "Couldn't file the casebook — someone else amended it while you were working. Bag your edits and refresh.";
 const REFRESH_BUTTON_TEXT: &str = "Re-sweep";
 
-const FEATURE_NOT_AVAILABLE_MESSAGE: &str = "Station's down — couldn't sync the casebook. Edits are filed locally. Try again in a bit.";
+const FEATURE_NOT_AVAILABLE_MESSAGE: &str =
+    "Station's down — couldn't sync the casebook. Edits are filed locally. Try again in a bit.";
 
 /// The frequency at which we check for modifications and save the notebook to the server. This
 /// lets us trade off how quickly edits appear on other clients with the load on the server for RTC
@@ -2184,7 +2185,7 @@ impl View for NotebookView {
 
     fn accessibility_contents(&self, ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new_without_help(
-            format!("{} notebook", self.title(ctx)),
+            format!("{} casebook", self.title(ctx)),
             YarpA11yRole::TextRole,
         ))
     }

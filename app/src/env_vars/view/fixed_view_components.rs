@@ -118,9 +118,7 @@ impl EnvVarCollectionView {
                             )
                             .with_tooltip(move || {
                                 ui_builder
-                                    .tool_tip(
-                                        "Pull env vars back out of the bin".to_string(),
-                                    )
+                                    .tool_tip("Pull env vars back out of the bin".to_string())
                                     .build()
                                     .finish()
                             })

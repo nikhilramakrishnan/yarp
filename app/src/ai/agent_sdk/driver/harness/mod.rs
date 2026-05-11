@@ -22,16 +22,17 @@ use crate::terminal::model::block::{BlockId, SerializedBlock};
 use crate::terminal::CLIAgent;
 use crate::util::path::resolve_executable;
 use yarp_cli::{
-    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV, SERVER_ROOT_URL_OVERRIDE_ENV,
-    SESSION_SHARING_SERVER_URL_OVERRIDE_ENV, WS_SERVER_URL_OVERRIDE_ENV,
+    FUZZ_CLI_ENV, FUZZ_HARNESS_ENV, FUZZ_PARENT_RUN_ID_ENV, FUZZ_RUN_ID_ENV,
+    SERVER_ROOT_URL_OVERRIDE_ENV, SESSION_SHARING_SERVER_URL_OVERRIDE_ENV,
+    WS_SERVER_URL_OVERRIDE_ENV,
 };
 use yarp_core::channel::ChannelState;
 
 use super::terminal::{CommandHandle, TerminalDriver};
 use super::{
-    AgentDriver, AgentDriverError, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
-    LEGACY_OZ_PARENT_STATE_ROOT_ENV, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
-    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV,
+    AgentDriver, AgentDriverError, FUZZ_MESSAGE_LISTENER_MANAGED_EXTERNALLY_ENV,
+    FUZZ_MESSAGE_LISTENER_STATE_ROOT_ENV, LEGACY_OZ_PARENT_LISTENER_MANAGED_EXTERNALLY_ENV,
+    LEGACY_OZ_PARENT_STATE_ROOT_ENV,
 };
 
 mod claude_code;
@@ -94,8 +95,8 @@ pub(crate) trait ThirdPartyHarness: Send + Sync {
     /// use the default impl, which returns `Ok(None)` and causes the run to start fresh.
     ///
     /// Implementations download the raw transcript via [`HarnessSupportClient::fetch_transcript`]
-    /// (which derives the conversation from the current task's `agent_conversation_id`) and
-    /// own all harness-specific deserialization and error mapping (e.g. a 404 maps to
+    /// for the requested conversation and own all harness-specific deserialization and
+    /// error mapping (e.g. a 404 maps to
     /// [`AgentDriverError::ConversationResumeStateMissing`] tagged with the harness label).
     async fn fetch_resume_payload(
         &self,

@@ -616,7 +616,7 @@ impl BuyCreditsBanner {
             } else {
                 // Default message when not at limit
                 let banner_description = if has_admin_permissions {
-                    "Top up the rations on the books to keep Fuzz officers on patrol."
+                    "Top up the rations on the books to keep Taskforce officers on patrol."
                 } else {
                     "Flag a station admin to top up the rations."
                 };

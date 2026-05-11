@@ -95,11 +95,11 @@ impl ReviewTerminalUnavailableReason {
     fn label(&self) -> &'static str {
         match self {
             Self::NoSelectedRepo => "no repo is selected for code review",
-            Self::SessionPathUnavailable => "session cwd is unavailable or not local",
-            Self::SessionOutsideSelectedRepo => "session cwd is not inside selected repo",
-            Self::AIDisabled => "AI is disabled for Yarp review destinations",
-            Self::TerminalExecuting => "terminal is currently executing a command",
-            Self::InputBoxNotVisible => "terminal input box is not visible",
+            Self::SessionPathUnavailable => "beat cwd is unavailable or not local",
+            Self::SessionOutsideSelectedRepo => "beat cwd is not inside selected repo",
+            Self::AIDisabled => "Taskforce is disabled for Yarp review destinations",
+            Self::TerminalExecuting => "beat is currently executing a command",
+            Self::InputBoxNotVisible => "beat input box is not visible",
         }
     }
 }
@@ -978,10 +978,14 @@ impl RightPanelView {
 
         let title = Shrinkable::new(
             1.0,
-            Text::new_inline("Casebook review".to_string(), appearance.ui_font_family(), 12.)
-                .with_style(Properties::default().weight(Weight::Bold))
-                .with_color(sub_text_color.into())
-                .finish(),
+            Text::new_inline(
+                "Casebook review".to_string(),
+                appearance.ui_font_family(),
+                12.,
+            )
+            .with_style(Properties::default().weight(Weight::Bold))
+            .with_color(sub_text_color.into())
+            .finish(),
         )
         .finish();
 

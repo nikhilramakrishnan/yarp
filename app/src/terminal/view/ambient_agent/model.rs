@@ -445,7 +445,7 @@ impl AmbientAgentViewModel {
                     me.set_harness(harness, ctx);
                 }
                 Err(err) => {
-                    log::warn!("Failed to fetch ambient agent task for shared session: {err}");
+                    log::warn!("Failed to fetch ambient officer task for shared session: {err}");
                     me.set_environment_id(None, ctx);
                 }
             },
@@ -581,7 +581,7 @@ impl AmbientAgentViewModel {
                             ctx.spawn(
                                 async move {
                                     if let Err(e) = ai_client.cancel_ambient_agent_task(&task_id).await {
-                                        log::error!("Failed to cancel ambient agent task {}: {:?}", task_id, e);
+                                        log::error!("Failed to cancel ambient officer task {}: {:?}", task_id, e);
                                     }
                                 },
                                 |_, _, _| {},
@@ -889,7 +889,9 @@ impl AmbientAgentViewModel {
     /// Sends a cancellation request to the server (if task_id is available) and transitions to the Cancelled state.
     pub fn cancel_task(&mut self, ctx: &mut ModelContext<Self>) {
         if !self.is_waiting_for_session() {
-            log::warn!("Attempted to cancel ambient agent task but not in WaitingForSession state");
+            log::warn!(
+                "Attempted to cancel ambient officer task but not in WaitingForSession state"
+            );
             return;
         }
 
@@ -900,7 +902,7 @@ impl AmbientAgentViewModel {
                 async move { ai_client.cancel_ambient_agent_task(&task_id).await },
                 |_me, result, _ctx| {
                     if let Err(err) = result {
-                        log::error!("Failed to cancel ambient agent task: {err}");
+                        log::error!("Failed to cancel ambient officer task: {err}");
                     }
                 },
             );
@@ -908,7 +910,7 @@ impl AmbientAgentViewModel {
             // No task_id yet, but we can still cancel locally.
             // The spawn stream will handle the cancellation when it receives the TaskSpawned event
             // and sees we're no longer in WaitingForSession state.
-            log::info!("Cancelling ambient agent task before task_id was received");
+            log::info!("Cancelling ambient officer task before task_id was received");
         }
 
         // Always transition to cancelled state immediately, regardless of whether we have a task_id.

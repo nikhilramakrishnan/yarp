@@ -156,8 +156,7 @@ pub(crate) type ResolvedBlocklistImageSources = HashMap<String, Option<AssetSour
 pub const BLOCKED_ACTION_MESSAGE_FOR_WRITE_TO_LONG_RUNNING_SHELL_COMMAND: &str =
     "OK to radio this in to the call-out in progress?";
 pub const BLOCKED_ACTION_MESSAGE_FOR_READING_FILES: &str = "Clearance for these case files?";
-pub const BLOCKED_ACTION_MESSAGE_FOR_SEARCHING_CODEBASE: &str =
-    "Clearance for this casebook?";
+pub const BLOCKED_ACTION_MESSAGE_FOR_SEARCHING_CODEBASE: &str = "Clearance for this casebook?";
 pub const BLOCKED_ACTION_MESSAGE_FOR_GREP_OR_FILE_GLOB: &str =
     "OK to sweep the files on this beat?";
 
@@ -2970,9 +2969,7 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
         } => {
             if *will_attempt_resume {
                 if *waiting_for_network {
-                    format!(
-                        "{error_message}\n\nResuming the call once the radio's back up..."
-                    )
+                    format!("{error_message}\n\nResuming the call once the radio's back up...")
                 } else {
                     format!("{error_message}\n\nResuming the call...")
                 }

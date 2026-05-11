@@ -50,10 +50,7 @@ use crate::{
             OUT_OF_BAND_REQUEST_RETRY_STRATEGY, PERIODIC_POLL, PERIODIC_POLL_RETRY_STRATEGY,
         },
         server_api::object::{GuestIdentifier, ObjectClient},
-        sync_queue::{
-            GenericStringObjectToCreate, QueueItem, SyncQueue,
-            SyncQueueEvent,
-        },
+        sync_queue::{GenericStringObjectToCreate, QueueItem, SyncQueue, SyncQueueEvent},
     },
     settings::cloud_preferences::Preference,
     util::sync::Condition,
@@ -4527,4 +4524,3 @@ impl Entity for UpdateManager {
 }
 
 impl SingletonEntity for UpdateManager {}
-

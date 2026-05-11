@@ -185,7 +185,7 @@ impl SearchItem for WorkflowSearchItem {
     fn accessibility_label(&self) -> String {
         let workflow = &self.cloud_workflow.model().data;
 
-        format!("Workflow: {}", workflow.name())
+        format!("Playbook: {}", workflow.name())
     }
 }
 

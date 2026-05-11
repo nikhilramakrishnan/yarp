@@ -467,7 +467,7 @@ impl LoginSlideView {
 
         let is_terminal = matches!(self.intention, OnboardingIntention::Terminal);
         let title_text = if is_terminal {
-            "Sign on for the Yarp Drive beat"
+            "Sign on for Records Locker duty"
         } else {
             "Sign on for PC duty"
         };
@@ -481,7 +481,7 @@ impl LoginSlideView {
             .finish();
 
         let subtitle_text = if is_terminal {
-            "Sign on to file your casebooks, workflows, and gear across every station you cover."
+            "Sign on to file your casebooks, playbooks, and gear across every station you cover."
         } else {
             "Sign on to call in PCs for planning, coding, and the rest of the legwork."
         };
@@ -591,7 +591,7 @@ impl LoginSlideView {
 
         let cmd_enter = Keystroke::parse("cmdorctrl-enter").unwrap_or_default();
         let skip_label = if matches!(self.intention, OnboardingIntention::Terminal) {
-            "Disable Yarp Drive"
+            "Disable Records Locker"
         } else {
             "Disable PC features"
         };
@@ -888,7 +888,7 @@ impl LoginSlideView {
 
         let is_terminal = matches!(self.intention, OnboardingIntention::Terminal);
         let title_text = if is_terminal {
-            "Sign Yarp Drive off the duty roster?"
+            "Sign the Records Locker off the duty roster?"
         } else {
             "Sign the PC off the duty roster?"
         };
@@ -924,7 +924,7 @@ impl LoginSlideView {
             .finish();
 
         let body_text_str = if is_terminal {
-            "Yarp Drive lets you file playbooks and case notes across every station and share them with your squad. By continuing, you won't have access to the following features:"
+            "Records Locker lets you file playbooks and case notes across every station and share them with your squad. By continuing, you won't have access to the following features:"
         } else {
             "Yarp runs better with the PC desk. By continuing, you won't have access to any of the following features:"
         };
@@ -979,7 +979,7 @@ impl LoginSlideView {
             .finish();
 
         let cancel_label = if is_terminal {
-            "Enable Yarp Drive"
+            "Enable Records Locker"
         } else {
             "Enable PC features"
         };

@@ -229,7 +229,7 @@ impl GetStartedView {
                 .finish(),
                 appearance
                     .ui_builder()
-                    .paragraph("Welcome to Sandford!")
+                    .paragraph("Sandford Taskforce Command")
                     .with_style(UiComponentStyles {
                         font_size: Some(20.),
                         ..Default::default()
@@ -239,7 +239,7 @@ impl GetStartedView {
                 Container::new(
                     appearance
                         .ui_builder()
-                        .paragraph("The Police Constable's Development Environment")
+                        .paragraph("Futuristic casework grid for ambient patrols and desk PCs")
                         .with_style(UiComponentStyles {
                             font_size: Some(14.),
                             font_family_id: Some(appearance.monospace_font_family()),
@@ -252,6 +252,21 @@ impl GetStartedView {
                         .finish(),
                 )
                 .with_margin_top(4.)
+                .with_margin_bottom(10.)
+                .finish(),
+                Container::new(
+                    appearance
+                        .ui_builder()
+                        .paragraph("MULTI-AGENT TASKFORCE  |  EVIDENCE LOCKER  |  RADIO ROOM")
+                        .with_style(UiComponentStyles {
+                            font_size: Some(11.),
+                            font_family_id: Some(appearance.monospace_font_family()),
+                            font_color: Some(theme.accent().into_solid()),
+                            ..Default::default()
+                        })
+                        .build()
+                        .finish(),
+                )
                 .with_margin_bottom(6.)
                 .finish(),
                 Container::new(

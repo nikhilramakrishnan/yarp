@@ -758,9 +758,7 @@ async fn fetch_version(
             // normally unreachable because `AutoupdateState::register` gates
             // the poll loop on the `Autoupdate` feature flag, but if it ever
             // runs we return an error so the poll loop just logs and bails.
-            anyhow::bail!(
-                "integration and open-source channel binaries don't support autoupdate"
-            );
+            anyhow::bail!("integration and open-source channel binaries don't support autoupdate");
         }
     }
 }

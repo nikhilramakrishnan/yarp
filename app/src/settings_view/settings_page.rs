@@ -587,7 +587,9 @@ pub fn render_local_only_icon(
         .ui_builder()
         .local_only_icon_with_tooltip(
             13.,
-            custom_tooltip.unwrap_or("This kit setting stays at the station — not on the cloud ledger".to_owned()),
+            custom_tooltip.unwrap_or(
+                "This kit setting stays at the station — not on the cloud ledger".to_owned(),
+            ),
             mouse_state.clone(),
         )
         .finish();

@@ -86,7 +86,10 @@ impl FileStore {
 
     fn tempfile_for(&self, path: &Path) -> PathBuf {
         let mut tmp = path.to_path_buf();
-        let file_name = path.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+        let file_name = path
+            .file_name()
+            .map(|s| s.to_string_lossy().into_owned())
+            .unwrap_or_default();
         let nonce = uuid::Uuid::new_v4();
         tmp.set_file_name(format!(".{file_name}.{nonce}.tmp"));
         tmp

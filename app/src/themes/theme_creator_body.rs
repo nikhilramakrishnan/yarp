@@ -175,8 +175,7 @@ impl ThemeCreatorBody {
 
             let Some(image_extension) = image_extension else {
                 self.send_error_toast(
-                    "This evidence won't process — try filing a different photo."
-                        .to_string(),
+                    "This evidence won't process — try filing a different photo.".to_string(),
                     ctx,
                 );
                 return;

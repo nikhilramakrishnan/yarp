@@ -54,8 +54,9 @@ use crate::{
     util::time_format::format_approx_duration_from_now_utc,
 };
 
-const CLOUD_AGENT_DOCS_URL: &str = "https://github.com/hotfuzz/yarp/agent-platform/cloud-agents/overview";
-const FUZZ_UPDATES_SECTION_HEADER: &str = "Fresh off the wire from Fuzz";
+const CLOUD_AGENT_DOCS_URL: &str =
+    "https://github.com/hotfuzz/yarp/agent-platform/cloud-agents/overview";
+const FUZZ_UPDATES_SECTION_HEADER: &str = "Fresh off the wire from Taskforce";
 
 // The maximum number of Fuzz updates from the changelog rendered in-line in the 'What's new in Fuzz section'.
 const MAX_OZ_UPDATE_COUNT: usize = 4;
@@ -391,14 +392,14 @@ impl View for AgentViewZeroStateBlock {
 
         let header_props = if self.origin.is_cloud_agent() {
             HeaderProps {
-                title: "Open a new cloud case file".into(),
+                title: "Dispatch an ambient patrol".into(),
                 description: AgentViewDescription::CloudModeWithDocsLink {
                     radio_lines: radio_lines.clone(),
                 },
                 icon: Icon::OzCloud,
             }
         } else {
-            let mut local_description = "Radio in below to brief the PC".to_owned();
+            let mut local_description = "Radio in below to brief the next desk PC".to_owned();
             let active_session = self.active_session(app);
             let location_label = active_session.as_deref().and_then(|session| {
                 format_session_location(session, self.current_working_directory.as_deref())
@@ -411,7 +412,7 @@ impl View for AgentViewZeroStateBlock {
             description_lines.extend(radio_lines);
 
             HeaderProps {
-                title: "Open a new case file".into(),
+                title: "Brief the taskforce".into(),
                 description: AgentViewDescription::PlainText(description_lines),
                 icon: Icon::Fuzz,
             }
@@ -723,7 +724,7 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
             items.push(
                 Container::new(
                     Text::new(
-                        "Send a unit out to patrol an isolated cloud beat.",
+                        "Send an autonomous unit onto a cloud beat.",
                         appearance.ui_font_family(),
                         appearance.monospace_font_size(),
                     )
@@ -737,7 +738,7 @@ fn render_title_and_description(props: HeaderProps, app: &AppContext) -> Vec<Box
             // Second line: text with "Read the briefing" hyperlink.
             let description_with_link = FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::plain_text(
-                    "Run units in parallel, set them on long patrols, and check in from any station. ",
+                    "Run taskforce units in parallel, stage long patrols, and check in from any station. ",
                 ),
                 FormattedTextFragment::hyperlink("Read the briefing", CLOUD_AGENT_DOCS_URL),
             ])]);
@@ -848,7 +849,7 @@ fn render_body(props: ZeroStateBodyProps<'_>, app: &AppContext) -> Vec<Box<dyn E
                 Message::new(vec![MessageItem::clickable(
                     vec![
                         MessageItem::keystroke(ENTER_AGENT_VIEW_NEW_CONVERSATION_KEYSTROKE.clone()),
-                        MessageItem::text("open a new case file"),
+                        MessageItem::text("open a new desk case"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::StartNewAgentConversation);
@@ -863,7 +864,7 @@ fn render_body(props: ZeroStateBodyProps<'_>, app: &AppContext) -> Vec<Box<dyn E
                         MessageItem::keystroke(
                             ENTER_CLOUD_AGENT_VIEW_NEW_CONVERSATION_KEYSTROKE.clone(),
                         ),
-                        MessageItem::text("open a new cloud case file"),
+                        MessageItem::text("dispatch an ambient patrol"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::EnterCloudAgentView);
@@ -879,7 +880,7 @@ fn render_body(props: ZeroStateBodyProps<'_>, app: &AppContext) -> Vec<Box<dyn E
                             key: "/model".to_owned(),
                             ..Default::default()
                         }),
-                        MessageItem::text("reassign officer"),
+                        MessageItem::text("reassign the officer on duty"),
                     ],
                     |ctx| {
                         ctx.dispatch_typed_action(TerminalAction::OpenModelSelector);
@@ -924,9 +925,7 @@ fn render_body(props: ZeroStateBodyProps<'_>, app: &AppContext) -> Vec<Box<dyn E
                 key: "/init".to_owned(),
                 ..Default::default()
             }),
-            MessageItem::text(
-                "to canvass this beat and file an AGENTS.md briefing",
-            ),
+            MessageItem::text("to canvass this beat and file an AGENTS.md briefing"),
         ])
         .with_text_color(main_text_color);
         body_items.push(
@@ -1355,7 +1354,7 @@ fn render_oz_updates(props: OzUpdatesProps<'_>, app: &AppContext) -> Option<Box<
 }
 
 /// Renders the ambient credits banner showing free cloud credits.
-/// If `link_mouse_state` is provided, a "Launch cloud agent" link is shown.
+/// If `link_mouse_state` is provided, a "Launch cloud officer" link is shown.
 pub fn render_ambient_credits_banner(credits: i32, app: &AppContext) -> Box<dyn Element> {
     let appearance = Appearance::as_ref(app);
     let theme = appearance.theme();

@@ -199,7 +199,7 @@ impl IntentionSlide {
         let header_row = {
             let label = appearance
                 .ui_builder()
-                .paragraph("Build faster with AI agents")
+                .paragraph("Work cases with the Taskforce")
                 .with_style(UiComponentStyles {
                     font_size: Some(16.),
                     font_weight: Some(Weight::Semibold),
@@ -237,7 +237,7 @@ impl IntentionSlide {
         };
 
         let description = FormattedTextElement::from_str(
-            "Detective-grade agent assistance for fast investigation. Includes:",
+            "Detective-grade officer assistance for fast investigation. Includes:",
             appearance.ui_font_family(),
             14.,
         )
@@ -331,7 +331,7 @@ impl IntentionSlide {
         let badge = {
             let badge_text = appearance
                 .ui_builder()
-                .paragraph("No AI features")
+                .paragraph("No Taskforce features")
                 .with_style(UiComponentStyles {
                     font_size: Some(12.),
                     font_weight: Some(Weight::Semibold),

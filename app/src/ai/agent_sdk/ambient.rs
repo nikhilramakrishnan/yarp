@@ -1,7 +1,7 @@
 //! Commands to interact with ambient agents on Yarp's platform.
-use std::io::Write as _;
 use std::sync::Arc;
 use std::time::Duration;
+use std::{fmt, io::Write as _};
 
 use crate::ai::ambient_agents::spawn::{
     spawn_task, AmbientAgentEvent, SessionJoinInfo, TASK_STATUS_POLLING_DURATION,
@@ -54,6 +54,15 @@ use super::common::{EnvironmentChoice, ResolveConfigurationError};
 
 const MAX_LINE_WIDTH: usize = 90;
 const STREAM_RETRY_BACKOFF_STEPS: &[u64] = &[1, 2, 5, 10];
+
+fn taskforce_run_url(task_id: &impl fmt::Display) -> Option<String> {
+    let fuzz_root_url = ChannelState::fuzz_root_url();
+    let fuzz_root_url = fuzz_root_url.trim_end_matches('/');
+    if fuzz_root_url.is_empty() || fuzz_root_url.contains("localhost.invalid") {
+        return None;
+    }
+    Some(format!("{fuzz_root_url}/runs/{task_id}"))
+}
 
 /// Singleton model that runs async work for ambient agent CLI commands.
 struct AmbientAgentRunner;
@@ -383,7 +392,7 @@ impl AmbientAgentRunner {
             let environment_id = match EnvironmentChoice::resolve_for_create(environment_args, ctx)
             {
                 Ok(EnvironmentChoice::None) => {
-                    eprintln!("Agent will run without an environment.");
+                    eprintln!("Officer will run without an environment.");
                     None
                 },
                 Ok(EnvironmentChoice::Environment { id, .. }) => Some(id),
@@ -489,7 +498,6 @@ impl AmbientAgentRunner {
             };
 
             let should_open = args.open;
-            let fuzz_root_url = ChannelState::fuzz_root_url();
             let ai_client_clone = ai_client.clone();
             let spawn_future = async move {
                 let mut stream = Box::pin(spawn_task(request, ai_client_clone, Some(TASK_STATUS_POLLING_DURATION)));
@@ -500,14 +508,18 @@ impl AmbientAgentRunner {
                     match event_result {
                         Ok(event) => match event {
                             AmbientAgentEvent::TaskSpawned { task_id, .. } => {
-                                println!("Spawned ambient agent with run ID: {task_id}");
-                                println!("View run: {fuzz_root_url}/runs/{task_id}");
+                                println!("Spawned ambient officer with run ID: {task_id}");
+                                if let Some(url) = taskforce_run_url(&task_id) {
+                                    println!("View run: {url}");
+                                } else {
+                                    println!("Local run saved in ~/.yarp/agent_tasks.json");
+                                }
                                 spawned_task_id = Some(task_id);
                             }
                             AmbientAgentEvent::AtCapacity => {
-                                println!("Concurrent cloud agent limit reached. This agent run will begin when one of your current cloud runs completes.");
+                                println!("Concurrent cloud officer limit reached. This officer run will begin when one of your current cloud runs completes.");
                                 if let Some(url) = &upgrade_link {
-                                    println!("To increase your concurrent agent limit, upgrade your plan: {}", url);
+                                    println!("To increase your concurrent officer limit, upgrade your plan: {}", url);
                                 }
                             }
                             AmbientAgentEvent::StateChanged {
@@ -520,7 +532,7 @@ impl AmbientAgentRunner {
                                         | AmbientAgentTaskState::Succeeded
                                 ) || state.is_failure_like()
                                 {
-                                    println!("Agent state: {:?}", state);
+                                    println!("Officer state: {:?}", state);
                                 }
                                 if state.is_failure_like() {
                                     if let Some(msg) = status_message {
@@ -533,12 +545,12 @@ impl AmbientAgentRunner {
                             AmbientAgentEvent::SessionStarted {
                                 session_join_info: info,
                             } => {
-                                println!("View agent session: {}", info.session_link);
+                                println!("View officer session: {}", info.session_link);
                                 session_join_info = Some(info);
                             }
                             AmbientAgentEvent::TimedOut => {
                                 let task_id_str = spawned_task_id.as_ref().map_or_else(|| "unknown".to_string(), |id| id.to_string());
-                                println!("Agent session with run ID {task_id_str} is not ready after {}s. Check for a sharing link in the ambient agent management panel. See https://github.com/hotfuzz/yarp/agent-platform/cloud-agents/managing-cloud-agents for details.", TASK_STATUS_POLLING_DURATION.as_secs());
+                                println!("Officer session with run ID {task_id_str} is not ready after {}s. Check for a sharing link in the Taskforce management panel. See https://github.com/hotfuzz/yarp/agent-platform/cloud-agents/managing-cloud-agents for details.", TASK_STATUS_POLLING_DURATION.as_secs());
                             }
                         },
                         Err(err) => {
@@ -761,12 +773,11 @@ impl AmbientAgentRunner {
         }
 
         if tasks.len() == 1 {
-            println!("\nAgent Run:");
+            println!("\nOfficer Run:");
         } else {
-            println!("\nAgent Runs ({}):", tasks.len());
+            println!("\nOfficer Runs ({}):", tasks.len());
         }
 
-        let fuzz_root_url = ChannelState::fuzz_root_url();
         for task in tasks {
             let state_emoji = Self::get_state_emoji(&task.state);
 
@@ -777,8 +788,11 @@ impl AmbientAgentRunner {
             let header = format!("{} {} ({:?})", state_emoji, task.task_id, task.state);
             table.add_row(vec![header]);
 
-            // Fuzz webapp link
-            table.add_row(vec![format!("Fuzz: {fuzz_root_url}/runs/{}", task.task_id)]);
+            if let Some(url) = taskforce_run_url(&task.task_id) {
+                table.add_row(vec![format!("Taskforce: {url}")]);
+            } else {
+                table.add_row(vec!["Local: ~/.yarp/agent_tasks.json".to_string()]);
+            }
 
             // Title (wrapped, single cell)
             if !task.title.is_empty() {
@@ -961,7 +975,7 @@ async fn watch_messages_forever(
             }
             Err(err) => {
                 if initial_connect {
-                    return Err(err.context("Failed to open agent event stream"));
+                    return Err(err.context("Failed to open officer event stream"));
                 }
 
                 failures += 1;
@@ -982,7 +996,7 @@ async fn watch_messages_forever(
                     let event = match serde_json::from_str::<AgentRunEvent>(&message.data) {
                         Ok(event) => event,
                         Err(err) => {
-                            eprintln!("Skipping malformed agent event payload: {err}");
+                            eprintln!("Skipping malformed officer event payload: {err}");
                             continue;
                         }
                     };

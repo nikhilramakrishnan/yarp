@@ -1,7 +1,5 @@
 use pathfinder_color::ColorU;
-use yarp_core::ui::theme::{
-    AnsiColor, AnsiColors, Details, Fill, TerminalColors, YarpTheme,
-};
+use yarp_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, TerminalColors, YarpTheme};
 
 const DARK_MODE_NORMAL_COLORS: AnsiColors = AnsiColors::new(
     AnsiColor::from_u32(0x616161FF),

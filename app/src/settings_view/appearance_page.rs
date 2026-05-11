@@ -2581,7 +2581,10 @@ impl SettingsWidget for CreateCustomThemeWidget {
                 .ui_builder()
                 .link(
                     "Stand up your own custom theme".to_string(),
-                    Some("https://github.com/hotfuzz/yarp/terminal/appearance/custom-themes".to_string()),
+                    Some(
+                        "https://github.com/hotfuzz/yarp/terminal/appearance/custom-themes"
+                            .to_string(),
+                    ),
                     None,
                     self.mouse_state.clone(),
                 )
@@ -2763,10 +2766,7 @@ impl SettingsWidget for ThemeSelectWidget {
             .with_child(
                 appearance
                     .ui_builder()
-                    .span(
-                        "Flip between light and dark uniforms when your system does."
-                            .to_string(),
-                    )
+                    .span("Flip between light and dark uniforms when your system does.".to_string())
                     .with_style(
                         UiComponentStyles::default().set_margin(Coords::default().bottom(10.)),
                     )
@@ -3252,7 +3252,7 @@ impl SettingsWidget for ToolsPanelStateScopeWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "left tools panel open closed across tabs file tree project explorer global search yarp drive conversation list"
+        "left tools panel open closed across tabs file tree project explorer global search records locker case list"
     }
 
     fn render(
@@ -3305,7 +3305,7 @@ impl SettingsWidget for InputTypeWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "input type yarp universal classic style prompt terminal ai developer mode interface shell chips ps1"
+        "input type yarp universal classic style prompt beat ai developer mode interface shell chips ps1"
     }
 
     fn render(
@@ -3394,7 +3394,7 @@ impl SettingsWidget for PromptWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "prompt ps1 terminal yarp shell custom"
+        "prompt ps1 beat yarp shell custom"
     }
 
     fn render(
@@ -3710,7 +3710,7 @@ impl SettingsWidget for AIFontWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "text agent ai font family font size monospace"
+        "text officer taskforce pc font family font size monospace"
     }
 
     fn render(
@@ -3759,7 +3759,7 @@ impl SettingsWidget for AIFontWidget {
         ai_font_row.add_child(
             appearance
                 .ui_builder()
-                .span("Match terminal".to_string())
+                .span("Match beat font".to_string())
                 .build()
                 .with_margin_left(2.)
                 .with_margin_right(16.)
@@ -3871,7 +3871,7 @@ impl SettingsWidget for TerminalFontWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "text terminal font family font size line height monospace"
+        "text beat font family font size line height monospace"
     }
 
     fn render(
@@ -3882,10 +3882,10 @@ impl SettingsWidget for TerminalFontWidget {
     ) -> Box<dyn Element> {
         let mut terminal_font_row = Flex::row();
 
-        // Terminal Font
+        // Beat font
         let mut terminal_font = Flex::column();
         terminal_font.add_child(render_body_item_label::<AppearancePageAction>(
-            "Terminal font".to_string(),
+            "Beat font".to_string(),
             None,
             None,
             LocalOnlyIconState::for_setting(
@@ -4056,7 +4056,7 @@ impl SettingsWidget for NotebookFontSizeWidget {
                         Align::new(
                             appearance
                                 .ui_builder()
-                                .span("Notebook font size".to_string())
+                                .span("Casebook font size".to_string())
                                 .build()
                                 .with_margin_right(16.)
                                 .finish(),
@@ -4082,7 +4082,7 @@ impl SettingsWidget for NotebookFontSizeWidget {
                 .with_child(
                     appearance
                         .ui_builder()
-                        .span("Match terminal".to_string())
+                        .span("Match beat font".to_string())
                         .build()
                         .with_margin_left(2.)
                         .with_margin_right(16.)
@@ -4211,7 +4211,7 @@ impl SettingsWidget for LigaturesWidget {
         let ligature_rendering_enabled = ligature_rendering.value();
 
         render_body_item::<AppearancePageAction>(
-            "Show ligatures in terminal".into(),
+            "Show ligatures in beat output".into(),
             Some(AdditionalInfo {
                 mouse_state: self.info_mouse_state.clone(),
                 on_click_action: None,
@@ -4591,7 +4591,7 @@ impl SettingsWidget for UseLatestUserPromptAsConversationTitleInTabNamesWidget {
     type View = AppearanceSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "latest user prompt conversation title tab names vertical tabs fuzz third-party agent"
+        "latest user prompt conversation title tab names vertical tabs taskforce third-party officer"
     }
 
     fn render(
@@ -4628,7 +4628,7 @@ impl SettingsWidget for UseLatestUserPromptAsConversationTitleInTabNamesWidget {
                 })
                 .finish(),
             Some(
-                "Show the latest user prompt instead of the generated conversation title for Fuzz and third-party agent sessions in vertical tabs."
+                "Show the latest user prompt instead of the generated case title for Taskforce and third-party officer sessions in vertical tabs."
                     .to_string(),
             ),
         )

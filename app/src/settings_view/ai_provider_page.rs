@@ -81,7 +81,7 @@ impl SettingsWidget for AIProviderWidget {
     type View = AIProviderPageView;
 
     fn search_terms(&self) -> &str {
-        "ai provider llm anthropic openai ollama api key"
+        "model provider llm anthropic openai ollama api key"
     }
 
     fn render(
@@ -106,7 +106,7 @@ impl SettingsWidget for AIProviderWidget {
             LocalLlmProvider::Disabled => "disabled (no provider configured)".to_string(),
         };
 
-        let title = ui.span("AI Provider".to_string()).build().finish();
+        let title = ui.span("Model Provider".to_string()).build().finish();
 
         let intro = ui
             .span(
@@ -163,7 +163,10 @@ impl SettingsWidget for AIProviderWidget {
         }
 
         let env_header = ui
-            .span("Shell overrides (set these in your shell to override the file on patrol)".to_string())
+            .span(
+                "Shell overrides (set these in your shell to override the file on patrol)"
+                    .to_string(),
+            )
             .build()
             .with_margin_top(20.)
             .finish();

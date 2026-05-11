@@ -490,8 +490,7 @@ where
             if state.is_hovered() {
                 let tooltip = Container::new(
                     Text::new_inline(
-                        "Flip on auto-spin-up of a worktree to clock this on."
-                            .to_string(),
+                        "Flip on auto-spin-up of a worktree to clock this on.".to_string(),
                         font_family,
                         12.,
                     )

@@ -113,11 +113,13 @@ const INVITE_LINK_PREFIX: &str = "/team/";
 const INVALID_DOMAINS_INSTRUCTIONS: &str =
     "Some of the provided domains are invalid, or have already been added.";
 
-const INVITE_LINK_TOGGLE_INSTRUCTIONS: &str = "As station chief, you decide whether the squad can put out the open-call line themselves.";
+const INVITE_LINK_TOGGLE_INSTRUCTIONS: &str =
+    "As station chief, you decide whether the squad can put out the open-call line themselves.";
 const INVITE_LINK_DOMAIN_RESTRICTIONS_INSTRUCTIONS: &str =
     "Only let officers carrying a badge from these domains sign on through the open-call line.";
 
-const INVITE_BY_EMAIL_EXPIRY_INSTRUCTIONS: &str = "Call-ins by name run for 7 days before they go cold.";
+const INVITE_BY_EMAIL_EXPIRY_INSTRUCTIONS: &str =
+    "Call-ins by name run for 7 days before they go cold.";
 const INVALID_EMAILS_INSTRUCTIONS: &str =
     "Some of those badges aren't valid, are already on the line, or are already on the roster.";
 
@@ -125,7 +127,8 @@ const OFFLINE_TEXT: &str = "You're off the air.";
 
 const LIMIT_HIT_ADMIN_TEXT: &str =
     "Roster's full for your plan. Upgrade the station to sign more officers on.";
-const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "Roster's full for your plan. Raise support@yarp.dev to sign more officers on.";
+const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str =
+    "Roster's full for your plan. Raise support@yarp.dev to sign more officers on.";
 const LIMIT_HIT_NON_ADMIN_TEXT: &str =
     "Roster's full for your plan. Raise the station chief to sign more officers on.";
 
@@ -137,7 +140,8 @@ const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_PREFIX_TEXT: &str = "Please ";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_LINK_TEXT: &str = "update your payment information";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_SUFFIX_TEXT: &str = " to restore access.";
 
-const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "Roster's overloaded for your plan. Raise support@yarp.dev to upgrade the station.";
+const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str =
+    "Roster's overloaded for your plan. Raise support@yarp.dev to upgrade the station.";
 const TEAM_LIMIT_EXCEEDED_NON_ADMIN_TEXT: &str =
     "Roster's overloaded for your plan. Raise the station chief to upgrade the station.";
 const TEAM_LIMIT_EXCEEDED_ADMIN_UPGRADEABLE: &str =
@@ -1049,9 +1053,7 @@ impl TeamsPageView {
                 self.show_success("Signed off the squad", ctx);
                 ctx.notify();
             }
-            TeamUpdateManagerEvent::RenameTeamSuccess => {
-                self.show_success("Station renamed", ctx)
-            }
+            TeamUpdateManagerEvent::RenameTeamSuccess => self.show_success("Station renamed", ctx),
             TeamUpdateManagerEvent::RenameTeamError => {
                 self.show_error("Couldn't rename the station", None, ctx)
             }
@@ -1788,9 +1790,7 @@ impl TeamsWidget {
         {
             format!("Extra officers are billed at your plan's per-badge rate: ${monthly_cost:.0}/month or ${yearly_cost:.0}/year, depending on your billing interval. {prorated_message}")
         } else {
-            format!(
-                "Extra officers are billed at your plan's per-badge rate. {prorated_message}"
-            )
+            format!("Extra officers are billed at your plan's per-badge rate. {prorated_message}")
         };
 
         let horizontal_padding = 16.;
@@ -2214,7 +2214,7 @@ impl TeamsWidget {
             if !policy.is_unlimited {
                 let mut shared_notebooks_column = Flex::column();
                 shared_notebooks_column.add_child(
-                    self.render_plan_usage_header("Shared Notebooks".into(), appearance),
+                    self.render_plan_usage_header("Shared Casebooks".into(), appearance),
                 );
                 let num_shared_notebooks = cloud_model
                     .active_notebooks_in_space(Space::Team { team_uid: team.uid }, app)
@@ -2239,7 +2239,7 @@ impl TeamsWidget {
             if !policy.is_unlimited {
                 let mut shared_workflows_column = Flex::column();
                 shared_workflows_column.add_child(
-                    self.render_plan_usage_header("Shared Workflows".into(), appearance),
+                    self.render_plan_usage_header("Shared Playbooks".into(), appearance),
                 );
                 let num_shared_workflows = cloud_model
                     .active_workflows_in_space(Space::Team { team_uid: team.uid }, app)
@@ -2943,9 +2943,11 @@ impl TeamsWidget {
             .with_main_axis_size(MainAxisSize::Max)
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween);
         discoverable_header_row.add_child(
-            Container::new(self.render_sub_header("Open-roster the station".to_owned(), appearance))
-                .with_padding_top(CONTENT_SEPARATION_PADDING)
-                .finish(),
+            Container::new(
+                self.render_sub_header("Open-roster the station".to_owned(), appearance),
+            )
+            .with_padding_top(CONTENT_SEPARATION_PADDING)
+            .finish(),
         );
 
         // Toggle to the right of header
@@ -3684,8 +3686,7 @@ impl TeamsWidget {
             let checkbox_row_text = if let Some(domain) = view.auth_state.user_email_domain() {
                 format!("Let officers with an @{domain} badge find the station and sign on.")
             } else {
-                "Let officers carrying your badge domain find the station and sign on."
-                    .to_string()
+                "Let officers carrying your badge domain find the station and sign on.".to_string()
             };
             let checkbox_row = Container::new(
                 Flex::row()

@@ -1518,13 +1518,9 @@ impl EditorElement {
                 )
                 .with_margin_right(self.view_snapshot.em_width)
                 .finish(),
-                Text::new(
-                    "Cycle tip-offs",
-                    self.view_snapshot.font_family,
-                    font_size,
-                )
-                .with_color(self.text_colors.hint_color.into())
-                .finish(),
+                Text::new("Cycle tip-offs", self.view_snapshot.font_family, font_size)
+                    .with_color(self.text_colors.hint_color.into())
+                    .finish(),
             ])
             .finish()
     }

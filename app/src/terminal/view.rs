@@ -2830,7 +2830,6 @@ pub struct TerminalView {
     /// State handle for the shimmering text animation in the remote server loading footer.
     /// Persisted across renders so the animation doesn't restart.
     remote_server_shimmer_handle: ShimmeringTextStateHandle,
-
 }
 
 /// Parameters stashed when a code review pane open is requested with
@@ -3706,9 +3705,7 @@ impl TerminalView {
         let slow_bootstrap_banner = ctx.add_typed_action_view(|_| {
             Banner::<TerminalAction>::new_with_buttons(
                 BannerTextContent::formatted_text(vec![
-                    FormattedTextFragment::plain_text(
-                        "Shell's slow signing on...  ",
-                    ),
+                    FormattedTextFragment::plain_text("Shell's slow signing on...  "),
                     FormattedTextFragment::hyperlink("Read the file", KNOWN_ISSUES_URL),
                 ]),
                 vec![BannerTextButton::new(
@@ -4521,9 +4518,9 @@ impl TerminalView {
         // the dispatch lands — the renderer suppresses dogfood debug chrome
         // (NLD-override indicator, memory-stats footer) for council blocks.
         let council_block_idx = self.model.lock().block_list().active_block_index();
-        let dispatched = self.input.update(ctx, |input, ctx| {
-            input.try_execute_command(&cmd, ctx)
-        });
+        let dispatched = self
+            .input
+            .update(ctx, |input, ctx| input.try_execute_command(&cmd, ctx));
         if !dispatched {
             log::warn!("council: try_execute_command returned false; aborting chain");
             self.input.update(ctx, |input, ctx| {
@@ -12843,7 +12840,10 @@ impl TerminalView {
                     true,
                 )
             } else {
-                ("Stand up a beat with no case files attached".to_string(), false)
+                (
+                    "Stand up a beat with no case files attached".to_string(),
+                    false,
+                )
             }
         };
 
@@ -12895,7 +12895,7 @@ impl TerminalView {
                         self.open_environment_management_pane(ctx);
                     }
                     EnvironmentSetupMode::LocalRepositories => {
-                        // Use the agent-based flow, directly starting without confirmation
+                        // Use the officer-based flow, directly starting without confirmation
                         // When the mode selector is shown, no args were provided
                         self.setup_cloud_environment_and_start(Vec::new(), ctx);
                     }
@@ -13073,7 +13073,7 @@ impl TerminalView {
                 .agent_mode_setup_banner_shown_for_repo_paths
                 .set_value(shown_repo_paths, ctx)
             {
-                log::error!("Failed to persist 'Agent Mode setup banner shown' setting: {e}");
+                log::error!("Failed to persist 'Taskforce setup banner shown' setting: {e}");
             }
         });
     }
@@ -15951,7 +15951,7 @@ impl TerminalView {
             items.extend(self.session_sharing_context_menu_items(&model, false));
         }
 
-        // Section 2: AI Command Search, Ask Yarp AI
+        // Section 2: command sweep and Taskforce briefing
         items.extend([
             MenuItem::Separator,
             MenuItemFields::new("Command sweep")
@@ -15968,7 +15968,7 @@ impl TerminalView {
 
         if AISettings::as_ref(ctx).is_any_ai_enabled(ctx) {
             items.push(
-                MenuItemFields::new("A.I. command sweep")
+                MenuItemFields::new("Taskforce command sweep")
                     .with_on_select_action(TerminalAction::InputContextMenuItem(
                         InputContextMenuAction::ShowAICommandSearch,
                     ))
@@ -19962,9 +19962,7 @@ impl TerminalView {
             },
             InputEvent::EnterAgentCouncil { prompt } => {
                 if self.council_chain_in_flight {
-                    log::warn!(
-                        "EnterAgentCouncil ignored: a council chain is already in flight"
-                    );
+                    log::warn!("EnterAgentCouncil ignored: a council chain is already in flight");
                     self.input.update(ctx, |input, ctx| {
                         input.try_execute_command(
                             "printf '\\033[3;38;5;244m(council in session — wait for verdict)\\033[0m\\n'",
@@ -20014,14 +20012,11 @@ impl TerminalView {
                 // `/tmp/yarp-council-{id}-{persona}.sh`.
                 let work_dir = format!("/tmp/yarp/{work_id}");
                 if std::fs::create_dir_all(&work_dir).is_err() {
-                    log::warn!(
-                        "EnterAgentCouncil could not create work dir {work_dir}; aborting"
-                    );
+                    log::warn!("EnterAgentCouncil could not create work dir {work_dir}; aborting");
                     return;
                 }
                 if let Ok(entries) = std::fs::read_dir("/tmp/yarp") {
-                    let stale_after =
-                        std::time::Duration::from_secs(60 * 60);
+                    let stale_after = std::time::Duration::from_secs(60 * 60);
                     let now = std::time::SystemTime::now();
                     for entry in entries.flatten() {
                         let path = entry.path();
@@ -20144,8 +20139,7 @@ impl TerminalView {
                     .collect::<Vec<_>>()
                     .join("; ");
                 for (idx, inv) in invocations.iter().enumerate() {
-                    let display_script_path =
-                        format!("{work_dir}/{}", inv.binary_basename);
+                    let display_script_path = format!("{work_dir}/{}", inv.binary_basename);
                     let take_file = &take_files[idx];
                     let done_marker = &done_markers[idx];
                     let timeout_marker = &timeout_markers[idx];
@@ -20295,8 +20289,7 @@ impl TerminalView {
                         // verbatim from the roster — keeps the verdict in
                         // character. Falls back to synth's own identity if
                         // no member is flagged `lead: true`.
-                        let lead_persona =
-                            team.members.iter().find(|p| p.lead).unwrap_or(synth);
+                        let lead_persona = team.members.iter().find(|p| p.lead).unwrap_or(synth);
                         let mut assembly = String::new();
                         let opener = format!(
                             "You are {} {}, lead of the Sandford NWA. {} {} \
@@ -20576,9 +20569,7 @@ impl TerminalView {
                                     std::fs::Permissions::from_mode(0o755),
                                 );
                             }
-                            chain.push_back(crate::personas::shell_quote_smart(
-                                &synth_script_path,
-                            ));
+                            chain.push_back(crate::personas::shell_quote_smart(&synth_script_path));
                             synth_attached = true;
                         }
                     }
@@ -24118,7 +24109,9 @@ impl TerminalView {
 
         match action {
             LearnMore => {
-                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation");
+                ctx.open_url(
+                    "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation",
+                );
             }
             Settings => {
                 if FeatureFlag::SSHTmuxWrapper.is_enabled() {
@@ -24350,8 +24343,7 @@ impl TerminalView {
         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
             toast_stack.add_ephemeral_toast(
                 DismissibleToast::error(
-                    "Can't run an env-var subshell off the local beat."
-                        .to_owned(),
+                    "Can't run an env-var subshell off the local beat.".to_owned(),
                 ),
                 window_id,
                 ctx,
@@ -24487,8 +24479,9 @@ impl TerminalView {
         let (shell_path_string, shell_type) = shell_session_info;
         if shell_type == ShellType::PowerShell {
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                let toast =
-                    DismissibleToast::error("Can't dispatch a PowerShell unit from this beat.".to_owned());
+                let toast = DismissibleToast::error(
+                    "Can't dispatch a PowerShell unit from this beat.".to_owned(),
+                );
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
             return;
@@ -24498,7 +24491,9 @@ impl TerminalView {
         // subshell start
         self.env_vars = env_var_collection.vars;
         self.model.lock().set_env_var_collection_name(Some(
-            env_var_collection.title.unwrap_or("Unfiled env vars".to_owned()),
+            env_var_collection
+                .title
+                .unwrap_or("Unfiled env vars".to_owned()),
         ));
         self.set_and_execute_subshell_command(&shell_path_string, shell_type, ctx);
 
@@ -25173,8 +25168,7 @@ impl TypedActionView for TerminalView {
                 YarpA11yRole::PopoverRole,
             )),
             RewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(
-                "Show confirmation dialog to rewind the case file to before this point."
-                    .to_owned(),
+                "Show confirmation dialog to rewind the case file to before this point.".to_owned(),
                 YarpA11yRole::ButtonRole,
             )),
             ExecuteRewindAIConversation { .. } => Custom(AccessibilityContent::new_without_help(

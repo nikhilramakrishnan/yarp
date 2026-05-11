@@ -151,8 +151,8 @@ fn new_command_executor_for_local_tty_session(
     use remote_server_executor::RemoteServerCommandExecutor;
     use settings::Setting as _;
     use tmux_executor::TmuxCommandExecutor;
-    use yarpui::SingletonEntity as _;
     use wsl_command_executor::WslCommandExecutor;
+    use yarpui::SingletonEntity as _;
 
     use crate::{
         features::FeatureFlag,

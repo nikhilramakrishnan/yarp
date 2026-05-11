@@ -42,8 +42,7 @@ const COMPARE_PLANS_TEXT: &str = "Compare duty rosters";
 const CONTACT_SUPPORT_TEXT: &str = "Radio support";
 const NON_ADMIN_CONTACT_ADMIN_TEXT: &str = ", radio a squad admin";
 const NON_ADMIN_ASK_ADMIN_TO_ENABLE_OVERAGES_TEXT: &str = ", ask a squad admin to open up rations";
-const NON_ADMIN_ASK_ADMIN_TO_INCREASE_OVERAGES_TEXT: &str =
-    ", ask a squad admin to raise rations";
+const NON_ADMIN_ASK_ADMIN_TO_INCREASE_OVERAGES_TEXT: &str = ", ask a squad admin to raise rations";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PromptAlertAction {

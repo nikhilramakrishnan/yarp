@@ -32,11 +32,11 @@ use session_sharing_protocol::{
 };
 
 use std::time::Duration;
+use websocket::{Message, Sink, Stream, WebsocketMessage as _};
 use yarp_core::features::FeatureFlag;
 use yarpui::{
     Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity, WeakViewHandle,
 };
-use websocket::{Message, Sink, Stream, WebsocketMessage as _};
 
 use crate::{
     auth::{auth_state::AuthState, AuthStateProvider, UserUid},
@@ -314,7 +314,7 @@ impl Network {
         auth_state: Arc<AuthState>,
     ) -> anyhow::Result<((impl Sink, impl Stream), UserID)> {
         let Some(join_endpoint) = connect_endpoint(format!("/sessions/join/{session_id}")) else {
-            bail!("This channel doesn't carry shared sessions.");
+            bail!("This channel doesn't carry broadcast beats.");
         };
         let user_id = Self::get_user_id(auth_client, &auth_state).await?;
         let socket = websocket::WebSocket::connect(join_endpoint, None /* protocols */).await?;
@@ -1013,9 +1013,7 @@ impl FailedToJoinReason {
             }
             FailedToJoinReason::SessionNotFound => "Channel's not on the air.",
             FailedToJoinReason::WrongPassword => "Frequency's no good.",
-            FailedToJoinReason::MaxNumberOfParticipantsReached => {
-                "Channel's at capacity."
-            }
+            FailedToJoinReason::MaxNumberOfParticipantsReached => "Channel's at capacity.",
             FailedToJoinReason::SessionNotAccessible => "You're not on this channel.",
         }
     }
@@ -1050,8 +1048,7 @@ pub fn session_ended_reason_string(reason: &SessionEndedReason) -> String {
 pub fn viewer_removed_reason_string(reason: &ViewerRemovedReason) -> String {
     match reason {
         ViewerRemovedReason::LostAccess => {
-            "You're off the channel — ask the sharer to wave you back on."
-                .to_owned()
+            "You're off the channel — ask the sharer to wave you back on.".to_owned()
         }
     }
 }

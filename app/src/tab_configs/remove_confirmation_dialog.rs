@@ -113,9 +113,7 @@ impl View for RemoveTabConfigConfirmationDialog {
 
         let dialog = Dialog::new(
             title,
-            Some(
-                "Tab config gets struck for good — no way back from this one.".into(),
-            ),
+            Some("Tab config gets struck for good — no way back from this one.".into()),
             UiComponentStyles {
                 width: Some(DIALOG_WIDTH),
                 ..dialog_styles(appearance)

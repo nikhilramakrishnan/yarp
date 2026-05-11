@@ -408,7 +408,7 @@ impl ProjectSlide {
             self.initialize_projects_automatically_mouse_state.clone(),
             initialize_projects_automatically,
             "Initialize project automatically",
-            "Prepares the project environment, builds an index of your code, and generates project rules—giving the agent deeper understanding and better performance.",
+            "Prepares the project environment, builds an index of your code, and generates project rules - giving the officer deeper understanding and better performance.",
             ProjectSlideAction::ToggleInitializeProjectsAutomatically,
         );
 

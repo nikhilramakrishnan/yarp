@@ -10,11 +10,11 @@ pub enum DefaultSlashCommandBinding {
 
 pub fn default_binding_for_command(name: &'static str) -> DefaultSlashCommandBinding {
     match name {
-        "/agent" => DefaultSlashCommandBinding::PerPlatform(PerPlatformKeystroke {
+        "/detective" => DefaultSlashCommandBinding::PerPlatform(PerPlatformKeystroke {
             mac: "cmd-enter",
             linux_and_windows: "ctrl-shift-enter",
         }),
-        "/cloud-agent" => DefaultSlashCommandBinding::PerPlatform(PerPlatformKeystroke {
+        "/cloud-detective" => DefaultSlashCommandBinding::PerPlatform(PerPlatformKeystroke {
             mac: "cmd-alt-enter",
             linux_and_windows: "ctrl-alt-enter",
         }),
@@ -32,4 +32,40 @@ pub fn default_binding_for_command(name: &'static str) -> DefaultSlashCommandBin
 
 pub fn binding_description(command: &StaticCommand) -> BindingDescription {
     BindingDescription::new_preserve_case(format!("Slash command: {}", command.name))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn detective_commands_own_primary_shortcuts() {
+        match default_binding_for_command("/detective") {
+            DefaultSlashCommandBinding::PerPlatform(binding) => {
+                assert_eq!(binding.mac, "cmd-enter");
+                assert_eq!(binding.linux_and_windows, "ctrl-shift-enter");
+            }
+            _ => panic!("expected /detective to own the primary Taskforce shortcut"),
+        }
+
+        match default_binding_for_command("/cloud-detective") {
+            DefaultSlashCommandBinding::PerPlatform(binding) => {
+                assert_eq!(binding.mac, "cmd-alt-enter");
+                assert_eq!(binding.linux_and_windows, "ctrl-alt-enter");
+            }
+            _ => panic!("expected /cloud-detective to own the cloud Taskforce shortcut"),
+        }
+    }
+
+    #[test]
+    fn legacy_agent_aliases_do_not_claim_primary_shortcuts() {
+        assert!(matches!(
+            default_binding_for_command("/agent"),
+            DefaultSlashCommandBinding::None
+        ));
+        assert!(matches!(
+            default_binding_for_command("/cloud-agent"),
+            DefaultSlashCommandBinding::None
+        ));
+    }
 }

@@ -574,7 +574,7 @@ impl AIAgentOutput {
                     last_was_action = false;
                 }
                 AIAgentOutputMessageType::EventsFromAgents { event_ids } => {
-                    result.push(format!("Received {} agent events", event_ids.len()));
+                    result.push(format!("Received {} officer events", event_ids.len()));
                     last_was_action = false;
                 }
             }
@@ -1525,7 +1525,7 @@ pub struct SubagentCall {
 
 impl Display for SubagentCall {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Subagent: {}", self.task_id)
+        write!(f, "Sub-officer: {}", self.task_id)
     }
 }
 
@@ -1740,7 +1740,7 @@ impl Display for AIAgentOutputMessage {
             }
             AIAgentOutputMessageType::Action(action) => write!(f, "Action: {action}")?,
             AIAgentOutputMessageType::TodoOperation(todo) => write!(f, "Todo: {todo}")?,
-            AIAgentOutputMessageType::Subagent(subagent) => write!(f, "Subagent: {subagent}")?,
+            AIAgentOutputMessageType::Subagent(subagent) => write!(f, "{subagent}")?,
             AIAgentOutputMessageType::WebSearch(status) => match status {
                 WebSearchStatus::Searching { query } => match query {
                     Some(q) => write!(f, "Searching web for: {q}")?,
@@ -1787,7 +1787,7 @@ impl Display for AIAgentOutputMessage {
                 write!(f, "Received {} messages", messages.len())?
             }
             AIAgentOutputMessageType::EventsFromAgents { event_ids } => {
-                write!(f, "Received {} agent events", event_ids.len())?
+                write!(f, "Received {} officer events", event_ids.len())?
             }
         }
 

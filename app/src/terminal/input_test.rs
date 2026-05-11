@@ -89,8 +89,8 @@ use yarpui::{App, ReadModel, UpdateView};
 
 use crate::terminal::universal_developer_input::UniversalDeveloperInputButtonBarEvent;
 
-use yarp_util::user_input::UserInput;
 use workflows::workflow::{Argument, ArgumentType, Workflow};
+use yarp_util::user_input::UserInput;
 
 use crate::context_chips::prompt::Prompt;
 use crate::terminal::general_settings::UserDefaultShellUnsupportedBannerState;

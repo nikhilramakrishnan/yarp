@@ -1160,7 +1160,9 @@ impl CodeDiffView {
                     .unwrap_or_else(|| "file".to_string());
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::error(format!("Couldn't roll back the case file: {file_name}")),
+                        DismissibleToast::error(format!(
+                            "Couldn't roll back the case file: {file_name}"
+                        )),
                         window_id,
                         ctx,
                     );
@@ -2555,7 +2557,7 @@ impl CodeDiffView {
             FormattedText::new([FormattedTextLine::Line(vec![
                 FormattedTextFragment::hyperlink(
                     "Amend noticeboard Standing Orders",
-                    "Settings > AI",
+                    "Settings > Taskforce",
                 ),
             ])]),
             font_size,

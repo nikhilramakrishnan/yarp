@@ -148,7 +148,9 @@ pub fn maybe_log_out(app: &mut AppContext) {
             } else {
                 "channel open"
             };
-            info_text_vec.push(format!("You've got {num_shared_sessions} {plural} on the air."));
+            info_text_vec.push(format!(
+                "You've got {num_shared_sessions} {plural} on the air."
+            ));
         }
 
         if num_unsaved_objects > 0 {
@@ -158,7 +160,7 @@ pub fn maybe_log_out(app: &mut AppContext) {
                 "object"
             };
             info_text_vec.push(format!(
-                "You've got {num_unsaved_objects} unfiled Yarp Drive {plural}. \
+                "You've got {num_unsaved_objects} unfiled Records Locker {plural}. \
             Sign off and the {plural} go with the wind."
             ));
         }

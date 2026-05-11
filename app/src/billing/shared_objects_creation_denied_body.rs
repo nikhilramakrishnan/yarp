@@ -18,13 +18,13 @@ const BUTTON_PADDING: f32 = 12.;
 const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_BORDER_RADIUS: f32 = 4.;
 
-const DEFAULT_DELINQUENT_ADMIN_MODAL_SUBHEADER: &str = "Filed drive case files are locked down — subscription payment's gone south.\n\nUpdate payment to get back on the air.";
-const DEFAULT_DELINQUENT_ADMIN_ENTERPRISE_MODAL_SUBHEADER: &str = "Filed drive case files are locked down — subscription payment's gone south.\n\nRing support@yarp.dev to get back on the air.";
-const DEFAULT_DELINQUENT_MODAL_SUBHEADER: &str = "Filed drive case files are locked down — subscription payment's gone south.\n\nFlag a station admin to get back on the air.";
-const DEFAULT_ADMIN_PROSUMER_MODAL_SUBHEADER: &str = "Yarp's Pro plan caps how many drive case files you can file.\n\nUpgrade to Turbo for unlimited filings.";
-const DEFAULT_PROSUMER_MODAL_SUBHEADER: &str = "Yarp's Pro plan caps how many drive case files you can file.\n\nFlag a station admin to upgrade to Turbo for unlimited filings.";
-const DEFAULT_ADMIN_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many drive case files you can file.\n\nUpgrade to a paid plan for unlimited filings.";
-const DEFAULT_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many drive case files you can file.\n\nFlag a station admin to upgrade to a paid plan for unlimited filings.";
+const DEFAULT_DELINQUENT_ADMIN_MODAL_SUBHEADER: &str = "Filed Records Locker case files are locked down — subscription payment's gone south.\n\nUpdate payment to get back on the air.";
+const DEFAULT_DELINQUENT_ADMIN_ENTERPRISE_MODAL_SUBHEADER: &str = "Filed Records Locker case files are locked down — subscription payment's gone south.\n\nRing support@yarp.dev to get back on the air.";
+const DEFAULT_DELINQUENT_MODAL_SUBHEADER: &str = "Filed Records Locker case files are locked down — subscription payment's gone south.\n\nFlag a station admin to get back on the air.";
+const DEFAULT_ADMIN_PROSUMER_MODAL_SUBHEADER: &str = "Yarp's Pro plan caps how many Records Locker case files you can file.\n\nUpgrade to Turbo for unlimited filings.";
+const DEFAULT_PROSUMER_MODAL_SUBHEADER: &str = "Yarp's Pro plan caps how many Records Locker case files you can file.\n\nFlag a station admin to upgrade to Turbo for unlimited filings.";
+const DEFAULT_ADMIN_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many Records Locker case files you can file.\n\nUpgrade to a paid plan for unlimited filings.";
+const DEFAULT_MODAL_SUBHEADER: &str = "Yarp's free plan caps how many Records Locker case files you can file.\n\nFlag a station admin to upgrade to a paid plan for unlimited filings.";
 const VIEW_PLANS_TEXT: &str = "Compare plans";
 const MANAGE_BILLING_BUTTON_TEXT: &str = "Mind the rations";
 

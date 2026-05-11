@@ -10,6 +10,15 @@ use super::Availability;
 
 pub static AGENT: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
     name: "/agent",
+    description: "Brief a detective (legacy alias)",
+    icon_path: "bundled/svg/fuzz.svg",
+    availability: Availability::AI_ENABLED,
+    auto_enter_ai_mode: false,
+    argument: Some(Argument::optional().with_execute_on_selection()),
+});
+
+pub static DETECTIVE: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
+    name: "/detective",
     description: "Brief a detective",
     icon_path: "bundled/svg/fuzz.svg",
     availability: Availability::AI_ENABLED,
@@ -19,6 +28,15 @@ pub static AGENT: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
 
 pub static CLOUD_AGENT: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
     name: "/cloud-agent",
+    description: "Brief a cloud detective (legacy alias)",
+    icon_path: "bundled/svg/fuzz-cloud.svg",
+    availability: Availability::AI_ENABLED,
+    auto_enter_ai_mode: false,
+    argument: Some(Argument::optional().with_execute_on_selection()),
+});
+
+pub static CLOUD_DETECTIVE: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
+    name: "/cloud-detective",
     description: "Brief a detective in the cloud",
     icon_path: "bundled/svg/fuzz-cloud.svg",
     availability: Availability::AI_ENABLED,
@@ -249,7 +267,7 @@ pub const OPEN_RULES: StaticCommand = StaticCommand {
 
 pub static NEW: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
     name: "/new",
-    description: "Brief a detective (alias for /agent)",
+    description: "Brief a detective (alias for /detective)",
     icon_path: "bundled/svg/new-conversation.svg",
     availability: Availability::NO_LRC_CONTROL | Availability::AI_ENABLED,
     auto_enter_ai_mode: false,
@@ -340,7 +358,9 @@ pub static QUEUE: LazyLock<StaticCommand> = LazyLock::new(|| StaticCommand {
         | Availability::NO_LRC_CONTROL
         | Availability::AI_ENABLED,
     auto_enter_ai_mode: true,
-    argument: Some(Argument::required().with_hint_text("<prompt to send when agent is done>")),
+    argument: Some(
+        Argument::required().with_hint_text("<prompt to send when the officer is done>"),
+    ),
 });
 
 pub static FORK_AND_COMPACT: LazyLock<StaticCommand> = LazyLock::new(|| {
@@ -610,6 +630,7 @@ fn all_commands() -> Vec<StaticCommand> {
         OPEN_PROJECT_RULES,
         OPEN_MCP_SERVERS,
         OPEN_RULES,
+        DETECTIVE.clone(),
         AGENT.clone(),
         NEW.clone(),
         PLAN.clone(),
@@ -689,6 +710,7 @@ fn all_commands() -> Vec<StaticCommand> {
     }
 
     if FeatureFlag::CloudMode.is_enabled() && FeatureFlag::CloudModeFromLocalSession.is_enabled() {
+        commands.push(CLOUD_DETECTIVE.clone());
         commands.push(CLOUD_AGENT.clone());
     }
 
@@ -728,6 +750,27 @@ mod tests {
         let mut seen = HashSet::new();
         for name in names {
             assert!(seen.insert(name), "duplicate slash command name: {name}");
+        }
+    }
+
+    #[test]
+    fn detective_aliases_are_registered() {
+        assert!(
+            COMMAND_REGISTRY
+                .get_command_with_name(DETECTIVE.name)
+                .is_some(),
+            "expected /detective to be registered"
+        );
+
+        if FeatureFlag::CloudMode.is_enabled()
+            && FeatureFlag::CloudModeFromLocalSession.is_enabled()
+        {
+            assert!(
+                COMMAND_REGISTRY
+                    .get_command_with_name(CLOUD_DETECTIVE.name)
+                    .is_some(),
+                "expected /cloud-detective to be registered"
+            );
         }
     }
 

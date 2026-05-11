@@ -22,7 +22,7 @@ fn test_parse_repo_qualified() {
 fn test_parse_org_repo_qualified() {
     let spec: SkillSpec = "hotfuzz/yarp:code-review".parse().unwrap();
     assert_eq!(spec.org, Some("hotfuzz".to_string()));
-    assert_eq!(spec.repo, Some("yarp-internal".to_string()));
+    assert_eq!(spec.repo, Some("yarp".to_string()));
     assert_eq!(spec.skill_identifier, "code-review");
     assert!(!spec.is_full_path());
 }
@@ -33,7 +33,7 @@ fn test_parse_full_path_with_org_repo() {
         .parse()
         .unwrap();
     assert_eq!(spec.org, Some("hotfuzz".to_string()));
-    assert_eq!(spec.repo, Some("yarp-internal".to_string()));
+    assert_eq!(spec.repo, Some("yarp".to_string()));
     assert_eq!(spec.skill_identifier, ".claude/skills/deploy/SKILL.md");
     assert!(spec.is_full_path());
 }
@@ -63,7 +63,7 @@ fn test_display_repo_qualified() {
 fn test_display_org_repo_qualified() {
     let spec = SkillSpec::with_org_and_repo(
         "hotfuzz".to_string(),
-        "yarp-internal".to_string(),
+        "yarp".to_string(),
         "code-review".to_string(),
     );
     assert_eq!(spec.to_string(), "hotfuzz/yarp:code-review");
@@ -73,7 +73,7 @@ fn test_display_org_repo_qualified() {
 fn test_display_full_path() {
     let spec = SkillSpec::with_org_and_repo(
         "hotfuzz".to_string(),
-        "yarp-internal".to_string(),
+        "yarp".to_string(),
         ".claude/skills/deploy/SKILL.md".to_string(),
     );
     assert_eq!(

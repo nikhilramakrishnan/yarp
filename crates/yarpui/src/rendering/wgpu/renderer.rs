@@ -7,8 +7,8 @@ mod util;
 use frame::Frame;
 use pathfinder_geometry::vector::Vector2F;
 use util::with_error_scope;
-use yarpui_core::platform::CapturedFrame;
 use wgpu::wgc::{device::DeviceError, present::SurfaceError};
+use yarpui_core::platform::CapturedFrame;
 
 use crate::r#async::block_on;
 use crate::rendering::wgpu::Resources;

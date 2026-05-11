@@ -24,24 +24,24 @@ impl std::fmt::Display for OnboardingIntention {
 
 pub use callout::{OnboardingCalloutView, OnboardingKeybindings};
 
-/// User-facing names of the AI features enabled when the agent intention is selected.
-/// Shared by the intention slide's agent card checklist and the login slide's
+/// User-facing names of the Taskforce features enabled when the officer intention is selected.
+/// Shared by the intention slide's officer card checklist and the login slide's
 /// skip-login confirmation dialog so the two always stay in sync.
 pub const AI_FEATURES: &[&str] = &[
-    "Yarp agents",
-    "Fuzz cloud agents platform",
+    "Yarp officers",
+    "Taskforce cloud officer platform",
     "Next command predictions",
     "Prompt suggestions",
     "Codebase context",
-    "Remote control with Claude Code, Codex, and other agents",
-    "Agents over SSH",
+    "Remote control with Claude Code, Codex, and other officers",
+    "Officers over SSH",
 ];
 
-/// User-facing names of the Yarp Drive features enabled when the terminal
-/// intention is selected with Yarp Drive turned on. Shared by the login slide's
+/// User-facing names of the Records Locker features enabled when the terminal
+/// intention is selected with Records Locker turned on. Shared by the login slide's
 /// skip-login confirmation dialog so the list stays in sync with any future
 /// surfaces that need it.
-pub const YARP_DRIVE_FEATURES: &[&str] = &["Yarp Drive", "Session Sharing"];
+pub const YARP_DRIVE_FEATURES: &[&str] = &["Records Locker", "Session Sharing"];
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "bin")] {

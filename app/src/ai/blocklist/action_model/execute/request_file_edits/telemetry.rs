@@ -223,16 +223,16 @@ impl TelemetryEventDesc for RequestFileEditsTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            Self::EditResolved => "Agent Mode pending code edit suggestion resolved",
+            Self::EditResolved => "Taskforce pending code edit suggestion resolved",
             Self::EditAcceptClicked => {
-                "User selected Accept for a code diff suggestion in Agent Mode"
+                "User selected Accept for a code diff suggestion in Taskforce"
             }
             Self::EditAcceptAndContinueClicked => {
-                "User selected Accept and start conversation for a code diff suggestion in Agent Mode"
+                "User selected Accept and start conversation for a code diff suggestion in Taskforce"
             }
             Self::DiffMatchFailed => "Failed to match code diff",
             Self::DiffInvalidFile => "File(s) in code diff could not be found",
-            Self::EditReceived => "Agent Mode suggested a code edit",
+            Self::EditReceived => "Taskforce suggested a code edit",
             Self::MissingLineNumbers => "Code diff was missing line numbers",
             Self::MalformedFinalLineProxy => {
                 "Suggested code diff likely required malformed trailing line correction (heuristic)"

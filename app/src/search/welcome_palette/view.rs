@@ -807,7 +807,7 @@ impl WelcomePalette {
             }
             CommandPaletteItemAction::ExecuteWorkflow { id } => {
                 let Some(workflow) = CloudModel::as_ref(ctx).get_workflow(id) else {
-                    log::warn!("Tried to execute workflow for id {id:?} but it does not exist");
+                    log::warn!("Tried to execute playbook for id {id:?} but it does not exist");
                     return;
                 };
 

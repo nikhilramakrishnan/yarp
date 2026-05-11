@@ -133,7 +133,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     // Add all of the toggle settings from the Features Page that you want to show up on the Command Palette here.
     let mut toggle_binding_pairs = vec![
         ToggleSettingActionPair::new(
-            "copy on select within the terminal",
+            "copy on select within the beat",
             builder(SettingsAction::FeaturesPageToggle(
                 FeaturesPageAction::ToggleCopyOnSelect,
             )),
@@ -266,7 +266,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
                 .is_supported_on_current_platform(),
         ),
         ToggleSettingActionPair::new(
-            "audible terminal bell",
+            "audible station bell",
             builder(SettingsAction::FeaturesPageToggle(
                 FeaturesPageAction::ToggleUseAudibleBell,
             )),
@@ -473,7 +473,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 
     toggle_binding_pairs.push(
         ToggleSettingActionPair::new(
-            "terminal input message line",
+            "beat input message line",
             builder(SettingsAction::FeaturesPageToggle(
                 FeaturesPageAction::ToggleShowTerminalInputMessageLine,
             )),
@@ -486,7 +486,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
     if FeatureFlag::AgentView.is_enabled() && AISettings::as_ref(app).is_any_ai_enabled(app) {
         toggle_binding_pairs.push(
             ToggleSettingActionPair::new(
-                "slash commands in terminal mode",
+                "slash commands in desk beat",
                 builder(SettingsAction::FeaturesPageToggle(
                     FeaturesPageAction::ToggleSlashCommandsInTerminalMode,
                 )),
@@ -549,7 +549,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
 
     if DefaultTerminal::can_yarp_become_default() {
         app.register_fixed_bindings([FixedBinding::empty(
-            "Make Yarp the default terminal",
+            "Make Yarp the default beat station",
             builder(SettingsAction::FeaturesPageToggle(
                 FeaturesPageAction::MakeYarpDefaultTerminal,
             )),
@@ -660,7 +660,8 @@ lazy_static! {
 const NOTIFICATION_CHECKBOX_MARGIN_RIGHT: f32 = 5.;
 const NOTIFICATION_EDITOR_MARGIN: f32 = 5.;
 
-const NOTIFICATIONS_DOCS_URL: &str = "https://github.com/hotfuzz/yarp/terminal/more-features/notifications";
+const NOTIFICATIONS_DOCS_URL: &str =
+    "https://github.com/hotfuzz/yarp/terminal/more-features/notifications";
 
 /// WARNING: this constant was computed manually by determining the pixel width
 /// of the quake mode dropdowns based on the number of expanded items in the flex row.
@@ -2749,11 +2750,11 @@ impl FeaturesPageView {
 
         let categories = vec![
             Category::new("General", general_widgets),
-            Category::new("Session", session_widgets),
+            Category::new("Beats", session_widgets),
             Category::new("Keys", keys_widgets),
             Category::new("Text Editing", text_editing_widgets),
-            Category::new("Terminal Input", editor_widgets),
-            Category::new("Terminal", terminal_widgets),
+            Category::new("Briefing Input", editor_widgets),
+            Category::new("Station", terminal_widgets),
             Category::new("Briefings", notifications_widgets),
             Category::new(
                 "Playbooks",
@@ -3687,7 +3688,7 @@ impl FeaturesPageView {
                 Container::new(
                     Align::new(
                         Text::new_inline(
-                            "When a command takes longer than",
+                            "When an operation takes longer than",
                             appearance.ui_font_family(),
                             font_size,
                         )
@@ -4236,7 +4237,7 @@ impl SettingsWidget for SessionRestorationWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "restore session window tab pane startup"
+        "restore beat window tab pane startup"
     }
 
     fn render(
@@ -4293,7 +4294,10 @@ impl SettingsWidget for SessionRestorationWidget {
             let link = ui_builder
                 .link(
                     "See docs.".to_owned(),
-                    Some("https://github.com/hotfuzz/yarp/terminal/sessions/session-restoration".to_owned()),
+                    Some(
+                        "https://github.com/hotfuzz/yarp/terminal/sessions/session-restoration"
+                            .to_owned(),
+                    ),
                     None,
                     self.docs_link.clone(),
                 )
@@ -4331,7 +4335,7 @@ impl SettingsWidget for SnackbarHeaderWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "sticky command block header snackbar"
+        "sticky dispatch block header snackbar"
     }
 
     fn render(
@@ -4342,7 +4346,7 @@ impl SettingsWidget for SnackbarHeaderWidget {
     ) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder();
         render_body_item::<FeaturesPageAction>(
-            "Pin the command header to the top of the page".into(),
+            "Pin the dispatch header to the top of the page".into(),
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
@@ -4430,7 +4434,7 @@ impl SettingsWidget for ExternalEditorWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "editor open files markdown AI conversations layout pane tab"
+        "editor open files markdown taskforce case files layout pane tab"
     }
 
     fn render(
@@ -4730,7 +4734,7 @@ impl SettingsWidget for AutoOpenCodeReviewPaneWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz auto open code review pane panel agent mode change first time accepted diff view conversation"
+        "taskforce officer pc auto open code review pane panel accepted diff view conversation"
     }
 
     fn render(
@@ -4777,7 +4781,7 @@ impl SettingsWidget for DefaultTerminalWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "yarp default terminal application"
+        "yarp default beat station application"
     }
 
     fn render(
@@ -4790,7 +4794,7 @@ impl SettingsWidget for DefaultTerminalWidget {
         let default_terminal = DefaultTerminal::as_ref(app);
         if default_terminal.is_yarp_default() {
             ui_builder
-                .wrappable_text("Yarp is the default terminal", true)
+                .wrappable_text("Yarp is the default beat station", true)
                 .with_style(UiComponentStyles {
                     font_color: Some(appearance.theme().disabled_ui_text_color().into()),
                     margin: Some(Coords::default().bottom(16.)),
@@ -4801,7 +4805,7 @@ impl SettingsWidget for DefaultTerminalWidget {
         } else {
             ui_builder
                 .link(
-                    "Make Yarp the default terminal".to_string(),
+                    "Make Yarp the default beat station".to_string(),
                     None,
                     Some(Box::new(|ctx| {
                         ctx.dispatch_typed_action(FeaturesPageAction::MakeYarpDefaultTerminal);
@@ -4898,7 +4902,8 @@ impl SettingsWidget for SSHWrapperWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
-                    "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation".into(),
+                    "https://github.com/hotfuzz/yarp/terminal/yarpify/ssh-legacy#implementation"
+                        .into(),
                 )),
                 secondary_text: if view.ssh_wrapper_toggled {
                     Some("This change kicks in on the next tour".to_string())
@@ -4996,7 +5001,7 @@ impl SettingsWidget for DesktopNotificationsWidget {
                     session_settings
                         .notifications
                         .is_agent_task_completed_enabled,
-                    "Notify when an agent completes a task",
+                    "Notify when an officer closes a task",
                     FeaturesPageAction::ToggleAgentTaskCompletedNotifications,
                     view.button_mouse_states
                         .agent_task_completed_notifications_checkbox
@@ -5009,7 +5014,7 @@ impl SettingsWidget for DesktopNotificationsWidget {
                 ),
                 view.render_notification_toggle(
                     session_settings.notifications.is_needs_attention_enabled,
-                    "Radio in when a command or agent needs your attention to keep moving",
+                    "Radio in when a command or officer needs your attention to keep moving",
                     FeaturesPageAction::ToggleNeedsAttentionNotifications,
                     view.button_mouse_states
                         .agent_needs_attention_notifications_checkbox
@@ -5203,7 +5208,7 @@ impl SettingsWidget for UndoCloseWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "reopen restore recover closed tab session"
+        "reopen restore recover closed tab beat"
     }
 
     fn render(
@@ -5926,7 +5931,7 @@ impl SettingsWidget for AtContextMenuInTerminalModeWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "@ at sign context menu terminal mode AI assistant"
+        "@ at sign context menu desk beat taskforce assistant"
     }
 
     fn render(
@@ -5937,7 +5942,7 @@ impl SettingsWidget for AtContextMenuInTerminalModeWidget {
     ) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder();
         render_body_item::<FeaturesPageAction>(
-            "Sign on '@' context menu in terminal mode".into(),
+            "Sign on '@' context menu in desk beat".into(),
             None,
             LocalOnlyIconState::for_setting(
                 AtContextMenuInTerminalMode::storage_key(),
@@ -5978,7 +5983,7 @@ impl SettingsWidget for SlashCommandsInTerminalModeWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "slash commands terminal mode input menu"
+        "slash commands desk beat input menu"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {
@@ -5993,7 +5998,7 @@ impl SettingsWidget for SlashCommandsInTerminalModeWidget {
     ) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder();
         render_body_item::<FeaturesPageAction>(
-            "Sign on slash commands in terminal mode".into(),
+            "Sign on slash commands in desk beat".into(),
             None,
             LocalOnlyIconState::for_setting(
                 EnableSlashCommandsInTerminal::storage_key(),
@@ -6086,7 +6091,7 @@ impl SettingsWidget for ShowTerminalInputMessageLineWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "terminal input message line bar agent"
+        "beat input message line bar officer"
     }
 
     fn render(
@@ -6097,7 +6102,7 @@ impl SettingsWidget for ShowTerminalInputMessageLineWidget {
     ) -> Box<dyn Element> {
         let ui_builder = appearance.ui_builder();
         render_body_item::<FeaturesPageAction>(
-            "Show terminal input message line".into(),
+            "Show beat input message line".into(),
             None,
             LocalOnlyIconState::for_setting(
                 ShowTerminalInputMessageBar::storage_key(),
@@ -6888,7 +6893,7 @@ impl SettingsWidget for DefaultSessionModeWidget {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "default session mode agent terminal new pane tab open config"
+        "default beat mode officer desk patrol new pane tab open config"
     }
 
     fn render(
@@ -6940,7 +6945,7 @@ impl SettingsWidget for WorkflowsInCommandSearch {
     type View = FeaturesPageView;
 
     fn search_terms(&self) -> &str {
-        "global workflows command search"
+        "global playbooks command search"
     }
 
     fn render(

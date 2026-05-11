@@ -10,11 +10,11 @@ use yarpui::{
 /// Display strings for keybindings shown in the onboarding callout.
 #[derive(Clone, Debug)]
 pub struct OnboardingKeybindings {
-    /// Display string for toggling between agent/terminal mode (e.g., "⌘I")
+    /// Display string for toggling between officer/command mode (e.g., "⌘I")
     pub toggle_input_mode: String,
-    /// Display string for submitting to local agent (e.g., "⌘⏎")
+    /// Display string for submitting to a local officer (e.g., "⌘⏎")
     pub submit_to_local_agent: String,
-    /// Display string for submitting to cloud agent (e.g., "⌘⌥⏎")
+    /// Display string for submitting to a cloud officer (e.g., "⌘⌥⏎")
     pub submit_to_cloud_agent: String,
 }
 
@@ -34,7 +34,7 @@ struct CalloutOptions {
     text: String,
     step: StepStatus,
     right_button: ButtonOptions,
-    /// Optional left button (e.g., "Skip", "Back to terminal")
+    /// Optional left button (e.g., "Skip", "Back to the beat")
     left_button: Option<ButtonOptions>,
     /// Optional checkbox for natural language detection
     checkbox: Option<CheckboxOptions>,
@@ -60,7 +60,7 @@ fn get_universal_input_callout_options(
         UniversalInputCalloutState::MeetInput => Some(CalloutOptions {
             title: "Meet the Yarp input",
             text: format!(
-                "Your terminal input accepts both terminal commands and agent prompts and automatically detects which you're using. Use {} to lock the input to Agent mode (natural language) or Terminal mode (commands).",
+                "Your Yarp input accepts both beat commands and officer briefings and automatically detects which you're using. Use {} to lock the input to Taskforce mode (natural language) or Command mode.",
                 keybindings.toggle_input_mode
             ),
             step: StepStatus::new(0, 2),
@@ -73,8 +73,8 @@ fn get_universal_input_callout_options(
             checkbox: None,
         }),
         UniversalInputCalloutState::TalkToAgent => Some(CalloutOptions {
-            title: "Talk to the agent",
-            text: "You can type in natural language to engage the agent. Submit the query below to start: What tests exist in this repo, how are they structured, and what do they cover?".to_string(),
+            title: "Brief the detective",
+            text: "You can type in natural language to engage the detective. Submit the briefing below to start: What tests exist in this repo, how are they structured, and what do they cover?".to_string(),
             step: StepStatus::new(1, 2),
             left_button: if has_project {
                 Some(ButtonOptions {
@@ -119,7 +119,7 @@ fn get_agent_modality_callout_options(
             Some(CalloutOptions {
                 title,
                 text: format!(
-                    "Run commands from the terminal, or use {} or {} to start or send to a local or cloud agent respectively.",
+                    "Run commands from the terminal, or use {} or {} to start or send to a local or cloud officer respectively.",
                     keybindings.submit_to_local_agent,
                     keybindings.submit_to_cloud_agent
                 ),
@@ -158,7 +158,7 @@ fn get_agent_modality_callout_options(
                 Some(CalloutOptions {
                     title: "Natural language support",
                     text: format!(
-                        "Natural language input is off by default. If enabled, you can type requests in plain English and Yarp will autodetect queries for the agent. You can always override them using {}.",
+                        "Natural language input is off by default. If enabled, you can type requests in plain English and Yarp will autodetect briefings for the officer. You can always override them using {}.",
                         keybindings.toggle_input_mode
                     ),
                     step: StepStatus::new(1, total_steps),
@@ -176,8 +176,8 @@ fn get_agent_modality_callout_options(
             }
         }
         AgentModalityCalloutState::IntroducingAgentExperience => Some(CalloutOptions {
-            title: "Introducing Yarp's new agent experience",
-            text: "Case files now have their own desk outside the terminal. Hit ESC to head back to the terminal whenever.".to_string(),
+            title: "Introducing Yarp Taskforce",
+            text: "Case files now have their own desk outside the terminal. Hit ESC to head back to the beat whenever.".to_string(),
             step: StepStatus::new(2, total_steps),
             left_button: None,
             right_button: ButtonOptions {
@@ -190,8 +190,8 @@ fn get_agent_modality_callout_options(
         AgentModalityCalloutState::UpdatedAgentInput => {
             if has_project {
                 Some(CalloutOptions {
-                    title: "Updated agent input",
-                    text: "Your agent input will detect natural language as well as commands by default. Use ! to lock the input in bash mode to write commands.\n\nSubmit the query below to have the agent initialize this project, or ⊗ to clear the input and start your own!".to_string(),
+                    title: "Updated detective input",
+                    text: "Your detective input will detect natural language as well as commands by default. Use ! to lock the input in bash mode to write commands.\n\nSubmit the briefing below to have the detective initialize this project, or ⊗ to clear the input and start your own!".to_string(),
                     step: StepStatus::new(3, total_steps),
                     left_button: Some(ButtonOptions {
                         text: "Skip initialization",
@@ -207,11 +207,11 @@ fn get_agent_modality_callout_options(
                 })
             } else {
                 Some(CalloutOptions {
-                    title: "Updated agent input",
-                    text: "Your agent input will detect natural language as well as commands by default. Use ! to lock the input in bash mode to write commands.".to_string(),
+                    title: "Updated detective input",
+                    text: "Your detective input will detect natural language as well as commands by default. Use ! to lock the input in bash mode to write commands.".to_string(),
                     step: StepStatus::new(3, total_steps),
                     left_button: Some(ButtonOptions {
-                        text: "Back to terminal",
+                        text: "Back to the beat",
                         action: OnboardingCalloutViewAction::BackToTerminalClicked,
                         keystroke: Some(Keystroke::parse("escape").unwrap_or_default()),
                     }),

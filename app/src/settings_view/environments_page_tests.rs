@@ -107,7 +107,7 @@ fn init_env_page_view_test_models(app: &mut App) {
     app.add_singleton_model(|_| KeybindingChangedNotifier::new());
     app.add_singleton_model(|_| GitHubAuthNotifier::new());
 
-    // The agent-assisted modal reads locally indexed repos via CodebaseIndexManager.
+    // The officer-assisted modal reads locally indexed repos via CodebaseIndexManager.
     // We register a test instance to avoid singleton lookup panics in unit tests.
     app.add_singleton_model(|ctx| {
         CodebaseIndexManager::new_for_test(ServerApiProvider::as_ref(ctx).get(), ctx)
@@ -181,8 +181,8 @@ fn test_render_environments_list_with_single_environment() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -248,8 +248,8 @@ fn test_render_environments_list_with_multiple_environments() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -303,8 +303,8 @@ fn test_render_environment_card_with_minimal_config() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -370,8 +370,8 @@ fn test_render_environment_card_with_github_repos() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -439,8 +439,8 @@ fn test_render_environment_card_with_setup_commands() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -524,8 +524,8 @@ fn test_render_environment_card_with_all_features() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -583,8 +583,8 @@ fn test_render_environment_card_with_empty_setup_commands() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered content: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered content: {}",
                 text_content
             );
         });
@@ -599,7 +599,7 @@ fn test_environments_page_widget_search_terms() {
     assert!(search_terms.contains("environments"));
     assert!(search_terms.contains("environment"));
     assert!(search_terms.contains("ambient"));
-    assert!(search_terms.contains("agents"));
+    assert!(search_terms.contains("officers"));
     assert!(search_terms.contains("github"));
 }
 
@@ -841,7 +841,7 @@ fn test_set_github_auth_redirect_target_updates_form() {
 
 #[test]
 fn test_render_empty_state_shows_github_remote_and_local_rows() {
-    // Empty-state UI should include GitHub-remote (suggested) and agent-assisted local repos paths.
+    // Empty-state UI should include GitHub-remote (suggested) and officer-assisted local repos paths.
     App::test((), |mut app| async move {
         init_env_page_view_test_models(&mut app);
         let window_id = create_test_window(&mut app);
@@ -855,8 +855,8 @@ fn test_render_empty_state_shows_github_remote_and_local_rows() {
             let text_content = element.debug_text_content().unwrap_or_default();
 
             assert!(
-                text_content.contains("Quick setup"),
-                "Expected quick setup row title in rendered content: {}",
+                text_content.contains("Quick briefing"),
+                "Expected quick briefing row title in rendered content: {}",
                 text_content
             );
             assert!(
@@ -865,10 +865,11 @@ fn test_render_empty_state_shows_github_remote_and_local_rows() {
                 text_content
             );
             // GitHub button text depends on async auth state, so just check that one of the
-            // expected states is present (Loading, Get started, Authorize, or Retry)
+            // expected states is present (loading, get started, authorize, or retry)
             let has_github_button = text_content.contains("Get started")
                 || text_content.contains("Authorize")
                 || text_content.contains("Loading...")
+                || text_content.contains("On the case...")
                 || text_content.contains("Retry");
             assert!(
                 has_github_button,
@@ -877,13 +878,13 @@ fn test_render_empty_state_shows_github_remote_and_local_rows() {
             );
 
             assert!(
-                text_content.contains("Use the agent"),
-                "Expected 'Use the agent' row title in rendered content: {}",
+                text_content.contains("Tag in the PC"),
+                "Expected 'Tag in the PC' row title in rendered content: {}",
                 text_content
             );
             assert!(
-                text_content.contains("Launch agent"),
-                "Expected 'Launch agent' button text in rendered content: {}",
+                text_content.contains("Tag in PC"),
+                "Expected 'Tag in PC' button text in rendered content: {}",
                 text_content
             );
 
@@ -894,9 +895,9 @@ fn test_render_empty_state_shows_github_remote_and_local_rows() {
             );
 
             // Basic ordering: GitHub row should appear above local repos row.
-            let github_pos = text_content.find("Quick setup").unwrap_or(usize::MAX);
+            let github_pos = text_content.find("Quick briefing").unwrap_or(usize::MAX);
             let local_pos = text_content
-                .find("Use the agent")
+                .find("Tag in the PC")
                 .unwrap_or(usize::MAX);
             assert!(
                 github_pos < local_pos,
@@ -925,7 +926,7 @@ fn test_render_empty_state_github_card_loading_state() {
 
             // Just verify the empty state renders the key components
             assert!(
-                text_content.contains("Quick setup"),
+                text_content.contains("Quick briefing"),
                 "Expected quick setup row in rendered content: {}",
                 text_content
             );
@@ -952,7 +953,7 @@ fn test_render_empty_state_github_card_error_state_shows_retry() {
 
             // Just verify the empty state renders the key components
             assert!(
-                text_content.contains("Quick setup"),
+                text_content.contains("Quick briefing"),
                 "Expected quick setup row in rendered content: {}",
                 text_content
             );
@@ -979,7 +980,7 @@ fn test_render_empty_state_github_card_unauthed_state_shows_authorize() {
 
             // Just verify the empty state renders the key components
             assert!(
-                text_content.contains("Quick setup"),
+                text_content.contains("Quick briefing"),
                 "Expected quick setup row in rendered content: {}",
                 text_content
             );
@@ -1003,13 +1004,13 @@ fn test_environment_setup_mode_selector_renders_options() {
             let text_content = element.debug_text_content().unwrap_or_default();
 
             assert!(
-                text_content.contains("Quick setup"),
-                "Expected Quick setup option in rendered content: {}",
+                text_content.contains("Quick briefing"),
+                "Expected Quick briefing option in rendered content: {}",
                 text_content
             );
             assert!(
-                text_content.contains("Use the agent"),
-                "Expected Use the agent option in rendered content: {}",
+                text_content.contains("Tag in the PC"),
+                "Expected Tag in the PC option in rendered content: {}",
                 text_content
             );
         });
@@ -1180,7 +1181,7 @@ fn test_environments_page_edit_variant() {
 fn test_github_repo_new() {
     let repo = GithubRepo::new("hotfuzz".to_string(), "yarp".to_string());
     assert_eq!(repo.owner, "hotfuzz");
-    assert_eq!(repo.repo, "yarp-internal");
+    assert_eq!(repo.repo, "yarp");
 }
 
 #[test]
@@ -1224,12 +1225,12 @@ fn test_environment_matches_search_query_name_description_image_repos() {
         vec![("hotfuzz".to_string(), "yarp".to_string())],
         vec![],
     );
-    environment.description = Some("Front end focused agents".to_string());
+    environment.description = Some("Front end focused officers".to_string());
 
     assert!(environment.matches_search_query("yarp"));
     assert!(environment.matches_search_query("Front end"));
     assert!(environment.matches_search_query("node:20"));
-    assert!(environment.matches_search_query("yarp-internal"));
+    assert!(environment.matches_search_query("yarp"));
     assert!(environment.matches_search_query("hotfuzz"));
     assert!(environment.matches_search_query("hotfuzz/yarp"));
 
@@ -1389,8 +1390,8 @@ fn test_render_environment_card_with_last_used_never() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered text: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered text: {}",
                 text_content
             );
         });
@@ -1466,8 +1467,8 @@ fn test_render_environment_card_with_last_used_timestamp() {
                 text_content
             );
             assert!(
-                text_content.contains("View my runs"),
-                "Expected 'View my runs' link in rendered text: {}",
+                text_content.contains("View my beats"),
+                "Expected 'View my beats' link in rendered text: {}",
                 text_content
             );
         });

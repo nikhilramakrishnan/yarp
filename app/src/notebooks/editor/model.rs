@@ -1288,7 +1288,7 @@ impl NotebooksEditorModel {
 
         if let Some(command) = child_model.executable_command(ctx) {
             ctx.emit_a11y_content(AccessibilityContent::new_without_help(
-                format!("Selected workflow: {command}"),
+                format!("Selected playbook: {command}"),
                 YarpA11yRole::TextareaRole,
             ));
         }

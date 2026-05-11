@@ -430,7 +430,7 @@ impl OrchestrationEventService {
             }
             SendEventResult::Error(error) => {
                 log::warn!(
-                    "LIFECYCLE-EVENT-WARN: Failed to emit lifecycle event for child agent: event_type={event_type_name} child_conversation_id={child_conversation_id:?} error={error}"
+                    "LIFECYCLE-EVENT-WARN: Failed to emit lifecycle event for child officer: event_type={event_type_name} child_conversation_id={child_conversation_id:?} error={error}"
                 );
             }
         }
@@ -719,7 +719,7 @@ impl OrchestrationEventService {
                 ),
                 ctx
             );
-            let error = "No target agents provided".to_string();
+            let error = "No target officers provided".to_string();
             self.log_send_message_error(source_conversation_id, target_agent_ids, &subject, &error);
             return SendMessageResult::Error(error);
         }

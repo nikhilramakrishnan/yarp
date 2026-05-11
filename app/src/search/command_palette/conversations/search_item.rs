@@ -26,22 +26,22 @@ use yarpui::ui_components::button::ButtonTooltipPosition;
 use yarpui::ui_components::components::{UiComponent, UiComponentStyles};
 use yarpui::{AppContext, Element, Gradient, SingletonEntity};
 
-/// Information about which action to take once the conversation item is accepted.
+/// Information about which action to take once the case-file item is accepted.
 #[derive(Debug)]
 pub enum ConversationAction {
-    /// Start a new conversation in the current view.
+    /// Start a new case file in the current view.
     New,
-    /// Fork the current active conversation into a new view.
+    /// Fork the current active case file into a new view.
     Fork {
         conversation_id: AIConversationId,
         title: String,
     },
-    /// Resume the matched conversation in its associated view.
+    /// Resume the matched case file in its associated view.
     Resume(Box<MatchedConversation>),
 }
 
-/// Search item to render a conversation within the command palette.
-/// When matched_conversation is None, we render this as a new conversation item.
+/// Search item to render a case file within the command palette.
+/// When matched_conversation is None, we render this as a new case-file item.
 #[derive(Debug)]
 pub struct ConversationSearchItem {
     action_info: ConversationAction,
@@ -414,7 +414,7 @@ impl SearchItem for ConversationSearchItem {
         match &self.action_info {
             ConversationAction::Resume(matched_conversation) => {
                 format!(
-                    "Conversation: {}",
+                    "Case file: {}",
                     matched_conversation.as_ref().conversation.title()
                 )
             }

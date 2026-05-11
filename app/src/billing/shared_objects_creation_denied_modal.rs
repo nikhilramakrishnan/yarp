@@ -21,7 +21,7 @@ use super::shared_objects_creation_denied_body::{
     SharedObjectsCreationDeniedBody, SharedObjectsCreationDeniedBodyEvent,
 };
 
-const DEFAULT_LIMIT_REACHED_MODAL_HEADER: &str = "Drive quota's full";
+const DEFAULT_LIMIT_REACHED_MODAL_HEADER: &str = "Records quota's full";
 
 pub struct SharedObjectsCreationDeniedModal {
     shared_objects_creation_denied_modal: ViewHandle<Modal<SharedObjectsCreationDeniedBody>>,

@@ -108,9 +108,9 @@ impl PlatformPageView {
                     Err(err) => {
                         let window_id = ctx.window_id();
                         crate::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                            let toast = crate::view_components::DismissibleToast::error(
-                                format!("Couldn't pull the credential ledger: {err}"),
-                            );
+                            let toast = crate::view_components::DismissibleToast::error(format!(
+                                "Couldn't pull the credential ledger: {err}"
+                            ));
                             toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                         });
                         ctx.notify();
@@ -128,34 +128,38 @@ impl PlatformPageView {
 
         // Create the modal wrapper
         let create_api_key_modal_view = ctx.add_typed_action_view(|ctx| {
-            Modal::new(Some("Issue a new warrant".to_string()), create_api_key_body, ctx)
-                .with_modal_style(UiComponentStyles {
-                    width: Some(MODAL_WIDTH),
-                    height: Some(MODAL_HEIGHT),
-                    ..Default::default()
-                })
-                .with_header_style(UiComponentStyles {
-                    padding: Some(Coords {
-                        top: 24.,
-                        bottom: 0.,
-                        left: 24.,
-                        right: 24.,
-                    }),
-                    font_size: Some(16.),
-                    font_weight: Some(yarpui::fonts::Weight::Bold),
-                    ..Default::default()
-                })
-                .with_body_style(UiComponentStyles {
-                    padding: Some(Coords {
-                        top: 0.,
-                        bottom: 24.,
-                        left: 24.,
-                        right: 24.,
-                    }),
-                    ..Default::default()
-                })
-                .with_background_opacity(100)
-                .with_dismiss_on_click()
+            Modal::new(
+                Some("Issue a new warrant".to_string()),
+                create_api_key_body,
+                ctx,
+            )
+            .with_modal_style(UiComponentStyles {
+                width: Some(MODAL_WIDTH),
+                height: Some(MODAL_HEIGHT),
+                ..Default::default()
+            })
+            .with_header_style(UiComponentStyles {
+                padding: Some(Coords {
+                    top: 24.,
+                    bottom: 0.,
+                    left: 24.,
+                    right: 24.,
+                }),
+                font_size: Some(16.),
+                font_weight: Some(yarpui::fonts::Weight::Bold),
+                ..Default::default()
+            })
+            .with_body_style(UiComponentStyles {
+                padding: Some(Coords {
+                    top: 0.,
+                    bottom: 24.,
+                    left: 24.,
+                    right: 24.,
+                }),
+                ..Default::default()
+            })
+            .with_background_opacity(100)
+            .with_dismiss_on_click()
         });
         ctx.subscribe_to_view(&create_api_key_modal_view, |me, _, event, ctx| {
             me.handle_modal_event(event, ctx);
@@ -356,7 +360,7 @@ impl SettingsWidget for PlatformPageWidget {
     type View = PlatformPageView;
 
     fn search_terms(&self) -> &str {
-        "fuzz cloud platform api keys authentication"
+        "taskforce cloud platform api keys authentication officers"
     }
 
     fn render(
@@ -379,7 +383,7 @@ impl PlatformPageWidget {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let text = vec![
-            FormattedTextFragment::plain_text("Issue and manage API keys so outside Fuzz cloud officers can radio your Yarp account.\nFor more details, crack open the "),
+            FormattedTextFragment::plain_text("Issue and manage API keys so outside Taskforce cloud officers can radio your Yarp account.\nFor more details, crack open the "),
             FormattedTextFragment::hyperlink("Standing Orders.", API_KEY_DOCS_URL),
         ];
 
@@ -414,7 +418,7 @@ impl PlatformPageWidget {
             Flex::row()
                 .with_cross_axis_alignment(CrossAxisAlignment::Center)
                 .with_child(
-                    Text::new_inline("Fuzz Cloud warrants", appearance.ui_font_family(), 16.)
+                    Text::new_inline("Taskforce Cloud warrants", appearance.ui_font_family(), 16.)
                         .with_style(Properties::default().weight(Weight::Bold))
                         .with_color(appearance.theme().active_ui_text_color().into())
                         .finish(),
@@ -474,9 +478,8 @@ impl PlatformPageWidget {
         header_row.add_child(
             Expanded::new(1., self.render_header_cell(appearance, "Last drawn")).finish(),
         );
-        header_row.add_child(
-            Expanded::new(1., self.render_header_cell(appearance, "Expires")).finish(),
-        );
+        header_row
+            .add_child(Expanded::new(1., self.render_header_cell(appearance, "Expires")).finish());
         header_row.add_child(Expanded::new(0.5, self.render_header_cell(appearance, "")).finish());
 
         Container::new(header_row.finish())

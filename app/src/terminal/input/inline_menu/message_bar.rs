@@ -113,9 +113,7 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> View for InlineMenuMessageBa
                 Some(color) => msg_border.with_border_color(color),
                 None => msg_border.with_border_fill(theme.outline()),
             };
-            Container::new(message_bar)
-                .with_border(msg_border)
-                .finish()
+            Container::new(message_bar).with_border(msg_border).finish()
         } else {
             message_bar
         }

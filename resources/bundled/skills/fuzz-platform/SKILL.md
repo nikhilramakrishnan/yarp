@@ -1,26 +1,26 @@
 ---
-name: fuzz-platform
-description: Use Yarp's REST API and command line to run, configure, and inspect Fuzz cloud agents
+name: taskforce-platform
+description: Use Yarp's REST API and command line to run, configure, and inspect Taskforce cloud officers
 ---
 
-# fuzz-platform
+# taskforce-platform
 
-Use the Fuzz REST API and CLI to:
-* Spawn cloud agents
-* Get the status of a cloud agent
-* Schedule cloud agents to run repeatedly
-* Create and manage the environments in which cloud agents run
-* Provide secrets for cloud agents to use
+Use the Taskforce REST API and CLI to:
+* Spawn cloud officers
+* Get the status of a cloud officer
+* Schedule cloud officers to run repeatedly
+* Create and manage the environments in which cloud officers run
+* Provide secrets for cloud officers to use
 
 ## Command Line
 
-The Fuzz CLI is installed as `{{yarp_cli_binary_name}}`. To get help output, use `{{yarp_cli_binary_name}} help` or `{{yarp_cli_binary_name}} help <subcommand>`.
+The Taskforce CLI is installed as `{{yarp_cli_binary_name}}`. To get help output, use `{{yarp_cli_binary_name}} help` or `{{yarp_cli_binary_name}} help <subcommand>`.
 Prefer `--output-format text` to review the response, or `--output-format json` to parse fields with `jq`.
 You can find more information at the local Yarp CLI help.
 
 The most important commands are:
-* `{{yarp_cli_binary_name}} agent run-cloud`: Spawn a new cloud agent. You can configure the prompt, model, environment, and other settings.
-* `{{yarp_cli_binary_name}} run list` and `{{yarp_cli_binary_name}} run get <run-id>`: List all cloud agent runs, and get details about a particular run.
+* `{{yarp_cli_binary_name}} agent run-cloud`: Spawn a new cloud officer. You can configure the prompt, model, environment, and other settings.
+* `{{yarp_cli_binary_name}} run list` and `{{yarp_cli_binary_name}} run get <run-id>`: List all cloud officer runs, and get details about a particular run.
 * `{{yarp_cli_binary_name}} environment list` and `{{yarp_cli_binary_name}} environment get`: List available environments, and get more information about a particular environment.
 * `{{yarp_cli_binary_name}} schedule list` and `{{yarp_cli_binary_name}} schedule get`: List scheduled tasks with most recent runs, and get more information about a particular scheduled run.
 
@@ -28,12 +28,12 @@ Most subcommands support the `--output-format json` flag to produce JSON output,
 
 ### Examples
 
-Start a cloud agent, and then monitor its status:
+Start a cloud officer, and then monitor its status:
 
 ```sh
 $ {{yarp_cli_binary_name}} agent run-cloud --prompt "Update the login error to be more specific" --environment UA17BXYZ
 # ...
-Spawned agent with run ID: 5972cca4-a410-42af-930a-e56bc23e07ac
+Spawned officer with run ID: 5972cca4-a410-42af-930a-e56bc23e07ac
 ```
 
 ```sh
@@ -41,7 +41,7 @@ $ {{yarp_cli_binary_name}} run get 5972cca4-a410-42af-930a-e56bc23e07ac
 # ...
 ```
 
-Schedule an agent to summarize feedback every day at 8am UTC:
+Schedule an officer to summarize feedback every day at 8am UTC:
 
 ```sh
 $ {{yarp_cli_binary_name}} schedule create --cron "0 8 * * *" \
@@ -49,7 +49,7 @@ $ {{yarp_cli_binary_name}} schedule create --cron "0 8 * * *" \
     --environment UA17BXYZ
 ```
 
-Create a secret for cloud agents to use:
+Create a secret for cloud officers to use:
 
 ```sh
 $ {{yarp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_key.txt --description "API key to access Jira"
@@ -57,9 +57,9 @@ $ {{yarp_cli_binary_name}} secret create JIRA_API_KEY --team --value-file jira_k
 
 ## REST API
 
-Fuzz has a REST API for starting and inspecting cloud agents.
+Taskforce has a REST API for starting and inspecting cloud officers.
 
-All API requests require authentication using an API key. The user can generate API keys in their Yarp settings, on the `Platform` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
+All API requests require authentication using an API key. The user can generate API keys in their Yarp settings, on the `Taskforce` page (accessible via `{{yarp_url_scheme}}://settings/platform`).
 
 You can find the full OpenAPI specification here: the local API documentation
 
@@ -101,32 +101,32 @@ curl -L -X GET {{yarp_server_url}}/api/v1/agent/runs/5972cca4-a410-42af-930a-e56
 
 ## GitHub Actions Integration
 
-You can trigger Fuzz cloud agents from GitHub Actions workflows. This enables automation like:
+You can trigger Taskforce cloud officers from GitHub Actions workflows. This enables automation like:
 * Triaging issues when they're created or labeled
 * Running checks on pull requests
 * Scheduling periodic tasks via workflow dispatch
 
-The agent will have access to the `gh` CLI to communicate back to the repository. Prefer prompting the agent to use `gh` vs. requiring the agent to respond with structured output for the GitHub workflow to parse.
+The officer will have access to the `gh` CLI to communicate back to the repository. Prefer prompting the officer to use `gh` vs. requiring the officer to respond with structured output for the GitHub workflow to parse.
 
 ### Action Setup
 
 Use `hotfuzz/fuzz-agent-action@main` in your workflow. Required inputs:
-* `prompt`: The task description for the agent
+* `prompt`: The task description for the officer
 * `yarp_api_key`: API key (store in GitHub secrets, e.g., `${{ secrets.YARP_API_KEY }}`)
-* `profile`: Optional agent profile identifier (can use repo variable, e.g., `${{ vars.YARP_AGENT_PROFILE || '' }}`)
+* `profile`: Optional officer profile identifier (can use repo variable, e.g., `${{ vars.YARP_AGENT_PROFILE || '' }}`)
 
-The action outputs `agent_output` with the agent's response.
+The action outputs `agent_output` with the officer's response.
 
 ### Minimal Workflow Example
 
 ```yaml
-name: Run Fuzz Agent
+name: Run Taskforce Officer
 on:
   issues:
     types: [opened, labeled]
 
 jobs:
-  agent:
+  officer:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -145,43 +145,43 @@ jobs:
             Respond to the issue with a comment containing your summary using the `gh` CLI.
           yarp_api_key: ${{ secrets.YARP_API_KEY }}
           profile: ${{ vars.YARP_AGENT_PROFILE || '' }}
-      - name: Use Agent Output
+      - name: Use Officer Output
         run: echo "${{ steps.agent.outputs.agent_output }}"
 ```
 
 ### Common Patterns
 
-**Conditional steps**: Use `if: steps.agent.outputs.agent_output` to branch on agent results.
+**Conditional steps**: Use `if: steps.agent.outputs.agent_output` to branch on officer results.
 
 **Templating**: Use `actions/github-script@v7` to construct dynamic prompts from issue templates, repo context, or code.
 
 **Error handling**: Check action success with `if: success()` or `if: failure()`.
 
-**Git operations**: The action runs with checked-out code and Git credentials, so agents can commit and push changes.
+**Git operations**: The action runs with checked-out code and Git credentials, so officers can commit and push changes.
 
 
 ## Environments
 
-All cloud agents run in an environment. The environment defines:
-* Which programs are preinstalled for the agent (based on a Docker image)
-* The Git repositories to check out before the agent starts
+All cloud officers run in an environment. The environment defines:
+* Which programs are preinstalled for the officer (based on a Docker image)
+* The Git repositories to check out before the officer starts
 * Setup commands to run, such as `npm install` or `cargo fetch`
 
-You should almost always run cloud agents in an environment. Otherwise, they may not have the necessary code or tools available.
+You should almost always run cloud officers in an environment. Otherwise, they may not have the necessary code or tools available.
 
-Cloud agents run in a sandbox, so they _can_ install additional programs into their environment. They also have Git credentials to create PRs and push branches.
+Cloud officers run in a sandbox, so they _can_ install additional programs into their environment. They also have Git credentials to create PRs and push branches.
 
 Cloud environments DO NOT store secret values, like API keys. Use the `{{yarp_cli_binary_name}} secret` commands instead.
 
 ## Using Third-Party Coding CLIs
 
-Fuzz environments support running third-party coding agent CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Fuzz Docker images (e.g. `hotfuzz/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
+Taskforce environments support running third-party coding CLIs such as Claude Code, Codex, Gemini CLI, Amp, Copilot CLI, and OpenCode. The `-agents` tagged variants of prebuilt Taskforce Docker images (e.g. `hotfuzz/dev-rust:1.85-agents`) come with the most popular CLIs preinstalled. Base tags (without `-agents`) do not include coding CLIs.
 
 For detailed per-CLI documentation (installation, authentication, non-interactive flags, and artifact reporting), see [references/third-party-clis.md](./references/third-party-clis.md).
 
-### For Interactive Agents: Launching Cloud Agents with Third-Party CLIs
+### For Interactive Officers: Launching Cloud Officers with Third-Party CLIs
 
-When you are an interactive agent launching a cloud agent to use a third-party CLI:
+When you are an interactive officer launching a cloud officer to use a third-party CLI:
 
 1. **Environment Selection**: First, ask the user which environment to use. Present the public `-agents` image options from [hotfuzz/fuzz-dev-environments](https://github.com/hotfuzz/fuzz-dev-environments):
    - `hotfuzz/dev-base:latest-agents`
@@ -201,29 +201,29 @@ When you are an interactive agent launching a cloud agent to use a third-party C
 
    If they choose a public image without an existing environment, create one with `{{yarp_cli_binary_name}} environment create ...`
 
-2. **Prompt Construction**: Construct a simple prompt that delegates CLI invocation to the cloud agent:
+2. **Prompt Construction**: Construct a simple prompt that delegates CLI invocation to the cloud officer:
    ```sh
    {{yarp_cli_binary_name}} agent run-cloud \
        --environment <ENV_ID> \
-       --prompt 'Read the fuzz-platform skill for instructions on using [CLI name] to solve: <task description>'
+       --prompt 'Read the taskforce-platform skill for instructions on using [CLI name] to solve: <task description>'
    ```
 
-   **Do not** include the CLI command syntax in the prompt. The cloud agent will read the fuzz-platform skill and follow those instructions.
+   **Do not** include the CLI command syntax in the prompt. The cloud officer will read the taskforce-platform skill and follow those instructions.
 
 **Example**:
 ```sh
 $ {{yarp_cli_binary_name}} agent run-cloud \
     --environment <ENV_ID> \
-    --prompt 'Read the fuzz-platform skill for instructions on using Claude Code to solve: Summarize the architecture of this project'
+    --prompt 'Read the taskforce-platform skill for instructions on using Claude Code to solve: Summarize the architecture of this project'
 ```
 
-### For Cloud Agents: Invoking Third-Party CLIs
+### For Cloud Officers: Invoking Third-Party CLIs
 
-When you are a cloud agent instructed to use a third-party CLI:
+When you are a cloud officer instructed to use a third-party CLI:
 
 1. **Environment**: You are already running in an environment with the CLI preinstalled (if it's in an `-agents` image).
 
-2. **Authentication**: API keys are available as environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`). These were configured as Fuzz secrets by the user.
+2. **Authentication**: API keys are available as environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`). These were configured as Taskforce secrets by the user.
 
 3. **Task Delegation (IMPORTANT)**: The user's task should be completed **entirely by the third-party CLI**. Do NOT use Yarp's built-in tools to complete the task yourself:
    - Do NOT use `edit_files`, `read_files`, `grep`, `codebase_semantic_search`, or other Yarp coding tools to perform the user's task
@@ -233,7 +233,7 @@ When you are a cloud agent instructed to use a third-party CLI:
      - Construct the prompt for the CLI with the user's task
      - Run the CLI and monitor its execution
      - Debug any issues with the CLI itself
-     - Report artifacts back to Yarp (see below)
+     - Report artifacts back to Taskforce (see below)
 
 4. **CLI Invocation**: Read [references/third-party-clis.md](./references/third-party-clis.md) for detailed instructions on:
    - Non-interactive mode flags for each CLI (e.g. `claude -p`, `codex exec`, `gemini -p`)
@@ -241,7 +241,7 @@ When you are a cloud agent instructed to use a third-party CLI:
    - Useful flags and options
    - Example commands
 
-5. **Artifact Reporting**: When the third-party CLI creates a PR, parse its output for the PR URL and branch name, then call `report_pr` to register the artifact in the Yarp UI.
+5. **Artifact Reporting**: When the third-party CLI creates a PR, parse its output for the PR URL and branch name, then call `report_pr` to register the artifact in the Taskforce UI.
 
 **Example workflow**:
 ```sh

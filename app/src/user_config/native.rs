@@ -12,11 +12,11 @@ use crate::features::FeatureFlag;
 use crate::launch_configs::launch_config::LaunchConfig;
 use crate::tab_configs::{TabConfig, TabConfigError};
 use crate::themes::theme::YarpThemeConfig;
+use crate::workflows::workflow::Workflow;
 use crate::yarp_managed_paths_watcher::{
     repository_update_touches_path, repository_update_touches_prefix, YarpManagedPathsWatcher,
     YarpManagedPathsWatcherEvent,
 };
-use crate::workflows::workflow::Workflow;
 
 use super::util::{
     for_each_dir_entry, has_name, is_config_file, parse_multi_launch_config_dir_entry,

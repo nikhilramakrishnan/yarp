@@ -131,7 +131,7 @@ define_settings_group!(TerminalSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "terminal.show_terminal_zero_state_block",
-        description: "Whether to show the PC zero-state block in new terminal sessions.",
+        description: "Whether to show the PC zero-state block in new desk beats.",
     },
 ]);
 

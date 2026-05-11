@@ -276,7 +276,7 @@ fn test_edit_mode_initializes_form_state_from_initial_values() {
             let env_id = SyncId::ClientId(ClientId::new());
             let initial_values = EnvironmentFormValues {
                 name: "Test Environment".to_string(),
-                description: "A test environment for front end agents".to_string(),
+                description: "A test environment for front end officers".to_string(),
                 selected_repos: vec![
                     GithubRepo::new("owner1".to_string(), "repo1".to_string()),
                     GithubRepo::new("owner2".to_string(), "repo2".to_string()),
@@ -598,10 +598,7 @@ fn test_selected_repos_as_remote_repo_args_formats_owner_repo_strings() {
 
             assert_eq!(
                 args,
-                vec![
-                    "hotfuzz/yarp".to_string(),
-                    "facebook/react".to_string(),
-                ]
+                vec!["hotfuzz/yarp".to_string(), "facebook/react".to_string(),]
             );
         });
     })
@@ -826,8 +823,8 @@ fn test_render_docker_image_field_shows_custom_image_warning() {
                 "Expected reason text in rendered content: {text_content}"
             );
             assert!(
-                text_content.contains("Launch agent"),
-                "Expected 'Launch agent' action in rendered content: {text_content}"
+                text_content.contains("Dispatch the PC"),
+                "Expected 'Dispatch the PC' action in rendered content: {text_content}"
             );
         });
     })

@@ -354,7 +354,7 @@ pub enum AgentDriverError {
     MCPJsonParseError(String),
     #[error("MCP server configuration is missing required variables")]
     MCPMissingVariables,
-    #[error("Agent profile \"{0}\" not found")]
+    #[error("Officer profile \"{0}\" not found")]
     ProfileError(String),
     #[error(
         "Failed to authenticate with server - please log in via 'fuzz login', provide an API key via '--api-key <key>', or set the YARP_API_KEY environment variable"
@@ -364,12 +364,12 @@ pub enum AgentDriverError {
     AIWorkflowNotFound(String),
     #[error("Terminal bootstrap failed")]
     BootstrapFailed,
-    #[error("Unable to share agent session")]
+    #[error("Unable to share officer session")]
     ShareSessionFailed {
         #[source]
         error: terminal::ShareSessionError,
     },
-    #[error("Error syncing Yarp Drive")]
+    #[error("Error syncing Records Locker")]
     YarpDriveSyncFailed,
     #[error("Requested environment not found: {0}")]
     EnvironmentNotFound(String),
@@ -387,13 +387,13 @@ pub enum AgentDriverError {
     ConversationError { error: RenderableAIError },
     #[error("Conversation was canceled: {reason}")]
     ConversationCancelled { reason: CancellationReason },
-    #[error("The agent got stuck waiting for user confirmation on the action: {blocked_action}")]
+    #[error("The officer got stuck waiting for user confirmation on the action: {blocked_action}")]
     ConversationBlocked { blocked_action: String },
     #[error("Timed out refreshing team metadata")]
     TeamMetadataRefreshTimeout,
     #[error("{0}")]
     SkillResolutionFailed(String),
-    #[error("Failed to build agent configuration")]
+    #[error("Failed to build officer configuration")]
     ConfigBuildFailed(#[source] anyhow::Error),
     #[error("Failed to resolve server-side prompt")]
     PromptResolutionFailed(#[source] anyhow::Error),
@@ -1415,7 +1415,7 @@ impl AgentDriver {
             HarnessKind::Unsupported(harness) => Err(AgentDriverError::HarnessSetupFailed {
                 harness: harness.to_string(),
                 reason: format!(
-                    "The {harness} harness is only supported for local child agent launches."
+                    "The {harness} harness is only supported for local child officer launches."
                 ),
             }),
         }
@@ -1640,7 +1640,7 @@ impl AgentDriver {
         ctx: &mut ModelContext<Self>,
     ) -> Result<(), AgentDriverError> {
         let terminal_view_id = self.terminal_driver.as_ref(ctx).terminal_view().id();
-        log::info!("Selecting base agent model {model_id} (from agent driver)");
+        log::info!("Selecting base officer model {model_id} (from agent driver)");
 
         LLMPreferences::handle(ctx).update(ctx, |preferences, ctx| {
             preferences.update_preferred_agent_mode_llm(&model_id, terminal_view_id, ctx);
@@ -2124,7 +2124,7 @@ impl AgentDriver {
                             report_if_error!(server_api
                                 .update_agent_task(task_id, None, Some(session_id), None, None)
                                 .await
-                                .context("Error setting ambient agent shared session ID"));
+                                .context("Error setting ambient officer shared session ID"));
                         },
                         |_, _, _| {},
                     );

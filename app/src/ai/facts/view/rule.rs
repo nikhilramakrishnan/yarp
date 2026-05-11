@@ -561,7 +561,8 @@ impl RuleView {
     }
 
     fn render_disabled_banner(&self, appearance: &Appearance) -> Box<dyn Element> {
-        let mut link = FormattedTextFragment::hyperlink(DISABLED_BANNER_LINK_TEXT, "Settings > AI");
+        let mut link =
+            FormattedTextFragment::hyperlink(DISABLED_BANNER_LINK_TEXT, "Settings > Taskforce");
         link.styles.weight = Some(CustomWeight::Bold);
 
         let formatted_text = FormattedTextElement::new(

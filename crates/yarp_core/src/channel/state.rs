@@ -257,7 +257,12 @@ impl ChannelState {
     }
 
     pub fn fuzz_root_url() -> Cow<'static, str> {
-        CHANNEL_STATE.lock().config.fuzz_config.fuzz_root_url.clone()
+        CHANNEL_STATE
+            .lock()
+            .config
+            .fuzz_config
+            .fuzz_root_url
+            .clone()
     }
 
     pub fn server_root_url() -> Cow<'static, str> {

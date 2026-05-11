@@ -972,7 +972,7 @@ impl ProfileModelSelector {
             .unwrap_or(0);
         if let Some(llm) = self.get_selected_llm_info(MenuType::Sidecar, index, ctx) {
             log::info!(
-                "Selecting base agent model {} (from model selector)",
+                "Selecting base officer model {} (from model selector)",
                 &llm.id
             );
             LLMPreferences::handle(ctx).update(ctx, |preferences, ctx| {
@@ -1813,7 +1813,7 @@ impl TypedActionView for ProfileModelSelector {
             }
             ProfileModelSelectorAction::SelectModel(llm_id) => {
                 LLMPreferences::handle(ctx).update(ctx, |preferences, ctx| {
-                    log::info!("Selecting base agent model {llm_id} (from model selector)");
+                    log::info!("Selecting base officer model {llm_id} (from model selector)");
                     preferences.update_preferred_agent_mode_llm(llm_id, self.terminal_view_id, ctx);
                 });
                 self.set_model_menu_visibility(false, ctx);

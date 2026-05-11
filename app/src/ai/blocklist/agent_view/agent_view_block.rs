@@ -283,9 +283,7 @@ impl View for AgentViewEntryBlock {
                 Shrinkable::new(
                     1.,
                     Text::new(
-                        conversation
-                            .title()
-                            .unwrap_or("Untitled case".to_string()),
+                        conversation.title().unwrap_or("Untitled case".to_string()),
                         appearance.ui_font_family(),
                         appearance.monospace_font_size(),
                     )

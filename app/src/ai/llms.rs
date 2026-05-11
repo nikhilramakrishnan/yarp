@@ -67,9 +67,7 @@ impl DisableReason {
         match self {
             DisableReason::AdminDisabled => "Sarge has yanked this PC from the duty roster.",
             DisableReason::OutOfRequests => "Top up your rations to call out more.",
-            DisableReason::ProviderOutage => {
-                "This PC is off the air — provider's gone dark."
-            }
+            DisableReason::ProviderOutage => "This PC is off the air — provider's gone dark.",
             DisableReason::RequiresUpgrade => "Top up your rations to sign on this PC.",
             DisableReason::Unavailable => "This PC is off the air.",
         }

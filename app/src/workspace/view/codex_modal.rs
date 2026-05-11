@@ -134,7 +134,7 @@ impl CodexModal {
 
         // Description - second paragraph
         let description_2 = FormattedTextElement::from_str(
-            "Sign Codex on directly in Fuzz and use station kit \
+            "Sign Codex on directly in Yarp and use station kit \
             like in-app code review, briefing sharing and file editing.",
             appearance.ui_font_family(),
             14.,

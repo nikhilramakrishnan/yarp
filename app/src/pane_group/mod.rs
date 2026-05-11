@@ -330,7 +330,7 @@ pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             "pane_group:close_current_session",
-            "Close Current Session",
+            "Close Current Beat",
             PaneGroupAction::RemoveActive,
         )
         .with_custom_action(CustomAction::CloseCurrentSession)
@@ -1616,7 +1616,9 @@ impl PaneGroup {
 
                 if let Some(llm_override) = &terminal_snapshot.llm_model_override {
                     if let Ok(llm_id) = serde_json::from_str::<LLMId>(llm_override) {
-                        log::info!("Selecting base agent model {llm_id} (from terminal snapshot)");
+                        log::info!(
+                            "Selecting base officer model {llm_id} (from terminal snapshot)"
+                        );
                         crate::ai::llms::LLMPreferences::handle(ctx).update(
                             ctx,
                             |llm_prefs, ctx| {
@@ -2440,7 +2442,7 @@ impl PaneGroup {
         {
             AuthManager::handle(ctx).update(ctx, |auth_manager, ctx| {
                 auth_manager.attempt_login_gated_feature(
-                    "Share Session",
+                    "Broadcast Beat",
                     AuthViewVariant::ShareRequirementCloseable,
                     ctx,
                 )
@@ -2914,7 +2916,10 @@ impl PaneGroup {
                     FormattedTextFragment::plain_text(
                         "Yarp's not cleared for your default shell — patrolling on zsh instead.  ",
                     ),
-                    FormattedTextFragment::hyperlink("Pull the dossier", YARP_SHELL_COMPATIBILITY_DOCS),
+                    FormattedTextFragment::hyperlink(
+                        "Pull the dossier",
+                        YARP_SHELL_COMPATIBILITY_DOCS,
+                    ),
                 ]),
             )
         });
@@ -3103,7 +3108,7 @@ impl PaneGroup {
 
             self.child_agent_panes.insert(child_id, new_pane_id.into());
         } else {
-            log::error!("Failed to get terminal view for child agent pane {child_id:?}");
+            log::error!("Failed to get terminal view for child officer pane {child_id:?}");
             self.discard_pane(new_pane_id.into(), ctx);
         }
     }
@@ -3327,7 +3332,7 @@ impl PaneGroup {
                 group.find_pane_id_for_terminal_view(target_view.id(), ctx)
             {
                 log::error!(
-                    "Failed to restore ambient agent pane, replacing with new cloud conversation"
+                    "Failed to restore ambient officer pane, replacing with new cloud conversation"
                 );
                 group.replace_pane_with_new_cloud_conversation(pane_id, ctx);
             }

@@ -68,9 +68,9 @@ pub(super) enum AgentModalityCalloutState {
     MeetTerminalInput,
     /// Step 2: "Natural language support" with checkbox
     NaturalLanguageSupport,
-    /// Step 3: "Introducing Yarp's new agent experience" (Agent intention only)
+    /// Step 3: "Introducing Yarp Taskforce" (Taskforce intention only)
     IntroducingAgentExperience,
-    /// Step 4: "Updated agent input" (Agent intention only)
+    /// Step 4: "Updated detective input" (Taskforce intention only)
     UpdatedAgentInput,
     /// Terminal state
     Complete(FinalState),
@@ -195,14 +195,14 @@ impl OnboardingCalloutModel {
             ),
             AgentModalityCalloutState::NaturalLanguageSupport => {
                 // For Terminal intention, finish here
-                // For Agent intention, continue to IntroducingAgentExperience
+                // For Taskforce intention, continue to IntroducingAgentExperience
                 match self.intention {
                     OnboardingIntention::Terminal => (
                         Some(AgentModalityCalloutState::Complete(FinalState::Finish)),
                         false,
                     ),
                     OnboardingIntention::AgentDrivenDevelopment => {
-                        // Signal to enter agent modality when showing the agent experience slide
+                        // Signal to enter Taskforce modality when showing the Taskforce experience slide
                         (
                             Some(AgentModalityCalloutState::IntroducingAgentExperience),
                             true,
@@ -442,13 +442,13 @@ impl OnboardingCalloutModel {
                 OnboardingQuery::AgentPrompt("help me terraform my Gcloud setup".to_string())
             }
             AgentModalityCalloutState::IntroducingAgentExperience => {
-                OnboardingQuery::AgentPrompt("Tell the agent what to build...".to_string())
+                OnboardingQuery::AgentPrompt("Tell the detective what to build...".to_string())
             }
             AgentModalityCalloutState::UpdatedAgentInput => {
                 if self.has_project {
                     OnboardingQuery::AgentPrompt("/init".to_string())
                 } else {
-                    OnboardingQuery::AgentPrompt("Tell the agent what to build...".to_string())
+                    OnboardingQuery::AgentPrompt("Tell the detective what to build...".to_string())
                 }
             }
             // All completion states should return None so the input gets cleared

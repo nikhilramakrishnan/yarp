@@ -1624,13 +1624,9 @@ fn render_groups(
             return Empty::new().finish();
         } else {
             return Container::new(
-                Text::new_inline(
-                    "No beats match the lead.",
-                    appearance.ui_font_family(),
-                    12.,
-                )
-                .with_color(theme.sub_text_color(theme.background()).into())
-                .finish(),
+                Text::new_inline("No beats match the lead.", appearance.ui_font_family(), 12.)
+                    .with_color(theme.sub_text_color(theme.background()).into())
+                    .finish(),
             )
             .with_padding(Padding::uniform(12.))
             .finish();
@@ -3039,7 +3035,7 @@ fn terminal_kind_badge_label(is_oz_agent: bool, cli_agent: Option<CLIAgent>) -> 
     if let Some(cli_agent) = cli_agent {
         cli_agent.display_name().to_string()
     } else if is_oz_agent {
-        "Fuzz".to_string()
+        "Taskforce".to_string()
     } else {
         "Terminal".to_string()
     }
@@ -4324,27 +4320,15 @@ fn subtitle_options_for_primary(
     match primary {
         VerticalTabsPrimaryInfo::Command => [
             (VerticalTabsCompactSubtitle::Branch, "Branch"),
-            (
-                VerticalTabsCompactSubtitle::WorkingDirectory,
-                "Beat",
-            ),
+            (VerticalTabsCompactSubtitle::WorkingDirectory, "Beat"),
         ],
         VerticalTabsPrimaryInfo::WorkingDirectory => [
             (VerticalTabsCompactSubtitle::Branch, "Branch"),
-            (
-                VerticalTabsCompactSubtitle::Command,
-                "Command / Case file",
-            ),
+            (VerticalTabsCompactSubtitle::Command, "Command / Case file"),
         ],
         VerticalTabsPrimaryInfo::Branch => [
-            (
-                VerticalTabsCompactSubtitle::Command,
-                "Command / Case file",
-            ),
-            (
-                VerticalTabsCompactSubtitle::WorkingDirectory,
-                "Beat",
-            ),
+            (VerticalTabsCompactSubtitle::Command, "Command / Case file"),
+            (VerticalTabsCompactSubtitle::WorkingDirectory, "Beat"),
         ],
     }
 }

@@ -277,7 +277,7 @@ impl AIExecutionProfilesModel {
         let profile_id = ClientProfileId::new();
 
         let Some(owner) = UserWorkspaces::as_ref(ctx).personal_drive(ctx) else {
-            log::error!("Failed to create AI execution profile: personal drive not available");
+            log::error!("Failed to create PC duty profile: Records Locker not available");
             return None;
         };
 
@@ -1211,7 +1211,7 @@ impl AIExecutionProfilesModel {
                     };
 
                     log::info!(
-                        "Updated local unsynced default execution profile (no personal drive yet): {profile_id:?}"
+                        "Updated local unsynced default execution profile (Records Locker not available yet): {profile_id:?}"
                     );
                 }
                 ctx.emit(AIExecutionProfilesModelEvent::ProfileUpdated(profile_id));

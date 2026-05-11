@@ -64,9 +64,9 @@ pub enum AgentManagementTelemetryEvent {
     SpawnNewCloudAgent,
     /// User opened the agent type selector modal
     AgentTypeSelectorOpened,
-    /// User ran a workflow step from the setup guide
+    /// User ran a playbook step from the setup guide
     SetupGuideStepRun { step: SetupGuideStep },
-    /// User copied a workflow step from the setup guide
+    /// User copied a playbook step from the setup guide
     SetupGuideStepCopy { step: SetupGuideStep },
     /// User opened a conversation
     ConversationOpened {
@@ -243,16 +243,20 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            Self::ViewToggled => "User toggled the agent management view open or closed",
-            Self::OpenSetupGuide => "User opened the ambient agent setup guide",
-            Self::DismissSetupGuide => "User dismissed the ambient agent setup guide",
-            Self::SpawnNewLocalAgent => "User spawned a new local agent from agent management",
-            Self::SpawnNewCloudAgent => "User spawned a new cloud agent from agent management",
-            Self::AgentTypeSelectorOpened => {
-                "User opened the agent type selector from agent management"
+            Self::ViewToggled => "User toggled the Taskforce management view open or closed",
+            Self::OpenSetupGuide => "User opened the ambient officer setup guide",
+            Self::DismissSetupGuide => "User dismissed the ambient officer setup guide",
+            Self::SpawnNewLocalAgent => {
+                "User spawned a new local officer from Taskforce management"
             }
-            Self::SetupGuideStepRun => "User ran a workflow step from the setup guide",
-            Self::SetupGuideStepCopy => "User copied a workflow step from the setup guide",
+            Self::SpawnNewCloudAgent => {
+                "User spawned a new cloud officer from Taskforce management"
+            }
+            Self::AgentTypeSelectorOpened => {
+                "User opened the officer type selector from Taskforce management"
+            }
+            Self::SetupGuideStepRun => "User ran a playbook step from the setup guide",
+            Self::SetupGuideStepCopy => "User copied a playbook step from the setup guide",
             Self::ConversationOpened => "User opened a conversation",
             Self::CloudRunOpened => "User opened a cloud run",
             Self::ArtifactClicked => "User clicked an artifact button",

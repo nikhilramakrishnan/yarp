@@ -433,8 +433,8 @@ async fn apply_create_file<F, Fut>(
     match read_file(absolute_path.clone()).await {
         FileReadResult::Found(_) => {
             safe_warn!(
-                safe: ("Agent Code tried to create a file that already exists"),
-                full: ("Agent Code tried to create a file that already exists: {absolute_path:?}")
+                safe: ("Taskforce officer tried to create a file that already exists"),
+                full: ("Taskforce officer tried to create a file that already exists: {absolute_path:?}")
             );
             result
                 .errors
@@ -450,8 +450,8 @@ async fn apply_create_file<F, Fut>(
         }
         FileReadResult::ReadError(err) => {
             safe_warn!(
-                safe: ("Unable to check if file exists for Agent Code: {err}"),
-                full: ("Unable to check if file exists for Agent Code: {absolute_path:?} {err}")
+                safe: ("Unable to check if file exists for Taskforce officer: {err}"),
+                full: ("Unable to check if file exists for Taskforce officer: {absolute_path:?} {err}")
             );
             result.errors.push(DiffApplicationError::ReadFailed {
                 file: file_path,
@@ -493,8 +493,8 @@ async fn apply_delete_file<F, Fut>(
         }
         FileReadResult::ReadError(err) => {
             safe_warn!(
-                safe: ("Unable to read file for Agent Code: {err}"),
-                full: ("Unable to read file {absolute_path:?} for Agent Code: {err}")
+                safe: ("Unable to read file for Taskforce officer: {err}"),
+                full: ("Unable to read file {absolute_path:?} for Taskforce officer: {err}")
             );
             result.errors.push(DiffApplicationError::ReadFailed {
                 file: file_path,
@@ -559,8 +559,8 @@ async fn apply_search_replace<F, Fut>(
         }
         FileReadResult::ReadError(err) => {
             safe_warn!(
-                safe: ("Unable to read file for Agent Code: {err}"),
-                full: ("Unable to read file {absolute_path:?} for Agent Code: {err}")
+                safe: ("Unable to read file for Taskforce officer: {err}"),
+                full: ("Unable to read file {absolute_path:?} for Taskforce officer: {err}")
             );
             result.errors.push(DiffApplicationError::ReadFailed {
                 file: file_path,
@@ -631,8 +631,8 @@ async fn apply_v4a_update<F, Fut>(
         }
         FileReadResult::ReadError(err) => {
             safe_warn!(
-                safe: ("Unable to read file for Agent Code: {err}"),
-                full: ("Unable to read file {absolute_path:?} for Agent Code: {err}")
+                safe: ("Unable to read file for Taskforce officer: {err}"),
+                full: ("Unable to read file {absolute_path:?} for Taskforce officer: {err}")
             );
             result.errors.push(DiffApplicationError::ReadFailed {
                 file: file_path,

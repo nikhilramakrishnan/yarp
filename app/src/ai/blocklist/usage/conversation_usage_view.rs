@@ -133,10 +133,7 @@ impl ConversationUsageView {
         let mut values: Vec<Box<dyn Element>> = vec![];
 
         // Usage summary
-        labels.push(render_section_header(
-            "DUTY LOG".to_string(),
-            appearance,
-        ));
+        labels.push(render_section_header("DUTY LOG".to_string(), appearance));
         values.push(render_section_header("".to_string(), appearance));
 
         if self.display_mode == DisplayMode::Footer
@@ -200,7 +197,7 @@ impl ConversationUsageView {
                     .ui_builder()
                     .info_button_with_tooltip(
                         font_size * 0.85,
-                        "You can change which model the PC uses for full terminal use on Settings > AI",
+                        "You can change which model the PC uses for the full desk beat on Settings > Taskforce",
                         self.full_terminal_use_tooltip_mouse_state.clone(),
                     )
                     .finish();

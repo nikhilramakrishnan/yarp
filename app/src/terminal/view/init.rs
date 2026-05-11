@@ -761,11 +761,10 @@ pub fn init(app: &mut AppContext) {
         ),
         EditableBinding::new(
             "terminal:ask_ai_assistant",
-            BindingDescription::new("Brief the PC with the selected text")
-                .with_custom_description(
-                    bindings::MAC_MENUS_CONTEXT,
-                    "Brief the PC with selection",
-                ),
+            BindingDescription::new("Brief the PC with the selected text").with_custom_description(
+                bindings::MAC_MENUS_CONTEXT,
+                "Brief the PC with selection",
+            ),
             TerminalAction::ContextMenu(ContextMenuAction::AskAI(
                 AskAISource::SelectedTerminalText,
             )),
@@ -1044,7 +1043,7 @@ pub fn init(app: &mut AppContext) {
 
     app.register_editable_bindings([EditableBinding::new(
         "terminal:load_agent_mode_conversation",
-        "Load agent mode conversation (from debug link in clipboard)",
+        "Load Taskforce conversation (from debug link in clipboard)",
         TerminalAction::LoadAgentModeConversation,
     )
     .with_enabled(ChannelState::enable_debug_features)
@@ -1159,7 +1158,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
     app.register_editable_bindings([
         EditableBinding::new(
             SET_INPUT_MODE_AGENT_ACTION_NAME,
-            "Switch input to PC mode",
+            "Switch input to Taskforce mode",
             TerminalAction::SetInputModeAgent,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())
@@ -1168,7 +1167,7 @@ fn register_input_mode_bindings(app: &mut AppContext) {
         .with_linux_or_windows_key_binding("ctrl-i"),
         EditableBinding::new(
             SET_INPUT_MODE_TERMINAL_ACTION_NAME,
-            "Switch input to Terminal mode",
+            "Switch input to Desk mode",
             TerminalAction::SetInputModeTerminal,
         )
         .with_group(bindings::BindingGroup::YarpAi.as_str())

@@ -220,7 +220,10 @@ impl CloudAgentCapacityModal {
 
             // Benefits list based on plan type
             let mut benefits = vec![
-                format!("{} the ambient officers on patrol at once", agent_multiplier),
+                format!(
+                    "{} the ambient officers on patrol at once",
+                    agent_multiplier
+                ),
                 credits_text,
                 "Bring your own warrant".to_string(),
             ];

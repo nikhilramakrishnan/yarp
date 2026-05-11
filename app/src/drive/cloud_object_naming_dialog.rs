@@ -32,7 +32,7 @@ const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_PADDING: f32 = 12.;
 const BUTTON_MARGIN_BETWEEN: f32 = 8.;
 
-const NOTEBOOK_TITLE: &str = "Notebook name";
+const NOTEBOOK_TITLE: &str = "Casebook name";
 const FOLDER_TITLE: &str = "Folder name";
 const ENV_VAR_COLLECTION_TITLE: &str = "Collection name";
 const CREATE_BUTTON_TEXT: &str = "File it";

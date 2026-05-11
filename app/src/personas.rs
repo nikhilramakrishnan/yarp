@@ -375,7 +375,9 @@ pub(crate) fn persona_spinner_color(name: &str) -> &'static str {
 pub(crate) fn persona_on_duty_quote(callsign_lc: &str) -> &'static str {
     match callsign_lc {
         "nicholas" | "angel" => "Reporting for duty. — Sgt Angel",
-        "danny" | "butterman" => "Have you ever fired two guns whilst jumping through the air? — PC Butterman",
+        "danny" | "butterman" => {
+            "Have you ever fired two guns whilst jumping through the air? — PC Butterman"
+        }
         "doris" | "thatcher" => "Right then, what's the story? — PC Thatcher",
         "frank" | "butterman.snr" => "All for the greater good. — Insp Butterman",
         "andy" | "wainwright" | "cartwright" => "Nothing like a bit of hustle and bustle. — DS",
@@ -651,4 +653,3 @@ pub(crate) fn streaming_args_for(basename: &str) -> &'static [&'static str] {
         _ => &[],
     }
 }
-

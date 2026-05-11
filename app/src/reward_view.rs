@@ -34,7 +34,8 @@ const BUTTON_FONT_SIZE: f32 = 14.;
 const BUTTON_HEIGHT: f32 = 45.;
 const BUTTON_WIDTH: f32 = 240.;
 const BUTTON_MARGIN_BOTTOM: f32 = 14.;
-const ACCESSIBILITY_HELP: &str = "Hit enter to crack open the theme chooser, escape to wave it off.";
+const ACCESSIBILITY_HELP: &str =
+    "Hit enter to crack open the theme chooser, escape to wave it off.";
 
 pub fn init(app: &mut AppContext) {
     use yarpui::keymap::macros::*;

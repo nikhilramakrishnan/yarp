@@ -236,7 +236,7 @@ impl AIDocumentModel {
         let content = document.editor.as_ref(ctx).markdown(ctx);
 
         let Some(owner) = Self::get_plan_owner(ctx) else {
-            log::warn!("Failed to get owner while saving AI Document to Yarp Drive. Skipping");
+            log::warn!("Failed to get owner while saving PC document to Records Locker. Skipping");
             return false;
         };
 

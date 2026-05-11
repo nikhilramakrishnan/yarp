@@ -1,7 +1,7 @@
-//! Agent type selector modal.
+//! Officer type selector modal.
 //!
-//! This modal is displayed when users click "New agent" to choose between
-//! cloud and local agent modes.
+//! This modal is displayed when users click "Deploy unit" to choose between
+//! cloud and local officer modes.
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
@@ -44,12 +44,12 @@ const TITLE_FONT_SIZE: f32 = 16.;
 const OPTION_TITLE_FONT_SIZE: f32 = 14.;
 const OPTION_DESC_FONT_SIZE: f32 = 12.;
 
-/// The type of agent selected by the user.
+/// The type of officer selected by the user.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AgentType {
-    /// Cloud agent - runs autonomously in a cloud environment.
+    /// Cloud officer - runs autonomously in a cloud environment.
     Cloud,
-    /// Local agent - runs on the user's machine.
+    /// Local officer - runs on the user's machine.
     Local,
 }
 
@@ -117,7 +117,7 @@ impl AgentTypeSelector {
             cloud_agent_mouse_state: MouseStateHandle::default(),
             local_agent_mouse_state: MouseStateHandle::default(),
             dialog_mouse_state: MouseStateHandle::default(),
-            // Cloud agent is selected by default (index 0).
+            // Cloud officer is selected by default (index 0).
             selected_option_index: 0,
         }
     }
@@ -126,7 +126,7 @@ impl AgentTypeSelector {
         let theme = appearance.theme();
 
         let title = Text::new(
-            "Pick your PC".to_string(),
+            "Deploy a taskforce unit".to_string(),
             appearance.ui_font_family(),
             TITLE_FONT_SIZE,
         )
@@ -257,11 +257,14 @@ impl AgentTypeSelector {
                 .with_child(title_text);
 
             if is_suggested {
-                let suggested_text =
-                    Text::new("Sarge's pick".to_string(), font_family, OPTION_DESC_FONT_SIZE)
-                        .with_style(Properties::default().weight(Weight::Medium))
-                        .with_color(badge_text_color)
-                        .finish();
+                let suggested_text = Text::new(
+                    "Sarge's pick".to_string(),
+                    font_family,
+                    OPTION_DESC_FONT_SIZE,
+                )
+                .with_style(Properties::default().weight(Weight::Medium))
+                .with_color(badge_text_color)
+                .finish();
 
                 let suggested = Container::new(suggested_text)
                     .with_horizontal_padding(8.)
@@ -334,7 +337,7 @@ impl AgentTypeSelector {
             0,
             Icon::OzCloud,
             "Ambient officer",
-            "Walks the beat on its own from a beat you pick. Best for parallel patrols or long stake-outs.",
+            "Walks the beat on its own from a cloud beat you pick. Best for parallel patrols and long stake-outs.",
             true,
             self.cloud_agent_mouse_state.clone(),
             AgentTypeSelectorAction::SelectCloudAgent,
@@ -345,7 +348,7 @@ impl AgentTypeSelector {
             1,
             Icon::Fuzz,
             "Desk PC",
-            "Works the case at your desk under your eye. Best for quick door-to-door jobs.",
+            "Works the case locally at your desk under your eye. Best for quick door-to-door jobs.",
             false,
             self.local_agent_mouse_state.clone(),
             AgentTypeSelectorAction::SelectLocalAgent,

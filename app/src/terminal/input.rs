@@ -2916,7 +2916,8 @@ impl Input {
                     ToastStack::handle(ctx).update(ctx, |ts, ctx| {
                         ts.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Photos pulled — this model doesn't take evidence photos.".to_string(),
+                                "Photos pulled — this model doesn't take evidence photos."
+                                    .to_string(),
                             ),
                             window_id,
                             ctx,
@@ -4575,8 +4576,7 @@ impl Input {
         else {
             let window_id = ctx.window_id();
             ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                let toast =
-                    DismissibleToast::default(String::from("No open case file to log."));
+                let toast = DismissibleToast::default(String::from("No open case file to log."));
                 toast_stack.add_ephemeral_toast(toast, window_id, ctx);
             });
             return;
@@ -4654,9 +4654,8 @@ impl Input {
                 let window_id = ctx.window_id();
                 let display_path = file_path.display().to_string();
                 ToastStack::handle(ctx).update(ctx, move |toast_stack, ctx| {
-                    let toast = DismissibleToast::default(format!(
-                        "Case file filed at {display_path}"
-                    ));
+                    let toast =
+                        DismissibleToast::default(format!("Case file filed at {display_path}"));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
             }
@@ -6680,13 +6679,13 @@ impl Input {
         // Emit the a11y content as the last step so that it overwrites any of the a11y content
         // emitted by the editor (if multiple `AccessibilityContent`s are emitted within the same
         // event loop, the last one wins).
-        let mut accessibility_text = format!("Workflow command {} inserted.", &command_to_insert);
+        let mut accessibility_text = format!("Playbook command {} inserted.", &command_to_insert);
         if let Some(a11y_content) = self.selected_workflow_a11y_text(ctx) {
             let _ = write!(accessibility_text, " {a11y_content}");
         }
         ctx.emit_a11y_content(AccessibilityContent::new(
             accessibility_text,
-            "Press shift-tab to select the next workflow argument",
+            "Press shift-tab to select the next playbook argument",
             YarpA11yRole::UserAction,
         ));
 
@@ -6786,7 +6785,7 @@ impl Input {
             .and_then(|selected_workflow_state| {
                 selected_workflow_state.more_info_view.read(ctx, |view, _| {
                     view.selected_argument()
-                        .map(|argument| format!("Selected Workflow argument {}", argument.name()))
+                        .map(|argument| format!("Selected playbook argument {}", argument.name()))
                 })
             })
     }
@@ -11919,7 +11918,7 @@ impl Input {
                         return;
                     } else {
                         log::warn!(
-                            "Tried to execute workflow for id {:?} but it does not exist",
+                            "Tried to execute playbook for id {:?} but it does not exist",
                             alias.workflow_id
                         );
                     };
@@ -14023,7 +14022,8 @@ impl TypedActionView for Input {
                     ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
                             DismissibleToast::error(
-                                "Can't open a new case file — the PC's still on a command.".to_string()
+                                "Can't open a new case file — the PC's still on a command."
+                                    .to_string(),
                             ),
                             window_id,
                             ctx,

@@ -320,7 +320,7 @@ impl PaneData {
         {
             self.hidden_panes.remove(pos);
         } else {
-            log::error!("Attempted to show child agent pane but couldn't find it.")
+            log::error!("Attempted to show child officer pane but couldn't find it.")
         }
     }
 

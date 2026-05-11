@@ -1730,7 +1730,7 @@ impl View for CodeFooterView {
                     Self::render_status_text(
                         theme,
                         appearance,
-                        "Use Fuzz to update this config".to_string(),
+                        "Use Taskforce to update this config".to_string(),
                     ),
                 )
                 .finish(),

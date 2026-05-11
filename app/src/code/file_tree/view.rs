@@ -72,7 +72,8 @@ use yarpui::ui_components::components::UiComponent;
 mod editing;
 mod render;
 
-const REMOTE_TEXT: &str = "The case cabinet works the local desk only — out-of-station patrols can't open it.";
+const REMOTE_TEXT: &str =
+    "The case cabinet works the local desk only — out-of-station patrols can't open it.";
 const DISABLED_TEXT: &str = "The case cabinet works the local desk only. Clock on at a fresh patrol or hop to an active one to flip through it.";
 const WSL_TEXT: &str = "The case cabinet doesn't run on WSL just yet.";
 

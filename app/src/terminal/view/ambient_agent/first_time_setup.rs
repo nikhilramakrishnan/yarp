@@ -148,7 +148,7 @@ impl FirstTimeCloudAgentSetupView {
         // Title - 20px medium weight
         column.add_child(
             Text::new(
-                "Dispatch a new Fuzz ambient officer",
+                "Dispatch a new Taskforce ambient officer",
                 appearance.ui_font_family(),
                 20.,
             )
@@ -158,7 +158,7 @@ impl FirstTimeCloudAgentSetupView {
         );
 
         let description_fragments = vec![FormattedTextFragment::plain_text(
-            "Send Fuzz ambient officers out on parallel patrol, build PCs that work cases on their own, and check the radio on any officer from anywhere.",
+            "Send Taskforce ambient officers out on parallel patrol, build PCs that work cases on their own, and check the radio on any officer from anywhere.",
         )];
         column.add_child(
             FormattedTextElement::new(
@@ -220,10 +220,7 @@ impl FirstTimeCloudAgentSetupView {
         let credits_text = if credits == 1 {
             "1 free shift on the rota for an ambient officer.".to_string()
         } else {
-            format!(
-                "{} free shifts on the rota for ambient officers.",
-                credits
-            )
+            format!("{} free shifts on the rota for ambient officers.", credits)
         };
         let text = Text::new(credits_text, appearance.ui_font_family(), 12.)
             .with_color(blended_colors::text_sub(theme, theme.surface_1()))

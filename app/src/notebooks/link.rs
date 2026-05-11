@@ -58,7 +58,7 @@ impl LinkTarget {
             LinkTarget::LocalDirectory { .. } => Some(SecondaryAction {
                 label: "Fresh beat".into(),
                 tooltip: Some("Open a fresh beat in this directory".into()),
-                accessibility_content: "Open in terminal session".into(),
+                accessibility_content: "Open in fresh beat".into(),
             }),
             LinkTarget::LocalFile {
                 is_markdown: true, ..

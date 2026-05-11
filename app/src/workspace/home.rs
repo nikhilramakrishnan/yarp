@@ -13,7 +13,7 @@ const YARP_HOME_CONTENT: &str = r#"
 Welcome to the Sandford web detachment — your browser-based outpost.
 Sign on here to:
 * Hop onto open channels
-* Open, read, and amend Yarp Drive case files
+* Open, read, and amend Records Locker case files
 * Amend your station's Standing Orders
 
 The web detachment also lets fellow officers without the desktop kit observe shared channels, casebooks, and duty rosters."#;

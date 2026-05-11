@@ -118,7 +118,7 @@ const ADDITIONAL_ADDON_CREDITS_DESCRIPTION_FOR_TEAM: &str =
 
 // Cloud agent trial widget constants.
 const AMBIENT_AGENT_TRIAL_TITLE: &str = "Ambient officer trial";
-/// The threshold below which we only show the "Buy more" button (not "New agent").
+/// The threshold below which we only show the "Buy more" button (not "Deploy unit").
 use crate::ai::request_usage_model::AMBIENT_AGENT_TRIAL_CREDIT_THRESHOLD;
 
 pub fn create_discount_badge(discount: u32, appearance: &Appearance) -> Box<dyn Element> {
@@ -425,11 +425,7 @@ impl BillingAndUsagePageView {
                 ctx.notify();
             }
             UserWorkspacesEvent::UpdateWorkspaceSettingsRejected(_err) => {
-                self.show_toast(
-                    "Couldn't amend the station orders",
-                    ToastFlavor::Error,
-                    ctx,
-                );
+                self.show_toast("Couldn't amend the station orders", ToastFlavor::Error, ctx);
                 self.usage_based_pricing_toggle_override = None;
                 self.usage_based_pricing_toggle_loading = false;
             }
@@ -438,11 +434,7 @@ impl BillingAndUsagePageView {
             }
             UserWorkspacesEvent::PurchaseAddonCreditsSuccess => {
                 self.purchase_addon_credits_loading = false;
-                self.show_toast(
-                    "Add-on rations on the books",
-                    ToastFlavor::Success,
-                    ctx,
-                );
+                self.show_toast("Add-on rations on the books", ToastFlavor::Success, ctx);
                 AIRequestUsageModel::handle(ctx).update(ctx, |ai_request_usage_model, ctx| {
                     ai_request_usage_model.refresh_request_usage_async(ctx)
                 });
@@ -1143,10 +1135,7 @@ impl UsageWidget {
         let credits_text = if credits_remaining == 1 {
             "1 ration left".to_string()
         } else {
-            format!(
-                "{} rations left",
-                credits_remaining.separate_with_commas()
-            )
+            format!("{} rations left", credits_remaining.separate_with_commas())
         };
         let credits_label = Text::new_inline(credits_text, appearance.ui_font_family(), 12.)
             .with_color(blended_colors::text_sub(theme, theme.surface_1()))
@@ -1160,7 +1149,7 @@ impl UsageWidget {
 
         let mut right_side = Flex::row().with_cross_axis_alignment(CrossAxisAlignment::Center);
 
-        // Only show "New agent" button if credits >= threshold.
+        // Only show "Deploy unit" button if credits >= threshold.
         if credits_remaining >= AMBIENT_AGENT_TRIAL_CREDIT_THRESHOLD {
             let new_agent_button = ui_builder
                 .button(
@@ -1810,9 +1799,7 @@ impl UsageWidget {
                 mouse_state: self.addon_info_icon_mouse_state.clone(),
                 on_click_action: None,
                 secondary_text: None,
-                tooltip_override_text: Some(
-                    "Sets the monthly cap on add-on rations.".to_string(),
-                ),
+                tooltip_override_text: Some("Sets the monthly cap on add-on rations.".to_string()),
             },
         );
 
@@ -2460,7 +2447,7 @@ impl SettingsWidget for UsageWidget {
     type View = BillingAndUsagePageView;
 
     fn search_terms(&self) -> &str {
-        "a.i. ai usage limit plan"
+        "taskforce model usage limit plan credits"
     }
 
     fn render(
@@ -2672,7 +2659,7 @@ impl UsageWidget {
                 )
                 .with_child(
                     Text::new(
-                        "Send an agent on patrol to fill the logbook here.",
+                        "Send an officer on patrol to fill the logbook here.",
                         appearance.ui_font_family(),
                         14.,
                     )
@@ -2868,8 +2855,9 @@ impl UsageWidget {
                     let hoverable =
                         Hoverable::new(self.sort_icon_mouse_state.clone(), |mouse_state| {
                             if mouse_state.is_hovered() {
-                                let tooltip =
-                                    appearance.ui_builder().tool_tip("Sort the ledger by".to_string());
+                                let tooltip = appearance
+                                    .ui_builder()
+                                    .tool_tip("Sort the ledger by".to_string());
 
                                 button.add_positioned_overlay_child(
                                     tooltip.build().finish(),

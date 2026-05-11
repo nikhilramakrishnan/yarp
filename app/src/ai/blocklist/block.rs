@@ -6085,8 +6085,7 @@ impl TypedActionView for AIBlock {
 
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast =
-                        DismissibleToast::default(String::from("Cheers for the tip-off!"));
+                    let toast = DismissibleToast::default(String::from("Cheers for the tip-off!"));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
 

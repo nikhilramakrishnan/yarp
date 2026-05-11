@@ -252,13 +252,11 @@ impl ScheduledAgentManager {
                                     tx.send(Err(anyhow::anyhow!("Bagging denied: {}", message)));
                             }
                             OperationSuccessType::Rejection => {
-                                let _ =
-                                    tx.send(Err(anyhow::anyhow!("HQ refused the bagging")));
+                                let _ = tx.send(Err(anyhow::anyhow!("HQ refused the bagging")));
                             }
                             OperationSuccessType::FeatureNotAvailable => {
-                                let _ = tx.send(Err(anyhow::anyhow!(
-                                    "Scheduled patrols not available"
-                                )));
+                                let _ = tx
+                                    .send(Err(anyhow::anyhow!("Scheduled patrols not available")));
                             }
                         }
                     }
@@ -438,7 +436,9 @@ impl ScheduledAgentManager {
 
         match CloudModel::as_ref(ctx).get_by_uid(&schedule_id.uid()) {
             None => {
-                let _ = tx.send(Err(anyhow::anyhow!("Patrol {schedule_id} not on the roster")));
+                let _ = tx.send(Err(anyhow::anyhow!(
+                    "Patrol {schedule_id} not on the roster"
+                )));
             }
             Some(schedule) => {
                 if schedule.metadata().has_pending_online_only_change()

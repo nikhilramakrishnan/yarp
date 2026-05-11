@@ -217,7 +217,7 @@ impl TerminalView {
                     .await
                     .is_err()
                 {
-                    return Err("Timed out waiting for Yarp Drive to sync for docker sandbox");
+                    return Err("Timed out waiting for Records Locker to sync for docker sandbox");
                 }
 
                 // Wait for the terminal session to bootstrap.

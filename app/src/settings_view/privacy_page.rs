@@ -75,7 +75,7 @@ const FONT_SIZE: f32 = 12.;
 
 const SAFE_MODE_TITLE: &str = "Classified-info redaction";
 static SAFE_MODE_DESCRIPTION: LazyLock<&'static str> = LazyLock::new(|| {
-    "With this on, Yarp sweeps blocks, Yarp Drive case files, and Fuzz \
+    "With this on, Yarp sweeps blocks, Records Locker case files, and Taskforce \
         prompts for classified material and stops it from being filed or \
         radioed to any HQ. Tune the list with regexes."
 });
@@ -89,9 +89,9 @@ const TELEMETRY_DESCRIPTION_OLD: &str =
 const TELEMETRY_TITLE: &str = "Help improve the station";
 const TELEMETRY_DESCRIPTION: &str =
     "Dispatch logs help us tighten up the kit. We may collect certain \
-    console traffic to sharpen Yarp's AI radio.";
+    console traffic to sharpen Yarp's Taskforce radio.";
 const TELEMETRY_FREE_TIER_NOTE: &str =
-    "On the free duty roster, dispatch logs must be on for the AI radio to work.";
+    "On the free duty roster, dispatch logs must be on for the Taskforce radio to work.";
 const TELEMETRY_DOCS_URL: &str =
     "https://github.com/hotfuzz/yarp/support-and-community/privacy-and-security/privacy#what-telemetry-data-does-yarp-collect-and-why";
 
@@ -165,34 +165,38 @@ impl PrivacyPageView {
         });
 
         let add_regex_modal_view = ctx.add_typed_action_view(|ctx| {
-            Modal::new(Some("File a redaction pattern".to_string()), add_regex_body, ctx)
-                .with_modal_style(UiComponentStyles {
-                    width: Some(600.),
-                    height: Some(400.),
-                    ..Default::default()
-                })
-                .with_header_style(UiComponentStyles {
-                    padding: Some(Coords {
-                        top: 24.,
-                        bottom: 0.,
-                        left: 24.,
-                        right: 24.,
-                    }),
-                    font_size: Some(16.),
-                    font_weight: Some(Weight::Bold),
-                    ..Default::default()
-                })
-                .with_body_style(UiComponentStyles {
-                    padding: Some(Coords {
-                        top: 0.,
-                        bottom: 24.,
-                        left: 24.,
-                        right: 24.,
-                    }),
-                    ..Default::default()
-                })
-                .with_background_opacity(100)
-                .with_dismiss_on_click()
+            Modal::new(
+                Some("File a redaction pattern".to_string()),
+                add_regex_body,
+                ctx,
+            )
+            .with_modal_style(UiComponentStyles {
+                width: Some(600.),
+                height: Some(400.),
+                ..Default::default()
+            })
+            .with_header_style(UiComponentStyles {
+                padding: Some(Coords {
+                    top: 24.,
+                    bottom: 0.,
+                    left: 24.,
+                    right: 24.,
+                }),
+                font_size: Some(16.),
+                font_weight: Some(Weight::Bold),
+                ..Default::default()
+            })
+            .with_body_style(UiComponentStyles {
+                padding: Some(Coords {
+                    top: 0.,
+                    bottom: 24.,
+                    left: 24.,
+                    right: 24.,
+                }),
+                ..Default::default()
+            })
+            .with_background_opacity(100)
+            .with_dismiss_on_click()
         });
         ctx.subscribe_to_view(&add_regex_modal_view, |me, _, event, ctx| {
             me.handle_modal_event(event, ctx);
@@ -1011,9 +1015,7 @@ impl SecretRedactionWidget {
                         .with_main_axis_size(MainAxisSize::Max)
                         .with_main_axis_alignment(MainAxisAlignment::SpaceBetween)
                         .with_cross_axis_alignment(CrossAxisAlignment::Center)
-                        .with_child(
-                            self.render_section_title("BOLO".to_string(), appearance),
-                        )
+                        .with_child(self.render_section_title("BOLO".to_string(), appearance))
                         .with_child(
                             Container::new(
                                 ui_builder
@@ -1187,10 +1189,7 @@ impl SettingsWidget for SecretRedactionWidget {
                 .with_child(
                     Container::new({
                         if is_enterprise_enabled {
-                            self.render_info(
-                                "Mandated by your squad.".to_string(),
-                                appearance,
-                            )
+                            self.render_info("Mandated by your squad.".to_string(), appearance)
                         } else {
                             ui_builder
                                 .switch(self.switch_state.clone())
@@ -1643,8 +1642,7 @@ impl SettingsWidget for CrashReportsWidget {
             .with_child(
                 ui_builder
                     .paragraph(
-                        "Crash reports help patch faults and keep the station upright."
-                            .to_owned(),
+                        "Crash reports help patch faults and keep the station upright.".to_owned(),
                     )
                     .with_style(UiComponentStyles {
                         font_color: Some(
@@ -1676,7 +1674,7 @@ impl SettingsWidget for CloudConversationStorageWidget {
     type View = PrivacyPageView;
 
     fn search_terms(&self) -> &str {
-        "sync cloud conversation store storage ai agent"
+        "sync cloud case file store storage taskforce officer"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {

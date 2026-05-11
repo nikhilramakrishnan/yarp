@@ -652,10 +652,7 @@ impl EnvironmentsPageView {
                 // Check if the client_id in the result matches our pending client_id
                 if let Some(result_client_id) = &result.client_id {
                     if *result_client_id == pending_client_id {
-                        self.show_success_toast(
-                            "Post's on the books.".to_string(),
-                            ctx,
-                        );
+                        self.show_success_toast("Post's on the books.".to_string(), ctx);
                     }
                 }
             }
@@ -1041,7 +1038,7 @@ impl SettingsWidget for EnvironmentsPageWidget {
     type View = EnvironmentsPageView;
 
     fn search_terms(&self) -> &str {
-        "environments environment ambient agents github yarp assisted manual configuration patrol posts beat post station unit"
+        "environments environment ambient officers github yarp assisted manual configuration patrol posts beat post station unit"
     }
 
     fn render(
@@ -1853,7 +1850,7 @@ impl EnvironmentsPageWidget {
 
             let timestamp_color = blended_colors::text_sub(theme, theme.surface_1());
 
-            // Add "Last edited" and "Last used" text with a "View my runs" link.
+            // Add "Last edited" and "Last used" text with a "View my beats" link.
             let view_runs_env_id = env_id_str.clone();
             let view_runs_link = appearance
                 .ui_builder()

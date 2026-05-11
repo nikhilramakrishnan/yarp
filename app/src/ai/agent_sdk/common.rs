@@ -141,7 +141,7 @@ pub fn refresh_yarp_drive(
     UpdateManager::as_ref(ctx)
         .initial_load_complete()
         .with_timeout(YARP_DRIVE_SYNC_TIMEOUT)
-        .map_err(|_| anyhow::anyhow!("Timed out waiting for Yarp Drive to sync"))
+        .map_err(|_| anyhow::anyhow!("Timed out waiting for Records Locker to sync"))
 }
 
 /// Fetch the conversation's server metadata and validate that its harness matches the caller's
@@ -257,11 +257,11 @@ impl EnvironmentChoice {
                     "No environments are configured for this account.\n\
 You can create an environment with `{cli_name} environment create`.\n\
 Or, re-run this command with `--no-environment` to not use an environment.\n\
-Without an environment, the agent will not be able to access private repositories or create pull requests.",
+Without an environment, the officer will not be able to access private repositories or create pull requests.",
                 )));
             }
 
-            let prompt = "Select an environment to run the agent in (or 'No environment'):";
+            let prompt = "Select an environment to run the officer in (or 'No environment'):";
 
             let choice = Select::new(prompt, options).prompt();
 
@@ -321,7 +321,7 @@ impl fmt::Display for EnvironmentChoice {
         match self {
             EnvironmentChoice::None => write!(
                 f,
-                "No environment (agent will not be able to access private repositories or create pull requests)",
+                "No environment (officer will not be able to access private repositories or create pull requests)",
             ),
             EnvironmentChoice::Environment { id, name } => write!(f, "{name} ({id})"),
         }

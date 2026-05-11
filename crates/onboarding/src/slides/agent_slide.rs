@@ -103,13 +103,13 @@ pub struct AgentDevelopmentSettings {
     /// The selected model's ID.
     pub selected_model_id: LLMId,
     pub autonomy: Option<AgentAutonomy>,
-    /// Whether the CLI agent toolbar is enabled (maps to `should_render_cli_agent_footer`).
+    /// Whether the CLI officer toolbar is enabled (maps to `should_render_cli_agent_footer`).
     pub cli_agent_toolbar_enabled: bool,
     /// The default session mode chosen during onboarding.
     pub session_default: crate::SessionDefault,
-    /// Whether the user chose to disable the Fuzz AI assistant.
+    /// Whether the user chose to disable the Taskforce assistant.
     pub disable_oz: bool,
-    /// Whether agent notifications (mailbox button, toasts, notification items) are shown.
+    /// Whether officer notifications (mailbox button, toasts, notification items) are shown.
     pub show_agent_notifications: bool,
 }
 
@@ -378,7 +378,7 @@ impl AgentSlide {
             );
 
         // Apply a semi-transparent overlay to visually disable the upper sections
-        // when the "Disable Fuzz" checkbox is checked.
+        // when the Taskforce checkbox is disabled.
         let upper_sections: Box<dyn Element> = if settings.disable_oz {
             let bg = appearance.theme().background().into_solid();
             let overlay_color = ColorU::new(bg.r, bg.g, bg.b, 128);
@@ -955,7 +955,7 @@ impl AgentSlide {
             .on_click(|ctx, _, _| ctx.dispatch_typed_action(AgentSlideAction::ToggleDisableOz))
             .finish();
 
-        let label = Text::new("Disable Yarp Agent", appearance.ui_font_family(), 14.0)
+        let label = Text::new("Disable Yarp Taskforce", appearance.ui_font_family(), 14.0)
             .with_color(internal_colors::text_sub(theme, background_for_text))
             .with_style(Properties {
                 weight: Weight::Normal,

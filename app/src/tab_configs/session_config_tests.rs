@@ -148,7 +148,12 @@ fn fuzz_no_worktree_same_as_terminal() {
 
 #[test]
 fn fuzz_with_worktree_has_worktree_commands_but_no_agent_command() {
-    let config = build_tab_config(&SessionType::Fuzz, Path::new("/home/user/repo"), true, false);
+    let config = build_tab_config(
+        &SessionType::Fuzz,
+        Path::new("/home/user/repo"),
+        true,
+        false,
+    );
     let expected_worktree_path =
         generated_worktree_path_string("/home/user/repo", "{{worktree_branch_name}}");
 

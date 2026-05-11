@@ -488,12 +488,7 @@ impl AuthViewBody {
 
     fn render_sign_in_row(&self, ui_builder: &UiBuilder) -> Box<dyn Element> {
         Flex::row()
-            .with_child(
-                ui_builder
-                    .span("Already on the force? ")
-                    .build()
-                    .finish(),
-            )
+            .with_child(ui_builder.span("Already on the force? ").build().finish())
             .with_child(
                 ui_builder
                     .link(
@@ -611,7 +606,7 @@ impl AuthViewBody {
                 "Need a badge to call PCs in or work with the rest of the station — sign on with dispatch first."
             }
             AuthViewVariant::HitDriveObjectLimitCloseable => {
-                "Need a badge to file more case work into the station drive — sign on with dispatch first."
+                "Need a badge to file more case work into the Records Locker — sign on with dispatch first."
             }
             AuthViewVariant::ShareRequirementCloseable => {
                 "Need a badge to open a channel — sign on with dispatch first."

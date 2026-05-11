@@ -130,36 +130,32 @@ impl TipsView {
 
         let tip_items = vec![
             TipItem::new(
-                "Command Palette".to_string(),
+                "Command Grid".to_string(),
                 "Radio in any Yarp action without your hands leaving the keyboard.".to_string(),
                 TipAction::CommandPalette,
                 ctx,
             ),
             TipItem::new(
                 "Split the Beat".to_string(),
-                "Carve a beat into panes — patrol multiple beats side by side."
-                    .to_string(),
+                "Carve a beat into panes — patrol multiple beats side by side.".to_string(),
                 TipAction::SplitPane,
                 ctx,
             ),
             TipItem::new(
                 "Sweep the archive".to_string(),
-                "Pull old commands off the record, edit them, and re-run."
-                    .to_string(),
+                "Pull old dispatches off the record, edit them, and re-run.".to_string(),
                 TipAction::HistorySearch,
                 ctx,
             ),
             TipItem::new(
-                "Radio for a Command".to_string(),
-                "Spell it out in plain English — the PC writes the shell command."
-                    .to_string(),
+                "Radio for Dispatch".to_string(),
+                "Spell it out in plain English — the desk PC writes the shell command.".to_string(),
                 TipAction::AiCommandSearch,
                 ctx,
             ),
             TipItem::new(
                 "Set Your Uniform".to_string(),
-                "Pick a theme that suits the station — or stitch your own."
-                    .to_string(),
+                "Pick a theme that suits the station — or stitch your own.".to_string(),
                 TipAction::ThemePicker,
                 ctx,
             ),

@@ -105,7 +105,7 @@ use yarpui::{
     UpdateView, View, ViewContext, ViewHandle, WindowId,
 };
 
-const YARP_DRIVE_TITLE: &str = "Yarp Drive";
+const YARP_DRIVE_TITLE: &str = "Records Locker";
 
 // Team zero state consts
 const HINT_HORIZONTAL_PADDING: f32 = 18.;
@@ -177,7 +177,8 @@ const INDEX_ENV_VAR_COLLECTION_LABEL: &str = "New environment variables";
 
 const IMPORT_LABEL: &str = "Bring in";
 const REMOVE_LABEL: &str = "Strike off";
-const OFFLINE_BANNER_TEXT: &str = "Off the radio. Some case files are read-only until you're back on the air.";
+const OFFLINE_BANNER_TEXT: &str =
+    "Off the radio. Some case files are read-only until you're back on the air.";
 
 pub const DRIVE_INDEX_VIEW_POSITION_ID: &str = "drive_index_view_id";
 
@@ -199,8 +200,7 @@ const SHARED_OBJECT_LIMIT_HIT_BANNER_LINE: &str =
 const PAYMENT_ISSUE_BANNER_LINE_1: &str =
     "Case files locked down — subscription payment's gone south.";
 
-const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN: &str =
-    "Square up the payment to lift the lockdown.";
+const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN: &str = "Square up the payment to lift the lockdown.";
 
 const PAYMENT_ISSUE_BANNER_LINE_2_ADMIN_ENTERPRISE: &str =
     "Radio support@yarp.dev to lift the lockdown.";
@@ -2082,8 +2082,7 @@ impl DriveIndex {
     }
 
     fn render_team_space_zero_state(&self, appearance: &Appearance) -> Box<dyn Element> {
-        let hint_text =
-            "Drag a personal playbook or casebook here to file it with the squad.";
+        let hint_text = "Drag a personal playbook or casebook here to file it with the squad.";
         let zero_state_info = Container::new(
             appearance
                 .ui_builder()
@@ -2976,7 +2975,7 @@ impl DriveIndex {
                 if mouse_state.is_hovered() {
                     let tooltip = appearance
                         .ui_builder()
-                        .tool_tip(String::from("Filing the latest with Yarp Drive"));
+                        .tool_tip(String::from("Filing the latest with Records Locker"));
 
                     stack.add_positioned_overlay_child(
                         tooltip.build().finish(),
@@ -3958,13 +3957,17 @@ impl DriveIndex {
             .with_cross_axis_alignment(CrossAxisAlignment::Start)
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween)
             .with_child(
-                Text::new_inline("Yarp Drive".to_string(), appearance.ui_font_family(), 14.)
-                    .with_color(theme.main_text_color(background_color).into())
-                    .with_style(Properties {
-                        weight: yarpui::fonts::Weight::Bold,
-                        ..Default::default()
-                    })
-                    .finish(),
+                Text::new_inline(
+                    "Records Locker".to_string(),
+                    appearance.ui_font_family(),
+                    14.,
+                )
+                .with_color(theme.main_text_color(background_color).into())
+                .with_style(Properties {
+                    weight: yarpui::fonts::Weight::Bold,
+                    ..Default::default()
+                })
+                .finish(),
             )
             .with_child(Shrinkable::new(1., Empty::new().finish()).finish())
             .with_child(close_icon_button)
@@ -4121,8 +4124,8 @@ impl DriveIndex {
             DriveObjectType::Workflow => "Playbooks",
             DriveObjectType::EnvVarCollection => "Environment Variables",
             DriveObjectType::Folder => "Folders",
-            DriveObjectType::AgentModeWorkflow => "Agent Workflows",
-            DriveObjectType::AIFact => "AI Fact",
+            DriveObjectType::AgentModeWorkflow => "Taskforce Playbooks",
+            DriveObjectType::AIFact => "Standing Order",
             DriveObjectType::AIFactCollection => "Rules",
             DriveObjectType::MCPServer => "MCP Server",
             DriveObjectType::MCPServerCollection => "MCP Servers",

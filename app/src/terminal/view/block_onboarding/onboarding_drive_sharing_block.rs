@@ -53,7 +53,7 @@ impl Entity for OnboardingDriveSharingBlock {
 
 const TITLE_TEXT: &str = "Filing case files at Sandford";
 const BODY_TEXT: &[&str] = &[
-    "Drive objects can be filed and put on the air, in Yarp or on the web, with any officer or civilian. Hit File in the Yarp Drive menu or the pane header to put a case on a frequency or send it by post.",
+    "Records Locker files can be filed and put on the air, in Yarp or on the web, with any officer or civilian. Hit File in the Records menu or the pane header to put a case on a frequency or send it by post.",
     "Access can be reworked any time the case calls for it.",
 ];
 

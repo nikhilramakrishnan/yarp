@@ -70,7 +70,7 @@ impl OneTimeModalModel {
                         .did_check_to_trigger_fuzz_launch_modal
                         .set_value(true, ctx)
                     {
-                        log::warn!("Failed to mark Fuzz launch modal as dismissed: {e}");
+                        log::warn!("Failed to mark Taskforce launch modal as dismissed: {e}");
                     }
                 });
                 GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
@@ -257,7 +257,7 @@ impl OneTimeModalModel {
                 .did_check_to_trigger_fuzz_launch_modal
                 .set_value(true, ctx)
             {
-                log::warn!("Failed to mark Fuzz launch modal as dismissed: {e}");
+                log::warn!("Failed to mark Taskforce launch modal as dismissed: {e}");
             }
         });
 

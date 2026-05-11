@@ -417,7 +417,7 @@ impl LeftPanelView {
                 ToolbeltButtonConfig {
                     icon: Icon::YarpDrive,
                     active_icon: None,
-                    tooltip_text: "Yarp Drive".to_string(),
+                    tooltip_text: "Records Locker".to_string(),
                     action: LeftPanelAction::YarpDrive,
                     render_with_active_state: false,
                     tooltip_keybinding: toolbelt_tooltip_keybinding(&tooltip_keybinding_names, ctx),

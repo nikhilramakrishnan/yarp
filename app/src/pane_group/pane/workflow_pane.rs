@@ -50,7 +50,7 @@ impl WorkflowPane {
                 content: None,
                 owner: UserWorkspaces::as_ref(ctx)
                     .personal_drive(ctx)
-                    .context("personal drive unavailable")?,
+                    .context("Records Locker unavailable")?,
                 initial_folder_id: None,
                 is_for_agent_mode: false,
             },
@@ -155,12 +155,12 @@ impl PaneContent for WorkflowPane {
                     Ok(ShareableLink::Pane { url: parsed_url })
                 } else {
                     Err(ShareableLinkError::Unexpected(String::from(
-                        "Failed to parse workflow url",
+                        "Failed to parse playbook URL",
                     )))
                 }
             } else {
                 Err(ShareableLinkError::Unexpected(String::from(
-                    "Could not retrieve workflow url from view",
+                    "Could not retrieve playbook URL from view",
                 )))
             }
         })

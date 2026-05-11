@@ -231,18 +231,14 @@ impl View for AddRegexModal {
                 Expanded::new(
                     1.,
                     Container::new(if !is_valid_regex && !pattern_text.trim().is_empty() {
-                        Text::new(
-                            "Bad regex",
-                            appearance.ui_font_family(),
-                            LABEL_FONT_SIZE,
-                        )
-                        .with_color(
-                            appearance
-                                .theme()
-                                .sub_text_color(appearance.theme().background())
-                                .into(),
-                        )
-                        .finish()
+                        Text::new("Bad regex", appearance.ui_font_family(), LABEL_FONT_SIZE)
+                            .with_color(
+                                appearance
+                                    .theme()
+                                    .sub_text_color(appearance.theme().background())
+                                    .into(),
+                            )
+                            .finish()
                     } else {
                         Empty::new().finish()
                     })

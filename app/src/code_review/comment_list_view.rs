@@ -924,7 +924,7 @@ impl CommentListView {
         } else if !has_sendable_comments {
             Cow::Borrowed("No fresh notes on the file to send up")
         } else {
-            Cow::Borrowed("Radio diff notes over to Agent")
+            Cow::Borrowed("Radio diff notes over to the duty PC")
         }
     }
 

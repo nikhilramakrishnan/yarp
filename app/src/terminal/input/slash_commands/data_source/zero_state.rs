@@ -51,7 +51,7 @@ impl SyncDataSource for ZeroStateDataSource {
             &commands::CONVERSATIONS,
             &commands::PROMPTS,
             &*commands::PLAN,
-            &commands::AGENT,
+            &commands::DETECTIVE,
         ];
 
         let mut active_prioritized_commands = vec![];

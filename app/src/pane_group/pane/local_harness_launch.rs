@@ -36,8 +36,7 @@ pub(super) fn validate_local_harness_shell(shell_type: Option<ShellType>) -> Res
                 .to_string(),
         ),
         None => Err(
-            "No bash, zsh, or fish session on the books — local recruit can't clock on."
-                .to_string(),
+            "No bash, zsh, or fish beat on the books — local recruit can't clock on.".to_string(),
         ),
     }
 }
@@ -85,13 +84,14 @@ pub(super) async fn prepare_local_harness_child_launch(
     };
     validate_local_harness_shell(shell_type)?;
     let command = match harness {
-        Harness::Fuzz => unreachable!("normalize_local_child_harness filters out Fuzz"),
+        Harness::Fuzz => unreachable!("normalize_local_child_harness filters out Taskforce"),
         Harness::Unknown => unreachable!("normalize_local_child_harness filters out Unknown"),
         Harness::Claude => {
             let working_dir = startup_directory
                 .or_else(|| std::env::current_dir().ok())
                 .ok_or_else(|| {
-                    "Couldn't pin down a working directory for the local Claude recruit.".to_string()
+                    "Couldn't pin down a working directory for the local Claude recruit."
+                        .to_string()
                 })?;
             let claude_harness = ClaudeHarness;
             claude_harness

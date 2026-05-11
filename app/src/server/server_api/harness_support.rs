@@ -1,9 +1,9 @@
 // We don't directly run agent harnesses on WASM, so this code is unused.
 #![cfg_attr(target_family = "wasm", expect(dead_code))]
 
-use std::collections::HashMap;
+use std::{collections::HashMap, path::PathBuf};
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
@@ -162,7 +162,7 @@ pub trait HarnessSupportClient: 'static + Send + Sync {
     /// `ClaudeTranscriptEnvelope`). Transient failures retry with bounded exponential
     /// backoff; permanent 4xx (e.g. 404 "no transcript") fail fast so the caller can
     /// surface a resume-specific error.
-    async fn fetch_transcript(&self) -> Result<bytes::Bytes>;
+    async fn fetch_transcript(&self, conversation_id: &AIConversationId) -> Result<bytes::Bytes>;
 
     /// Get an HTTP client to use with [`UploadTarget`]s for saving blobs.
     fn http_client(&self) -> &http_client::Client;
@@ -252,7 +252,7 @@ impl HarnessSupportClient for ServerApi {
         Ok(response.uploads)
     }
 
-    async fn fetch_transcript(&self) -> Result<bytes::Bytes> {
+    async fn fetch_transcript(&self, _conversation_id: &AIConversationId) -> Result<bytes::Bytes> {
         #[cfg(not(target_family = "wasm"))]
         {
             with_bounded_retry("fetch harness-support transcript", || async {
@@ -285,7 +285,47 @@ pub async fn upload_to_target(
     target: &UploadTarget,
     body: impl Into<reqwest::Body>,
 ) -> Result<()> {
+    let body = body.into();
+    if let Some(path) = local_file_upload_path(target)? {
+        let method = target.method.to_ascii_uppercase();
+        if method != "PUT" && method != "POST" {
+            return Err(anyhow!(
+                "Unsupported local upload method for {}: {}",
+                path.display(),
+                target.method
+            ));
+        }
+        let bytes = body.as_bytes().ok_or_else(|| {
+            anyhow!(
+                "Local upload target {} requires an in-memory request body",
+                path.display()
+            )
+        })?;
+        if let Some(parent) = path.parent() {
+            async_fs::create_dir_all(parent).await.with_context(|| {
+                format!("Failed to create local upload dir {}", parent.display())
+            })?;
+        }
+        async_fs::write(&path, bytes)
+            .await
+            .with_context(|| format!("Failed to write local upload target {}", path.display()))?;
+        return Ok(());
+    }
+
     super::presigned_upload::upload_to_target(http_client, target, body).await
+}
+
+fn local_file_upload_path(target: &UploadTarget) -> Result<Option<PathBuf>> {
+    if !target.url.starts_with("file://") {
+        return Ok(None);
+    }
+
+    let url = url::Url::parse(&target.url)
+        .with_context(|| format!("Invalid local upload target URL: {}", target.url))?;
+    let path = url
+        .to_file_path()
+        .map_err(|_| anyhow!("Invalid local upload file path: {}", target.url))?;
+    Ok(Some(path))
 }
 
 #[cfg(test)]

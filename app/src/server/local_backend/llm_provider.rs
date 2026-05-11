@@ -26,9 +26,19 @@ const OLLAMA_DEFAULT_MODEL: &str = "qwen2.5-coder";
 
 #[derive(Clone, Debug)]
 pub enum LocalLlmProvider {
-    Anthropic { api_key: String, model: String },
-    OpenAi { base_url: String, api_key: String, model: String },
-    Ollama { base_url: String, model: String },
+    Anthropic {
+        api_key: String,
+        model: String,
+    },
+    OpenAi {
+        base_url: String,
+        api_key: String,
+        model: String,
+    },
+    Ollama {
+        base_url: String,
+        model: String,
+    },
     /// No provider configured. Inference methods return an actionable error
     /// pointing the user at the env vars they need to set.
     Disabled,
@@ -82,8 +92,9 @@ impl LocalLlmProvider {
         let model_env = std::env::var("YARP_LLM_MODEL").ok();
         let base_url_env = std::env::var("YARP_LLM_BASE_URL").ok();
 
-        let pick =
-            |env: Option<String>, file: &str| env.or_else(|| (!file.is_empty()).then(|| file.to_string()));
+        let pick = |env: Option<String>, file: &str| {
+            env.or_else(|| (!file.is_empty()).then(|| file.to_string()))
+        };
         let key = pick(key_env, &stored.api_key);
         let model = pick(model_env, &stored.model);
         let base_url = pick(base_url_env, &stored.base_url);
@@ -118,14 +129,11 @@ impl LocalLlmProvider {
                 LocalLlmProvider::Anthropic { api_key, model }
             }
             "openai" => {
-                let Some(api_key) = key
-                    .clone()
-                    .or_else(|| std::env::var("OPENAI_API_KEY").ok())
+                let Some(api_key) = key.clone().or_else(|| std::env::var("OPENAI_API_KEY").ok())
                 else {
                     return LocalLlmProvider::Disabled;
                 };
-                let base_url =
-                    base_url.unwrap_or_else(|| "https://api.openai.com/v1".to_string());
+                let base_url = base_url.unwrap_or_else(|| "https://api.openai.com/v1".to_string());
                 let model = model.unwrap_or_else(|| OPENAI_DEFAULT_MODEL.to_string());
                 LocalLlmProvider::OpenAi {
                     base_url,
@@ -134,15 +142,12 @@ impl LocalLlmProvider {
                 }
             }
             "ollama" => {
-                let base_url =
-                    base_url.unwrap_or_else(|| "http://localhost:11434".to_string());
+                let base_url = base_url.unwrap_or_else(|| "http://localhost:11434".to_string());
                 let model = model.unwrap_or_else(|| OLLAMA_DEFAULT_MODEL.to_string());
                 LocalLlmProvider::Ollama { base_url, model }
             }
             other => {
-                log::warn!(
-                    "yarp: unknown LLM provider value {other:?}; LLM disabled"
-                );
+                log::warn!("yarp: unknown LLM provider value {other:?}; LLM disabled");
                 LocalLlmProvider::Disabled
             }
         }
@@ -319,10 +324,7 @@ async fn openai_chat(
         .await
         .context("openai: request failed")?;
     let status = response.status();
-    let text = response
-        .text()
-        .await
-        .context("openai: read body failed")?;
+    let text = response.text().await.context("openai: read body failed")?;
     if !status.is_success() {
         return Err(anyhow!("openai: HTTP {status}: {text}"));
     }
@@ -397,10 +399,7 @@ async fn ollama_chat(
         .await
         .context("ollama: request failed")?;
     let status = response.status();
-    let text = response
-        .text()
-        .await
-        .context("ollama: read body failed")?;
+    let text = response.text().await.context("ollama: read body failed")?;
     if !status.is_success() {
         return Err(anyhow!("ollama: HTTP {status}: {text}"));
     }

@@ -788,10 +788,7 @@ impl InitStepBlock {
                 let label = if !servers_to_install.is_empty() {
                     "Language kit on order".to_string()
                 } else if enabled_servers.len() == 1 {
-                    format!(
-                        "{} kit on the books",
-                        enabled_servers[0].language_name()
-                    )
+                    format!("{} kit on the books", enabled_servers[0].language_name())
                 } else {
                     "Language kit on the books".to_string()
                 };

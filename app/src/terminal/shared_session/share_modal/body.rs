@@ -339,16 +339,16 @@ impl View for Body {
         } else if disabled_count > 1 {
             // Multiple options disabled - mention both reasons if agent conversations exist
             if self.has_agent_conversations {
-                Some("Some options are off — the session's over the channel quota and there are case files on the air")
+                Some("Some options are off — the beat's over the channel quota and there are case files on the air")
             } else {
-                Some("Some options are off — the session's over the channel quota")
+                Some("Some options are off — the beat's over the channel quota")
             }
         } else {
             // Only one option disabled - use specific message if it's due to agent conversations
             if self.has_agent_conversations {
-                Some("Can't broadcast without the scrollback — there are case files on this session")
+                Some("Can't broadcast without the scrollback — there are case files on this beat")
             } else {
-                Some("Some options are off — the session's over the channel quota")
+                Some("Some options are off — the beat's over the channel quota")
             }
         };
 

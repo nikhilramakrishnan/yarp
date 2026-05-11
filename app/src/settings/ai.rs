@@ -274,7 +274,7 @@ impl VoiceInputToggleKey {
     }
 }
 
-/// The default mode for new terminal sessions.
+/// The default mode for new beats.
 #[derive(
     Default,
     Debug,
@@ -287,22 +287,19 @@ impl VoiceInputToggleKey {
     schemars::JsonSchema,
     settings_value::SettingsValue,
 )]
-#[schemars(
-    description = "Default mode for new sessions.",
-    rename_all = "snake_case"
-)]
+#[schemars(description = "Default mode for new beats.", rename_all = "snake_case")]
 pub enum DefaultSessionMode {
-    /// New sessions start in the terminal mode (default).
+    /// New beats start in desk mode (default).
     #[default]
     Terminal,
-    /// New sessions start in PC view.
+    /// New beats start in taskforce view.
     Agent,
-    /// New sessions start in ambient officer mode.
+    /// New beats start in ambient patrol mode.
     CloudAgent,
-    /// New sessions open a user-defined tab config.
+    /// New beats open a user-defined beat config.
     /// The specific config is identified by the companion `default_tab_config_path` setting.
     TabConfig,
-    /// New sessions open in a local Docker sandbox.
+    /// New beats open in a local Docker sandbox.
     /// Requires the `LocalDockerSandbox` feature flag; falls back to `Terminal` when disabled.
     DockerSandbox,
 }
@@ -314,16 +311,16 @@ settings::macros::implement_setting_for_enum!(
     SyncToCloud::Globally(RespectUserSyncSetting::Yes),
     private: false,
     toml_path: "general.default_session_mode",
-    description: "The default mode for new terminal sessions.",
+    description: "The default mode for new beats.",
 );
 
 impl DefaultSessionMode {
     /// Display name for the settings dropdown.
     pub fn display_name(&self) -> &'static str {
         match self {
-            DefaultSessionMode::Terminal => "Terminal",
-            DefaultSessionMode::Agent => "PC",
-            DefaultSessionMode::CloudAgent => "Cloud Fuzz",
+            DefaultSessionMode::Terminal => "Desk Beat",
+            DefaultSessionMode::Agent => "Taskforce Beat",
+            DefaultSessionMode::CloudAgent => "Ambient Patrol",
             DefaultSessionMode::TabConfig => "Beat config",
             DefaultSessionMode::DockerSandbox => "Local Docker Sandbox",
         }
@@ -716,7 +713,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
         toml_path: "agents.yarp_agent.is_any_ai_enabled",
-        description: "Controls whether all AI features are enabled.",
+        description: "Controls whether all PC features are enabled.",
     },
     // This field should not be referenced directly to lookup active AI enablement -- use the
     // `is_active_ai_enabled()` getter.
@@ -742,7 +739,7 @@ define_settings_group!(AISettings, settings: [
     },
     // This field should not be referenced directly -- use the
     // `is_nld_in_terminal_enabled()` getter.
-    // Controls whether natural language detection is enabled in the terminal input.
+    // Controls whether natural language detection is enabled in the beat input.
     //
     // This is only used when `FeatureFlag::AgentView` is enabled.
     nld_in_terminal_enabled_internal: NLDInTerminalEnabled {
@@ -752,7 +749,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.input.nld_in_terminal_enabled",
-        description: "Controls whether natural language detection is enabled in the terminal input.",
+        description: "Controls whether natural language detection is enabled in the beat input.",
     },
     autodetection_command_denylist: AICommandDenylist {
         type: String,
@@ -1078,7 +1075,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.knowledge.yarp_drive_context_enabled",
-        description: "Whether Yarp Drive context is included in PC briefings.",
+        description: "Whether records locker context is included in PC briefings.",
     }
 
     // Whether the codebase speedbump banner has been permanently dismissed for a given repo path.
@@ -1170,7 +1167,7 @@ define_settings_group!(AISettings, settings: [
         private: true,
     }
 
-    // Used to determine whether the "What's new in Fuzz" section of the agent view
+    // Used to determine whether the Taskforce changelog section of the officer view
     // zero state is expanded or collapsed by default.
     should_expand_oz_updates: ShouldExpandOzUpdates {
         type: bool,
@@ -1180,7 +1177,7 @@ define_settings_group!(AISettings, settings: [
         private: true,
     }
 
-    // Used to determine whether the "What's new in Fuzz" section of the agent view
+    // Used to determine whether the Taskforce changelog section of the officer view
     // zero state is shown or hidden.
     should_show_oz_updates_in_zero_state: ShouldShowOzUpdatesInZeroState {
         type: bool,
@@ -1211,7 +1208,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.yarp_agent.other.should_render_use_agent_toolbar_for_user_commands",
-        description: "Whether to show the \"Use Agent\" footer for terminal commands.",
+        description: "Whether to show the \"Use PC\" footer for beat commands.",
     }
 
     // Whether to render the CLI agent footer for commands like Claude, Codex, Gemini, etc.
@@ -1223,7 +1220,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.third_party.should_render_cli_agent_toolbar",
-        description: "Whether to show the CLI agent footer for coding agent commands.",
+        description: "Whether to show the CLI officer footer for coding officer commands.",
     }
     // When enabled and a CLI agent session has a plugin listener, rich input
     // auto-closes when the session enters a Blocked state (the agent requires
@@ -1235,7 +1232,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.third_party.auto_toggle_composer",
-        description: "Whether CLI agent Rich Input automatically closes and reopens based on the agent's blocked state.",
+        description: "Whether CLI officer Rich Input automatically closes and reopens based on the officer's blocked state.",
     }
 
     // When enabled and a CLI agent session has a plugin listener, rich input
@@ -1247,7 +1244,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.third_party.auto_open_composer_on_cli_agent_start",
-        description: "Whether CLI agent Rich Input automatically opens when a CLI agent session starts.",
+        description: "Whether CLI officer Rich Input automatically opens when a CLI officer session starts.",
     }
 
     // When enabled and a CLI agent session does NOT have a plugin listener,
@@ -1261,7 +1258,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "agents.third_party.auto_dismiss_composer_after_submit",
-        description: "Whether CLI agent Rich Input automatically closes after the user submits a prompt.",
+        description: "Whether CLI officer Rich Input automatically closes after the user submits a prompt.",
     }
 
     // Maps custom toolbar command regex patterns to specific CLI agents.
@@ -1276,7 +1273,7 @@ define_settings_group!(AISettings, settings: [
         private: false,
         toml_path: "agents.third_party.cli_agent_toolbar_enabled_commands",
         max_table_depth: 1,
-        description: "Maps custom toolbar command patterns to specific CLI agents.",
+        description: "Maps custom toolbar command patterns to specific CLI officers.",
     }
 
     // This is not a user-visible setting - it tracks whether a paid user has dismissed the
@@ -1458,7 +1455,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
         toml_path: "agents.yarp_agent.other.agent_attribution_enabled",
-        description: "Whether the Yarp Agent adds an attribution co-author line to commit messages and pull requests it creates.",
+        description: "Whether the Yarp Taskforce adds an attribution co-author line to commit messages and pull requests it creates.",
     }
 ]);
 

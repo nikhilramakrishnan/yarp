@@ -330,7 +330,7 @@ impl EditorView {
                                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                                     let toast = crate::view_components::DismissibleToast::success(
                                         format!(
-                                            "Radio's hot. Press and hold `{}` to call in (Standing Orders > AI > Voice to retune).",
+                                            "Radio's hot. Press and hold `{}` to call in (Standing Orders > Taskforce > Voice to retune).",
                                             toggle_key.display_name()
                                         )
                                             .to_string(),

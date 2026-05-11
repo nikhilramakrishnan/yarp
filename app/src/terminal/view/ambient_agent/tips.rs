@@ -40,11 +40,11 @@ impl AITip for CloudModeTip {
 pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
     vec![
         CloudModeTip::new(
-            "Install the Fuzz Slack integration to dispatch ambient officers from any channel or DM.",
+            "Install the Taskforce Slack integration to dispatch ambient officers from any channel or DM.",
             None,
         ),
         CloudModeTip::new(
-            "Build programmatic PCs using Fuzz's TypeScript and Python SDKs.",
+            "Build programmatic PCs using Taskforce's TypeScript and Python SDKs.",
             None,
         ),
         CloudModeTip::new(
@@ -52,11 +52,11 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "View all your PC patrols and their status in the Fuzz web app.",
+            "View all your PC patrols and their status in the Taskforce web app.",
             None,
         ),
         CloudModeTip::new(
-            "Tune into any Fuzz officer's beat live by opening a radio channel.",
+            "Tune into any Taskforce officer's beat live by opening a radio channel.",
             None,
         ),
         CloudModeTip::new(
@@ -76,7 +76,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             Some("https://github.com/hotfuzz/fuzz-agent-action"),
         ),
         CloudModeTip::new(
-            "Call the Fuzz REST API to dispatch PCs from any backend service or internal tool.",
+            "Call the Taskforce REST API to dispatch PCs from any backend service or internal tool.",
             None,
         ),
         CloudModeTip::new(
@@ -88,11 +88,11 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Use the `--share` flag with the Fuzz CLI to open the radio channel from anywhere.",
+            "Use the `--share` flag with the Taskforce CLI to open the radio channel from anywhere.",
             None,
         ),
         CloudModeTip::new(
-            "Fork a completed Fuzz ambient officer's case file into Yarp to keep working it from your desk.",
+            "Fork a completed Taskforce ambient officer's case file into Yarp to keep working it from your desk.",
             None,
         ),
         CloudModeTip::new(
@@ -104,15 +104,15 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Tag @Fuzz in Linear issues to dispatch a PC to investigate and propose a fix.",
+            "Tag @Taskforce in Linear issues to dispatch a PC to investigate and propose a fix.",
             None,
         ),
         CloudModeTip::new(
-            "Send PCs out on remote dev boxes or CI runners using the Fuzz CLI.",
+            "Send PCs out on remote dev boxes or CI runners using the Taskforce CLI.",
             None,
         ),
         CloudModeTip::new(
-            "Wire up MCP servers so Fuzz ambient officers can radio GitHub, Linear, and Sentry.",
+            "Wire up MCP servers so Taskforce ambient officers can radio GitHub, Linear, and Sentry.",
             None,
         ),
         CloudModeTip::new(
@@ -120,7 +120,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Tune in to your colleagues' PC patrols in the Fuzz web app for shared visibility.",
+            "Tune in to your colleagues' PC patrols in the Taskforce web app for shared visibility.",
             None,
         ),
         CloudModeTip::new(
@@ -176,7 +176,7 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Stand up an internal Slack bot that hands off coding work to Fuzz PCs.",
+            "Stand up an internal Slack bot that hands off coding work to Taskforce PCs.",
             None,
         ),
         CloudModeTip::new(
@@ -184,15 +184,15 @@ pub fn get_cloud_mode_tips() -> Vec<CloudModeTip> {
             None,
         ),
         CloudModeTip::new(
-            "Use the Fuzz TypeScript SDK to build custom dispatch pipelines.",
+            "Use the Taskforce TypeScript SDK to build custom dispatch pipelines.",
             None,
         ),
         CloudModeTip::new(
-            "Use the Fuzz Python SDK to put PCs in your data pipelines.",
+            "Use the Taskforce Python SDK to put PCs in your data pipelines.",
             None,
         ),
         CloudModeTip::new(
-            "Watch PC success rates and patrol times using the Fuzz API.",
+            "Watch PC success rates and patrol times using the Taskforce API.",
             None,
         ),
         CloudModeTip::new(

@@ -7,7 +7,7 @@ use crate::{
     model::ModelArgs, scope::ObjectScope, share::ShareArgs, skill::SkillSpec,
 };
 
-/// Output format for agent results.
+/// Output format for officer results.
 #[derive(Debug, Copy, Clone, ValueEnum, Eq, PartialEq, Default)]
 pub enum OutputFormat {
     /// Output as JSON.
@@ -52,10 +52,10 @@ impl fmt::Display for Prompt {
 #[derive(Debug, Clone, Args)]
 #[group(multiple = false)]
 pub struct PromptArg {
-    /// Prompt for the agent to carry out.
+    /// Prompt for the officer to carry out.
     #[arg(long = "prompt", short = 'p')]
     pub prompt: Option<String>,
-    /// The saved AI prompt to run, identified by id.
+    /// The saved Taskforce prompt to run, identified by id.
     #[arg(long = "saved-prompt")]
     pub saved_prompt: Option<String>,
 }
@@ -73,11 +73,11 @@ impl PromptArg {
 /// Shared CLI args for controlling computer use capabilities.
 #[derive(Debug, Clone, Args, Default)]
 pub struct ComputerUseArgs {
-    /// Enable computer use capabilities for this agent run.
+    /// Enable computer use capabilities for this officer run.
     #[arg(long = "computer-use", conflicts_with = "no_computer_use")]
     pub computer_use: bool,
 
-    /// Disable computer use capabilities for this agent run.
+    /// Disable computer use capabilities for this officer run.
     #[arg(long = "no-computer-use", conflicts_with = "computer_use")]
     pub no_computer_use: bool,
 }
@@ -100,11 +100,11 @@ impl ComputerUseArgs {
 /// should be accepted but not shown in help output.
 #[derive(Debug, Clone, Args, Default)]
 pub struct HiddenComputerUseArgs {
-    /// Enable computer use capabilities for this agent run.
+    /// Enable computer use capabilities for this officer run.
     #[arg(long = "computer-use", conflicts_with = "no_computer_use", hide = true)]
     pub computer_use: bool,
 
-    /// Disable computer use capabilities for this agent run.
+    /// Disable computer use capabilities for this officer run.
     #[arg(long = "no-computer-use", conflicts_with = "computer_use", hide = true)]
     pub no_computer_use: bool,
 }
@@ -118,10 +118,10 @@ impl HiddenComputerUseArgs {
         }
     }
 }
-/// The execution harness for an agent run.
+/// The execution harness for an officer run.
 #[derive(Debug, Copy, Clone, ValueEnum, Eq, PartialEq, Default)]
 pub enum Harness {
-    /// Use Yarp's built-in MAA infrastructure (default).
+    /// Use Yarp's built-in Taskforce infrastructure (default).
     #[default]
     #[value(name = "fuzz")]
     Fuzz,
@@ -157,7 +157,7 @@ impl Harness {
 
     pub fn display_name(self) -> &'static str {
         match self {
-            Self::Fuzz => "Fuzz",
+            Self::Fuzz => "Taskforce",
             Self::Claude => "Claude Code",
             Self::OpenCode => "OpenCode",
             Self::Gemini => "Gemini CLI",
@@ -179,24 +179,24 @@ impl fmt::Display for Harness {
     }
 }
 
-/// Profile subcommands.
+/// Officer profile subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum AgentProfileCommand {
-    /// List available agent profiles.
+    /// List available officer profiles.
     List,
 }
 
-/// Agent-related subcommands.
+/// Officer-related subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum AgentCommand {
-    /// Run a new Fuzz agent.
+    /// Run a new Taskforce officer.
     Run(RunAgentArgs),
-    /// Dispatch an Fuzz agent that runs remotely.
+    /// Dispatch a Taskforce officer that runs remotely.
     RunCloud(RunCloudArgs),
-    /// Manage agent profiles.
+    /// Manage officer profiles.
     #[command(subcommand)]
     Profile(AgentProfileCommand),
-    /// List all available agents.
+    /// List all available officers.
     List(ListAgentConfigsArgs),
 }
 
@@ -220,7 +220,7 @@ pub struct RunAgentArgs {
     #[command(flatten)]
     pub config_file: ConfigFileArgs,
 
-    /// Use a skill as the base prompt for the agent.
+    /// Use a skill as the base prompt for the officer.
     ///
     /// Format: `skill_name`, `repo:skill_name`, or `org/repo:skill_name`
     ///
@@ -234,18 +234,18 @@ pub struct RunAgentArgs {
     #[arg(long = "skill", value_name = "SPEC")]
     pub skill: Option<SkillSpec>,
 
-    /// Name for this agent task.
+    /// Name for this officer task.
     #[arg(long = "name", short = 'n')]
     pub name: Option<String>,
-    /// Working directory for the agent
+    /// Working directory for the officer.
     #[arg(short = 'C', long = "cwd")]
     pub cwd: Option<PathBuf>,
-    /// Display agent progress in the Yarp interface.
+    /// Display officer progress in the Yarp interface.
     #[arg(long = "gui", hide = true)]
     pub gui: bool,
     #[command(flatten)]
     pub share: ShareArgs,
-    /// MCP servers to start before executing the agent.
+    /// MCP servers to start before executing the officer.
     ///
     /// Can be specified as:
     /// - A path to a JSON file containing MCP configuration
@@ -254,14 +254,14 @@ pub struct RunAgentArgs {
     /// Can be specified multiple times to include multiple servers.
     #[arg(long = "mcp", value_name = "SPEC")]
     pub mcp_specs: Vec<MCPSpec>,
-    /// LEGACY: MCP servers to start before executing the agent, identified by UUID.
+    /// LEGACY: MCP servers to start before executing the officer, identified by UUID.
     #[arg(long = "mcp-server", value_name = "UUID", hide = true)]
     pub mcp_servers: Vec<uuid::Uuid>,
     /// Cloud environment to use, identified by ID.
     #[arg(long = "environment", short = 'e', value_name = "ID")]
     pub environment: Option<String>,
 
-    /// Keep the agent's session open after the conversation completes.
+    /// Keep the officer's session open after the conversation completes.
     ///
     /// This is useful when you want to keep the session alive for follow-up interactions.
     ///
@@ -277,11 +277,11 @@ pub struct RunAgentArgs {
 
     #[command(flatten)]
     pub snapshot: SnapshotArgs,
-    /// Identifier for the task that spawned this agent, used to report progress.
+    /// Identifier for the task that spawned this officer, used to report progress.
     #[arg(long = "task-id", hide = true, conflicts_with_all = ["prompt", "saved_prompt", "file"])]
     pub task_id: Option<String>,
 
-    /// Whether we are running the agent in a sandboxed environment.
+    /// Whether we are running the officer in a sandboxed environment.
     #[arg(long = "sandboxed", hide = true)]
     pub sandboxed: bool,
     /// IAM role ARN to use for federated AWS Bedrock credentials for this run.
@@ -295,13 +295,13 @@ pub struct RunAgentArgs {
     #[arg(long = "conversation", value_name = "ID")]
     pub conversation: Option<String>,
 
-    /// Agent profile to configure the terminal session.
+    /// Officer profile to configure the terminal session.
     #[arg(long = "profile", value_name = "ID")]
     pub profile: Option<String>,
 
-    /// Execution harness for the agent run.
+    /// Execution harness for the officer run.
     ///
-    /// "fuzz" (default) uses Yarp's built-in agent infrastructure.
+    /// "fuzz" (default) uses Yarp's built-in Taskforce infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,
@@ -353,7 +353,7 @@ pub struct RunCloudArgs {
     #[command(flatten)]
     pub config_file: ConfigFileArgs,
 
-    /// Use a skill as the base prompt for the agent.
+    /// Use a skill as the base prompt for the officer.
     ///
     /// Format: `skill_name`, `repo:skill_name`, or `org/repo:skill_name`
     ///
@@ -367,11 +367,11 @@ pub struct RunCloudArgs {
     #[arg(long = "skill", value_name = "SPEC")]
     pub skill: Option<SkillSpec>,
 
-    /// Name for this agent task.
+    /// Name for this officer task.
     #[arg(long = "name", short = 'n')]
     pub name: Option<String>,
 
-    /// MCP servers to start before executing the agent.
+    /// MCP servers to start before executing the officer.
     ///
     /// Can be specified as:
     /// - A path to a JSON file containing MCP configuration
@@ -381,10 +381,10 @@ pub struct RunCloudArgs {
     #[arg(long = "mcp", value_name = "SPEC")]
     pub mcp_specs: Vec<MCPSpec>,
 
-    /// The environment to run this ambient agent in.
+    /// The environment to run this ambient officer in.
     #[command(flatten)]
     pub environment: EnvironmentCreateArgs,
-    /// Open the agent's session in Yarp once it's available.
+    /// Open the officer's session in Yarp once it's available.
     #[arg(long = "open")]
     pub open: bool,
 
@@ -401,7 +401,7 @@ pub struct RunCloudArgs {
     #[arg(long = "host", value_name = "WORKER_ID")]
     pub worker_host: Option<String>,
 
-    /// Path to a file to attach to the agent query.
+    /// Path to a file to attach to the officer query.
     ///
     /// Can be specified multiple times to attach multiple files (maximum 5).
     ///
@@ -420,22 +420,22 @@ pub struct RunCloudArgs {
     #[command(flatten)]
     pub snapshot: SnapshotArgs,
 
-    /// Execution harness for the agent run.
+    /// Execution harness for the officer run.
     ///
-    /// "fuzz" (default) uses Yarp's built-in agent infrastructure.
+    /// "fuzz" (default) uses Yarp's built-in Taskforce infrastructure.
     /// "claude" delegates to the `claude` CLI.
     #[arg(long = "harness", value_name = "HARNESS", default_value_t = Harness::Fuzz, hide = true)]
     pub harness: Harness,
 
     /// Name of a managed secret for Claude Code harness authentication.
     ///
-    /// Resolved server-side and injected into the agent container.
+    /// Resolved server-side and injected into the officer container.
     /// Only valid when --harness is set to "claude".
     #[arg(long = "claude-auth-secret", value_name = "NAME", hide = true)]
     pub claude_auth_secret: Option<String>,
 }
 
-/// Arguments for listing available agents.
+/// Arguments for listing available officers.
 #[derive(Debug, Clone, Args)]
 pub struct ListAgentConfigsArgs {
     /// List skills from a specific GitHub repository.

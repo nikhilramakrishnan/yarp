@@ -1,9 +1,9 @@
 use clap::{Args, Subcommand, ValueEnum};
 
-/// Commands to support third-party agent harnesses running within Fuzz.
+/// Commands to support third-party officer harnesses running within Taskforce.
 ///
-/// These commands are invoked by external agent harnesses (e.g. Claude Code)
-/// during a cloud agent run to interact with Fuzz platform APIs.
+/// These commands are invoked by external officer harnesses (e.g. Claude Code)
+/// during a cloud officer run to interact with Taskforce platform APIs.
 #[derive(Debug, Clone, Args)]
 pub struct HarnessSupportArgs {
     /// The run ID to associate with harness-support API calls.
@@ -20,7 +20,7 @@ pub enum HarnessSupportCommand {
     #[command(hide = true)]
     Ping,
 
-    /// Report an artifact back to the Fuzz platform.
+    /// Report an artifact back to the Taskforce platform.
     ReportArtifact(ReportArtifactArgs),
 
     /// Send a progress notification to the task's originating platform (Slack, Linear, etc.).

@@ -931,17 +931,15 @@ pub(super) fn render(props: Props, app: &AppContext) -> Box<dyn Element> {
                                 vec![FormattedTextFragment::plain_text(format!("{verb} "))];
                             match &conversation_label {
                                 Some(name) => {
-                                    fragments
-                                        .push(FormattedTextFragment::plain_text("case file "));
+                                    fragments.push(FormattedTextFragment::plain_text("case file "));
                                     fragments.push(FormattedTextFragment::weighted(
                                         name.as_str(),
                                         Some(markdown_parser::weight::CustomWeight::Bold),
                                     ));
                                 }
                                 None => {
-                                    fragments.push(FormattedTextFragment::plain_text(
-                                        "this case file",
-                                    ));
+                                    fragments
+                                        .push(FormattedTextFragment::plain_text("this case file"));
                                 }
                             };
                             match query {
@@ -1245,7 +1243,9 @@ fn render_search_codebase(
                                     RadioButtonItem::text(
                                         "Always wave case files through on patrol",
                                     ),
-                                    RadioButtonItem::text("Always wave case files through on this beat"),
+                                    RadioButtonItem::text(
+                                        "Always wave case files through on this beat",
+                                    ),
                                 ],
                                 props
                                     .state_handles
@@ -2219,8 +2219,7 @@ fn render_suggest_new_conversation(
 
     let mut content = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
-    let new_conversation_header_text =
-        "Looks like the case changed. Want to file a fresh one?";
+    let new_conversation_header_text = "Looks like the case changed. Want to file a fresh one?";
     let new_conversation_header_element = HeaderConfig::new(new_conversation_header_text, app)
         .with_icon(yellow_stop_icon(appearance))
         .with_corner_radius_override(CornerRadius::with_top(Radius::Pixels(8.)))

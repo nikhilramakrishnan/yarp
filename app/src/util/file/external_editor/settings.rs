@@ -137,10 +137,7 @@ define_settings_group!(EditorSettings, settings: [
     schemars::JsonSchema,
     settings_value::SettingsValue,
 )]
-#[schemars(
-    description = "How to open case files.",
-    rename_all = "snake_case"
-)]
+#[schemars(description = "How to open case files.", rename_all = "snake_case")]
 pub enum OpenConversationPreference {
     NewTab,
     SplitPane,

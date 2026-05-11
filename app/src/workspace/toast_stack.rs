@@ -14,9 +14,9 @@ pub struct ToastStack;
 impl From<ToastType> for DismissibleToast<WorkspaceAction> {
     fn from(value: ToastType) -> Self {
         match value {
-            ToastType::CloudObjectNotFound => {
-                DismissibleToast::error(String::from("No lead on that one — or you don't have clearance."))
-            }
+            ToastType::CloudObjectNotFound => DismissibleToast::error(String::from(
+                "No lead on that one — or you don't have clearance.",
+            )),
         }
     }
 }

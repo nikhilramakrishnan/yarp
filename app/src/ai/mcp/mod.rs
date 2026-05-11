@@ -76,7 +76,7 @@ impl MCPProvider {
             MCPProvider::Yarp => "Yarp",
             MCPProvider::Claude => "Claude",
             MCPProvider::Codex => "Codex",
-            MCPProvider::Agents => "Other Agents",
+            MCPProvider::Agents => "Other Officers",
         }
     }
 

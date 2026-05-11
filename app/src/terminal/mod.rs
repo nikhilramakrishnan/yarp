@@ -79,11 +79,11 @@ pub mod ssh;
 pub mod terminal_manager;
 mod terminal_size_element;
 pub mod view;
-pub mod yarpify;
 mod waterfall_gap_element;
 mod writeable_pty;
 #[cfg(windows)]
 pub mod wsl;
+pub mod yarpify;
 
 pub mod cli_agent;
 pub use cli_agent::CLIAgent;

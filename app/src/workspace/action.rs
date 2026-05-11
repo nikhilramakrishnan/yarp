@@ -680,7 +680,7 @@ impl From<&WorkspaceAction> for LoginGatedFeature {
     fn from(val: &WorkspaceAction) -> LoginGatedFeature {
         use WorkspaceAction::*;
         match val {
-            ImportToTeamDrive => "Importing to the squad drive",
+            ImportToTeamDrive => "Importing to the squad Records Locker",
             CreateTeamNotebook => "Filing a squad casebook",
             CreateTeamWorkflow => "Filing a squad playbook",
             CreateTeamFolder => "Filing a squad case folder",

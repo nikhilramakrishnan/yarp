@@ -110,7 +110,7 @@ impl AtContextMenuDisabledReason {
             AtContextMenuDisabledReason::Wasm => "Need a case cabinet for this".to_string(),
             #[cfg(not(target_family = "wasm"))]
             AtContextMenuDisabledReason::DisabledInTerminalMode => {
-                "Off-duty in terminal mode — switch it back on in settings".to_string()
+                "Off-duty in desk mode — switch it back on in settings".to_string()
             }
         }
     }
@@ -1135,7 +1135,7 @@ fn build_new_renderable_option_config(
                 icon_color: fg_color,
                 label: None,
                 tooltip: Some(tooltip_config(
-                    "Agent Mode",
+                    "Taskforce Mode",
                     Some(agent_mode_tooltip_subtext(terminal_keybindings)),
                     app,
                 )),

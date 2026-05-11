@@ -110,16 +110,16 @@ impl AgentToolbarItemKind {
     pub fn display_label(&self) -> &'static str {
         match self {
             Self::ContextChip(_) => "Case tag",
-            Self::ModelSelector => "Officer Assigned",
+            Self::ModelSelector => "Officer assigned",
             Self::NLDToggle => "Sniff it out",
             Self::VoiceInput => "Radio mic",
-            Self::FileAttach => "Clip Evidence",
-            Self::ContextWindowUsage => "Case Load",
-            Self::FileExplorer => "Evidence Locker",
+            Self::FileAttach => "Clip evidence",
+            Self::ContextWindowUsage => "Case load",
+            Self::FileExplorer => "Evidence locker",
             Self::RichInput => "Casebook",
             Self::ShareSession => "/remote-control",
             Self::Settings => "Standing Orders",
-            Self::FastForwardToggle => "On the Double",
+            Self::FastForwardToggle => "On the double",
         }
     }
 

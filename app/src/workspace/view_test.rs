@@ -68,8 +68,8 @@ use crate::resource_center::Tip;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::undo_close::UndoCloseSettings;
-use crate::yarp_managed_paths_watcher::YarpManagedPathsWatcher;
 use crate::workflows::local_workflows::LocalWorkflows;
+use crate::yarp_managed_paths_watcher::YarpManagedPathsWatcher;
 use crate::{experiments, workspace, GlobalResourceHandlesProvider};
 use crate::{AgentNotificationsModel, ObjectActions};
 
@@ -1464,7 +1464,7 @@ fn test_open_or_toggle_yarp_drive() {
 
         let workspace = mock_workspace(&mut app);
         workspace.update(&mut app, |workspace, ctx| {
-            // First, unconditionally open Yarp Drive as a system action. WD should be open and welcome tips should not have opening yarp drive.
+            // First, unconditionally open Records Locker as a system action. It should be open and welcome tips should not record opening it.
             workspace.open_or_toggle_yarp_drive(
                 false, /* toggle */
                 false, /* explicit_user_action */
@@ -1472,7 +1472,7 @@ fn test_open_or_toggle_yarp_drive() {
             );
             assert!(
                 workspace.current_workspace_state.is_yarp_drive_open,
-                "Yarp Drive should be open"
+                "Records Locker should be open"
             );
             assert!(
                 !workspace
@@ -1480,10 +1480,10 @@ fn test_open_or_toggle_yarp_drive() {
                     .as_ref(ctx)
                     .features_used
                     .contains(&Tip::Action(TipAction::OpenYarpDrive)),
-                "Yarp drive welcome tip should not be completed"
+                "Records Locker welcome tip should not be completed"
             );
 
-            // Next, toggle yarp drive as a user action. WD should be closed and tip should not be filled out.
+            // Next, toggle Records Locker as a user action. It should be closed and tip should not be filled out.
             workspace.open_or_toggle_yarp_drive(
                 true, /* toggle */
                 true, /* explicit_user_action */
@@ -1491,7 +1491,7 @@ fn test_open_or_toggle_yarp_drive() {
             );
             assert!(
                 !workspace.current_workspace_state.is_yarp_drive_open,
-                "Yarp Drive should be closed"
+                "Records Locker should be closed"
             );
             assert!(
                 !workspace
@@ -1499,10 +1499,10 @@ fn test_open_or_toggle_yarp_drive() {
                     .as_ref(ctx)
                     .features_used
                     .contains(&Tip::Action(TipAction::OpenYarpDrive)),
-                "Yarp drive welcome tip should not be completed"
+                "Records Locker welcome tip should not be completed"
             );
 
-            // Finally, toggle yarp drive again as a user action. WD should be open and tip filled out.
+            // Finally, toggle Records Locker again as a user action. It should be open and tip filled out.
             workspace.open_or_toggle_yarp_drive(
                 true, /* toggle */
                 true, /* explicit_user_action */
@@ -1510,7 +1510,7 @@ fn test_open_or_toggle_yarp_drive() {
             );
             assert!(
                 workspace.current_workspace_state.is_yarp_drive_open,
-                "Yarp Drive should be open"
+                "Records Locker should be open"
             );
             assert!(
                 workspace
@@ -1518,7 +1518,7 @@ fn test_open_or_toggle_yarp_drive() {
                     .as_ref(ctx)
                     .features_used
                     .contains(&Tip::Action(TipAction::OpenYarpDrive)),
-                "Yarp drive welcome tip should not be completed"
+                "Records Locker welcome tip should not be completed"
             );
         });
     });
@@ -1661,8 +1661,9 @@ fn test_tab_context_menu_share_session_items() {
         // for sharing are "Close radio channel" and "Close all radio channels".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
-            assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Close radio channel").into_item()));
+            assert!(items[0].is_approximately_same_item_as(
+                &MenuItemFields::new("Close radio channel").into_item()
+            ));
             assert!(items[1].is_approximately_same_item_as(
                 &MenuItemFields::new("Close all radio channels").into_item()
             ));
@@ -1682,8 +1683,9 @@ fn test_tab_context_menu_share_session_items() {
         // for sharing are "Open radio channel" and "Close all radio channels".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
-            assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Open radio channel").into_item()));
+            assert!(items[0].is_approximately_same_item_as(
+                &MenuItemFields::new("Open radio channel").into_item()
+            ));
             assert!(items[1].is_approximately_same_item_as(
                 &MenuItemFields::new("Close all radio channels").into_item()
             ));
@@ -1698,8 +1700,9 @@ fn test_tab_context_menu_share_session_items() {
         // When there's no shared sessions in a tab, the only option is "Open radio channel".
         workspace.read(&app, |workspace, ctx| {
             let items = workspace.tabs[1].menu_items(1, 3, ctx);
-            assert!(items[0]
-                .is_approximately_same_item_as(&MenuItemFields::new("Open radio channel").into_item()));
+            assert!(items[0].is_approximately_same_item_as(
+                &MenuItemFields::new("Open radio channel").into_item()
+            ));
             assert!(items[1].is_approximately_same_item_as(&MenuItem::Separator));
         });
     });
@@ -1751,11 +1754,11 @@ fn test_switch_focus_panels() {
         workspace.update(&mut app, |view, ctx| {
             assert!(
                 view.left_panel_view.is_self_or_child_focused(ctx),
-                "Expected Yarp Drive panel to be focused"
+                "Expected Records Locker panel to be focused"
             );
         });
 
-        // Shift focus from WD to left panel when AI panel is open
+        // Shift focus from Records Locker to left panel when Taskforce panel is open
         workspace.update(&mut app, |view, ctx| {
             view.current_workspace_state.is_ai_assistant_panel_open = true;
             view.focus_left_panel(ctx);
@@ -1763,11 +1766,11 @@ fn test_switch_focus_panels() {
         workspace.update(&mut app, |view, ctx| {
             assert!(
                 view.ai_assistant_panel.is_self_or_child_focused(ctx),
-                "Expected AI panel to be focused"
+                "Expected Taskforce panel to be focused"
             );
         });
 
-        // Shift focus from AI panel to left panel (terminal)
+        // Shift focus from Taskforce panel to left panel (terminal)
         workspace.update(&mut app, |view, ctx| {
             view.focus_left_panel(ctx);
         });
@@ -1778,7 +1781,7 @@ fn test_switch_focus_panels() {
             );
         });
 
-        // Shift focus from workspace to right panel when AI assistant is open
+        // Shift focus from workspace to right panel when Taskforce assistant is open
         workspace.update(&mut app, |view, ctx| {
             view.current_workspace_state.is_ai_assistant_panel_open = true;
             view.focus_right_panel(ctx);
@@ -1786,7 +1789,7 @@ fn test_switch_focus_panels() {
         workspace.update(&mut app, |view, ctx| {
             assert!(
                 view.ai_assistant_panel.is_self_or_child_focused(ctx),
-                "Expected AI panel to be focused"
+                "Expected Taskforce panel to be focused"
             );
         });
 

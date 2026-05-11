@@ -49,7 +49,6 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
     undo_close::UndoCloseStack,
-    yarp_managed_paths_watcher::YarpManagedPathsWatcher,
     workflows::local_workflows::LocalWorkflows,
     workspace::{
         sync_inputs::SyncedInputState, ActiveSession, OneTimeModalModel, WorkspaceRegistry,
@@ -58,6 +57,7 @@ use crate::{
         team_tester::TeamTesterStatus, update_manager::TeamUpdateManager,
         user_profiles::UserProfiles, user_workspaces::UserWorkspaces,
     },
+    yarp_managed_paths_watcher::YarpManagedPathsWatcher,
     AgentNotificationsModel, GlobalResourceHandles, GlobalResourceHandlesProvider,
 };
 #[cfg(feature = "local_fs")]

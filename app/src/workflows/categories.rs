@@ -764,7 +764,7 @@ impl CategoriesView {
             appearance
                 .ui_builder()
                 .link(
-                    "creating your own workflow".into(),
+                    "creating your own playbook".into(),
                     Some(
                         "https://github.com/hotfuzz/yarp/knowledge-and-collaboration/yarp-drive/workflows"
                             .into(),

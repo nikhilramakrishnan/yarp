@@ -19,7 +19,7 @@ use super::{
 
 const TITLE: &str = "Sign on to call in the radio";
 const CONTENT: &str =
-    "AI radio's off the air for civilians. Get sworn in to ring up the squad.";
+    "Taskforce radio's off the air for civilians. Get sworn in to ring up the squad.";
 const SIGN_UP_BUTTON_TEXT: &str = "Swear in";
 
 // Layout constants for three-column banner

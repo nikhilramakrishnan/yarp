@@ -6,11 +6,11 @@ use enum_iterator::{all, cardinality};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
-use yarp_util::path::LineAndColumnArg;
-use yarpui::AppContext;
 use winreg::enums::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
 use winreg::RegKey;
 use winreg::HKEY;
+use yarp_util::path::LineAndColumnArg;
+use yarpui::AppContext;
 
 use super::Editor;
 

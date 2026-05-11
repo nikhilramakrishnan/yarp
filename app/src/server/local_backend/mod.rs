@@ -34,6 +34,8 @@ pub use harness_support::OssHarnessSupportClient;
 pub use object_client::OssObjectClient;
 pub use paths::LocalPaths;
 
+#[cfg(test)]
+use std::path::PathBuf;
 use std::sync::Arc;
 
 /// Shared context for every local-backend client. Cheap to clone (`Arc` inside).
@@ -66,6 +68,18 @@ impl LocalBackend {
 
     pub fn file_store(&self) -> &FileStore {
         &self.inner.file_store
+    }
+
+    #[cfg(test)]
+    pub(crate) fn with_root_for_test(root: PathBuf) -> Self {
+        let paths = LocalPaths { root };
+        paths.ensure_root_exists();
+        Self {
+            inner: Arc::new(LocalBackendInner {
+                paths,
+                file_store: FileStore::new(),
+            }),
+        }
     }
 }
 

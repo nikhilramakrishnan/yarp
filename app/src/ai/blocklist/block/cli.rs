@@ -1230,8 +1230,7 @@ impl View for CLISubagentView {
                 output_items.add_child(
                     Container::new(render_informational_footer(
                         app,
-                        "This call's off the books. \"Take the wheel\" to carry on."
-                            .to_string(),
+                        "This call's off the books. \"Take the wheel\" to carry on.".to_string(),
                     ))
                     .with_margin_top(8.)
                     .with_margin_left(icon_size(app) + AVATAR_RIGHT_MARGIN)
@@ -1544,7 +1543,9 @@ impl TypedActionView for CLISubagentView {
                     .write(ClipboardContent::plain_text(debug_id.clone()));
             }
             CLISubagentAction::OpenFeedbackDocs => {
-                ctx.open_url("https://github.com/hotfuzz/yarp/support-and-billing/sending-us-feedback");
+                ctx.open_url(
+                    "https://github.com/hotfuzz/yarp/support-and-billing/sending-us-feedback",
+                );
             }
         }
     }
@@ -1853,7 +1854,7 @@ fn render_permissions_speedbump(
 
     let formatted_text = FormattedTextElement::new(
         FormattedText::new([FormattedTextLine::Line(vec![
-            FormattedTextFragment::hyperlink("Amend PC clearances", "Settings > AI"),
+            FormattedTextFragment::hyperlink("Amend PC clearances", "Settings > Taskforce"),
         ])]),
         font_size,
         font_family,
@@ -2028,14 +2029,19 @@ fn render_search_action_input(
             };
 
             if queries.len() == 1 {
-                format!("Sweeping the records for `{}` in {}", queries[0], display_path)
+                format!(
+                    "Sweeping the records for `{}` in {}",
+                    queries[0], display_path
+                )
             } else {
                 let patterns_list = queries
                     .iter()
                     .map(|q| format!(" - `{q}`"))
                     .collect::<Vec<_>>()
                     .join("\n");
-                format!("Sweeping the records for these patterns in {display_path}:\n{patterns_list}")
+                format!(
+                    "Sweeping the records for these patterns in {display_path}:\n{patterns_list}"
+                )
             }
         }
         AIAgentActionType::FileGlobV2 {

@@ -38,9 +38,8 @@ use yarpui::{
 
 const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
 
-const UNSHARE_BLOCK_CONFIRMATION_DIALOG_TEXT: &str =
-    "Pulling this case file off the air?\n\
-\nLink goes dead and the file's wiped from station drives.";
+const UNSHARE_BLOCK_CONFIRMATION_DIALOG_TEXT: &str = "Pulling this case file off the air?\n\
+\nLink goes dead and the file's wiped from the Records Locker.";
 
 #[derive(Clone, Debug)]
 struct UserOwnedBlock {
@@ -303,9 +302,10 @@ impl GetBlocksForUserRequestState {
                 .label("No shared case files on the books yet.")
                 .build()
                 .finish()),
-            GetBlocksForUserRequestState::InFlight => {
-                pad(ui_builder.label("Pulling the case files...").build().finish())
-            }
+            GetBlocksForUserRequestState::InFlight => pad(ui_builder
+                .label("Pulling the case files...")
+                .build()
+                .finish()),
             GetBlocksForUserRequestState::Failed => pad(ui_builder
                 .label("Couldn't pull the case files. Try again.")
                 .build()
@@ -421,7 +421,8 @@ impl ShowBlocksView {
 
             menu.set_items(
                 vec![MenuItem::Item(
-                    MenuItemFields::new("Pull from the air").with_on_select_action(ShowBlocksAction::Unshare),
+                    MenuItemFields::new("Pull from the air")
+                        .with_on_select_action(ShowBlocksAction::Unshare),
                 )],
                 ctx,
             );

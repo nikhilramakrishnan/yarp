@@ -6,9 +6,9 @@ use crate::json_filter::JsonOutput;
 /// Task-related subcommands.
 #[derive(Debug, Clone, Subcommand)]
 pub enum TaskCommand {
-    /// List ambient agent tasks.
+    /// List cloud officer tasks.
     List(ListTasksArgs),
-    /// Get status of a specific ambient agent task.
+    /// Get status of a specific cloud officer task.
     Get(TaskGetArgs),
     /// Retrieve the conversation for a specific run or conversation.
     #[command(subcommand)]
@@ -145,7 +145,7 @@ pub struct ListTasksArgs {
     #[arg(long = "skill", value_name = "SPEC")]
     pub skill: Option<String>,
 
-    /// Filter to runs created by a specific scheduled agent.
+    /// Filter to runs created by a specific scheduled officer.
     #[arg(long = "schedule", value_name = "SCHEDULE_ID")]
     pub schedule: Option<String>,
 
@@ -153,7 +153,7 @@ pub struct ListTasksArgs {
     #[arg(long = "ancestor-run", value_name = "RUN_ID")]
     pub ancestor_run: Option<String>,
 
-    /// Filter by agent config name.
+    /// Filter by officer configuration name.
     #[arg(long = "name", value_name = "NAME")]
     pub name: Option<String>,
 

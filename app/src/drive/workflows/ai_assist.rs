@@ -69,9 +69,7 @@ pub enum GeneratedCommandMetadataError {
 impl GeneratedCommandMetadataError {
     pub fn user_facing_message(&self) -> String {
         match self {
-            Self::BadCommand => {
-                "Couldn't write up the case. Try again with a different command."
-            }
+            Self::BadCommand => "Couldn't write up the case. Try again with a different command.",
             Self::AiProviderError => "Wires got crossed. Try again.",
             Self::RateLimited => "Rations have run dry. Top up the kit and have another go.",
             Self::Other => "Wires got crossed. Try again.",

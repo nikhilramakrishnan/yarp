@@ -101,28 +101,28 @@ pub enum EnvironmentCommand {
     },
 }
 
-/// Common arguments for selecting an environment when creating an integration.
+/// Common arguments for selecting an environment when creating a Taskforce integration.
 #[derive(Args, Clone, Debug)]
 #[group(required = false, multiple = false)]
 pub struct EnvironmentCreateArgs {
-    /// Cloud environment to run the agent in.
+    /// Cloud environment to run the officer in.
     #[arg(long = "environment", value_name = "ENVIRONMENT_ID", short = 'e')]
     pub environment: Option<String>,
 
-    /// Do not run the agent in an environment (not recommended).
+    /// Do not run the officer in an environment (not recommended).
     #[arg(long = "no-environment")]
     pub no_environment: bool,
 }
 
-/// Common arguments for selecting an environment when updating an integration.
+/// Common arguments for selecting an environment when updating a Taskforce integration.
 #[derive(Args, Clone, Debug)]
 #[group(required = false, multiple = false)]
 pub struct EnvironmentUpdateArgs {
-    /// Cloud environment to run the agent in.
+    /// Cloud environment to run the officer in.
     #[arg(long = "environment", value_name = "ENVIRONMENT_ID", short = 'e')]
     pub environment: Option<String>,
 
-    /// Do not run the agent in an environment (not recommended).
+    /// Do not run the officer in an environment (not recommended).
     #[arg(long = "remove-environment")]
     pub remove_environment: bool,
 }

@@ -159,8 +159,9 @@ impl OnboardingAgenticSuggestionsBlock {
             (
                 AgenticSuggestionsContent {
                     title: "File a fresh snake game case in Python".to_string(),
-                    description: "Have a PC walk you through filing a snake game from start to finish".to_string(),
-                    prompt: "Make a snake game for playing in the terminal using python. Use the code tool and requested commands to do it for me. Before deciding on a solution, make sure I have all the prerequisites installed. At the end of our conversation, the app should run without any additional steps.".to_string(),
+                    description:
+                        "Have a PC walk the snake game case from intake to close".to_string(),
+                    prompt: "Make a snake game for playing in Yarp's desk beat using python. Use the code tool and requested commands to do it for me. Before deciding on a solution, make sure I have all the prerequisites installed. At the end of our case file, the app should run without any additional steps.".to_string(),
                     chip_type: OnboardingChipType::PythonSnakeGame,
                     icon: UIIcon::Icon::GamingPad,
                 },
@@ -179,8 +180,8 @@ impl OnboardingAgenticSuggestionsBlock {
             (
                 AgenticSuggestionsContent {
                     title: "Kit out a Matrix-style custom theme".to_string(),
-                    description: "Kit out your terminal in Matrix green".to_string(),
-                    prompt: format!("First check if {matrix_save_directory} exists, and create this path if it doesn't already exist. Then create a matrix theme for my Yarp terminal without a background image field, following exact YAML structure on the yarp website without any extra or missing fields. Call it matrix.yaml and save it in the directory we previously created. Once you've verified that the theme is correct and ready to be applied, let me know by only saying 'The matrix theme is now available at <path>.'."),
+                    description: "Kit out your beat station in Matrix green".to_string(),
+                    prompt: format!("First check if {matrix_save_directory} exists, and create this path if it doesn't already exist. Then create a matrix theme for my Yarp station without a background image field, following exact YAML structure on the yarp website without any extra or missing fields. Call it matrix.yaml and save it in the directory we previously created. Once you've verified that the theme is correct and ready to be applied, let me know by only saying 'The matrix theme is now available at <path>.'."),
                     chip_type: OnboardingChipType::MatrixThemePicker,
                     icon: UIIcon::Icon::PaintBrush,
                 },
@@ -592,7 +593,7 @@ impl OnboardingAgenticSuggestionsBlock {
         const WELCOME_TEXT_LINE_ONE: &str = "Sworn in to Sandford. Right then, Constable.";
         const WELCOME_TEXT_LINE_TWO_PART_ONE: &str =
             "Sample call-outs you can radio to the squad straight from the beat — patch in";
-        const WELCOME_TEXT_LINE_TWO_PART_TWO: &str = " Agent Mode";
+        const WELCOME_TEXT_LINE_TWO_PART_TWO: &str = " Taskforce Mode";
 
         Flex::column()
             .with_children(vec![

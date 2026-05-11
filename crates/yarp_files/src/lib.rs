@@ -29,12 +29,12 @@ use repo_metadata::{
     repository::{RepositorySubscriber, SubscriberId},
     CanonicalizedPath, Repository, RepositoryUpdate,
 };
+use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 use yarp_util::content_version::ContentVersion;
 use yarp_util::file::FileSaveError;
 use yarp_util::file::{FileId, FileLoadError};
 use yarpui::ModelHandle;
 use yarpui::{r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, SingletonEntity};
-use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 
 pub mod text_file_reader;
 pub use text_file_reader::{TextFileReadResult, TextFileSegment};

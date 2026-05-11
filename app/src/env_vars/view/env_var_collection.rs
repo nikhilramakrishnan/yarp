@@ -80,7 +80,8 @@ const SECTION_SPACING: f32 = 16.;
 
 // Variable rows
 pub(super) const ROW_SPACING: f32 = 8.;
-pub const EDUCATION_TEXT: &str = "File a secret or command. Yarp never holds outside secrets in evidence";
+pub const EDUCATION_TEXT: &str =
+    "File a secret or command. Yarp never holds outside secrets in evidence";
 const VARIABLE_FONT_SIZE: f32 = 13.;
 const DESCRIPTION_EDITOR_CUTOFF: f32 = 30.;
 const DESCRIPTION_BOTTOM_MARGIN: f32 = 12.;
@@ -669,7 +670,14 @@ impl EnvVarCollectionView {
 
         let title = collection.title.clone().unwrap_or_default();
 
-        self.set_pane_title(if title.is_empty() { "Unfiled env vars" } else { &title }, ctx);
+        self.set_pane_title(
+            if title.is_empty() {
+                "Unfiled env vars"
+            } else {
+                &title
+            },
+            ctx,
+        );
         if let Some(server_id) = env_var_collection.id.into_server() {
             self.pane_configuration.update(ctx, |pane_config, ctx| {
                 pane_config
@@ -1595,7 +1603,11 @@ impl BackingView for EnvVarCollectionView {
         app: &AppContext,
     ) -> view::HeaderContent {
         let title = self.title_editor.as_ref(app).buffer_text(app);
-        let title = if title.is_empty() { "Unfiled env vars" } else { &title };
+        let title = if title.is_empty() {
+            "Unfiled env vars"
+        } else {
+            &title
+        };
         view::HeaderContent::simple(title)
     }
 

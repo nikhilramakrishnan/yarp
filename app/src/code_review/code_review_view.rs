@@ -552,7 +552,9 @@ impl DiscardOperationType {
             DiscardOperationType::FileUncommittedChanges => {
                 "Burn the uncommitted evidence on this case file?".to_string()
             }
-            DiscardOperationType::AllChangesAgainstBranch(_) => "Burn all the evidence?".to_string(),
+            DiscardOperationType::AllChangesAgainstBranch(_) => {
+                "Burn all the evidence?".to_string()
+            }
             DiscardOperationType::FileChangesAgainstBranch(_) => {
                 "Burn all the evidence on this case file?".to_string()
             }
@@ -5861,8 +5863,10 @@ impl CodeReviewView {
                     )
                     .check(self.discard_dialog_state.stash_changes_enabled)
                     .with_label(
-                        appearance.ui_builder().span("Stash the evidence").with_style(
-                            UiComponentStyles {
+                        appearance
+                            .ui_builder()
+                            .span("Stash the evidence")
+                            .with_style(UiComponentStyles {
                                 font_size: Some(appearance.ui_font_size()),
                                 font_color: Some(
                                     appearance
@@ -5871,8 +5875,7 @@ impl CodeReviewView {
                                         .into(),
                                 ),
                                 ..Default::default()
-                            },
-                        ),
+                            }),
                     )
                     .build()
                     .on_click(|ctx, _, _| {

@@ -276,9 +276,7 @@ impl CreateApiKeyModal {
                     // This can happen if the team state changed between render and click.
                     self.request_state = RequestState::Idle;
                     ctx.emit(CreateApiKeyModalEvent::Error {
-                        message:
-                            "Can't issue a team warrant — no squad on the roster."
-                                .to_string(),
+                        message: "Can't issue a team warrant — no squad on the roster.".to_string(),
                     });
                     ctx.notify();
                     return;

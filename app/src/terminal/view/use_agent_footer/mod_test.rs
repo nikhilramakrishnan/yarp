@@ -320,7 +320,7 @@ fn use_agent_footer_hidden_during_cloud_agent_setup_lrc() {
             let model = view.model.lock();
             assert!(
                 !view.should_render_use_agent_footer(&model, ctx),
-                "footer should be hidden during cloud agent setup LRCs",
+                "footer should be hidden during cloud officer setup LRCs",
             );
             let active_block_index = model.block_list().active_block_index();
             assert!(
@@ -380,7 +380,7 @@ fn cli_agent_footer_renders_for_viewer_of_shared_cloud_agent_session() {
             let model = view.model.lock();
             assert!(
                 view.should_render_use_agent_footer(&model, ctx),
-                "footer should render for viewer of shared cloud agent session with CLI agent",
+                "footer should render for viewer of shared cloud officer session with CLI officer",
             );
             let active_block_index = model.block_list().active_block_index();
             let rendered_footer_view_id = model

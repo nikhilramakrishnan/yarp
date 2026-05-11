@@ -872,8 +872,8 @@ impl<A: InlineMenuAction, T: 'static + Send + Sync> InlineMenuView<A, T> {
         .with_height(inline_styles::HEADER_ROW_HEIGHT)
         .finish();
 
-        let header_outer_border = Border::new(inline_styles::HEADER_BORDER)
-            .with_sides(true, false, true, false);
+        let header_outer_border =
+            Border::new(inline_styles::HEADER_BORDER).with_sides(true, false, true, false);
         let header_outer_border = match radio_header_color {
             Some(color) => header_outer_border.with_border_color(color),
             None => header_outer_border.with_border_fill(theme.outline()),

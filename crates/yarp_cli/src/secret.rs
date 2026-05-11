@@ -9,7 +9,7 @@ use crate::scope::ObjectScope;
 pub enum SecretCommand {
     /// Create a new secret.
     ///
-    /// Use `fuzz secret create anthropic api-key <NAME>` to create a Claude/Anthropic auth secret.
+    /// Use `fuzz secret create anthropic api-key <NAME>` to create a Claude/Anthropic auth secret for the Taskforce.
     Create(CreateSecretArgs),
     /// Delete a secret.
     Delete(DeleteSecretArgs),

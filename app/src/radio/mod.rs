@@ -5,12 +5,12 @@
 //! Hot Fuzz lexicon: each beacon is an officer's call sign on the channel; the
 //! radio dir is the precinct's open frequency.
 
+use std::collections::HashMap;
 use std::fs;
 use std::io;
 use std::path::PathBuf;
-use std::collections::HashMap;
-use std::sync::Mutex;
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::Mutex;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
@@ -247,8 +247,8 @@ pub fn register(beacon: &Beacon) -> io::Result<()> {
     };
     fs::create_dir_all(&dir)?;
     let path = dir.join(format!("{}.json", beacon.pid));
-    let json = serde_json::to_vec_pretty(beacon)
-        .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+    let json =
+        serde_json::to_vec_pretty(beacon).map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
     fs::write(&path, json)
 }
 
@@ -490,7 +490,6 @@ pub fn drain_from_pid(from_pid: u32) -> Vec<Message> {
     out
 }
 
-
 /// Drain en-route replies from this Yarp's inbox — used at stand-down so the
 /// originator's inbox doesn't keep displaying acks to a now-resolved 10-13.
 /// Other senders' messages stay put; only en-route bodies are reaped.
@@ -548,7 +547,6 @@ pub fn latest_dispatch() -> Option<Message> {
     inbox.into_iter().max_by_key(|m| m.sent_at_unix)
 }
 
-
 /// Classify a message body as a 10-13 (officer needs assistance) emergency.
 /// Detected on the raw body so any UI surface or workspace handler can branch
 /// on urgency without re-implementing the parser. Police shorthand: 10-13
@@ -564,7 +562,6 @@ pub fn is_emergency_body(body: &str) -> bool {
 pub fn is_stand_down_body(body: &str) -> bool {
     body.trim() == STAND_DOWN_BROADCAST_BODY.trim()
 }
-
 
 /// Classify a message body as an "en route" reply — the canonical 1:1
 /// response to a 10-13 hail. Lets the inbox roster line frame an inbox of
@@ -609,7 +606,6 @@ fn resolve_superseded_emergencies(mut msgs: Vec<Message>) -> Vec<Message> {
     });
     msgs
 }
-
 
 /// Mark this Yarp as actively calling 10-13 for `ttl` seconds. Lets the
 /// originator's UI render "calling 10-13" while their broadcast is in flight
@@ -1014,7 +1010,6 @@ pub fn self_respond_at_unix(pid: u32) -> Option<u64> {
     Some(at)
 }
 
-
 // Canonical message bodies for the precinct radio. Centralized so a hail, the
 // emergency response, the routine ack-on-emergency, and any future palette
 // entry all speak the same wire format — divergence here would let two yarps
@@ -1213,9 +1208,7 @@ mod tests {
         // The guard's Drop should not panic even if the beacon was never
         // written to disk. Use a beacon for a fake pid so we don't disturb
         // a real one if the test runs while the GUI is up.
-        let guard = BeaconGuard {
-            pid: 0xDEAD_BEEF,
-        };
+        let guard = BeaconGuard { pid: 0xDEAD_BEEF };
         drop(guard);
     }
 
@@ -1244,8 +1237,7 @@ mod tests {
     #[test]
     fn register_then_list_active_round_trips_in_sandbox() {
         let _sandbox = RadioSandbox::new();
-        let beacon = Beacon::new("dev.yarp.Yarp", "Sandford")
-            .with_tab_title("Test patrol");
+        let beacon = Beacon::new("dev.yarp.Yarp", "Sandford").with_tab_title("Test patrol");
         // Use the current pid so the alive-check doesn't filter us out.
         let mut beacon = beacon;
         beacon.pid = std::process::id();

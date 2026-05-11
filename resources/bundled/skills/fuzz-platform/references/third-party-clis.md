@@ -1,24 +1,24 @@
-# Third-Party Coding Agent CLIs
+# Third-Party Coding CLIs
 
-**Context**: This reference is for cloud agents who need to invoke third-party coding CLIs. If you are an interactive agent launching a cloud agent, see the "For Interactive Agents" section in the main fuzz-platform skill instead.
+**Context**: This reference is for cloud officers who need to invoke third-party coding CLIs. If you are an interactive officer launching a cloud officer, see the "For Interactive Officers" section in the main taskforce-platform skill instead.
 
-This reference documents third-party coding agent CLIs that Fuzz cloud agents can install and run. Each CLI has its own authentication, non-interactive mode, and nuances.
+This reference documents third-party coding CLIs that Taskforce cloud officers can install and run. Each CLI has its own authentication, non-interactive mode, and nuances.
 
-The `-agents` tagged variants of prebuilt Fuzz Docker images (e.g. `hotfuzz/dev-base:latest-agents`, `hotfuzz/dev-rust:1.85-agents`) include Claude Code, Codex, and Gemini CLI preinstalled. Base tags (without `-agents`) do not include coding agent CLIs.
+The `-agents` tagged variants of prebuilt Taskforce Docker images (e.g. `hotfuzz/dev-base:latest-agents`, `hotfuzz/dev-rust:1.85-agents`) include Claude Code, Codex, and Gemini CLI preinstalled. Base tags (without `-agents`) do not include coding CLIs.
 
 > **Note**: Commands below that reference the Yarp CLI should use the CLI binary name from the parent skill (the `{{yarp_cli_binary_name}}` value).
 
 ## Reporting Artifacts
 
-When a third-party CLI creates a PR or branch, Fuzz does not automatically detect it. You must explicitly register these artifacts so they appear in the Yarp UI.
+When a third-party CLI creates a PR or branch, Taskforce does not automatically detect it. You must explicitly register these artifacts so they appear in the Taskforce UI.
 
 **Pull Requests**: After a third-party CLI creates a PR, call the `report_pr` tool with the `pr_url` and `branch` parameters. Parse the CLI's output to extract the PR URL and branch name.
 
-**How to prompt for this**: When writing prompts that instruct an Fuzz agent to delegate work to a third-party CLI, always include instructions to:
+**How to prompt for this**: When writing prompts that instruct a Taskforce officer to delegate work to a third-party CLI, always include instructions to:
 1. Tell the third-party CLI to print the PR URL and branch name in its output.
 2. After the CLI finishes, parse the output and call `report_pr` to register the artifact.
 
-**Plans**: Plan artifacts are registered automatically by the Fuzz agent when it creates plans using its built-in plan tools. No special handling is needed.
+**Plans**: Plan artifacts are registered automatically by the Taskforce officer when it creates plans using its built-in plan tools. No special handling is needed.
 
 ---
 
@@ -29,7 +29,7 @@ When a third-party CLI creates a PR or branch, Fuzz does not automatically detec
 - **Non-interactive mode**: `claude -p "<prompt>"`
 - **Useful flags**: `--output-format json`, `--allowedTools "Read,Write,Bash(...)"`, `--append-system-prompt`
 
-### Fuzz secret
+### Taskforce secret
 
 ```sh
 {{yarp_cli_binary_name}} secret create ANTHROPIC_API_KEY --team --value-file key.txt --description "Anthropic API key for Claude Code"
@@ -61,12 +61,12 @@ Then call the report_pr tool with those values so the PR appears as an artifact.
   printenv OPENAI_API_KEY | codex login --with-api-key
   ```
   Alternatively, `CODEX_API_KEY` can be set directly.
-- **Recommended**: Add `printenv OPENAI_API_KEY | codex login --with-api-key` as an environment setup command so authentication happens automatically before the agent starts.
+- **Recommended**: Add `printenv OPENAI_API_KEY | codex login --with-api-key` as an environment setup command so authentication happens automatically before the officer starts.
 - **Non-interactive mode**: `codex exec "<prompt>"`
 - **Regional endpoint**: Set `OPENAI_BASE_URL` if needed (e.g. `https://us.api.openai.com/v1`).
 - **Useful flags**: `--full-auto`, `--sandbox workspace-write`, `--json`, `--skip-git-repo-check`
 
-### Fuzz secret
+### Taskforce secret
 
 ```sh
 {{yarp_cli_binary_name}} secret create OPENAI_API_KEY --team --value-file key.txt --description "OpenAI API key for Codex CLI"
@@ -96,7 +96,7 @@ After Codex finishes, parse the PR URL and branch name from its output and call 
 - **Non-interactive mode**: `gemini -p "<prompt>"` (headless mode)
 - **Useful flags**: `--output-format json`, `--yolo` (auto-approve tool actions)
 
-### Fuzz secret
+### Taskforce secret
 
 ```sh
 {{yarp_cli_binary_name}} secret create GEMINI_API_KEY --team --value-file key.txt --description "Gemini API key for Gemini CLI"
@@ -125,7 +125,7 @@ After it finishes, parse the PR URL and branch from the output and call report_p
 - **Non-interactive mode**: `amp -x "<prompt>"` (execute mode)
 - **Useful flags**: `--dangerously-allow-all` (skip tool approval prompts)
 
-### Fuzz secret
+### Taskforce secret
 
 ```sh
 {{yarp_cli_binary_name}} secret create AMP_API_KEY --team --value-file key.txt --description "Amp API key"
@@ -154,9 +154,9 @@ After Amp finishes, parse the PR URL and branch from the output and call report_
 - **Non-interactive mode**: `copilot -p "<prompt>"`
 - **Useful flags**: `--allow-all-tools`
 - **Note**: The `gh copilot` extension (distinct from standalone `copilot`) requires OAuth and does **not** work with PATs.
-- **Not preinstalled** in Fuzz images. Install via setup commands or GitHub releases.
+- **Not preinstalled** in Taskforce images. Install via setup commands or GitHub releases.
 
-### Fuzz secret
+### Taskforce secret
 
 ```sh
 {{yarp_cli_binary_name}} secret create GH_TOKEN --team --value-file token.txt --description "GitHub PAT with Copilot Requests permission"
@@ -184,7 +184,7 @@ After Copilot finishes, parse the PR URL and branch from the output and call rep
 - **Auth**: Uses provider-specific API keys via environment variables (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`). Also reads from `.env` files. Run `opencode auth login` to configure interactively.
 - **Non-interactive mode**: `opencode run "<prompt>"` or `opencode -p "<prompt>"`
 - **Useful flags**: `-f json` (JSON output), `-q` (quiet/no spinner)
-- **Not preinstalled** in Fuzz images. Install via setup commands.
+- **Not preinstalled** in Taskforce images. Install via setup commands.
 
 ### Example prompt
 
@@ -200,7 +200,7 @@ Run: opencode run "Explain the architecture of this project" -q
 - **Auth**: Requires a Factory account. Use `/login` in the CLI or generate an API key from Factory Settings. **Headless env-var auth is not yet confirmed** — this CLI may require interactive login.
 - **Non-interactive mode**: `droid exec "<prompt>"`
 - **Useful flags**: `--auto low|medium|high` (permission tier), `--skip-permissions-unsafe`
-- **Status**: **Not currently supported** for headless Fuzz environments due to unclear non-interactive auth. Excluded from prebuilt images.
+- **Status**: **Not currently supported** for headless Taskforce environments due to unclear non-interactive auth. Excluded from prebuilt images.
 
 ---
 

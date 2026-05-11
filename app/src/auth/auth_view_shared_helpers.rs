@@ -176,7 +176,8 @@ where
     };
 
     let paragraph_1 = "All of Yarp's local kit works without the radio.";
-    let paragraph_2 = "But your first shift needs the line up, so the PC desk and cloud officers can clock on.";
+    let paragraph_2 =
+        "But your first shift needs the line up, so the PC desk and cloud officers can clock on.";
     let paragraph_3 = "Cloud kit is on offer to every officer, so the line has to be live to meter PC duty, keep troublemakers out, and pin cloud case files to a badge. If you stay off-the-books, an anonymous badge number is filed to keep that kit running.";
 
     Container::new(
@@ -501,7 +502,8 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
         .with_child(
             Shrinkable::new(
                 1.,
-                render_privacy_settings_section_header("File incident reports", appearance).finish(),
+                render_privacy_settings_section_header("File incident reports", appearance)
+                    .finish(),
             )
             .finish(),
         )

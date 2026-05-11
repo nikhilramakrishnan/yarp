@@ -22,7 +22,7 @@ lazy_static! {
         aliases: vec!["h:"]
     };
     static ref WORKFLOWS_FILTER_ATOM: FilterAtom = FilterAtom {
-        primary_text: "workflows:",
+        primary_text: "playbooks:",
         aliases: vec!["w:"]
     };
     static ref AGENT_MODE_WORKFLOWS_FILTER_ATOM: FilterAtom = FilterAtom {
@@ -30,7 +30,7 @@ lazy_static! {
         aliases: vec!["p:"]
     };
     static ref NOTEBOOKS_FILTER_ATOM: FilterAtom = FilterAtom {
-        primary_text: "notebooks:",
+        primary_text: "casebooks:",
         aliases: vec!["n:"]
     };
     static ref PLANS_FILTER_ATOM: FilterAtom = FilterAtom {
@@ -46,7 +46,7 @@ lazy_static! {
         aliases: vec![]
     };
     static ref DRIVE_FILTER_ATOM: FilterAtom = FilterAtom {
-        primary_text: "drive:",
+        primary_text: "records:",
         aliases: vec![]
     };
     static ref SESSIONS_FILTER_ATOM: FilterAtom = FilterAtom {
@@ -249,16 +249,14 @@ impl QueryFilter {
             QueryFilter::Commands => "Sweep commands",
             QueryFilter::Blocks => "Sweep blocks",
             QueryFilter::Code => "Sweep code symbols",
-            QueryFilter::Rules => "Sweep AI rules",
+            QueryFilter::Rules => "Sweep standing orders",
             QueryFilter::Repos => "Sweep beats",
             QueryFilter::DiffSets => "Sweep diff sets",
             QueryFilter::StaticSlashCommands => "Sweep slash commands",
             QueryFilter::Skills => "Sweep skills",
             QueryFilter::BaseModels => "Sweep base models",
-            QueryFilter::FullTerminalUseModels => "Sweep full terminal use models",
-            QueryFilter::CurrentDirectoryConversations => {
-                "Sweep case files in current directory"
-            }
+            QueryFilter::FullTerminalUseModels => "Sweep full desk beat models",
+            QueryFilter::CurrentDirectoryConversations => "Sweep case files in current directory",
         }
     }
 
@@ -297,32 +295,32 @@ impl QueryFilter {
     /// Returns the display name (e.g. the string to be used in UI) representing the filter.
     pub fn display_name(&self) -> &'static str {
         match self {
-            QueryFilter::History => "history",
-            QueryFilter::Workflows => "workflows",
-            QueryFilter::AgentModeWorkflows => "prompts",
-            QueryFilter::Notebooks => "notebooks",
-            QueryFilter::Plans => "plans",
-            QueryFilter::NaturalLanguage => "AI command suggestions",
-            QueryFilter::Actions => "actions",
-            QueryFilter::Sessions => "sessions",
-            QueryFilter::Conversations => "conversations",
-            QueryFilter::LaunchConfigurations => "launch configurations",
-            QueryFilter::Drive => "Yarp Drive",
-            QueryFilter::EnvironmentVariables => "environment variables",
-            QueryFilter::PromptHistory => "prompt history",
-            QueryFilter::Files => "files",
+            QueryFilter::History => "duty log",
+            QueryFilter::Workflows => "playbooks",
+            QueryFilter::AgentModeWorkflows => "standing orders",
+            QueryFilter::Notebooks => "casebooks",
+            QueryFilter::Plans => "operation plans",
+            QueryFilter::NaturalLanguage => "dispatch suggestions",
+            QueryFilter::Actions => "controls",
+            QueryFilter::Sessions => "beats",
+            QueryFilter::Conversations => "case files",
+            QueryFilter::LaunchConfigurations => "duty rosters",
+            QueryFilter::Drive => "central records",
+            QueryFilter::EnvironmentVariables => "env evidence",
+            QueryFilter::PromptHistory => "briefing history",
+            QueryFilter::Files => "evidence",
             QueryFilter::Commands => "commands",
-            QueryFilter::Blocks => "blocks",
+            QueryFilter::Blocks => "dispatch blocks",
             QueryFilter::Code => "code",
             QueryFilter::Rules => "rules",
-            QueryFilter::Repos => "repos",
+            QueryFilter::Repos => "beats",
             QueryFilter::DiffSets => "diff sets",
             QueryFilter::StaticSlashCommands => "slash commands",
-            QueryFilter::HistoricalConversations => "historical conversations",
+            QueryFilter::HistoricalConversations => "closed case files",
             QueryFilter::Skills => "skills",
-            QueryFilter::BaseModels => "base models",
-            QueryFilter::FullTerminalUseModels => "full terminal use models",
-            QueryFilter::CurrentDirectoryConversations => "current directory conversations",
+            QueryFilter::BaseModels => "base officers",
+            QueryFilter::FullTerminalUseModels => "full-desk officers",
+            QueryFilter::CurrentDirectoryConversations => "current beat cases",
         }
     }
 

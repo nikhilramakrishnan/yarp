@@ -1147,7 +1147,9 @@ fn open_yarp_drive_object(arg: &OpenYarpDriveObjectArgs, ctx: &mut AppContext) {
 
 fn display_object_missing_error_in_window(window_id: WindowId, ctx: &mut AppContext) {
     crate::workspace::ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-        let toast = DismissibleToast::error(String::from("No lead on that one — or you don't have clearance."));
+        let toast = DismissibleToast::error(String::from(
+            "No lead on that one — or you don't have clearance.",
+        ));
         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
     });
 }

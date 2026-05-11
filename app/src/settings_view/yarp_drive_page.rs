@@ -119,7 +119,7 @@ impl SettingsWidget for YarpDriveHeaderWidget {
     type View = YarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "yarp drive sign up"
+        "records locker sign up"
     }
 
     fn should_render(&self, app: &AppContext) -> bool {
@@ -139,7 +139,7 @@ impl SettingsWidget for YarpDriveHeaderWidget {
 
         let message = Container::new(
             Text::new_inline(
-                "Get sworn in to make use of Yarp Drive.".to_string(),
+                "Get sworn in to make use of the records locker.".to_string(),
                 appearance.ui_font_family(),
                 14.,
             )
@@ -202,7 +202,7 @@ impl SettingsWidget for YarpDriveToggleWidget {
     type View = YarpDriveSettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "yarp drive tools panel command palette search workflows prompts notebooks environment variables"
+        "records locker tools panel command grid search playbooks prompts casebooks environment variables"
     }
 
     fn render(
@@ -218,7 +218,7 @@ impl SettingsWidget for YarpDriveToggleWidget {
                 .is_anonymous_or_logged_out();
 
         render_body_item::<YarpDriveSettingsPageAction>(
-            "Yarp Drive".into(),
+            "Records Locker".into(),
             Some(AdditionalInfo {
                 mouse_state: self.info_icon_mouse_state.clone(),
                 on_click_action: Some(YarpDriveSettingsPageAction::OpenUrl(
@@ -248,7 +248,7 @@ impl SettingsWidget for YarpDriveToggleWidget {
                     }
                 })
                 .finish(),
-            Some("Yarp Drive is the squad locker in your terminal — stash Workflows, Notebooks, Prompts, and Environment Variables for solo use or to share with the unit.".into()),
+            Some("The records locker is the squad shelf for Yarp — stash Playbooks, Casebooks, Prompts, and Environment Variables for solo use or to share with the unit.".into()),
         )
     }
 }

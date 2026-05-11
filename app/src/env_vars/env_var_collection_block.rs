@@ -255,8 +255,7 @@ impl EnvVarCollectionBlock {
     }
 
     fn render_header(&self, app: &AppContext) -> Box<dyn Element> {
-        const COMMAND_WAITING_FOR_USER_MESSAGE: &str =
-            "Clear me to run this and read the readout?";
+        const COMMAND_WAITING_FOR_USER_MESSAGE: &str = "Clear me to run this and read the readout?";
 
         let title: Cow<'static, str> = if self.state == EnvVarCollectionState::WaitingForUser {
             COMMAND_WAITING_FOR_USER_MESSAGE.into()

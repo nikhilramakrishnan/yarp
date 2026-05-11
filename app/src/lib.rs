@@ -91,12 +91,12 @@ mod view_components;
 mod vim_registers;
 mod voice;
 mod voltron;
-mod yarp_managed_paths_watcher;
 #[cfg(target_family = "wasm")]
 mod wasm_nux_dialog;
 mod window_settings;
 mod word_block_editor;
 mod workspaces;
+mod yarp_managed_paths_watcher;
 
 // PLEASE DO NOT ADD MORE PUBLIC MODULES!
 //
@@ -187,11 +187,11 @@ pub use yarp_core::errors::{report_error, report_if_error};
 
 #[cfg(feature = "plugin_host")]
 pub use plugin::{run_plugin_host, PLUGIN_HOST_FLAG};
+use window_settings::WindowSettings;
+use workflows::manager::WorkflowManager;
 use yarp_core::user_preferences::GetUserPreferences as _;
 use yarpui::modals::{AlertDialogWithCallbacks, AppModalCallback};
 use yarpui::platform::app::ApproveTerminateResult;
-use window_settings::WindowSettings;
-use workflows::manager::WorkflowManager;
 
 use crate::ai::ambient_agents::github_auth_notifier::GitHubAuthNotifier;
 use crate::ai::document::ai_document_model::AIDocumentModel;
@@ -241,12 +241,12 @@ use crate::terminal::{AudibleBell, History};
 use crate::undo_close::UndoCloseStack;
 use crate::user_config::YarpConfig;
 use crate::vim_registers::VimRegisters;
-use crate::yarp_managed_paths_watcher::{ensure_yarp_watch_roots_exist, YarpManagedPathsWatcher};
 use crate::workflows::aliases::WorkflowAliases;
 use crate::workflows::local_workflows::LocalWorkflows;
 use crate::workspace::{ActiveSession, OneTimeModalModel, ToastStack};
 use crate::workspaces::team_tester::TeamTesterStatus;
 use crate::workspaces::user_profiles::UserProfiles;
+use crate::yarp_managed_paths_watcher::{ensure_yarp_watch_roots_exist, YarpManagedPathsWatcher};
 #[cfg(feature = "local_tty")]
 use anyhow::Context;
 use anyhow::{anyhow, Result};
@@ -265,9 +265,9 @@ use std::sync::Arc;
 use terminal::input;
 use terminal::session_settings::SessionSettings;
 use url::Url;
+use workspace::sync_inputs::SyncedInputState;
 use yarp_core::execution_mode::{AppExecutionMode, ExecutionMode};
 use yarp_managed_secrets::ManagedSecretManager;
-use workspace::sync_inputs::SyncedInputState;
 
 use yarpui::{integration::TestDriver, App, AssetProvider, Event};
 

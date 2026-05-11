@@ -1412,7 +1412,10 @@ fn test_link_at_offset_uses_cached_cell_links() {
     };
     table.cell_links = vec![
         vec![
-            vec![ParsedUrl::new(1..3, "https://github.com/hotfuzz/yarp".into())],
+            vec![ParsedUrl::new(
+                1..3,
+                "https://github.com/hotfuzz/yarp".into(),
+            )],
             vec![],
         ],
         vec![vec![], vec![]],

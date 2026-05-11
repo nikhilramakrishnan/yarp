@@ -906,8 +906,8 @@ impl TypedActionView for ConversationListView {
                         })
                         .with_disabled(is_ambient_agent_conversation);
                     if is_ambient_agent_conversation {
-                        delete_item = delete_item
-                            .with_tooltip("Ambient officer case files can't be binned");
+                        delete_item =
+                            delete_item.with_tooltip("Ambient officer case files can't be binned");
                     }
 
                     // Check if conversation is shareable:
@@ -1040,8 +1040,7 @@ impl TypedActionView for ConversationListView {
                         ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                             toast_stack.add_ephemeral_toast(
                                 DismissibleToast::error(
-                                    "Can't bin a case file while it's still active."
-                                        .to_string(),
+                                    "Can't bin a case file while it's still active.".to_string(),
                                 ),
                                 window_id,
                                 ctx,

@@ -20,7 +20,8 @@ use yarpui::{
 
 const TITLE_EXISTING_USERS: &str = "Standing Orders amended on the books.";
 const TITLE_NEW_USERS: &str = "Help us run a tighter station.";
-const DESCRIPTION: &str = "We may log a few station interactions to keep Yarp's PC sharp. Stand down any time.";
+const DESCRIPTION: &str =
+    "We may log a few station interactions to keep Yarp's PC sharp. Stand down any time.";
 const PRIVACY_URL: &str = "https://github.com/hotfuzz/yarp/privacy";
 
 #[derive(Default, Debug, Clone)]

@@ -58,8 +58,8 @@ use super::{
     env_var_collections::EnvVarCollectionDataSource,
     history::history_data_source_for_session,
     notebooks::notebooks_data_source,
-    yarp_ai::YarpAIDataSource,
     workflows::{cloud_workflows_data_source, WorkflowsDataSource},
+    yarp_ai::YarpAIDataSource,
     zero_state::{CommandSearchZeroStateEvent, CommandSearchZeroStateView},
 };
 
@@ -620,7 +620,11 @@ impl CommandSearchView {
                             current_user_id,
                         )
                     } else {
-                        self.render_error_header_text("You've hit your rations cap. Talk to a team admin for an upgrade.".to_string(), appearance)
+                        self.render_error_header_text(
+                            "You've hit your rations cap. Talk to a team admin for an upgrade."
+                                .to_string(),
+                            appearance,
+                        )
                     }
                 } else {
                     self.render_error_header_text(message, appearance)
@@ -981,7 +985,7 @@ impl TypedActionView for CommandSearchView {
             AttemptLoginGatedUpgrade => {
                 AuthManager::handle(ctx).update(ctx, |auth_manager, ctx| {
                     auth_manager.attempt_login_gated_feature(
-                        "Upgrade AI Usage",
+                        "Upgrade Taskforce Usage",
                         AuthViewVariant::RequireLoginCloseable,
                         ctx,
                     )
@@ -1005,7 +1009,7 @@ impl View for CommandSearchView {
     fn accessibility_contents(&self, _ctx: &AppContext) -> Option<AccessibilityContent> {
         Some(AccessibilityContent::new(
             "Command Sweep".to_owned(),
-            "Sweep your history, playbooks, and more.  Use the Up and Down arrows to browse results after typing.  Press Enter to accept a selected result, inserting it into the terminal input.  Press Escape to stand down.".to_owned(),
+            "Sweep your history, playbooks, and more.  Use the Up and Down arrows to browse results after typing.  Press Enter to accept a selected result, inserting it into the beat input.  Press Escape to stand down.".to_owned(),
             YarpA11yRole::MenuRole,
         ))
     }

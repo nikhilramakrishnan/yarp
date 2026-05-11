@@ -10,9 +10,7 @@ use yarpui::{
     AppContext, Entity, View, ViewContext, ViewHandle,
 };
 
-use crate::{
-    appearance::Appearance, personas::Roster, workspace::WorkspaceAction,
-};
+use crate::{appearance::Appearance, personas::Roster, workspace::WorkspaceAction};
 
 use super::{
     settings_page::{
@@ -69,18 +67,17 @@ fn pill_button(
     let bg_hover = theme.surface_2();
     let ui_builder = appearance.ui_builder();
     Hoverable::new(mouse_state, move |state| {
-        let bg = if state.is_hovered() { bg_hover } else { bg_idle };
-        Container::new(
-            ui_builder
-                .label(label)
-                .build()
-                .finish(),
-        )
-        .with_horizontal_padding(12.)
-        .with_vertical_padding(6.)
-        .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
-        .with_background(bg)
-        .finish()
+        let bg = if state.is_hovered() {
+            bg_hover
+        } else {
+            bg_idle
+        };
+        Container::new(ui_builder.label(label).build().finish())
+            .with_horizontal_padding(12.)
+            .with_vertical_padding(6.)
+            .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
+            .with_background(bg)
+            .finish()
     })
     .with_cursor(Cursor::PointingHand)
     .on_click(move |ctx, _, _| on_click(ctx))
@@ -91,7 +88,7 @@ impl SettingsWidget for CouncilPageWidget {
     type View = CouncilPageView;
 
     fn search_terms(&self) -> &str {
-        "council squad agents personas sandford nwa team"
+        "council squad officers personas sandford nwa team"
     }
 
     fn render(
@@ -110,7 +107,7 @@ impl SettingsWidget for CouncilPageWidget {
             .finish();
 
         let subhead = ui_builder
-            .paragraph("Assemble the team that convenes when /agent is invoked. Edit personas.json to rewrite voices, add officers, or stand up a new squad.")
+            .paragraph("Assemble the team that convenes when a detective is briefed. Edit personas.json to rewrite voices, add officers, or stand up a new squad.")
             .build()
             .with_margin_top(6.)
             .finish();
@@ -146,11 +143,7 @@ impl SettingsWidget for CouncilPageWidget {
         let button_row = Flex::row()
             .with_main_axis_alignment(MainAxisAlignment::Start)
             .with_child(open_button)
-            .with_child(
-                Container::new(reload_button)
-                    .with_margin_left(8.)
-                    .finish(),
-            )
+            .with_child(Container::new(reload_button).with_margin_left(8.).finish())
             .finish();
 
         let roster_block: Box<dyn Element> = match Roster::load() {
@@ -225,20 +218,11 @@ impl SettingsWidget for CouncilPageWidget {
             .with_child(header)
             .with_child(subhead)
             .with_child(path_label)
-            .with_child(
-                Container::new(button_row)
-                    .with_margin_top(10.)
-                    .finish(),
-            )
+            .with_child(Container::new(button_row).with_margin_top(10.).finish())
             .with_child(roster_block)
             .finish();
 
-        Align::new(
-            Container::new(body)
-                .with_uniform_padding(16.)
-                .finish(),
-        )
-        .finish()
+        Align::new(Container::new(body).with_uniform_padding(16.).finish()).finish()
     }
 }
 

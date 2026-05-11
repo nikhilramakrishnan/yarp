@@ -11,9 +11,9 @@ use yarpui::{
 use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::blocklist::agent_view::orchestration_conversation_links::conversation_navigation_card_with_icon;
 use crate::ai::blocklist::agent_view::{AgentViewController, AgentViewControllerEvent};
-use crate::personas::persona_officer_label;
 use crate::ai::blocklist::BlocklistAIHistoryEvent;
 use crate::appearance::Appearance;
+use crate::personas::persona_officer_label;
 use crate::terminal::view::TerminalAction;
 use crate::ui_components::buttons::close_button;
 use crate::BlocklistAIHistoryModel;
@@ -204,7 +204,7 @@ impl View for ChildAgentStatusCard {
 
             let Some(mouse_state) = self.mouse_states.get(&conversation_id).cloned() else {
                 log::error!(
-                    "Missing mouse state handle for child agent card {:?}",
+                    "Missing mouse state handle for child officer card {:?}",
                     conversation_id
                 );
                 continue;
@@ -214,7 +214,7 @@ impl View for ChildAgentStatusCard {
                 self.dismiss_mouse_states.get(&conversation_id).cloned()
             else {
                 log::error!(
-                    "Missing dismiss mouse state handle for child agent card {:?}",
+                    "Missing dismiss mouse state handle for child officer card {:?}",
                     conversation_id
                 );
                 continue;

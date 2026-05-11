@@ -995,7 +995,7 @@ impl View for SettingsImportView {
         if display_new_session_text {
             new_session_setting_text = Container::new(
                 Text::new(
-                    "Some standing orders kick in once you sign on for a fresh session.",
+                    "Some standing orders kick in once you sign on for a fresh beat.",
                     font_family,
                     font_size,
                 )

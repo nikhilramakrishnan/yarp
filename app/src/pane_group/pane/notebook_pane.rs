@@ -57,7 +57,7 @@ impl NotebookPane {
                 title: None,
                 owner: UserWorkspaces::as_ref(ctx)
                     .personal_drive(ctx)
-                    .context("personal drive unavailable")?,
+                    .context("Records Locker unavailable")?,
                 initial_folder_id: None,
             },
         };
@@ -149,12 +149,12 @@ impl PaneContent for NotebookPane {
                     Ok(ShareableLink::Pane { url: parsed_url })
                 } else {
                     Err(ShareableLinkError::Unexpected(String::from(
-                        "Failed to parse notebook url",
+                        "Failed to parse casebook URL",
                     )))
                 }
             } else {
                 Err(ShareableLinkError::Unexpected(String::from(
-                    "Could not retrieve notebook url from view",
+                    "Could not retrieve casebook URL from view",
                 )))
             }
         })

@@ -75,7 +75,7 @@ use yarpui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
-const DESCRIPTION_TEXT: &str = "Sign on MCP servers to give the Yarp Agent more kit to work with. They wire up data sources and tools to agents through a standard interface — think of them as plugins on the duty roster. Sign on a custom server, pick from the presets to get up and running, or grab one off the squad's shared shelf below. ";
+const DESCRIPTION_TEXT: &str = "Sign on MCP servers to give the Yarp Taskforce more kit to work with. They wire up data sources and tools to officers through a standard interface — think of them as plugins on the duty roster. Sign on a custom server, pick from the presets to get up and running, or grab one off the squad's shared shelf below. ";
 
 #[derive(Debug, Clone)]
 pub enum MCPServersListPageViewEvent {
@@ -841,7 +841,9 @@ impl MCPServersListPageView {
                 // Show the toast that the server updated, even though we don't update the cloud template in this case
                 let window_id = ctx.window_id();
                 ToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast = DismissibleToast::success(String::from("MCP server back on the call sheet."));
+                    let toast = DismissibleToast::success(String::from(
+                        "MCP server back on the call sheet.",
+                    ));
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
             }
@@ -1109,7 +1111,7 @@ impl MCPServersListPageView {
         let is_any_ai_enabled = ai_settings.is_any_ai_enabled(app);
 
         let label = render_body_item_label::<MCPServersListPageViewAction>(
-            "Auto-spawn servers from third-party agents".to_string(),
+            "Auto-spawn servers from third-party PCs".to_string(),
             None,
             None,
             LocalOnlyIconState::Hidden,
@@ -1143,7 +1145,7 @@ impl MCPServersListPageView {
         > = std::sync::LazyLock::new(|| {
             vec![
                 FormattedTextFragment::plain_text(
-                    "Sniffs out MCP servers from your station-wide third-party AI agent configs (e.g. in your home directory) and dispatches them automatically. Servers spotted inside a casebook never go on patrol on their own — sign them on individually in the \"Detected from\" sections below. ",
+                    "Sniffs out MCP servers from your station-wide third-party PC configs (e.g. in your home directory) and dispatches them automatically. Servers spotted inside a casebook never go on patrol on their own — sign them on individually in the \"Detected from\" sections below. ",
                 ),
                 FormattedTextFragment::hyperlink(
                     "See supported providers.",

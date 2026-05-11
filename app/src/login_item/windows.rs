@@ -10,10 +10,10 @@ use crate::report_if_error;
 use crate::terminal::general_settings::GeneralSettings;
 use ::settings::Setting;
 use std::path::{Path, PathBuf};
-use yarp_core::channel::ChannelState;
-use yarpui::{AppContext, SingletonEntity};
 use winreg::enums::{HKEY_CURRENT_USER, KEY_SET_VALUE};
 use winreg::RegKey;
+use yarp_core::channel::ChannelState;
+use yarpui::{AppContext, SingletonEntity};
 
 /// The registry subkey Windows scans on sign-in to launch per-user startup apps.
 const RUN_SUBKEY: &str = r"Software\Microsoft\Windows\CurrentVersion\Run";

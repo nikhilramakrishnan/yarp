@@ -631,7 +631,10 @@ impl BuildPlanMigrationModal {
 
         let learn_more_fragments = vec![
             FormattedTextFragment::plain_text("Read the file on our "),
-            FormattedTextFragment::hyperlink("pricing page", "https://github.com/hotfuzz/yarp/pricing"),
+            FormattedTextFragment::hyperlink(
+                "pricing page",
+                "https://github.com/hotfuzz/yarp/pricing",
+            ),
             FormattedTextFragment::plain_text("."),
         ];
         let learn_more = Container::new(

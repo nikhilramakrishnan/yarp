@@ -34,11 +34,11 @@ use prost::Message;
 use referral::ReferralsClient;
 use team::TeamClient;
 use url::Url;
+use workspace::WorkspaceClient;
 use yarp_core::context_flag::ContextFlag;
 use yarp_core::errors::{register_error, AnyhowErrorExt, ErrorExt};
 use yarp_managed_secrets::client::ManagedSecretsClient;
 use yarpui::{r#async::BoxFuture, ModelContext};
-use workspace::WorkspaceClient;
 
 use crate::server::telemetry::TelemetryApi;
 use crate::settings::PrivacySettingsSnapshot;
@@ -154,7 +154,7 @@ pub enum DeserializationError {
 
 #[derive(thiserror::Error, Debug)]
 pub enum AIApiError {
-    #[error("Request failed due to lack of AI quota.")]
+    #[error("Request failed due to lack of Taskforce quota.")]
     QuotaLimit,
 
     #[error("There has been an inneraction. Please try again later.")]
@@ -1107,7 +1107,7 @@ impl ServerApi {
             .client
             .post(url)
             .proto(request)
-            .prevent_sleep("Agent Mode request in-progress");
+            .prevent_sleep("Taskforce Mode request in-progress");
         if let Some(token) = auth_token.as_bearer_token() {
             request_builder = request_builder.bearer_auth(token);
         }
@@ -1402,10 +1402,12 @@ impl ServerApiProvider {
     #[cfg_attr(target_family = "wasm", expect(dead_code))]
     pub fn get_harness_support_client(&self) -> Arc<dyn harness_support::HarnessSupportClient> {
         // yarp: harness transcript / snapshot persistence happens locally
-        // under `~/.yarp/harness/{id}/`. Sentinel `localhost.invalid` URLs
-        // are returned from upload-target methods so any leak is loud.
+        // under `~/.yarp/harness/{id}/`; upload targets are local `file://`
+        // paths handled by the harness upload helper.
+        let task_id = *self.server_api.ambient_agent_task_id.read();
         Arc::new(crate::server::local_backend::OssHarnessSupportClient::new(
             crate::server::local_backend::LocalBackend::new(),
+            task_id,
         ))
     }
 }

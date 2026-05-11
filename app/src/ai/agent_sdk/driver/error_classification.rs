@@ -27,14 +27,14 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
         AgentDriverError::ShareSessionFailed { error: share_err } => {
             let message = match share_err {
                 ShareSessionError::Internal(_) => {
-                    "Failed to share agent session due to an internal error. Please try running your task again.".to_string()
+                    "Failed to share officer session due to an internal error. Please try running your task again.".to_string()
                 }
                 ShareSessionError::Failed(reason) => {
                     // The reason string comes from the session-sharing layer and is aimed at
                     // interactive users (e.g. "try sharing again"). Provide a cloud-agent-
                     // appropriate message instead of wrapping it, which would produce
                     // repetitive "try again" text.
-                    format!("Failed to share agent session: {reason}")
+                    format!("Failed to share officer session: {reason}")
                 }
                 ShareSessionError::Disabled => {
                     "Session sharing is not enabled for your account. This is likely because \
@@ -66,7 +66,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
         AgentDriverError::YarpDriveSyncFailed => (
             AgentTaskState::Error,
             TaskStatusUpdate::with_error_code(
-                "Yarp Drive failed to sync. Please check your network connection and try again.",
+                "Records Locker failed to sync. Please check your network connection and try again.",
                 PlatformErrorCode::InternalError,
             ),
         ),
@@ -95,7 +95,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
             AgentTaskState::Failed,
             TaskStatusUpdate::with_error_code(
                 format!(
-                    "MCP server {uuid} was not found. Verify the server exists in your Yarp Drive and the UUID is correct."
+                    "MCP server {uuid} was not found. Verify the server exists in your Records Locker and the UUID is correct."
                 ),
                 PlatformErrorCode::EnvironmentSetupFailed,
             ),
@@ -125,7 +125,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
             AgentTaskState::Failed,
             TaskStatusUpdate::with_error_code(
                 format!(
-                    "Agent profile \"{name}\" not found. Check the profile ID and ensure it exists in your team's Yarp Drive."
+                    "Officer profile \"{name}\" not found. Check the profile ID and ensure it exists in your team's Records Locker."
                 ),
                 PlatformErrorCode::ResourceNotFound,
             ),
@@ -134,7 +134,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
             AgentTaskState::Failed,
             TaskStatusUpdate::with_error_code(
                 format!(
-                    "Saved prompt not found for ID {id}. Verify the prompt exists in your Yarp Drive."
+                    "Saved prompt not found for ID {id}. Verify the prompt exists in your Records Locker."
                 ),
                 PlatformErrorCode::ResourceNotFound,
             ),
@@ -216,7 +216,7 @@ pub fn classify_driver_error(error: &AgentDriverError) -> (AgentTaskState, TaskS
         AgentDriverError::ConfigBuildFailed(err) => (
             AgentTaskState::Failed,
             TaskStatusUpdate::with_error_code(
-                format!("Failed to build agent configuration: {err}"),
+                format!("Failed to build officer configuration: {err}"),
                 PlatformErrorCode::EnvironmentSetupFailed,
             ),
         ),

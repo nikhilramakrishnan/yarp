@@ -486,7 +486,7 @@ pub struct ConversationDetailsPanel {
     show_open_button: bool,
     #[cfg(not(target_family = "wasm"))]
     continue_locally_button: ViewHandle<ActionButton>,
-    /// Text button "View in Fuzz" shown next to "Continue locally".
+    /// Text button "View in Taskforce" shown next to "Continue locally".
     open_in_oz_button: ViewHandle<ActionButton>,
     /// Tracks when each copy button was last clicked (for checkmark feedback).
     copy_feedback_times: HashMap<CopyButtonKind, Instant>,
@@ -519,8 +519,8 @@ impl ConversationDetailsPanel {
                 })
         });
         let open_in_oz_button = ctx.add_typed_action_view(|_| {
-            ActionButton::new("Pull up in Fuzz", SecondaryTheme)
-                .with_tooltip("View this beat at the Fuzz web station")
+            ActionButton::new("Pull up in Taskforce", SecondaryTheme)
+                .with_tooltip("View this beat at the Taskforce web station")
                 .with_size(ButtonSize::Small)
                 .on_click(|ctx| {
                     ctx.dispatch_typed_action(ConversationDetailsPanelAction::OpenInOz);
@@ -648,7 +648,12 @@ impl ConversationDetailsPanel {
         } = &data.mode
         {
             let fuzz_root_url = ChannelState::fuzz_root_url();
-            Some(format!("{fuzz_root_url}/runs/{task_id}"))
+            let fuzz_root_url = fuzz_root_url.trim_end_matches('/');
+            if fuzz_root_url.is_empty() || fuzz_root_url.contains("localhost.invalid") {
+                None
+            } else {
+                Some(format!("{fuzz_root_url}/runs/{task_id}"))
+            }
         } else {
             None
         }
@@ -983,13 +988,9 @@ impl ConversationDetailsPanel {
         let theme = appearance.theme();
         let ui_font_size = appearance.ui_font_size();
 
-        let label_text = Text::new(
-            "Kit".to_string(),
-            appearance.ui_font_family(),
-            ui_font_size,
-        )
-        .with_color(blended_colors::text_sub(theme, theme.surface_1()))
-        .finish();
+        let label_text = Text::new("Kit".to_string(), appearance.ui_font_family(), ui_font_size)
+            .with_color(blended_colors::text_sub(theme, theme.surface_1()))
+            .finish();
 
         let icon_tint = harness_display::brand_color(harness)
             .map(Into::into)

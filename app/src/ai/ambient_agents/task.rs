@@ -186,7 +186,7 @@ impl AgentSource {
             AgentSource::Cli => "CLI",
             AgentSource::ScheduledAgent => "Scheduled patrol",
             AgentSource::Interactive => "Yarp (local PC)",
-            AgentSource::WebApp => "Fuzz Web",
+            AgentSource::WebApp => "Taskforce Web",
             AgentSource::GitHubAction => "GitHub Action",
             AgentSource::CloudMode => "Yarp (cloud PC)",
         }

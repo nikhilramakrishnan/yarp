@@ -28,11 +28,11 @@ const ACTION_BUTTON_BORDER_WIDTH: f32 = 2.;
 const ACTION_BUTTON_HORIZONTAL_PADDING: f32 = 8.;
 const ACTION_BUTTON_FONT_SIZE: f32 = 14.;
 
-const AUTH_OVERRIDE_DESCRIPTION: &str = "Looks like you signed on through a web browser. Carry on and every personal Yarp Drive item and preference from this off-the-books session goes in the bin.";
+const AUTH_OVERRIDE_DESCRIPTION: &str = "Looks like you signed on through a web browser. Carry on and every personal Records Locker item and preference from this off-the-books session goes in the bin.";
 const AUTH_OVERRIDE_CONFIRMATION_WARNING: &str = "No way back from this one.";
 const AUTH_OVERRIDE_INITIAL_STEP_HEADER: &str = "New officer signing on";
 const AUTH_OVERRIDE_CONFIRM_CONFIRMATION_STEP_HEADER: &str =
-    "Strike personal Yarp Drive items and preferences off the books?";
+    "Strike personal Records Locker items and preferences off the books?";
 const AUTH_OVERRIDE_BULK_EXPORT_BUTTON_LABEL: &str = "Photocopy your records";
 const AUTH_OVERRIDE_BULK_EXPORT_DESCRIPTION: &str = " for the dossier.";
 const AUTH_OVERRIDE_CANCEL_BUTTON_LABEL: &str = "Stand down";

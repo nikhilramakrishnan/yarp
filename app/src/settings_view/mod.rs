@@ -25,13 +25,13 @@ use crate::{
     GlobalResourceHandlesProvider,
 };
 use about_page::AboutPageView;
-use council_page::CouncilPageView;
-use ai_provider_page::AIProviderPageView;
 use ai_page::{AISettingsPageAction, AISettingsPageEvent, AISettingsPageView, AISubpage};
+use ai_provider_page::AIProviderPageView;
 use appearance_page::{AppearancePageAction, AppearanceSettingsPageView};
 use billing_and_usage_page::{BillingAndUsagePageEvent, BillingAndUsagePageView};
 use code_page::CodeSubpage;
 use code_page::{CodeSettingsPageAction, CodeSettingsPageEvent};
+use council_page::CouncilPageView;
 use environments_page::EnvironmentsPageView;
 use features_page::{FeaturesPageView, FeaturesSettingsPageEvent};
 use itertools::Itertools as _;
@@ -134,7 +134,7 @@ const SIDEBAR_WIDTH_DEFAULT: f32 = 200.;
 /// Wider sidebar used when the settings-file footer is enabled. Sized to
 /// match Figma's settings nav rail (223px alert + 12px horizontal padding
 /// on each side + 1px right border), giving the error-alert footer enough
-/// room to render its "Open file" and "Fix with Fuzz" buttons side-by-side
+/// room to render its "Open file" and "Fix with Taskforce" buttons side-by-side
 /// with the designed 24px indent and 8px internal padding.
 const SIDEBAR_WIDTH_WITH_FOOTER: f32 = 248.;
 
@@ -240,17 +240,17 @@ impl Display for SettingsSection {
             SettingsSection::Keybindings => write!(f, "Keyboard shortcuts"),
             SettingsSection::SharedBlocks => write!(f, "Shared blocks"),
             SettingsSection::MCPServers => write!(f, "MCP Servers"),
-            SettingsSection::YarpDrive => write!(f, "Yarp Drive"),
-            SettingsSection::YarpAgent => write!(f, "Yarp Agent"),
-            SettingsSection::AgentProfiles => write!(f, "Profiles"),
+            SettingsSection::YarpDrive => write!(f, "Records Locker"),
+            SettingsSection::YarpAgent => write!(f, "Taskforce"),
+            SettingsSection::AgentProfiles => write!(f, "Duty profiles"),
             SettingsSection::AgentMCPServers => write!(f, "MCP servers"),
             SettingsSection::Knowledge => write!(f, "Knowledge"),
-            SettingsSection::ThirdPartyCLIAgents => write!(f, "Third party CLI agents"),
+            SettingsSection::ThirdPartyCLIAgents => write!(f, "Third-party CLI officers"),
             SettingsSection::CodeIndexing => write!(f, "Indexing and projects"),
             SettingsSection::EditorAndCodeReview => write!(f, "Editor and Code Review"),
             SettingsSection::CloudEnvironments => write!(f, "Environments"),
-            SettingsSection::OzCloudAPIKeys => write!(f, "Fuzz Cloud API Keys"),
-            SettingsSection::AIProvider => write!(f, "AI Provider"),
+            SettingsSection::OzCloudAPIKeys => write!(f, "Taskforce Cloud API Keys"),
+            SettingsSection::AIProvider => write!(f, "Model Provider"),
             SettingsSection::Council => write!(f, "Council"),
             _ => write!(f, "{self:?}"),
         }
@@ -330,7 +330,7 @@ impl FromStr for SettingsSection {
         match s {
             "About" => Ok(Self::About),
             "Account" => Ok(Self::Account),
-            "AI Provider" | "AIProvider" => Ok(Self::AIProvider),
+            "Model Provider" | "AI Provider" | "AIProvider" => Ok(Self::AIProvider),
             "AI" => Ok(Self::AI),
             "MCP Servers" => Ok(Self::MCPServers),
             "Billing and usage" => Ok(Self::BillingAndUsage),
@@ -343,17 +343,22 @@ impl FromStr for SettingsSection {
             "Shared blocks" => Ok(Self::SharedBlocks),
             "Teams" => Ok(Self::Teams),
             "Yarpify" => Ok(Self::Yarpify),
-            "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
-            // This page was called "Fuzz" at one point, keep for backward compatibility.
-            "Fuzz" | "Yarp Agent" => Ok(Self::YarpAgent),
-            "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
+            "Records Locker" | "YarpDrive" | "Yarp Drive" => Ok(Self::YarpDrive),
+            // This page was called "Fuzz" / "Yarp Agent" at earlier points,
+            // keep those names for backward compatibility.
+            "Taskforce" | "Fuzz" | "Yarp Agent" => Ok(Self::YarpAgent),
+            "Duty profiles" | "Profiles" | "AgentProfiles" => Ok(Self::AgentProfiles),
             "MCP servers" | "AgentMCPServers" => Ok(Self::AgentMCPServers),
             "Knowledge" => Ok(Self::Knowledge),
-            "Third party CLI agents" | "ThirdPartyCLIAgents" => Ok(Self::ThirdPartyCLIAgents),
+            "Third-party CLI officers" | "Third party CLI agents" | "ThirdPartyCLIAgents" => {
+                Ok(Self::ThirdPartyCLIAgents)
+            }
             "Indexing and projects" | "CodeIndexing" => Ok(Self::CodeIndexing),
             "Editor and Code Review" | "EditorAndCodeReview" => Ok(Self::EditorAndCodeReview),
             "CloudEnvironments" => Ok(Self::CloudEnvironments),
-            "Fuzz Cloud API Keys" | "OzCloudAPIKeys" => Ok(Self::OzCloudAPIKeys),
+            "Taskforce Cloud API Keys" | "Fuzz Cloud API Keys" | "OzCloudAPIKeys" => {
+                Ok(Self::OzCloudAPIKeys)
+            }
             _ => Err(()),
         }
     }
@@ -2240,7 +2245,7 @@ impl SettingsView {
         Container::new(
             Align::new(
                 Flex::column()
-                .with_cross_axis_alignment(CrossAxisAlignment::Center)
+                    .with_cross_axis_alignment(CrossAxisAlignment::Center)
                     .with_children([
                         Text::new(
                             "No standing orders match your APB.",
@@ -2262,7 +2267,7 @@ impl SettingsView {
             )
             .finish(),
         )
-            .with_uniform_margin(16.)
+        .with_uniform_margin(16.)
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)))
         .with_background(internal_colors::fg_overlay_1(appearance.theme()))
         .finish()

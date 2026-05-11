@@ -117,9 +117,7 @@ pub struct CloudAgentComputerUseState {
 impl ComputerUsePermission {
     pub fn description(&self) -> &'static str {
         match self {
-            ComputerUsePermission::Never => {
-                "Computer use kit's locked away — the PC won't see it."
-            }
+            ComputerUsePermission::Never => "Computer use kit's locked away — the PC won't see it.",
             ComputerUsePermission::AlwaysAsk => {
                 "Require explicit approval before the PC uses computer use kit."
             }
@@ -309,7 +307,7 @@ impl AIExecutionProfile {
     #[cfg(feature = "agent_mode_evals")]
     pub fn create_agent_mode_eval_profile() -> Self {
         Self {
-            name: "Agent Mode Eval".to_string(),
+            name: "Taskforce Mode Eval".to_string(),
             is_default_profile: false,
             apply_code_diffs: ActionPermission::AlwaysAllow,
             read_files: ActionPermission::AlwaysAllow,

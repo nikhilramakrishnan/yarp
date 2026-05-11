@@ -572,7 +572,8 @@ const ELLIPSE_SVG_PATH: &str = "bundled/svg/ellipse.svg";
 
 const AI_ASSISTANT_BUTTON_ID: &str = "workspace_view:ai_assistant_button";
 
-const VERSION_DEPRECATION_BANNER_TEXT: &str = "Your kit's gone stale and some duties may not run. Sign on to fresh issue immediately.";
+const VERSION_DEPRECATION_BANNER_TEXT: &str =
+    "Your kit's gone stale and some duties may not run. Sign on to fresh issue immediately.";
 
 const VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT: &str = "Some Yarp duties may go down without a fresh issue, but Yarp can't reissue the kit on its own.";
 
@@ -808,7 +809,7 @@ pub enum BannerSeverity {
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 enum BannerButtonVariant {
     /// No fill, no border, just text (and optional icon). Used for the primary
-    /// action in the Figma design (e.g. "Fix with Fuzz").
+    /// action in the Figma design (e.g. "Fix with Taskforce").
     Naked,
     /// Border-only, no fill (e.g. "Open file").
     Outlined,
@@ -1942,7 +1943,9 @@ impl Workspace {
                     log::warn!("Failed to remove tab config file: {e:?}");
                     self.toast_stack.update(ctx, |toast_stack, ctx| {
                         toast_stack.add_ephemeral_toast(
-                            DismissibleToast::error(format!("Couldn't strike the beat Standing Orders from the record: {e}")),
+                            DismissibleToast::error(format!(
+                                "Couldn't strike the beat Standing Orders from the record: {e}"
+                            )),
                             ctx,
                         );
                     });
@@ -4069,9 +4072,8 @@ impl Workspace {
                 let Some(cloud_conversation) = cloud_conversation else {
                     log::error!("Failed to load conversation from server");
                     me.toast_stack.update(ctx, |view, ctx| {
-                        let new_toast = DismissibleToast::error(
-                            "Couldn't pull the case file.".to_string(),
-                        );
+                        let new_toast =
+                            DismissibleToast::error("Couldn't pull the case file.".to_string());
                         view.add_ephemeral_toast(new_toast, ctx);
                     });
                     return;
@@ -4234,9 +4236,8 @@ impl Workspace {
         ));
 
         self.toast_stack.update(ctx, |toast_stack, ctx| {
-            let toast = DismissibleToast::default(
-                "Radio control frequency copied — 10-4.".to_string(),
-            );
+            let toast =
+                DismissibleToast::default("Radio control frequency copied — 10-4.".to_string());
             toast_stack.add_ephemeral_toast(toast, ctx);
         });
     }
@@ -6065,9 +6066,7 @@ impl Workspace {
                 ctx.request_user_attention();
                 workspace.toast_stack.update(ctx, |toast_stack, ctx| {
                     toast_stack.add_ephemeral_toast(
-                        DismissibleToast::default(
-                            "Channel's lit — radio incoming.".to_owned(),
-                        ),
+                        DismissibleToast::default("Channel's lit — radio incoming.".to_owned()),
                         ctx,
                     );
                 });
@@ -6329,12 +6328,12 @@ impl Workspace {
             }
         }
 
-        // 3. Cloud Fuzz (if flags enabled)
+        // 3. Cloud Taskforce (if flags enabled)
         if is_any_ai_enabled
             && FeatureFlag::AgentView.is_enabled()
             && FeatureFlag::CloudMode.is_enabled()
         {
-            let mut cloud_item = MenuItemFields::new("Cloud Fuzz")
+            let mut cloud_item = MenuItemFields::new("Cloud Taskforce")
                 .with_on_select_action(WorkspaceAction::AddAmbientAgentTab)
                 .with_icon(icons::Icon::LayoutAlt01);
             if effective_default == DefaultSessionMode::CloudAgent {
@@ -6529,9 +6528,9 @@ impl Workspace {
                     open_in_active_window: false,
                 },
             ),
-            NewSessionMenuItem::OpenLaunchConfigDocs => {
-                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/sessions/launch-configurations")
-            }
+            NewSessionMenuItem::OpenLaunchConfigDocs => ctx.open_url(
+                "https://github.com/hotfuzz/yarp/terminal/sessions/launch-configurations",
+            ),
             #[cfg(feature = "local_fs")]
             NewSessionMenuItem::CreateNewTabConfig => {
                 self.create_and_open_new_tab_config(ctx);
@@ -7817,7 +7816,7 @@ impl Workspace {
             match result {
                 Ok(_) => {
                     let command_name = ChannelState::channel().cli_command_name();
-                    let message = format!("Fuzz CLI's signed on. Run '{command_name}' from the command line whenever.");
+                    let message = format!("Taskforce CLI's signed on. Run '{command_name}' from the command line whenever.");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::success(message.to_string())
                             .with_link(
@@ -7829,7 +7828,7 @@ impl Workspace {
                     });
                 }
                 Err(error) => {
-                    let error_message = format!("Couldn't sign on the Fuzz command: {error}");
+                    let error_message = format!("Couldn't sign on the Taskforce command: {error}");
                     log::error!("{error_message}");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
@@ -7847,14 +7846,14 @@ impl Workspace {
             async { cli_install::uninstall_cli() },
             |view, result, ctx| match result {
                 Ok(_) => {
-                    let message = "Fuzz command stood down.";
+                    let message = "Taskforce command stood down.";
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::success(message.to_string());
                         toast_stack.add_ephemeral_toast(toast, ctx);
                     });
                 }
                 Err(error) => {
-                    let error_message = format!("Couldn't strike the Fuzz command: {error}");
+                    let error_message = format!("Couldn't strike the Taskforce command: {error}");
                     log::error!("{error_message}");
                     view.toast_stack.update(ctx, |toast_stack, ctx| {
                         let toast = DismissibleToast::error(error_message);
@@ -9605,9 +9604,10 @@ impl Workspace {
                     .unwrap_or_else(|| UserWorkspaces::upgrade_link(*user_id));
 
                 self.toast_stack.update(ctx, |view, ctx| {
-                    let new_toast =
-                        DismissibleToast::error("Meter's run out on rations.".into()).with_link(
-                            ToastLink::new("Top up the kit to keep going.".into()).with_href(upgrade_link),
+                    let new_toast = DismissibleToast::error("Meter's run out on rations.".into())
+                        .with_link(
+                            ToastLink::new("Top up the kit to keep going.".into())
+                                .with_href(upgrade_link),
                         );
                     view.add_ephemeral_toast(new_toast, ctx);
                 });
@@ -11701,7 +11701,7 @@ impl Workspace {
 
         ctx.spawn(future, move |workspace, source_conversation, ctx| {
             let Some(CloudConversationData::Fuzz(source_conversation)) = source_conversation else {
-                log::error!("Failed to load Fuzz conversation {conversation_id} for forking.");
+                log::error!("Failed to load Taskforce conversation {conversation_id} for forking.");
                 WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
                     let toast = DismissibleToast::error(
                         "Couldn't pull up the case file to spin off.".to_owned(),
@@ -11731,8 +11731,9 @@ impl Workspace {
                 Err(e) => {
                     log::error!("Conversation forking failed. {e}.");
                     WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                        let toast =
-                            DismissibleToast::error("Couldn't peel off a copy of the case file.".to_owned());
+                        let toast = DismissibleToast::error(
+                            "Couldn't peel off a copy of the case file.".to_owned(),
+                        );
                         toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                     });
                     return;
@@ -12640,7 +12641,7 @@ impl Workspace {
             } => self.close_palette(true, *accepted_action_type, ctx),
             CommandPaletteEvent::ExecuteWorkflow { id } => {
                 let Some(workflow) = CloudModel::as_ref(ctx).get_workflow(id) else {
-                    log::warn!("Tried to execute workflow for id {id:?} but it does not exist");
+                    log::warn!("Tried to execute playbook for id {id:?} but it does not exist");
                     return;
                 };
 
@@ -12852,8 +12853,9 @@ impl Workspace {
                                 link = link.with_keystroke(keystroke);
                             }
 
-                            let toast = DismissibleToast::default(String::from("Yarp's been reissued!"))
-                                .with_link(link);
+                            let toast =
+                                DismissibleToast::default(String::from("Yarp's been reissued!"))
+                                    .with_link(link);
 
                             stack.add_ephemeral_toast(toast, ctx);
                         });
@@ -13355,7 +13357,7 @@ impl Workspace {
                         ctx,
                     ),
                     _ => {
-                        log::warn!("Attempted to open an unsupported Yarp Drive link")
+                        log::warn!("Attempted to open an unsupported Records Locker link")
                     }
                 }
             }
@@ -14706,8 +14708,7 @@ impl Workspace {
             {
                 let window_id = ctx.window_id();
                 WorkspaceToastStack::handle(ctx).update(ctx, |toast_stack, ctx| {
-                    let toast =
-                        DismissibleToast::default("That plan's already pinned.".to_owned());
+                    let toast = DismissibleToast::default("That plan's already pinned.".to_owned());
                     toast_stack.add_ephemeral_toast(toast, window_id, ctx);
                 });
                 return;
@@ -14788,9 +14789,8 @@ impl Workspace {
             // The active terminal exists but is busy, and the fallback behavior is
             // RequireExisting or OpenIfNone. In those cases, show a toast and no-op.
             self.toast_stack.update(ctx, |toast_stack, ctx| {
-                let mut toast = DismissibleToast::error(
-                    "A command's still running on this beat.".to_string(),
-                );
+                let mut toast =
+                    DismissibleToast::error("A command's still running on this beat.".to_string());
                 if let Some(id) = object_id {
                     toast = toast.with_object_id(id.uid());
                 }
@@ -14811,8 +14811,7 @@ impl Workspace {
 
         if !ContextFlag::CreateNewSession.is_enabled() {
             self.toast_stack.update(ctx, |toast_stack, ctx| {
-                let toast =
-                    DismissibleToast::error("Couldn't sign on a new beat.".to_string());
+                let toast = DismissibleToast::error("Couldn't sign on a new beat.".to_string());
                 toast_stack.add_ephemeral_toast(toast, ctx);
             });
             return None;
@@ -15054,7 +15053,8 @@ impl Workspace {
                                     self.toast_stack.update(ctx, |view, ctx| {
                                         view.add_ephemeral_toast(
                                             DismissibleToast::error(
-                                                "That playbook's been pulled from the books.".to_string(),
+                                                "That playbook's been pulled from the books."
+                                                    .to_string(),
                                             ),
                                             ctx,
                                         );
@@ -15239,7 +15239,7 @@ impl Workspace {
                                             },
                                         ) {
                                             new_toast = DismissibleToast::success(
-                                                "Playbook filed to your Yarp Drive".to_string(),
+                                                "Playbook filed to Records Locker".to_string(),
                                             )
                                             .with_object_id(object_id_clone)
                                             .with_link(
@@ -15265,13 +15265,16 @@ impl Workspace {
                                         || result.operation == ObjectOperation::Update
                                     {
                                         new_toast = new_toast.with_link(
-                                            ToastLink::new("Pull it up".to_string()).with_onclick_action(
-                                                WorkspaceAction::ViewObjectInYarpDrive(
-                                                    YarpDriveItemId::Object(
-                                                        CloudObjectTypeAndId::Workflow(workflow.id),
+                                            ToastLink::new("Pull it up".to_string())
+                                                .with_onclick_action(
+                                                    WorkspaceAction::ViewObjectInYarpDrive(
+                                                        YarpDriveItemId::Object(
+                                                            CloudObjectTypeAndId::Workflow(
+                                                                workflow.id,
+                                                            ),
+                                                        ),
                                                     ),
                                                 ),
-                                            ),
                                         )
                                     }
                                 }
@@ -15316,8 +15319,7 @@ impl Workspace {
                                     DismissibleToast::error(message)
                                         .with_link(
                                             ToastLink::new(
-                                                "Pull the latest and try again."
-                                                    .to_string(),
+                                                "Pull the latest and try again.".to_string(),
                                             )
                                             .with_onclick_action(
                                                 WorkspaceAction::HandleConflictingWorkflow(
@@ -15330,8 +15332,7 @@ impl Workspace {
                                     DismissibleToast::error(message)
                                         .with_link(
                                             ToastLink::new(
-                                                "Pull the latest and try again."
-                                                    .to_string(),
+                                                "Pull the latest and try again.".to_string(),
                                             )
                                             .with_onclick_action(
                                                 WorkspaceAction::HandleConflictingEnvVarCollection(
@@ -15348,7 +15349,7 @@ impl Workspace {
                             OperationSuccessType::FeatureNotAvailable => {
                                 if cloned_workflow.is_some() {
                                     log::error!(
-                                        "Getting feature not available message for workflows"
+                                        "Getting feature not available message for playbooks"
                                     );
                                 }
                             }
@@ -16004,7 +16005,7 @@ impl Workspace {
                     model.mark_fuzz_launch_modal_dismissed(ctx);
                 });
 
-                // Clear the "Introducing Fuzz" custom tab name so normal tab naming rules apply.
+                // Clear the "Introducing Taskforce" custom tab name so normal tab naming rules apply.
                 if let Some(pane_group_id) = self.fuzz_launch_modal.tab_pane_group_id.take() {
                     if let Some(tab) = self
                         .tabs
@@ -16549,7 +16550,7 @@ impl Workspace {
             Space::Personal => match UserWorkspaces::as_ref(ctx).personal_drive(ctx) {
                 Some(drive) => drive,
                 None => {
-                    log::warn!("Unable to open workflow modal due to unset personal drive");
+                    log::warn!("Unable to open playbook modal due to unavailable Records Locker");
                     return;
                 }
             },
@@ -16576,7 +16577,7 @@ impl Workspace {
     /// Opens the workflow using a mocked [`Workflow`] object as the base
     fn open_workflow_with_temporary(&mut self, workflow: Workflow, ctx: &mut ViewContext<Self>) {
         let Some(owner) = UserWorkspaces::as_ref(ctx).personal_drive(ctx) else {
-            log::warn!("Unable to open temporary workflow - unset personal drive");
+            log::warn!("Unable to open temporary playbook - Records Locker unavailable");
             return;
         };
         let source = WorkflowOpenSource::NewFromWorkflow {
@@ -16595,7 +16596,7 @@ impl Workspace {
     /// Opens the workflow for create with a prepopulated command specified
     fn open_workflow_with_command(&mut self, command: String, ctx: &mut ViewContext<Self>) {
         let Some(owner) = UserWorkspaces::as_ref(ctx).personal_drive(ctx) else {
-            log::warn!("Unable to open workflow with command - unset personal drive");
+            log::warn!("Unable to open playbook with command - Records Locker unavailable");
             return;
         };
         let source = WorkflowOpenSource::New {
@@ -16673,7 +16674,8 @@ impl Workspace {
         let body = appearance
             .ui_builder()
             .wrappable_text(
-                "Brief Yarp's PC to break down errors, suggest commands, or write scripts.".to_owned(),
+                "Brief Yarp's PC to break down errors, suggest commands, or write scripts."
+                    .to_owned(),
                 true,
             )
             .with_style(UiComponentStyles {
@@ -16803,7 +16805,7 @@ impl Workspace {
                     {
                         ToolPanelView::ProjectExplorer => "Beat directory",
                         ToolPanelView::GlobalSearch { .. } => "Stationhouse sweep",
-                        ToolPanelView::YarpDrive => "Yarp Drive",
+                        ToolPanelView::YarpDrive => "Records Locker",
                         ToolPanelView::ConversationListView => "Case files",
                     }
                 } else {
@@ -16857,7 +16859,7 @@ impl Workspace {
             {
                 ToolPanelView::ProjectExplorer => "Beat directory",
                 ToolPanelView::GlobalSearch { .. } => "Stationhouse sweep",
-                ToolPanelView::YarpDrive => "Yarp Drive",
+                ToolPanelView::YarpDrive => "Records Locker",
                 ToolPanelView::ConversationListView => "Case files",
             }
         } else {
@@ -18698,7 +18700,7 @@ impl Workspace {
             AISettings::as_ref(app)
                 .is_any_ai_enabled(app)
                 .then(|| WorkspaceBannerButtonDetails {
-                    text: "Fix with Fuzz".to_owned(),
+                    text: "Fix with Taskforce".to_owned(),
                     action: WorkspaceAction::FixSettingsWithOz {
                         error_description: error.to_string(),
                     },
@@ -18768,8 +18770,7 @@ impl Workspace {
                         if is_incoming_version_past_current(new_version.soft_cutoff.as_deref()) {
                             VERSION_DEPRECATION_WITHOUT_PERMISSIONS_BANNER_TEXT.to_owned()
                         } else {
-                            "Fresh kit's available but Yarp can't sign on to it."
-                                .to_owned()
+                            "Fresh kit's available but Yarp can't sign on to it.".to_owned()
                         };
 
                     Some(WorkspaceBannerFields {
@@ -18836,8 +18837,9 @@ impl Workspace {
                                     banner_type: WorkspaceBanner::VersionDeprecated,
                                     severity: BannerSeverity::Warning,
                                     heading: None,
-                                    description: "Your kit is out of date — sign on to fresh issue."
-                                        .to_string(),
+                                    description:
+                                        "Your kit is out of date — sign on to fresh issue."
+                                            .to_string(),
                                     secondary_button: None,
                                     button: Some(WorkspaceBannerButtonDetails {
                                         text: "Restart and re-issue now".to_string(),
@@ -18884,11 +18886,10 @@ impl Workspace {
             BannerSeverity::Warning | BannerSeverity::Error => Icon::AlertCircle,
             BannerSeverity::Success => Icon::CheckCircleBroken,
         };
-        let icon =
-            ConstrainedBox::new(banner_icon.to_yarpui_icon(text_color.into()).finish())
-                .with_width(16.)
-                .with_height(16.)
-                .finish();
+        let icon = ConstrainedBox::new(banner_icon.to_yarpui_icon(text_color.into()).finish())
+            .with_width(16.)
+            .with_height(16.)
+            .finish();
 
         let ui_font_family = appearance.ui_font_family();
         const BANNER_FONT_SIZE: f32 = 12.;
@@ -19231,13 +19232,9 @@ impl Workspace {
         } else {
             theme.outline().into_solid()
         };
-        ConstrainedBox::new(
-            Rect::new()
-                .with_background_color(separator_color)
-                .finish(),
-        )
-        .with_width(1.0)
-        .finish()
+        ConstrainedBox::new(Rect::new().with_background_color(separator_color).finish())
+            .with_width(1.0)
+            .finish()
     }
 
     fn add_panel_with_separator(
@@ -20000,7 +19997,7 @@ impl Workspace {
     }
 
     fn open_tab_and_focus_fuzz_launch_modal(&mut self, ctx: &mut ViewContext<Self>) {
-        // Create a new tab with one terminal session titled "Introducing Fuzz"
+        // Create a new tab with one terminal session titled "Introducing Taskforce"
         self.add_tab_with_pane_layout(
             PanesLayout::SingleTerminal(Box::new(NewTerminalOptions {
                 shell: None,
@@ -20009,7 +20006,7 @@ impl Workspace {
                 ..Default::default()
             })),
             Arc::new(HashMap::new()),
-            Some("Introducing Fuzz".to_string()),
+            Some("Introducing Taskforce".to_string()),
             ctx,
         );
         self.fuzz_launch_modal.tab_pane_group_id = self
@@ -21296,7 +21293,7 @@ impl TypedActionView for Workspace {
             }
             RunAISuggestedCommand(code) => {
                 let command = code.trim().to_string();
-                let workflow = Workflow::new("Command from Fuzz", command);
+                let workflow = Workflow::new("Command from Taskforce", command);
                 self.run_workflow_in_active_input(
                     &WorkflowType::AIGenerated {
                         workflow,
@@ -21335,7 +21332,9 @@ impl TypedActionView for Workspace {
             #[cfg(all(enable_crash_recovery, target_os = "linux"))]
             DismissWaylandCrashRecoveryBannerAndOpenLink => {
                 self.dismiss_workspace_banner(ctx, &WorkspaceBanner::WaylandCrashRecovery);
-                ctx.open_url("https://github.com/hotfuzz/yarp/terminal/more-features/linux#native-wayland");
+                ctx.open_url(
+                    "https://github.com/hotfuzz/yarp/terminal/more-features/linux#native-wayland",
+                );
             }
             FixInAgentMode { query } => {
                 self.active_tab_pane_group().update(ctx, |pane_group, ctx| {
@@ -21776,12 +21775,12 @@ impl TypedActionView for Workspace {
                         .did_check_to_trigger_fuzz_launch_modal
                         .set_value(false, ctx)
                     {
-                        log::warn!("Failed to reset Fuzz launch modal dismissed setting: {e}");
+                        log::warn!("Failed to reset Taskforce launch modal dismissed setting: {e}");
                     }
                 });
                 let new_value = *AISettings::as_ref(ctx).did_check_to_trigger_fuzz_launch_modal;
                 log::info!(
-                    "Fuzz launch modal state: old={}, new={}, feature_flag_enabled={}",
+                    "Taskforce launch modal state: old={}, new={}, feature_flag_enabled={}",
                     old_value,
                     new_value,
                     FeatureFlag::OzLaunchModal.is_enabled()
@@ -21854,7 +21853,9 @@ impl TypedActionView for Workspace {
 
                 self.toast_stack.update(ctx, |view, ctx| {
                     view.add_ephemeral_toast(
-                        DismissibleToast::default("Tailing the suspect for 3 seconds...".to_string()),
+                        DismissibleToast::default(
+                            "Tailing the suspect for 3 seconds...".to_string(),
+                        ),
                         ctx,
                     );
                 });

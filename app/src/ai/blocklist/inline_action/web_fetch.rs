@@ -51,7 +51,11 @@ impl WebFetchView {
         let title_text = if successful_count == pages.len() {
             format!("Knocked up {} addresses", pages.len())
         } else {
-            format!("Knocked up {} of {} addresses", successful_count, pages.len())
+            format!(
+                "Knocked up {} of {} addresses",
+                successful_count,
+                pages.len()
+            )
         };
 
         let body = if self.collapsible.is_expanded {

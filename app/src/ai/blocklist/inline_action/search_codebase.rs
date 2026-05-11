@@ -167,7 +167,10 @@ impl SearchCodebaseView {
         app: &AppContext,
     ) -> Box<dyn Element> {
         let title_text = if let Some(repo_name) = &self.repo_name {
-            format!("Combed the casebook for \"{}\" in {}", self.search_query, repo_name)
+            format!(
+                "Combed the casebook for \"{}\" in {}",
+                self.search_query, repo_name
+            )
         } else {
             format!("Combed the casebook for \"{}\"", self.search_query)
         };
@@ -473,7 +476,10 @@ impl View for SearchCodebaseView {
                 | AIActionStatus::RunningAsync,
             ) => {
                 let loading_text = if let Some(repo_name) = &self.repo_name {
-                    format!("Combing the casebook for \"{}\" in {}", self.search_query, repo_name)
+                    format!(
+                        "Combing the casebook for \"{}\" in {}",
+                        self.search_query, repo_name
+                    )
                 } else {
                     format!("Combing the casebook for \"{}\"", self.search_query)
                 };

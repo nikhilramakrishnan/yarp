@@ -9,9 +9,9 @@ mod linux;
 
 #[cfg(target_os = "windows")]
 mod windows;
-use yarpui_core::fonts::{Style, Weight};
 #[cfg(target_os = "windows")]
 use windows::loader;
+use yarpui_core::fonts::{Style, Weight};
 
 use std::any::Any;
 use std::collections::HashMap;

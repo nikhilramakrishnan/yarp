@@ -15,7 +15,7 @@ define_settings_group!(YarpDriveSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "yarp_drive.sorting_choice",
-        description: "The sort order for items in Yarp Drive.",
+        description: "The sort order for items in the records locker.",
     },
     sharing_onboarding_block_shown: YarpDriveSharingOnboardingBlockShown {
         type: bool,
@@ -24,7 +24,7 @@ define_settings_group!(YarpDriveSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: true,
     },
-    // Controls whether Yarp Drive appears in the tools panel, command palette, and command search.
+    // Controls whether the records locker appears in the tools panel, command grid, and command search.
     enable_yarp_drive: EnableYarpDrive {
         type: bool,
         default: true,
@@ -32,12 +32,12 @@ define_settings_group!(YarpDriveSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "yarp_drive.enabled",
-        description: "Whether Yarp Drive is enabled.",
+        description: "Whether the records locker is enabled.",
     },
 ]);
 
 impl YarpDriveSettings {
-    /// Returns whether Yarp Drive should be considered enabled.
+    /// Returns whether Records Locker should be considered enabled.
     /// Returns `false` when the user is anonymous or fully logged out,
     /// regardless of the user setting.
     pub fn is_yarp_drive_enabled(app: &yarpui::AppContext) -> bool {

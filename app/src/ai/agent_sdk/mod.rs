@@ -258,7 +258,7 @@ fn run_agent(
             }
             if args.harness == Harness::OpenCode {
                 return Err(anyhow::anyhow!(
-                    "The opencode harness is only supported for local child agent launches."
+                    "The opencode harness is only supported for local child officer launches."
                 ));
             }
 
@@ -635,10 +635,10 @@ impl AgentDriverRunner {
                 HarnessKind::Unsupported(harness) => {
                     return Err(AgentDriverError::HarnessSetupFailed {
                         harness: harness.to_string(),
-                        reason: format!(
-                            "The {harness} harness is only supported for local child agent launches."
-                        ),
-                    });
+                            reason: format!(
+                                "The {harness} harness is only supported for local child officer launches."
+                            ),
+                        });
                 }
                 HarnessKind::Fuzz | HarnessKind::ThirdParty(_) => {}
             }
@@ -1157,7 +1157,7 @@ impl AgentDriverRunner {
             HarnessKind::Unsupported(harness) => Err(AgentDriverError::HarnessSetupFailed {
                 harness: harness.to_string(),
                 reason: format!(
-                    "The {harness} harness is only supported for local child agent launches."
+                    "The {harness} harness is only supported for local child officer launches."
                 ),
             }),
         }

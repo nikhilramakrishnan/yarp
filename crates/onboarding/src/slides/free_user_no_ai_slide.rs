@@ -30,7 +30,7 @@ const SUBSCRIBE_ITEMS: &[&str] = &[
     "Access to Reload credits and volume-based discounts",
     "Extended ambient officer access",
     "Highest codebase indexing limits",
-    "Unlimited Yarp Drive objects and collaboration",
+    "Unlimited Records Locker objects and collaboration",
     "Private email support",
     "Unlimited central records storage",
 ];
@@ -121,8 +121,8 @@ impl FreeUserNoAiSlide {
             appearance,
             0,
             Icon::Code2,
-            "Agent driven development with Yarp's built-in agent",
-            "Iterate, plan, and build with Fuzz: Yarp's built-in agent. Available locally or in the cloud.",
+            "Taskforce development with Yarp's built-in officer",
+            "Iterate, plan, and build with Taskforce: Yarp's built-in officer. Available locally or in the cloud.",
             agent_price_badge.to_string(),
             true, // badge is green
             self.agent_mouse_state.clone(),
@@ -133,8 +133,8 @@ impl FreeUserNoAiSlide {
             appearance,
             1,
             Icon::Terminal,
-            "Classic terminal with third-party agents",
-            "A modern terminal that supports third-party agents (Claude Code, Codex, Gemini CLI) and classic terminal workflows.",
+            "Classic terminal with third-party coding CLIs",
+            "A modern terminal that supports third-party coding CLIs (Claude Code, Codex, Gemini CLI) and classic terminal workflows.",
             "Free".to_string(),
             false, // badge is gray
             self.classic_terminal_mouse_state.clone(),
@@ -368,7 +368,7 @@ impl FreeUserNoAiSlide {
         let text_sub = internal_colors::text_sub(theme, internal_colors::neutral_2(theme));
 
         let title = FormattedTextElement::from_str(
-            "Subscribe to access agent driven development in Yarp.",
+            "Subscribe to access Taskforce development in Yarp.",
             ui_font_family,
             24.,
         )

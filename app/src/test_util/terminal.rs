@@ -16,9 +16,9 @@ use crate::ai::skills::SkillManager;
 use crate::code_review::git_status_update::GitStatusUpdateModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::yarp_managed_paths_watcher::YarpManagedPathsWatcher;
+use watcher::HomeDirectoryWatcher;
 use yarpui::SingletonEntity;
 use yarpui::{platform::WindowStyle, App, ViewHandle, WindowId};
-use watcher::HomeDirectoryWatcher;
 
 use super::settings::initialize_settings_for_tests;
 use crate::ai::blocklist::BlocklistAIPermissions;

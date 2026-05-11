@@ -156,7 +156,8 @@ const BLOCK_HOVER_BUTTON_HEIGHT: f32 = 28.;
 const TAG_AGENT_FOR_ASSISTANCE_TEXT: &str = "Tag a PC for backup";
 
 const SAVE_AS_WORKFLOW_TEXT: &str = "Log as a playbook";
-const SAVE_AS_WORKFLOW_SECRETS_TEXT: &str = "Case files with classified info can't go on the playbook.";
+const SAVE_AS_WORKFLOW_SECRETS_TEXT: &str =
+    "Case files with classified info can't go on the playbook.";
 
 enum ScrollingAcceleration {
     Polynomial(f32),

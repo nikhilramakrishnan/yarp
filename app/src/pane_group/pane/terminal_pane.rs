@@ -557,7 +557,7 @@ impl PaneContent for TerminalPane {
                     Ok(ShareableLink::Pane { url })
                 } else {
                     Err(ShareableLinkError::Unexpected(String::from(
-                        "Failed to retreive shared session link",
+                        "Failed to retrieve radio channel link",
                     )))
                 }
             }
@@ -1266,8 +1266,7 @@ fn handle_terminal_view_event(
                             pane_id,
                             request.name,
                             request.parent_conversation_id,
-                            "Local recruits don't patrol the WASM beat."
-                                .to_string(),
+                            "Local recruits don't patrol the WASM beat.".to_string(),
                             ctx,
                         );
                     }
@@ -1320,7 +1319,7 @@ fn handle_terminal_view_event(
                                 Ok(runtime_skills) => runtime_skills,
                                 Err(unresolved_references) => {
                                     let error_message = format!(
-                                        "Failed to resolve child agent skills: {}",
+                                        "Failed to resolve child officer skills: {}",
                                         unresolved_references.join(", ")
                                     );
                                     log::error!(

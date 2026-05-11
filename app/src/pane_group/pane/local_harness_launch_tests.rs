@@ -53,16 +53,13 @@ fn validate_local_harness_shell_rejects_unsupported_shells() {
     assert_eq!(
         validate_local_harness_shell(Some(ShellType::PowerShell)),
         Err(
-            "Local child harnesses currently require bash, zsh, or fish; PowerShell is not supported."
+            "Local recruits patrol with bash, zsh, or fish — PowerShell isn't on the rota."
                 .to_string()
         )
     );
     assert_eq!(
         validate_local_harness_shell(None),
-        Err(
-            "Local child harnesses currently require a detected bash, zsh, or fish session."
-                .to_string()
-        )
+        Err("No bash, zsh, or fish beat on the books — local recruit can't clock on.".to_string())
     );
 }
 

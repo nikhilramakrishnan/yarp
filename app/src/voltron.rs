@@ -90,7 +90,7 @@ pub enum VoltronItem {
 impl VoltronItem {
     pub fn as_str(&self) -> &'static str {
         match self {
-            VoltronItem::AiCommands => "A.I. command sweep",
+            VoltronItem::AiCommands => "Taskforce command sweep",
             VoltronItem::Workflows => "Playbooks",
             VoltronItem::History => "Sweep the archive",
         }

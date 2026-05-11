@@ -6,11 +6,11 @@ mod screenshot;
 
 use async_trait::async_trait;
 use pathfinder_geometry::vector::Vector2I;
-use yarpui::r#async::Timer;
 use x11rb::connection::Connection;
 use x11rb::protocol::xproto::{self, ConnectionExt as _};
 use x11rb::protocol::xtest::ConnectionExt as _;
 use x11rb::rust_connection::RustConnection;
+use yarpui::r#async::Timer;
 
 use crate::{Action, ActionResult, Options};
 

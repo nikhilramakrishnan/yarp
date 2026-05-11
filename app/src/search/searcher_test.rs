@@ -190,7 +190,7 @@ fn test_searcher_async() {
         "Run cargo fmt on changed files",
         "Run yarp-on-web",
         "Run fresh yarp-local and clear yarp-dev permissions",
-        "Give user unlimited AI",
+        "Give user unlimited rations",
     ];
     let background_executor = Arc::new(Background::default());
     let searcher_async =
@@ -222,7 +222,7 @@ fn test_searcher_async() {
         "there should be exactly 1 match for 'unlimited'"
     );
     assert_eq!(
-        result[0].values.name, "Give user unlimited AI",
+        result[0].values.name, "Give user unlimited rations",
         "should match the search string"
     );
     assert_eq!(

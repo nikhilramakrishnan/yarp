@@ -33,8 +33,7 @@ const TMUX_NOT_INSTALLED_ERROR: &str =
     "tmux isn't on the books at the remote desk. File it and call in again.";
 const UNSUPPORTED_TMUX_VERSION_ERROR: &str =
     "The tmux on the remote desk is older than 3.0. File 3.0 or newer through a different channel and call in again.";
-const TMUX_FAILED_ERROR: &str =
-    "tmux flaked at the remote desk. Re-file it and call in again.";
+const TMUX_FAILED_ERROR: &str = "tmux flaked at the remote desk. Re-file it and call in again.";
 const YARPIFY_TIMEOUT_ERROR: &str = "Yarpifying the session hit a timeout.";
 const UNSUPPORTED_SHELL_ERROR: &str =
     "Shell isn't on the rota. Set bash, zsh, or fish as your default and call in again.";
@@ -236,16 +235,26 @@ impl View for SshErrorBlock {
         let ui_builder = appearance.ui_builder();
 
         if self.should_show_report_to_yarp_button() {
-            let report_issue_text = build_description_row(FormattedText::new([FormattedTextLine::Line(vec![
-                    FormattedTextFragment::plain_text("We're tightening up SSH at the station. Consider "),
-                    FormattedTextFragment::hyperlink("filing an issue", get_ssh_github_issue_url(self.error_reason.error_title())),
+            let report_issue_text = build_description_row(
+                FormattedText::new([FormattedTextLine::Line(vec![
+                    FormattedTextFragment::plain_text(
+                        "We're tightening up SSH at the station. Consider ",
+                    ),
+                    FormattedTextFragment::hyperlink(
+                        "filing an issue",
+                        get_ssh_github_issue_url(self.error_reason.error_title()),
+                    ),
                     FormattedTextFragment::plain_text(" on GitHub so we can pin the case."),
                 ])]),
-                theme, appearance, self.report_link_highlight_index.clone())
-                .with_hyperlink_font_color(theme.accent().into())
-                .register_default_click_handlers(|link, ctx, _| {
-                    ctx.dispatch_typed_action(SshErrorBlockAction::OpenUrl(link.url));
-                }).finish();
+                theme,
+                appearance,
+                self.report_link_highlight_index.clone(),
+            )
+            .with_hyperlink_font_color(theme.accent().into())
+            .register_default_click_handlers(|link, ctx, _| {
+                ctx.dispatch_typed_action(SshErrorBlockAction::OpenUrl(link.url));
+            })
+            .finish();
             content.add_child(apply_spacing_styles(Container::new(report_issue_text)).finish());
         }
 

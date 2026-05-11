@@ -88,7 +88,7 @@ impl ThirdPartyHarness for ClaudeHarness {
     ) -> Result<Option<ResumePayload>, AgentDriverError> {
         let conversation_id_str = conversation_id.to_string();
         let bytes = harness_support_client
-            .fetch_transcript()
+            .fetch_transcript(conversation_id)
             .await
             .map_err(|err| {
                 // A 404 from the server maps to "no stored transcript" so the CLI can tell

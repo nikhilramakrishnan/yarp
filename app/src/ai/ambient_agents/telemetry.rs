@@ -154,7 +154,7 @@ impl TelemetryEventDesc for CloudAgentTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            Self::EnteredCloudMode => "User entered cloud agent view",
+            Self::EnteredCloudMode => "User entered ambient officer view",
             Self::EnvironmentSelectorOpened => "User opened the environment selector menu",
             Self::EnvironmentSelected => "User selected an environment from the selector",
             Self::OpenedEnvironmentManagementPane => "User opened the environment management pane",

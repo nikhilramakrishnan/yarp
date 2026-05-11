@@ -138,7 +138,7 @@ impl HarnessSupportClient for TestClient {
         Ok(targets)
     }
 
-    async fn fetch_transcript(&self) -> Result<bytes::Bytes> {
+    async fn fetch_transcript(&self, _conversation_id: &AIConversationId) -> Result<bytes::Bytes> {
         unimplemented!("not used by upload_snapshot_from_declarations_file")
     }
 
