@@ -51,6 +51,27 @@ func TestDecodeSplitSequenceWaits(t *testing.T) {
 	}
 }
 
+// A lone trailing ESC is ambiguous (Esc keypress vs split sequence); the
+// decoder must ask for more input and let the session's timer disambiguate,
+// otherwise a split arrow key closes the overlay and leaks "[A" to the shell.
+func TestLoneTrailingEscWaits(t *testing.T) {
+	keys, rest := DecodeKeys([]byte("\x1b"))
+	if len(keys) != 0 || string(rest) != "\x1b" {
+		t.Fatalf("lone ESC should wait: keys=%+v rest=%q", keys, rest)
+	}
+}
+
+// Paste markers and focus events must be inert — decoding them as Esc used
+// to dismiss the overlay whenever the user pasted.
+func TestUnknownCSIIsIgnored(t *testing.T) {
+	for _, seq := range []string{"\x1b[200~", "\x1b[201~", "\x1b[I", "\x1b[O"} {
+		keys, rest := DecodeKeys([]byte(seq))
+		if len(rest) != 0 || len(keys) != 1 || keys[0].Kind != KeyIgnore {
+			t.Fatalf("%q decoded to %+v (rest %q), want KeyIgnore", seq, keys, rest)
+		}
+	}
+}
+
 func TestDecodeUTF8(t *testing.T) {
 	keys, rest := DecodeKeys([]byte("héπ"))
 	if len(rest) != 0 || len(keys) != 3 || keys[2].Rune != 'π' {

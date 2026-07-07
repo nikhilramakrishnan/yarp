@@ -153,21 +153,28 @@ func cmdAI(settings *config.Settings, args []string) error {
 	recent, _ := blocks.LoadRecent(dir, settings.LLM.ContextBlocks)
 	ag := &agent.Agent{Client: client}
 	if settings.MemoryOn() {
-		base, _ := config.Dir()
-		ag.Memory = llm.OpenMemory(filepath.Join(base, "memory.jsonl"))
+		if path, err := config.MemoryPath(); err == nil {
+			ag.Memory = llm.OpenMemory(path)
+		}
 	}
 	cwd, _ := os.Getwd()
-	_, err = ag.Reply(ctx, question, recent, cwd, func(d string) { fmt.Print(d) })
+	text, err := ag.Reply(ctx, question, recent, cwd, func(d string) { fmt.Print(d) })
 	fmt.Println()
-	return err
+	if err != nil {
+		if text == "" {
+			return err
+		}
+		fmt.Fprintf(os.Stderr, "yarp: stream ended early: %v\n", err)
+	}
+	return nil
 }
 
 func cmdMemory(args []string) error {
-	base, err := config.Dir()
+	path, err := config.MemoryPath()
 	if err != nil {
 		return err
 	}
-	mem := llm.OpenMemory(filepath.Join(base, "memory.jsonl"))
+	mem := llm.OpenMemory(path)
 	sub := "list"
 	if len(args) > 0 {
 		sub = args[0]
@@ -192,7 +199,7 @@ func cmdMemory(args []string) error {
 		}
 		return mem.Remember(fact, time.Now())
 	case "clear":
-		return os.Remove(filepath.Join(base, "memory.jsonl"))
+		return os.Remove(path)
 	default:
 		return fmt.Errorf("usage: yarp memory list|add <fact>|clear")
 	}
@@ -223,17 +230,7 @@ func cmdBackup(settings *config.Settings, args []string) error {
 			return gdriveAuth(settings)
 		}
 	}
-	summary, err := backup.Run(home, backup.RunConfig{
-		Dir:          settings.Backup.Dir,
-		RcloneRemote: settings.Backup.RcloneRemote,
-		Keep:         settings.Backup.Keep,
-		Drive: backup.DriveAuth{
-			ClientID:     settings.Backup.GoogleDrive.ClientID,
-			ClientSecret: settings.Backup.GoogleDrive.ClientSecret,
-			RefreshToken: settings.Backup.GoogleDrive.RefreshToken,
-		},
-		DriveFolder: settings.Backup.GoogleDrive.FolderID,
-	}, time.Now())
+	summary, err := backup.Run(home, backup.RunConfigFromSettings(settings), time.Now())
 	if err != nil {
 		return err
 	}

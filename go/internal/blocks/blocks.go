@@ -28,7 +28,6 @@ type Block struct {
 	ExitCode  int       `json:"exit_code"` // -1 when unknown
 	Output    string    `json:"output,omitempty"`
 	Truncated bool      `json:"truncated,omitempty"`
-	Bookmark  bool      `json:"bookmark,omitempty"`
 }
 
 // Duration is the block's wall-clock run time.
@@ -106,26 +105,51 @@ func LoadRecent(historyDir string, limit int) ([]Block, error) {
 }
 
 // Commands returns distinct commands from recent history, newest first,
-// capped at limit. Used to feed the palette.
+// capped at limit. Used to feed the palette on every overlay open, so it
+// decodes only the cmd field — deserializing megabytes of stored output to
+// list command names would make the hotkey visibly stall.
 func Commands(historyDir string, limit int) ([]string, error) {
-	blks, err := LoadRecent(historyDir, limit*4)
-	if err != nil {
+	files, err := sessionFiles(historyDir)
+	if err != nil || len(files) == 0 {
 		return nil, err
 	}
-	seen := make(map[string]bool, len(blks))
+	seen := make(map[string]bool)
 	var out []string
-	for _, b := range blks {
-		cmd := strings.TrimSpace(b.Cmd)
-		if cmd == "" || seen[cmd] {
+	for i := len(files) - 1; i >= 0 && len(out) < limit; i-- {
+		cmds, err := readSessionCommands(files[i])
+		if err != nil {
 			continue
 		}
-		seen[cmd] = true
-		out = append(out, cmd)
-		if len(out) == limit {
-			break
+		for j := len(cmds) - 1; j >= 0 && len(out) < limit; j-- {
+			cmd := strings.TrimSpace(cmds[j])
+			if cmd == "" || seen[cmd] {
+				continue
+			}
+			seen[cmd] = true
+			out = append(out, cmd)
 		}
 	}
 	return out, nil
+}
+
+func readSessionCommands(path string) ([]string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	var out []string
+	sc := bufio.NewScanner(f)
+	sc.Buffer(make([]byte, 0, 64*1024), 4*1024*1024)
+	for sc.Scan() {
+		var line struct {
+			Cmd string `json:"cmd"`
+		}
+		if json.Unmarshal(sc.Bytes(), &line) == nil {
+			out = append(out, line.Cmd)
+		}
+	}
+	return out, sc.Err()
 }
 
 // Prune deletes session files whose modification time is older than maxAge.

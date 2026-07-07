@@ -25,13 +25,13 @@ import (
 // vt scanner, with the overlay available on a hotkey. One goroutine reads
 // the pty, one reads stdin, and the main loop owns all state — no locks.
 type Session struct {
-	settings *config.Settings
-	homeDir  string
+	settings   *config.Settings
+	homeDir    string
+	paletteKey byte
 
 	pty     termio.Pty
 	scanner *vt.Scanner
 	store   *blocks.Store
-	cleanup func()
 
 	out  *os.File
 	cols int
@@ -48,15 +48,20 @@ type Session struct {
 	ov         *overlay
 	ptyBuf     bytes.Buffer // child output withheld while the overlay is up
 	ptyDropped bool         // buffer overflowed; discarding until close
-	dirty      bool         // output arrived under the overlay → nudge on close
+
+	// stdin decoding state
+	stdinSeq  seqTracker
+	stdinRest []byte           // partial escape sequence / rune between chunks
+	escCh     <-chan time.Time // fires to resolve a pending lone ESC as a keypress
 
 	// ai plumbing (see ai.go)
 	aiAgent  *agent.Agent
-	aiDelta  chan string
+	aiGen    int // generation counter; stale deltas/results are dropped
+	aiDelta  chan aiDelta
 	aiDone   chan aiResult
 	aiCancel context.CancelFunc
 
-	stdinRest []byte // partial escape sequence between chunks
+	backupCh chan string // async "Back up now" results
 }
 
 // Run starts the shell and blocks until it exits, returning its exit code.
@@ -108,15 +113,17 @@ func Run(settings *config.Settings) (int, error) {
 	defer term.Restore(int(os.Stdin.Fd()), oldState)
 
 	s := &Session{
-		settings: settings,
-		homeDir:  home,
-		pty:      p,
-		store:    store,
-		out:      os.Stdout,
-		cols:     cols,
-		rows:     rows,
-		aiDelta:  make(chan string, 64),
-		aiDone:   make(chan aiResult, 1),
+		settings:   settings,
+		homeDir:    home,
+		paletteKey: settings.PaletteByte(),
+		pty:        p,
+		store:      store,
+		out:        os.Stdout,
+		cols:       cols,
+		rows:       rows,
+		aiDelta:    make(chan aiDelta, 64),
+		aiDone:     make(chan aiResult, 1),
+		backupCh:   make(chan string, 1),
 	}
 	s.scanner = vt.NewScanner(s.onVTEvent, settings.BlockOutputLimitKB*1024)
 	s.applyThemeOnStartup()
@@ -151,7 +158,6 @@ func (s *Session) loop() int {
 	resize := time.NewTicker(400 * time.Millisecond)
 	defer resize.Stop()
 
-	paletteByte := s.settings.PaletteByte()
 	for {
 		select {
 		case chunk, ok := <-ptyCh:
@@ -175,15 +181,41 @@ func (s *Session) loop() int {
 			if !ok {
 				return s.finish(0)
 			}
-			s.handleStdin(chunk, paletteByte)
+			s.handleStdin(chunk)
 
-		case delta := <-s.aiDelta:
-			s.aiAppendDelta(delta)
-			s.repaint()
+		case d := <-s.aiDelta:
+			if d.gen == s.aiGen {
+				s.aiAppendDelta(d.text)
+				// Batch: drain whatever else already arrived before the
+				// (comparatively expensive) repaint.
+			drain:
+				for {
+					select {
+					case d := <-s.aiDelta:
+						if d.gen == s.aiGen {
+							s.aiAppendDelta(d.text)
+						}
+					default:
+						break drain
+					}
+				}
+				s.repaint()
+			}
 
 		case res := <-s.aiDone:
-			s.aiFinish(res)
-			s.repaint()
+			if res.gen == s.aiGen {
+				s.aiFinish(res)
+				s.repaint()
+			}
+
+		case msg := <-s.backupCh:
+			if s.ov != nil {
+				s.ov.status = msg
+				s.repaint()
+			}
+
+		case <-s.escCh:
+			s.resolvePendingEsc()
 
 		case code := <-exitCh:
 			return s.finish(code)
@@ -194,60 +226,88 @@ func (s *Session) loop() int {
 	}
 }
 
-func (s *Session) handleStdin(chunk []byte, paletteByte byte) {
+// handleStdin routes one chunk of user input.
+func (s *Session) handleStdin(chunk []byte) {
 	if s.ov == nil {
-		// Passthrough — except the hotkey that opens the overlay.
-		if i := bytes.IndexByte(chunk, paletteByte); i >= 0 {
-			if i > 0 {
-				s.pty.Write(chunk[:i])
+		s.passthrough(chunk)
+		return
+	}
+	s.overlayInput(chunk)
+}
+
+// passthrough forwards input to the pty, watching for the palette hotkey.
+// The hotkey only fires on a byte in ground state: BEL and ESC occur inside
+// terminal reply sequences and bracketed pastes, which must pass through
+// untouched.
+func (s *Session) passthrough(chunk []byte) {
+	start := 0
+	for i := 0; i < len(chunk); i++ {
+		b := chunk[i]
+		ground := s.stdinSeq.ground()
+		s.stdinSeq.feed(b)
+		if b == s.paletteKey && ground {
+			if i > start {
+				s.pty.Write(chunk[start:i])
 			}
 			s.openOverlay()
-			// Anything typed after the hotkey in the same chunk feeds the
-			// overlay.
-			chunk = chunk[i+1:]
-			if len(chunk) == 0 {
-				return
-			}
-		} else {
-			s.pty.Write(chunk)
+			s.overlayInput(chunk[i+1:])
 			return
 		}
 	}
-	buf := append(s.stdinRest, chunk...)
-	keys, rest := DecodeKeys(buf)
-	s.stdinRest = rest
-	for _, k := range keys {
+	if start < len(chunk) {
+		s.pty.Write(chunk[start:])
+	}
+}
+
+// overlayInput decodes keys for the overlay. If the overlay closes mid-batch
+// (Esc followed by more typing in one read), the remaining raw bytes belong
+// to the shell and are forwarded verbatim — no lossy re-encoding.
+func (s *Session) overlayInput(chunk []byte) {
+	buf := s.stdinRest
+	s.stdinRest = nil
+	buf = append(buf, chunk...)
+	i := 0
+	for i < len(buf) {
 		if s.ov == nil {
-			// The overlay closed mid-batch (e.g. Esc then more typing):
-			// remaining keys belong to the shell.
-			s.pty.Write(keyBytes(k))
-			continue
+			s.passthrough(buf[i:])
+			s.armEscTimer()
+			return
 		}
+		k, n, need := DecodeOne(buf[i:])
+		if need {
+			s.stdinRest = append([]byte(nil), buf[i:]...)
+			break
+		}
+		i += n
 		s.handleOverlayKey(k)
 	}
 	if s.ov != nil {
 		s.repaint()
 	}
+	s.armEscTimer()
 }
 
-// keyBytes re-encodes a decoded key for the pty (used only for the tail of
-// a chunk that closed the overlay).
-func keyBytes(k Key) []byte {
-	switch k.Kind {
-	case KeyRune:
-		return []byte(string(k.Rune))
-	case KeyEnter:
-		return []byte{'\r'}
-	case KeyBackspace:
-		return []byte{0x7f}
-	case KeyTab:
-		return []byte{'\t'}
-	case KeyCtrl:
-		return []byte{k.Ctrl}
-	case KeyEsc:
-		return []byte{0x1b}
+// armEscTimer starts a short timer when the pending input is a lone ESC:
+// if nothing follows, it was an Esc keypress; if bytes arrive first, it was
+// the start of a split escape sequence.
+func (s *Session) armEscTimer() {
+	if s.ov != nil && len(s.stdinRest) == 1 && s.stdinRest[0] == 0x1b {
+		s.escCh = time.After(60 * time.Millisecond)
+	} else {
+		s.escCh = nil
 	}
-	return nil
+}
+
+func (s *Session) resolvePendingEsc() {
+	s.escCh = nil
+	if s.ov == nil || len(s.stdinRest) != 1 || s.stdinRest[0] != 0x1b {
+		return
+	}
+	s.stdinRest = nil
+	s.handleOverlayKey(Key{Kind: KeyEsc})
+	if s.ov != nil {
+		s.repaint()
+	}
 }
 
 // bufferUnderOverlay withholds child output while the overlay covers the
@@ -258,7 +318,6 @@ func keyBytes(k Key) []byte {
 const ptyBufCap = 4 << 20
 
 func (s *Session) bufferUnderOverlay(chunk []byte) {
-	s.dirty = true
 	if s.ptyDropped {
 		return
 	}
@@ -301,26 +360,30 @@ func (s *Session) onVTEvent(ev vt.Event) {
 		s.scanner.StartCapture()
 	case vt.CommandEnd:
 		if !s.inCommand {
+			// Integrations without a preexec hook (pwsh) report the command
+			// and exit code only, with no OutputStart: record an output-less
+			// block rather than dropping the command.
+			if s.pendCmd != "" {
+				now := time.Now()
+				s.record(blocks.Block{
+					Cmd: s.pendCmd, CWD: s.cwd,
+					StartedAt: now, EndedAt: now,
+					ExitCode: ev.ExitCode,
+				})
+				s.pendCmd = ""
+			}
 			return
 		}
 		out, trunc := s.scanner.StopCapture()
-		out = strings.TrimRight(out, "\n")
-		b := blocks.Block{
+		s.record(blocks.Block{
 			Cmd:       s.pendCmd,
 			CWD:       s.cwd,
 			StartedAt: s.pendStart,
 			EndedAt:   time.Now(),
 			ExitCode:  ev.ExitCode,
-			Output:    out,
+			Output:    strings.TrimRight(out, "\n"),
 			Truncated: trunc,
-		}
-		if b.Cmd != "" || len(out) > 0 {
-			_ = s.store.Append(&b)
-			s.recent = append(s.recent, b)
-			if len(s.recent) > 64 {
-				s.recent = s.recent[1:]
-			}
-		}
+		})
 		s.pendCmd = ""
 		s.inCommand = false
 	case vt.PromptStart:
@@ -338,31 +401,39 @@ func (s *Session) onVTEvent(ev vt.Event) {
 	}
 }
 
+func (s *Session) record(b blocks.Block) {
+	if b.Cmd == "" && b.Output == "" {
+		return
+	}
+	_ = s.store.Append(&b)
+	s.recent = append(s.recent, b)
+	if len(s.recent) > 64 {
+		s.recent = s.recent[1:]
+	}
+}
+
 func (s *Session) flushPendingBlock() {
 	if !s.inCommand {
 		return
 	}
 	out, trunc := s.scanner.StopCapture()
-	if s.pendCmd == "" && len(out) == 0 {
-		return
-	}
-	_ = s.store.Append(&blocks.Block{
+	s.record(blocks.Block{
 		Cmd: s.pendCmd, CWD: s.cwd,
 		StartedAt: s.pendStart, EndedAt: time.Now(),
-		ExitCode: -1, Output: out, Truncated: trunc,
+		ExitCode: -1, Output: strings.TrimRight(out, "\n"), Truncated: trunc,
 	})
 }
 
-// readerChan pumps an io.Reader into a channel of owned chunks.
+// readerChan pumps an io.Reader into a channel of right-sized owned chunks.
 func readerChan(r io.Reader) <-chan []byte {
 	ch := make(chan []byte, 8)
 	go func() {
 		defer close(ch)
+		buf := make([]byte, 32*1024)
 		for {
-			buf := make([]byte, 32*1024)
 			n, err := r.Read(buf)
 			if n > 0 {
-				ch <- buf[:n]
+				ch <- append([]byte(nil), buf[:n]...)
 			}
 			if err != nil {
 				return

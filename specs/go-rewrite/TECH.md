@@ -95,9 +95,25 @@ Dependencies (all small, no cgo): `creack/pty`, `UserExistsError/conpty`,
 
 - Capture folds `\r` → `\n` (progress bars become lines) and swallows the LF
   of CRLF; output is trimmed of trailing newlines and capped
-  (`block_output_limit_kb`, default 256) with a `truncated` flag.
-- The bash DEBUG-trap preexec skips `__yarp_*` commands so yarp's own
-  PROMPT_COMMAND never becomes a block.
+  (`block_output_limit_kb`, default 256) with a `truncated` flag. Only 7-bit
+  escape forms are recognized: bytes 0x9c/0x9d are UTF-8 continuation bytes
+  in real output, never C1 controls.
+- The bash DEBUG-trap preexec is gated the way bash-preexec does it: an
+  at-prompt flag armed by the last PROMPT_COMMAND entry and cleared by the
+  first, so neither yarp's own hooks nor the user's PROMPT_COMMAND (starship,
+  direnv, `history -a`) are ever recorded as commands.
+- The palette hotkey only fires on a byte in ground state — a small stdin
+  sequence tracker ignores BEL/ESC inside terminal query replies and
+  bracketed pastes. In the overlay, unknown CSI (paste markers, focus
+  events) decode to an inert key, never Esc; a lone ESC is disambiguated
+  from a split sequence by a 60 ms timer; and when the overlay closes
+  mid-batch, remaining input is forwarded to the pty as raw bytes.
+- pwsh reports command + exit code from history at the next prompt (deduped
+  by history Id); the session records these as output-less blocks since
+  PowerShell has no preexec hook to open a capture window.
+- Inserted text is sanitized of every control character (CR would execute);
+  AI deltas/results carry a generation counter so a cancelled request can
+  never write into a newer question's transcript; backups run off-loop.
 - A prompt arriving while a command is open (hooks half-installed, shell
   crashed) drops the dangling capture instead of mislabeling it.
 - Unknown shells run with no hooks: yarp degrades to a plain passthrough

@@ -55,7 +55,11 @@ func Discover(ctx context.Context, endpoint, model string) (*Client, error) {
 	if endpoint != "" {
 		candidates = []string{strings.TrimRight(endpoint, "/")}
 	}
-	hc := &http.Client{Timeout: 90 * time.Second}
+	// No client-wide timeout: it would bound the entire streamed response
+	// body and silently cut off long generations from slow local models.
+	// Probes bound themselves with short contexts; chats are bounded by the
+	// caller's context (Esc cancels in the overlay).
+	hc := &http.Client{}
 	for _, base := range candidates {
 		c := &Client{BaseURL: base, Model: model, http: hc}
 		probeCtx, cancel := context.WithTimeout(ctx, 1500*time.Millisecond)
@@ -162,8 +166,8 @@ func (c *Client) Chat(ctx context.Context, msgs []Message, onDelta func(string))
 			}
 		}
 	}
-	if err := sc.Err(); err != nil && full.Len() == 0 {
-		return "", err
-	}
-	return full.String(), nil
+	// A partial answer is worth returning alongside the error: the caller
+	// shows the text and tells the user the stream ended early, instead of
+	// presenting a truncation as a complete reply.
+	return full.String(), sc.Err()
 }

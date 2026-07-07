@@ -75,6 +75,8 @@ func clipVisible(s string, width int) string {
 }
 
 // wrapText hard-wraps plain text to width, preserving existing newlines.
+// Each line is converted to runes exactly once — a single long line (256KB
+// of minified JSON) must wrap in linear time, not quadratic.
 func wrapText(s string, width int) []string {
 	if width < 4 {
 		width = 4
@@ -85,10 +87,10 @@ func wrapText(s string, width int) []string {
 			out = append(out, "")
 			continue
 		}
-		for len(raw) > 0 {
-			runes := []rune(raw)
+		runes := []rune(raw)
+		for len(runes) > 0 {
 			if len(runes) <= width {
-				out = append(out, raw)
+				out = append(out, string(runes))
 				break
 			}
 			cut := width
@@ -100,7 +102,10 @@ func wrapText(s string, width int) []string {
 				}
 			}
 			out = append(out, string(runes[:cut]))
-			raw = strings.TrimLeft(string(runes[cut:]), " ")
+			runes = runes[cut:]
+			for len(runes) > 0 && runes[0] == ' ' {
+				runes = runes[1:]
+			}
 		}
 	}
 	return out

@@ -22,8 +22,6 @@ type EventKind int
 const (
 	// PromptStart: OSC 133;A — the shell is about to draw a prompt.
 	PromptStart EventKind = iota
-	// CommandStart: OSC 133;B — the user finished the prompt; input begins.
-	CommandStart
 	// OutputStart: OSC 133;C — the command was accepted; output follows.
 	OutputStart
 	// CommandEnd: OSC 133;D;<exit> — the command finished.
@@ -32,8 +30,6 @@ const (
 	CWDChanged
 	// CommandLine: OSC 633;E;<cmd> or OSC 6973;cmd;<base64> — the command text.
 	CommandLine
-	// TitleChanged: OSC 0/2;<title>.
-	TitleChanged
 )
 
 // Event is one extracted shell-integration event.
@@ -43,10 +39,14 @@ type Event struct {
 	Text     string // CWD path, command line, or title
 }
 
+// Only 7-bit sequence forms are recognized. The 8-bit C1 controls (0x9c ST,
+// 0x9d OSC) are deliberately NOT: those byte values are UTF-8 continuation
+// bytes ("Н" is D0 9D, "”" is E2 80 9D), so treating them as controls would
+// derail the scanner on ordinary Unicode output. No modern shell integration
+// emits 8-bit forms.
 const (
 	esc = 0x1b
 	bel = 0x07
-	st  = 0x9c // 8-bit string terminator
 )
 
 type state int
@@ -108,11 +108,6 @@ func (s *Scanner) Scan(p []byte) {
 			switch {
 			case b == esc:
 				s.state = stEsc
-			case b == st:
-				// stray 8-bit terminator; ignore
-			case b == 0x9d: // 8-bit OSC introducer
-				s.oscBuf = s.oscBuf[:0]
-				s.state = stOSC
 			case s.capture:
 				s.captureByte(b)
 			}
@@ -141,8 +136,6 @@ func (s *Scanner) Scan(p []byte) {
 			switch b {
 			case bel:
 				s.finishOSC()
-			case st:
-				s.finishOSC()
 			case esc:
 				s.state = stOSCEsc
 			default:
@@ -161,8 +154,6 @@ func (s *Scanner) Scan(p []byte) {
 		case stStr:
 			if b == esc {
 				s.state = stStrEsc
-			} else if b == st {
-				s.state = stGround
 			}
 		case stStrEsc:
 			switch b {
@@ -228,8 +219,6 @@ func ParseOSC(body string) (Event, bool) {
 		switch kind {
 		case "A":
 			return Event{Kind: PromptStart}, true
-		case "B":
-			return Event{Kind: CommandStart}, true
 		case "C":
 			return Event{Kind: OutputStart}, true
 		case "D":
@@ -258,8 +247,6 @@ func ParseOSC(body string) (Event, bool) {
 		}
 	case "7":
 		return Event{Kind: CWDChanged, Text: parseFileURL(rest)}, true
-	case "0", "2":
-		return Event{Kind: TitleChanged, Text: rest}, true
 	}
 	return Event{}, false
 }
@@ -296,23 +283,12 @@ func unescape633(s string) string {
 }
 
 // parseFileURL extracts the path from a file://host/path OSC 7 payload.
+// url.Parse already percent-decodes into u.Path; decoding again would
+// corrupt directories with literal % escapes in their names.
 func parseFileURL(raw string) string {
 	u, err := url.Parse(strings.TrimSpace(raw))
 	if err != nil || u.Scheme != "file" {
 		return ""
 	}
-	if p, err := url.PathUnescape(u.Path); err == nil {
-		return p
-	}
 	return u.Path
-}
-
-// Strip removes ANSI escape sequences from s, returning printable text. It is
-// used when handing terminal output to the local model.
-func Strip(s string) string {
-	sc := NewScanner(func(Event) {}, len(s)+1)
-	sc.StartCapture()
-	sc.Scan([]byte(s))
-	text, _ := sc.StopCapture()
-	return text
 }

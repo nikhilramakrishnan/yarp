@@ -3,6 +3,7 @@ package backup
 import (
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,16 +15,9 @@ func UploadViaRclone(archive, remote string) error {
 		return fmt.Errorf("rclone is not installed (https://rclone.org/install/)")
 	}
 	out, err := exec.Command("rclone", "copyto", archive,
-		strings.TrimRight(remote, "/")+"/"+baseName(archive)).CombinedOutput()
+		strings.TrimRight(remote, "/")+"/"+filepath.Base(archive)).CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("rclone copy failed: %v: %s", err, strings.TrimSpace(string(out)))
 	}
 	return nil
-}
-
-func baseName(p string) string {
-	if i := strings.LastIndexAny(p, `/\`); i >= 0 {
-		return p[i+1:]
-	}
-	return p
 }

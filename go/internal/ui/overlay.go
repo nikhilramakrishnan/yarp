@@ -42,6 +42,9 @@ type paletteItem struct {
 	cmd    string
 	wf     *workflows.Workflow
 	action string
+	// key is the precomputed lowercase search text: fuzzy-ranking ~hundreds
+	// of items per keystroke must not re-lowercase them every time.
+	key string
 }
 
 type chatLine struct {
@@ -65,6 +68,10 @@ type overlay struct {
 	blockSel  int
 	detail    *blocks.Block
 	detailTop int
+	// wrapped-output cache: re-wrapping a 256KB output on every scroll
+	// keystroke is the difference between instant and seconds.
+	detailLines []string
+	detailWidth int
 
 	// workflow arg fill
 	wf       *workflows.Workflow
@@ -93,7 +100,7 @@ func newOverlay(items []paletteItem) *overlay {
 
 func (o *overlay) filter() {
 	ranked := fuzzy.Rank(o.query, o.items, func(it paletteItem) string {
-		return it.label + " " + it.cmd
+		return it.key
 	})
 	o.view = o.view[:0]
 	for _, r := range ranked {
@@ -104,11 +111,29 @@ func (o *overlay) filter() {
 	}
 }
 
-func (o *overlay) moveSel(delta, n int) {
+// moveSel advances a list cursor with wrap-around; every pane shares it.
+func (o *overlay) moveSel(sel *int, delta, n int) {
 	if n == 0 {
 		return
 	}
-	o.sel = (o.sel + delta + n) % n
+	*sel = (*sel + delta + n) % n
+}
+
+// enterDetail switches to the block-detail pane, resetting the wrap cache.
+func (o *overlay) enterDetail(b *blocks.Block) {
+	o.detail = b
+	o.detailTop = 0
+	o.detailLines = nil
+	o.detailWidth = 0
+	o.mode = modeBlockDetail
+}
+
+// scrollStart returns the first visible index keeping sel on screen.
+func scrollStart(sel, visible int) int {
+	if sel >= visible {
+		return sel - visible + 1
+	}
+	return 0
 }
 
 // render paints the current mode into a frame.
@@ -138,10 +163,7 @@ func (o *overlay) renderPalette(f *frame) {
 	f.line(0, sgrBold+" yarp "+sgrReset+sgrDim+" — type to search history, workflows, actions"+sgrReset)
 	f.line(1, sgrCyan+" ▸ "+sgrReset+o.query+sgrInverse+" "+sgrReset)
 	visible := f.rows - 4
-	start := 0
-	if o.sel >= visible {
-		start = o.sel - visible + 1
-	}
+	start := scrollStart(o.sel, visible)
 	for i := 0; i < visible && start+i < len(o.view); i++ {
 		it := o.view[start+i]
 		marker, style := "   ", ""
@@ -161,10 +183,7 @@ func (o *overlay) renderPalette(f *frame) {
 func (o *overlay) renderBlocks(f *frame) {
 	f.line(0, sgrBold+" blocks "+sgrReset+sgrDim+fmt.Sprintf(" — %d recent commands", len(o.blockList))+sgrReset)
 	visible := f.rows - 3
-	start := 0
-	if o.blockSel >= visible {
-		start = o.blockSel - visible + 1
-	}
+	start := scrollStart(o.blockSel, visible)
 	for i := 0; i < visible && start+i < len(o.blockList); i++ {
 		b := o.blockList[start+i]
 		style := ""
@@ -189,7 +208,11 @@ func (o *overlay) renderDetail(f *frame) {
 	f.line(0, sgrBold+" $ "+firstLine(b.Cmd)+sgrReset)
 	meta := fmt.Sprintf(" exit %d · %s · %s", b.ExitCode, b.Duration().Round(time.Millisecond), b.CWD)
 	f.line(1, sgrDim+meta+sgrReset)
-	lines := wrapText(b.Output, f.cols-2)
+	if o.detailLines == nil || o.detailWidth != f.cols-2 {
+		o.detailLines = wrapText(b.Output, f.cols-2)
+		o.detailWidth = f.cols - 2
+	}
+	lines := o.detailLines
 	visible := f.rows - 4
 	if o.detailTop > len(lines)-visible {
 		o.detailTop = len(lines) - visible
@@ -209,8 +232,14 @@ func (o *overlay) renderDetail(f *frame) {
 
 func (o *overlay) renderAI(f *frame) {
 	f.line(0, sgrBold+" ask yarp "+sgrReset+sgrDim+" — local model, /remember <fact> to save memory"+sgrReset)
+	// Only the tail of a long conversation can be visible; don't re-wrap
+	// the whole transcript on every streamed delta.
+	chat := o.chat
+	if len(chat) > 30 {
+		chat = chat[len(chat)-30:]
+	}
 	var lines []string
-	for _, c := range o.chat {
+	for _, c := range chat {
 		prefix := map[string]string{"you": sgrCyan + "you" + sgrReset, "yarp": sgrGreen + "yarp" + sgrReset, "note": sgrDim + "  ·" + sgrReset}[c.role]
 		for j, l := range wrapText(c.text, f.cols-8) {
 			if j == 0 {
@@ -244,10 +273,7 @@ func (o *overlay) renderAI(f *frame) {
 func (o *overlay) renderThemes(f *frame) {
 	f.line(0, sgrBold+" themes "+sgrReset+sgrDim+" — applied to this terminal via OSC; drop Warp YAML themes in ~/.yarp/themes"+sgrReset)
 	visible := f.rows - 3
-	start := 0
-	if o.themeSel >= visible {
-		start = o.themeSel - visible + 1
-	}
+	start := scrollStart(o.themeSel, visible)
 	for i := 0; i < visible && start+i < len(o.themeList); i++ {
 		t := o.themeList[start+i]
 		style := ""

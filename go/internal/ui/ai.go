@@ -2,21 +2,28 @@ package ui
 
 import (
 	"context"
-	"encoding/base64"
 	"strings"
 	"time"
 
 	"github.com/nikhilramakrishnan/yarp/go/internal/agent"
-	"github.com/nikhilramakrishnan/yarp/go/internal/backup"
 	"github.com/nikhilramakrishnan/yarp/go/internal/config"
 	"github.com/nikhilramakrishnan/yarp/go/internal/llm"
 )
 
 // AI pane wiring. The model call runs in its own goroutine; deltas and the
 // final result come back through session channels so all state mutation
-// stays on the main loop.
+// stays on the main loop. Every message carries the generation counter of
+// the request that produced it: cancelling a request bumps the generation,
+// so a cancelled goroutine's stragglers can never leak into the transcript
+// of a newer question.
+
+type aiDelta struct {
+	gen  int
+	text string
+}
 
 type aiResult struct {
+	gen  int
 	text string
 	err  error
 }
@@ -26,9 +33,7 @@ func (s *Session) keyAI(k Key) {
 	switch k.Kind {
 	case KeyEsc:
 		if s.aiCancel != nil {
-			s.aiCancel()
-			s.aiCancel = nil
-			o.streaming = false
+			s.cancelAI()
 			o.chat = append(o.chat, chatLine{role: "note", text: "cancelled"})
 			return
 		}
@@ -63,23 +68,42 @@ func (s *Session) keyAI(k Key) {
 	}
 }
 
+// cancelAI aborts the in-flight request and invalidates its generation so
+// late deltas/results are dropped on the floor.
+func (s *Session) cancelAI() {
+	if s.aiCancel != nil {
+		s.aiCancel()
+		s.aiCancel = nil
+	}
+	s.aiGen++
+	if s.ov != nil {
+		s.ov.streaming = false
+	}
+}
+
 func (s *Session) rememberFact(fact string) {
 	o := s.ov
 	if !s.settings.MemoryOn() {
 		o.chat = append(o.chat, chatLine{role: "note", text: "memory is disabled in settings"})
 		return
 	}
-	mem := s.memory()
-	if err := mem.Remember(fact, time.Now()); err != nil {
+	mem, err := s.memory()
+	if err == nil {
+		err = mem.Remember(fact, time.Now())
+	}
+	if err != nil {
 		o.chat = append(o.chat, chatLine{role: "note", text: "could not save: " + err.Error()})
 		return
 	}
 	o.chat = append(o.chat, chatLine{role: "note", text: "remembered: " + fact})
 }
 
-func (s *Session) memory() *llm.Memory {
-	base, _ := config.Dir()
-	return llm.OpenMemory(base + "/memory.jsonl")
+func (s *Session) memory() (*llm.Memory, error) {
+	path, err := config.MemoryPath()
+	if err != nil {
+		return nil, err
+	}
+	return llm.OpenMemory(path), nil
 }
 
 // startAIRequest kicks off one model call. The agent is created lazily on
@@ -92,6 +116,7 @@ func (s *Session) startAIRequest(question string) {
 	o.chat = append(o.chat, chatLine{role: "yarp", text: ""})
 
 	ctx, cancel := context.WithCancel(context.Background())
+	s.aiGen++
 	s.aiCancel = cancel
 
 	if s.aiAgent == nil {
@@ -105,11 +130,14 @@ func (s *Session) startAIRequest(question string) {
 		}
 		s.aiAgent = &agent.Agent{Client: client}
 		if s.settings.MemoryOn() {
-			s.aiAgent.Memory = s.memory()
+			if mem, err := s.memory(); err == nil {
+				s.aiAgent.Memory = mem
+			}
 		}
 	}
 
 	// Snapshot everything the goroutine needs; it must not touch s.
+	gen := s.aiGen
 	recent := s.recentBlocks(s.settings.LLM.ContextBlocks)
 	cwd := s.cwd
 	ag := s.aiAgent
@@ -118,12 +146,15 @@ func (s *Session) startAIRequest(question string) {
 	go func() {
 		defer cancel()
 		full, err := ag.Reply(ctx, question, recent, cwd, func(d string) {
+			if ctx.Err() != nil {
+				return
+			}
 			select {
-			case delta <- d:
+			case delta <- aiDelta{gen: gen, text: d}:
 			case <-ctx.Done():
 			}
 		})
-		done <- aiResult{text: full, err: err}
+		done <- aiResult{gen: gen, text: full, err: err}
 	}()
 }
 
@@ -138,6 +169,8 @@ func (s *Session) aiAppendDelta(d string) {
 	}
 }
 
+// aiFinish applies a completed request's result. The caller has already
+// checked the generation, so this result belongs to the visible transcript.
 func (s *Session) aiFinish(res aiResult) {
 	s.aiCancel = nil
 	o := s.ov
@@ -145,7 +178,7 @@ func (s *Session) aiFinish(res aiResult) {
 		return
 	}
 	o.streaming = false
-	if res.err != nil {
+	if res.err != nil && res.text == "" {
 		o.chat = append(o.chat, chatLine{role: "note", text: res.err.Error()})
 		return
 	}
@@ -153,6 +186,9 @@ func (s *Session) aiFinish(res aiResult) {
 	// proposed commands and strip REMEMBER lines from display.
 	if len(o.chat) > 0 && o.chat[len(o.chat)-1].role == "yarp" {
 		o.chat[len(o.chat)-1].text = stripRememberLines(res.text)
+	}
+	if res.err != nil {
+		o.chat = append(o.chat, chatLine{role: "note", text: "stream ended early: " + res.err.Error()})
 	}
 	o.suggested = agent.SuggestedCommands(res.text)
 }
@@ -166,23 +202,4 @@ func stripRememberLines(s string) string {
 		out = append(out, l)
 	}
 	return strings.TrimSpace(strings.Join(out, "\n"))
-}
-
-func base64Std(s string) string {
-	return base64.StdEncoding.EncodeToString([]byte(s))
-}
-
-// runBackup bridges the overlay's "Back up now" action to the backup package.
-func runBackup(settings *config.Settings, homeDir string, now time.Time) (string, error) {
-	return backup.Run(homeDir, backup.RunConfig{
-		Dir:          settings.Backup.Dir,
-		RcloneRemote: settings.Backup.RcloneRemote,
-		Keep:         settings.Backup.Keep,
-		Drive: backup.DriveAuth{
-			ClientID:     settings.Backup.GoogleDrive.ClientID,
-			ClientSecret: settings.Backup.GoogleDrive.ClientSecret,
-			RefreshToken: settings.Backup.GoogleDrive.RefreshToken,
-		},
-		DriveFolder: settings.Backup.GoogleDrive.FolderID,
-	}, now)
 }

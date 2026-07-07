@@ -94,6 +94,16 @@ func Dir() (string, error) {
 	return d, os.MkdirAll(d, dirPermissions)
 }
 
+// MemoryPath is the single definition of where agent memory lives; the
+// overlay and every CLI subcommand must agree on it.
+func MemoryPath() (string, error) {
+	base, err := Dir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(base, "memory.jsonl"), nil
+}
+
 // Subdir returns (and creates) a directory under the yarp home.
 func Subdir(name string) (string, error) {
 	base, err := Dir()

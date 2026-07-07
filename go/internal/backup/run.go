@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/nikhilramakrishnan/yarp/go/internal/config"
 )
 
 // RunConfig captures the resolved backup settings (see config.BackupSettings).
@@ -15,6 +17,22 @@ type RunConfig struct {
 	Keep         int
 	Drive        DriveAuth
 	DriveFolder  string
+}
+
+// RunConfigFromSettings is the one place settings map onto a backup run —
+// the CLI and the overlay's "Back up now" must never wire these separately.
+func RunConfigFromSettings(s *config.Settings) RunConfig {
+	return RunConfig{
+		Dir:          s.Backup.Dir,
+		RcloneRemote: s.Backup.RcloneRemote,
+		Keep:         s.Backup.Keep,
+		Drive: DriveAuth{
+			ClientID:     s.Backup.GoogleDrive.ClientID,
+			ClientSecret: s.Backup.GoogleDrive.ClientSecret,
+			RefreshToken: s.Backup.GoogleDrive.RefreshToken,
+		},
+		DriveFolder: s.Backup.GoogleDrive.FolderID,
+	}
 }
 
 // Run snapshots homeDir and ships the archive to every configured

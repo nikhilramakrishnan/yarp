@@ -30,59 +30,62 @@ const (
 	KeyHome
 	KeyEnd
 	KeyDelete
+	// KeyIgnore is a decoded-but-meaningless sequence: bracketed-paste
+	// markers, focus events, mouse reports, unknown CSI. Overlay handlers
+	// must not react to it — in particular it must never alias to Esc, or
+	// pasting into the palette would dismiss the overlay.
+	KeyIgnore
 )
 
-// DecodeKeys turns a raw stdin chunk into keys, returning any trailing bytes
-// that need more input to decode (split escape sequences / UTF-8 runes).
+// DecodeOne decodes the first key in buf, returning the key, the number of
+// bytes consumed, and need=true when buf ends mid-sequence (partial escape
+// sequence or UTF-8 rune) and more input is required. A lone trailing ESC
+// reports need=true too: the caller disambiguates "Esc keypress" from "start
+// of a split sequence" with a short timer, because the bytes alone can't.
+func DecodeOne(buf []byte) (key Key, n int, need bool) {
+	if len(buf) == 0 {
+		return Key{}, 0, true
+	}
+	b := buf[0]
+	switch {
+	case b == 0x1b:
+		return decodeEscape(buf)
+	case b == '\r' || b == '\n':
+		return Key{Kind: KeyEnter}, 1, false
+	case b == 0x7f || b == 0x08:
+		return Key{Kind: KeyBackspace}, 1, false
+	case b == '\t':
+		return Key{Kind: KeyTab}, 1, false
+	case b < 0x20:
+		return Key{Kind: KeyCtrl, Ctrl: b}, 1, false
+	default:
+		r, size := utf8.DecodeRune(buf)
+		if r == utf8.RuneError && size == 1 && !utf8.FullRune(buf) {
+			return Key{}, 0, true // wait for the rest of the rune
+		}
+		return Key{Kind: KeyRune, Rune: r}, size, false
+	}
+}
+
+// DecodeKeys decodes as many keys as buf holds, returning trailing bytes
+// that need more input.
 func DecodeKeys(buf []byte) (keys []Key, rest []byte) {
 	i := 0
 	for i < len(buf) {
-		b := buf[i]
-		switch {
-		case b == 0x1b:
-			key, n, need := decodeEscape(buf[i:])
-			if need {
-				return keys, buf[i:]
-			}
-			if n == 0 { // lone ESC
-				keys = append(keys, Key{Kind: KeyEsc})
-				i++
-				continue
-			}
-			keys = append(keys, key)
-			i += n
-		case b == '\r' || b == '\n':
-			keys = append(keys, Key{Kind: KeyEnter})
-			i++
-		case b == 0x7f || b == 0x08:
-			keys = append(keys, Key{Kind: KeyBackspace})
-			i++
-		case b == '\t':
-			keys = append(keys, Key{Kind: KeyTab})
-			i++
-		case b < 0x20:
-			keys = append(keys, Key{Kind: KeyCtrl, Ctrl: b})
-			i++
-		default:
-			r, n := utf8.DecodeRune(buf[i:])
-			if r == utf8.RuneError && n == 1 && !utf8.FullRune(buf[i:]) {
-				return keys, buf[i:] // wait for the rest of the rune
-			}
-			keys = append(keys, Key{Kind: KeyRune, Rune: r})
-			i += n
+		k, n, need := DecodeOne(buf[i:])
+		if need {
+			return keys, buf[i:]
 		}
+		keys = append(keys, k)
+		i += n
 	}
 	return keys, nil
 }
 
 // decodeEscape parses one escape sequence at the start of buf (buf[0]==ESC).
-// need=true means the sequence is incomplete. n==0 with need=false means
-// treat as a lone ESC key.
 func decodeEscape(buf []byte) (key Key, n int, need bool) {
 	if len(buf) == 1 {
-		// Could be a lone Esc press or a split sequence; treating it as Esc
-		// keeps the overlay responsive and terminals rarely split here.
-		return Key{}, 0, false
+		return Key{}, 0, true // lone ESC or split sequence; caller decides
 	}
 	if buf[1] != '[' && buf[1] != 'O' {
 		// Alt+<key> or other ESC-prefixed input; report Esc and let the next
@@ -95,8 +98,8 @@ func decodeEscape(buf []byte) (key Key, n int, need bool) {
 		if c >= 0x40 && c <= 0x7e {
 			return csiKey(buf[2:j], c), j + 1, false
 		}
-		if j > 16 { // runaway; drop it
-			return Key{Kind: KeyEsc}, j + 1, false
+		if j > 24 { // runaway; drop it
+			return Key{Kind: KeyIgnore}, j + 1, false
 		}
 	}
 	return Key{}, 0, true
@@ -130,5 +133,7 @@ func csiKey(params []byte, final byte) Key {
 			return Key{Kind: KeyPgDn}
 		}
 	}
-	return Key{Kind: KeyEsc}
+	// Everything else — paste markers 200~/201~, focus I/O, mouse, unknown
+	// CSI — is deliberately inert.
+	return Key{Kind: KeyIgnore}
 }

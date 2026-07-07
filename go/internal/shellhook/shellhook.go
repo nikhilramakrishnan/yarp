@@ -88,10 +88,15 @@ func Prepare(k Kind, runtimeDir string) (Launch, error) {
 		}
 		return Launch{Args: []string{"--rcfile", rc}, Cleanup: rm(rc)}, nil
 	case Zsh:
-		// A ZDOTDIR shim: our .zshrc restores the user's ZDOTDIR, sources
-		// their zshrc, then installs the hooks.
+		// A ZDOTDIR shim: our .zshenv runs the user's .zshenv (PATH etc.
+		// commonly live there), then our .zshrc restores the user's ZDOTDIR,
+		// sources their zshrc, and installs the hooks.
 		zdot := filepath.Join(runtimeDir, "zdot")
 		if err := os.MkdirAll(zdot, 0o700); err != nil {
+			return noop, err
+		}
+		zshenv := fmt.Sprintf(zshEnvTemplate, zdot)
+		if err := os.WriteFile(filepath.Join(zdot, ".zshenv"), []byte(zshenv), 0o600); err != nil {
 			return noop, err
 		}
 		body := zshSourceUserRC + zshHook
@@ -126,9 +131,15 @@ if [ -z "$YARP_HOOKED" ]; then
   YARP_HOOKED=1
   __yarp_osc() { printf '\033]%s\007' "$1"; }
   __yarp_cwd() { __yarp_osc "7;file://$HOSTNAME$PWD"; }
+  # The DEBUG trap fires for every simple command, including each entry of
+  # PROMPT_COMMAND itself. Gate on YARP_AT_PROMPT — armed by the LAST prompt
+  # command and cleared by the first — so the user's own PROMPT_COMMAND
+  # hooks (starship, direnv, history -a) are never recorded as commands.
+  # This is the same design bash-preexec uses.
   __yarp_preexec() {
-    [ -n "$YARP_IN_CMD" ] && return
+    [ -z "$YARP_AT_PROMPT" ] && return
     case "$BASH_COMMAND" in __yarp_*) return ;; esac
+    unset YARP_AT_PROMPT
     YARP_IN_CMD=1
     local b64
     b64=$(printf '%s' "$BASH_COMMAND" | base64 2>/dev/null | tr -d '\n')
@@ -137,6 +148,7 @@ if [ -z "$YARP_HOOKED" ]; then
   }
   __yarp_precmd() {
     local exit=$?
+    unset YARP_AT_PROMPT
     if [ -n "$YARP_IN_CMD" ]; then
       __yarp_osc "133;D;$exit"
       unset YARP_IN_CMD
@@ -144,9 +156,21 @@ if [ -z "$YARP_HOOKED" ]; then
     __yarp_cwd
     __yarp_osc "133;A"
   }
-  PROMPT_COMMAND="__yarp_precmd${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+  __yarp_interactive() { YARP_AT_PROMPT=1; }
+  PROMPT_COMMAND="__yarp_precmd${PROMPT_COMMAND:+;$PROMPT_COMMAND};__yarp_interactive"
   trap '__yarp_preexec' DEBUG
 fi
+`
+
+// zshEnvTemplate is the shim's .zshenv: zsh sources $ZDOTDIR/.zshenv before
+// anything else, so the user's own .zshenv must run here or their PATH and
+// environment would silently differ inside yarp. The user's file may itself
+// change ZDOTDIR; that value is carried forward for the .zshrc phase.
+const zshEnvTemplate = `# yarp bootstrap: run the user's .zshenv, then return to the shim.
+ZDOTDIR="${YARP_USER_ZDOTDIR:-$HOME}"
+[[ -f "$ZDOTDIR/.zshenv" ]] && source "$ZDOTDIR/.zshenv"
+export YARP_USER_ZDOTDIR="$ZDOTDIR"
+ZDOTDIR='%s'
 `
 
 const zshSourceUserRC = `# yarp bootstrap: restore the user's ZDOTDIR and load their config.
@@ -209,23 +233,23 @@ end
 `
 
 const pwshHook = `# yarp shell integration for PowerShell.
-# preexec has no native hook; the command line is reported from history at
-# the next prompt, which is enough to delimit and label blocks.
+# PowerShell has no preexec hook, so the command line and exit code are
+# reported from history at the next prompt (the session records these as
+# output-less blocks). Deduplicating on the history Id means pressing Enter
+# on an empty prompt never re-reports the previous command.
 if (-not $env:YARP_HOOKED) {
   $env:YARP_HOOKED = "1"
-  $global:__yarpFirstPrompt = $true
+  $global:__yarpLastHistoryId = -1
   $global:__yarpOldPrompt = $function:prompt
   function global:prompt {
     $exit = if ($global:LASTEXITCODE -ne $null) { $global:LASTEXITCODE } elseif ($?) { 0 } else { 1 }
-    if (-not $global:__yarpFirstPrompt) {
-      $last = Get-History -Count 1
-      if ($last) {
-        $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($last.CommandLine))
-        [Console]::Write("$([char]27)]6973;cmd;$b64$([char]7)")
-      }
+    $last = Get-History -Count 1
+    if ($last -and $last.Id -ne $global:__yarpLastHistoryId) {
+      $global:__yarpLastHistoryId = $last.Id
+      $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($last.CommandLine))
+      [Console]::Write("$([char]27)]6973;cmd;$b64$([char]7)")
       [Console]::Write("$([char]27)]133;D;$exit$([char]7)")
     }
-    $global:__yarpFirstPrompt = $false
     $cwd = (Get-Location).Path -replace '\\', '/'
     [Console]::Write("$([char]27)]7;file://$env:COMPUTERNAME/$cwd$([char]7)")
     [Console]::Write("$([char]27)]133;A$([char]7)")

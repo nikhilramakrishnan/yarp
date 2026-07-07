@@ -21,6 +21,16 @@ import (
 
 const snapshotPrefix = "yarp-backup-"
 
+// zeroReader pads tar entries whose file shrank mid-snapshot.
+type zeroReader struct{}
+
+func (zeroReader) Read(p []byte) (int, error) {
+	for i := range p {
+		p[i] = 0
+	}
+	return len(p), nil
+}
+
 // Snapshot writes a tar.gz of srcDir (the yarp home) into destDir and
 // returns the archive path. Runtime scratch and the backups directory itself
 // are excluded.
@@ -55,6 +65,9 @@ func Snapshot(srcDir, destDir string, now time.Time) (string, error) {
 			}
 			return nil
 		}
+		if !info.IsDir() && !info.Mode().IsRegular() {
+			return nil // symlinks, sockets: nothing worth archiving
+		}
 		hdr, err := tar.FileInfoHeader(info, "")
 		if err != nil {
 			return err
@@ -62,21 +75,27 @@ func Snapshot(srcDir, destDir string, now time.Time) (string, error) {
 		hdr.Name = rel
 		if info.IsDir() {
 			hdr.Name += "/"
+			return tw.WriteHeader(hdr)
 		}
+		// Open BEFORE committing the header: writing a header and then
+		// failing to supply its bytes corrupts the whole archive, whereas
+		// skipping an unreadable file just narrows the backup.
+		src, err := os.Open(p)
+		if err != nil {
+			return nil
+		}
+		defer src.Close()
 		if err := tw.WriteHeader(hdr); err != nil {
 			return err
 		}
-		if info.Mode().IsRegular() {
-			src, err := os.Open(p)
-			if err != nil {
-				return nil
-			}
-			defer src.Close()
-			if _, err := io.Copy(tw, src); err != nil {
-				return err
-			}
+		// The file may change size between stat and copy (another yarp
+		// session appending history): copy exactly the declared size and
+		// zero-pad if it shrank, so one racing file can't abort the backup.
+		n, err := io.CopyN(tw, src, hdr.Size)
+		if err == io.EOF {
+			_, err = io.CopyN(tw, zeroReader{}, hdr.Size-n)
 		}
-		return nil
+		return err
 	})
 	if err != nil {
 		return "", err

@@ -50,7 +50,7 @@ func (a *Agent) Reply(ctx context.Context, userMsg string, recent []blocks.Block
 	msgs = append(msgs, llm.Message{Role: "user", Content: userMsg})
 
 	full, err := a.Client.Chat(ctx, msgs, onDelta)
-	if err != nil {
+	if full == "" && err != nil {
 		return "", err
 	}
 	a.history = append(a.history,
@@ -62,7 +62,9 @@ func (a *Agent) Reply(ctx context.Context, userMsg string, recent []blocks.Block
 		a.history = a.history[len(a.history)-12:]
 	}
 	a.persistDirectives(full)
-	return full, nil
+	// err may carry a mid-stream failure; the partial text is still
+	// returned so the caller can show it with a truncation note.
+	return full, err
 }
 
 // contextMessage assembles terminal context and recalled memory.

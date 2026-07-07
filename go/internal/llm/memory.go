@@ -54,6 +54,7 @@ func (m *Memory) All() ([]MemoryEntry, error) {
 	defer f.Close()
 	var out []MemoryEntry
 	sc := bufio.NewScanner(f)
+	sc.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 	for sc.Scan() {
 		var e MemoryEntry
 		if json.Unmarshal(sc.Bytes(), &e) == nil && e.Text != "" {

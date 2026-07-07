@@ -90,8 +90,29 @@ func TestUnescape633(t *testing.T) {
 	}
 }
 
-func TestStrip(t *testing.T) {
-	if got := Strip("\x1b[31mred\x1b[0m"); got != "red" {
-		t.Fatalf("Strip = %q", got)
+// Bytes 0x9c/0x9d are UTF-8 continuation bytes (e.g. "Н" = D0 9D); they must
+// pass through as text, not be mistaken for 8-bit C1 controls — that bug ate
+// the shell's 133;D and dropped whole blocks on Unicode output.
+func TestUTF8ContinuationBytesAreNotControls(t *testing.T) {
+	var events []Event
+	s := NewScanner(func(e Event) { events = append(events, e) }, 0)
+	s.StartCapture()
+	s.Scan([]byte("Название — “ok”\n"))
+	s.Scan([]byte("\x1b]133;D;0\x07"))
+	got, _ := s.StopCapture()
+	if got != "Название — “ok”\n" {
+		t.Fatalf("captured %q", got)
+	}
+	if len(events) != 1 || events[0].Kind != CommandEnd {
+		t.Fatalf("CommandEnd lost after unicode output: %+v", events)
+	}
+}
+
+// url.Parse already percent-decodes; a second decode corrupted directories
+// with literal % in their names.
+func TestOSC7LiteralPercentDir(t *testing.T) {
+	ev, ok := ParseOSC("7;file://host/tmp/a%2520b")
+	if !ok || ev.Text != "/tmp/a%20b" {
+		t.Fatalf("literal-percent dir decoded wrong: %+v", ev)
 	}
 }
