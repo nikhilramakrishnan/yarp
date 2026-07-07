@@ -243,9 +243,15 @@ func (o *overlay) renderAI(f *frame) {
 
 func (o *overlay) renderThemes(f *frame) {
 	f.line(0, sgrBold+" themes "+sgrReset+sgrDim+" — applied to this terminal via OSC; drop Warp YAML themes in ~/.yarp/themes"+sgrReset)
-	for i, t := range o.themeList {
+	visible := f.rows - 3
+	start := 0
+	if o.themeSel >= visible {
+		start = o.themeSel - visible + 1
+	}
+	for i := 0; i < visible && start+i < len(o.themeList); i++ {
+		t := o.themeList[start+i]
 		style := ""
-		if i == o.themeSel {
+		if start+i == o.themeSel {
 			style = sgrInverse
 		}
 		f.line(1+i, fmt.Sprintf("%s  %s %s", style, t.Name, sgrDim+t.Background+" / "+t.Foreground))

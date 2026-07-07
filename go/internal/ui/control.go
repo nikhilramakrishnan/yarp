@@ -34,7 +34,11 @@ func (s *Session) closeOverlay() {
 	}
 	s.ov = nil
 	s.out.WriteString(altScreenOff)
-	if s.ptyBuf.Len() > 0 {
+	if s.ptyDropped {
+		s.ptyDropped = false
+		s.out.WriteString(sgrReset + "\r\n" + sgrDim +
+			"[yarp: output skipped while the overlay was open]" + sgrReset + "\r\n")
+	} else if s.ptyBuf.Len() > 0 {
 		s.out.Write(s.ptyBuf.Bytes())
 		s.ptyBuf.Reset()
 	}

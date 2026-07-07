@@ -45,9 +45,10 @@ type Session struct {
 	recent    []blocks.Block // completed this session, newest last
 
 	// overlay state
-	ov     *overlay
-	ptyBuf bytes.Buffer // child output withheld while the overlay is up
-	dirty  bool         // buffered output exists → nudge a repaint on close
+	ov         *overlay
+	ptyBuf     bytes.Buffer // child output withheld while the overlay is up
+	ptyDropped bool         // buffer overflowed; discarding until close
+	dirty      bool         // output arrived under the overlay → nudge on close
 
 	// ai plumbing (see ai.go)
 	aiAgent  *agent.Agent
@@ -165,8 +166,7 @@ func (s *Session) loop() int {
 			}
 			s.scanner.Scan(chunk)
 			if s.ov != nil {
-				s.ptyBuf.Write(chunk)
-				s.dirty = true
+				s.bufferUnderOverlay(chunk)
 			} else {
 				s.out.Write(chunk)
 			}
@@ -248,6 +248,25 @@ func keyBytes(k Key) []byte {
 		return []byte{0x1b}
 	}
 	return nil
+}
+
+// bufferUnderOverlay withholds child output while the overlay covers the
+// screen. The buffer is capped: replaying an unbounded log dump on close is
+// as useless as storing it, so past the cap yarp discards (the scanner has
+// already seen every byte, so block recording is unaffected) and says so
+// when the overlay closes.
+const ptyBufCap = 4 << 20
+
+func (s *Session) bufferUnderOverlay(chunk []byte) {
+	s.dirty = true
+	if s.ptyDropped {
+		return
+	}
+	s.ptyBuf.Write(chunk)
+	if s.ptyBuf.Len() > ptyBufCap {
+		s.ptyBuf.Reset()
+		s.ptyDropped = true
+	}
 }
 
 func (s *Session) pollResize() {
