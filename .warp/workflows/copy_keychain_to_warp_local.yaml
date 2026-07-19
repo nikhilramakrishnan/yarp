@@ -1,6 +1,0 @@
----
-name: "Copy YarpDev Keychain to Yarp local"
-command: "security add-generic-password -a User -U -s yarp -w \"$(security find-generic-password -a User -s dev.yarp.Yarp-Dev -w)\""
-description: "Copies the refresh token from YarpDev into the local yarp app so that it can authenticate."
-author: Yarp Team
-shells: []

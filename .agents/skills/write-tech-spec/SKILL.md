@@ -36,8 +36,8 @@ Before drafting, read the product spec (if any), inspect the relevant code, and 
 Required sections:
 
 1. **Context** — What's being built, how the current system works in the area being changed, and the most relevant files with line references. Combine the "problem," "current state," and "relevant code" into one grounded section. Example references:
-   - `app/src/workspace/mod.rs:42` — entry point for the user flow
-   - `app/src/workspace/workspace.rs (120-220)` — state and event handling that will likely change
+   - `internal/ui/session.go:42` — entry point for the user flow
+   - `internal/ui/control.go (120-220)` — state and event handling that will likely change
    Reference `PRODUCT.md` for user-visible behavior rather than restating it.
 2. **Proposed changes** — The implementation plan: which modules change, new types/APIs/state being introduced, data flow, ownership boundaries, and how the design follows existing patterns. Call out tradeoffs when there is more than one reasonable path.
 3. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
