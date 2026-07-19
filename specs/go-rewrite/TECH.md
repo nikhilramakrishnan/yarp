@@ -130,9 +130,19 @@ the Rust integration tests), config defaults/round-trip, memory recall,
 snapshot/restore/prune (including exclusion of backups/runtime and
 path-escape rejection), and key decoding (split sequences, UTF-8).
 
-E2E (manual/CI-able): pipe a scripted session through `script -qc ./yarp`,
-assert JSONL blocks; stub SSE server for the AI path. Cross-compile gates:
-`GOOS=windows`, `GOOS=darwin` builds.
+E2E: `go/e2e/run.sh` drives the real binary on a pty through **bash, zsh,
+fish, and pwsh** (installed locally) and asserts blocks are recorded with
+correct labels and exit codes. The driver (`e2e/driver.py`) behaves like a
+real terminal — it answers DSR/DA queries, which PSReadLine requires — so
+the test is faithful where plain piped stdin is not. Verified end-to-end:
+the bash PROMPT_COMMAND gating, the zsh .zshenv shim and PROMPT_SP output
+cleanup, fish events, and pwsh history-based reporting (hook-sourcing and
+empty prompts excluded). The AI path is exercised against a stub
+OpenAI-compatible SSE server. Cross-compile gates: `GOOS=windows`,
+`GOOS=darwin` builds.
+
+Remaining untested-at-runtime surface: Windows ConPTY itself (this rewrite
+was validated on Linux; pwsh hook logic is shell-side and shared).
 
 ## Build & release
 

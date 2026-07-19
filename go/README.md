@@ -27,4 +27,7 @@ CGO_ENABLED=0 go build ./cmd/yarp
 
 Run `yarp doctor` to check your setup, `yarp help` for the full CLI.
 
+Testing: `go test ./...` for units; `./e2e/run.sh` drives the real binary
+on a pty through bash, zsh, fish, and pwsh and asserts blocks are recorded.
+
 Design and rationale: see `specs/go-rewrite/PRODUCT.md` and `TECH.md`.

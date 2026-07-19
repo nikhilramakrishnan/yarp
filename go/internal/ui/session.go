@@ -381,7 +381,7 @@ func (s *Session) onVTEvent(ev vt.Event) {
 			StartedAt: s.pendStart,
 			EndedAt:   time.Now(),
 			ExitCode:  ev.ExitCode,
-			Output:    strings.TrimRight(out, "\n"),
+			Output:    cleanCaptured(out),
 			Truncated: trunc,
 		})
 		s.pendCmd = ""
@@ -420,8 +420,31 @@ func (s *Session) flushPendingBlock() {
 	s.record(blocks.Block{
 		Cmd: s.pendCmd, CWD: s.cwd,
 		StartedAt: s.pendStart, EndedAt: time.Now(),
-		ExitCode: -1, Output: strings.TrimRight(out, "\n"), Truncated: trunc,
+		ExitCode: -1, Output: cleanCaptured(out), Truncated: trunc,
 	})
+}
+
+// cleanCaptured normalizes stored output: per-line trailing spaces go (CR
+// folding leaves progress-bar padding behind), as do trailing blank lines
+// and zsh's PROMPT_SP end-of-line mark — a lone %/# plus padding that zsh
+// prints between a command's output and the next prompt, which would
+// otherwise pollute every captured block under zsh.
+func cleanCaptured(out string) string {
+	lines := strings.Split(out, "\n")
+	for i := range lines {
+		lines[i] = strings.TrimRight(lines[i], " ")
+	}
+	n := len(lines)
+	for n > 0 && lines[n-1] == "" {
+		n--
+	}
+	if n > 0 && (lines[n-1] == "%" || lines[n-1] == "#") {
+		n--
+		for n > 0 && lines[n-1] == "" {
+			n--
+		}
+	}
+	return strings.Join(lines[:n], "\n")
 }
 
 // readerChan pumps an io.Reader into a channel of right-sized owned chunks.

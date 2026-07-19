@@ -239,16 +239,24 @@ const pwshHook = `# yarp shell integration for PowerShell.
 # on an empty prompt never re-reports the previous command.
 if (-not $env:YARP_HOOKED) {
   $env:YARP_HOOKED = "1"
+  # Baseline the history so commands that ran before the hook (including the
+  # dot-sourcing of this very file, which pwsh puts in history) are never
+  # reported as blocks; the path filter catches it even if it lands later.
+  $global:__yarpHookPath = $PSCommandPath
   $global:__yarpLastHistoryId = -1
+  $__yarpH0 = Get-History -Count 1
+  if ($__yarpH0) { $global:__yarpLastHistoryId = $__yarpH0.Id }
   $global:__yarpOldPrompt = $function:prompt
   function global:prompt {
     $exit = if ($global:LASTEXITCODE -ne $null) { $global:LASTEXITCODE } elseif ($?) { 0 } else { 1 }
     $last = Get-History -Count 1
     if ($last -and $last.Id -ne $global:__yarpLastHistoryId) {
       $global:__yarpLastHistoryId = $last.Id
-      $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($last.CommandLine))
-      [Console]::Write("$([char]27)]6973;cmd;$b64$([char]7)")
-      [Console]::Write("$([char]27)]133;D;$exit$([char]7)")
+      if (-not ($global:__yarpHookPath -and $last.CommandLine.Contains($global:__yarpHookPath))) {
+        $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($last.CommandLine))
+        [Console]::Write("$([char]27)]6973;cmd;$b64$([char]7)")
+        [Console]::Write("$([char]27)]133;D;$exit$([char]7)")
+      }
     }
     $cwd = (Get-Location).Path -replace '\\', '/'
     [Console]::Write("$([char]27)]7;file://$env:COMPUTERNAME/$cwd$([char]7)")
