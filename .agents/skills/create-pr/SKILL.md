@@ -38,14 +38,14 @@ If the PR includes code changes, run the relevant presubmit checks before openin
 ```
 
 `./script/presubmit` runs:
-- `cargo fmt` - Code formatting
-- `cargo clippy` - Linting with all warnings as errors
+- `gofmt -l .` - Code formatting (no output means clean)
+- `go vet ./...` and `go test ./...` - Linting and tests
 - All tests (unit, doc, and integration)
-If the PR is documentation-only (for example, skills, markdown, or other non-code content), you do not need to run `cargo fmt` or `cargo clippy` just to open or update the PR.
+If the PR is documentation-only (for example, skills, markdown, or other non-code content), you do not need to run `gofmt` or `go vet` just to open or update the PR.
 
 If presubmit fails for a code-changing PR, use the `fix-errors` skill to resolve issues.
 
-**You must run `cargo fmt` and `cargo clippy` before:**
+**You must run `gofmt`, `go vet`, and `go test ./...` before:**
 - Opening a new PR that includes code changes
 - Pushing new commits that include code changes to an existing PR branch
 - Any reviewed branch update that changes code
@@ -219,7 +219,7 @@ Your PR summary under the "Description" section should include:
 1. **Monitor CI checks** - Ensure all automated checks pass
 2. **Respond to review comments** - Address feedback promptly
 3. **Keep the PR up to date** - Merge master if conflicts arise
-4. **Re-run relevant validation** - After making changes based on review feedback. For code changes, re-run `cargo fmt`/`cargo clippy` (and other relevant checks); for documentation-only changes, this is not required.
+4. **Re-run relevant validation** - After making changes based on review feedback. For code changes, re-run `gofmt`/`go vet`/`go test` (and other relevant checks); for documentation-only changes, this is not required.
 
 ## Best Practices
 

@@ -11,7 +11,7 @@ alternate-screen overlay toggled by a hotkey. This is what makes a full
 rewrite tractable, fast (no rendering pipeline), and portable (rendering is
 the host terminal's problem).
 
-## Module map (`go/`)
+## Module map (repo root)
 
 ```
 cmd/yarp            CLI dispatch (run, history, ai, memory, backup, themes,
@@ -130,7 +130,7 @@ the Rust integration tests), config defaults/round-trip, memory recall,
 snapshot/restore/prune (including exclusion of backups/runtime and
 path-escape rejection), and key decoding (split sequences, UTF-8).
 
-E2E: `go/e2e/run.sh` drives the real binary on a pty through **bash, zsh,
+E2E: `e2e/run.sh` drives the real binary on a pty through **bash, zsh,
 fish, and pwsh** (installed locally) and asserts blocks are recorded with
 correct labels and exit codes. The driver (`e2e/driver.py`) behaves like a
 real terminal — it answers DSR/DA queries, which PSReadLine requires — so
@@ -147,9 +147,16 @@ was validated on Linux; pwsh hook logic is shell-side and shared).
 ## Build & release
 
 ```
-cd go && CGO_ENABLED=0 go build -ldflags "-s -w -X main.version=$(git describe)" ./cmd/yarp
+CGO_ENABLED=0 go build -ldflags "-s -w -X main.version=$(git describe)" ./cmd/yarp
 ```
 
 Release = the same command in a matrix over GOOS/GOARCH. No packaging step,
-no assets to bundle (themes ship in code; fonts/SVGs of the Rust app are not
-needed by a terminal-native client).
+no assets to bundle (themes ship in code; fonts/SVGs of the old Rust app are
+not needed by a terminal-native client).
+
+## Legacy code removal
+
+Once the rewrite was verified end-to-end across all four shells, the Rust
+tree (app/, crates/, build configs, Rust-bound agent skills) was deleted and
+the Go module hoisted to the repo root. The Rust code remains recoverable
+from git history; `specs/` stays as the record of what it did.

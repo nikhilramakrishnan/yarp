@@ -1,16 +1,14 @@
 # YARP.md
 
-## Go rewrite (current direction)
-
-yarp is being rewritten as a single, static, cross-platform Go binary in
-`go/` — a local-first terminal client with blocks, a ctrl-g overlay
-(palette/blocks/AI/themes), local-LLM support, and personal backup
-connectors. See `specs/go-rewrite/PRODUCT.md` and `specs/go-rewrite/TECH.md`.
+yarp is a single, static, cross-platform Go binary — a local-first terminal
+client with blocks, a ctrl-g overlay (palette/blocks/AI/themes), local-LLM
+support, and personal backup connectors. Design record:
+`specs/go-rewrite/PRODUCT.md` and `specs/go-rewrite/TECH.md`.
 
 ```bash
-cd go
 CGO_ENABLED=0 go build ./cmd/yarp   # build
-go test ./...                        # test
+go test ./...                        # unit tests
+./e2e/run.sh                         # four-shell end-to-end matrix
 ```
 
 ## Local-First Architecture
@@ -21,18 +19,12 @@ go test ./...                        # test
   llama.cpp), configured via settings or `YARP_LLM_BASE_URL`/`YARP_LLM_MODEL`
   — the same env contract the Rust `OssAiClient`/`LocalLlmProvider` used.
   There is no API-key surface.
-- Hosted object sync is gone; storage is backed up with `yarp backup` to
-  targets the user owns (local dir, their own Google Drive, rclone remotes).
+- Storage is backed up with `yarp backup` to targets the user owns (local
+  dir, their own Google Drive, rclone remotes).
 
-## Legacy Rust build
+## The legacy Rust codebase
 
-The original Rust app remains in `app/` + `crates/`:
-
-```bash
-./script/run
-cargo build --bin yarp
-cargo check --bin yarp
-```
-
-- The Rust `yarp` binary entry point is `src/bin/local.rs` (internal
-  Local-channel build); its `OssObjectClient` is a local-first stub.
+The original Rust fork of Warp (app/ + crates/) was removed after the Go
+rewrite was verified end-to-end; recover it from git history if ever needed
+(it last lived at tag-less commit `b3a515e`'s parent tree). The `specs/`
+directory remains as the institutional memory of the work done there.
