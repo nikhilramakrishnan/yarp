@@ -15,7 +15,8 @@ type Pty interface {
 	Resize(cols, rows int) error
 	// Wait blocks until the child exits and returns its exit code.
 	Wait() (int, error)
-	// Close releases the pty. Safe to call after Wait.
+	// Close terminates the attached process and releases the pty. Safe to call
+	// after Wait. It is the authoritative pane-close operation.
 	Close() error
 }
 
